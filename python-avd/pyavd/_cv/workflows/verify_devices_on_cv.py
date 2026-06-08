@@ -49,7 +49,7 @@ async def verify_devices_in_cloudvision_inventory(
     Hostname is always set for a device, but to support initial rollout, the hostname will not
     be used for search *if* either serial_number or system_mac_address is set.
 
-    Skip checks for devices where _exists_on_cv is already filled out on the device.
+    Skip checks for devices where exists_on_cv is already filled out on the device.
 
     Populate current streaming status for all existing devices.
 
@@ -59,7 +59,7 @@ async def verify_devices_in_cloudvision_inventory(
     device_tuples = {
         (device.serial_number, device.system_mac_address, device.hostname if not any([device.serial_number, device.system_mac_address]) else None)
         for device in devices
-        if device._exists_on_cv is None
+        if device.exists_on_cv is None
     }
     LOGGER.info("verify_devices_in_cloudvision_inventory: %s unique devices.", len(device_tuples))
 
@@ -74,36 +74,36 @@ async def verify_devices_in_cloudvision_inventory(
         # Use serial_number as unique ID if set.
         if device.serial_number is not None:
             if device.serial_number not in found_device_dict_by_serial:
-                device._exists_on_cv = False
+                device.exists_on_cv = False
                 continue
-            device._exists_on_cv = True
+            device.exists_on_cv = True
             device.system_mac_address = found_device_dict_by_serial[device.serial_number].system_mac_address
             # Update streaming status
-            device._streaming = found_device_dict_by_serial[device.serial_number].streaming_status == StreamingStatus.ACTIVE
+            device.streaming = found_device_dict_by_serial[device.serial_number].streaming_status == StreamingStatus.ACTIVE
             existing_devices.append(device)
             continue
 
         # Use system_mac_address as unique ID if set.
         if device.system_mac_address is not None:
             if device.system_mac_address not in found_device_dict_by_system_mac:
-                device._exists_on_cv = False
+                device.exists_on_cv = False
                 continue
-            device._exists_on_cv = True
+            device.exists_on_cv = True
             device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
             # Update streaming status
-            device._streaming = found_device_dict_by_system_mac[device.system_mac_address].streaming_status == StreamingStatus.ACTIVE
+            device.streaming = found_device_dict_by_system_mac[device.system_mac_address].streaming_status == StreamingStatus.ACTIVE
             existing_devices.append(device)
             continue
 
         # Finally use hostname as unique ID.
         if device.hostname not in found_device_dict_by_hostname:
-            device._exists_on_cv = False
+            device.exists_on_cv = False
             continue
-        device._exists_on_cv = True
+        device.exists_on_cv = True
         device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
         device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
         # Update streaming status
-        device._streaming = found_device_dict_by_hostname[device.hostname].streaming_status == StreamingStatus.ACTIVE
+        device.streaming = found_device_dict_by_hostname[device.hostname].streaming_status == StreamingStatus.ACTIVE
         existing_devices.append(device)
 
     # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio
@@ -116,7 +116,7 @@ async def verify_devices_in_cloudvision_inventory(
         len(existing_device_tuples),
     )
 
-    if missing_devices := [device for device in devices if not device._exists_on_cv]:
+    if missing_devices := [device for device in devices if not device.exists_on_cv]:
         warnings.append(
             missing_devices_handler(missing_devices=missing_devices, skip_missing_devices=skip_missing_devices, context="CloudVision Device Inventory")
         )

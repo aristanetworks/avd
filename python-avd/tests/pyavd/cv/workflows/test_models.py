@@ -22,6 +22,7 @@ from pyavd._cv.workflows.models import (
     AvdDevice,
     AvdManifest,
     AvdWorkspace,
+    AvdWorkspaceBuildWarningsConfig,
     CVChangeControl,
     CVDevice,
     CVDeviceTag,
@@ -375,6 +376,42 @@ class TestAvdManifestFromDict:
             AvdManifest.from_dict(invalid_data)
 
 
+class TestAvdWorkspaceBuildWarningsConfigFromDict:
+    def test_success_defaults(self) -> None:
+        """Tests that from_dict with an empty dict produces default values."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({})
+        assert config.enabled is True
+        assert isinstance(config.suppress_patterns, tuple)
+        assert not config.suppress_patterns
+        assert config.suppress_portfast is False
+
+    def test_success_list_to_tuple(self) -> None:
+        """Tests that a list passed for suppress_patterns is converted to a tuple."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({"suppress_patterns": ["pattern1", "pattern2"]})
+        assert config.suppress_patterns == ("pattern1", "pattern2")
+
+    def test_success_full(self) -> None:
+        """Tests successful creation with all fields specified."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({"enabled": False, "suppress_patterns": ["p1"], "suppress_portfast": True})
+        assert config.enabled is False
+        assert config.suppress_patterns == ("p1",)
+        assert config.suppress_portfast is True
+
+    @pytest.mark.parametrize(
+        ("invalid_data", "match_str"),
+        [
+            pytest.param(None, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="none_input"),
+            pytest.param("string", "Invalid AvdWorkspaceBuildWarningsConfig definition", id="string_input"),
+            pytest.param({"suppress_patterns": 42}, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="non_iterable_suppress_patterns"),
+            pytest.param({"unknown_key": True}, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="unknown_key"),
+        ],
+    )
+    def test_invalid_data_failure(self, invalid_data: Any, match_str: str) -> None:
+        """Tests that ValueError is raised for invalid input data."""
+        with pytest.raises(ValueError, match=match_str):
+            AvdWorkspaceBuildWarningsConfig.from_dict(invalid_data)
+
+
 # === CVGRPCKeepalives Tests ===
 
 
@@ -493,15 +530,15 @@ class TestGetResult:
             avd_device=AvdDevice(hostname="avd-leaf1", serial_number="sn54321", system_mac_address="55:44:33:22:11:00"),
             serial_number="sn12345",
             system_mac_address="00:11:22:33:44:55",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         )
         result = device.get_result()
         assert result["hostname"] == "avd-leaf1"
         assert result["serial_number"] == "sn12345"
         assert result["system_mac_address"] == "00:11:22:33:44:55"
-        assert result["_exists_on_cv"] is True
-        assert result["_streaming"] is True
+        assert result["exists_on_cv"] is True
+        assert result["streaming"] is True
 
     def test_deploy_to_cv_result_get_result(self) -> None:
         cv_device_1 = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="snleaf1"), serial_number="snleaf1", system_mac_address="00:11:22:33:44:55")
@@ -574,15 +611,15 @@ class TestGetResult:
         assert result_workspace["state"] == "submitted"
         assert result_workspace["change_control_id"] == "cc-id"
         assert result_workspace["build_id"] == "build-id"
-        assert result_workspace["build_warnings"] == {"enabled": True, "suppress_patterns": [], "suppress_portfast": False}
+        assert result_workspace["build_warnings"] == {"enabled": True, "suppress_patterns": (), "suppress_portfast": False}
 
         result_workspace_device_duild_results = result_workspace["device_build_results"][0]
         assert "avd_device" not in result_workspace_device_duild_results["device"]
         assert result_workspace_device_duild_results["device"]["hostname"] == "leaf1"
         assert result_workspace_device_duild_results["device"]["serial_number"] == "snleaf1"
         assert result_workspace_device_duild_results["device"]["system_mac_address"] == "00:11:22:33:44:55"
-        assert result_workspace_device_duild_results["device"]["_exists_on_cv"] is None
-        assert result_workspace_device_duild_results["device"]["_streaming"] is None
+        assert result_workspace_device_duild_results["device"]["exists_on_cv"] is None
+        assert result_workspace_device_duild_results["device"]["streaming"] is None
         assert result_workspace_device_duild_results["config_validation"]["errors"][0]["error_msg"] == "syntax error"
         assert result_workspace_device_duild_results["config_validation"]["errors"][0]["line_num"] == 5
         assert result_workspace_device_duild_results["config_validation"]["errors"][0]["configlet_name"] == "AVD_leaf1"
@@ -608,8 +645,8 @@ class TestGetResult:
         assert result_deployed_configs["device"]["hostname"] == "leaf1"
         assert result_deployed_configs["device"]["serial_number"] == "snleaf1"
         assert result_deployed_configs["device"]["system_mac_address"] == "00:11:22:33:44:55"
-        assert result_deployed_configs["device"]["_exists_on_cv"] is None
-        assert result_deployed_configs["device"]["_streaming"] is None
+        assert result_deployed_configs["device"]["exists_on_cv"] is None
+        assert result_deployed_configs["device"]["streaming"] is None
 
         # deployed_static_config_containers
         result_deployed_static_config_containers = result["deployed_static_config_containers"][0]

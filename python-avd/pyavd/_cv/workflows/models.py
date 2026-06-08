@@ -62,7 +62,7 @@ class CVGRPCChannelConfiguration:
             return Configuration()
 
 
-@dataclass(frozen=True)
+@dataclass
 class CloudVision:
     servers: str | list[str]
     token: str | None
@@ -120,7 +120,7 @@ class CVChangeControl:
     def requested_state(self) -> Literal["pending approval", "approved", "running", "completed", "deleted"]:
         return self.avd_change_control.requested_state
 
-    def get_result(self) -> dict:
+    def get_result(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "description": self.description,
@@ -247,10 +247,21 @@ class CVWorkspaceDeviceBuildResult:
 class AvdWorkspaceBuildWarningsConfig:
     enabled: bool = True
     """Fetch and expose Workspace build warnings."""
-    suppress_patterns: list[str] = field(default_factory=list)
-    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
+    suppress_patterns: tuple[str, ...] = field(default_factory=tuple)
+    """Arbitrary tuple of the EOS CLI warning string patterns to suppress."""
     suppress_portfast: bool = False
     """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
+
+    @classmethod
+    def from_dict(cls, data: dict) -> AvdWorkspaceBuildWarningsConfig:
+        """Build an AvdWorkspaceBuildWarningsConfig instance from an input dictionary."""
+        try:
+            copied_data = data.copy()
+            suppress_patterns = tuple(copied_data.pop("suppress_patterns", ()))
+            return cls(suppress_patterns=suppress_patterns, **copied_data)
+        except (AttributeError, TypeError) as e:
+            msg = f"Invalid AvdWorkspaceBuildWarningsConfig definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
 
 
 @dataclass(frozen=True)
@@ -311,7 +322,7 @@ class CVWorkspace:
     def build_warnings(self) -> AvdWorkspaceBuildWarningsConfig:
         return self.avd_workspace.build_warnings
 
-    def get_result(self) -> dict:
+    def get_result(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "description": self.description,
@@ -324,16 +335,6 @@ class CVWorkspace:
             "build_warnings": serialize(self.build_warnings),
             "device_build_results": serialize(self.device_build_results),
         }
-
-
-@dataclass
-class DeployChangeControlResult:
-    failed: bool = False
-    errors: list = field(default_factory=list)
-    warnings: list = field(default_factory=list)
-    change_control: CVChangeControl | None = None
-    deployed_devices: list[CVDevice] = field(default_factory=list)
-    skipped_devices: list[CVDevice] = field(default_factory=list)
 
 
 @dataclass
@@ -361,7 +362,7 @@ class DeployToCvResult:
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
 
-    def get_result(self) -> dict:
+    def get_result(self) -> dict[str, Any]:
         return {f.name: serialize(getattr(self, f.name)) for f in fields(self)}
 
 
@@ -382,8 +383,8 @@ class CVDevice:
     avd_device: AvdDevice
     serial_number: str | None = None
     system_mac_address: str | None = None
-    _exists_on_cv: bool | None = None
-    _streaming: bool | None = None
+    exists_on_cv: bool | None = None
+    streaming: bool | None = None
     """Device's streaming status."""
 
     def __post_init__(self) -> None:
@@ -401,13 +402,13 @@ class CVDevice:
     def hostname(self) -> str:
         return self.avd_device.hostname
 
-    def get_result(self) -> dict:
+    def get_result(self) -> dict[str, Any]:
         return {
             "hostname": self.hostname,
             "serial_number": self.serial_number,
             "system_mac_address": self.system_mac_address,
-            "_exists_on_cv": self._exists_on_cv,
-            "_streaming": self._streaming,
+            "exists_on_cv": self.exists_on_cv,
+            "streaming": self.streaming,
         }
 
 

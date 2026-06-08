@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import logging
 from asyncio import gather, run
-from dataclasses import asdict
 from pathlib import Path
 from string import Template
 from typing import Any
@@ -230,7 +229,7 @@ class ActionModule(ActionBase):
                 # Objects are converted to JSON compatible dicts.
                 result.update(
                     cloudvision={
-                        **asdict(cloudvision),
+                        **serialize(cloudvision),
                         "token": "<removed>",
                         **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
@@ -238,7 +237,7 @@ class ActionModule(ActionBase):
                     device_tags=[serialize(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[serialize(interface_tag) for interface_tag in interface_tag_objects],
                     cv_pathfinder_metadata=[serialize(metadata) for metadata in cv_pathfinder_metadata_objects],
-                    static_config_manifest=asdict(static_config_manifest) if static_config_manifest else None,
+                    static_config_manifest=serialize(static_config_manifest) if static_config_manifest else None,
                 )
 
             # Check if there is anything to deploy.
@@ -256,7 +255,7 @@ class ActionModule(ActionBase):
                 # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})
                 if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig(**workspace_args["build_warnings"])
+                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig.from_dict(workspace_args["build_warnings"])
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(

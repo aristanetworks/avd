@@ -95,22 +95,22 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             avd_device=AvdDevice(hostname="avd-ci-leaf1"),
             serial_number="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
             system_mac_address="50:00:00:72:8b:31",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
         CVDevice(
             avd_device=AvdDevice(hostname="avd-ci-spine1"),
             serial_number="DCC816CEAC4BBD6319385043AD318362",
             system_mac_address="50:00:00:d7:ee:0b",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
         CVDevice(
             avd_device=AvdDevice(hostname="avd-ci-spine2"),
             serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
             system_mac_address="50:00:00:cb:38:c2",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         ),
     )
     workspace_id: str = MOCKED_WORKSPACE_ID
@@ -308,7 +308,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 avd_workspace=AvdWorkspace(
                     id=self.workspace_id,
                     requested_state="built",
-                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*",)),
                 )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
@@ -382,7 +382,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     id=self.workspace_id,
                     requested_state="built",
                     build_warnings=AvdWorkspaceBuildWarningsConfig(
-                        suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
+                        suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", ""))
                     ),
                 )
             )
@@ -441,7 +441,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     id=self.workspace_id,
                     requested_state="built",
                     build_warnings=AvdWorkspaceBuildWarningsConfig(
-                        suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
+                        suppress_patterns=(".*! /32 IPv4 address is not [a-z]+ on the.*",),
                         suppress_portfast=True,
                     ),
                 )
@@ -501,7 +501,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     id=self.workspace_id,
                     requested_state="built",
                     build_warnings=AvdWorkspaceBuildWarningsConfig(
-                        suppress_patterns=[r"(?P<invalid"],
+                        suppress_patterns=(r"(?P<invalid",),
                     ),
                 )
             )
@@ -591,7 +591,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     id=self.workspace_id,
                     requested_state="built",
                     build_warnings=AvdWorkspaceBuildWarningsConfig(
-                        suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
+                        suppress_patterns=(".*portfast should only be enabled on ports connected to a single host.*",),
                         suppress_portfast=True,
                     ),
                 )
@@ -724,15 +724,15 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 avd_device=AvdDevice(hostname="avd-ci-spine1"),
                 serial_number="DCC816CEAC4BBD6319385043AD318362",
                 system_mac_address="50:00:00:d7:ee:0b",
-                _exists_on_cv=True,
-                _streaming=True,
+                exists_on_cv=True,
+                streaming=True,
             ),
             CVDevice(
                 avd_device=AvdDevice(hostname="avd-ci-spine2"),
                 serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
                 system_mac_address="50:00:00:cb:38:c2",
-                _exists_on_cv=True,
-                _streaming=True,
+                exists_on_cv=True,
+                streaming=True,
             ),
         )
 

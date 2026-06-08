@@ -63,40 +63,40 @@ async def test_deploy_tags_to_cv_no_tags(
 @pytest.mark.parametrize(
     ("tags"),
     [
-        pytest.param([CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False))], id="ONE_DEVICE_TAG_ONE_DEVICE"),
+        pytest.param([CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False))], id="ONE_DEVICE_TAG_ONE_DEVICE"),
         pytest.param(
             [
-                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False)),
-                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False)),
+                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False)),
+                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False)),
             ],
             id="ONE_DEVICE_TAG_MULTIPLE_DEVICES",
         ),
         pytest.param(
             [
-                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False)),
-                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False)),
-                CVDeviceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False)),
-                CVDeviceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False)),
+                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False)),
+                CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False)),
+                CVDeviceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False)),
+                CVDeviceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False)),
             ],
             id="MULTIPLE_DEVICE_TAGS_MULTIPLE_DEVICES",
         ),
         pytest.param(
-            [CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False), interface="Ethernet1")],
+            [CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False), interface="Ethernet1")],
             id="ONE_INTERFACE_TAG_ONE_DEVICE",
         ),
         pytest.param(
             [
-                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False), interface="Ethernet1"),
-                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False), interface="Ethernet1"),
             ],
             id="ONE_INTERFACE_TAG_MULTIPLE_DEVICES",
         ),
         pytest.param(
             [
-                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False), interface="Ethernet1"),
-                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False), interface="Ethernet1"),
-                CVInterfaceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L1"), _exists_on_cv=False), interface="Ethernet1"),
-                CVInterfaceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L2"), _exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L1"), exists_on_cv=False), interface="Ethernet1"),
+                CVInterfaceTag("K2", "V2", CVDevice(avd_device=AvdDevice(hostname="L2"), exists_on_cv=False), interface="Ethernet1"),
             ],
             id="MULTIPLE_INTERFACE_TAGS_MULTIPLE_DEVICES",
         ),
@@ -131,20 +131,20 @@ async def test_deploy_tags_to_cv_new_device_tags(
 
     designed_tags: list[CVDeviceTag | CVInterfaceTag] = [
         # New interface Tag for non-existing device
-        CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", _exists_on_cv=False)),
+        CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", exists_on_cv=False)),
         # Assigning new device Tags to L1 (has no Tags assigned yet)
-        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
     ]
 
     await deploy_tags_to_cv(designed_tags, WORKSPACE, strict, skipped_tags, deployed_tags, removed_tags, mock_cv_client)
 
     # Assert that we skipped Tag assignment for non-existing device
-    assert skipped_tags == [CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", _exists_on_cv=False))]
+    assert skipped_tags == [CVDeviceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", exists_on_cv=False))]
     # Assert that all device Tags for L1 were deployed
     assert deployed_tags == [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
     assert not removed_tags
@@ -218,8 +218,8 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
 
     # Try to assign Tags (label+value pair) already assigned to L2 to new device L1
     designed_tags: list[CVDeviceTag | CVInterfaceTag] = [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
     ]
 
     await deploy_tags_to_cv(designed_tags, WORKSPACE, strict, skipped_tags, deployed_tags, removed_tags, mock_cv_client)
@@ -228,8 +228,8 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
     assert not skipped_tags
     # Assert that all device Tags for L1 were deployed
     assert deployed_tags == [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True)),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
     assert not removed_tags
@@ -291,8 +291,8 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
 
     # Try to assign Tags (label+value pair) that are already assigned to L2
     designed_tags: list[CVDeviceTag | CVInterfaceTag] = [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True)),
     ]
 
     await deploy_tags_to_cv(designed_tags, WORKSPACE, strict, skipped_tags, deployed_tags, removed_tags, mock_cv_client)
@@ -301,8 +301,8 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
     assert not skipped_tags
     # Assert that all device Tags for L2 were deployed
     assert deployed_tags == [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True)),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
     assert not removed_tags
@@ -340,10 +340,10 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
             # We expect 'strict' mode to unassociate all other assigned user Tags of the same type from the targeted device
             [
                 CVDeviceTag(
-                    "device_tag_2", "device_tag_2_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)
+                    "device_tag_2", "device_tag_2_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)
                 ),
-                CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
-                CVDeviceTag("mixed_tag_2", "mixed_tag_2_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
+                CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
+                CVDeviceTag("mixed_tag_2", "mixed_tag_2_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
             ],
             1,
             {
@@ -359,7 +359,7 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
         pytest.param(
             False,
             # We expect 'non-strict' mode to only unassociate user Tags (from targeted device) if they share the same label with Tags being assigned
-            [CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True))],
+            [CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True))],
             1,
             {
                 "workspace_id": WORKSPACE.id,
@@ -388,11 +388,11 @@ async def test_deploy_tags_to_cv_all_device_tags(
 
     designed_tags: list[CVDeviceTag | CVInterfaceTag] = [
         # New Tag assignment for L3
-        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
         # Already existing Tag assignment for L3
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
         # New Tag assignment for L3
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
     ]
 
     await deploy_tags_to_cv(designed_tags, WORKSPACE, strict, skipped_tags, deployed_tags, removed_tags, mock_cv_client)
@@ -401,9 +401,9 @@ async def test_deploy_tags_to_cv_all_device_tags(
     assert not skipped_tags
     # Assert that all device Tags for L3 were deployed
     assert deployed_tags == [
-        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
-        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
-        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
+        CVDeviceTag("device_tag_1", "device_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
+        CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True)),
     ]
     # Assert that in 'strict' mode we removed/unassociated all other Tags and in 'non-strict' mode we only removed Tags that share the same label with designed
     assert removed_tags == expected_removed_tags
@@ -481,16 +481,16 @@ async def test_deploy_tags_to_cv_new_interface_tags(
 
     designed_tags: list[CVDeviceTag | CVInterfaceTag] = [
         # New interface Tag for non-existing device
-        CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", _exists_on_cv=False), "Ethernet1"),
+        CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", exists_on_cv=False), "Ethernet1"),
         # Assigning new interface Tags to L1 (has no Tags assigned yet)
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_1",
-            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
 
@@ -498,18 +498,18 @@ async def test_deploy_tags_to_cv_new_interface_tags(
 
     # Assert that we skipped Tag assignment for non-existing device
     assert skipped_tags == [
-        CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", _exists_on_cv=False), "Ethernet1")
+        CVInterfaceTag("K1", "V1", CVDevice(avd_device=AvdDevice(hostname="L0"), serial_number="L0_serial", exists_on_cv=False), "Ethernet1")
     ]
     # Assert that all interface Tags for L1 were deployed
     assert deployed_tags == [
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_1",
-            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
@@ -589,11 +589,11 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
 
@@ -606,11 +606,11 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L1"), serial_number="L1_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
@@ -678,11 +678,11 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
 
@@ -695,11 +695,11 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L2"), serial_number="L2_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
     # Assert that deployment did not delete any other Tags from CloudVision
@@ -740,19 +740,19 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
                 CVInterfaceTag(
                     "interface_tag_2",
                     "interface_tag_2_value_1",
-                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
                     "Ethernet1",
                 ),
                 CVInterfaceTag(
                     "mixed_tag_1",
                     "mixed_tag_1_value_2",
-                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
                     "Ethernet1",
                 ),
                 CVInterfaceTag(
                     "mixed_tag_2",
                     "mixed_tag_2_value_1",
-                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
                     "Ethernet1",
                 ),
             ],
@@ -780,7 +780,7 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
                 CVInterfaceTag(
                     "mixed_tag_1",
                     "mixed_tag_1_value_2",
-                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+                    CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
                     "Ethernet1",
                 )
             ],
@@ -817,19 +817,19 @@ async def test_deploy_tags_to_cv_all_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_1",
-            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         # Already existing Tag assignment for L3
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         # New Tag assignment for L3
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
 
@@ -842,17 +842,17 @@ async def test_deploy_tags_to_cv_all_interface_tags(
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_1",
-            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
             "interface_tag_1",
             "interface_tag_1_value_2",
-            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True),
+            CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True),
             "Ethernet1",
         ),
         CVInterfaceTag(
-            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True), "Ethernet1"
+            "mixed_tag_1", "mixed_tag_1_value_1", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", exists_on_cv=True), "Ethernet1"
         ),
     ]
     # Assert that in 'strict' mode we removed/unassociated all other Tags and in 'non-strict' mode we only removed Tags that share the same label with designed

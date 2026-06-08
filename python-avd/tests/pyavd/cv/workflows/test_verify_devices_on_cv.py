@@ -66,8 +66,8 @@ async def test_verify_devices_in_cloudvision_inventory(
             avd_device=AvdDevice(hostname="avd-ci-leaf2"),
             serial_number="B51AA89B6E51E89E1422107EDE3A9438",
             system_mac_address="50:00:00:d5:5d:c0",
-            _exists_on_cv=True,
-            _streaming=True,
+            exists_on_cv=True,
+            streaming=True,
         )
     ]
 
@@ -82,12 +82,12 @@ async def test_verify_devices_in_cloudvision_inventory(
     ],
 )
 async def test_verify_device_not_found_on_cv(mock_cv_client: MagicMock, device: CVDevice) -> None:
-    """Test that device absent from CloudVision gets _exists_on_cv=False that CVResourceNotFound exception gets appended to warnings."""
+    """Test that device absent from CloudVision gets exists_on_cv=False that CVResourceNotFound exception gets appended to warnings."""
     mock_cv_client.get_inventory_devices = AsyncMock(return_value=[])
     warnings: list[Exception] = []
     result = await verify_devices_in_cloudvision_inventory(devices=[device], skip_missing_devices=True, warnings=warnings, cv_client=mock_cv_client)
     assert result == []
-    assert device._exists_on_cv is False
+    assert device.exists_on_cv is False
     assert len(warnings) == 1
     assert isinstance(warnings[0], CVResourceNotFound)
     assert warnings[0].args[0] == "Missing devices on CloudVision"

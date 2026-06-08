@@ -291,8 +291,8 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
                     avd_device=AvdDevice(hostname="avd-ci-leaf2"),
                     serial_number="50:00:00:d5:5d:c0",
                     system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
-                    _exists_on_cv=True,
-                    _streaming=True,
+                    exists_on_cv=True,
+                    streaming=True,
                 )
             ],
             warnings=warnings,
@@ -381,8 +381,8 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
                     avd_device=AvdDevice(hostname="avd-ci-leaf2"),
                     serial_number="50:00:00:d5:5d:c0",
                     system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
-                    _exists_on_cv=True,
-                    _streaming=True,
+                    exists_on_cv=True,
+                    streaming=True,
                 )
             ],
             warnings=result.warnings,
@@ -466,8 +466,8 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
                     avd_device=AvdDevice(hostname="avd-ci-leaf1"),
                     serial_number="50:00:00:72:8b:31",
                     system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
-                    _exists_on_cv=True,
-                    _streaming=False,
+                    exists_on_cv=True,
+                    streaming=False,
                 )
             ],
             warnings=result.warnings,
@@ -556,8 +556,8 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
                     avd_device=AvdDevice(hostname="avd-ci-leaf1"),
                     serial_number="50:00:00:72:8b:31",
                     system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
-                    _exists_on_cv=True,
-                    _streaming=False,
+                    exists_on_cv=True,
+                    streaming=False,
                 )
             ],
             warnings=result.warnings,
