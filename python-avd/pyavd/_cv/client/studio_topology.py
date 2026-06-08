@@ -64,7 +64,7 @@ class StudioTopologyMixin(Protocol):
 
     @LimitCvVersion(min_ver="2025.1.0")
     @GRPCRequestHandler()
-    async def wait_to_stage_devices_for_decommission(
+    async def wait_for_device_decommission_staging(
         self: CVClientProtocol,
         workspace_id: str,
         device_ids: list[str],
@@ -103,7 +103,7 @@ class StudioTopologyMixin(Protocol):
             current_status = response.value.status
             if current_status == DecommissionStatus.UNSPECIFIED:
                 # Non-terminal status. Includes the INITIAL_SYNC_COMPLETE update which references no device.
-                LOGGER.debug("wait_to_stage_devices_for_decommission: Got decommission staging update: %s", response.value)
+                LOGGER.debug("wait_for_device_decommission_staging: Got decommission staging update: %s", response.value)
                 # Avoid tracking INITIAL_SYNC_COMPLETE update referencing no devices
                 # TODO: Figure out a way to test
                 if device_id:
@@ -114,7 +114,7 @@ class StudioTopologyMixin(Protocol):
                     latest_per_device_failure_response.pop(device_id, None)
                     successful_responses.append(response.value)
                     LOGGER.debug(
-                        "wait_to_stage_devices_for_decommission: Staging device %s for decommission succeeded: %s",
+                        "wait_for_device_decommission_staging: Staging device %s for decommission succeeded: %s",
                         device_id,
                         response.value,
                     )
@@ -123,7 +123,7 @@ class StudioTopologyMixin(Protocol):
                     remaining_device_ids.discard(device_id)
                     latest_per_device_failure_response[device_id] = response.value
                     LOGGER.debug(
-                        "wait_to_stage_devices_for_decommission: Staging device %s for decommission failed: %s",
+                        "wait_for_device_decommission_staging: Staging device %s for decommission failed: %s",
                         device_id,
                         response.value,
                     )
