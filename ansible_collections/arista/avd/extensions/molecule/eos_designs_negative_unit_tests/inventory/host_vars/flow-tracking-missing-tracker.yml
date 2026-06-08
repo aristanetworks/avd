@@ -5,7 +5,6 @@ l2leaf:
       id: 1
       # Could as well be hardware
       flow_tracker_type: sampled
-      inband_mgmt_vrf: INBANDMGMT
 
 fabric_flow_tracking:
   endpoints:
