@@ -276,6 +276,7 @@ cv_workspace_build_timeout: 300
 #       description: <str, optional>
 #       tag_query: <str>
 #       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       preserve_existing_sub_containers: <bool, default=false>
 #       configlets:
 #         - name: <str>
 #       sub_containers:
@@ -283,6 +284,7 @@ cv_workspace_build_timeout: 300
 #           description: <str, optional>
 #           tag_query: <str>
 #           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           preserve_existing_sub_containers: <bool, default=false>
 #           configlets:
 #             - name: <str>
 #           sub_containers: <list of containers>
@@ -453,6 +455,12 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 !!! note "Root Containers Order"
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
+!!! note "Partial Manifest Deployments"
+    By default, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
+    Set `preserve_existing_sub_containers: true` on a container to preserve existing manifest-managed child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
+    Existing manifest-managed child container order is preserved, and any newly declared child containers are appended.
+    This is not yet supported for the root-level `containers`, so all managed root containers must be specified to avoid them getting removed. For a partial manifest deployment, other root-level containers can have `preserve_existing_sub_containers: true` set in the manifest, to not require the full tree to be defined for all of them.
+
 !!! warning "Manual configlet assignments"
     Before you remove a configlet created by a cv_deploy manifest, ensure it is not manually assigned to any non-manifest containers. Otherwise you must manually unassign the configlet from such containers first.
 
@@ -472,6 +480,7 @@ cv_static_config_manifest:
     - name: FABRIC
       description: "Fabric devices"
       tag_query: "device:*"
+      preserve_existing_sub_containers: true  # Ignore other DC containers under FABRIC
       sub_containers:
         - name: DC1
           tag_query: "DC:DC1"

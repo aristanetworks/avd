@@ -1,0 +1,27 @@
+---
+# Test for 802.1X device profiling with DHCP disabled and LLDP non-default options.
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-5
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  device_profiling:
+    enabled: true
+    dhcp:
+      enabled: false
+    lldp:
+      system_name:
+        enabled: false
+      system_description:
+        enabled: true
+        auth_only: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
