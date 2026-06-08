@@ -80,7 +80,11 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
     @skip_if_hardware_validation_disabled
     def create(self) -> Iterator[VerifyTransceiversManufacturers.Input]:
         """Generate the inputs for the `VerifyTransceiversManufacturers` test."""
-        yield VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))
+        validate_hardware = self.structured_config.metadata.validate_hardware
+        manufacturers = list(validate_hardware.transceiver_manufacturers)
+        if validate_hardware.ignore_no_transceivers and "Not Present" not in manufacturers:
+            manufacturers.append("Not Present")
+        yield VerifyTransceiversManufacturers.Input(manufacturers=manufacturers)
 
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):

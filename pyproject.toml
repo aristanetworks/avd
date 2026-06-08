@@ -6,7 +6,7 @@ dev = [
     "anta==1.8.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.5",
+    "pyavd-utils==0.0.6",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"
@@ -256,7 +256,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.2.0-dev3"
+current_version = "6.2.0"
 
 allow_dirty = true
 commit = false
