@@ -1424,6 +1424,94 @@ keys:
                 valid_values:
                 - control-plane
                 - data-plane
+          openstack:
+            type: dict
+            description: OpenStack services.
+            keys:
+              authentication:
+                type: dict
+                keys:
+                  role:
+                    type: str
+                    description: API authentication user role.
+              grace_period:
+                type: int
+                description: Set the grace period in seconds for which the OpenStack
+                  agent waits for OpenStack region data.
+                min: 0
+                max: 14400
+                convert_types:
+                - str
+              ip_access_group_name:
+                type: str
+                convert_types:
+                - int
+              ipv6_access_group_name:
+                type: str
+                convert_types:
+                - int
+              name_resolution:
+                type: dict
+                keys:
+                  force:
+                    type: bool
+                    description: Get the tenant and VM names from OpenStack immediately.
+                  interval:
+                    type: int
+                    min: 0
+                    max: 86400
+                    convert_types:
+                    - str
+                    description: Set the time interval in seconds between name updates,
+                      0 to disable.
+              network_type_driver:
+                type: dict
+                keys:
+                  vlan:
+                    type: str
+                    valid_values:
+                    - arista
+                    - default
+              regions:
+                type: list
+                min_length: 1
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      description: The name of the region. This must match what is
+                        in use in the ML2 driver configuration.
+                      type: str
+                      convert_types:
+                      - int
+                    username:
+                      type: str
+                      description: '''admin'' or valid keystone user.'
+                    password:
+                      type: str
+                      convert_types:
+                      - int
+                    password_type:
+                      type: str
+                      default: '7'
+                      valid_values:
+                      - '0'
+                      - '7'
+                      - 8a
+                      convert_types:
+                      - int
+                    tenant:
+                      type: str
+                      description: Tenant name.
+                    keystone:
+                      type: dict
+                      keys:
+                        auth_url:
+                          type: str
+                          pattern: ^https?://(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?/v(2\.0|3)/$
+              shutdown:
+                type: bool
   daemon_terminattr:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
@@ -2511,34 +2599,41 @@ keys:
     description: Opt-in to future EOS CLI behaviors which will become default behaviors
       in a future AVD major version.
     keys:
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.2.0.
+
+          Always render a ''!'' before the ''(no) ip routing'' command section.
+
+          Without this the ''!'' is missing when only configuring routing for VRFs.'
       new_ip_radius_cli_order:
         type: bool
         default: false
-        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
-          sorted by VRF name.
+        description: 'Available from AVD 6.1.0.
+
+          When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
+          VRF name.
 
           When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
           sorted by source interface name.'
       new_ip_tacacs_cli_order:
         type: bool
         default: false
-        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
-          sorted by VRF name.
+        description: 'Available from AVD 6.1.0.
+
+          When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by
+          VRF name.
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
-      always_render_ip_routing_separator:
-        type: bool
-        default: false
-        description: 'Always render a ''!'' before the ''(no) ip routing'' command
-          section.
-
-          Without this the ''!'' is missing when only configuring routing for VRFs.'
       only_render_mpls_rsvp_with_settings:
         type: bool
         default: false
-        description: 'When `true`, only renders the `mpls rsvp` CLI block when at
-          least one `mpls.rsvp.*` setting is defined.
+        description: 'Available from AVD 6.2.0.
+
+          When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*`
+          setting is defined.
 
           When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
           even if no sub-settings are set.'
@@ -2576,8 +2671,92 @@ keys:
               - xcvr-misconfigured
               - xcvr-overheat
               - xcvr-power-unsupported
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: detect_cause
+      detect_cause:
+        type: dict
+        description: 'Specifies the events that should trigger this action.
+
+          The list of supported causes depends on both the EOS version and the hardware
+          platform.'
+        keys:
+          acl:
+            type: bool
+            description: Enable/Disable detection for ACL errors.
+          arp_inspection:
+            type: bool
+            description: Enable/Disable detection for ARP inspection errors.
+          dot1x:
+            type: bool
+            description: Enable/Disable detection for 802.1X errors.
+          dot1x_coa:
+            type: bool
+            description: Enable/Disable detection for 802.1X Change of Authorization
+              errors.
+          dot1x_phone_classification:
+            type: bool
+            description: Enable/Disable detection for 802.1X phone classification
+              errors.
+          dot1x_session_replace:
+            type: bool
+            description: Enable/Disable detection for 802.1X session replace errors.
+          error_correction_encoding:
+            type: bool
+            description: Enable/Disable detection for error correction encoding errors.
+          fabric_capacity_low:
+            type: bool
+            description: Enable/Disable detection for fabric capacity low errors.
+          hardware_speed_group:
+            type: bool
+            description: Enable/Disable detection for hardware speed group errors.
+          interface_speed:
+            type: bool
+            description: Enable/Disable detection for interface speed errors.
+          internal_error:
+            type: bool
+            description: Enable/Disable detection for internal errors.
+          link_change:
+            type: bool
+            description: Enable/Disable detection for link change errors.
+          port_breakout:
+            type: bool
+            description: Enable/Disable detection for port breakout errors.
+          storm_control:
+            type: bool
+            description: Enable/Disable detection for storm control errors.
+          switchcard_unreachable:
+            type: bool
+            description: Enable/Disable detection for switchcard unreachable errors.
+          tapagg:
+            type: bool
+            description: Enable/Disable detection for tap aggregation errors.
+          tpid:
+            type: bool
+            description: Enable/Disable detection for TPID errors.
+          transceiver_adapter:
+            type: bool
+            description: Enable/Disable detection for transceiver adapter errors.
+          xcvr_misconfigured:
+            type: bool
+            description: Enable/Disable detection for transceiver misconfiguration
+              errors.
+          xcvr_overheat:
+            type: bool
+            description: Enable/Disable detection for transceiver overheat errors.
+          xcvr_power_unsupported:
+            type: bool
+            description: Enable/Disable detection for unsupported transceiver power
+              errors.
       recovery:
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: recovery_cause or recovery_interval
         keys:
           causes:
             type: list
@@ -2637,6 +2816,473 @@ keys:
             description: Interval in seconds.
             min: 30
             max: 86400
+      recovery_cause:
+        type: dict
+        description: 'Specifies the type of event that can trigger recovery actions.
+
+          The list of supported causes depends on both the EOS version and the hardware
+          platform.'
+        keys:
+          acl:
+            type: dict
+            description: Recovery settings for ACL errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for ACL errors.
+              interval:
+                type: int
+                description: Interval for ACL recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          arp_inspection:
+            type: dict
+            description: Recovery settings for ARP inspection errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for ARP inspection errors.
+              interval:
+                type: int
+                description: Interval for ARP inspection recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          bpduguard:
+            type: dict
+            description: Recovery settings for BPDU guard errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for BPDU guard errors.
+              interval:
+                type: int
+                description: Interval for BPDU guard recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x:
+            type: dict
+            description: Recovery settings for 802.1X errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X errors.
+              interval:
+                type: int
+                description: Interval for 802.1X recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_coa:
+            type: dict
+            description: Recovery settings for 802.1X Change of Authorization errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X Change of Authorization errors.
+              interval:
+                type: int
+                description: Interval for 802.1X Change of Authorization recovery
+                  in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_phone_classification:
+            type: dict
+            description: Recovery settings for 802.1X phone classification errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X phone classification errors.
+              interval:
+                type: int
+                description: Interval for 802.1X phone classification recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x_session_replace:
+            type: dict
+            description: Recovery settings for 802.1X session replace errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for 802.1X session replace errors.
+              interval:
+                type: int
+                description: Interval for 802.1X session replace recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          error_correction_encoding:
+            type: dict
+            description: Recovery settings for error correction encoding errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for error correction encoding errors.
+              interval:
+                type: int
+                description: Interval for error correction encoding recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          fabric_capacity_low:
+            type: dict
+            description: Recovery settings for fabric capacity low errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for fabric capacity low errors.
+              interval:
+                type: int
+                description: Interval for fabric capacity low recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          hardware_speed_group:
+            type: dict
+            description: Recovery settings for hardware speed group errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for hardware speed group errors.
+              interval:
+                type: int
+                description: Interval for hardware speed group recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          hitless_reload_down:
+            type: dict
+            description: Recovery settings for hitless reload down errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for hitless reload down errors.
+              interval:
+                type: int
+                description: Interval for hitless reload down recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          interface_speed:
+            type: dict
+            description: Recovery settings for interface speed errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for interface speed errors.
+              interval:
+                type: int
+                description: Interval for interface speed recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          internal_error:
+            type: dict
+            description: Recovery settings for internal errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for internal errors.
+              interval:
+                type: int
+                description: Interval for internal error recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          lacp_rate_limit:
+            type: dict
+            description: Recovery settings for LACP rate limit errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for LACP rate limit errors.
+              interval:
+                type: int
+                description: Interval for LACP rate limit recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          link_flap:
+            type: dict
+            description: Recovery settings for link flap errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for link flap errors.
+              interval:
+                type: int
+                description: Interval for link flap recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          no_internal_vlan:
+            type: dict
+            description: Recovery settings for no internal VLAN errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for no internal VLAN errors.
+              interval:
+                type: int
+                description: Interval for no internal VLAN recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          port_breakout:
+            type: dict
+            description: Recovery settings for port breakout errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port breakout errors.
+              interval:
+                type: int
+                description: Interval for port breakout recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          portchannelguard:
+            type: dict
+            description: Recovery settings for port-channel guard errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port-channel guard errors.
+              interval:
+                type: int
+                description: Interval for port-channel guard recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          portsec:
+            type: dict
+            description: Recovery settings for port security errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for port security errors.
+              interval:
+                type: int
+                description: Interval for port security recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          speed_misconfigured:
+            type: dict
+            description: Recovery settings for speed misconfigured errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for speed misconfigured errors.
+              interval:
+                type: int
+                description: Interval for speed misconfigured recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          storm_control:
+            type: dict
+            description: Recovery settings for storm control errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for storm control errors.
+              interval:
+                type: int
+                description: Interval for storm control recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          stuck_queue:
+            type: dict
+            description: Recovery settings for stuck queue errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for stuck queue errors.
+              interval:
+                type: int
+                description: Interval for stuck queue recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          switchcard_unreachable:
+            type: dict
+            description: Recovery settings for switchcard unreachable errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for switchcard unreachable errors.
+              interval:
+                type: int
+                description: Interval for switchcard unreachable recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tap_port_init:
+            type: dict
+            description: Recovery settings for tap port init errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for tap port init errors.
+              interval:
+                type: int
+                description: Interval for tap port init recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tapagg:
+            type: dict
+            description: Recovery settings for tap aggregation errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for tap aggregation errors.
+              interval:
+                type: int
+                description: Interval for tap aggregation recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tpid:
+            type: dict
+            description: Recovery settings for TPID errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for TPID errors.
+              interval:
+                type: int
+                description: Interval for TPID recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          transceiver_adapter:
+            type: dict
+            description: Recovery settings for transceiver adapter errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver adapter errors.
+              interval:
+                type: int
+                description: Interval for transceiver adapter recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          uplink_failure_detection:
+            type: dict
+            description: Recovery settings for uplink failure detection errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for uplink failure detection errors.
+              interval:
+                type: int
+                description: Interval for uplink failure detection recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_misconfigured:
+            type: dict
+            description: Recovery settings for transceiver misconfiguration errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver misconfiguration errors.
+              interval:
+                type: int
+                description: Interval for transceiver misconfiguration recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_overheat:
+            type: dict
+            description: Recovery settings for transceiver overheat errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for transceiver overheat errors.
+              interval:
+                type: int
+                description: Interval for transceiver overheat recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_power_unsupported:
+            type: dict
+            description: Recovery settings for unsupported transceiver power errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for unsupported transceiver power errors.
+              interval:
+                type: int
+                description: Interval for unsupported transceiver power recovery in
+                  seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_unsupported:
+            type: dict
+            description: Recovery settings for unsupported transceiver errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for unsupported transceiver errors.
+              interval:
+                type: int
+                description: Interval for unsupported transceiver recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+      recovery_interval:
+        type: int
+        convert_types:
+        - str
+        description: Default recovery interval in seconds applied to all recovery
+          causes. EOS default is 300 seconds.
+        min: 30
+        max: 86400
   ethernet_interfaces:
     type: list
     primary_key: name
@@ -10031,6 +10677,11 @@ keys:
             default:
             - Arista Networks
             - Arastra, Inc.
+          ignore_no_transceivers:
+            type: bool
+            description: Accept ports with no transceiver as valid when checking the
+              approved manufacturers.
+            default: true
       cv_tags:
         type: dict
         keys:
@@ -19872,6 +20523,12 @@ keys:
                   min: 1
                   max: 3600
                   description: Number of seconds.
+            no_graceful_restart:
+              type: bool
+              description: 'Disables graceful-restart for this VRF. Mutually exclusive
+                with `graceful_restart`. `graceful_restart` takes precedence.
+
+                '
             networks:
               type: list
               primary_key: prefix

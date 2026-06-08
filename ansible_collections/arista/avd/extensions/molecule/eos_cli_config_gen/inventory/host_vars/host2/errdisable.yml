@@ -1,14 +1,43 @@
 ---
 errdisable:
-  recovery:
-    causes:
-      - name: bpduguard
-      - name: arp-inspection
-      - name: portsec
-      - name: hitless-reload-down
-      - name: lacp-rate-limit
-      - name: link-flap
-      - name: no-internal-vlan
-      - name: portchannelguard
-      - name: tapagg
-      - name: uplink-failure-detection
+  detect_cause:
+    acl: false
+    arp_inspection: false
+    dot1x: false
+    dot1x_coa: false
+    dot1x_phone_classification: false
+    dot1x_session_replace: false
+    error_correction_encoding: false
+    hardware_speed_group: false
+    interface_speed: false
+    internal_error: false
+    link_change: false
+    port_breakout: false
+    storm_control: false
+    switchcard_unreachable: false
+    tapagg: false
+    transceiver_adapter: false
+    xcvr_misconfigured: false
+    xcvr_overheat: false
+    xcvr_power_unsupported: false
+  recovery_cause:
+    bpduguard:
+      enabled: true
+    arp_inspection:
+      enabled: false
+    portsec:
+      enabled: true
+    hitless_reload_down:
+      enabled: false
+    lacp_rate_limit:
+      enabled: true
+    link_flap:
+      enabled: true
+    no_internal_vlan:
+      enabled: false
+    portchannelguard:
+      enabled: true
+    tapagg:
+      enabled: false
+    uplink_failure_detection:
+      enabled: true
