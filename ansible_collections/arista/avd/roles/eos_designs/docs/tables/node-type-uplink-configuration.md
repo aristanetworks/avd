@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.defaults.uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.defaults.uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -64,7 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -101,7 +101,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -145,7 +145,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -184,7 +184,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "device_profiles.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "device_profiles.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "device_profiles.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "device_profiles.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "device_profiles.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "device_profiles.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "device_profiles.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -228,7 +228,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "devices.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "devices.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "devices.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "devices.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "devices.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code><br>- <code>l2-ethernet</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "devices.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "devices.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "devices.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
@@ -294,7 +294,7 @@
 
         # Override the default `uplink_type` set at the `node_type_key` level.
         # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
         # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
         # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
@@ -456,7 +456,7 @@
 
               # Override the default `uplink_type` set at the `node_type_key` level.
               # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-              uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+              uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
               # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
               # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
@@ -590,7 +590,7 @@
 
           # Override the default `uplink_type` set at the `node_type_key` level.
           # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-          uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+          uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
           # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
           # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
@@ -745,7 +745,7 @@
 
           # Override the default `uplink_type` set at the `node_type_key` level.
           # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-          uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+          uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
           # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
           # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
@@ -885,7 +885,7 @@
 
         # Override the default `uplink_type` set at the `node_type_key` level.
         # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
         # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
         # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
@@ -1040,7 +1040,7 @@
 
         # Override the default `uplink_type` set at the `node_type_key` level.
         # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
-        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan" | "l2-ethernet">
 
         # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
         # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,

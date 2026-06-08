@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import warnings
 from importlib import import_module
@@ -19,7 +20,7 @@ from ansible.utils.collection_loader._collection_finder import _get_collection_m
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 if TYPE_CHECKING:
     # Relying on packaging installed by ansible
@@ -40,6 +41,7 @@ DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
 # TODO: Consider moving the following helpers inside the plugin class as methods to use `self.logger`.
@@ -320,7 +322,12 @@ def _get_collection_version(collection_path: str) -> str:
         with manifest_file.open("rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    return metadata["version"]
+    version = metadata["version"]
+    if not isinstance(version, str) or not COLLECTION_VERSION_PATTERN.fullmatch(version):
+        msg = f"Invalid collection version found in collection metadata: {version}"
+        raise ValueError(msg)
+
+    return version
 
 
 def _get_running_collection_version(running_collection_name: str, result: dict[str, Any]) -> None:
@@ -379,8 +386,8 @@ def check_running_from_source() -> bool:
     return schemas_recompiled or templates_recompiled
 
 
-class ActionModule(AvdActionPlugin):
-    _logging_config = AvdLoggingConfig(add_role_context=True)
+class ActionModule(AVDActionPlugin):
+    _logging_config = AVDLoggingConfig(add_role_context=True)
 
     def main(self, task_vars: dict[str, Any]) -> None:
         if not HAS_PACKAGING:

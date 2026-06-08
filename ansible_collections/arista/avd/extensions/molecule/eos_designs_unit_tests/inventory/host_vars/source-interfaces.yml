@@ -9,7 +9,8 @@ l2leaf:
       inband_mgmt_vrf: INBANDMGMT
 
 # Testing that the generated source interfaces do not contain the VRF if VRF "default"
-mgmt_interface_vrf: default
+mgmt_interface_settings:
+  vrf: default
 
 source_interfaces:
   http_client:

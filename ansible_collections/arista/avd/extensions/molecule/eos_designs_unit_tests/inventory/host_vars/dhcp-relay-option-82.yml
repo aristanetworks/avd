@@ -1,0 +1,23 @@
+---
+# Test for DHCP Relay option-82 on VTEP
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: dhcp-relay-option-82
+      id: 101
+      bgp_as: 201
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10001
+    l2vlans:
+      - id: 201
+        name: dhcp-relay
+
+general_settings:
+  dhcp_relay:
+    information_option: true

@@ -30,6 +30,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "network_ports.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_ports.[].trunk_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "network_ports.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_in</samp>](## "network_ports.[].mac_acl_in") | String |  |  |  | MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_out</samp>](## "network_ports.[].mac_acl_out") | String |  |  |  | MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "network_ports.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "network_ports.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "network_ports.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
@@ -100,6 +102,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "network_ports.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "network_ports.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "network_ports.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -175,12 +180,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "network_ports.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "network_ports.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "network_ports.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "network_ports.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "network_ports.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces.<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "network_ports.[].port_channel.subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].port_channel.subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "network_ports.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "network_ports.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
@@ -287,6 +293,12 @@
         # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
         # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         vlans: <str>
+
+        # MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+        mac_acl_in: <str>
+
+        # MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
+        mac_acl_out: <str>
         spanning_tree_portfast: <str; "edge" | "network">
         spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
         spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
@@ -431,6 +443,18 @@
 
                 # Set action for supplicant traffic when AAA times out.
                 traffic_allow: <bool>
+
+        # Address locking settings applied on the port.
+        address_locking:
+
+          # Enable address locking for IPv4.
+          # Key `ipv4` can only be set to false.
+          # For EOS version 4.31 and higher.
+          ipv4: <bool>
+
+          # Enable address locking for IPv6.
+          # For EOS version 4.31 and higher.
+          ipv6: <bool>
 
         # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
         poe:
@@ -656,27 +680,37 @@
             # Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
             multiplier: <int>
 
-          # Port-Channel L2 Subinterfaces
+          # Port-Channel L2 Subinterfaces.
           # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-          # The parent Port-Channel interface is automatically created if not defined elsewhere.
           # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
           # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
           subinterfaces:
 
               # Subinterface number.
-            - number: <int>
+            - number: <int; 1-1048575; required; unique>
+
+              # Description for subinterface.
+              # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+              # The available template fields are:
+              #   - `subinterface` - The full subinterface name.
+              #   - `subinterface_number` - The number for the subinterface.
+              #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+              #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+              #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+              #   - `endpoint` - The name of the connected endpoint
+              description: <str>
 
               # In format xxxx:xxxx:xxxx or "auto".
               # Required for multihomed port-channels with subinterfaces.
               short_esi: <str>
 
               # VLAN ID to bridge.
-              # Default is subinterface number.
+              # Default is the subinterface number.
               vlan_id: <int; 1-4094>
-
-              # Client VLAN ID encapsulation.
-              # Default is subinterface number.
               encapsulation_vlan:
+
+                # Client VLAN ID encapsulation.
+                # Default is the subinterface number.
                 client_dot1q: <int; 1-4094>
 
               # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.

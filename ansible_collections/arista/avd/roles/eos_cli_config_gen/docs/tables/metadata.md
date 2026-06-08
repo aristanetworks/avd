@@ -25,6 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.validate_hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.validate_hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.validate_hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ignore_no_transceivers</samp>](## "metadata.validate_hardware.ignore_no_transceivers") | Boolean |  | `True` |  | Accept ports with no transceiver as valid when checking the approved manufacturers. |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -34,6 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "metadata.cv_tags.interface_tags.[].tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].value") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;cv_use_static_config_manifest</samp>](## "metadata.cv_use_static_config_manifest") | Boolean |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br><br>The device configuration is expected to be deployed via the<br>`static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the<br>flat "AVD Configurations" layout in the Static Configlet Studio.<br>The device will still be verified and onboarded in the Inventory & Topology Studio. |
     | [<samp>&nbsp;&nbsp;cv_pathfinder</samp>](## "metadata.cv_pathfinder") | Dictionary |  |  |  | Metadata used for CV Pathfinder visualization on CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "metadata.cv_pathfinder.role") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "metadata.cv_pathfinder.region") | String |  |  |  |  |
@@ -198,6 +200,9 @@
         # List of approved transceiver manufacturers for the device.
         transceiver_manufacturers: # (1)!
           - <str>
+
+        # Accept ports with no transceiver as valid when checking the approved manufacturers.
+        ignore_no_transceivers: <bool; default=True>
       cv_tags:
         device_tags:
           - name: <str; required>
@@ -207,6 +212,14 @@
             tags:
               - name: <str; required>
                 value: <str; required>
+
+      # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      #
+      # The device configuration is expected to be deployed via the
+      # `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+      # flat "AVD Configurations" layout in the Static Configlet Studio.
+      # The device will still be verified and onboarded in the Inventory & Topology Studio.
+      cv_use_static_config_manifest: <bool>
 
       # Metadata used for CV Pathfinder visualization on CloudVision.
       cv_pathfinder:

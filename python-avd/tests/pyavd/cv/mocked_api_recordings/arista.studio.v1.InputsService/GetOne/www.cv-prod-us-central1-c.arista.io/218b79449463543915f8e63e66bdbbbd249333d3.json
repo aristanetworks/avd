@@ -1,0 +1,7 @@
+{
+	"raise": {
+		"type": "GRPCError",
+		"status": "NOT_FOUND",
+		"message": "no inputs status"
+	}
+}

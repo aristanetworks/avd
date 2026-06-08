@@ -64,6 +64,8 @@ port_channel_interfaces:
       enable: true
       mpass: true
       delay_mechanism: e2e
+      region:
+        domain_number: 25
       sync_message:
         interval: 1
       role: dynamic
@@ -122,6 +124,7 @@ port_channel_interfaces:
     qos:
       trust: cos
       cos: 2
+    cpu_traffic_policy_fallback_vrf: CPU_TRAFFIC_POLICY
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
@@ -361,6 +364,11 @@ port_channel_interfaces:
         rx_accept:
           default_route: true
           route_preference: true
+        dns_servers:
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
       managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101

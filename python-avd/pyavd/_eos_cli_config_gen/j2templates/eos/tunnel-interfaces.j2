@@ -75,6 +75,16 @@ interface {{ tunnel_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
+{%     if tunnel_interface.ipv6_nd.ra.dns_servers_lifetime is arista.avd.defined %}
+   ipv6 nd ra dns-servers lifetime {{ tunnel_interface.ipv6_nd.ra.dns_servers_lifetime }}
+{%     endif %}
+{%     for dns_server in tunnel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") %}
+{%         set ra_dns_server = "ipv6 nd ra dns-server " ~ dns_server.address %}
+{%         if dns_server.lifetime is arista.avd.defined %}
+{%             set ra_dns_server = ra_dns_server ~ " lifetime " ~ dns_server.lifetime %}
+{%         endif %}
+   {{ ra_dns_server }}
+{%     endfor %}
 {%     if tunnel_interface.tcp_mss_ceiling is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if tunnel_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}

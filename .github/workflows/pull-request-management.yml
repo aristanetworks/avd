@@ -38,6 +38,10 @@ jobs:
       - galaxy_importer
       - ansible_lint
       - test_pyavd
+      - codespell
+      - j2lint
+      - markdownlint
+      - check_schema_tables_in_docs
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -141,7 +145,7 @@ jobs:
           pip install --group dev --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
-        uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
+        uses: jakebailey/pyright-action@8ec14b5cfe41f26e5f41686a31eb6012758217ef
 
   # ----------------------------------- #
   # Test Requirements
@@ -194,7 +198,7 @@ jobs:
           - "eos_cli_config_gen_deprecated_vars"
           - "eos_cli_config_gen_negative_unit_tests"
         ansible_version:
-          - "ansible-core<2.21.0"
+          - "ansible-core<2.22.0"
         python_version:
           - "3.12"
         # Also test minimum ansible version for one scenario.
@@ -257,11 +261,12 @@ jobs:
           - "example-l2ls-fabric"
           - "example-single-dc-l3ls"
           - "example-single-dc-l3ls-ipv6"
+          - "example-single-dc-multipod-l3ls"
           - "example-cv-pathfinder"
           - "howto"
           - "eos_designs_negative_unit_tests"
         ansible_version:
-          - "ansible-core>=2.16.0,<2.21.0"
+          - "ansible-core>=2.16.0,<2.22.0"
         python_version:
           - "3.12"
         include:
@@ -277,12 +282,15 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.20.0"
             python_version: "3.11"
-          # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.21.0"
+            python_version: "3.12"
+          # Test latest ansible-core with latest Python
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
           - avd_scenario: "eos_designs_negative_unit_tests"
-            ansible_version: "ansible-core<2.21.0"
+            ansible_version: "ansible-core<2.22.0"
             python_version: "3.14"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
@@ -373,7 +381,7 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.21.0"
+          - "ansible-core<2.22.0"
         python_version:
           - "3.12"
         include:
@@ -412,24 +420,32 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        ansible_version: [stable, devel]
         include:
-          - ansibe_version: stable
-            pip_installation: "ansible-core<2.21.0"
-          - ansibe_version: devel
+          - ansible_version: first_stable
+            pip_installation: "ansible-core<2.17.0"
+            python_version: |
+              3.10
+              3.11
+              3.12
+          - ansible_version: latest_stable
+            pip_installation: "ansible-core<2.22.0"
+            python_version: |
+              3.12
+              3.13
+              3.14
+          - ansible_version: devel
             pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
             skip_test: "--skip-test ansible-doc"
+            python_version: |
+              3.14
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
           python-version: |
-            3.10
-            3.11
-            3.12
-            3.13
-            3.14
+            ${{ matrix.python_version }}
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v8
         with:
@@ -440,7 +456,6 @@ jobs:
           pip install "${{ matrix.pip_installation }}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
-        # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
         run: |
           ansible-test sanity --color yes -v ${{ matrix.skip_test }}
 
@@ -462,7 +477,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.21.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "ansible-core<2.22.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -492,7 +507,7 @@ jobs:
             3.14
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.21.0" "./python-avd[ansible-collection]" --upgrade
+          pip install "ansible-core<2.22.0" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -520,7 +535,7 @@ jobs:
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
-          pip install "ansible-core<2.21.0" distlib --upgrade
+          pip install "ansible-core<2.22.0" distlib --upgrade
       - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
@@ -604,6 +619,68 @@ jobs:
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
+
+  # ----------------------------------- #
+  # Codespell
+  # ----------------------------------- #
+  codespell:
+    name: Check for common misspellings in text files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install codespell
+        run: pip install codespell==2.4.2
+      - name: Run codespell
+        run: codespell --config .codespellrc
+
+  # ----------------------------------- #
+  # j2lint
+  # ----------------------------------- #
+  j2lint:
+    name: Check for linting errors on Jinja2 files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install j2lint
+        run: pip install j2lint==1.2.0
+      - name: Run j2lint
+        run: j2lint .
+
+  # ----------------------------------- #
+  # markdownlint
+  # ----------------------------------- #
+  markdownlint:
+    name: Check for linting errors on Markdown files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install markdownlint-cli2
+        run: npm install markdownlint-cli2 --global
+      - name: Run markdownlint-cli2
+        # Exclusions are configured in .markdownlint-cli2.yaml
+        run: markdownlint-cli2 "**/*.md"
+      - name: Check GIT status
+        run: sh .github/check-git-status.sh
+
+  # ----------------------------------- #
+  # Check schema tables in docs
+  # ----------------------------------- #
+  check_schema_tables_in_docs:
+    name: Check for schema tables in documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Check for schema tables in documentation
+        run: python development/find_missing_tables.py @.find-missing-tables-args
 
   # ----------------------------------- #
   # Test of pyavd

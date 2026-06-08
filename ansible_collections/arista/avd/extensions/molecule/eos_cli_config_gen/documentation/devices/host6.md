@@ -6,6 +6,14 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
+- [Routing](#routing)
+  - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+- [MPLS](#mpls)
+  - [MPLS and LDP](#mpls-and-ldp)
+- [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
 
@@ -21,9 +29,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -58,4 +66,72 @@ interface Management1
 !
 snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
 snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
+```
+
+## Routing
+
+### IP Routing
+
+#### IP Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+| TENANT_A | True |
+| TENANT_B | True (ipv6 interfaces) |
+
+#### IP Routing Device Configuration
+
+```eos
+!
+no ip routing vrf MGMT
+ip routing vrf TENANT_A
+ip routing ipv6 interfaces vrf TENANT_B
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | false |
+| TENANT_A | false |
+| TENANT_B | false |
+
+## MPLS
+
+### MPLS and LDP
+
+#### MPLS and LDP Summary
+
+| Setting | Value |
+| -------- | ---- |
+| MPLS IP Enabled | - |
+| LDP Enabled | False |
+| LDP Router ID | - |
+| LDP Interface Disabled Default | - |
+| LDP Transport-Address Interface | - |
+
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| TENANT_A | enabled |
+| TENANT_B | enabled (ipv6 interface) |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
+!
+vrf instance TENANT_A
+!
+vrf instance TENANT_B
 ```

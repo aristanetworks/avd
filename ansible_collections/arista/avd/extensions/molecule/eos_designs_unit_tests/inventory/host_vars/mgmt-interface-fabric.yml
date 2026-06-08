@@ -1,6 +1,7 @@
 # Minimum config to only test the specific feature.
-mgmt_interface: MY_INTERFACE_FABRIC
-mgmt_interface_vrf: MGMT
+mgmt_interface_settings:
+  interface: MY_INTERFACE_FABRIC
+  vrf: MGMT
 mgmt_gateway: 1.1.1.1
 l2leaf:
   nodes:
@@ -8,4 +9,4 @@ l2leaf:
       mgmt_ip: 1.1.1.2
       id: 103
       filter:
-        deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
+        deny_vrfs: [MULTI_TENANT_VRF_TEST]
