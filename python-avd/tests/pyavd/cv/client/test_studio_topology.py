@@ -156,11 +156,10 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     """
     Test unsuccessful decommissioning of four devices where issues are faced when subscribing for decomm staging updates.
 
-    Stating of decommissioning for the first device succeeds.
-    Stating of decommissioning for the second device fails with FAILURE.
-    # TODO: Confirm that UNSPECIFIED status in this case is still non-terminal.
-    Stating of decommissioning for the third device stucks with a single UNSPECIFIED update without ever getting update with terminal status.
-    Stating of decommissioning for the forth device fails due to not receiving any updates at all.
+    Staging for decommission for the first device succeeds.
+    Staging for decommission for the second device fails with FAILURE.
+    Staging for decommission for the third device stucks with a single UNSPECIFIED update without ever getting update with terminal status.
+    Staging for decommission for the forth device fails due to not receiving any updates at all.
 
     Exact test steps:
     -   description: Fetch Workspace status
@@ -197,10 +196,8 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     """
     target_devices = ["device_one_id_ok", "device_two_id_failure", "device_three_id_unspecified", "device_four_id_silent"]
     expected_exception_msg = (
-        "No decommission staging response received for the following devices: {'device_four_id_silent'}. "
-        "Decommission staging failed for the following devices:.*"
-        "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
-        "'device_three_id_unspecified':.*status=DecommissionStatus.UNSPECIFIED, error=''.*"
+        r"No decommission staging response received for the following devices: \{'device_four_id_silent'\}\. "
+        r"Decommission staging did not reach terminal status for the following devices: \{'device_three_id_unspecified'\}\."
     )
 
     # create new workspace
@@ -270,7 +267,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     """
     Test partially successful decommissioning where every device reaches a terminal status, but not all of them succeed.
 
-    Specific use case for empty `remaining_device_ids` and non-empty latest_per_device_failure_response leading to loop exiting via break.
+    All terminal responses are returned regardless of status — the caller decides how to handle failures.
 
     Exact test steps:
     -   description: Fetch Workspace status
@@ -301,10 +298,6 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
             'f086a8e34b692a31f83fb9899081a798a4adcda6.json'
     """
     target_devices = ["device_one_id_ok", "device_two_id_failure"]
-    expected_exception_msg = (
-        "Decommission staging failed for the following devices:.*"
-        "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
-    )
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
@@ -317,9 +310,12 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
         # stage_devices_for_decommission method returns only failed responses
         assert len(stage_devices_for_decommission_response) == 0
 
-        with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
-            # Subscribe for decommissining updates.
-            _ = await cv_client.wait_for_device_decommission_staging(workspace_id=workspace.id, device_ids=target_devices)
+        # Both devices reach terminal status. No exception is raised.
+        wait_for_device_decommission_staging_response = await cv_client.wait_for_device_decommission_staging(
+            workspace_id=workspace.id, device_ids=target_devices
+        )
+
+    assert {r.key.device_id for r in wait_for_device_decommission_staging_response} == set(target_devices)
 
     # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
     assert any(
