@@ -4,20 +4,22 @@ config_end: true
 enable_password:
   disabled: true
 errdisable:
-  detect:
-    causes:
-    - acl
-    - arp-inspection
-    - link-change
-  recovery:
-    causes:
-    - name: acl
+  detect_cause:
+    acl: true
+    arp_inspection: true
+    link_change: true
+  recovery_cause:
+    acl:
+      enabled: true
       interval: 60
-    - name: arp-inspection
+    arp_inspection:
+      enabled: true
       interval: 90
-    - name: bpduguard
+    bpduguard:
+      enabled: true
       interval: 300
-    - name: link-flap
+    link_flap:
+      enabled: true
       interval: 60
 ethernet_interfaces:
 - name: Ethernet1

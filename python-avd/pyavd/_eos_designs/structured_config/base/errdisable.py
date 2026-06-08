@@ -3,33 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, cast
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-
     from . import AvdStructuredConfigBaseProtocol
-
-
-def _evaluate_errdisable_cause(
-    cause_field: str,
-    errdisable_cause: object,
-    platform_cause: object,
-) -> tuple[str, bool, bool, int | None]:
-    """
-    Return (cause_name, detection_enabled, recovery_enabled, recovery_interval) for a single cause.
-
-    The schema field name (snake_case) is translated to the EOS cause name.
-    A cause is enabled only when both the user input and the platform support evaluate to True.
-    `getattr` defaults to None to handle causes whose class doesn't define detection or recovery.
-    """
-    cause_name = cause_field.replace("_", "-")
-    detection_enabled = bool(getattr(errdisable_cause, "detection", None) and getattr(platform_cause, "detection", None))
-    recovery_enabled = bool(getattr(errdisable_cause, "recovery", None) and getattr(platform_cause, "recovery", None))
-    recovery_interval = getattr(errdisable_cause, "recovery_interval", None)
-    return cause_name, detection_enabled, recovery_enabled, recovery_interval
 
 
 class ErrDisableMixin(Protocol):
@@ -41,12 +20,19 @@ class ErrDisableMixin(Protocol):
 
     @structured_config_contributor
     def errdisable(self: AvdStructuredConfigBaseProtocol) -> None:
-        """Set errdisable configuration."""
+        """
+        Set errdisable configuration.
+
+        Only emit per-cause structured config when the user has explicitly set `detection`
+        or `recovery` in `errdisable_settings.causes.<cause>`. Anything left unset falls
+        back to the EOS default. A cause is skipped when the platform does not support that
+        capability (`platform_settings.feature_support.errdisable_causes.<cause>.<field>: false`).
+        """
         if not self.inputs.errdisable_settings:
             return
 
         if self.inputs.errdisable_settings.recovery_interval is not None:
-            self.structured_config.errdisable.recovery.interval = self.inputs.errdisable_settings.recovery_interval
+            self.structured_config.errdisable.recovery_interval = self.inputs.errdisable_settings.recovery_interval
 
         errdisable_causes = self.inputs.errdisable_settings.causes
         if not errdisable_causes:
@@ -56,11 +42,15 @@ class ErrDisableMixin(Protocol):
 
         for cause_field, errdisable_cause in errdisable_causes.items():
             platform_cause = getattr(platform_errdisable_causes, cause_field)
-            cause_name, detection_enabled, recovery_enabled, recovery_interval = _evaluate_errdisable_cause(cause_field, errdisable_cause, platform_cause)
-            if detection_enabled:
-                self.structured_config.errdisable.detect.causes.append(cause_name)
-            if recovery_enabled:
-                self.structured_config.errdisable.recovery.causes.append_new(
-                    name=cast("EosCliConfigGen.Errdisable.Recovery.CausesItem.Name", cause_name),
-                    interval=recovery_interval,
-                )
+            user_detection = getattr(errdisable_cause, "detection", None)
+            user_recovery = getattr(errdisable_cause, "recovery", None)
+            recovery_interval = getattr(errdisable_cause, "recovery_interval", None)
+
+            if user_detection is not None and getattr(platform_cause, "detection", None):
+                setattr(self.structured_config.errdisable.detect_cause, cause_field, user_detection)
+
+            if user_recovery is not None and getattr(platform_cause, "recovery", None):
+                recovery_cause = getattr(self.structured_config.errdisable.recovery_cause, cause_field)
+                recovery_cause.enabled = user_recovery
+                if recovery_interval is not None:
+                    recovery_cause.interval = recovery_interval

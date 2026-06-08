@@ -4,28 +4,32 @@ config_end: true
 enable_password:
   disabled: true
 errdisable:
-  detect:
-    causes:
-    - acl
-    - arp-inspection
-    - dot1x
-    - link-change
-    - storm-control
-  recovery:
-    causes:
-    - name: acl
+  detect_cause:
+    acl: true
+    arp_inspection: true
+    dot1x: true
+    link_change: true
+    storm_control: true
+  recovery_cause:
+    acl:
+      enabled: true
       interval: 60
-    - name: arp-inspection
+    arp_inspection:
+      enabled: true
       interval: 90
-    - name: bpduguard
+    bpduguard:
+      enabled: true
       interval: 300
-    - name: dot1x
+    dot1x:
+      enabled: true
       interval: 60
-    - name: link-flap
+    link_flap:
+      enabled: true
       interval: 60
-    - name: storm-control
+    storm_control:
+      enabled: true
       interval: 120
-    interval: 200
+  recovery_interval: 200
 hostname: errdisable-settings
 ip_igmp_snooping:
   globally_enabled: true
