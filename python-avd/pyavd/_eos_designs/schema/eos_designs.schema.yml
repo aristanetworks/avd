@@ -350,43 +350,22 @@ keys:
       accept_dhcp_default_route_for_mgmt_ip_dhcp:
         type: bool
         default: false
-        description: Configure management interface to accept DHCP default route when
-          the management IP is set to 'dhcp'.
-      remove_redundant_ipv4_unicast_for_peer_groups:
-        type: bool
-        description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
-          only when IPv4 is activated by default instead of always deactivating it.
-        default: false
-      raise_for_port_channels_without_members:
-        type: bool
-        description: Raise an error if an L3 Port-Channel is configured without any
-          member interfaces.
-        default: false
-      only_configure_mlag_vrfs_peer_group_when_used:
-        type: bool
-        description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
-          needed.
-        default: false
-      raise_for_underlay_router_with_uplink_type_port_channel:
-        type: bool
-        description: 'Raise an error if a node has both ''underlay_router: true''
-          and ''uplink_type: port-channel'' set,
+        description: 'Available from AVD 6.2.0.
 
-          since this combination is not supported.'
-        default: false
+          Configure management interface to accept DHCP default route when the management
+          IP is set to ''dhcp''.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
-        description: Configure `inband_mgmt_vrf` for IPv6 inband management.
-        default: false
-      only_configure_ipv6_inband_mgmt_prefix_list_when_used:
-        type: bool
-        description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
-          it is needed.
+        description: 'Available from AVD 6.2.0.
+
+          Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
       consistent_uplink_vlans:
         type: bool
-        description: 'Always configure Port-Channel uplinks with consistent ''switchport
-          trunk allowed'' on both ends
+        description: 'Available from AVD 6.2.0.
+
+          Always configure Port-Channel uplinks with consistent ''switchport trunk
+          allowed'' on both ends
 
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
@@ -394,8 +373,44 @@ keys:
       fix_radius_server_group_tls:
         type: bool
         default: false
-        description: Fix to configure TLS on RADIUS server group members to match
-          their global RADIUS server configurations.
+        description: 'Available from AVD 6.2.0.
+
+          Fix to configure TLS on RADIUS server group members to match their global
+          RADIUS server configurations.'
+      only_configure_ipv6_inband_mgmt_prefix_list_when_used:
+        type: bool
+        description: 'Available from AVD 6.2.0.
+
+          Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.'
+        default: false
+      only_configure_mlag_vrfs_peer_group_when_used:
+        type: bool
+        description: 'Available from AVD 6.2.0.
+
+          Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
+        default: false
+      raise_for_port_channels_without_members:
+        type: bool
+        description: 'Available from AVD 6.2.0.
+
+          Raise an error if an L3 Port-Channel is configured without any member interfaces.'
+        default: false
+      raise_for_underlay_router_with_uplink_type_port_channel:
+        type: bool
+        description: 'Available from AVD 6.2.0.
+
+          Raise an error if a node has both ''underlay_router: true'' and ''uplink_type:
+          port-channel'' set,
+
+          since this combination is not supported.'
+        default: false
+      remove_redundant_ipv4_unicast_for_peer_groups:
+        type: bool
+        description: 'Available from AVD 6.1.0.
+
+          Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+          IPv4 is activated by default instead of always deactivating it.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2399,14 +2414,104 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
-          dhcp:
-            type: dict
-            description: RADIUS AV pairs for DHCP options sent in Access-Request and
-              Accounting messages.
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/dhcp
           framed_mtu:
             type: int
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
+      device_profiling:
+        type: dict
+        description: 'Device profiling feature.
+
+          Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+
+          to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting
+          messages.
+
+          Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode:
+          start-stop`.'
+        keys:
+          enabled:
+            type: bool
+            default: false
+            description: Enable all DHCP and LLDP TLV profiling options.
+          dhcp:
+            type: dict
+            description: "DHCP options profiling.\nEnables profiling via DHCP Discover/Request
+              packets.\nLimitations:\n  - IPv4 only. IPv6 address assignments via
+              DHCPv6 or SLAAC are not supported.\n  - Not supported on VTEP devices.\n
+              \ - Not supported with IP Locking features.\n  - MLAG support requires
+              EOS 4.34.3+."
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all DHCP profiling options collectively.
+              hostname:
+                type: dict
+                description: DHCP Option 12 (Hostname).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              parameter_request_list:
+                type: dict
+                description: DHCP Option 55 (Parameter Request List).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              vendor_class_id:
+                type: dict
+                description: DHCP Option 60 (Vendor Class ID).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+          lldp:
+            type: dict
+            description: 'LLDP TLVs profiling.
+
+              Enables profiling via LLDP packets.
+
+              Requires LLDP to be globally enabled.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all LLDP profiling options collectively.
+              system_name:
+                type: dict
+                description: LLDP system name (LLDP TLV 5).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
+              system_description:
+                type: dict
+                description: LLDP system description (LLDP TLV 6).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
       redistribute_in_evpn:
         type: bool
         default: true
@@ -9285,15 +9390,17 @@ keys:
                 Set to 0 to skip validation.
             transceiver_manufacturers:
               type: list
-              description: 'List of approved transceiver manufacturers for the device.
-
-                Include "Not Present" to allow ports with no transceiver to successfully
-                pass validation.'
+              description: List of approved transceiver manufacturers for the device.
               items:
                 type: str
               default:
               - Arista Networks
               - Arastra, Inc.
+            ignore_no_transceivers:
+              type: bool
+              description: Accept ports with no transceiver as valid when checking
+                the approved manufacturers.
+              default: true
         logging:
           type: dict
           keys:

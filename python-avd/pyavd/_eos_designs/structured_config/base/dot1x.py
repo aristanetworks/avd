@@ -34,6 +34,7 @@ class Dot1xMixin(Protocol):
         self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
         self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
         self._configure_dot1x_global_settings(dot1x_settings)
+        self._configure_dot1x_device_profiling(dot1x_settings)
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
@@ -93,8 +94,6 @@ class Dot1xMixin(Protocol):
         )
         if dot1x_settings.radius_av_pairs.service_type is True:
             self.structured_config.dot1x.radius_av_pair.service_type = True
-        if dot1x_settings.radius_av_pairs.dhcp:
-            self.structured_config.dot1x.radius_av_pair.dhcp = dot1x_settings.radius_av_pairs.dhcp
         if dot1x_settings.radius_av_pairs.framed_mtu:
             self.structured_config.dot1x.radius_av_pair.framed_mtu = dot1x_settings.radius_av_pairs.framed_mtu
         if dot1x_settings.mac_based_authentication.username_format:
@@ -105,6 +104,64 @@ class Dot1xMixin(Protocol):
         self.structured_config.dot1x.mac_based_authentication._update(
             delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
         )
+
+    def _configure_dot1x_device_profiling(
+        self: AvdStructuredConfigBaseProtocol,
+        dot1x_settings: EosDesigns.Dot1xSettings,
+    ) -> None:
+        """Configure 802.1X device profiling."""
+        device_profiling = dot1x_settings.device_profiling
+        if not device_profiling.enabled:
+            return
+
+        if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
+            msg = (
+                "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
+                "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        self._configure_dot1x_device_profiling_dhcp(device_profiling.dhcp)
+        self._configure_dot1x_device_profiling_lldp(device_profiling.lldp)
+
+    def _configure_dot1x_device_profiling_dhcp(self: AvdStructuredConfigBaseProtocol, dhcp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Dhcp) -> None:
+        """Configure 802.1X device profiling DHCP options."""
+        if not dhcp_profiling.enabled:
+            return
+
+        if self.shared_utils.vtep:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
+            raise AristaAvdInvalidInputsError(msg)
+
+        address_locking_settings = self.inputs.address_locking_settings
+        if address_locking_settings and not address_locking_settings.disabled:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if dhcp_profiling.hostname.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.auth_only = dhcp_profiling.hostname.auth_only
+
+        if dhcp_profiling.parameter_request_list.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only = dhcp_profiling.parameter_request_list.auth_only
+
+        if dhcp_profiling.vendor_class_id.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only = dhcp_profiling.vendor_class_id.auth_only
+
+    def _configure_dot1x_device_profiling_lldp(self: AvdStructuredConfigBaseProtocol, lldp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Lldp) -> None:
+        """Configure 802.1X device profiling LLDP TLVs."""
+        if not lldp_profiling.enabled:
+            return
+
+        if lldp_profiling.system_name.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = lldp_profiling.system_name.auth_only
+
+        if lldp_profiling.system_description.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = lldp_profiling.system_description.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
