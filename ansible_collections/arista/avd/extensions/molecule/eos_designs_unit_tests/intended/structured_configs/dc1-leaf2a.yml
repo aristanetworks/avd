@@ -114,6 +114,21 @@ ethernet_interfaces:
     peer: dc1.l2leaf7a
     peer_interface: Ethernet1
     peer_type: l2leaf
+- name: Ethernet33
+  description: description through uplink_switch_ethernet_structured_config(dc1-l2leaf8a)
+  shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
+  metadata:
+    peer: dc1-l2leaf8a
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
 - name: Ethernet49/1
   description: P2P_LINK_Ethernet49/1_TO_DC1-SPINE1_Ethernet3/1
   shutdown: false

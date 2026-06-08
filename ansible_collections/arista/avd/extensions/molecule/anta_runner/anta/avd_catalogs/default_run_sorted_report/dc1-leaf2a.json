@@ -183,7 +183,8 @@
           ]
         },
         "manufacturers": [
-          "Third-party vendor"
+          "Third-party vendor",
+          "Not Present"
         ]
       }
     },
