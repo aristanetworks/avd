@@ -18390,7 +18390,118 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}}
+            class Lldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class SystemName(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemName.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                class SystemDescription(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemDescription.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "system_name": {"type": SystemName},
+                    "system_description": {"type": SystemDescription},
+                }
+                enabled: bool
+                """
+                Enable all LLDP profiling options collectively.
+
+                Default value: `True`
+                """
+                system_name: SystemName
+                """
+                LLDP system name (LLDP TLV 5).
+
+                Subclass of AvdModel.
+                """
+                system_description: SystemDescription
+                """
+                LLDP system description (LLDP TLV 6).
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        system_name: SystemName | UndefinedType = Undefined,
+                        system_description: SystemDescription | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Lldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable all LLDP profiling options collectively.
+                            system_name:
+                               LLDP system name (LLDP TLV 5).
+
+                               Subclass of AvdModel.
+                            system_description:
+                               LLDP system description (LLDP TLV 6).
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}, "lldp": {"type": Lldp}}
             enabled: bool
             """
             Enable all DHCP and LLDP TLV profiling options.
@@ -18410,10 +18521,19 @@ class EosDesigns(EosDesignsRootModel):
               - MLAG support requires EOS 4.34.3+.
             Subclass of AvdModel.
             """
+            lldp: Lldp
+            """
+            LLDP TLVs profiling.
+            Enables profiling via LLDP packets.
+            Requires LLDP to be globally enabled.
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, dhcp: Dhcp | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, enabled: bool | UndefinedType = Undefined, dhcp: Dhcp | UndefinedType = Undefined, lldp: Lldp | UndefinedType = Undefined
+                ) -> None:
                     """
                     DeviceProfiling.
 
@@ -18432,6 +18552,11 @@ class EosDesigns(EosDesignsRootModel):
                            devices.
                              - Not supported with IP Locking features.
                              - MLAG support requires EOS 4.34.3+.
+                           Subclass of AvdModel.
+                        lldp:
+                           LLDP TLVs profiling.
+                           Enables profiling via LLDP packets.
+                           Requires LLDP to be globally enabled.
                            Subclass of AvdModel.
 
                     """

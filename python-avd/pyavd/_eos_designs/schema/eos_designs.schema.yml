@@ -2478,6 +2478,40 @@ keys:
                     type: bool
                     default: false
                     description: Sends the attribute only once when first learned.
+          lldp:
+            type: dict
+            description: 'LLDP TLVs profiling.
+
+              Enables profiling via LLDP packets.
+
+              Requires LLDP to be globally enabled.'
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all LLDP profiling options collectively.
+              system_name:
+                type: dict
+                description: LLDP system name (LLDP TLV 5).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
+              system_description:
+                type: dict
+                description: LLDP system description (LLDP TLV 6).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
       redistribute_in_evpn:
         type: bool
         default: true

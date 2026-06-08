@@ -121,31 +121,47 @@ class Dot1xMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        dhcp_settings = device_profiling.dhcp
-        if dhcp_settings.enabled:
-            if self.shared_utils.vtep:
-                msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
-                raise AristaAvdInvalidInputsError(msg)
+        self._configure_dot1x_device_profiling_dhcp(device_profiling.dhcp)
+        self._configure_dot1x_device_profiling_lldp(device_profiling.lldp)
 
-            address_locking_settings = self.inputs.address_locking_settings
-            if address_locking_settings and not address_locking_settings.disabled:
-                msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
-                raise AristaAvdInvalidInputsError(msg)
+    def _configure_dot1x_device_profiling_dhcp(self: AvdStructuredConfigBaseProtocol, dhcp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Dhcp) -> None:
+        """Configure 802.1X device profiling DHCP options."""
+        if not dhcp_profiling.enabled:
+            return
 
-            self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
-                hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
-                    enabled=dhcp_settings.hostname.enabled,
-                    auth_only=dhcp_settings.hostname.auth_only,
-                ),
-                parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
-                    enabled=dhcp_settings.parameter_request_list.enabled,
-                    auth_only=dhcp_settings.parameter_request_list.auth_only,
-                ),
-                vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
-                    enabled=dhcp_settings.vendor_class_id.enabled,
-                    auth_only=dhcp_settings.vendor_class_id.auth_only,
-                ),
-            )
+        if self.shared_utils.vtep:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
+            raise AristaAvdInvalidInputsError(msg)
+
+        address_locking_settings = self.inputs.address_locking_settings
+        if address_locking_settings and not address_locking_settings.disabled:
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if dhcp_profiling.hostname.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.hostname.auth_only = dhcp_profiling.hostname.auth_only
+
+        if dhcp_profiling.parameter_request_list.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only = dhcp_profiling.parameter_request_list.auth_only
+
+        if dhcp_profiling.vendor_class_id.enabled:
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.enabled = True
+            self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only = dhcp_profiling.vendor_class_id.auth_only
+
+    def _configure_dot1x_device_profiling_lldp(self: AvdStructuredConfigBaseProtocol, lldp_profiling: EosDesigns.Dot1xSettings.DeviceProfiling.Lldp) -> None:
+        """Configure 802.1X device profiling LLDP TLVs."""
+        if not lldp_profiling.enabled:
+            return
+
+        if lldp_profiling.system_name.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = lldp_profiling.system_name.auth_only
+
+        if lldp_profiling.system_description.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = lldp_profiling.system_description.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
