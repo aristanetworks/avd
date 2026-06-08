@@ -19,25 +19,6 @@ MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_cli_config_gen"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 
 
-@pytest.fixture
-def action_module() -> Callable[..., ActionModule]:
-    def _factory(task_args: dict | None = None) -> ActionModule:
-        mock_task = MagicMock()
-        mock_task.args = task_args or {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-        return ActionModule(
-            task=mock_task,
-            connection=MagicMock(),
-            play_context=MagicMock(),
-            loader=MagicMock(),
-            templar=MagicMock(),
-            shared_loader_obj=MagicMock(),
-        )
-
-    return _factory
-
-
 @pytest.mark.parametrize(
     ("generate_device_config", "generate_device_doc", "with_custom_templates", "expected_messages"),
     [
@@ -117,7 +98,7 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
 ) -> None:
     """Verify run emits the expected DEBUG logs and routes them to display.vvv prefixed with the hostname."""
     hostname = "my-spine-1"
-    module = action_module()
+    module = action_module(ActionModule)
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
         "generate_device_config": generate_device_config,
@@ -152,7 +133,7 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
 
 def test_load_structured_config_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised with a message identifying the missing host."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
     mock_file_path = MagicMock()
@@ -178,7 +159,7 @@ def test_load_structured_config_raises_when_file_missing(action_module: Callable
 
 def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
     """Test that any exception during execution is wrapped with the 'Error during plugin execution:' prefix and chained."""
-    module = action_module()
+    module = action_module(ActionModule)
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
         "generate_device_config": True,
@@ -200,7 +181,7 @@ def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., Actio
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
