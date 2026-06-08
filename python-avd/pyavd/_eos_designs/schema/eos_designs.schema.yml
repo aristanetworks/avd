@@ -4792,6 +4792,8 @@ keys:
                 type: list
                 items:
                   type: dict
+                  description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                    with the hostname to configure the bgp listen ranges.
                   keys:
                     prefix:
                       type: str

@@ -135,6 +135,7 @@ class RouterBgpMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
                 bgp_vrf = self.structured_config.router_bgp
+                # Listen ranges are configured when a node from bgp_peer_group.nodes[] matches the hostname
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
                     self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf)
 
