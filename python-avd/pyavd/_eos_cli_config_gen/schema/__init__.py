@@ -6378,13 +6378,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         only_render_no_logging_transceiver: bool
         """
         When `true`, only renders the `no logging transceiver` when
-        `monitor_layer1.logging_transceiver.enabled` or `monitor_layer1.logging_transceiver.dom`
-         or
+        `monitor_layer1.logging_transceiver.enabled` and `monitor_layer1.logging_transceiver.dom`
+         and
         `monitor_layer1.logging_transceiver.communication` are set to `false`.
         When `false` (default), no
-        config would appeare under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
-         or
-        `monitor_layer1.logging_transceiver.dom` or `monitor_layer1.logging_transceiver.communication` are
+        config is rendered under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
+         and
+        `monitor_layer1.logging_transceiver.dom` and `monitor_layer1.logging_transceiver.communication` are
         set to `false`.
 
         Default value: `False`
@@ -6429,13 +6429,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        sub-settings are set.
                     only_render_no_logging_transceiver:
                        When `true`, only renders the `no logging transceiver` when
-                       `monitor_layer1.logging_transceiver.enabled` or `monitor_layer1.logging_transceiver.dom`
-                        or
+                       `monitor_layer1.logging_transceiver.enabled` and `monitor_layer1.logging_transceiver.dom`
+                        and
                        `monitor_layer1.logging_transceiver.communication` are set to `false`.
                        When `false` (default), no
-                       config would appeare under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
-                        or
-                       `monitor_layer1.logging_transceiver.dom` or `monitor_layer1.logging_transceiver.communication` are
+                       config is rendered under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
+                        and
+                       `monitor_layer1.logging_transceiver.dom` and `monitor_layer1.logging_transceiver.communication` are
                        set to `false`.
 
                 """
