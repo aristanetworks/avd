@@ -34,12 +34,6 @@ l3leaf:
       filter:
         tenants: ["TEST1"]
         always_include_vrfs_in_tenants: ["TEST1"]
-    - name: network-services-ip-helpers-leaf2
-      id: 2
-      mgmt_ip: 10.1.1.2/24
-      filter:
-        tenants: ["TEST1"]
-        always_include_vrfs_in_tenants: ["TEST1"]
     - name: network-services-ip-helpers-leaf3
       id: 11
       inband_mgmt_vrf: INBANDMGMT

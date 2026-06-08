@@ -28579,6 +28579,8 @@ class EosDesigns(EosDesignsRootModel):
                 configure the source VRF for one of the two options above depending on the value of
                 `default_mgmt_method`.
                 - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
                 """
 
                 if TYPE_CHECKING:
@@ -28625,6 +28627,8 @@ class EosDesigns(EosDesignsRootModel):
                                configure the source VRF for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -74333,6 +74337,8 @@ class EosDesigns(EosDesignsRootModel):
                         configure the source VRF for one of the two options above depending on the value of
                         `default_mgmt_method`.
                         - Any other string will be used directly as the source VRF name.
+                        - If not
+                        set, EOS uses the VRF on the SVI.
                         """
 
                         if TYPE_CHECKING:
@@ -74379,6 +74385,8 @@ class EosDesigns(EosDesignsRootModel):
                                        configure the source VRF for one of the two options above depending on the value of
                                        `default_mgmt_method`.
                                        - Any other string will be used directly as the source VRF name.
+                                       - If not
+                                       set, EOS uses the VRF on the SVI.
 
                                 """
 
