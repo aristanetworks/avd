@@ -1,4 +1,70 @@
 ---
 errdisable:
-  recovery:
-    interval: 300
+  recovery_cause:
+    acl:
+      enabled: false
+    arp_inspection:
+      enabled: true
+    bpduguard:
+      enabled: false
+    dot1x:
+      enabled: false
+      interval: 500
+    dot1x_coa:
+      enabled: false
+    dot1x_phone_classification:
+      enabled: false
+    dot1x_session_replace:
+      enabled: false
+    error_correction_encoding:
+      enabled: false
+    fabric_capacity_low:
+      enabled: false
+    hardware_speed_group:
+      enabled: false
+    hitless_reload_down:
+      enabled: true
+    interface_speed:
+      enabled: false
+    internal_error:
+      enabled: false
+    lacp_rate_limit:
+      enabled: false
+    link_flap:
+      enabled: false
+    no_internal_vlan:
+      enabled: true
+    port_breakout:
+      enabled: false
+    portchannelguard:
+      enabled: false
+      interval: 600
+    portsec:
+      enabled: false
+    speed_misconfigured:
+      enabled: false
+    storm_control:
+      enabled: false
+    stuck_queue:
+      enabled: false
+    switchcard_unreachable:
+      enabled: false
+    tap_port_init:
+      enabled: false
+    tapagg:
+      enabled: true
+    tpid:
+      enabled: false
+    transceiver_adapter:
+      enabled: false
+    uplink_failure_detection:
+      enabled: false
+    xcvr_misconfigured:
+      enabled: false
+    xcvr_overheat:
+      enabled: false
+    xcvr_power_unsupported:
+      enabled: false
+    xcvr_unsupported:
+      enabled: false
+  recovery_interval: 300

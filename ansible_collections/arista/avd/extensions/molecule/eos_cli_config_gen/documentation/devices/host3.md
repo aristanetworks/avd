@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -107,6 +107,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | - | Redis Password Set |
+| OpenStack | True | - |
 | VXLAN | - | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -118,6 +119,12 @@ cvx
    !
    service mcs
       redis password 7 <removed>
+   !
+   service openstack
+      ip access-group ACL-OS
+      ipv6 access-group ACL-V6-IN
+      no shutdown
+      network type-driver vlan default
    !
    service vxlan
       vtep mac-learning control-plane
@@ -481,8 +488,77 @@ ipv6 dhcp relay option remote-id format %m:%h:%p
 
 Errdisable recovery timer interval: 300 seconds
 
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
+| acl | - | False | - |
+| arp-inspection | - | True | - |
+| bpduguard | - | False | - |
+| dot1x | - | False | 500 |
+| dot1x-coa | - | False | - |
+| dot1x-phone-classification | - | False | - |
+| dot1x-session-replace | - | False | - |
+| error-correction-encoding | - | False | - |
+| fabric-capacity-low | - | False | - |
+| hardware-speed-group | - | False | - |
+| hitless-reload-down | - | True | - |
+| interface-speed | - | False | - |
+| internal-error | - | False | - |
+| lacp-rate-limit | - | False | - |
+| link-flap | - | False | - |
+| no-internal-vlan | - | True | - |
+| port-breakout | - | False | - |
+| portchannelguard | - | False | 600 |
+| portsec | - | False | - |
+| speed-misconfigured | - | False | - |
+| storm-control | - | False | - |
+| stuck-queue | - | False | - |
+| switchcard-unreachable | - | False | - |
+| tap-port-init | - | False | - |
+| tapagg | - | True | - |
+| tpid | - | False | - |
+| transceiver-adapter | - | False | - |
+| uplink-failure-detection | - | False | - |
+| xcvr-misconfigured | - | False | - |
+| xcvr-overheat | - | False | - |
+| xcvr-power-unsupported | - | False | - |
+| xcvr-unsupported | - | False | - |
+
 ```eos
 !
+no errdisable recovery cause acl
+errdisable recovery cause arp-inspection
+no errdisable recovery cause bpduguard
+no errdisable recovery cause dot1x
+no errdisable recovery cause dot1x-coa
+no errdisable recovery cause dot1x-phone-classification
+no errdisable recovery cause dot1x-session-replace
+no errdisable recovery cause error-correction-encoding
+no errdisable recovery cause fabric-capacity-low
+no errdisable recovery cause hardware-speed-group
+errdisable recovery cause hitless-reload-down
+no errdisable recovery cause interface-speed
+no errdisable recovery cause internal-error
+no errdisable recovery cause lacp-rate-limit
+no errdisable recovery cause link-flap
+errdisable recovery cause no-internal-vlan
+no errdisable recovery cause port-breakout
+no errdisable recovery cause portchannelguard
+no errdisable recovery cause portsec
+no errdisable recovery cause speed-misconfigured
+no errdisable recovery cause storm-control
+no errdisable recovery cause stuck-queue
+no errdisable recovery cause switchcard-unreachable
+no errdisable recovery cause tap-port-init
+errdisable recovery cause tapagg
+no errdisable recovery cause tpid
+no errdisable recovery cause transceiver-adapter
+no errdisable recovery cause uplink-failure-detection
+no errdisable recovery cause xcvr-misconfigured
+no errdisable recovery cause xcvr-overheat
+no errdisable recovery cause xcvr-power-unsupported
+no errdisable recovery cause xcvr-unsupported
+errdisable recovery cause dot1x interval 500
+errdisable recovery cause portchannelguard interval 600
 errdisable recovery interval 300
 ```
 
