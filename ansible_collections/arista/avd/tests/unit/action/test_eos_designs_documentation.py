@@ -22,24 +22,21 @@ MOCK_TMP_DIR = "/avd/mocked/tmp"
 FABRIC_NAME = "DC1_FABRIC"
 
 
-@pytest.fixture
-def base_validated_args() -> dict:
-    return {
-        "tmp_dir": MOCK_TMP_DIR,
-        "structured_config_dir": "/output/structured_configs",
-        "structured_config_suffix": "yml",
-        "fabric_documentation_file": "/output/fabric.md",
-        "mode": "0o664",
-        "fabric_documentation": True,
-        "include_connected_endpoints": False,
-        "topology_csv_file": "/output/topology.csv",
-        "topology_csv": False,
-        "p2p_links_csv_file": "/output/p2p_links.csv",
-        "p2p_links_csv": False,
-        "toc": True,
-        "digital_twin_file": "DIGITAL-TWIN-TOPOLOGY.yml",
-        "digital_twin": False,
-    }
+"""Default validated_args returned by the action module's argument-spec validation.
+
+Tests spread this and override only the keys relevant to the scenario under test.
+"""
+BASE_VALIDATED_ARGS = {
+    "tmp_dir": MOCK_TMP_DIR,
+    "structured_config_dir": "/output/structured_configs",
+    "structured_config_suffix": "yml",
+    "fabric_documentation": True,
+    "include_connected_endpoints": False,
+    "topology_csv": False,
+    "p2p_links_csv": False,
+    "toc": True,
+    "digital_twin": False,
+}
 
 
 def _empty_output() -> MagicMock:
@@ -69,7 +66,7 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
 
 
 def test_run_routes_missing_device_warning_to_result_warnings(
-    action_module: Callable[..., ActionModule], base_validated_args: dict, tmp_path: Path, caplog: pytest.LogCaptureFixture
+    action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
     """End-to-end: a WARNING logged in read_structured_configs ends up in result['warnings'] with the missing device name visible."""
     module = action_module(ActionModule)
@@ -79,7 +76,7 @@ def test_run_routes_missing_device_warning_to_result_warnings(
     structured_dir.mkdir()
     (structured_dir / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
 
-    validated_args = {**base_validated_args, "structured_config_dir": str(structured_dir), "fabric_documentation": False}
+    validated_args = {**BASE_VALIDATED_ARGS, "structured_config_dir": str(structured_dir), "fabric_documentation": False}
 
     with (
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
