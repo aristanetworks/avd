@@ -128,6 +128,7 @@ cv_workspace_build_timeout: 300
 #       description: <str, optional>
 #       tag_query: <str>
 #       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       preserve_existing_sub_containers: <bool, default=false>
 #       configlets:
 #         - name: <str>
 #       sub_containers:
@@ -135,6 +136,7 @@ cv_workspace_build_timeout: 300
 #           description: <str, optional>
 #           tag_query: <str>
 #           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           preserve_existing_sub_containers: <bool, default=false>
 #           configlets:
 #             - name: <str>
 #           sub_containers: <list of containers>
