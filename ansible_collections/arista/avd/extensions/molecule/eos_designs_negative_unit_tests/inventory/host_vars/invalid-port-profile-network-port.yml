@@ -26,5 +26,5 @@ l2leaf:
       id: 1
 
 expected_error_message: >-
-  'port_profiles[name=common].port_channel.subinterfaces' is not supported
+  'port_profiles[profile=common].port_channel.subinterfaces' is not supported
   since this profile is referenced under a network_port.
