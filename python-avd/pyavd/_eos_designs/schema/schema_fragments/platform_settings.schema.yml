@@ -52,6 +52,7 @@ keys:
           sflow_subinterfaces: false
           subinterface_mtu: false
           per_interface_l2_mru: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -66,6 +67,7 @@ keys:
           sflow_subinterfaces: false
           subinterface_mtu: false
           per_interface_l2_mru: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -84,6 +86,7 @@ keys:
           per_interface_mtu: false
           per_interface_l2_mru: false
           sflow_subinterfaces: false
+          vxlan_decap_vrf_filter: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -325,6 +328,7 @@ keys:
           subinterface_mtu: false
           per_interface_l2_mru: false
           sflow_subinterfaces: false
+          vxlan_decap_vrf_filter: true
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
         digital_twin:
           platform: vEOS-lab

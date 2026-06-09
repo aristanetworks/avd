@@ -62,6 +62,12 @@ interface Vxlan1
 {%     if vxlan_config.vxlan.mlag_source_interface is arista.avd.defined %}
    vxlan mlag source-interface {{ vxlan_config.vxlan.mlag_source_interface }}
 {%     endif %}
+{%     if vxlan_config.vxlan.decapsulation_filter.vrf_non_default_ipv4 is arista.avd.defined(true) %}
+   vxlan decapsulation filter vrf non-default ipv4
+{%     endif %}
+{%     if vxlan_config.vxlan.decapsulation_filter.interface_multiple_vrf_disabled is arista.avd.defined %}
+   vxlan decapsulation filter interface multiple-vrf disabled {{ vxlan_config.vxlan.decapsulation_filter.interface_multiple_vrf_disabled | join(' ') }}
+{%     endif %}
 {%     if vxlan_config.vxlan.bfd_vtep_evpn is arista.avd.defined %}
 {%         if vxlan_config.vxlan.bfd_vtep_evpn.interval is arista.avd.defined
                and vxlan_config.vxlan.bfd_vtep_evpn.min_rx is arista.avd.defined

@@ -56,6 +56,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vtep_learned_data_plane</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vtep_learned_data_plane") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decapsulation_filter</samp>](## "vxlan_interface.vxlan1.vxlan.decapsulation_filter") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_non_default_ipv4</samp>](## "vxlan_interface.vxlan1.vxlan.decapsulation_filter.vrf_non_default_ipv4") | Boolean |  |  |  | Filter VXLAN decapsulation to the default VRF for IPv4.<br>CLI: vxlan decapsulation filter vrf non-default ipv4<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_multiple_vrf_disabled</samp>](## "vxlan_interface.vxlan1.vxlan.decapsulation_filter.interface_multiple_vrf_disabled") | List, items: String |  |  |  | List of interfaces added to the VXLAN decapsulation filter for multiple VRF disabled.<br>CLI: vxlan decapsulation filter interface multiple-vrf disabled <interface list><br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.decapsulation_filter.interface_multiple_vrf_disabled.[]") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "vxlan_interface.vxlan1.eos_cli") | String |  |  |  | Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;Vxlan1</samp>](## "vxlan_interface.Vxlan1") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vxlan1</samp> instead.</span> |
 
@@ -168,6 +172,18 @@
               # Remote VTEP IP Address.
             - <str>
           flood_vtep_learned_data_plane: <bool>
+          decapsulation_filter:
+
+            # Filter VXLAN decapsulation to the default VRF for IPv4.
+            # CLI: vxlan decapsulation filter vrf non-default ipv4
+            vrf_non_default_ipv4: <bool>
+
+            # List of interfaces added to the VXLAN decapsulation filter for multiple VRF disabled.
+            # CLI: vxlan decapsulation filter interface multiple-vrf disabled <interface list>
+            interface_multiple_vrf_disabled:
+
+                # Interface name.
+              - <str>
 
         # Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.
         eos_cli: <str>

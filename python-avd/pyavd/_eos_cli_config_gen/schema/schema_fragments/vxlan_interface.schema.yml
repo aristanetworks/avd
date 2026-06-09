@@ -188,6 +188,22 @@ keys:
                   description: Remote VTEP IP Address.
               flood_vtep_learned_data_plane:
                 type: bool
+              decapsulation_filter:
+                type: dict
+                keys:
+                  vrf_non_default_ipv4:
+                    type: bool
+                    description: |
+                      Filter VXLAN decapsulation to the default VRF for IPv4.
+                      CLI: vxlan decapsulation filter vrf non-default ipv4
+                  interface_multiple_vrf_disabled:
+                    type: list
+                    description: |
+                      List of interfaces added to the VXLAN decapsulation filter for multiple VRF disabled.
+                      CLI: vxlan decapsulation filter interface multiple-vrf disabled <interface list>
+                    items:
+                      type: str
+                      description: Interface name.
           eos_cli:
             type: str
             description: |

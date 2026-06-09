@@ -75220,6 +75220,65 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 FloodVteps._item_type = str
 
+                class DecapsulationFilter(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class InterfaceMultipleVrfDisabled(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    InterfaceMultipleVrfDisabled._item_type = str
+
+                    _fields: ClassVar[dict] = {
+                        "vrf_non_default_ipv4": {"type": bool},
+                        "interface_multiple_vrf_disabled": {"type": InterfaceMultipleVrfDisabled},
+                    }
+                    vrf_non_default_ipv4: bool | None
+                    """
+                    Filter VXLAN decapsulation to the default VRF for IPv4.
+                    CLI: vxlan decapsulation filter vrf non-
+                    default ipv4
+                    """
+                    interface_multiple_vrf_disabled: InterfaceMultipleVrfDisabled
+                    """
+                    List of interfaces added to the VXLAN decapsulation filter for multiple VRF disabled.
+                    CLI: vxlan
+                    decapsulation filter interface multiple-vrf disabled <interface list>
+
+
+                    Subclass of AvdList with
+                    `str` items.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            vrf_non_default_ipv4: bool | None | UndefinedType = Undefined,
+                            interface_multiple_vrf_disabled: InterfaceMultipleVrfDisabled | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            DecapsulationFilter.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                vrf_non_default_ipv4:
+                                   Filter VXLAN decapsulation to the default VRF for IPv4.
+                                   CLI: vxlan decapsulation filter vrf non-
+                                   default ipv4
+                                interface_multiple_vrf_disabled:
+                                   List of interfaces added to the VXLAN decapsulation filter for multiple VRF disabled.
+                                   CLI: vxlan
+                                   decapsulation filter interface multiple-vrf disabled <interface list>
+
+
+                                   Subclass of AvdList with
+                                   `str` items.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "source_interface": {"type": str},
                     "shutdown": {"type": bool},
@@ -75237,6 +75296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "vrfs": {"type": Vrfs},
                     "flood_vteps": {"type": FloodVteps},
                     "flood_vtep_learned_data_plane": {"type": bool},
+                    "decapsulation_filter": {"type": DecapsulationFilter},
                 }
                 source_interface: str | None
                 """Source Interface Name."""
@@ -75290,6 +75350,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 flood_vteps: FloodVteps
                 """Subclass of AvdList with `str` items."""
                 flood_vtep_learned_data_plane: bool | None
+                decapsulation_filter: DecapsulationFilter
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -75312,6 +75374,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         vrfs: Vrfs | UndefinedType = Undefined,
                         flood_vteps: FloodVteps | UndefinedType = Undefined,
                         flood_vtep_learned_data_plane: bool | None | UndefinedType = Undefined,
+                        decapsulation_filter: DecapsulationFilter | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Vxlan.
@@ -75356,6 +75419,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                             flood_vteps: Subclass of AvdList with `str` items.
                             flood_vtep_learned_data_plane: flood_vtep_learned_data_plane
+                            decapsulation_filter: Subclass of AvdModel.
 
                         """
 

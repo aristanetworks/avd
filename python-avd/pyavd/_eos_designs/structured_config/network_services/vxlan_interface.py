@@ -53,7 +53,31 @@ class VxlanInterfaceMixin(Protocol):
 
     @cached_property
     def _multi_vtep(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        return self.shared_utils.mlag is True and self.shared_utils.evpn_multicast is True
+        if self.shared_utils.node_config.multi_vtep_mlag is True:
+            evpn_gw = self.shared_utils.node_config.evpn_gateway
+            if evpn_gw.evpn_l2.enabled or evpn_gw.evpn_l3.enabled:
+                msg = (
+                    "'multi_vtep_mlag' is not supported when the node is configured as an EVPN "
+                    "multi-domain gateway ('evpn_gateway.evpn_l2' or 'evpn_gateway.evpn_l3')."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+            if self.shared_utils.underlay_ipv6:
+                msg = "'multi_vtep_mlag' is not supported with IPv6 underlay ('underlay_ipv6: true')."
+                raise AristaAvdInvalidInputsError(msg)
+        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.shared_utils.node_config.multi_vtep_mlag is True)
+
+    def _set_vxlan_decap_filter(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set vxlan decapsulation filter for SA055 mitigation when multi_vtep_mlag is active."""
+        # Gated on multi_vtep_mlag (not _multi_vtep) to preserve behavior for users who get _multi_vtep
+        # implicitly via evpn_multicast and have not opted into the SA055 filter.
+        if self.shared_utils.node_config.multi_vtep_mlag is not True:
+            return
+        vxlan = self.structured_config.vxlan_interface.vxlan1.vxlan
+        if self.shared_utils.platform_settings.feature_support.vxlan_decap_vrf_filter:
+            vxlan.decapsulation_filter.vrf_non_default_ipv4 = True
+        else:
+            for interface in self.shared_utils.mlag_interfaces:
+                vxlan.decapsulation_filter.interface_multiple_vrf_disabled.append(interface)
 
     @structured_config_contributor
     def vxlan_interface(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
@@ -76,6 +100,7 @@ class VxlanInterfaceMixin(Protocol):
         if self._multi_vtep:
             vxlan.source_interface = "Loopback0"
             vxlan.mlag_source_interface = self.shared_utils.vtep_loopback
+            self._set_vxlan_decap_filter()
         else:
             vxlan.source_interface = self.shared_utils.vtep_loopback
 

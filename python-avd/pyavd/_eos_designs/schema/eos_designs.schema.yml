@@ -7622,6 +7622,7 @@ keys:
         sflow_subinterfaces: false
         subinterface_mtu: false
         per_interface_l2_mru: false
+        vxlan_decap_vrf_filter: true
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7637,6 +7638,7 @@ keys:
         sflow_subinterfaces: false
         subinterface_mtu: false
         per_interface_l2_mru: false
+        vxlan_decap_vrf_filter: true
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7656,6 +7658,7 @@ keys:
         per_interface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        vxlan_decap_vrf_filter: true
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7897,6 +7900,7 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        vxlan_decap_vrf_filter: true
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
       digital_twin:
@@ -11752,6 +11756,23 @@ $defs:
             description: Set VXLAN source interface.
             type: str
             pattern: Loopback[\d/]+
+          multi_vtep_mlag:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature
+              and apply the SA055 VXLAN decapsulation filter
+
+              (restricting decapsulation to the default VRF on supported platforms,
+              otherwise via per-interface
+
+              multiple-vrf-disabled on the MLAG peer link members).
+
+              Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6
+              is enabled.
+
+              '
+            type: bool
+            default: false
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
@@ -14520,6 +14541,18 @@ $defs:
               description: 'Support for EVPN gateway RD/RT rewrite mode.
 
                 An error will be raised if the feature is enabled and this is false.'
+            vxlan_decap_vrf_filter:
+              type: bool
+              default: false
+              description: 'Support for ''vxlan decapsulation filter vrf non-default
+                ipv4'' (SA055 mitigation).
+
+                When false, ''vxlan decapsulation filter interface multiple-vrf disabled''
+                is used
+
+                with the MLAG peer link member interfaces as the fallback.
+
+                '
             hardware_counters:
               type: bool
               description: 'Support for enabling counters using programmable hardware

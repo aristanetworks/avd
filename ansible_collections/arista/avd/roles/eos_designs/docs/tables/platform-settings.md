@@ -34,6 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_rd_rt_rewrite</samp>](## "platform_settings.[].feature_support.evpn_gateway_rd_rt_rewrite") | Boolean |  | `False` |  | Support for EVPN gateway RD/RT rewrite mode.<br>An error will be raised if the feature is enabled and this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan_decap_vrf_filter</samp>](## "platform_settings.[].feature_support.vxlan_decap_vrf_filter") | Boolean |  | `False` |  | Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).<br>When false, 'vxlan decapsulation filter interface multiple-vrf disabled' is used<br>with the MLAG peer link member interfaces as the fallback.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "platform_settings.[].feature_support.hardware_counters") | Boolean |  | `True` |  | Support for enabling counters using programmable hardware counter resources.<br>Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Features set to `false` will be ignored for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.hardware_counter_features.acl") | Boolean |  | `True` |  |  |
@@ -182,6 +183,11 @@
           # An error will be raised if the feature is enabled and this is false.
           evpn_gateway_rd_rt_rewrite: <bool; default=False>
 
+          # Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+          # When false, 'vxlan decapsulation filter interface multiple-vrf disabled' is used
+          # with the MLAG peer link member interfaces as the fallback.
+          vxlan_decap_vrf_filter: <bool; default=False>
+
           # Support for enabling counters using programmable hardware counter resources.
           # Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform.
           hardware_counters: <bool; default=True>
@@ -303,6 +309,7 @@
             sflow_subinterfaces: false
             subinterface_mtu: false
             per_interface_l2_mru: false
+            vxlan_decap_vrf_filter: true
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -318,6 +325,7 @@
             sflow_subinterfaces: false
             subinterface_mtu: false
             per_interface_l2_mru: false
+            vxlan_decap_vrf_filter: true
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -337,6 +345,7 @@
             per_interface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            vxlan_decap_vrf_filter: true
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -578,6 +587,7 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            vxlan_decap_vrf_filter: true
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
           digital_twin:

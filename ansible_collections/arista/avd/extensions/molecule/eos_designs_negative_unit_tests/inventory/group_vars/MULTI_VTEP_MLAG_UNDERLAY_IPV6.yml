@@ -1,0 +1,21 @@
+---
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+l3leaf:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:91::/48
+    vtep_loopback_ipv6_pool: 2001:DB8:92::/48
+    router_id_pool: 192.168.93.0/24
+    multi_vtep_mlag: true
+  node_groups:
+    - group: multi-vtep-mlag-ipv6-underlay
+      nodes:
+        - name: multi-vtep-mlag-ipv6-underlay
+          bgp_as: 65093
+          id: 1
+
+type: l3leaf
+
+expected_error_message: >-
+  'multi_vtep_mlag' is not supported with IPv6 underlay ('underlay_ipv6: true').
