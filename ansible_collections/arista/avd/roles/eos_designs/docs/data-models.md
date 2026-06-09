@@ -457,7 +457,7 @@ To help format the custom interface descriptions, the following contextual varia
 underlay_ethernet_interfaces:
 
 - `{{ interface }}`
-- `{{ type }}`
+- `{{ link_type }}`
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - `{{ wan_carrier }}`

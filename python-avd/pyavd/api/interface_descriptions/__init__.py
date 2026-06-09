@@ -74,7 +74,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_ethernet_interfaces:
             return self._template(
                 template_path,
-                type=data.link_type,
+                link_type=data.link_type,
                 interface=data.interface,
                 peer=data.peer,
                 peer_interface=data.peer_interface,
