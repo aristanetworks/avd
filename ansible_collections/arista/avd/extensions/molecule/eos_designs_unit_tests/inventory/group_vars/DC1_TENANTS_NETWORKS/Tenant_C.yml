@@ -47,6 +47,8 @@ tenant_c:
           - prefix: 192.168.143.0/24
             peer_id_include_router_id: true
             peer_filter: peerfilter
+          - prefix: 192.168.144.0/24
+            peer_filter: peerfilter
     vrfs:
       - name: Tenant_C_OP_Zone
         vrf_vni: 30
