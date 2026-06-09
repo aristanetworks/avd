@@ -1065,11 +1065,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         only_configure_route_map_connected_to_bgp_vrfs_when_used: bool
         """
+        Available from AVD 6.3.0.
         Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
-        The route map is skipped when
-        both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
-        since 'redistribute connected route-map'
-        is not required in that case.
+        The
+        route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+        since
+        'redistribute connected route-map' is not required in that case.
 
         Default value: `False`
         """
@@ -1134,11 +1135,12 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
                     only_configure_route_map_connected_to_bgp_vrfs_when_used:
+                       Available from AVD 6.3.0.
                        Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
-                       The route map is skipped when
-                       both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
-                       since 'redistribute connected route-map'
-                       is not required in that case.
+                       The
+                       route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+                       since
+                       'redistribute connected route-map' is not required in that case.
 
                 """
 

@@ -413,8 +413,9 @@ keys:
         default: false
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool
-        description: 'Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it
-          is needed.
+        description: 'Available from AVD 6.3.0.
+
+          Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it is needed.
 
           The route map is skipped when both ''underlay_rfc5549'' and ''overlay_mlag_rfc5549''
           are set,
