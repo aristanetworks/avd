@@ -181,19 +181,15 @@ class CVClientProtocol(
             if path := (verify_paths.cafile or verify_paths.capath):
                 return CVTLSSettings(grpc_ssl=verify_paths, requests_verify=path)
             # No usable OS trust store — warn and fall through to the certifi default.
-            self._warn_no_system_trust_store()
+            LOGGER.warning(
+                "CVClient: 'use_system_certs' is enabled but no system trust store was found "
+                "(neither SSL_CERT_FILE/SSL_CERT_DIR nor OpenSSL's compiled-in default paths "
+                "resolve to a readable file or directory). Falling back to the 'certifi' bundle for "
+                "both gRPC and REST. To use the OS trust store, install a CA bundle package "
+                "(e.g. 'ca-certificates') or set SSL_CERT_FILE / SSL_CERT_DIR explicitly."
+            )
 
         return CVTLSSettings(grpc_ssl=True, requests_verify=True)
-
-    def _warn_no_system_trust_store(self) -> None:
-        """Log a warning when `use_system_certs` was requested but no OS trust store was found."""
-        LOGGER.warning(
-            "CVClient: 'use_system_certs' is enabled but no system trust store was found "
-            "(neither SSL_CERT_FILE/SSL_CERT_DIR nor OpenSSL's compiled-in default paths "
-            "resolve to a readable file or directory). Falling back to the 'certifi' bundle for "
-            "both gRPC and REST. To use the OS trust store, install a CA bundle package "
-            "(e.g. 'ca-certificates') or set SSL_CERT_FILE / SSL_CERT_DIR explicitly."
-        )
 
     def _set_token(self) -> None:
         """
@@ -321,7 +317,7 @@ class CVClient(CVClientProtocol):
             password: Password to use for authentication if token is not set.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
-            use_system_certs: Use system certificate and honor overrides with `SSL_CERT_FILE` and
+            use_system_certs: Use system certificates and honor overrides with `SSL_CERT_FILE` and
                 `SSL_CERT_DIR`. Prefer the OS trust store over the bundled `certifi` Python package
                 (certifi is only used as a fallback when the OS provides no usable trust store).
                 Applied to both the gRPC channel and the REST calls. Ignored when `verify_certs=False`.

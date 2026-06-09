@@ -48,9 +48,8 @@ options:
     suboptions:
       use_system_certs:
         description: |-
-          Use system certificate and honor overrides with `SSL_CERT_FILE` and `SSL_CERT_DIR`.
-          Prefer the OS trust store over the bundled `certifi` Python package
-          (certifi is only used as a fallback when the OS provides no usable trust store).
+          Use system certificates instead of Python's bundled certificate store.
+          Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
         type: bool
         default: false
   proxy_host:

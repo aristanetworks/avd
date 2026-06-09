@@ -41,7 +41,7 @@
         cv_username: "{{ cv_username | arista.avd.default }}"
         cv_password: "{{ cv_password | arista.avd.default }}"
         cv_verify_certs: "{{ cv_verify_certs }}"
-        cv_deploy_future: "{{ cv_deploy_future | ansible.builtin.omit }}"
+        cv_deploy_future: "{{ cv_deploy_future | default(omit) }}"
         proxy_host: "{{ proxy_host | arista.avd.default }}"
         proxy_port: "{{ proxy_port }}"
         proxy_username: "{{ proxy_username | arista.avd.default }}"

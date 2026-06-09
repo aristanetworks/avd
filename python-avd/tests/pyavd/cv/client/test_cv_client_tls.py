@@ -6,7 +6,6 @@ from __future__ import annotations
 import shutil
 import ssl
 import subprocess
-from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from logging import WARNING
 from os import environ
@@ -21,8 +20,6 @@ from pyavd._cv.client.models import CVTLSSettings
 
 if TYPE_CHECKING:
     from pathlib import Path
-
-ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 
 # === Test Helpers ===
