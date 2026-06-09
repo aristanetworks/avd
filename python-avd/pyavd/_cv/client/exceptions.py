@@ -93,7 +93,3 @@ class CVGRPCError(CVClientException):
 
 class CVClientInvalidServerName(CVClientException):
     """CloudVision server FQDN is invalid."""
-
-
-class CVDeviceDecommissionFailed(CVClientException):
-    """Device Decommission failed."""

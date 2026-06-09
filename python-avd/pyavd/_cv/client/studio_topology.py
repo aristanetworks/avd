@@ -16,7 +16,7 @@ from pyavd._cv.api.arista.studio_topology.v1 import (
     DecommissionStreamRequest,
     DeviceKey,
 )
-from pyavd._cv.client.exceptions import CVDeviceDecommissionFailed
+from pyavd._cv.client.exceptions import CVTimeoutError
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
@@ -81,7 +81,7 @@ class StudioTopologyMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of Decommission objects for all devices.
+            List of Decommission objects for all requested devices.
 
         Raises:
             CVDeviceDecommissionFailed: If the stream closed before all devices reached a terminal status.
@@ -92,53 +92,32 @@ class StudioTopologyMixin(Protocol):
         client = DecommissionServiceStub(self._channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
 
-        # Set of device_ids for which we have not yet received a response
-        devices_missing_update = set(device_ids)
         # Set of device_ids for which we have not yet received a response in terminal status
-        devices_missing_terminal_update = set(device_ids)
+        devices_missing_terminal_response = set(device_ids)
         terminal_responses: list[Decommission] = []
 
         async for response in responses:
             device_id = response.value.key.device_id
-            current_status = response.value.status
-
-            # Non-terminal status. Includes the INITIAL_SYNC_COMPLETE update which references no device. Keep on waiting.
-            if current_status == DecommissionStatus.UNSPECIFIED:
-                LOGGER.debug("wait_for_device_decommission_staging: Got decommission staging update: %s", response.value)
-                if device_id:
-                    devices_missing_update.discard(device_id)
-                continue
-
-            if device_id:
-                devices_missing_update.discard(device_id)
-                devices_missing_terminal_update.discard(device_id)
+            # Explicitly access status field to make sure the default value is revealed by __repr__
+            status = response.value.status
+            if device_id and status in (DecommissionStatus.SUCCESS, DecommissionStatus.FAILURE):
+                LOGGER.debug(
+                    "wait_for_device_decommission_staging: Staging device %s for decommission completed: %s",
+                    device_id,
+                    response.value,
+                )
+                devices_missing_terminal_response.discard(device_id)
                 terminal_responses.append(response.value)
-                if current_status == DecommissionStatus.SUCCESS:
-                    LOGGER.debug(
-                        "wait_for_device_decommission_staging: Staging device %s for decommission succeeded: %s",
-                        device_id,
-                        response.value,
-                    )
-                # FAILURE (but may eventually cover other terminal unsuccessful states)
-                else:
-                    LOGGER.debug(
-                        "wait_for_device_decommission_staging: Staging device %s for decommission failed: %s",
-                        device_id,
-                        response.value,
-                    )
+            else:
+                LOGGER.debug("wait_for_device_decommission_staging: Received decommission staging response: %s", response.value)
 
-            # Return as soon as all devices got terminal responses
-            if not devices_missing_terminal_update:
+            # Return as soon as terminal responses received for all devices
+            if not devices_missing_terminal_response:
                 return terminal_responses
 
-        if devices_missing_terminal_update:
-            msg_parts = []
-            if devices_missing_update:
-                msg_parts.append(f"No decommission staging response received for the following devices: {devices_missing_update}.")
-            devices_stuck_at_unspecified = devices_missing_terminal_update - devices_missing_update
-            if devices_stuck_at_unspecified:
-                msg_parts.append(f"Decommission staging did not reach terminal status for the following devices: {devices_stuck_at_unspecified}.")
-            raise CVDeviceDecommissionFailed(" ".join(msg_parts))
+        if devices_missing_terminal_response:
+            msg = f"Decommission staging timed out for the following devices: {devices_missing_terminal_response}."
+            raise CVTimeoutError(msg)
 
         # Kept only to satisfy ruff's RET503.
         return terminal_responses  # pragma: no cover

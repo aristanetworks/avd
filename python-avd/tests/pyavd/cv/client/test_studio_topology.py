@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVDeviceDecommissionFailed
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVTimeoutError
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.models import CVWorkspace
 
@@ -78,7 +78,7 @@ async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureF
     assert any(
         re.search(
             re.compile(
-                r"wait_for_device_decommission_staging: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_for_device_decommission_staging: Received decommission staging response: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
@@ -90,7 +90,7 @@ async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureF
     for target_device in target_devices:
         assert any(
             re.search(
-                re.compile(f"wait_for_device_decommission_staging: Staging device {target_device} for decommission succeeded"),
+                re.compile(f"wait_for_device_decommission_staging: Staging device {target_device} for decommission completed"),
                 str(record.message),
             )
             for record in caplog.records
@@ -195,10 +195,6 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
             'aff03f31ff54008136884a1dbfdaa0f0fc791774.json'
     """
     target_devices = ["device_one_id_ok", "device_two_id_failure", "device_three_id_unspecified", "device_four_id_silent"]
-    expected_exception_msg = (
-        r"No decommission staging response received for the following devices: \{'device_four_id_silent'\}\. "
-        r"Decommission staging did not reach terminal status for the following devices: \{'device_three_id_unspecified'\}\."
-    )
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
@@ -211,15 +207,19 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
         # stage_devices_for_decommission method returns only failed responses
         assert len(stage_devices_for_decommission_response) == 0
 
-        with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
+        with pytest.raises(CVTimeoutError) as exc_info:
             # Subscribe for decommissining updates.
             _ = await cv_client.wait_for_device_decommission_staging(workspace_id=workspace.id, device_ids=target_devices)
+
+    assert "Decommission staging timed out for the following devices:" in str(exc_info.value)
+    assert "device_three_id_unspecified" in str(exc_info.value)
+    assert "device_four_id_silent" in str(exc_info.value)
 
     # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
     assert any(
         re.search(
             re.compile(
-                r"wait_for_device_decommission_staging: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_for_device_decommission_staging: Received decommission staging response: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
@@ -230,7 +230,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     # Assert that DecommissionStatus.SUCCESS is received and logged for the first device
     assert any(
         re.search(
-            re.compile("wait_for_device_decommission_staging: Staging device device_one_id_ok for decommission succeeded"),
+            re.compile("wait_for_device_decommission_staging: Staging device device_one_id_ok for decommission completed"),
             str(record.message),
         )
         for record in caplog.records
@@ -240,7 +240,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     assert any(
         re.search(
             re.compile(
-                "wait_for_device_decommission_staging: Staging device device_two_id_failure for decommission failed.*"
+                "wait_for_device_decommission_staging: Staging device device_two_id_failure for decommission completed.*"
                 "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
             ),
             str(record.message),
@@ -252,7 +252,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     assert any(
         re.search(
             re.compile(
-                "wait_for_device_decommission_staging: Got decommission staging update:.*"
+                "wait_for_device_decommission_staging: Received decommission staging response:.*"
                 "device_id='device_three_id_unspecified'.*status=DecommissionStatus.UNSPECIFIED, error=''"
             ),
             str(record.message),
@@ -321,7 +321,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     assert any(
         re.search(
             re.compile(
-                r"wait_for_device_decommission_staging: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_for_device_decommission_staging: Received decommission staging response: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
@@ -332,7 +332,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     # Assert that DecommissionStatus.SUCCESS is received and logged for the first device
     assert any(
         re.search(
-            re.compile("wait_for_device_decommission_staging: Staging device device_one_id_ok for decommission succeeded"),
+            re.compile("wait_for_device_decommission_staging: Staging device device_one_id_ok for decommission completed"),
             str(record.message),
         )
         for record in caplog.records
@@ -342,7 +342,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     assert any(
         re.search(
             re.compile(
-                "wait_for_device_decommission_staging: Staging device device_two_id_failure for decommission failed.*"
+                "wait_for_device_decommission_staging: Staging device device_two_id_failure for decommission completed.*"
                 "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
             ),
             str(record.message),
@@ -386,7 +386,7 @@ async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest
             '83d945b70ef4fc507f316bfbdf25a7fc17c47ca6.json'
     """
     target_devices = ["device_four_id_silent"]
-    expected_exception_msg = "No decommission staging response received for the following devices: {'device_four_id_silent'}."
+    expected_exception_msg = r"Decommission staging timed out for the following devices: \{'device_four_id_silent'\}\."
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
@@ -399,7 +399,7 @@ async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest
         # stage_devices_for_decommission method returns only failed responses
         assert len(stage_devices_for_decommission_response) == 0
 
-        with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
+        with pytest.raises(CVTimeoutError, match=expected_exception_msg):
             # Subscribe for decommissining updates.
             _ = await cv_client.wait_for_device_decommission_staging(workspace_id=workspace.id, device_ids=target_devices)
 
@@ -407,7 +407,7 @@ async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest
     assert any(
         re.search(
             re.compile(
-                r"wait_for_device_decommission_staging: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_for_device_decommission_staging: Received decommission staging response: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
