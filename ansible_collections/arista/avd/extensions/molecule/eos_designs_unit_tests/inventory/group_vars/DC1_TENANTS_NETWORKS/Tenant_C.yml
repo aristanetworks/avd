@@ -28,11 +28,6 @@ tenant_c:
       - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
         remote_as: "666"
         description: "Tenant C peer group"
-        listen_ranges:
-          - prefix: 192.168.142.0/24
-            remote_as: 111
-            peer_id_include_router_id: true
-            peer_filter: peerfilter
         nodes: ['dc1-bl[12]a']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"
@@ -50,7 +45,6 @@ tenant_c:
           rcf_out: TEST_RCF_OUT()
         listen_ranges:
           - prefix: 192.168.143.0/24
-            remote_as: 111
             peer_id_include_router_id: true
             peer_filter: peerfilter
     vrfs:

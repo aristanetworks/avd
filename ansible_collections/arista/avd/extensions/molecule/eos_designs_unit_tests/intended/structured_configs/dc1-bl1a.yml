@@ -307,11 +307,6 @@ monitor_sessions:
       name: myIpAVL
       priority: 5
 ntp: null
-peer_filters:
-- name: peerfilter
-  sequence_numbers:
-  - sequence: 20
-    match: as-range 1-2 result reject
 platform:
   sand:
     lag:
@@ -379,12 +374,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  listen_ranges:
-  - prefix: 192.168.142.0/24
-    peer_id_include_router_id: true
-    peer_group: Tenant_C_BGP_PEER_GROUP_RESTRICTED
-    peer_filter: peerfilter
-    remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
