@@ -134,10 +134,11 @@ class RouterBgpMixin(Protocol):
         # For VRF default the bgp_vrf variable will be set to the global router_bgp for some settings.
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
+                context = f"{tenant.name}.bgp_peer_groups[name={bgp_peer_group.name}]"
                 bgp_vrf = self.structured_config.router_bgp
                 # Listen ranges are configured when a node from bgp_peer_group.nodes[] matches the hostname
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                    self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf)
+                    self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf, context)
 
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
@@ -206,8 +207,9 @@ class RouterBgpMixin(Protocol):
                         bgp_vrf.aggregate_addresses.append(aggregate_address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True))
 
                 for bgp_peer_group in vrf.bgp_peer_groups:
+                    context = f"{tenant.name}.vrfs[name={vrf.name}].bgp_peer_groups[name={bgp_peer_group.name}]"
                     if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                        self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf)
+                        self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf, context)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -821,8 +823,16 @@ class RouterBgpMixin(Protocol):
         bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem,
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
+        context: str
     ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
-        for listen_range in bgp_peer_group.listen_ranges:
+        for index, listen_range in enumerate(bgp_peer_group.listen_ranges):
+            if not (listen_range.peer_filter or listen_range.remote_as):
+                msg = f"{context}.listen_ranges[{index}].peer_filter or {context}.remote_as"
+                raise AristaAvdMissingVariableError(msg)
+            if listen_range.peer_filter and listen_range.remote_as:
+                msg = f"'{context}.listen_ranges[{index}].peer_filter' or '{context}.listen_ranges[{index}].remote_as' cannot be set together."
+                raise AristaAvdInvalidInputsError(msg)
+
             bgp_vrf.listen_ranges.append_new(
                 prefix=listen_range.prefix,
                 peer_group=bgp_peer_group.name,

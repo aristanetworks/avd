@@ -48,6 +48,11 @@ tenant_c:
           activate: true
           rcf_in: TEST_RCF_IN()
           rcf_out: TEST_RCF_OUT()
+        listen_ranges:
+          - prefix: 192.168.143.0/24
+            remote_as: 111
+            peer_id_include_router_id: true
+            peer_filter: peerfilter
     vrfs:
       - name: Tenant_C_OP_Zone
         vrf_vni: 30
