@@ -981,72 +981,84 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
-            "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
-            "raise_for_port_channels_without_members": {"type": bool, "default": False},
-            "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
-            "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
-            "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
+            "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
+            "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
+            "raise_for_port_channels_without_members": {"type": bool, "default": False},
+            "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
+            "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
-        Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
-
-        Default value: `False`
-        """
-        remove_redundant_ipv4_unicast_for_peer_groups: bool
-        """
-        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
-        default instead of always deactivating it.
-
-        Default value: `False`
-        """
-        raise_for_port_channels_without_members: bool
-        """
-        Raise an error if an L3 Port-Channel is configured without any member interfaces.
-
-        Default value: `False`
-        """
-        only_configure_mlag_vrfs_peer_group_when_used: bool
-        """
-        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
-
-        Default value: `False`
-        """
-        raise_for_underlay_router_with_uplink_type_port_channel: bool
-        """
-        Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
-        since
-        this combination is not supported.
+        Available from AVD 6.2.0.
+        Configure management interface to accept DHCP default route when the
+        management IP is set to 'dhcp'.
 
         Default value: `False`
         """
         configure_inband_mgmt_ipv6_vrf: bool
         """
+        Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
-
-        Default value: `False`
-        """
-        only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool
-        """
-        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
 
         Default value: `False`
         """
         consistent_uplink_vlans: bool
         """
-        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
-        and on
-        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+        Available from AVD 6.2.0.
+        Always configure Port-Channel uplinks with consistent 'switchport trunk
+        allowed' on both ends
+        and on all 'uplink_switches' even when available VLANs differ between the
+        'uplink_switches'.
 
         Default value: `False`
         """
         fix_radius_server_group_tls: bool
         """
-        Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-        configurations.
+        Available from AVD 6.2.0.
+        Fix to configure TLS on RADIUS server group members to match their global
+        RADIUS server configurations.
+
+        Default value: `False`
+        """
+        only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool
+        """
+        Available from AVD 6.2.0.
+        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+
+        Default value: `False`
+        """
+        only_configure_mlag_vrfs_peer_group_when_used: bool
+        """
+        Available from AVD 6.2.0.
+        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+
+        Default value: `False`
+        """
+        raise_for_port_channels_without_members: bool
+        """
+        Available from AVD 6.2.0.
+        Raise an error if an L3 Port-Channel is configured without any member
+        interfaces.
+
+        Default value: `False`
+        """
+        raise_for_underlay_router_with_uplink_type_port_channel: bool
+        """
+        Available from AVD 6.2.0.
+        Raise an error if a node has both 'underlay_router: true' and
+        'uplink_type: port-channel' set,
+        since this combination is not supported.
+
+        Default value: `False`
+        """
+        remove_redundant_ipv4_unicast_for_peer_groups: bool
+        """
+        Available from AVD 6.1.0.
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+        IPv4 is activated by default instead of always deactivating it.
 
         Default value: `False`
         """
@@ -1057,14 +1069,14 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
-                remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
-                raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
-                only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
-                raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
-                only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
+                only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
+                only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
+                raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+                raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
+                remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1073,25 +1085,42 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    accept_dhcp_default_route_for_mgmt_ip_dhcp: Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
-                    remove_redundant_ipv4_unicast_for_peer_groups:
-                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
-                       default instead of always deactivating it.
-                    raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
-                    only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
-                    raise_for_underlay_router_with_uplink_type_port_channel:
-                       Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
-                       since
-                       this combination is not supported.
-                    configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
-                    only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+                    accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                       Available from AVD 6.2.0.
+                       Configure management interface to accept DHCP default route when the
+                       management IP is set to 'dhcp'.
+                    configure_inband_mgmt_ipv6_vrf:
+                       Available from AVD 6.2.0.
+                       Configure `inband_mgmt_vrf` for IPv6 inband management.
                     consistent_uplink_vlans:
-                       Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
-                       and on
-                       all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+                       Available from AVD 6.2.0.
+                       Always configure Port-Channel uplinks with consistent 'switchport trunk
+                       allowed' on both ends
+                       and on all 'uplink_switches' even when available VLANs differ between the
+                       'uplink_switches'.
                     fix_radius_server_group_tls:
-                       Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-                       configurations.
+                       Available from AVD 6.2.0.
+                       Fix to configure TLS on RADIUS server group members to match their global
+                       RADIUS server configurations.
+                    only_configure_ipv6_inband_mgmt_prefix_list_when_used:
+                       Available from AVD 6.2.0.
+                       Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+                    only_configure_mlag_vrfs_peer_group_when_used:
+                       Available from AVD 6.2.0.
+                       Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+                    raise_for_port_channels_without_members:
+                       Available from AVD 6.2.0.
+                       Raise an error if an L3 Port-Channel is configured without any member
+                       interfaces.
+                    raise_for_underlay_router_with_uplink_type_port_channel:
+                       Available from AVD 6.2.0.
+                       Raise an error if a node has both 'underlay_router: true' and
+                       'uplink_type: port-channel' set,
+                       since this combination is not supported.
+                    remove_redundant_ipv4_unicast_for_peer_groups:
+                       Available from AVD 6.1.0.
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+                       IPv4 is activated by default instead of always deactivating it.
 
                 """
 
@@ -18183,30 +18212,18 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "service_type": {"type": bool, "default": False},
-                "dhcp": {"type": EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp},
-                "framed_mtu": {"type": int},
-            }
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
-            dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp
-            """RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages."""
             framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    service_type: bool | UndefinedType = Undefined,
-                    dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp | UndefinedType = Undefined,
-                    framed_mtu: int | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18215,8 +18232,332 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
-                        dhcp: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
                         framed_mtu: framed_mtu
+
+                    """
+
+        class DeviceProfiling(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Dhcp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Hostname(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Hostname.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                class ParameterRequestList(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ParameterRequestList.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                class VendorClassId(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            VendorClassId.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "hostname": {"type": Hostname},
+                    "parameter_request_list": {"type": ParameterRequestList},
+                    "vendor_class_id": {"type": VendorClassId},
+                }
+                enabled: bool
+                """
+                Enable all DHCP profiling options collectively.
+
+                Default value: `True`
+                """
+                hostname: Hostname
+                """
+                DHCP Option 12 (Hostname).
+
+                Subclass of AvdModel.
+                """
+                parameter_request_list: ParameterRequestList
+                """
+                DHCP Option 55 (Parameter Request List).
+
+                Subclass of AvdModel.
+                """
+                vendor_class_id: VendorClassId
+                """
+                DHCP Option 60 (Vendor Class ID).
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        hostname: Hostname | UndefinedType = Undefined,
+                        parameter_request_list: ParameterRequestList | UndefinedType = Undefined,
+                        vendor_class_id: VendorClassId | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dhcp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable all DHCP profiling options collectively.
+                            hostname:
+                               DHCP Option 12 (Hostname).
+
+                               Subclass of AvdModel.
+                            parameter_request_list:
+                               DHCP Option 55 (Parameter Request List).
+
+                               Subclass of AvdModel.
+                            vendor_class_id:
+                               DHCP Option 60 (Vendor Class ID).
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class Lldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class SystemName(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemName.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                class SystemDescription(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemDescription.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "system_name": {"type": SystemName},
+                    "system_description": {"type": SystemDescription},
+                }
+                enabled: bool
+                """
+                Enable all LLDP profiling options collectively.
+
+                Default value: `True`
+                """
+                system_name: SystemName
+                """
+                LLDP system name (LLDP TLV 5).
+
+                Subclass of AvdModel.
+                """
+                system_description: SystemDescription
+                """
+                LLDP system description (LLDP TLV 6).
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        system_name: SystemName | UndefinedType = Undefined,
+                        system_description: SystemDescription | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Lldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable all LLDP profiling options collectively.
+                            system_name:
+                               LLDP system name (LLDP TLV 5).
+
+                               Subclass of AvdModel.
+                            system_description:
+                               LLDP system description (LLDP TLV 6).
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}, "lldp": {"type": Lldp}}
+            enabled: bool
+            """
+            Enable all DHCP and LLDP TLV profiling options.
+
+            Default value: `False`
+            """
+            dhcp: Dhcp
+            """
+            DHCP options profiling.
+            Enables profiling via DHCP Discover/Request packets.
+            Limitations:
+              - IPv4
+            only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+              - Not supported on VTEP
+            devices.
+              - Not supported with IP Locking features.
+              - MLAG support requires EOS 4.34.3+.
+            Subclass of AvdModel.
+            """
+            lldp: Lldp
+            """
+            LLDP TLVs profiling.
+            Enables profiling via LLDP packets.
+            Requires LLDP to be globally enabled.
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | UndefinedType = Undefined, dhcp: Dhcp | UndefinedType = Undefined, lldp: Lldp | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    DeviceProfiling.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable all DHCP and LLDP TLV profiling options.
+                        dhcp:
+                           DHCP options profiling.
+                           Enables profiling via DHCP Discover/Request packets.
+                           Limitations:
+                             - IPv4
+                           only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+                             - Not supported on VTEP
+                           devices.
+                             - Not supported with IP Locking features.
+                             - MLAG support requires EOS 4.34.3+.
+                           Subclass of AvdModel.
+                        lldp:
+                           LLDP TLVs profiling.
+                           Enables profiling via LLDP packets.
+                           Requires LLDP to be globally enabled.
+                           Subclass of AvdModel.
 
                     """
 
@@ -18229,6 +18570,7 @@ class EosDesigns(EosDesignsRootModel):
             "dynamic_authorization": {"type": DynamicAuthorization},
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
+            "device_profiling": {"type": DeviceProfiling},
             "redistribute_in_evpn": {"type": bool, "default": True},
         }
         enabled: bool
@@ -18261,6 +18603,15 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius_av_pairs: RadiusAvPairs
         """Subclass of AvdModel."""
+        device_profiling: DeviceProfiling
+        """
+        Device profiling feature.
+        Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+        to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+        Requires
+        `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+        Subclass of AvdModel.
+        """
         redistribute_in_evpn: bool
         """
         Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
@@ -18282,6 +18633,7 @@ class EosDesigns(EosDesignsRootModel):
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
+                device_profiling: DeviceProfiling | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18302,6 +18654,13 @@ class EosDesigns(EosDesignsRootModel):
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pairs: Subclass of AvdModel.
+                    device_profiling:
+                       Device profiling feature.
+                       Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+                       to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+                       Requires
+                       `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+                       Subclass of AvdModel.
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.
@@ -28191,9 +28550,38 @@ class EosDesigns(EosDesignsRootModel):
                 ip_helper: str
                 """IPv4 DHCP server IP."""
                 source_interface: str | None
-                """Interface name."""
+                """
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted
+                according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the
+                source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one
+                of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be
+                used directly as the source interface.
+                """
                 source_vrf: str | None
-                """VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF."""
+                """
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these
+                rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                -
+                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be
+                raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will
+                configure the source VRF for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
+                """
 
                 if TYPE_CHECKING:
 
@@ -28212,8 +28600,35 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             ip_helper: IPv4 DHCP server IP.
-                            source_interface: Interface name.
-                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                            source_interface:
+                               Interface name to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted
+                               according to these rules:
+                               - `use_mgmt_interface` will configure the OOB management interface as the
+                               source interface.
+                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                               source interface.
+                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                               of the two options above depending on the value of `default_mgmt_method`.
+                               - Any other string will be
+                               used directly as the source interface.
+                            source_vrf:
+                               VRF to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted according to these
+                               rules:
+                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                 An
+                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               -
+                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                 An error will be
+                               raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will
+                               configure the source VRF for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -28897,9 +29312,38 @@ class EosDesigns(EosDesignsRootModel):
                         ip_helper: str
                         """IPv4 DHCP server IP."""
                         source_interface: str | None
-                        """Interface name to originate DHCP relay packets to DHCP server."""
+                        """
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted
+                        according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the
+                        source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                        source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one
+                        of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be
+                        used directly as the source interface.
+                        """
                         source_vrf: str | None
-                        """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                        """
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these
+                        rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An
+                        error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        -
+                        `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be
+                        raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will
+                        configure the source VRF for one of the two options above depending on the value of
+                        `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not
+                        set, EOS uses the VRF on the SVI.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -28918,8 +29362,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     ip_helper: IPv4 DHCP server IP.
-                                    source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                    source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                    source_interface:
+                                       Interface name to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted
+                                       according to these rules:
+                                       - `use_mgmt_interface` will configure the OOB management interface as the
+                                       source interface.
+                                       - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                       source interface.
+                                       - `use_default_mgmt_method_interface` will configure the source interface for one
+                                       of the two options above depending on the value of `default_mgmt_method`.
+                                       - Any other string will be
+                                       used directly as the source interface.
+                                    source_vrf:
+                                       VRF to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted according to these
+                                       rules:
+                                       - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                         An
+                                       error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                       -
+                                       `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                         An error will be
+                                       raised if inband management is not configured for the device.
+                                       - `use_default_mgmt_method_vrf` will
+                                       configure the source VRF for one of the two options above depending on the value of
+                                       `default_mgmt_method`.
+                                       - Any other string will be used directly as the source VRF name.
+                                       - If not
+                                       set, EOS uses the VRF on the SVI.
 
                                 """
 
@@ -30049,9 +30520,38 @@ class EosDesigns(EosDesignsRootModel):
                     ip_helper: str
                     """IPv4 DHCP server IP."""
                     source_interface: str | None
-                    """Interface name to originate DHCP relay packets to DHCP server."""
+                    """
+                    Interface name to originate DHCP relay packets to DHCP server.
+                    The value will be interpreted
+                    according to these rules:
+                    - `use_mgmt_interface` will configure the OOB management interface as the
+                    source interface.
+                    - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                    source interface.
+                    - `use_default_mgmt_method_interface` will configure the source interface for one
+                    of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be
+                    used directly as the source interface.
+                    """
                     source_vrf: str | None
-                    """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                    """
+                    VRF to originate DHCP relay packets to DHCP server.
+                    The value will be interpreted according to these
+                    rules:
+                    - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                      An
+                    error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    -
+                    `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                      An error will be
+                    raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will
+                    configure the source VRF for one of the two options above depending on the value of
+                    `default_mgmt_method`.
+                    - Any other string will be used directly as the source VRF name.
+                    - If not
+                    set, EOS uses the VRF on the SVI.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -30070,8 +30570,35 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 ip_helper: IPv4 DHCP server IP.
-                                source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                source_interface:
+                                   Interface name to originate DHCP relay packets to DHCP server.
+                                   The value will be interpreted
+                                   according to these rules:
+                                   - `use_mgmt_interface` will configure the OOB management interface as the
+                                   source interface.
+                                   - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                   source interface.
+                                   - `use_default_mgmt_method_interface` will configure the source interface for one
+                                   of the two options above depending on the value of `default_mgmt_method`.
+                                   - Any other string will be
+                                   used directly as the source interface.
+                                source_vrf:
+                                   VRF to originate DHCP relay packets to DHCP server.
+                                   The value will be interpreted according to these
+                                   rules:
+                                   - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                     An
+                                   error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                   -
+                                   `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                     An error will be
+                                   raised if inband management is not configured for the device.
+                                   - `use_default_mgmt_method_vrf` will
+                                   configure the source VRF for one of the two options above depending on the value of
+                                   `default_mgmt_method`.
+                                   - Any other string will be used directly as the source VRF name.
+                                   - If not
+                                   set, EOS uses the VRF on the SVI.
 
                             """
 
@@ -42835,9 +43362,38 @@ class EosDesigns(EosDesignsRootModel):
                 ip_helper: str
                 """IPv4 DHCP server IP."""
                 source_interface: str | None
-                """Interface name to originate DHCP relay packets to DHCP server."""
+                """
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted
+                according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the
+                source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one
+                of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be
+                used directly as the source interface.
+                """
                 source_vrf: str | None
-                """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                """
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these
+                rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                -
+                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be
+                raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will
+                configure the source VRF for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
+                """
 
                 if TYPE_CHECKING:
 
@@ -42856,8 +43412,35 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             ip_helper: IPv4 DHCP server IP.
-                            source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                            source_interface:
+                               Interface name to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted
+                               according to these rules:
+                               - `use_mgmt_interface` will configure the OOB management interface as the
+                               source interface.
+                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                               source interface.
+                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                               of the two options above depending on the value of `default_mgmt_method`.
+                               - Any other string will be
+                               used directly as the source interface.
+                            source_vrf:
+                               VRF to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted according to these
+                               rules:
+                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                 An
+                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               -
+                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                 An error will be
+                               raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will
+                               configure the source VRF for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -43960,9 +44543,38 @@ class EosDesigns(EosDesignsRootModel):
             ip_helper: str
             """IPv4 DHCP server IP."""
             source_interface: str | None
-            """Interface name to originate DHCP relay packets to DHCP server."""
+            """
+            Interface name to originate DHCP relay packets to DHCP server.
+            The value will be interpreted
+            according to these rules:
+            - `use_mgmt_interface` will configure the OOB management interface as the
+            source interface.
+            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+            source interface.
+            - `use_default_mgmt_method_interface` will configure the source interface for one
+            of the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the source interface.
+            """
             source_vrf: str | None
-            """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+            """
+            VRF to originate DHCP relay packets to DHCP server.
+            The value will be interpreted according to these
+            rules:
+            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+              An
+            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            -
+            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+              An error will be
+            raised if inband management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will
+            configure the source VRF for one of the two options above depending on the value of
+            `default_mgmt_method`.
+            - Any other string will be used directly as the source VRF name.
+            - If not
+            set, EOS uses the VRF on the SVI.
+            """
 
             if TYPE_CHECKING:
 
@@ -43981,8 +44593,35 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         ip_helper: IPv4 DHCP server IP.
-                        source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                        source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                        source_interface:
+                           Interface name to originate DHCP relay packets to DHCP server.
+                           The value will be interpreted
+                           according to these rules:
+                           - `use_mgmt_interface` will configure the OOB management interface as the
+                           source interface.
+                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                           source interface.
+                           - `use_default_mgmt_method_interface` will configure the source interface for one
+                           of the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the source interface.
+                        source_vrf:
+                           VRF to originate DHCP relay packets to DHCP server.
+                           The value will be interpreted according to these
+                           rules:
+                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                             An
+                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           -
+                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                             An error will be
+                           raised if inband management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will
+                           configure the source VRF for one of the two options above depending on the value of
+                           `default_mgmt_method`.
+                           - Any other string will be used directly as the source VRF name.
+                           - If not
+                           set, EOS uses the VRF on the SVI.
 
                     """
 
@@ -45426,6 +46065,7 @@ class EosDesigns(EosDesignsRootModel):
                     "type": TransceiverManufacturers,
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
+                "ignore_no_transceivers": {"type": bool, "default": True},
             }
             min_power_supplies: int | None
             """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
@@ -45440,12 +46080,16 @@ class EosDesigns(EosDesignsRootModel):
             transceiver_manufacturers: TransceiverManufacturers
             """
             List of approved transceiver manufacturers for the device.
-            Include "Not Present" to allow ports with
-            no transceiver to successfully pass validation.
 
             Subclass of AvdList with `str` items.
 
             Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
+            """
+            ignore_no_transceivers: bool
+            """
+            Accept ports with no transceiver as valid when checking the approved manufacturers.
+
+            Default value: `True`
             """
 
             if TYPE_CHECKING:
@@ -45459,6 +46103,7 @@ class EosDesigns(EosDesignsRootModel):
                     min_line_cards: int | None | UndefinedType = Undefined,
                     min_fabric_cards: int | None | UndefinedType = Undefined,
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
+                    ignore_no_transceivers: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hardware.
@@ -45474,10 +46119,9 @@ class EosDesigns(EosDesignsRootModel):
                         min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
                         transceiver_manufacturers:
                            List of approved transceiver manufacturers for the device.
-                           Include "Not Present" to allow ports with
-                           no transceiver to successfully pass validation.
 
                            Subclass of AvdList with `str` items.
+                        ignore_no_transceivers: Accept ports with no transceiver as valid when checking the approved manufacturers.
 
                     """
 
@@ -73664,9 +74308,38 @@ class EosDesigns(EosDesignsRootModel):
                         ip_helper: str
                         """IPv4 DHCP server IP."""
                         source_interface: str | None
-                        """Interface name."""
+                        """
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted
+                        according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the
+                        source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                        source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one
+                        of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be
+                        used directly as the source interface.
+                        """
                         source_vrf: str | None
-                        """VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF."""
+                        """
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these
+                        rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An
+                        error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        -
+                        `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be
+                        raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will
+                        configure the source VRF for one of the two options above depending on the value of
+                        `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not
+                        set, EOS uses the VRF on the SVI.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -73685,8 +74358,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     ip_helper: IPv4 DHCP server IP.
-                                    source_interface: Interface name.
-                                    source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                                    source_interface:
+                                       Interface name to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted
+                                       according to these rules:
+                                       - `use_mgmt_interface` will configure the OOB management interface as the
+                                       source interface.
+                                       - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                       source interface.
+                                       - `use_default_mgmt_method_interface` will configure the source interface for one
+                                       of the two options above depending on the value of `default_mgmt_method`.
+                                       - Any other string will be
+                                       used directly as the source interface.
+                                    source_vrf:
+                                       VRF to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted according to these
+                                       rules:
+                                       - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                         An
+                                       error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                       -
+                                       `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                         An error will be
+                                       raised if inband management is not configured for the device.
+                                       - `use_default_mgmt_method_vrf` will
+                                       configure the source VRF for one of the two options above depending on the value of
+                                       `default_mgmt_method`.
+                                       - Any other string will be used directly as the source VRF name.
+                                       - If not
+                                       set, EOS uses the VRF on the SVI.
 
                                 """
 
@@ -74379,9 +75079,38 @@ class EosDesigns(EosDesignsRootModel):
                                 ip_helper: str
                                 """IPv4 DHCP server IP."""
                                 source_interface: str | None
-                                """Interface name to originate DHCP relay packets to DHCP server."""
+                                """
+                                Interface name to originate DHCP relay packets to DHCP server.
+                                The value will be interpreted
+                                according to these rules:
+                                - `use_mgmt_interface` will configure the OOB management interface as the
+                                source interface.
+                                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                source interface.
+                                - `use_default_mgmt_method_interface` will configure the source interface for one
+                                of the two options above depending on the value of `default_mgmt_method`.
+                                - Any other string will be
+                                used directly as the source interface.
+                                """
                                 source_vrf: str | None
-                                """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                                """
+                                VRF to originate DHCP relay packets to DHCP server.
+                                The value will be interpreted according to these
+                                rules:
+                                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                  An
+                                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                -
+                                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                  An error will be
+                                raised if inband management is not configured for the device.
+                                - `use_default_mgmt_method_vrf` will
+                                configure the source VRF for one of the two options above depending on the value of
+                                `default_mgmt_method`.
+                                - Any other string will be used directly as the source VRF name.
+                                - If not
+                                set, EOS uses the VRF on the SVI.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -74400,8 +75129,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             ip_helper: IPv4 DHCP server IP.
-                                            source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                            source_interface:
+                                               Interface name to originate DHCP relay packets to DHCP server.
+                                               The value will be interpreted
+                                               according to these rules:
+                                               - `use_mgmt_interface` will configure the OOB management interface as the
+                                               source interface.
+                                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                               source interface.
+                                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                                               of the two options above depending on the value of `default_mgmt_method`.
+                                               - Any other string will be
+                                               used directly as the source interface.
+                                            source_vrf:
+                                               VRF to originate DHCP relay packets to DHCP server.
+                                               The value will be interpreted according to these
+                                               rules:
+                                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                                 An
+                                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                               -
+                                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                                 An error will be
+                                               raised if inband management is not configured for the device.
+                                               - `use_default_mgmt_method_vrf` will
+                                               configure the source VRF for one of the two options above depending on the value of
+                                               `default_mgmt_method`.
+                                               - Any other string will be used directly as the source VRF name.
+                                               - If not
+                                               set, EOS uses the VRF on the SVI.
 
                                         """
 
@@ -75537,9 +76293,38 @@ class EosDesigns(EosDesignsRootModel):
                             ip_helper: str
                             """IPv4 DHCP server IP."""
                             source_interface: str | None
-                            """Interface name to originate DHCP relay packets to DHCP server."""
+                            """
+                            Interface name to originate DHCP relay packets to DHCP server.
+                            The value will be interpreted
+                            according to these rules:
+                            - `use_mgmt_interface` will configure the OOB management interface as the
+                            source interface.
+                            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                            source interface.
+                            - `use_default_mgmt_method_interface` will configure the source interface for one
+                            of the two options above depending on the value of `default_mgmt_method`.
+                            - Any other string will be
+                            used directly as the source interface.
+                            """
                             source_vrf: str | None
-                            """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                            """
+                            VRF to originate DHCP relay packets to DHCP server.
+                            The value will be interpreted according to these
+                            rules:
+                            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                              An
+                            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                            -
+                            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                              An error will be
+                            raised if inband management is not configured for the device.
+                            - `use_default_mgmt_method_vrf` will
+                            configure the source VRF for one of the two options above depending on the value of
+                            `default_mgmt_method`.
+                            - Any other string will be used directly as the source VRF name.
+                            - If not
+                            set, EOS uses the VRF on the SVI.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -75558,8 +76343,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         ip_helper: IPv4 DHCP server IP.
-                                        source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                        source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                        source_interface:
+                                           Interface name to originate DHCP relay packets to DHCP server.
+                                           The value will be interpreted
+                                           according to these rules:
+                                           - `use_mgmt_interface` will configure the OOB management interface as the
+                                           source interface.
+                                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                           source interface.
+                                           - `use_default_mgmt_method_interface` will configure the source interface for one
+                                           of the two options above depending on the value of `default_mgmt_method`.
+                                           - Any other string will be
+                                           used directly as the source interface.
+                                        source_vrf:
+                                           VRF to originate DHCP relay packets to DHCP server.
+                                           The value will be interpreted according to these
+                                           rules:
+                                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                             An
+                                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                           -
+                                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                             An error will be
+                                           raised if inband management is not configured for the device.
+                                           - `use_default_mgmt_method_vrf` will
+                                           configure the source VRF for one of the two options above depending on the value of
+                                           `default_mgmt_method`.
+                                           - Any other string will be used directly as the source VRF name.
+                                           - If not
+                                           set, EOS uses the VRF on the SVI.
 
                                     """
 
