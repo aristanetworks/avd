@@ -1,7 +1,7 @@
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
-    vtep_loopback_ipv4_pool: 10.43.0.0/24 
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
     - name: missing-peer-filter-or-remote-as
       bgp_as: 42

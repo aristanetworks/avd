@@ -1,7 +1,7 @@
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
-    vtep_loopback_ipv4_pool: 10.43.0.0/24 
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
   node_groups:
     - group: vrf-missing-id
       nodes:
