@@ -7,8 +7,8 @@ node_type_keys:
     network_services:
       l3: true
     interface_descriptions:
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-deprecated.j2'
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-deprecated.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
 
 type: l3spine
 
@@ -22,7 +22,7 @@ l3spine:
     mlag_peer_ipv4_pool: "10.10.10.0/24"
     mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
   nodes:
-    - name: node-type-l3-interfaces-portchannels-custom-template
+    - name: node-type-l3-interfaces-portchannels-custom-template-new
       id: 2
       mgmt_ip: 10.1.1.2/24
       l3_interfaces:
