@@ -508,10 +508,24 @@ class FilteredTenantsMixin(Protocol):
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
             for svi_ip_helper in ip_helpers:
+                ip_helper = svi_ip_helper.ip_helper
+                # Not enforcing default_mgmt_method_vrf or interface when it is not defined in inputs.
+                source_interface = self.get_local_interface(svi_ip_helper.source_interface) if svi_ip_helper.source_interface else None
+                source_vrf = (
+                    self.get_vrf(
+                        svi_ip_helper.source_vrf,
+                        context=(
+                            f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[name={svi.name}].ip_helpers[ip_helper={ip_helper}].source_vrf or"
+                            f" tenants[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[ip_helper={ip_helper}].source_vrf"
+                        ),
+                    )
+                    if svi_ip_helper.source_vrf
+                    else None
+                )
                 config.ip_helpers.append_new(
                     ip_helper=svi_ip_helper.ip_helper,
-                    source_interface=svi_ip_helper.source_interface,
-                    vrf=svi_ip_helper.source_vrf,
+                    source_interface=source_interface,
+                    vrf=source_vrf,
                 )
 
         if svi.ospf.enabled:
