@@ -389,6 +389,17 @@ keys:
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
         default: false
+      only_configure_route_map_connected_to_bgp_vrfs_when_used:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it is needed.
+
+          The route map is skipped when both ''underlay_rfc5549'' and ''overlay_mlag_rfc5549''
+          are set,
+
+          since ''redistribute connected route-map'' is not required in that case.'
+        default: false
       raise_for_port_channels_without_members:
         type: bool
         description: 'Available from AVD 6.2.0.
