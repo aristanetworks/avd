@@ -29,16 +29,24 @@ def extract_from_device_deployments(
     return configs, device_tags, interface_tags, cv_pathfinder_metadata
 
 
-def serialize(obj: Any) -> Any:
-    """Recursively serialize an object to a JSON-compatible structure."""
+def get_result(obj: Any) -> Any:
+    """
+    Recursively convert workflow model objects into the JSON-compatible structure returned as part of the Ansible module result.
+
+    For objects that implement `get_result()`, that method is called first so the object
+    controls which fields are exposed (potentially a subset of the dataclass fields).
+    Plain dataclasses without `get_result()` are expanded field-by-field.
+    Collections (list, tuple, dict) are traversed recursively.
+    All other values are returned as a deep copy.
+    """
     if hasattr(obj, "get_result"):
-        return serialize(obj.get_result())
+        return get_result(obj.get_result())
     if is_dataclass(obj) and not isinstance(obj, type):
-        return {f.name: serialize(getattr(obj, f.name)) for f in fields(obj)}
+        return {f.name: get_result(getattr(obj, f.name)) for f in fields(obj)}
     if isinstance(obj, list):
-        return [serialize(item) for item in obj]
+        return [get_result(item) for item in obj]
     if isinstance(obj, tuple):
-        return tuple(serialize(item) for item in obj)
+        return tuple(get_result(item) for item in obj)
     if isinstance(obj, dict):
-        return {k: serialize(v) for k, v in obj.items()}
+        return {k: get_result(v) for k, v in obj.items()}
     return deepcopy(obj)

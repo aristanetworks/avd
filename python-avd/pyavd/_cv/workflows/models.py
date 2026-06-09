@@ -15,7 +15,7 @@ from grpclib.config import Configuration
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 
-from .utils import serialize
+from .utils import get_result
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -121,11 +121,12 @@ class CVChangeControl:
         return self.avd_change_control.requested_state
 
     def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
         return {
             "name": self.name,
             "description": self.description,
             "id": self.id,
-            "change_control_template": serialize(self.change_control_template),
+            "change_control_template": get_result(self.change_control_template),
             "requested_state": self.requested_state,
             "state": self.state,
         }
@@ -323,6 +324,7 @@ class CVWorkspace:
         return self.avd_workspace.build_warnings
 
     def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
         return {
             "name": self.name,
             "description": self.description,
@@ -332,8 +334,8 @@ class CVWorkspace:
             "state": self.state,
             "change_control_id": self.change_control_id,
             "build_id": self.build_id,
-            "build_warnings": serialize(self.build_warnings),
-            "device_build_results": serialize(self.device_build_results),
+            "build_warnings": get_result(self.build_warnings),
+            "device_build_results": get_result(self.device_build_results),
         }
 
 
@@ -363,7 +365,8 @@ class DeployToCvResult:
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
 
     def get_result(self) -> dict[str, Any]:
-        return {f.name: serialize(getattr(self, f.name)) for f in fields(self)}
+        """Return a representation of this object for the Ansible module result."""
+        return {f.name: get_result(getattr(self, f.name)) for f in fields(self)}
 
 
 @dataclass(frozen=True)
@@ -403,6 +406,7 @@ class CVDevice:
         return self.avd_device.hostname
 
     def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
         return {
             "hostname": self.hostname,
             "serial_number": self.serial_number,
