@@ -823,7 +823,7 @@ class RouterBgpMixin(Protocol):
         bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem,
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
-        context: str
+        context: str,
     ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
         for index, listen_range in enumerate(bgp_peer_group.listen_ranges):
             if not (listen_range.peer_filter or listen_range.remote_as):
