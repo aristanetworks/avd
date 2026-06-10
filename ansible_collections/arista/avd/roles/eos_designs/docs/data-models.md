@@ -456,22 +456,47 @@ To help format the custom interface descriptions, the following contextual varia
 
 underlay_ethernet_interfaces:
 
+- `{{ interface }}`
+- `{{ link_type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
+- `{{ peer }}`
+- `{{ peer_interface }}`
+- `{{ wan_carrier }}`
+- `{{ wan_circuit_id }}`
+- `{{ main_interface_wan_carrier }}`
 - `{{ link.interface }}`
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
+- `{{ link.wan_carrier }}`
+- `{{ link.wan_circuit_id }}`
+- `{{ link.main_interface_wan_carrier }}`
 - All group/hostvars
+
+Note: Variables like `link.*` are deprecated and will be removed in AVD 7.0.
 
 underlay_port_channel_interfaces:
 
+- `{{ interface }}`
+- `{{ channel_description }}`
+- `{{ channel_group_id }}`
+- `{{ peer }}`
+- `{{ peer_channel_group_id }}`
+- `{{ peer_node_group }}`
+- `{{ wan_carrier }}`
+- `{{ wan_circuit_id }}` for `l3_port_channels` defined under the node config.
+- `{{ main_interface_wan_carrier }}`
 - `{{ link.interface }}`
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
+- `{{ link.peer_node_group }}`
+- `{{ link.wan_circuit_id }}` for `l3_port_channels` defined under the node config.
 - `{{ link.wan_carrier }}` for `l3_port_channels` defined under the node config.
 - `{{ link.main_interface_wan_carrier }}` for `l3_port_channels` subintefaces defined under the node config.
 - All group/hostvars
+
+Note: Variables like `link.*` are deprecated and will be removed in AVD 7.0.
 
 mlag_ethernet_interfaces:
 

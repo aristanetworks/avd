@@ -138,6 +138,16 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet7.7
+  description: test_monitor_session_on_sub_interface
+  shutdown: false
+  mtu: 9000
+  vrf: Tenant_A_WAN_Zone
+  encapsulation_dot1q:
+    vlan: 7
+  ip_address: 10.10.20.27/24
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet13
   shutdown: false
   metadata:
@@ -256,6 +266,10 @@ monitor_sessions:
   destinations:
   - Ethernet7
   encapsulation_gre_metadata_tx: true
+- name: Monitor_session_on_sub_interface
+  sources:
+  - name: Ethernet7.7
+    direction: rx
 ntp: null
 platform:
   sand:
