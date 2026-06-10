@@ -18,6 +18,13 @@ keys:
           Available from AVD 6.2.0.
           Always render a '!' before the '(no) ip routing' command section.
           Without this the '!' is missing when only configuring routing for VRFs.
+      monitor_layer1_render_without_enabled:
+        type: bool
+        default: false
+        description: |-
+          When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or `false` and any
+           `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true`.
+          When `false` (default), renders the `monitor layer1` block only when `monitor_layer1.enabled` is `true`.
       new_ip_radius_cli_order:
         type: bool
         default: false
@@ -39,11 +46,3 @@ keys:
           Available from AVD 6.2.0.
           When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is defined.
           When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no sub-settings are set.
-      only_render_no_logging_transceiver:
-        type: bool
-        default: false
-        description: |-
-          When `true`, only renders the `no logging transceiver` when `monitor_layer1.logging_transceiver.enabled` and `monitor_layer1.logging_transceiver.dom`
-           and `monitor_layer1.logging_transceiver.communication` are set to `false`.
-          When `false` (default), no config is rendered under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
-           and `monitor_layer1.logging_transceiver.dom` and `monitor_layer1.logging_transceiver.communication` are set to `false`.

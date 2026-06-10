@@ -6552,10 +6552,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "always_render_ip_routing_separator": {"type": bool, "default": False},
+            "monitor_layer1_render_without_enabled": {"type": bool, "default": False},
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
-            "only_render_no_logging_transceiver": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6563,6 +6563,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Always render a '!' before the '(no) ip routing' command section.
         Without
         this the '!' is missing when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
+        monitor_layer1_render_without_enabled: bool
+        """
+        When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or
+        `false` and any
+         `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-
+        setting is `true`.
+        When `false` (default), renders the `monitor layer1` block only when
+        `monitor_layer1.enabled` is `true`.
 
         Default value: `False`
         """
@@ -6596,20 +6607,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
-        only_render_no_logging_transceiver: bool
-        """
-        When `true`, only renders the `no logging transceiver` when
-        `monitor_layer1.logging_transceiver.enabled` and `monitor_layer1.logging_transceiver.dom`
-         and
-        `monitor_layer1.logging_transceiver.communication` are set to `false`.
-        When `false` (default), no
-        config is rendered under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
-         and
-        `monitor_layer1.logging_transceiver.dom` and `monitor_layer1.logging_transceiver.communication` are
-        set to `false`.
-
-        Default value: `False`
-        """
 
         if TYPE_CHECKING:
 
@@ -6617,10 +6614,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+                monitor_layer1_render_without_enabled: bool | UndefinedType = Undefined,
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
-                only_render_no_logging_transceiver: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6634,6 +6631,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without
                        this the '!' is missing when only configuring routing for VRFs.
+                    monitor_layer1_render_without_enabled:
+                       When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or
+                       `false` and any
+                        `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-
+                       setting is `true`.
+                       When `false` (default), renders the `monitor layer1` block only when
+                       `monitor_layer1.enabled` is `true`.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
@@ -6652,16 +6656,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `mpls.rsvp.*` setting is defined.
                        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp`
                        is defined, even if no sub-settings are set.
-                    only_render_no_logging_transceiver:
-                       When `true`, only renders the `no logging transceiver` when
-                       `monitor_layer1.logging_transceiver.enabled` and `monitor_layer1.logging_transceiver.dom`
-                        and
-                       `monitor_layer1.logging_transceiver.communication` are set to `false`.
-                       When `false` (default), no
-                       config is rendered under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
-                        and
-                       `monitor_layer1.logging_transceiver.dom` and `monitor_layer1.logging_transceiver.communication` are
-                       set to `false`.
 
                 """
 
@@ -29645,7 +29639,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "logging_mac_fault": {"type": bool}, "logging_transceiver": {"type": LoggingTransceiver}}
-        enabled: bool
+        enabled: bool | None
         """Enable monitor layer1."""
         logging_mac_fault: bool | None
         """Enable MAC fault logging."""
@@ -29661,7 +29655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 logging_mac_fault: bool | None | UndefinedType = Undefined,
                 logging_transceiver: LoggingTransceiver | UndefinedType = Undefined,
             ) -> None:

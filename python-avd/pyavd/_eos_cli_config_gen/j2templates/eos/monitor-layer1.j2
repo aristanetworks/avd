@@ -4,24 +4,20 @@
  that can be found in the LICENSE file.
 #}
 {# eos - monitor layer1 #}
-{% if monitor_layer1.enabled is arista.avd.defined(true) %}
+{% if (eos_config_future.monitor_layer1_render_without_enabled is arista.avd.defined(true) or monitor_layer1.enabled is arista.avd.defined(true)) and (monitor_layer1.logging_transceiver.enabled is arista.avd.defined(true)
+           or monitor_layer1.logging_transceiver.dom is arista.avd.defined(true)
+           or monitor_layer1.logging_transceiver.communication is arista.avd.defined(true)
+           or monitor_layer1.logging_mac_fault is arista.avd.defined(true)) %}
 !
 monitor layer1
-{%     set no_logging_transceiver = true %}
 {%     if monitor_layer1.logging_transceiver.enabled is arista.avd.defined(true) %}
    logging transceiver
-{%         set no_logging_transceiver = false %}
 {%     endif %}
 {%     if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}
    logging transceiver dom
-{%         set no_logging_transceiver = false %}
 {%     endif %}
 {%     if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
    logging transceiver communication
-{%         set no_logging_transceiver = false %}
-{%     endif %}
-{%     if no_logging_transceiver is arista.avd.defined(true) and eos_config_future.only_render_no_logging_transceiver is arista.avd.defined(true) %}
-   no logging transceiver
 {%     endif %}
 {%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
    logging mac fault

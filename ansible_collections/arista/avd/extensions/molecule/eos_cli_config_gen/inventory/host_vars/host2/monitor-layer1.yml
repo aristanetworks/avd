@@ -1,6 +1,3 @@
 ---
-# Testcase for `no logging transceiver` output.
-eos_config_future:
-  only_render_no_logging_transceiver: true
 monitor_layer1:
   enabled: true

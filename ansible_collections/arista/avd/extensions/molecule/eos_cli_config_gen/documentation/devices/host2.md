@@ -46,8 +46,6 @@
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
-- [Monitor Layer 1 Logging](#monitor-layer-1-logging)
-  - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
@@ -802,19 +800,6 @@ monitor connectivity
    interface set GLOBAL_SET2 Ethernet1
    interface set HOST_SET2 Loopback2-4, Loopback10-12
    local-interfaces HOST_SET2 default
-```
-
-## Monitor Layer 1 Logging
-
-| Layer 1 Event | Logging |
-| ------------- | ------- |
-
-### Monitor Layer 1 Device Configuration
-
-```eos
-!
-monitor layer1
-   no logging transceiver
 ```
 
 ## Hardware TCAM Profile
