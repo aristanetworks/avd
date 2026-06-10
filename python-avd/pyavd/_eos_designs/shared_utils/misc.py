@@ -412,53 +412,26 @@ class MiscMixin(Protocol):
 
         neighbors.append(neighbor)
 
-    def _block_l3_generic_interface_ipv6_bgp(
-        self: SharedUtilsProtocol,
-        interface: (
-            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
-            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
-        ),
-        description: str | None,  # noqa: ARG002
-        context: str,
-        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,  # noqa: ARG002
-    ) -> None:
-        """
-        Raise if IPv6 BGP peering is configured.
-
-        IPv6 BGP peering on L3 interfaces / L3 Port-Channels is not supported yet because IPv6 outbound
-        prefix-list / route-map handling has not been implemented. IPv4 always installs a deny-all
-        ``route-map ... out`` by default; shipping IPv6 BGP without the same safe default would silently
-        leak the full BGP table, and adding the filter later would be a breaking change.
-        """
-        if not (interface.peer_ipv6_address and interface.bgp):
-            return
-
-        peer_ipv6 = interface.peer_ipv6_address
-        msg = f"IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported. Got 'peer_ipv6_address: {peer_ipv6}' on '{context}'"
-        raise AristaAvdInvalidInputsError(msg)
-
     @cached_property
     def l3_bgp_objects(
         self: SharedUtilsProtocol,
-    ) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps, EosCliConfigGen.RouterBgp.Neighbors]:
+    ) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps]:
         """Generates the EosCliConfigGen Router BGP Neighbors and their associated PrefixListsItem and RouteMapsItem."""
         neighbors = EosCliConfigGen.RouterBgp.Neighbors()
         prefix_lists = EosCliConfigGen.PrefixLists()
         route_maps = EosCliConfigGen.RouteMaps()
-        ipv6_neighbors = EosCliConfigGen.RouterBgp.Neighbors()
 
         for interface in self.l3_interfaces:
-            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
+            has_bgp = bool(interface.bgp and interface.peer_ip)
             description = (
                 self._get_l3_generic_interface_bgp_description(interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface)
                 if has_bgp
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._block_l3_generic_interface_ipv6_bgp(interface, description, f"l3_interfaces[{interface.name}]", ipv6_neighbors)
 
         for interface in self.node_config.l3_port_channels:
-            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
+            has_bgp = bool(interface.bgp and interface.peer_ip)
             description = (
                 self._get_l3_generic_interface_bgp_description(
                     interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
@@ -467,9 +440,8 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._block_l3_generic_interface_ipv6_bgp(interface, description, f"l3_port_channels[{interface.name}]", ipv6_neighbors)
 
-        return neighbors, prefix_lists, route_maps, ipv6_neighbors
+        return neighbors, prefix_lists, route_maps
 
     @property
     def l3_bgp_neighbors(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.Neighbors:

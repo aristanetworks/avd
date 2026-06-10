@@ -9264,7 +9264,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -9363,8 +9362,6 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -9463,7 +9460,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
-                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -9537,7 +9533,6 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -9961,7 +9956,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -10057,8 +10051,6 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -10142,7 +10134,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
-                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -10213,7 +10204,6 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -14529,7 +14519,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -14628,8 +14617,6 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -14728,7 +14715,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
-                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -14802,7 +14788,6 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -15226,7 +15211,6 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
-                "peer_ipv6_address": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -15322,8 +15306,6 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
-            peer_ipv6_address: str | None
-            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -15407,7 +15389,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
-                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -15478,7 +15459,6 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
-                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -23697,7 +23677,6 @@ class EosDesigns(EosDesignsRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_ip": {"type": str},
-            "peer_ipv6_address": {"type": str},
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
@@ -23799,8 +23778,6 @@ class EosDesigns(EosDesignsRootModel):
         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
         and `ip` is an IP address.
         """
-        peer_ipv6_address: str | None
-        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
         bgp: Bgp
         """
         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -23899,7 +23876,6 @@ class EosDesigns(EosDesignsRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_ip: str | None | UndefinedType = Undefined,
-                peer_ipv6_address: str | None | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -23975,7 +23951,6 @@ class EosDesigns(EosDesignsRootModel):
                     peer_ip:
                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                        and `ip` is an IP address.
-                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                     bgp:
                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                        IPv6 BGP
@@ -40015,7 +39990,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -40114,8 +40088,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -40214,7 +40186,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -40288,7 +40259,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -40712,7 +40682,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -40808,8 +40777,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -40893,7 +40860,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -40964,7 +40930,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -45268,7 +45233,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -45367,8 +45331,6 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -45467,7 +45429,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
-                                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -45541,7 +45502,6 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -45971,7 +45931,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -46067,8 +46026,6 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -46152,7 +46109,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
-                                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -46223,7 +46179,6 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -50462,7 +50417,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -50561,8 +50515,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -50661,7 +50613,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -50735,7 +50686,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -51159,7 +51109,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -51255,8 +51204,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -51340,7 +51287,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -51411,7 +51357,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -55730,7 +55675,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -55829,8 +55773,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -55929,7 +55871,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -56003,7 +55944,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -56427,7 +56367,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -56523,8 +56462,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -56608,7 +56545,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -56679,7 +56615,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -74509,7 +74444,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -74608,8 +74542,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -74708,7 +74640,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -74782,7 +74713,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -75206,7 +75136,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -75302,8 +75231,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -75387,7 +75314,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -75458,7 +75384,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -79762,7 +79687,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -79861,8 +79785,6 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -79961,7 +79883,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
-                                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -80035,7 +79956,6 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -80465,7 +80385,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
-                                "peer_ipv6_address": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -80561,8 +80480,6 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
-                            peer_ipv6_address: str | None
-                            """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -80646,7 +80563,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
-                                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -80717,7 +80633,6 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
-                                        peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -84956,7 +84871,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -85055,8 +84969,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -85155,7 +85067,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -85229,7 +85140,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -85653,7 +85563,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -85749,8 +85658,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -85834,7 +85741,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -85905,7 +85811,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -90224,7 +90129,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -90323,8 +90227,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -90423,7 +90325,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -90497,7 +90398,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -90921,7 +90821,6 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
-                            "peer_ipv6_address": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -91017,8 +90916,6 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
-                        peer_ipv6_address: str | None
-                        """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -91102,7 +90999,6 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
-                                peer_ipv6_address: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -91173,7 +91069,6 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
-                                    peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
