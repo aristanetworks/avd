@@ -31,8 +31,8 @@ class MiscMixin(Protocol):
     """
 
     @cached_property
-    def all_fabric_devices(self: SharedUtilsProtocol) -> list[str]:
-        return list(self.peer_facts.keys())
+    def all_fabric_devices(self: SharedUtilsProtocol) -> frozenset[str]:
+        return frozenset(self.peer_facts.keys())
 
     @cached_property
     def id(self: SharedUtilsProtocol) -> int | None:
