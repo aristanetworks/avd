@@ -986,6 +986,7 @@ class EosDesigns(EosDesignsRootModel):
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
+            "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
@@ -1037,6 +1038,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_route_map_connected_to_bgp_vrfs_when_used: bool
+        """
+        Available from AVD 6.3.0.
+        Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
+        The
+        route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+        since
+        'redistribute connected route-map' is not required in that case.
+
+        Default value: `False`
+        """
         raise_for_port_channels_without_members: bool
         """
         Available from AVD 6.2.0.
@@ -1074,6 +1086,7 @@ class EosDesigns(EosDesignsRootModel):
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
+                only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
@@ -1108,6 +1121,13 @@ class EosDesigns(EosDesignsRootModel):
                     only_configure_mlag_vrfs_peer_group_when_used:
                        Available from AVD 6.2.0.
                        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+                    only_configure_route_map_connected_to_bgp_vrfs_when_used:
+                       Available from AVD 6.3.0.
+                       Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
+                       The
+                       route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+                       since
+                       'redistribute connected route-map' is not required in that case.
                     raise_for_port_channels_without_members:
                        Available from AVD 6.2.0.
                        Raise an error if an L3 Port-Channel is configured without any member
@@ -28558,9 +28578,38 @@ class EosDesigns(EosDesignsRootModel):
                 ip_helper: str
                 """IPv4 DHCP server IP."""
                 source_interface: str | None
-                """Interface name."""
+                """
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted
+                according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the
+                source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one
+                of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be
+                used directly as the source interface.
+                """
                 source_vrf: str | None
-                """VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF."""
+                """
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these
+                rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                -
+                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be
+                raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will
+                configure the source VRF for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
+                """
 
                 if TYPE_CHECKING:
 
@@ -28579,8 +28628,35 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             ip_helper: IPv4 DHCP server IP.
-                            source_interface: Interface name.
-                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                            source_interface:
+                               Interface name to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted
+                               according to these rules:
+                               - `use_mgmt_interface` will configure the OOB management interface as the
+                               source interface.
+                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                               source interface.
+                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                               of the two options above depending on the value of `default_mgmt_method`.
+                               - Any other string will be
+                               used directly as the source interface.
+                            source_vrf:
+                               VRF to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted according to these
+                               rules:
+                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                 An
+                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               -
+                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                 An error will be
+                               raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will
+                               configure the source VRF for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -29264,9 +29340,38 @@ class EosDesigns(EosDesignsRootModel):
                         ip_helper: str
                         """IPv4 DHCP server IP."""
                         source_interface: str | None
-                        """Interface name to originate DHCP relay packets to DHCP server."""
+                        """
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted
+                        according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the
+                        source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                        source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one
+                        of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be
+                        used directly as the source interface.
+                        """
                         source_vrf: str | None
-                        """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                        """
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these
+                        rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An
+                        error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        -
+                        `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be
+                        raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will
+                        configure the source VRF for one of the two options above depending on the value of
+                        `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not
+                        set, EOS uses the VRF on the SVI.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -29285,8 +29390,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     ip_helper: IPv4 DHCP server IP.
-                                    source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                    source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                    source_interface:
+                                       Interface name to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted
+                                       according to these rules:
+                                       - `use_mgmt_interface` will configure the OOB management interface as the
+                                       source interface.
+                                       - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                       source interface.
+                                       - `use_default_mgmt_method_interface` will configure the source interface for one
+                                       of the two options above depending on the value of `default_mgmt_method`.
+                                       - Any other string will be
+                                       used directly as the source interface.
+                                    source_vrf:
+                                       VRF to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted according to these
+                                       rules:
+                                       - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                         An
+                                       error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                       -
+                                       `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                         An error will be
+                                       raised if inband management is not configured for the device.
+                                       - `use_default_mgmt_method_vrf` will
+                                       configure the source VRF for one of the two options above depending on the value of
+                                       `default_mgmt_method`.
+                                       - Any other string will be used directly as the source VRF name.
+                                       - If not
+                                       set, EOS uses the VRF on the SVI.
 
                                 """
 
@@ -30416,9 +30548,38 @@ class EosDesigns(EosDesignsRootModel):
                     ip_helper: str
                     """IPv4 DHCP server IP."""
                     source_interface: str | None
-                    """Interface name to originate DHCP relay packets to DHCP server."""
+                    """
+                    Interface name to originate DHCP relay packets to DHCP server.
+                    The value will be interpreted
+                    according to these rules:
+                    - `use_mgmt_interface` will configure the OOB management interface as the
+                    source interface.
+                    - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                    source interface.
+                    - `use_default_mgmt_method_interface` will configure the source interface for one
+                    of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be
+                    used directly as the source interface.
+                    """
                     source_vrf: str | None
-                    """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                    """
+                    VRF to originate DHCP relay packets to DHCP server.
+                    The value will be interpreted according to these
+                    rules:
+                    - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                      An
+                    error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    -
+                    `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                      An error will be
+                    raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will
+                    configure the source VRF for one of the two options above depending on the value of
+                    `default_mgmt_method`.
+                    - Any other string will be used directly as the source VRF name.
+                    - If not
+                    set, EOS uses the VRF on the SVI.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -30437,8 +30598,35 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 ip_helper: IPv4 DHCP server IP.
-                                source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                source_interface:
+                                   Interface name to originate DHCP relay packets to DHCP server.
+                                   The value will be interpreted
+                                   according to these rules:
+                                   - `use_mgmt_interface` will configure the OOB management interface as the
+                                   source interface.
+                                   - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                   source interface.
+                                   - `use_default_mgmt_method_interface` will configure the source interface for one
+                                   of the two options above depending on the value of `default_mgmt_method`.
+                                   - Any other string will be
+                                   used directly as the source interface.
+                                source_vrf:
+                                   VRF to originate DHCP relay packets to DHCP server.
+                                   The value will be interpreted according to these
+                                   rules:
+                                   - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                     An
+                                   error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                   -
+                                   `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                     An error will be
+                                   raised if inband management is not configured for the device.
+                                   - `use_default_mgmt_method_vrf` will
+                                   configure the source VRF for one of the two options above depending on the value of
+                                   `default_mgmt_method`.
+                                   - Any other string will be used directly as the source VRF name.
+                                   - If not
+                                   set, EOS uses the VRF on the SVI.
 
                             """
 
@@ -38498,6 +38686,7 @@ class EosDesigns(EosDesignsRootModel):
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
+                "subinterface_monitor_session": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
                 "per_interface_l2_mtu": {"type": bool, "default": True},
                 "per_interface_l2_mru": {"type": bool, "default": True},
@@ -38550,6 +38739,14 @@ class EosDesigns(EosDesignsRootModel):
             Support for MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
             rendered under sub-interfaces even if it is set in the inputs.
+
+            Default value: `True`
+            """
+            subinterface_monitor_session: bool
+            """
+            Support for monitor session configuration on sub-interfaces.
+            When this key is set to false, an error
+            will be raised if a monitor session is configured on a sub-interface.
 
             Default value: `True`
             """
@@ -38707,6 +38904,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
+                    subinterface_monitor_session: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     per_interface_l2_mtu: bool | UndefinedType = Undefined,
                     per_interface_l2_mru: bool | UndefinedType = Undefined,
@@ -38749,6 +38947,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
+                        subinterface_monitor_session:
+                           Support for monitor session configuration on sub-interfaces.
+                           When this key is set to false, an error
+                           will be raised if a monitor session is configured on a sub-interface.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -39269,6 +39471,7 @@ class EosDesigns(EosDesignsRootModel):
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
+                "subinterface_monitor_session": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
                 "per_interface_l2_mtu": {"type": bool, "default": True},
                 "per_interface_l2_mru": {"type": bool, "default": True},
@@ -39321,6 +39524,14 @@ class EosDesigns(EosDesignsRootModel):
             Support for MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
             rendered under sub-interfaces even if it is set in the inputs.
+
+            Default value: `True`
+            """
+            subinterface_monitor_session: bool
+            """
+            Support for monitor session configuration on sub-interfaces.
+            When this key is set to false, an error
+            will be raised if a monitor session is configured on a sub-interface.
 
             Default value: `True`
             """
@@ -39478,6 +39689,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
+                    subinterface_monitor_session: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     per_interface_l2_mtu: bool | UndefinedType = Undefined,
                     per_interface_l2_mru: bool | UndefinedType = Undefined,
@@ -39520,6 +39732,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
+                        subinterface_monitor_session:
+                           Support for monitor session configuration on sub-interfaces.
+                           When this key is set to false, an error
+                           will be raised if a monitor session is configured on a sub-interface.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -43206,9 +43422,38 @@ class EosDesigns(EosDesignsRootModel):
                 ip_helper: str
                 """IPv4 DHCP server IP."""
                 source_interface: str | None
-                """Interface name to originate DHCP relay packets to DHCP server."""
+                """
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted
+                according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the
+                source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one
+                of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be
+                used directly as the source interface.
+                """
                 source_vrf: str | None
-                """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                """
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these
+                rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                -
+                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be
+                raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will
+                configure the source VRF for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
+                """
 
                 if TYPE_CHECKING:
 
@@ -43227,8 +43472,35 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             ip_helper: IPv4 DHCP server IP.
-                            source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                            source_interface:
+                               Interface name to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted
+                               according to these rules:
+                               - `use_mgmt_interface` will configure the OOB management interface as the
+                               source interface.
+                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                               source interface.
+                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                               of the two options above depending on the value of `default_mgmt_method`.
+                               - Any other string will be
+                               used directly as the source interface.
+                            source_vrf:
+                               VRF to originate DHCP relay packets to DHCP server.
+                               The value will be interpreted according to these
+                               rules:
+                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                 An
+                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               -
+                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                 An error will be
+                               raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will
+                               configure the source VRF for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -44331,9 +44603,38 @@ class EosDesigns(EosDesignsRootModel):
             ip_helper: str
             """IPv4 DHCP server IP."""
             source_interface: str | None
-            """Interface name to originate DHCP relay packets to DHCP server."""
+            """
+            Interface name to originate DHCP relay packets to DHCP server.
+            The value will be interpreted
+            according to these rules:
+            - `use_mgmt_interface` will configure the OOB management interface as the
+            source interface.
+            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+            source interface.
+            - `use_default_mgmt_method_interface` will configure the source interface for one
+            of the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the source interface.
+            """
             source_vrf: str | None
-            """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+            """
+            VRF to originate DHCP relay packets to DHCP server.
+            The value will be interpreted according to these
+            rules:
+            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+              An
+            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            -
+            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+              An error will be
+            raised if inband management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will
+            configure the source VRF for one of the two options above depending on the value of
+            `default_mgmt_method`.
+            - Any other string will be used directly as the source VRF name.
+            - If not
+            set, EOS uses the VRF on the SVI.
+            """
 
             if TYPE_CHECKING:
 
@@ -44352,8 +44653,35 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         ip_helper: IPv4 DHCP server IP.
-                        source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                        source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                        source_interface:
+                           Interface name to originate DHCP relay packets to DHCP server.
+                           The value will be interpreted
+                           according to these rules:
+                           - `use_mgmt_interface` will configure the OOB management interface as the
+                           source interface.
+                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                           source interface.
+                           - `use_default_mgmt_method_interface` will configure the source interface for one
+                           of the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the source interface.
+                        source_vrf:
+                           VRF to originate DHCP relay packets to DHCP server.
+                           The value will be interpreted according to these
+                           rules:
+                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                             An
+                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           -
+                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                             An error will be
+                           raised if inband management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will
+                           configure the source VRF for one of the two options above depending on the value of
+                           `default_mgmt_method`.
+                           - Any other string will be used directly as the source VRF name.
+                           - If not
+                           set, EOS uses the VRF on the SVI.
 
                     """
 
@@ -74048,9 +74376,38 @@ class EosDesigns(EosDesignsRootModel):
                         ip_helper: str
                         """IPv4 DHCP server IP."""
                         source_interface: str | None
-                        """Interface name."""
+                        """
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted
+                        according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the
+                        source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                        source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one
+                        of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be
+                        used directly as the source interface.
+                        """
                         source_vrf: str | None
-                        """VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF."""
+                        """
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these
+                        rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An
+                        error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        -
+                        `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be
+                        raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will
+                        configure the source VRF for one of the two options above depending on the value of
+                        `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not
+                        set, EOS uses the VRF on the SVI.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -74069,8 +74426,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     ip_helper: IPv4 DHCP server IP.
-                                    source_interface: Interface name.
-                                    source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                                    source_interface:
+                                       Interface name to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted
+                                       according to these rules:
+                                       - `use_mgmt_interface` will configure the OOB management interface as the
+                                       source interface.
+                                       - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                       source interface.
+                                       - `use_default_mgmt_method_interface` will configure the source interface for one
+                                       of the two options above depending on the value of `default_mgmt_method`.
+                                       - Any other string will be
+                                       used directly as the source interface.
+                                    source_vrf:
+                                       VRF to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted according to these
+                                       rules:
+                                       - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                         An
+                                       error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                       -
+                                       `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                         An error will be
+                                       raised if inband management is not configured for the device.
+                                       - `use_default_mgmt_method_vrf` will
+                                       configure the source VRF for one of the two options above depending on the value of
+                                       `default_mgmt_method`.
+                                       - Any other string will be used directly as the source VRF name.
+                                       - If not
+                                       set, EOS uses the VRF on the SVI.
 
                                 """
 
@@ -74763,9 +75147,38 @@ class EosDesigns(EosDesignsRootModel):
                                 ip_helper: str
                                 """IPv4 DHCP server IP."""
                                 source_interface: str | None
-                                """Interface name to originate DHCP relay packets to DHCP server."""
+                                """
+                                Interface name to originate DHCP relay packets to DHCP server.
+                                The value will be interpreted
+                                according to these rules:
+                                - `use_mgmt_interface` will configure the OOB management interface as the
+                                source interface.
+                                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                source interface.
+                                - `use_default_mgmt_method_interface` will configure the source interface for one
+                                of the two options above depending on the value of `default_mgmt_method`.
+                                - Any other string will be
+                                used directly as the source interface.
+                                """
                                 source_vrf: str | None
-                                """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                                """
+                                VRF to originate DHCP relay packets to DHCP server.
+                                The value will be interpreted according to these
+                                rules:
+                                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                  An
+                                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                -
+                                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                  An error will be
+                                raised if inband management is not configured for the device.
+                                - `use_default_mgmt_method_vrf` will
+                                configure the source VRF for one of the two options above depending on the value of
+                                `default_mgmt_method`.
+                                - Any other string will be used directly as the source VRF name.
+                                - If not
+                                set, EOS uses the VRF on the SVI.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -74784,8 +75197,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             ip_helper: IPv4 DHCP server IP.
-                                            source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                            source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                            source_interface:
+                                               Interface name to originate DHCP relay packets to DHCP server.
+                                               The value will be interpreted
+                                               according to these rules:
+                                               - `use_mgmt_interface` will configure the OOB management interface as the
+                                               source interface.
+                                               - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                               source interface.
+                                               - `use_default_mgmt_method_interface` will configure the source interface for one
+                                               of the two options above depending on the value of `default_mgmt_method`.
+                                               - Any other string will be
+                                               used directly as the source interface.
+                                            source_vrf:
+                                               VRF to originate DHCP relay packets to DHCP server.
+                                               The value will be interpreted according to these
+                                               rules:
+                                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                                 An
+                                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                               -
+                                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                                 An error will be
+                                               raised if inband management is not configured for the device.
+                                               - `use_default_mgmt_method_vrf` will
+                                               configure the source VRF for one of the two options above depending on the value of
+                                               `default_mgmt_method`.
+                                               - Any other string will be used directly as the source VRF name.
+                                               - If not
+                                               set, EOS uses the VRF on the SVI.
 
                                         """
 
@@ -75921,9 +76361,38 @@ class EosDesigns(EosDesignsRootModel):
                             ip_helper: str
                             """IPv4 DHCP server IP."""
                             source_interface: str | None
-                            """Interface name to originate DHCP relay packets to DHCP server."""
+                            """
+                            Interface name to originate DHCP relay packets to DHCP server.
+                            The value will be interpreted
+                            according to these rules:
+                            - `use_mgmt_interface` will configure the OOB management interface as the
+                            source interface.
+                            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                            source interface.
+                            - `use_default_mgmt_method_interface` will configure the source interface for one
+                            of the two options above depending on the value of `default_mgmt_method`.
+                            - Any other string will be
+                            used directly as the source interface.
+                            """
                             source_vrf: str | None
-                            """VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI."""
+                            """
+                            VRF to originate DHCP relay packets to DHCP server.
+                            The value will be interpreted according to these
+                            rules:
+                            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                              An
+                            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                            -
+                            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                              An error will be
+                            raised if inband management is not configured for the device.
+                            - `use_default_mgmt_method_vrf` will
+                            configure the source VRF for one of the two options above depending on the value of
+                            `default_mgmt_method`.
+                            - Any other string will be used directly as the source VRF name.
+                            - If not
+                            set, EOS uses the VRF on the SVI.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -75942,8 +76411,35 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         ip_helper: IPv4 DHCP server IP.
-                                        source_interface: Interface name to originate DHCP relay packets to DHCP server.
-                                        source_vrf: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                                        source_interface:
+                                           Interface name to originate DHCP relay packets to DHCP server.
+                                           The value will be interpreted
+                                           according to these rules:
+                                           - `use_mgmt_interface` will configure the OOB management interface as the
+                                           source interface.
+                                           - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                           source interface.
+                                           - `use_default_mgmt_method_interface` will configure the source interface for one
+                                           of the two options above depending on the value of `default_mgmt_method`.
+                                           - Any other string will be
+                                           used directly as the source interface.
+                                        source_vrf:
+                                           VRF to originate DHCP relay packets to DHCP server.
+                                           The value will be interpreted according to these
+                                           rules:
+                                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                             An
+                                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                           -
+                                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                             An error will be
+                                           raised if inband management is not configured for the device.
+                                           - `use_default_mgmt_method_vrf` will
+                                           configure the source VRF for one of the two options above depending on the value of
+                                           `default_mgmt_method`.
+                                           - Any other string will be used directly as the source VRF name.
+                                           - If not
+                                           set, EOS uses the VRF on the SVI.
 
                                     """
 
@@ -103446,6 +103942,7 @@ class EosDesigns(EosDesignsRootModel):
                         "feature_support": {
                             "queue_monitor_length_notify": False,
                             "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
                             "per_interface_l2_mru": False,
                             "hardware_counter_features": {
                                 "acl": False,
@@ -103481,7 +103978,12 @@ class EosDesigns(EosDesignsRootModel):
                         "lag_hardware_only": True,
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False},
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -103493,6 +103995,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "per_interface_l2_mtu": False,
                             "private_vlan": False,
+                            "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -103501,6 +104004,7 @@ class EosDesigns(EosDesignsRootModel):
                         "feature_support": {
                             "queue_monitor_length_notify": False,
                             "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
                             "per_interface_l2_mru": False,
                             "hardware_counter_features": {
                                 "acl": False,
@@ -103538,7 +104042,12 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False},
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -103551,6 +104060,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_all_active_multihoming": True,
                             "evpn_gateway_rd_rt_rewrite": True,
                             "private_vlan": False,
+                            "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -103564,6 +104074,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_all_active_multihoming": True,
                             "evpn_gateway_rd_rt_rewrite": True,
                             "private_vlan": False,
+                            "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -103611,6 +104122,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
+                            "subinterface_monitor_session": False,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
@@ -103629,6 +104141,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
+                            "subinterface_monitor_session": False,
                         },
                         "management_interface": "Management1",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -103643,6 +104156,7 @@ class EosDesigns(EosDesignsRootModel):
                             "queue_monitor_length_notify": False,
                             "sflow": False,
                             "hardware_validation": False,
+                            "subinterface_monitor_session": False,
                         },
                         "p2p_uplinks_mtu": 9194,
                         "digital_twin": {"act_node_type": "cloudeos"},
@@ -103655,6 +104169,7 @@ class EosDesigns(EosDesignsRootModel):
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
                             "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
                             "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6},
                             "sflow": False,
@@ -103671,6 +104186,7 @@ class EosDesigns(EosDesignsRootModel):
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
                             "subinterface_mtu": False,
+                            "subinterface_monitor_session": False,
                             "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16},
                             "sflow": False,
@@ -103689,6 +104205,7 @@ class EosDesigns(EosDesignsRootModel):
                             "poe": True,
                             "per_interface_l2_mru": False,
                             "sflow": False,
+                            "subinterface_monitor_session": False,
                         },
                         "management_interface": "Management1",
                         "p2p_uplinks_mtu": 9194,
@@ -105353,7 +105870,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "subinterface_monitor_session": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "subinterface_monitor_session": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False, "subinterface_monitor_session": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False, "subinterface_monitor_session": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
