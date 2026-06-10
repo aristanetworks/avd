@@ -211,6 +211,18 @@ tenant_a:
                 role: destination
                 session_settings:
                   encapsulation_gre_metadata_tx: true
+          # Test monitor session on subinterface
+          - interfaces: [Ethernet7.7]
+            ip_addresses: [10.10.20.27/24]
+            nodes: [dc1-bl1b]
+            mtu: 9000
+            enabled: true
+            description: "test_monitor_session_on_sub_interface"
+            monitor_sessions:
+              - name: Monitor_session_on_sub_interface
+                role: source
+                source_settings:
+                  direction: rx
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4

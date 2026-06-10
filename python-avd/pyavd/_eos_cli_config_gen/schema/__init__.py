@@ -23730,13 +23730,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Initiator(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"route_map_inout": {"type": str}}
+                _fields: ClassVar[dict] = {"route_map_inout": {"type": str}, "route_map_in": {"type": str}, "route_map_out": {"type": str}}
                 route_map_inout: str | None
-                """Route Map."""
+                """Route Map applied to both inbound and outbound directions."""
+                route_map_in: str | None
+                """Inbound Route Map."""
+                route_map_out: str | None
+                """Outbound Route Map."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, route_map_inout: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        route_map_inout: str | None | UndefinedType = Undefined,
+                        route_map_in: str | None | UndefinedType = Undefined,
+                        route_map_out: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Initiator.
 
@@ -23744,7 +23754,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            route_map_inout: Route Map.
+                            route_map_inout: Route Map applied to both inbound and outbound directions.
+                            route_map_in: Inbound Route Map.
+                            route_map_out: Outbound Route Map.
 
                         """
 
