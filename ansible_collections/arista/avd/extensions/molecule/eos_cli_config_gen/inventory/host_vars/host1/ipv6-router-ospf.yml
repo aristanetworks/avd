@@ -3,6 +3,11 @@ ipv6_router_ospf:
   process_ids:
     - id: 401
       vrf: TENANT_A_PROJECT02
+      passive_interface_default: true
+      no_passive_interfaces:
+        - Ethernet1
+        - Ethernet2
+        - Vlan4093
     - id: 301
       vrf: TEST1
       redistribute:

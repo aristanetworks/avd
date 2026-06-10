@@ -31,6 +31,13 @@ keys:
             router_id:
               type: str
               description: IPv4 Address.
+            passive_interface_default:
+              type: bool
+            no_passive_interfaces:
+              type: list
+              items:
+                type: str
+                description: Interface Name.
             redistribute:
               type: dict
               description: Redistribute routes with OSPFv3.

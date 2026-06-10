@@ -17,6 +17,14 @@ ipv6 router ospf {{ process_id.id }}
 {%     if process_id.auto_cost_reference_bandwidth is arista.avd.defined %}
    auto-cost reference-bandwidth {{ process_id.auto_cost_reference_bandwidth }}
 {%     endif %}
+{%     if process_id.passive_interface_default is arista.avd.defined(true) %}
+   passive-interface default
+{%     endif %}
+{%     if process_id.no_passive_interfaces is arista.avd.defined %}
+{%         for interface in process_id.no_passive_interfaces | arista.avd.natural_sort %}
+   no passive-interface {{ interface }}
+{%         endfor %}
+{%     endif %}
 {%     if process_id.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%         set redistribute_bgp_cli = "redistribute bgp" %}
 {%         if process_id.redistribute.bgp.include_leaked is arista.avd.defined(true) %}

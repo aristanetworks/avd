@@ -12,6 +12,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "ipv6_router_ospf.process_ids.[].id") | Integer | Required, Unique |  |  | OSPF process ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ipv6_router_ospf.process_ids.[].vrf") | String |  |  |  | VRF name for OSPF process. Must be unique across all OSPFv3 instances. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "ipv6_router_ospf.process_ids.[].router_id") | String |  |  |  | IPv4 Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "ipv6_router_ospf.process_ids.[].passive_interface_default") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interfaces</samp>](## "ipv6_router_ospf.process_ids.[].no_passive_interfaces") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_router_ospf.process_ids.[].no_passive_interfaces.[]") | String |  |  |  | Interface Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "ipv6_router_ospf.process_ids.[].redistribute") | Dictionary |  |  |  | Redistribute routes with OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -62,6 +65,11 @@
 
           # IPv4 Address.
           router_id: <str>
+          passive_interface_default: <bool>
+          no_passive_interfaces:
+
+              # Interface Name.
+            - <str>
 
           # Redistribute routes with OSPFv3.
           redistribute:

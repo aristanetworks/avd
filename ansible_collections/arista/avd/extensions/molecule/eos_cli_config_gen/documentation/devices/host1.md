@@ -8908,13 +8908,13 @@ ip ospf router-id output-format hostnames
 
 #### IPv6 Router OSPF Summary
 
-| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
-| ---------- | --- | --------- | ----------------------------- |
-| 100 | - | 192.168.255.3 | 100 |
-| 101 | TEST2 | - | - |
-| 201 | MGMT | - | - |
-| 301 | TEST1 | - | - |
-| 401 | TENANT_A_PROJECT02 | - | - |
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth | Default Passive Interface | No Passive Interface |
+| ---------- | --- | --------- | ----------------------------- | ------------------------- | -------------------- |
+| 100 | - | 192.168.255.3 | 100 | disabled | - |
+| 101 | TEST2 | - | - | disabled | - |
+| 201 | MGMT | - | - | disabled | - |
+| 301 | TEST1 | - | - | disabled | - |
+| 401 | TENANT_A_PROJECT02 | - | - | enabled | Ethernet1<br>Ethernet2<br>Vlan4093 |
 
 #### IPv6 Router OSPF Router Redistribution
 
@@ -8972,6 +8972,10 @@ ipv6 router ospf 301 vrf TEST1
    redistribute ospfv3 leaked
 !
 ipv6 router ospf 401 vrf TENANT_A_PROJECT02
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Vlan4093
 ```
 
 ### Router ISIS

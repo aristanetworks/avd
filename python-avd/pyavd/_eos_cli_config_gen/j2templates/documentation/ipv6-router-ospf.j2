@@ -10,12 +10,22 @@
 
 #### IPv6 Router OSPF Summary
 
-| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
-| ---------- | --- | --------- | ----------------------------- |
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth | Default Passive Interface | No Passive Interface |
+| ---------- | --- | --------- | ----------------------------- | ------------------------- | -------------------- |
 {%     for process_id in ipv6_router_ospf.process_ids | arista.avd.natural_sort('id') %}
 {%         set router_id = process_id.router_id | arista.avd.default ('-') %}
 {%         set auto_cost_reference_bandwidth = process_id.auto_cost_reference_bandwidth | arista.avd.default('-') %}
-| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} | {{ router_id }} | {{ auto_cost_reference_bandwidth }} |
+{%         if process_id.passive_interface_default is arista.avd.defined(true) %}
+{%             set passive_interface_default = 'enabled' %}
+{%         else %}
+{%             set passive_interface_default = 'disabled' %}
+{%         endif %}
+{%         if process_id.no_passive_interfaces is arista.avd.defined %}
+{%             set no_passive_interfaces = process_id.no_passive_interfaces %}
+{%         else %}
+{%             set no_passive_interfaces = ['-'] %}
+{%         endif %}
+| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} | {{ router_id }} | {{ auto_cost_reference_bandwidth }} | {{ passive_interface_default }} | {{ no_passive_interfaces | join("<br>") }} |
 {%     endfor %}
 {# Router Redistribution #}
 {%     set has = namespace() %}

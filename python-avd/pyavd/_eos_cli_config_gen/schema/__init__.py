@@ -20774,6 +20774,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ProcessIdsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class NoPassiveInterfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            NoPassiveInterfaces._item_type = str
+
             class Redistribute(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -21128,6 +21133,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "id": {"type": int},
                 "vrf": {"type": str},
                 "router_id": {"type": str},
+                "passive_interface_default": {"type": bool},
+                "no_passive_interfaces": {"type": NoPassiveInterfaces},
                 "redistribute": {"type": Redistribute},
                 "auto_cost_reference_bandwidth": {"type": int},
             }
@@ -21137,6 +21144,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """VRF name for OSPF process. Must be unique across all OSPFv3 instances."""
             router_id: str | None
             """IPv4 Address."""
+            passive_interface_default: bool | None
+            no_passive_interfaces: NoPassiveInterfaces
+            """Subclass of AvdList with `str` items."""
             redistribute: Redistribute
             """
             Redistribute routes with OSPFv3.
@@ -21154,6 +21164,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
                     router_id: str | None | UndefinedType = Undefined,
+                    passive_interface_default: bool | None | UndefinedType = Undefined,
+                    no_passive_interfaces: NoPassiveInterfaces | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
                     auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -21167,6 +21179,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: OSPF process ID.
                         vrf: VRF name for OSPF process. Must be unique across all OSPFv3 instances.
                         router_id: IPv4 Address.
+                        passive_interface_default: passive_interface_default
+                        no_passive_interfaces: Subclass of AvdList with `str` items.
                         redistribute:
                            Redistribute routes with OSPFv3.
 
