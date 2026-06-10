@@ -24,6 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration on sub-interfaces.<br>When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
@@ -222,6 +223,10 @@
           # Support for MTU configuration under sub-interfaces.
           # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
           subinterface_mtu: <bool; default=True>
+
+          # Support for monitor session configuration on sub-interfaces.
+          # When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface.
+          subinterface_monitor_session: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -842,6 +847,7 @@
           feature_support:
             queue_monitor_length_notify: false
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mru: false
             hardware_counter_features:
               acl: false
@@ -975,6 +981,7 @@
           tcam_profile: vxlan-routing
           feature_support:
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
             errdisable_causes:
@@ -1063,6 +1070,7 @@
               transceiver_adapter:
                 detection: false
                 recovery: false
+            subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -1070,6 +1078,7 @@
           feature_support:
             queue_monitor_length_notify: false
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mru: false
             hardware_counter_features:
               acl: false
@@ -1173,6 +1182,7 @@
           tcam_profile: vxlan-routing
           feature_support:
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
             errdisable_causes:
@@ -1262,6 +1272,7 @@
               transceiver_adapter:
                 detection: false
                 recovery: false
+            subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -1294,6 +1305,7 @@
                 recovery: false
               tapagg:
                 detection: false
+            subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -1508,6 +1520,7 @@
                 recovery: false
               xcvr_unsupported:
                 recovery: false
+            subinterface_monitor_session: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -1583,6 +1596,7 @@
                 recovery: false
               xcvr_unsupported:
                 recovery: false
+            subinterface_monitor_session: false
           management_interface: Management1
           reload_delay:
             mlag: 300
@@ -1646,6 +1660,7 @@
                 recovery: false
               xcvr_unsupported:
                 recovery: false
+            subinterface_monitor_session: false
           p2p_uplinks_mtu: 9194
           digital_twin:
             act_node_type: cloudeos
@@ -1658,6 +1673,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mru: false
             platform_sfe_interface_profile:
               supported: true
@@ -1711,6 +1727,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             subinterface_mtu: false
+            subinterface_monitor_session: false
             per_interface_l2_mru: false
             platform_sfe_interface_profile:
               supported: true
@@ -1805,6 +1822,7 @@
               transceiver_adapter:
                 detection: false
                 recovery: false
+            subinterface_monitor_session: false
           management_interface: Management1
           p2p_uplinks_mtu: 9194
           digital_twin:

@@ -389,6 +389,17 @@ keys:
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
         default: false
+      only_configure_route_map_connected_to_bgp_vrfs_when_used:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it is needed.
+
+          The route map is skipped when both ''underlay_rfc5549'' and ''overlay_mlag_rfc5549''
+          are set,
+
+          since ''redistribute connected route-map'' is not required in that case.'
+        default: false
       raise_for_port_channels_without_members:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -5357,11 +5368,36 @@ keys:
                       description: IPv4 DHCP server IP.
                     source_interface:
                       type: str
-                      description: Interface name.
+                      description: 'Interface name to originate DHCP relay packets
+                        to DHCP server.
+
+                        The value will be interpreted according to these rules:
+
+                        - `use_mgmt_interface` will configure the OOB management interface
+                        as the source interface.
+
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+                        as the source interface.
+
+                        - `use_default_mgmt_method_interface` will configure the source
+                        interface for one of the two options above depending on the
+                        value of `default_mgmt_method`.
+
+                        - Any other string will be used directly as the source interface.'
                     source_vrf:
                       type: str
-                      description: VRF to originate DHCP relay packets to DHCP server.
-                        If not set, uses current VRF.
+                      description: "VRF to originate DHCP relay packets to DHCP server.\nThe
+                        value will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                        will configure the `mgmt_interface_vrf` as the source VRF.\n
+                        \ An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are
+                        not configured for the device.\n- `use_inband_mgmt_vrf` will
+                        configure the `inband_mgmt_vrf` as the source VRF.\n  An error
+                        will be raised if inband management is not configured for
+                        the device.\n- `use_default_mgmt_method_vrf` will configure
+                        the source VRF for one of the two options above depending
+                        on the value of `default_mgmt_method`.\n- Any other string
+                        will be used directly as the source VRF name.\n- If not set,
+                        EOS uses the VRF on the SVI."
                       convert_types:
                       - int
               enable_mlag_ibgp_peering_vrfs:
@@ -8088,6 +8124,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -8221,6 +8258,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
         errdisable_causes:
@@ -8309,6 +8347,7 @@ keys:
           transceiver_adapter:
             detection: false
             recovery: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -8316,6 +8355,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -8419,6 +8459,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
         errdisable_causes:
@@ -8508,6 +8549,7 @@ keys:
           transceiver_adapter:
             detection: false
             recovery: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -8540,6 +8582,7 @@ keys:
             recovery: false
           tapagg:
             detection: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -8754,6 +8797,7 @@ keys:
             recovery: false
           xcvr_unsupported:
             recovery: false
+        subinterface_monitor_session: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -8829,6 +8873,7 @@ keys:
             recovery: false
           xcvr_unsupported:
             recovery: false
+        subinterface_monitor_session: false
       management_interface: Management1
       reload_delay:
         mlag: 300
@@ -8892,6 +8937,7 @@ keys:
             recovery: false
           xcvr_unsupported:
             recovery: false
+        subinterface_monitor_session: false
       p2p_uplinks_mtu: 9194
       digital_twin:
         act_node_type: cloudeos
@@ -8904,6 +8950,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -8957,6 +9004,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -9051,6 +9099,7 @@ keys:
           transceiver_adapter:
             detection: false
             recovery: false
+        subinterface_monitor_session: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -15508,6 +15557,13 @@ $defs:
                 even if it is set in the inputs.
 
                 '
+            subinterface_monitor_session:
+              type: bool
+              default: true
+              description: 'Support for monitor session configuration on sub-interfaces.
+
+                When this key is set to false, an error will be raised if a monitor
+                session is configured on a sub-interface.'
             per_interface_mtu:
               type: bool
               default: true
@@ -16299,12 +16355,34 @@ $defs:
               description: IPv4 DHCP server IP.
             source_interface:
               type: str
-              description: Interface name to originate DHCP relay packets to DHCP
+              description: 'Interface name to originate DHCP relay packets to DHCP
                 server.
+
+                The value will be interpreted according to these rules:
+
+                - `use_mgmt_interface` will configure the OOB management interface
+                as the source interface.
+
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+                as the source interface.
+
+                - `use_default_mgmt_method_interface` will configure the source interface
+                for one of the two options above depending on the value of `default_mgmt_method`.
+
+                - Any other string will be used directly as the source interface.'
             source_vrf:
               type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If
-                not set, EOS uses the VRF on the SVI.
+              description: "VRF to originate DHCP relay packets to DHCP server.\nThe
+                value will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                will configure the `mgmt_interface_vrf` as the source VRF.\n  An error
+                will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
+                the device.\n- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf`
+                as the source VRF.\n  An error will be raised if inband management
+                is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                will configure the source VRF for one of the two options above depending
+                on the value of `default_mgmt_method`.\n- Any other string will be
+                used directly as the source VRF name.\n- If not set, EOS uses the
+                VRF on the SVI."
               convert_types:
               - int
       static_routes:

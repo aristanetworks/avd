@@ -611,7 +611,6 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           per_interface_l2_mtu: false
           private_vlan: false
-<<<<<<< HEAD
           errdisable_causes:
             acl:
               recovery: false
@@ -648,9 +647,7 @@ keys:
             transceiver_adapter:
               detection: false
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -817,7 +814,6 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
-<<<<<<< HEAD
           errdisable_causes:
             acl:
               recovery: false
@@ -853,9 +849,7 @@ keys:
             transceiver_adapter:
               detection: false
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -870,7 +864,6 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
-<<<<<<< HEAD
           errdisable_causes:
             acl:
               recovery: false
@@ -889,9 +882,7 @@ keys:
               recovery: false
             tapagg:
               detection: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -1052,7 +1043,6 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
-<<<<<<< HEAD
           errdisable_causes:
             dot1x:
               detection: false
@@ -1106,9 +1096,7 @@ keys:
               recovery: false
             xcvr_unsupported:
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -1131,7 +1119,6 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
-<<<<<<< HEAD
           errdisable_causes:
             dot1x:
               detection: false
@@ -1185,9 +1172,7 @@ keys:
               recovery: false
             xcvr_unsupported:
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         management_interface: Management1
         reload_delay:
           mlag: 300
@@ -1203,7 +1188,6 @@ keys:
           queue_monitor_length_notify: false
           sflow: false
           hardware_validation: false
-<<<<<<< HEAD
           errdisable_causes:
             acl:
               detection: false
@@ -1252,9 +1236,7 @@ keys:
               recovery: false
             xcvr_unsupported:
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         p2p_uplinks_mtu: 9194
         digital_twin:
           act_node_type: cloudeos
@@ -1379,7 +1361,6 @@ keys:
           poe: true
           per_interface_l2_mru: false
           sflow: false
-<<<<<<< HEAD
           errdisable_causes:
             acl:
               detection: false
@@ -1417,9 +1398,7 @@ keys:
             transceiver_adapter:
               detection: false
               recovery: false
-=======
           subinterface_monitor_session: false
->>>>>>> devel
         management_interface: Management1
         p2p_uplinks_mtu: 9194
         digital_twin:
