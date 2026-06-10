@@ -10,7 +10,7 @@ keys:
     type: list
     primary_key: name
     description: |-
-      PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.
+      PREVIEW: This data model is currently in "preview" mode and is not used anywhere yet.
       IPv4 standard access-lists catalog.
     items:
       type: dict
