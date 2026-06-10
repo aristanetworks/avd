@@ -3593,11 +3593,10 @@ keys:
   ipv4_standard_acls:
     type: list
     primary_key: name
-    description: 'IPv4 standard access-lists catalog.
+    description: 'PREVIEW: This data-model in "preview" mode and it is not used anywhere
+      yet.
 
-      For now this is only supported for `dot1x_settings.captive_portal.ipv4_standard_acl`;
-
-      support for other consumers will be added in future releases.'
+      IPv4 standard access-lists catalog.'
     items:
       type: dict
       keys:

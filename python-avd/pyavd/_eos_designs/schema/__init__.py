@@ -104857,14 +104857,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     ipv4_standard_acls: Ipv4StandardAcls
     """
-    IPv4 standard access-lists catalog.
-    For now this is only supported for
-    `dot1x_settings.captive_portal.ipv4_standard_acl`;
-    support for other consumers will be added in
-    future releases.
+    PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.
+    IPv4 standard access-
+    lists catalog.
 
-    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is
-    `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+    (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -106943,14 +106941,12 @@ class EosDesigns(EosDesignsRootModel):
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv4_standard_acls:
-                   IPv4 standard access-lists catalog.
-                   For now this is only supported for
-                   `dot1x_settings.captive_portal.ipv4_standard_acl`;
-                   support for other consumers will be added in
-                   future releases.
+                   PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.
+                   IPv4 standard access-
+                   lists catalog.
 
-                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is
-                   `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be

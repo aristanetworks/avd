@@ -10,9 +10,8 @@ keys:
     type: list
     primary_key: name
     description: |-
+      PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.
       IPv4 standard access-lists catalog.
-      For now this is only supported for `dot1x_settings.captive_portal.ipv4_standard_acl`;
-      support for other consumers will be added in future releases.
     items:
       type: dict
       keys:

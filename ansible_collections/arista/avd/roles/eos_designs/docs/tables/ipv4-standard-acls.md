@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | IPv4 standard access-lists catalog.<br>For now this is only supported for `dot1x_settings.captive_portal.ipv4_standard_acl`;<br>support for other consumers will be added in future releases. |
+    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.<br>IPv4 standard access-lists catalog. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_standard_acls.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv4_standard_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_standard_acls.[].entries") | List, items: Dictionary |  |  |  |  |
@@ -25,9 +25,8 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW: This data-model in "preview" mode and it is not used anywhere yet.
     # IPv4 standard access-lists catalog.
-    # For now this is only supported for `dot1x_settings.captive_portal.ipv4_standard_acl`;
-    # support for other consumers will be added in future releases.
     ipv4_standard_acls:
 
         # Access-list Name.
