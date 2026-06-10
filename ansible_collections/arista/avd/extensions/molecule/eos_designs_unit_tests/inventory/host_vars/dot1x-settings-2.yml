@@ -27,14 +27,16 @@ dot1x_settings:
   radius_av_pairs:
     service_type: true
     framed_mtu: 1500
-    dhcp:
-      hostname:
+  # `device_profiling.enabled` is omitted so it takes its default (false). The early-return
+  # fires before the accounting validation, so the sub-keys below are ignored and it is safe
+  # to combine with `accounting.mode: stop-only`.
+  device_profiling:
+    lldp:
+      system_name:
         enabled: true
         auth_only: true
-      parameter_request_list:
+      system_description:
         enabled: true
-      vendor_class_id:
-        enabled: false
 
 aaa_settings:
   radius:

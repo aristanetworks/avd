@@ -104,6 +104,21 @@ ethernet_interfaces:
     peer: dc1.l2leaf6b
     peer_interface: Ethernet1
     peer_type: l2leaf
+- name: Ethernet33
+  description: DC1-L2LEAF8C_Ethernet1
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  metadata:
+    peer: dc1-l2leaf8c
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
 - name: Ethernet49/1
   description: P2P_LINK_Ethernet49/1_TO_DC1-SPINE1_Ethernet5/1
   shutdown: false
@@ -1175,6 +1190,10 @@ vlan_interfaces:
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
   vrf: '12345678'
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
@@ -1187,6 +1206,10 @@ vlan_interfaces:
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
   vrf: '12345678'
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
@@ -1201,6 +1224,10 @@ vlan_interfaces:
   shutdown: false
   vrf: '12345678'
   ip_address_virtual: 10.4.12.254/24
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: false
   ipv6_address_virtuals:
   - 2001:db8:412::1/64

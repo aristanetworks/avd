@@ -111,7 +111,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.15.14
+    rev: v0.15.16
     hooks:
       # Run the linter.
       - id: ruff
@@ -121,7 +121,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.409
+    rev: v1.1.410
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -190,8 +190,8 @@ repos:
         files: python-avd/pyproject.toml
         pass_filenames: false
       - id: pdm-export
-        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
-        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
+        name: Extract requirements from pyavd/pyproject.toml to docs/avd-requirements.txt
+        entry: pdm export -p python-avd -o docs/avd-requirements.txt --without-hashes -G ansible -G self --pyproject
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
