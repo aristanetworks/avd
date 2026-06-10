@@ -26457,13 +26457,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Certificate(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"file": {"type": str}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {"file": {"type": str}, "key": {"type": str}, "auto_certificate": {"type": str}}
                 file: str | None
                 key: str | None
+                auto_certificate: str | None
+                """Automatically managed certificate profile."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, file: str | None | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        file: str | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        auto_certificate: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Certificate.
 
@@ -26473,6 +26481,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             file: file
                             key: key
+                            auto_certificate: Automatically managed certificate profile.
 
                         """
 

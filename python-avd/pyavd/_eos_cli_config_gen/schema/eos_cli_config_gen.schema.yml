@@ -10230,6 +10230,11 @@ keys:
                   type: str
                 key:
                   type: str
+                auto_certificate:
+                  description: Automatically managed certificate profile.
+                  type: str
+                  convert_types:
+                  - int
             certificate_revocation_lists:
               type: list
               description: 'List of CRLs (Certificate Revocation List).

@@ -204,8 +204,11 @@ management security
 {%         if ssl_profile.ciphers.v1_3 is arista.avd.defined %}
       cipher v1.3 {{ ssl_profile.ciphers.v1_3 }}
 {%         endif %}
-{%         if ssl_profile.certificate is arista.avd.defined %}
+{%         if ssl_profile.certificate.file is arista.avd.defined and ssl_profile.certificate.key is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
+{%         endif %}
+{%         if ssl_profile.certificate.auto_certificate is arista.avd.defined %}
+      certificate auto-certificate {{ ssl_profile.certificate.auto_certificate }}
 {%         endif %}
 {%         if ssl_profile.trust_certificate is arista.avd.defined %}
 {%             if ssl_profile.trust_certificate.system is arista.avd.defined(true) %}
