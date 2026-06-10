@@ -93,6 +93,12 @@ $defs:
               description: |
                 Support for MTU configuration under sub-interfaces.
                 When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
+            subinterface_monitor_session:
+              type: bool
+              default: true
+              description: |-
+                Support for monitor session configuration on sub-interfaces.
+                When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface.
             per_interface_mtu:
               type: bool
               default: true

@@ -1,7 +1,7 @@
-{% if link.wan_carrier is arista.avd.defined %}
-custom_template_description_{{ link.wan_carrier }}
-{% elif link.main_interface_wan_carrier is arista.avd.defined %}
-custom_template_description_{{ link.main_interface_wan_carrier }}
+{% if wan_carrier is arista.avd.defined %}
+custom_template_description_{{ wan_carrier }}
+{% elif main_interface_wan_carrier is arista.avd.defined %}
+custom_template_description_{{ main_interface_wan_carrier }}
 {% else %}
-{{ description_prefix }}_{{ link.interface }}_{{ link.peer | upper }}_Po{{ link.channel_group_id }}_To_Po{{ link.peer_channel_group_id }}_{{ link.channel_description }}
+{{ description_prefix }}_{{ interface }}_{{ peer | upper }}_Po{{ channel_group_id }}_To_Po{{ peer_channel_group_id }}_{{ channel_description }}
 {% endif %}
