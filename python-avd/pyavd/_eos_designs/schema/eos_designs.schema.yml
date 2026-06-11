@@ -2541,6 +2541,7 @@ keys:
             description: Enable the Web Authentication feature.
           url:
             type: str
+            pattern: https?://[^\s/:]+(:\d+)?
             description: 'Static captive portal URL used when the RADIUS server does
               not provide one during the authentication workflow.
 
