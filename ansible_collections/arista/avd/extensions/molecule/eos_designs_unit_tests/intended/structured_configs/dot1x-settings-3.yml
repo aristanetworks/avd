@@ -1,3 +1,11 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
 aaa_authentication:
   dot1x:
     default: group radius
@@ -10,13 +18,17 @@ dot1x:
   protocol_bpdu_bypass: false
   dynamic_authorization: false
   radius_av_pair:
+    lldp:
+      system_name:
+        enabled: true
+        auth_only: true
     dhcp:
       hostname:
-        enabled: false
-      parameter_request_list:
-        enabled: false
+        enabled: true
+        auth_only: true
       vendor_class_id:
         enabled: true
+        auth_only: true
 enable_password:
   disabled: true
 hostname: dot1x-settings-3

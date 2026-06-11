@@ -74,6 +74,14 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_ethernet_interfaces:
             return self._template(
                 template_path,
+                link_type=data.link_type,
+                interface=data.interface,
+                peer=data.peer,
+                peer_interface=data.peer_interface,
+                wan_carrier=data.wan_carrier,
+                wan_circuit_id=data.wan_circuit_id,
+                main_interface_wan_carrier=data.main_interface_wan_carrier,
+                # TODO: Add deprecation warning for link.* vars
                 link={
                     "type": data.link_type,
                     "interface": data.interface,
@@ -155,6 +163,16 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_port_channel_interfaces:
             return self._template(
                 template_path,
+                interface=data.interface,
+                peer=data.peer,
+                channel_group_id=data.port_channel_id,
+                peer_channel_group_id=data.peer_channel_group_id,
+                channel_description=data.port_channel_description,
+                peer_node_group=data.peer_node_group,
+                wan_carrier=data.wan_carrier,
+                wan_circuit_id=data.wan_circuit_id,
+                main_interface_wan_carrier=data.main_interface_wan_carrier,
+                # TODO: Add deprecation warning for link.* vars
                 link={
                     "interface": data.interface,
                     "peer": data.peer,

@@ -38,6 +38,27 @@ CVX is enabled
 {%                 endif %}
 | MCS | {{ enabled }} | {{ settings | join("<br>") }} |
 {%             endif %}
+{%             if cvx.services.openstack is arista.avd.defined %}
+{%                 if cvx.services.openstack.shutdown is arista.avd.defined %}
+{%                     set enabled = not cvx.services.openstack.shutdown %}
+{%                 else %}
+{%                     set enabled = '-' %}
+{%                 endif %}
+{%                 set regions = [] %}
+{%                 for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%                     set region_has_settings = (
+                          region.username is arista.avd.defined and region.password is arista.avd.defined and region.tenant is arista.avd.defined
+                      ) or region.keystone.auth_url is arista.avd.defined %}
+{%                     if region_has_settings %}
+{%                         do regions.append(region.name) %}
+{%                     endif %}
+{%                 endfor %}
+{%                 set settings = [] %}
+{%                 if regions %}
+{%                     do settings.append("Regions: " ~ regions | join(", ")) %}
+{%                 endif %}
+| OpenStack | {{ enabled }} | {{ settings | join("<br>") if settings else "-" }} |
+{%             endif %}
 {%             if cvx.services.vxlan is arista.avd.defined %}
 {%                 if cvx.services.vxlan.shutdown is arista.avd.defined %}
 {%                     set enabled = not cvx.services.vxlan.shutdown %}

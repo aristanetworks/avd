@@ -13,14 +13,6 @@ dot1x_settings:
     radius_groups: [agni-server-group, radius]
   accounting:
     radius_groups: [agni-server-group, radius]
-  radius_av_pairs:
-    dhcp:
-      parameter_request_list:
-        enabled: true
-        auth_only: true
-      vendor_class_id:
-        enabled: true
-        auth_only: true
 
 aaa_settings:
   radius:
