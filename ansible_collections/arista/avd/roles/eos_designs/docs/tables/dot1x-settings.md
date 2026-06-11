@@ -43,12 +43,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id.auth_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
-    | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x_settings.captive_portal") | Dictionary |  |  |  | Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.captive_portal.enabled") | Boolean | Required |  |  | Enable the 802.1X captive portal feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>]<br>This option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.captive_portal.ssl_profile") | String |  |  |  | Name of the SSL profile used by the captive portal.<br>This option is mutually exclusive with `url`. If both are set, `ssl_profile` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.captive_portal.start_limit_infinite") | Boolean |  |  |  | Set captive-portal start limit to infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "dot1x_settings.captive_portal.ipv4_standard_acl") | String |  |  |  | Name of the IPv4 standard access-list to apply to the captive portal. |
+    | [<samp>&nbsp;&nbsp;web_authentication</samp>](## "dot1x_settings.web_authentication") | Dictionary |  |  |  | The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.<br>Requires `dot1x_settings.dynamic_authorization.enabled: true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.web_authentication.enabled") | Boolean | Required |  |  | Enable the Web Authentication feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.web_authentication.url") | String |  |  |  | Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.<br>If both are configured, the RADIUS-provided URL takes precedence.<br>Supported format: http[s]://<hostname>[:<port>] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.web_authentication.ssl_profile") | String |  |  |  | SSL profile name, enabling HTTPS redirection on port 443.<br>Without this, only HTTP redirection is supported.<br>Can be used alone (when RADIUS provides the URL dynamically) or together with `url`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.web_authentication.start_limit_infinite") | Boolean |  |  |  | Disable the loop-protection mechanism that limits captive portal authentication retries.<br>By default, EOS limits a supplicant to 16 consecutive attempts before logging it off. |
 
 === "YAML"
 
@@ -143,25 +142,24 @@
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>
 
-      # Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
-      captive_portal:
+      # The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.
+      # Requires `dot1x_settings.dynamic_authorization.enabled: true`.
+      web_authentication:
 
-        # Enable the 802.1X captive portal feature.
+        # Enable the Web Authentication feature.
         enabled: <bool; required>
 
-        # Supported URL type:
-        #   - http: http://<hostname>[:<port>]
-        #   - https: https://<hostname>[:<port>]
-        # This option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+        # Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.
+        # If both are configured, the RADIUS-provided URL takes precedence.
+        # Supported format: http[s]://<hostname>[:<port>]
         url: <str>
 
-        # Name of the SSL profile used by the captive portal.
-        # This option is mutually exclusive with `url`. If both are set, `ssl_profile` takes precedence.
+        # SSL profile name, enabling HTTPS redirection on port 443.
+        # Without this, only HTTP redirection is supported.
+        # Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
         ssl_profile: <str>
 
-        # Set captive-portal start limit to infinite.
+        # Disable the loop-protection mechanism that limits captive portal authentication retries.
+        # By default, EOS limits a supplicant to 16 consecutive attempts before logging it off.
         start_limit_infinite: <bool>
-
-        # Name of the IPv4 standard access-list to apply to the captive portal.
-        ipv4_standard_acl: <str>
     ```

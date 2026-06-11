@@ -18177,36 +18177,33 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class CaptivePortal(AvdModel):
+        class WebAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "enabled": {"type": bool},
-                "url": {"type": str},
-                "ssl_profile": {"type": str},
-                "start_limit_infinite": {"type": bool},
-                "ipv4_standard_acl": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "url": {"type": str}, "ssl_profile": {"type": str}, "start_limit_infinite": {"type": bool}}
             enabled: bool
-            """Enable the 802.1X captive portal feature."""
+            """Enable the Web Authentication feature."""
             url: str | None
             """
-            Supported URL type:
-              - http: http://<hostname>[:<port>]
-              - https: https://<hostname>[:<port>]
-            This
-            option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+            Static captive portal URL used when the RADIUS server does not provide one during the authentication
+            workflow.
+            If both are configured, the RADIUS-provided URL takes precedence.
+            Supported format:
+            http[s]://<hostname>[:<port>]
             """
             ssl_profile: str | None
             """
-            Name of the SSL profile used by the captive portal.
-            This option is mutually exclusive with `url`. If
-            both are set, `ssl_profile` takes precedence.
+            SSL profile name, enabling HTTPS redirection on port 443.
+            Without this, only HTTP redirection is
+            supported.
+            Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
             """
             start_limit_infinite: bool | None
-            """Set captive-portal start limit to infinite."""
-            ipv4_standard_acl: str | None
-            """Name of the IPv4 standard access-list to apply to the captive portal."""
+            """
+            Disable the loop-protection mechanism that limits captive portal authentication retries.
+            By default,
+            EOS limits a supplicant to 16 consecutive attempts before logging it off.
+            """
 
             if TYPE_CHECKING:
 
@@ -18217,28 +18214,30 @@ class EosDesigns(EosDesignsRootModel):
                     url: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
                     start_limit_infinite: bool | None | UndefinedType = Undefined,
-                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    CaptivePortal.
+                    WebAuthentication.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Enable the 802.1X captive portal feature.
+                        enabled: Enable the Web Authentication feature.
                         url:
-                           Supported URL type:
-                             - http: http://<hostname>[:<port>]
-                             - https: https://<hostname>[:<port>]
-                           This
-                           option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+                           Static captive portal URL used when the RADIUS server does not provide one during the authentication
+                           workflow.
+                           If both are configured, the RADIUS-provided URL takes precedence.
+                           Supported format:
+                           http[s]://<hostname>[:<port>]
                         ssl_profile:
-                           Name of the SSL profile used by the captive portal.
-                           This option is mutually exclusive with `url`. If
-                           both are set, `ssl_profile` takes precedence.
-                        start_limit_infinite: Set captive-portal start limit to infinite.
-                        ipv4_standard_acl: Name of the IPv4 standard access-list to apply to the captive portal.
+                           SSL profile name, enabling HTTPS redirection on port 443.
+                           Without this, only HTTP redirection is
+                           supported.
+                           Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
+                        start_limit_infinite:
+                           Disable the loop-protection mechanism that limits captive portal authentication retries.
+                           By default,
+                           EOS limits a supplicant to 16 consecutive attempts before logging it off.
 
                     """
 
@@ -18252,7 +18251,7 @@ class EosDesigns(EosDesignsRootModel):
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
             "redistribute_in_evpn": {"type": bool, "default": True},
-            "captive_portal": {"type": CaptivePortal},
+            "web_authentication": {"type": WebAuthentication},
         }
         enabled: bool
         """
@@ -18291,12 +18290,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        captive_portal: CaptivePortal
+        web_authentication: WebAuthentication
         """
-        Web authentication feature authenticates a supplicant through a web page, referred to as a captive
-        portal.
+        The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a
+        captive portal.
+        Requires `dot1x_settings.dynamic_authorization.enabled: true`.
 
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
 
         if TYPE_CHECKING:
@@ -18313,7 +18314,7 @@ class EosDesigns(EosDesignsRootModel):
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
-                captive_portal: CaptivePortal | UndefinedType = Undefined,
+                web_authentication: WebAuthentication | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1xSettings.
@@ -18336,11 +18337,13 @@ class EosDesigns(EosDesignsRootModel):
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.
-                    captive_portal:
-                       Web authentication feature authenticates a supplicant through a web page, referred to as a captive
-                       portal.
+                    web_authentication:
+                       The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a
+                       captive portal.
+                       Requires `dot1x_settings.dynamic_authorization.enabled: true`.
 
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
 
                 """
 

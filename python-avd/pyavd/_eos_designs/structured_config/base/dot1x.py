@@ -102,28 +102,22 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
-        self._configure_dot1x_captive_portal(dot1x_settings.captive_portal)
+        self._configure_dot1x_web_authentication(dot1x_settings.web_authentication)
 
-    def _configure_dot1x_captive_portal(self: AvdStructuredConfigBaseProtocol, captive_portal: EosDesigns.Dot1xSettings.CaptivePortal) -> None:
+    def _configure_dot1x_web_authentication(self: AvdStructuredConfigBaseProtocol, web_authentication: EosDesigns.Dot1xSettings.WebAuthentication) -> None:
         """Configure 802.1X captive portal settings."""
-        if not captive_portal:
+        if not web_authentication:
             return
 
         # TODO: AVD 7.0.0 - `start_limit_infinite` and `access_list_ipv4` are currently dropped by the eos_cli_config_gen
         # template when `enabled` is false, even though EOS allows them to coexist with `no captive-portal`.
-        # Tracked by issue #7041; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
+        # Tracked by issue #7042; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
         self.structured_config.dot1x.captive_portal = EosCliConfigGen.Dot1x.CaptivePortal(
-            enabled=captive_portal.enabled,
-            start_limit_infinite=captive_portal.start_limit_infinite,
-            access_list_ipv4=captive_portal.ipv4_standard_acl,
+            enabled=web_authentication.enabled,
+            start_limit_infinite=web_authentication.start_limit_infinite,
+            ssl_profile=web_authentication.ssl_profile,
+            url=web_authentication.url,
         )
-
-        # `url` and `ssl_profile` are mutually exclusive in EOS CLI. `ssl_profile` takes precedence when both are set.
-        # issue #7041 is tracking to add this mutual exclusivity in eos_cli_config_gen.
-        if captive_portal.ssl_profile:
-            self.structured_config.dot1x.captive_portal.ssl_profile = captive_portal.ssl_profile
-        elif captive_portal.url:
-            self.structured_config.dot1x.captive_portal.url = captive_portal.url
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

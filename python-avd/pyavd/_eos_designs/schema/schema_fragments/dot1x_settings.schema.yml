@@ -129,29 +129,30 @@ keys:
         default: true
         description: |-
           Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
-      captive_portal:
+      web_authentication:
         type: dict
-        description: Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
+        description: |-
+            The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.
+            Requires `dot1x_settings.dynamic_authorization.enabled: true`.
         keys:
           enabled:
             type: bool
             required: true
-            description: Enable the 802.1X captive portal feature.
+            description: Enable the Web Authentication feature.
           url:
             type: str
             description: |-
-              Supported URL type:
-                - http: http://<hostname>[:<port>]
-                - https: https://<hostname>[:<port>]
-              This option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+              Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.
+              If both are configured, the RADIUS-provided URL takes precedence.
+              Supported format: http[s]://<hostname>[:<port>]
           ssl_profile:
             type: str
             description: |-
-              Name of the SSL profile used by the captive portal.
-              This option is mutually exclusive with `url`. If both are set, `ssl_profile` takes precedence.
+              SSL profile name, enabling HTTPS redirection on port 443.
+              Without this, only HTTP redirection is supported.
+              Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
           start_limit_infinite:
             type: bool
-            description: Set captive-portal start limit to infinite.
-          ipv4_standard_acl:
-            type: str
-            description: Name of the IPv4 standard access-list to apply to the captive portal.
+            description: |-
+              Disable the loop-protection mechanism that limits captive portal authentication retries.
+              By default, EOS limits a supplicant to 16 consecutive attempts before logging it off.
