@@ -252,7 +252,7 @@ When targeting ACT as a Digital Twin environment, AVD:
 - Automatically assigns appropriate ACT node types to fabric devices
 - Optimizes configurations for ACT's virtual environment
 - Manages credentials and OS versions for ACT devices
-- Assigns OOB MGMT IP addresses to devices (required by ACT)
+- Optionally assigns OOB MGMT IP addresses to devices when configured (required by ACT for all node types except `veos` and `cloudeos`)
 
 #### ACT Default values
 
@@ -299,10 +299,15 @@ In the example below a `7050X3` production device will be assigned the `veos` AC
 
 #### Management IP Configuration
 
-Each ACT Digital Twin device requires an OOB management IP address to be assigned inside topology file. AVD assigns the ACT management IP in the following priority order:
+ACT Digital Twin devices can optionally have an OOB management IP address assigned in the topology file. AVD assigns the ACT management IP in the following priority order:
 
 1. `<node_type_keys.key>.nodes[].digital_twin.mgmt_ip` - Per-node Digital Twin management IP
 2. `<node_type_keys.key>.nodes[].mgmt_ip` - Per-node production management IP
+
+When neither key is set, AVD behaviour depends on the ACT node type:
+
+- **`veos` and `cloudeos`**: `ip_addr` is omitted from the topology entry.
+- **All other node types**: AVD raises an error because ACT requires `ip_addr` for those node types.
 
 **Example:**
 
@@ -319,7 +324,7 @@ spine:
 ```
 
 !!! note
-    If a device does not have a management IP configured (neither `mgmt_ip` nor `digital_twin.mgmt_ip`), AVD will raise an exception when running in ACT Digital Twin mode.
+    For `veos` and `cloudeos` ACT node types, `mgmt_ip` is optional. For all other node types (e.g., `generic`, `third-party`, `cvp`), `mgmt_ip` must be configured, otherwise AVD will raise an exception.
 
 #### ACT OS Version Configuration
 
@@ -436,12 +441,17 @@ spine:
       mgmt_ip: 10.10.1.12/24  # Production management IP
       digital_twin:
         mgmt_ip: 172.16.1.12/24  # ACT Digital Twin management IP (overrides production IP) in topology file
+
+    # Device with no management IP — valid only for veos and cloudeos ACT node types
+    - name: spine3
+      # No mgmt_ip set; ip_addr will be omitted from the ACT topology entry
 ```
 
 **Result:**
 
 - `spine1`: Uses `10.10.1.11/24` as OOB MGMT IP in ACT Digital Twin topology file
 - `spine2`: Uses `172.16.1.12/24` as OOB MGMT IP in ACT Digital Twin topology file
+- `spine3`: No `ip_addr` in ACT Digital Twin topology file (only valid for `veos`/`cloudeos` node types)
 
 ##### Example 2: OS Version Configuration
 
