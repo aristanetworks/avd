@@ -9030,6 +9030,11 @@ class EosDesigns(EosDesignsRootModel):
         class L3InterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Ipv6Addresses(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6Addresses._item_type = str
+
             Speed: TypeAlias = Literal[
                 "100full",
                 "100g",
@@ -9343,6 +9348,7 @@ class EosDesigns(EosDesignsRootModel):
                 "profile": {"type": str},
                 "description": {"type": str},
                 "ip_address": {"type": str},
+                "ipv6_addresses": {"type": Ipv6Addresses},
                 "dhcp_ip": {"type": str},
                 "public_ip": {"type": str},
                 "encapsulation_dot1q_vlan": {"type": int},
@@ -9384,6 +9390,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
+            ipv6_addresses: Ipv6Addresses
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -9452,7 +9460,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             bgp: Bgp
             """
-            Enforce IPv4 BGP peering for the peer
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -9534,6 +9544,7 @@ class EosDesigns(EosDesignsRootModel):
                     profile: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
                     public_ip: str | None | UndefinedType = Undefined,
                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -9576,6 +9587,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set a default description will be configured with '[<peer>[
                            <peer_interface>]]'.
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -9618,7 +9630,9 @@ class EosDesigns(EosDesignsRootModel):
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
                         bgp:
-                           Enforce IPv4 BGP peering for the peer
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -9909,6 +9923,11 @@ class EosDesigns(EosDesignsRootModel):
 
             MemberInterfaces._item_type = MemberInterfacesItem
 
+            class Ipv6Addresses(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6Addresses._item_type = str
+
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -10024,6 +10043,7 @@ class EosDesigns(EosDesignsRootModel):
                 "mode": {"type": str, "default": "active"},
                 "member_interfaces": {"type": MemberInterfaces},
                 "ip_address": {"type": str},
+                "ipv6_addresses": {"type": Ipv6Addresses},
                 "dhcp_ip": {"type": str},
                 "public_ip": {"type": str},
                 "encapsulation_dot1q_vlan": {"type": int},
@@ -10073,6 +10093,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
+            ipv6_addresses: Ipv6Addresses
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -10127,7 +10149,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             bgp: Bgp
             """
-            Enforce IPv4 BGP peering for the peer
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 Port-Channels is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -10197,6 +10221,7 @@ class EosDesigns(EosDesignsRootModel):
                     mode: Mode | UndefinedType = Undefined,
                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
                     public_ip: str | None | UndefinedType = Undefined,
                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -10242,6 +10267,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of
                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -10275,7 +10301,9 @@ class EosDesigns(EosDesignsRootModel):
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
                         bgp:
-                           Enforce IPv4 BGP peering for the peer
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 Port-Channels is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -14257,6 +14285,11 @@ class EosDesigns(EosDesignsRootModel):
         class L3InterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Ipv6Addresses(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6Addresses._item_type = str
+
             Speed: TypeAlias = Literal[
                 "100full",
                 "100g",
@@ -14570,6 +14603,7 @@ class EosDesigns(EosDesignsRootModel):
                 "profile": {"type": str},
                 "description": {"type": str},
                 "ip_address": {"type": str},
+                "ipv6_addresses": {"type": Ipv6Addresses},
                 "dhcp_ip": {"type": str},
                 "public_ip": {"type": str},
                 "encapsulation_dot1q_vlan": {"type": int},
@@ -14611,6 +14645,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
+            ipv6_addresses: Ipv6Addresses
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -14679,7 +14715,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             bgp: Bgp
             """
-            Enforce IPv4 BGP peering for the peer
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -14761,6 +14799,7 @@ class EosDesigns(EosDesignsRootModel):
                     profile: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
                     public_ip: str | None | UndefinedType = Undefined,
                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -14803,6 +14842,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set a default description will be configured with '[<peer>[
                            <peer_interface>]]'.
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -14845,7 +14885,9 @@ class EosDesigns(EosDesignsRootModel):
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
                         bgp:
-                           Enforce IPv4 BGP peering for the peer
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -15136,6 +15178,11 @@ class EosDesigns(EosDesignsRootModel):
 
             MemberInterfaces._item_type = MemberInterfacesItem
 
+            class Ipv6Addresses(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6Addresses._item_type = str
+
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -15251,6 +15298,7 @@ class EosDesigns(EosDesignsRootModel):
                 "mode": {"type": str, "default": "active"},
                 "member_interfaces": {"type": MemberInterfaces},
                 "ip_address": {"type": str},
+                "ipv6_addresses": {"type": Ipv6Addresses},
                 "dhcp_ip": {"type": str},
                 "public_ip": {"type": str},
                 "encapsulation_dot1q_vlan": {"type": int},
@@ -15300,6 +15348,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
+            ipv6_addresses: Ipv6Addresses
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -15354,7 +15404,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             bgp: Bgp
             """
-            Enforce IPv4 BGP peering for the peer
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 Port-Channels is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -15424,6 +15476,7 @@ class EosDesigns(EosDesignsRootModel):
                     mode: Mode | UndefinedType = Undefined,
                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
                     public_ip: str | None | UndefinedType = Undefined,
                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -15469,6 +15522,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of
                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -15502,7 +15556,9 @@ class EosDesigns(EosDesignsRootModel):
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
                         bgp:
-                           Enforce IPv4 BGP peering for the peer
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 Port-Channels is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -23742,6 +23798,11 @@ class EosDesigns(EosDesignsRootModel):
     class L3InterfaceProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         Speed: TypeAlias = Literal[
             "100full",
             "100g",
@@ -24055,6 +24116,7 @@ class EosDesigns(EosDesignsRootModel):
             "name": {"type": str},
             "description": {"type": str},
             "ip_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
             "dhcp_ip": {"type": str},
             "public_ip": {"type": str},
             "encapsulation_dot1q_vlan": {"type": int},
@@ -24099,6 +24161,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         ip_address: str | None
         """Node IPv4 address/Mask or 'dhcp'."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
         dhcp_ip: str | None
         """
         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -24167,7 +24231,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp: Bgp
         """
-        Enforce IPv4 BGP peering for the peer
+        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+        IPv6 BGP
+        peering on L3 interfaces is not yet supported.
 
         Subclass of AvdModel.
         """
@@ -24249,6 +24315,7 @@ class EosDesigns(EosDesignsRootModel):
                 name: str | None | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                 dhcp_ip: str | None | UndefinedType = Undefined,
                 public_ip: str | None | UndefinedType = Undefined,
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -24293,6 +24360,7 @@ class EosDesigns(EosDesignsRootModel):
                        If not set a default description will be configured with '[<peer>[
                        <peer_interface>]]'.
                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
                     dhcp_ip:
                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                        IPv4 address
@@ -24335,7 +24403,9 @@ class EosDesigns(EosDesignsRootModel):
                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                        and `ip` is an IP address.
                     bgp:
-                       Enforce IPv4 BGP peering for the peer
+                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                       IPv6 BGP
+                       peering on L3 interfaces is not yet supported.
 
                        Subclass of AvdModel.
                     ipv4_acl_in:
@@ -50064,6 +50134,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -50379,6 +50454,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -50420,6 +50496,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -50488,7 +50566,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -50570,6 +50650,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -50612,6 +50693,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -50654,7 +50736,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -50945,6 +51029,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -51060,6 +51149,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -51109,6 +51199,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -51163,7 +51255,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -51233,6 +51327,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -51278,6 +51373,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -51311,7 +51407,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -55273,6 +55371,11 @@ class EosDesigns(EosDesignsRootModel):
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Ipv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv6Addresses._item_type = str
+
                             Speed: TypeAlias = Literal[
                                 "100full",
                                 "100g",
@@ -55594,6 +55697,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "profile": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -55635,6 +55739,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -55703,7 +55809,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             bgp: Bgp
                             """
-                            Enforce IPv4 BGP peering for the peer
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -55785,6 +55893,7 @@ class EosDesigns(EosDesignsRootModel):
                                     profile: str | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -55827,6 +55936,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -55869,7 +55979,9 @@ class EosDesigns(EosDesignsRootModel):
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
                                         bgp:
-                                           Enforce IPv4 BGP peering for the peer
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -56160,6 +56272,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             MemberInterfaces._item_type = MemberInterfacesItem
 
+                            class Ipv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv6Addresses._item_type = str
+
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -56281,6 +56398,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode": {"type": str, "default": "active"},
                                 "member_interfaces": {"type": MemberInterfaces},
                                 "ip_address": {"type": str},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -56330,6 +56448,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -56384,7 +56504,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             bgp: Bgp
                             """
-                            Enforce IPv4 BGP peering for the peer
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 Port-Channels is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -56454,6 +56576,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode: Mode | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -56499,6 +56622,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of
                                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -56532,7 +56656,9 @@ class EosDesigns(EosDesignsRootModel):
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
                                         bgp:
-                                           Enforce IPv4 BGP peering for the peer
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 Port-Channels is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -60435,6 +60561,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -60750,6 +60881,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -60791,6 +60923,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -60859,7 +60993,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -60941,6 +61077,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -60983,6 +61120,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -61025,7 +61163,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -61316,6 +61456,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -61431,6 +61576,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -61480,6 +61626,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -61534,7 +61682,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -61604,6 +61754,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -61649,6 +61800,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -61682,7 +61834,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -65665,6 +65819,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -65980,6 +66139,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -66021,6 +66181,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -66089,7 +66251,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -66171,6 +66335,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -66213,6 +66378,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -66255,7 +66421,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -66546,6 +66714,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -66661,6 +66834,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -66710,6 +66884,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -66764,7 +66940,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -66834,6 +67012,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -66879,6 +67058,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -66912,7 +67092,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -84594,6 +84776,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -84909,6 +85096,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -84950,6 +85138,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -85018,7 +85208,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -85100,6 +85292,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -85142,6 +85335,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -85184,7 +85378,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -85475,6 +85671,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -85590,6 +85791,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -85639,6 +85841,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -85693,7 +85897,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -85763,6 +85969,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -85808,6 +86015,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -85841,7 +86049,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -89803,6 +90013,11 @@ class EosDesigns(EosDesignsRootModel):
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Ipv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv6Addresses._item_type = str
+
                             Speed: TypeAlias = Literal[
                                 "100full",
                                 "100g",
@@ -90124,6 +90339,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "profile": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -90165,6 +90381,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -90233,7 +90451,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             bgp: Bgp
                             """
-                            Enforce IPv4 BGP peering for the peer
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -90315,6 +90535,7 @@ class EosDesigns(EosDesignsRootModel):
                                     profile: str | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -90357,6 +90578,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -90399,7 +90621,9 @@ class EosDesigns(EosDesignsRootModel):
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
                                         bgp:
-                                           Enforce IPv4 BGP peering for the peer
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -90690,6 +90914,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             MemberInterfaces._item_type = MemberInterfacesItem
 
+                            class Ipv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv6Addresses._item_type = str
+
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -90811,6 +91040,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode": {"type": str, "default": "active"},
                                 "member_interfaces": {"type": MemberInterfaces},
                                 "ip_address": {"type": str},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -90860,6 +91090,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -90914,7 +91146,9 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             bgp: Bgp
                             """
-                            Enforce IPv4 BGP peering for the peer
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 Port-Channels is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -90984,6 +91218,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode: Mode | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -91029,6 +91264,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of
                                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -91062,7 +91298,9 @@ class EosDesigns(EosDesignsRootModel):
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
                                         bgp:
-                                           Enforce IPv4 BGP peering for the peer
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 Port-Channels is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -94965,6 +95203,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -95280,6 +95523,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -95321,6 +95565,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -95389,7 +95635,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -95471,6 +95719,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -95513,6 +95762,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -95555,7 +95805,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -95846,6 +96098,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -95961,6 +96218,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -96010,6 +96268,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -96064,7 +96324,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -96134,6 +96396,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -96179,6 +96442,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -96212,7 +96476,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -100195,6 +100461,11 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         Speed: TypeAlias = Literal[
                             "100full",
                             "100g",
@@ -100510,6 +100781,7 @@ class EosDesigns(EosDesignsRootModel):
                             "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -100551,6 +100823,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -100619,7 +100893,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -100701,6 +100977,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -100743,6 +101020,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -100785,7 +101063,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -101076,6 +101356,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -101191,6 +101476,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -101240,6 +101526,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
+                        ipv6_addresses: Ipv6Addresses
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -101294,7 +101582,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp: Bgp
                         """
-                        Enforce IPv4 BGP peering for the peer
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -101364,6 +101654,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -101409,6 +101700,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -101442,7 +101734,9 @@ class EosDesigns(EosDesignsRootModel):
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
                                     bgp:
-                                       Enforce IPv4 BGP peering for the peer
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
