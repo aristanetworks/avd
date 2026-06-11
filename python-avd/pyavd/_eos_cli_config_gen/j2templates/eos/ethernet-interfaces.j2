@@ -362,7 +362,7 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
-{#     TODO: AVD 7.0.0 Check for CLI order #}
+{#     TODO: AVD 7.0.0 Check for CLI order and Inherited Interface VRF #}
 {%     if ethernet_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
 {%         set non_default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | list %}
 {%         set default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | list + ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | list %}

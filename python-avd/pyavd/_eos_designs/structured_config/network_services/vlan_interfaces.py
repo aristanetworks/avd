@@ -127,7 +127,7 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.ipv6_access_group_out = acl.name
             self._set_ipv6_acl(acl)
 
-        if lifetime := svi.ipv6_nd.ra_dns_servers.dns_servers_lifetime:
+        if (lifetime := svi.ipv6_nd.ra_dns_servers.dns_servers_lifetime) is not None:
             vlan_interface_config.ipv6_nd.ra.dns_servers_lifetime = lifetime
 
         for dns_server in svi.ipv6_nd.ra_dns_servers.servers:
