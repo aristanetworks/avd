@@ -14698,6 +14698,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -14769,7 +14774,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 interfaces is not yet supported.'
           keys:
             peer_as:
               type: str
@@ -14967,6 +14975,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -15016,7 +15029,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
           keys:
             peer_as:
               type: str
