@@ -13,6 +13,7 @@ from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -484,3 +485,41 @@ class UtilsMixin(Protocol):
                 return None
             case _:
                 return router_id
+
+    def _set_interface_ipv4(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+        *,
+        ipv4_acl_in: str | None,
+        ipv4_acl_out: str | None,
+        interface_name: str,
+        interface_ip: str | None,
+    ) -> None:
+        """Render the IPv4-only configuration on an interface that has an IPv4 address."""
+        if ipv4_acl_in:
+            acl = self.shared_utils.get_ipv4_acl(name=ipv4_acl_in, interface_name=interface_name, interface_ip=interface_ip)
+            interface.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+        if ipv4_acl_out:
+            acl = self.shared_utils.get_ipv4_acl(name=ipv4_acl_out, interface_name=interface_name, interface_ip=interface_ip)
+            interface.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
+
+    def _set_interface_ipv6(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+        *,
+        ipv6_acl_in: str | None,
+        ipv6_acl_out: str | None,
+        interface_name: str,
+        ipv6_interface_ip: str | None,
+    ) -> None:
+        """Render the IPv6-only configuration on an interface that has an IPv6 address."""
+        if ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(name=ipv6_acl_in, interface_name=interface_name, interface_ip=ipv6_interface_ip)
+            interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+        if ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(name=ipv6_acl_out, interface_name=interface_name, interface_ip=ipv6_interface_ip)
+            interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)

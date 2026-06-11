@@ -106,47 +106,27 @@ class PortChannelInterfacesMixin(Protocol):
                     port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
                     if vrf.name == "default":
                         self.structured_config.ipv6_unicast_routing = True
-                if l3_port_channel.ipv4_acl_in:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_port_channel.ipv4_acl_in,
+                if l3_port_channel.ip_address:
+                    self._set_interface_ipv4(
+                        port_channel_interface,
+                        ipv4_acl_in=l3_port_channel.ipv4_acl_in,
+                        ipv4_acl_out=l3_port_channel.ipv4_acl_out,
                         interface_name=l3_port_channel.name,
                         interface_ip=interface_ip,
                     )
-                    port_channel_interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
 
-                if l3_port_channel.ipv4_acl_out:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_port_channel.ipv4_acl_out,
-                        interface_name=l3_port_channel.name,
-                        interface_ip=interface_ip,
-                    )
-                    port_channel_interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_port_channel.ipv6_acl_in or l3_port_channel.ipv6_acl_out:
+                if l3_port_channel.ipv6_addresses:
                     # Use the first IPv6 address for "interface_ip" substitution in ACLs, matching the IPv4 behavior.
                     ipv6_interface_ip = next(iter(l3_port_channel.ipv6_addresses), None)
                     if ipv6_interface_ip and "/" in ipv6_interface_ip:
                         ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
-
-                    if l3_port_channel.ipv6_acl_in:
-                        acl = self.shared_utils.get_ipv6_acl(
-                            name=l3_port_channel.ipv6_acl_in,
-                            interface_name=l3_port_channel.name,
-                            interface_ip=ipv6_interface_ip,
-                        )
-                        port_channel_interface.ipv6_access_group_in = acl.name
-                        self._set_ipv6_acl(acl)
-
-                    if l3_port_channel.ipv6_acl_out:
-                        acl = self.shared_utils.get_ipv6_acl(
-                            name=l3_port_channel.ipv6_acl_out,
-                            interface_name=l3_port_channel.name,
-                            interface_ip=ipv6_interface_ip,
-                        )
-                        port_channel_interface.ipv6_access_group_out = acl.name
-                        self._set_ipv6_acl(acl)
+                    self._set_interface_ipv6(
+                        port_channel_interface,
+                        ipv6_acl_in=l3_port_channel.ipv6_acl_in,
+                        ipv6_acl_out=l3_port_channel.ipv6_acl_out,
+                        interface_name=l3_port_channel.name,
+                        ipv6_interface_ip=ipv6_interface_ip,
+                    )
 
                 if not is_subinterface:
                     port_channel_interface.switchport.enabled = False

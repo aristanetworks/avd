@@ -146,41 +146,23 @@ class EthernetInterfacesMixin(Protocol):
                     interface.name, default(l3_interface.sflow, self.inputs.fabric_sflow.l3_interfaces)
                 )
 
-                if l3_interface.ipv4_acl_in:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_interface.ipv4_acl_in,
+                if ip_address:
+                    self._set_interface_ipv4(
+                        interface,
+                        ipv4_acl_in=l3_interface.ipv4_acl_in,
+                        ipv4_acl_out=l3_interface.ipv4_acl_out,
                         interface_name=interface_name,
                         interface_ip=interface_ip,
                     )
-                    interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
 
-                if l3_interface.ipv4_acl_out:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_interface.ipv4_acl_out,
+                if ipv6_address:
+                    self._set_interface_ipv6(
+                        interface,
+                        ipv6_acl_in=l3_interface.ipv6_acl_in,
+                        ipv6_acl_out=l3_interface.ipv6_acl_out,
                         interface_name=interface_name,
-                        interface_ip=interface_ip,
+                        ipv6_interface_ip=ipv6_interface_ip,
                     )
-                    interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_interface.ipv6_acl_in:
-                    acl = self.shared_utils.get_ipv6_acl(
-                        name=l3_interface.ipv6_acl_in,
-                        interface_name=interface_name,
-                        interface_ip=ipv6_interface_ip,
-                    )
-                    interface.ipv6_access_group_in = acl.name
-                    self._set_ipv6_acl(acl)
-
-                if l3_interface.ipv6_acl_out:
-                    acl = self.shared_utils.get_ipv6_acl(
-                        name=l3_interface.ipv6_acl_out,
-                        interface_name=interface_name,
-                        interface_ip=ipv6_interface_ip,
-                    )
-                    interface.ipv6_access_group_out = acl.name
-                    self._set_ipv6_acl(acl)
 
                 if "." in interface_name:
                     # This is a subinterface
