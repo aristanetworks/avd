@@ -1313,6 +1313,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
+| OpenStack | True | Regions: REGION_1, REGION_2, REGION_3, REGION_5 |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -1327,6 +1328,28 @@ cvx
    service mcs
       redis password 7 <removed>
       no shutdown
+   !
+   service openstack
+      ip access-group ACL-OS-IN
+      ipv6 access-group ACL-V6-OS
+      no shutdown
+      grace-period 600
+      network type-driver vlan arista
+      authentication role BOSS
+      name-resolution interval 20
+      !
+      region REGION_1
+         keystone auth-url https://keystone.example.com/v3/
+      !
+      region REGION_2
+         username BOB tenant TEST_2 password 7 11243C44
+         keystone auth-url https://10.10.10.2/v3/
+      !
+      region REGION_3
+         keystone auth-url https://10.10.10.3:5000/v3/
+      !
+      region REGION_5
+         keystone auth-url http://keystone.legacy.net:8123/v2.0/
    !
    service vxlan
       no shutdown
@@ -13722,6 +13745,7 @@ Errdisable recovery timer interval: 300 seconds
 | dot1x-phone-classification | True | True | - |
 | dot1x-session-replace | True | True | - |
 | error-correction-encoding | True | True | - |
+| fabric-capacity-low | True | True | - |
 | hardware-speed-group | True | True | - |
 | hitless-reload-down | - | True | - |
 | interface-speed | True | True | - |
@@ -13738,6 +13762,7 @@ Errdisable recovery timer interval: 300 seconds
 | stuck-queue | - | True | - |
 | switchcard-unreachable | True | True | - |
 | tapagg | True | True | - |
+| tpid | True | True | - |
 | transceiver-adapter | True | True | - |
 | uplink-failure-detection | - | True | - |
 | xcvr-misconfigured | True | True | - |
@@ -13754,6 +13779,7 @@ errdisable detect cause dot1x-coa
 errdisable detect cause dot1x-phone-classification
 errdisable detect cause dot1x-session-replace
 errdisable detect cause error-correction-encoding
+errdisable detect cause fabric-capacity-low
 errdisable detect cause hardware-speed-group
 errdisable detect cause interface-speed
 errdisable detect cause internal-error
@@ -13762,16 +13788,20 @@ errdisable detect cause port-breakout
 errdisable detect cause storm-control
 errdisable detect cause switchcard-unreachable
 errdisable detect cause tapagg
+errdisable detect cause tpid
 errdisable detect cause transceiver-adapter
 errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause acl
 errdisable recovery cause arp-inspection
+errdisable recovery cause bpduguard
+errdisable recovery cause dot1x
 errdisable recovery cause dot1x-coa
 errdisable recovery cause dot1x-phone-classification
 errdisable recovery cause dot1x-session-replace
 errdisable recovery cause error-correction-encoding
+errdisable recovery cause fabric-capacity-low
 errdisable recovery cause hardware-speed-group
 errdisable recovery cause hitless-reload-down
 errdisable recovery cause interface-speed
@@ -13787,6 +13817,7 @@ errdisable recovery cause storm-control
 errdisable recovery cause stuck-queue
 errdisable recovery cause switchcard-unreachable
 errdisable recovery cause tapagg
+errdisable recovery cause tpid
 errdisable recovery cause transceiver-adapter
 errdisable recovery cause uplink-failure-detection
 errdisable recovery cause xcvr-misconfigured
@@ -15081,12 +15112,16 @@ Default maintenance unit profile: **UP1**
 
 #### Maintenance profiles
 
-| BGP profile | Initiator route-map |
-| ----------- | ------------------- |
-| bgp2 | SystemGenerated |
-| BP1 | RM-MAINTENANCE |
-| BP2 | RM-MAINTENANCE2 |
-| BP3 | RM-MAINTENANCE3 |
+| BGP profile | Initiator route-map in | Initiator route-map out | Initiator route-map inout |
+| ----------- | ---------------------- | ----------------------- | ------------------------- |
+| BP1 | - | - | RM-MAINTENANCE |
+| BP2 | - | - | RM-MAINTENANCE2 |
+| BP3 | - | - | RM-MAINTENANCE3 |
+| BP4 | RM-MAINTENANCE-IN | - | - |
+| BP5 | - | RM-MAINTENANCE-OUT | - |
+| BP6 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | - |
+| BP7 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | RM-MAINTENANCE-INOUT |
+| bgp2 | - | - | - |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
 | ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
@@ -15117,6 +15152,21 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp BP4
+      initiator route-map RM-MAINTENANCE-IN in
+   !
+   profile bgp BP5
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP6
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP7
+      initiator route-map RM-MAINTENANCE-INOUT inout
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
    !
    profile bgp bgp2
    profile bgp BP1 default
