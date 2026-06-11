@@ -28,8 +28,8 @@ cv_verify_certs: true
 
 # Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
 # cv_deploy_future:
-#   Use system certificates instead of Python's bundled certificate store.
-#   Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+#   # Use system certificates instead of Python's bundled certificate store.
+#   # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
 #   use_system_certs: <bool; default=false>
 
 # Client-side gRPC keepalive settings for the CloudVision connection.
