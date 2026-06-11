@@ -6,12 +6,6 @@ enable_password:
 hostname: digital-twin-single-switch-fabric-1
 ip_igmp_snooping:
   globally_enabled: true
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  type: oob
 metadata:
   is_deployed: true
   platform: vEOS-lab
