@@ -630,10 +630,6 @@
           - vEOS
           - vEOS-lab
           feature_support:
-            address_locking_ipv4_enforcement_disabled: false
-            address_locking_ipv6_enforcement_disabled: false
-            address_locking_ipv6_ethernet_interface: false
-            address_locking_ipv6_vlan: false
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             interface_storm_control: false
@@ -657,10 +653,6 @@
           - ceos
           - cEOSLab
           feature_support:
-            address_locking_ipv4_enforcement_disabled: false
-            address_locking_ipv6_enforcement_disabled: false
-            address_locking_ipv6_ethernet_interface: false
-            address_locking_ipv6_vlan: false
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             interface_storm_control: false
@@ -682,10 +674,6 @@
         - platforms:
           - CloudEOS
           feature_support:
-            address_locking_ipv4_enforcement_disabled: false
-            address_locking_ipv6_enforcement_disabled: false
-            address_locking_ipv6_ethernet_interface: false
-            address_locking_ipv6_vlan: false
             bgp_update_wait_install: false
             interface_storm_control: false
             per_interface_l2_mru: false

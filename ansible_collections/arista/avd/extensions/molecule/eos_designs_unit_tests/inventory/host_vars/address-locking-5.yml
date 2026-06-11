@@ -11,7 +11,17 @@ l3leaf:
     - name: address-locking-5
       id: 101
       bgp_as: 101
-      platform: cEOSLab
+      platform: patrial_address_locking_platform
+
+# Testing platform with partial support for the Address Locking feature
+custom_platform_settings:
+  - platforms:
+      - patrial_address_locking_platform
+    feature_support:
+      address_locking_ipv4_enforcement_disabled: false
+      address_locking_ipv6_enforcement_disabled: false
+      address_locking_ipv6_ethernet_interface: false
+      address_locking_ipv6_vlan: false
 
 # Testing feature support on virtual platforms
 address_locking_settings:
