@@ -19,6 +19,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "platform_settings.[].feature_support.address_locking") | Boolean |  | `True` |  | Global support for Address Locking feature.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_expiration_mac_disabled</samp>](## "platform_settings.[].feature_support.address_locking_expiration_mac_disabled") | Boolean |  | `True` |  | Support for deauthorizing locked addresses upon MAC aging out.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv4_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking_ipv4_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv4 addresses.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv6_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking_ipv6_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv6 addresses.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv6_ethernet_interface</samp>](## "platform_settings.[].feature_support.address_locking_ipv6_ethernet_interface") | Boolean |  | `True` |  | Support for controlling IPv6 Address Locking on the Ethernet interface level.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv6_vlan</samp>](## "platform_settings.[].feature_support.address_locking_ipv6_vlan") | Boolean |  | `True` |  | Support for controlling IPv6 Address Locking on the VLAN level.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
@@ -121,6 +127,30 @@
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
+
+          # Global support for Address Locking feature.
+          # The feature will be ignored on platforms where this is false.
+          address_locking: <bool; default=True>
+
+          # Support for deauthorizing locked addresses upon MAC aging out.
+          # The feature will be ignored on platforms where this is false.
+          address_locking_expiration_mac_disabled: <bool; default=True>
+
+          # Support for disabling enforcement for locked IPv4 addresses.
+          # The feature will be ignored on platforms where this is false.
+          address_locking_ipv4_enforcement_disabled: <bool; default=True>
+
+          # Support for disabling enforcement for locked IPv6 addresses.
+          # The feature will be ignored on platforms where this is false.
+          address_locking_ipv6_enforcement_disabled: <bool; default=True>
+
+          # Support for controlling IPv6 Address Locking on the Ethernet interface level.
+          # The feature will be ignored on platforms where this is false.
+          address_locking_ipv6_ethernet_interface: <bool; default=True>
+
+          # Support for controlling IPv6 Address Locking on the VLAN level.
+          # The feature will be ignored on platforms where this is false.
+          address_locking_ipv6_vlan: <bool; default=True>
 
           # Support for LANZ.
           # The feature will be ignored on platforms where this is false.
@@ -600,6 +630,10 @@
           - vEOS
           - vEOS-lab
           feature_support:
+            address_locking_ipv4_enforcement_disabled: false
+            address_locking_ipv6_enforcement_disabled: false
+            address_locking_ipv6_ethernet_interface: false
+            address_locking_ipv6_vlan: false
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             interface_storm_control: false
@@ -623,6 +657,10 @@
           - ceos
           - cEOSLab
           feature_support:
+            address_locking_ipv4_enforcement_disabled: false
+            address_locking_ipv6_enforcement_disabled: false
+            address_locking_ipv6_ethernet_interface: false
+            address_locking_ipv6_vlan: false
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             interface_storm_control: false
@@ -644,6 +682,10 @@
         - platforms:
           - CloudEOS
           feature_support:
+            address_locking_ipv4_enforcement_disabled: false
+            address_locking_ipv6_enforcement_disabled: false
+            address_locking_ipv6_ethernet_interface: false
+            address_locking_ipv6_vlan: false
             bgp_update_wait_install: false
             interface_storm_control: false
             per_interface_l2_mru: false

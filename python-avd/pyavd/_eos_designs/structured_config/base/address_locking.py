@@ -21,14 +21,24 @@ class AddressLockingMixin(Protocol):
 
     @structured_config_contributor
     def address_locking(self: AvdStructuredConfigBaseProtocol) -> None:
-        if not (address_locking_settings := self.inputs.address_locking_settings):
+        feature_support = self.shared_utils.platform_settings.feature_support
+        if not (address_locking_settings := self.inputs.address_locking_settings) or not feature_support.address_locking:
             return
 
         local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
+
+        locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)
+        if not feature_support.address_locking_expiration_mac_disabled:
+            del locked_address.expiration_mac_disabled
+        if not feature_support.address_locking_ipv4_enforcement_disabled:
+            del locked_address.ipv4_enforcement_disabled
+        if not feature_support.address_locking_ipv6_enforcement_disabled:
+            del locked_address.ipv6_enforcement_disabled
+
         self.structured_config.address_locking._update(
             dhcp_servers_ipv4=address_locking_settings.dhcp_servers_ipv4._cast_as(EosCliConfigGen.AddressLocking.DhcpServersIpv4),
             local_interface=local_interface,
-            locked_address=address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress),
+            locked_address=locked_address,
             disabled=address_locking_settings.disabled,
             leases=address_locking_settings.leases._cast_as(EosCliConfigGen.AddressLocking.Leases),
         )

@@ -7925,6 +7925,10 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        address_locking_ipv4_enforcement_disabled: false
+        address_locking_ipv6_enforcement_disabled: false
+        address_locking_ipv6_ethernet_interface: false
+        address_locking_ipv6_vlan: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
@@ -7948,6 +7952,10 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        address_locking_ipv4_enforcement_disabled: false
+        address_locking_ipv6_enforcement_disabled: false
+        address_locking_ipv6_ethernet_interface: false
+        address_locking_ipv6_vlan: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
@@ -7969,6 +7977,10 @@ keys:
     - platforms:
       - CloudEOS
       feature_support:
+        address_locking_ipv4_enforcement_disabled: false
+        address_locking_ipv6_enforcement_disabled: false
+        address_locking_ipv6_ethernet_interface: false
+        address_locking_ipv6_vlan: false
         bgp_update_wait_install: false
         interface_storm_control: false
         per_interface_l2_mru: false
@@ -14427,6 +14439,45 @@ $defs:
         feature_support:
           type: dict
           keys:
+            address_locking:
+              type: bool
+              description: 'Global support for Address Locking feature.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            address_locking_expiration_mac_disabled:
+              type: bool
+              description: 'Support for deauthorizing locked addresses upon MAC aging
+                out.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            address_locking_ipv4_enforcement_disabled:
+              type: bool
+              description: 'Support for disabling enforcement for locked IPv4 addresses.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            address_locking_ipv6_enforcement_disabled:
+              type: bool
+              description: 'Support for disabling enforcement for locked IPv6 addresses.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            address_locking_ipv6_ethernet_interface:
+              type: bool
+              description: 'Support for controlling IPv6 Address Locking on the Ethernet
+                interface level.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            address_locking_ipv6_vlan:
+              type: bool
+              description: 'Support for controlling IPv6 Address Locking on the VLAN
+                level.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             queue_monitor:
               type: bool
               description: 'Support for LANZ.
