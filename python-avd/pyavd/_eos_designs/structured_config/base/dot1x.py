@@ -111,6 +111,13 @@ class Dot1xMixin(Protocol):
         if not web_authentication:
             return
 
+        if not self.inputs.dot1x_settings.dynamic_authorization.enabled:
+            msg = (
+                "Set 'dot1x_settings.dynamic_authorization.enabled: true' to use 'dot1x_settings.web_authentication' "
+                "— captive portal requires RADIUS CoA to authorize the session after portal login."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
         # TODO: AVD 7.0.0 - `start_limit_infinite` and `access_list_ipv4` are currently dropped by the eos_cli_config_gen
         # template when `enabled` is false, even though EOS allows them to coexist with `no captive-portal`.
         # Tracked by issue #7042; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
