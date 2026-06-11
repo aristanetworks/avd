@@ -489,8 +489,8 @@ class TestCVGRPCChannelConfiguration:
         assert "gRPC keepalives will not be enabled" in caplog.text
 
 
-class TestGetResult:
-    def test_cv_change_control_get_result(self) -> None:
+class TestCVChangeControl:
+    def test_get_result(self) -> None:
         template = AvdChangeControlTemplate(name="template-name", id="template-id")
         cc = CVChangeControl(
             avd_change_control=AvdChangeControl(name="avd-cc-name", description="avd-cc-desc", requested_state="approved", change_control_template=template),
@@ -508,7 +508,9 @@ class TestGetResult:
         assert result["requested_state"] == "approved"
         assert result["change_control_template"] == {"name": "template-name", "id": "template-id"}
 
-    def test_cv_workspace_get_result(self) -> None:
+
+class TestCVWorkspace:
+    def test_get_result(self) -> None:
         ws = CVWorkspace(
             avd_workspace=AvdWorkspace(name="workspace-name", description="workspace-description", requested_state="submitted"),
             state="submitted",
@@ -525,7 +527,9 @@ class TestGetResult:
         assert result["build_id"] == "build-id"
         assert result["device_build_results"] == []
 
-    def test_cv_device_get_result(self) -> None:
+
+class TestCVDevice:
+    def test_get_result(self) -> None:
         device = CVDevice(
             avd_device=AvdDevice(hostname="avd-leaf1", serial_number="sn54321", system_mac_address="55:44:33:22:11:00"),
             serial_number="sn12345",
@@ -540,7 +544,9 @@ class TestGetResult:
         assert result["exists_on_cv"] is True
         assert result["streaming"] is True
 
-    def test_deploy_to_cv_result_get_result(self) -> None:
+
+class TestDeployToCvResult:
+    def test_get_result(self) -> None:
         cv_device_1 = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="snleaf1"), serial_number="snleaf1", system_mac_address="00:11:22:33:44:55")
         cv_device_2 = CVDevice(avd_device=AvdDevice(hostname="leaf2"), serial_number="snleaf2", system_mac_address=None)
 

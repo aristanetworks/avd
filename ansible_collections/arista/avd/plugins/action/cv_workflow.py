@@ -47,7 +47,7 @@ try:
         CVWorkspace,
         DeployToCvResult,
     )
-    from pyavd._cv.workflows.utils import extract_from_device_deployments, serialize
+    from pyavd._cv.workflows.utils import extract_from_device_deployments, get_result
     from pyavd._utils import default, get, strip_empties_from_dict
 
     HAS_PYAVD = True
@@ -229,15 +229,15 @@ class ActionModule(ActionBase):
                 # Objects are converted to JSON compatible dicts.
                 result.update(
                     cloudvision={
-                        **serialize(cloudvision),
+                        **get_result(cloudvision),
                         "token": "<removed>",
                         **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
-                    configs=[serialize(config) for config in eos_config_objects],
-                    device_tags=[serialize(device_tag) for device_tag in device_tag_objects],
-                    interface_tags=[serialize(interface_tag) for interface_tag in interface_tag_objects],
-                    cv_pathfinder_metadata=[serialize(metadata) for metadata in cv_pathfinder_metadata_objects],
-                    static_config_manifest=serialize(static_config_manifest) if static_config_manifest else None,
+                    configs=[get_result(config) for config in eos_config_objects],
+                    device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
+                    interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
+                    cv_pathfinder_metadata=[get_result(metadata) for metadata in cv_pathfinder_metadata_objects],
+                    static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
                 )
 
             # Check if there is anything to deploy.
