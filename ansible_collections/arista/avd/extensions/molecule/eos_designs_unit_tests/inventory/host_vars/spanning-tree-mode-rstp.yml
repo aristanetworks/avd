@@ -10,5 +10,5 @@ l2leaf:
           minimum: 201
           maximum: 2001
         root_super: true
-        mst_pvst_boundary: true
+        mst_pvst_boundary: false
         loop_guard_default: true

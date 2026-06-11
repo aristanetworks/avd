@@ -14,8 +14,6 @@ spanning_tree:
   root_super: true
   mode: rstp
   rstp_priority: 8192
-  mst:
-    pvst_border: true
   port_id_allocation_port_channel_range:
     minimum: 201
     maximum: 2001

@@ -22,7 +22,8 @@ l2leaf:
 l3leaf:
   defaults:
     bgp_as: 65001
-    spanning_tree_mode: none
+    spanning_tree_settings:
+      mode: none
     loopback_ipv4_pool: 192.0.255.0/24
     uplink_ipv4_pool: 10.255.1.0/24
     vtep_loopback_ipv4_pool: 10.255.2.0/24

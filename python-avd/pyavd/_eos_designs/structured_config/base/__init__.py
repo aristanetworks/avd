@@ -287,7 +287,7 @@ class AvdStructuredConfigBaseProtocol(
 
         node_config = self.shared_utils.node_config
         if stp_settings := node_config.spanning_tree_settings:
-            spanning_tree_mode: EosCliConfigGen.SpanningTree.Mode | None = stp_settings.mode
+            spanning_tree_mode = stp_settings.mode
             root_super = stp_settings.root_super
             pvst_boundary = stp_settings.mst_pvst_boundary
             stp_po_range = stp_settings.port_id_allocation_port_channel_range
