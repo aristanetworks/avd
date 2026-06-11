@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>eos_config_future</samp>](## "eos_config_future") | Dictionary |  |  |  | Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version. |
     | [<samp>&nbsp;&nbsp;always_render_ip_routing_separator</samp>](## "eos_config_future.always_render_ip_routing_separator") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always render a '!' before the '(no) ip routing' command section.<br>Without this the '!' is missing when only configuring routing for VRFs. |
-    | [<samp>&nbsp;&nbsp;monitor_layer1_render_without_enabled</samp>](## "eos_config_future.monitor_layer1_render_without_enabled") | Boolean |  | `False` |  | When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or `false` and any<br> `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true`.<br>When `false` (default), renders the `monitor layer1` block only when `monitor_layer1.enabled` is `true`. |
+    | [<samp>&nbsp;&nbsp;monitor_layer1_render_without_enabled</samp>](## "eos_config_future.monitor_layer1_render_without_enabled") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.<br>When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;new_ip_radius_cli_order</samp>](## "eos_config_future.new_ip_radius_cli_order") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source interface name. |
     | [<samp>&nbsp;&nbsp;new_ip_tacacs_cli_order</samp>](## "eos_config_future.new_ip_tacacs_cli_order") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name. |
     | [<samp>&nbsp;&nbsp;only_render_mpls_rsvp_with_settings</samp>](## "eos_config_future.only_render_mpls_rsvp_with_settings") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is defined.<br>When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no sub-settings are set. |
@@ -25,9 +25,9 @@
       # Without this the '!' is missing when only configuring routing for VRFs.
       always_render_ip_routing_separator: <bool; default=False>
 
-      # When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or `false` and any
-      #  `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true`.
-      # When `false` (default), renders the `monitor layer1` block only when `monitor_layer1.enabled` is `true`.
+      # Available from AVD 6.3.0.
+      # When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.
+      # When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
       monitor_layer1_render_without_enabled: <bool; default=False>
 
       # Available from AVD 6.1.0.

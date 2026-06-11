@@ -6568,12 +6568,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         monitor_layer1_render_without_enabled: bool
         """
-        When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or
-        `false` and any
-         `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-
-        setting is `true`.
-        When `false` (default), renders the `monitor layer1` block only when
-        `monitor_layer1.enabled` is `true`.
+        Available from AVD 6.3.0.
+        When `true`, renders the `monitor layer1` CLI block only if
+        `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+        matter the value of `monitor_layer1.enabled` is `true` or `false`.
+        When `false` (default), renders
+        the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
 
         Default value: `False`
         """
@@ -6632,12 +6632,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Without
                        this the '!' is missing when only configuring routing for VRFs.
                     monitor_layer1_render_without_enabled:
-                       When `true`, renders the `monitor layer1` CLI block whenever `monitor_layer1.enabled` is `true` or
-                       `false` and any
-                        `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-
-                       setting is `true`.
-                       When `false` (default), renders the `monitor layer1` block only when
-                       `monitor_layer1.enabled` is `true`.
+                       Available from AVD 6.3.0.
+                       When `true`, renders the `monitor layer1` CLI block only if
+                       `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+                       matter the value of `monitor_layer1.enabled` is `true` or `false`.
+                       When `false` (default), renders
+                       the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
