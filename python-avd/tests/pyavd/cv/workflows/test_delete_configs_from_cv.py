@@ -9,7 +9,7 @@ import pytest
 
 from pyavd._cv.api.arista.configlet.v1 import Configlet, ConfigletAssignment, ConfigletKey
 from pyavd._cv.workflows.deploy_configs_to_cv import CONFIGLET_CONTAINER_ID, delete_configs_from_cv
-from pyavd._cv.workflows.models import CVDevice, CVDeviceDeployment, CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVDeviceDeployment, CVWorkspace, DeployToCvResult
 
 from .helpers import create_grpc_container
 
@@ -22,18 +22,18 @@ if TYPE_CHECKING:
 @pytest.fixture
 def deployment_result() -> DeployToCvResult:
     """Fixture to provide a fresh deployment result object for each test."""
-    workspace = CVWorkspace(name="pytest_workspace", id="pytest_workspace")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(name="pytest_workspace", id="pytest_workspace"))
     return DeployToCvResult(workspace=workspace)
 
 
 def _manifest_deployment(hostname: str, serial_number: str | None = None) -> CVDeviceDeployment:
     """Helper to create a CVDeviceDeployment with use_static_config_manifest=True."""
-    return CVDeviceDeployment(device=CVDevice(hostname=hostname, serial_number=serial_number), use_static_config_manifest=True)
+    return CVDeviceDeployment(device=CVDevice(avd_device=AvdDevice(hostname=hostname), serial_number=serial_number), use_static_config_manifest=True)
 
 
 def _config_deployment(hostname: str, serial_number: str | None = None) -> CVDeviceDeployment:
     """Helper to create a CVDeviceDeployment with use_static_config_manifest=False (default)."""
-    return CVDeviceDeployment(device=CVDevice(hostname=hostname, serial_number=serial_number))
+    return CVDeviceDeployment(device=CVDevice(avd_device=AvdDevice(hostname=hostname), serial_number=serial_number))
 
 
 def _make_configlet(configlet_id: str, display_name: str | None = None) -> Configlet:
