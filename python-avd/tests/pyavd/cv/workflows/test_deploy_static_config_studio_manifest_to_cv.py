@@ -10,7 +10,7 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import Configlet, ConfigletKey
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
-from pyavd._cv.workflows.models import AvdConfiglet, AvdContainer, AvdManifest, CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdConfiglet, AvdContainer, AvdManifest, AvdWorkspace, CVWorkspace, DeployToCvResult
 
 from .helpers import create_grpc_container, generate_id
 
@@ -36,7 +36,7 @@ def avd_initial_manifest() -> AvdManifest:
 @pytest.fixture
 def deployment_result() -> DeployToCvResult:
     """Fixture to provide a fresh deployment result object for each test."""
-    workspace = CVWorkspace(name="pytest_workspace", id="pytest_workspace")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(name="pytest_workspace", id="pytest_workspace"))
     return DeployToCvResult(workspace=workspace)
 
 

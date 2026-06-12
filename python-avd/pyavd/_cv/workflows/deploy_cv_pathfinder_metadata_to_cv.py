@@ -364,7 +364,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     edges: list[CVPathfinderMetadata] = []
     pathfinders: list[CVPathfinderMetadata] = []
     for device_metadata in cv_pathfinder_metadata:
-        if not device_metadata.device._exists_on_cv:
+        if not device_metadata.device.exists_on_cv:
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
                 device_metadata.device.serial_number,
