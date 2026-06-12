@@ -26,6 +26,12 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
+# Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
+# cv_deploy_future:
+#   # Use system certificates instead of Python's bundled certificate store.
+#   # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+#   use_system_certs: <bool; default=false>
+
 # Client-side gRPC keepalive settings for the CloudVision connection.
 cv_grpc_keepalives:
   # Enable client-side gRPC keepalives. When false, the other settings have no effect.
