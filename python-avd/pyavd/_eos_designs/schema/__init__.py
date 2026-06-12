@@ -38744,7 +38744,6 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "address_locking": {"type": bool, "default": True},
-                "address_locking_expiration_mac_disabled": {"type": bool, "default": True},
                 "address_locking_ipv4_enforcement_disabled": {"type": bool, "default": True},
                 "address_locking_ipv6_enforcement_disabled": {"type": bool, "default": True},
                 "address_locking_ipv6_ethernet_interface": {"type": bool, "default": True},
@@ -38778,14 +38777,6 @@ class EosDesigns(EosDesignsRootModel):
             Global support for Address Locking feature.
             The feature will be ignored on platforms where this is
             false.
-
-            Default value: `True`
-            """
-            address_locking_expiration_mac_disabled: bool
-            """
-            Support for deauthorizing locked addresses upon MAC aging out.
-            The feature will be ignored on
-            platforms where this is false.
 
             Default value: `True`
             """
@@ -39016,7 +39007,6 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     address_locking: bool | UndefinedType = Undefined,
-                    address_locking_expiration_mac_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv6_ethernet_interface: bool | UndefinedType = Undefined,
@@ -39056,10 +39046,6 @@ class EosDesigns(EosDesignsRootModel):
                            Global support for Address Locking feature.
                            The feature will be ignored on platforms where this is
                            false.
-                        address_locking_expiration_mac_disabled:
-                           Support for deauthorizing locked addresses upon MAC aging out.
-                           The feature will be ignored on
-                           platforms where this is false.
                         address_locking_ipv4_enforcement_disabled:
                            Support for disabling enforcement for locked IPv4 addresses.
                            The feature will be ignored on
@@ -39613,7 +39599,6 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "address_locking": {"type": bool, "default": True},
-                "address_locking_expiration_mac_disabled": {"type": bool, "default": True},
                 "address_locking_ipv4_enforcement_disabled": {"type": bool, "default": True},
                 "address_locking_ipv6_enforcement_disabled": {"type": bool, "default": True},
                 "address_locking_ipv6_ethernet_interface": {"type": bool, "default": True},
@@ -39647,14 +39632,6 @@ class EosDesigns(EosDesignsRootModel):
             Global support for Address Locking feature.
             The feature will be ignored on platforms where this is
             false.
-
-            Default value: `True`
-            """
-            address_locking_expiration_mac_disabled: bool
-            """
-            Support for deauthorizing locked addresses upon MAC aging out.
-            The feature will be ignored on
-            platforms where this is false.
 
             Default value: `True`
             """
@@ -39885,7 +39862,6 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     address_locking: bool | UndefinedType = Undefined,
-                    address_locking_expiration_mac_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
                     address_locking_ipv6_ethernet_interface: bool | UndefinedType = Undefined,
@@ -39925,10 +39901,6 @@ class EosDesigns(EosDesignsRootModel):
                            Global support for Address Locking feature.
                            The feature will be ignored on platforms where this is
                            false.
-                        address_locking_expiration_mac_disabled:
-                           Support for deauthorizing locked addresses upon MAC aging out.
-                           The feature will be ignored on
-                           platforms where this is false.
                         address_locking_ipv4_enforcement_disabled:
                            Support for disabling enforcement for locked IPv4 addresses.
                            The feature will be ignored on

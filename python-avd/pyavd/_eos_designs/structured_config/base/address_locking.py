@@ -28,8 +28,6 @@ class AddressLockingMixin(Protocol):
         local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
 
         locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)
-        if not feature_support.address_locking_expiration_mac_disabled:
-            del locked_address.expiration_mac_disabled
         if not feature_support.address_locking_ipv4_enforcement_disabled:
             del locked_address.ipv4_enforcement_disabled
         if not feature_support.address_locking_ipv6_enforcement_disabled:

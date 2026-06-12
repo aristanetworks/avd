@@ -14449,13 +14449,6 @@ $defs:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
-            address_locking_expiration_mac_disabled:
-              type: bool
-              description: 'Support for deauthorizing locked addresses upon MAC aging
-                out.
-
-                The feature will be ignored on platforms where this is false.'
-              default: true
             address_locking_ipv4_enforcement_disabled:
               type: bool
               description: 'Support for disabling enforcement for locked IPv4 addresses.

@@ -20,7 +20,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "platform_settings.[].feature_support.address_locking") | Boolean |  | `True` |  | Global support for Address Locking feature.<br>The feature will be ignored on platforms where this is false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_expiration_mac_disabled</samp>](## "platform_settings.[].feature_support.address_locking_expiration_mac_disabled") | Boolean |  | `True` |  | Support for deauthorizing locked addresses upon MAC aging out.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv4_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking_ipv4_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv4 addresses.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv6_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking_ipv6_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv6 addresses.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking_ipv6_ethernet_interface</samp>](## "platform_settings.[].feature_support.address_locking_ipv6_ethernet_interface") | Boolean |  | `True` |  | Support for controlling IPv6 Address Locking on the Ethernet interface level.<br>The feature will be ignored on platforms where this is false. |
@@ -131,10 +130,6 @@
           # Global support for Address Locking feature.
           # The feature will be ignored on platforms where this is false.
           address_locking: <bool; default=True>
-
-          # Support for deauthorizing locked addresses upon MAC aging out.
-          # The feature will be ignored on platforms where this is false.
-          address_locking_expiration_mac_disabled: <bool; default=True>
 
           # Support for disabling enforcement for locked IPv4 addresses.
           # The feature will be ignored on platforms where this is false.
