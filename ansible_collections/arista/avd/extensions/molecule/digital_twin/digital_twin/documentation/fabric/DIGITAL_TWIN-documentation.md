@@ -29,6 +29,7 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-4 | 192.168.0.4/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-1 | 192.169.3.1/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-3 | 192.169.3.3/32 | custom-platform | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-veos-no-mgmt | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital.twin.ethernet.ports.2 | 192.169.3.2/32 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.

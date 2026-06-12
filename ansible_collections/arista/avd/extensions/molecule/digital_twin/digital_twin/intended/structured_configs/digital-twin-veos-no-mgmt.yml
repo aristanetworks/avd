@@ -3,26 +3,18 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: digital-twin-single-switch-fabric-1
+hostname: digital-twin-veos-no-mgmt
 ip_igmp_snooping:
   globally_enabled: true
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.2.1/32
-  type: oob
 metadata:
   is_deployed: true
   platform: vEOS-lab
-  fabric_name: DIGITAL_TWIN_SINGLE_SWITCH_FABRIC
+  fabric_name: DIGITAL_TWIN
   validate_hardware:
     enabled: false
   digital_twin:
     environment: act
     node_type: veos
-    ip_addr: 192.168.2.1/32
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!

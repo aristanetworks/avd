@@ -72,6 +72,9 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+- digital-twin-veos-no-mgmt:
+    node_type: veos
+    version: 4.33.1.1F
 - digital.twin.ethernet.ports.2:
     node_type: veos
     ip_addr: 192.169.3.2/32

@@ -1,6 +1,7 @@
 nodes:
 - digital-twin-single-switch-fabric-1:
     node_type: veos
+    ip_addr: 192.168.2.1/32
     version: 4.33.1.1F
 veos:
   username: cvpadmin
