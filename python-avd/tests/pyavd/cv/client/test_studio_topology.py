@@ -11,7 +11,7 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVTimeoutError
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
-from pyavd._cv.workflows.models import CVWorkspace
+from pyavd._cv.workflows.models import AvdWorkspace, CVWorkspace
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
@@ -54,7 +54,7 @@ async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureF
     target_devices = ["1207F35678E44BD8E7C7EC8BB18DDB8C", "D60EC473E29C51A45C50D84B9D89F756"]
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
-    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION"))
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(DEBUG):
@@ -131,7 +131,7 @@ async def test_stage_devices_for_decommission_failure(caplog: pytest.LogCaptureF
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
-    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION"))
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(ERROR), pytest.raises(CVClientBulkAPIError, match=expected_exception_msg):
@@ -198,7 +198,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
-    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION"))
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(DEBUG):
@@ -301,7 +301,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
-    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION"))
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(DEBUG):
@@ -390,7 +390,7 @@ async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest
 
     # create new workspace
     workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
-    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION"))
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(DEBUG):
