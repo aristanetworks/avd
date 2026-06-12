@@ -41,6 +41,17 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
+  cv_deploy_future:
+    description: |-
+      Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version.
+    type: dict
+    suboptions:
+      use_system_certs:
+        description: |-
+          Use system certificates instead of Python's bundled certificate store.
+          Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+        type: bool
+        default: false
   proxy_host:
     description: FQDN/IP of the HTTP CONNECT proxy server.
     type: str
@@ -259,6 +270,8 @@ EXAMPLES = r"""
         cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # cv_deploy_future:
+        #   use_system_certs: false
         # proxy_host: "proxy.local.domain"
         # proxy_port: "8080"
         # proxy_username: "avd_user"
