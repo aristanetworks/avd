@@ -35,6 +35,7 @@ try:
         AvdWorkspaceBuildWarningsConfig,
         CloudVision,
         CVChangeControl,
+        CVDeployFuture,
         CVDevice,
         CVDeviceDeployment,
         CVDeviceTag,
@@ -90,6 +91,12 @@ ARGUMENT_SPEC = {
     "cv_username": {"type": "str", "required": False},
     "cv_password": {"type": "str", "secret": True, "required": False},
     "cv_verify_certs": {"type": "bool", "default": True},
+    "cv_deploy_future": {
+        "type": "dict",
+        "options": {
+            "use_system_certs": {"type": "bool", "default": False},
+        },
+    },
     "proxy_host": {"type": "str", "required": False},
     "proxy_port": {"type": "int", "required": False, "default": 8080},
     "proxy_username": {"type": "str", "required": False},
@@ -193,6 +200,7 @@ class ActionModule(ActionBase):
                 username=validated_args.get("cv_username"),
                 password=validated_args.get("cv_password"),
                 verify_certs=validated_args["cv_verify_certs"],
+                deploy_future=CVDeployFuture(**get(validated_args, "cv_deploy_future", default={})),
                 proxy_host=validated_args.get("proxy_host"),
                 proxy_port=validated_args.get("proxy_port"),
                 proxy_username=validated_args.get("proxy_username"),
