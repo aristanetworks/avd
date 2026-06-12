@@ -12,8 +12,7 @@ keys:
     keys:
       enabled:
         type: bool
-        description: |-
-          Enable monitor layer1.
+        description: Enable monitor layer1.
         deprecation:
           warning: true
           removed: false
