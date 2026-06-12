@@ -503,11 +503,11 @@ class TestCVDeployFuture:
         """Tests that CVDeployFuture accepts explicit values for all fields."""
         future = CVDeployFuture(use_system_certs=True)
         assert future.use_system_certs is True
-        
-        
+
+
 # === CVChangeControl Tests ===
 
-        
+
 class TestCVChangeControl:
     def test_get_result(self) -> None:
         template = AvdChangeControlTemplate(name="template-name", id="template-id")

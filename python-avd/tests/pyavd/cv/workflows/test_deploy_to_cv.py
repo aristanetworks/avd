@@ -12,7 +12,16 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import AvdWorkspace, CloudVision, CVDeployFuture, CVDeviceDeployment, CVEosConfig, CVGRPCChannelConfiguration, CVGRPCKeepalives, CVWorkspace
+from pyavd._cv.workflows.models import (
+    AvdWorkspace,
+    CloudVision,
+    CVDeployFuture,
+    CVDeviceDeployment,
+    CVEosConfig,
+    CVGRPCChannelConfiguration,
+    CVGRPCKeepalives,
+    CVWorkspace,
+)
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
