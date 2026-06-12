@@ -159,7 +159,7 @@ async def deploy_to_cv(
             verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
             try:
-                # Verify devices exist and update CVDevice objects with _exists_on_cv.
+                # Verify devices exist and update CVDevice objects with exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
                     devices=devices,
