@@ -29,17 +29,11 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
     from types import FrameType
 
-from .models import JINJA2_EXTENSIONS, SOURCE_EXIT, CompiledTemplate, FileStamp, SourceTemplate
+    from .models import CompiledTemplate, SourceTemplate
 
 __all__ = (
-    "JINJA2_EXTENSIONS",
-    "SOURCE_EXIT",
-    "CompiledTemplate",
-    "FileStamp",
     "JinjaTemplateCoveragePlugin",
     "JinjaTemplateFileReporter",
-    "JinjaTemplateFileTracer",
-    "SourceTemplate",
     "coverage_init",
 )
 
@@ -102,9 +96,14 @@ class JinjaTemplateFileTracer(FileTracer):
 class JinjaTemplateFileReporter(FileReporter):
     """Describe executable lines and branch arcs for a source Jinja template."""
 
+    @property
+    def _source_template(self) -> SourceTemplate:
+        """Return the cached source reporting model for this template."""
+        return source_template(Path(self.filename))
+
     def lines(self) -> set[int]:
         """Return source template lines that should be treated as executable statements."""
-        return set(source_template(Path(self.filename)).reportable_lines)
+        return set(self._source_template.reportable_lines)
 
     def translate_lines(self, lines: Iterable[int]) -> set[int]:
         """Drop recorded lines that are not reportable source template lines."""
@@ -113,16 +112,16 @@ class JinjaTemplateFileReporter(FileReporter):
 
     def arcs(self) -> set[tuple[int, int]]:
         """Return possible source-level branch arcs for supported Jinja control flow."""
-        return set(source_template(Path(self.filename)).possible_arcs)
+        return set(self._source_template.possible_arcs)
 
     def no_branch_lines(self) -> set[int]:
         """Return lines that should not be treated as missing branch coverage."""
-        return set(source_template(Path(self.filename)).no_branch_lines)
+        return set(self._source_template.no_branch_lines)
 
     def translate_arcs(self, arcs: Iterable[tuple[int, int]]) -> set[tuple[int, int]]:
         """Drop recorded arcs whose endpoints are not reportable source template lines."""
         recorded_arcs = tuple(arcs)
-        template = source_template(Path(self.filename))
+        template = self._source_template
         translated_arcs: set[tuple[int, int]] = set()
         for from_line, to_line in recorded_arcs:
             translated_from_line = translate_recorded_arc_endpoint(from_line, template.arc_endpoint_lines)
