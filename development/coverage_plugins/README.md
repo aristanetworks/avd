@@ -173,10 +173,10 @@ If a child exists but `child.enabled` is false, the child output branch is repor
 Typical finding:
 
 ```text
-Missing: 5, 4->exit, 4->5
+Missing: 5, 4->5
 ```
 
-Line 4 was evaluated for a child, but the output on line 5 did not render. `4->exit` represents the modeled false path leaving the inner condition.
+Line 4 was evaluated for a child, but the output on line 5 did not render. The modeled false path leaving the inner condition (`4->exit`) was covered.
 
 ### Complex Jinja Expressions
 
