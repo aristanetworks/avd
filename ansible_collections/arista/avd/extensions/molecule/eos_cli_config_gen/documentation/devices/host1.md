@@ -1700,6 +1700,9 @@ ip radius vrf abc source-interface Loopback10
 
 | Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
 | ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| LDAP_NO_SERVERS | ldap | - | - | - | - |
+| LDAP_NO_VRF_FIRST | ldap | default | 10.10.10.250 | - | - |
+| LDAP_NO_VRF_FIRST | ldap | mgt | 10.10.10.251 | - | - |
 | TACACS | tacacs+ | mgt | 10.10.11.157 | - | - |
 | TACACS | tacacs+ | default | 10.10.11.249 | - | - |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 | - | - |
@@ -1729,6 +1732,12 @@ aaa group server ldap LADP2
 aaa group server ldap LDAP1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
+!
+aaa group server ldap LDAP_NO_SERVERS
+!
+aaa group server ldap LDAP_NO_VRF_FIRST
+   server 10.10.10.250
+   server 10.10.10.251 vrf mgt
 !
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
@@ -15117,12 +15126,16 @@ Default maintenance unit profile: **UP1**
 
 #### Maintenance profiles
 
-| BGP profile | Initiator route-map |
-| ----------- | ------------------- |
-| bgp2 | SystemGenerated |
-| BP1 | RM-MAINTENANCE |
-| BP2 | RM-MAINTENANCE2 |
-| BP3 | RM-MAINTENANCE3 |
+| BGP profile | Initiator route-map in | Initiator route-map out | Initiator route-map inout |
+| ----------- | ---------------------- | ----------------------- | ------------------------- |
+| BP1 | - | - | RM-MAINTENANCE |
+| BP2 | - | - | RM-MAINTENANCE2 |
+| BP3 | - | - | RM-MAINTENANCE3 |
+| BP4 | RM-MAINTENANCE-IN | - | - |
+| BP5 | - | RM-MAINTENANCE-OUT | - |
+| BP6 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | - |
+| BP7 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | RM-MAINTENANCE-INOUT |
+| bgp2 | - | - | - |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
 | ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
@@ -15153,6 +15166,21 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp BP4
+      initiator route-map RM-MAINTENANCE-IN in
+   !
+   profile bgp BP5
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP6
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP7
+      initiator route-map RM-MAINTENANCE-INOUT inout
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
    !
    profile bgp bgp2
    profile bgp BP1 default

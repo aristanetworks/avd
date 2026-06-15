@@ -389,6 +389,17 @@ keys:
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
         default: false
+      only_configure_route_map_connected_to_bgp_vrfs_when_used:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it is needed.
+
+          The route map is skipped when both ''underlay_rfc5549'' and ''overlay_mlag_rfc5549''
+          are set,
+
+          since ''redistribute connected route-map'' is not required in that case.'
+        default: false
       raise_for_port_channels_without_members:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -7722,6 +7733,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -7763,6 +7775,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -7778,6 +7791,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7785,6 +7799,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -7827,6 +7842,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -7843,6 +7859,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7857,6 +7874,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7918,6 +7936,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        subinterface_monitor_session: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7940,6 +7959,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        subinterface_monitor_session: false
       management_interface: Management1
       reload_delay:
         mlag: 300
@@ -7955,6 +7975,7 @@ keys:
         queue_monitor_length_notify: false
         sflow: false
         hardware_validation: false
+        subinterface_monitor_session: false
       p2p_uplinks_mtu: 9194
       digital_twin:
         act_node_type: cloudeos
@@ -7967,6 +7988,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -7985,6 +8007,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -8004,6 +8027,7 @@ keys:
         poe: true
         per_interface_l2_mru: false
         sflow: false
+        subinterface_monitor_session: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -13578,6 +13602,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -13649,7 +13678,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 interfaces is not yet supported.'
           keys:
             peer_as:
               type: str
@@ -13847,6 +13879,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -13896,7 +13933,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
           keys:
             peer_as:
               type: str
@@ -14437,6 +14477,13 @@ $defs:
                 even if it is set in the inputs.
 
                 '
+            subinterface_monitor_session:
+              type: bool
+              default: true
+              description: 'Support for monitor session configuration on sub-interfaces.
+
+                When this key is set to false, an error will be raised if a monitor
+                session is configured on a sub-interface.'
             per_interface_mtu:
               type: bool
               default: true
