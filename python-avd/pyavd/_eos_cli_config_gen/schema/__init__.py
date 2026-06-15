@@ -26473,7 +26473,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 file: str | None
                 key: str | None
                 auto_certificate: str | None
-                """Automatically managed certificate profile."""
+                """
+                Automatically managed certificate profile.
+                This is mutually exclusive with `file` and `key`, if
+                `auto_certificate` is specified, `file` and `key` are ignored.
+                """
 
                 if TYPE_CHECKING:
 
@@ -26493,7 +26497,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             file: file
                             key: key
-                            auto_certificate: Automatically managed certificate profile.
+                            auto_certificate:
+                               Automatically managed certificate profile.
+                               This is mutually exclusive with `file` and `key`, if
+                               `auto_certificate` is specified, `file` and `key` are ignored.
 
                         """
 

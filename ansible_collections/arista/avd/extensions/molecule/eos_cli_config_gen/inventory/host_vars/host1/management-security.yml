@@ -146,7 +146,6 @@ management_security:
       certificate:
         file: eAPI.crt
         key: eAPI.key
-        auto_certificate: AVD_AUTO_CERTIFICATE_PROFILE
       certificate_revocation_lists:
         - intermediate.crl
         - ca.crl
