@@ -6555,6 +6555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
+            "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6595,6 +6596,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        render_monitor_layer1_without_enabled: bool
+        """
+        Available from AVD 6.3.0.
+        When `true`, renders the `monitor layer1` CLI block only if
+        `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+        matter the value of `monitor_layer1.enabled` is `true` or `false`.
+        When `false` (default), renders
+        the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6605,6 +6617,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
+                render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6636,6 +6649,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `mpls.rsvp.*` setting is defined.
                        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp`
                        is defined, even if no sub-settings are set.
+                    render_monitor_layer1_without_enabled:
+                       Available from AVD 6.3.0.
+                       When `true`, renders the `monitor layer1` CLI block only if
+                       `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+                       matter the value of `monitor_layer1.enabled` is `true` or `false`.
+                       When `false` (default), renders
+                       the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
 
                 """
 
@@ -29619,7 +29639,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "logging_mac_fault": {"type": bool}, "logging_transceiver": {"type": LoggingTransceiver}}
-        enabled: bool
+        enabled: bool | None
         """Enable monitor layer1."""
         logging_mac_fault: bool | None
         """Enable MAC fault logging."""
@@ -29635,7 +29655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 logging_mac_fault: bool | None | UndefinedType = Undefined,
                 logging_transceiver: LoggingTransceiver | UndefinedType = Undefined,
             ) -> None:
