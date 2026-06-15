@@ -14,7 +14,7 @@ dev = [
     {include-group = "molecule"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.4.0",
-    "aristaproto[compiler]==0.1.4",
+    "aristaproto[compiler]==0.1.5",
     "bump-my-version>=1.3.0",
     "codespell>=2.4.2",
     "docker>=7.1.0",
@@ -23,7 +23,7 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.15.16",
+    "ruff==0.15.17",
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "twine>=6.2.0",
@@ -53,7 +53,7 @@ molecule = [
 pytest = [
     "ansible-core>=2.16.0,<2.22.0",
     "anta==1.8.0",
-    "pytest>=9.0.3",
+    "pytest>=9.1.0",
     "pytest-asyncio>=1.3.0",
     "pydantic>=2.11.10",
     "referencing>=0.37.0",
