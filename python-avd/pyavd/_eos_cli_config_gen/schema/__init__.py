@@ -40373,13 +40373,51 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"allow_non_ect": {"type": AllowNonEct}}
+                class GlobalBuffer(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes"]
+                    _fields: ClassVar[dict] = {"units": {"type": str}, "min": {"type": int}, "max": {"type": int}}
+                    units: Units
+                    """Units to be used for the threshold values."""
+                    min: int
+                    """Random-detect ECN minimum-threshold."""
+                    max: int
+                    """Random-detect ECN maximum-threshold."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, units: Units | UndefinedType = Undefined, min: int | UndefinedType = Undefined, max: int | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            GlobalBuffer.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                units: Units to be used for the threshold values.
+                                min: Random-detect ECN minimum-threshold.
+                                max: Random-detect ECN maximum-threshold.
+
+                            """
+
+                _fields: ClassVar[dict] = {"allow_non_ect": {"type": AllowNonEct}, "global_buffer": {"type": GlobalBuffer}}
                 allow_non_ect: AllowNonEct
                 """Subclass of AvdModel."""
+                global_buffer: GlobalBuffer
+                """
+                Set global shared memory thresholds.
+
+                Subclass of AvdModel.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, allow_non_ect: AllowNonEct | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self, *, allow_non_ect: AllowNonEct | UndefinedType = Undefined, global_buffer: GlobalBuffer | UndefinedType = Undefined
+                    ) -> None:
                         """
                         Ecn.
 
@@ -40388,6 +40426,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             allow_non_ect: Subclass of AvdModel.
+                            global_buffer:
+                               Set global shared memory thresholds.
+
+                               Subclass of AvdModel.
 
                         """
 
