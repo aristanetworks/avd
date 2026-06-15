@@ -69,7 +69,7 @@ class PortChannelInterfacesMixin(Protocol):
             elif link.vlans is not None:
                 port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 
-            port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, link.sflow_enabled)
+            port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(port_channel_interface.name, link.sflow_enabled)
 
             for link_tracking_group in link.link_tracking_groups:
                 port_channel_interface.link_tracking_groups.append_new(
@@ -164,6 +164,9 @@ class PortChannelInterfacesMixin(Protocol):
             or None
         )
         interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
+        if l3_port_channel.ipv6_addresses:
+            self.structured_config.ipv6_unicast_routing = True
+            interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
 
         if l3_port_channel.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)

@@ -20,6 +20,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces") | List, items: Dictionary |  |  |  | L2 Subinterfaces<br>Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed ethernet interfaces with subinterfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the subinterface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -35,6 +44,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_in</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mac_acl_in") | String |  |  |  | MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_out</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mac_acl_out") | String |  |  |  | MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
@@ -105,6 +116,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -180,12 +194,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces.<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
@@ -209,6 +224,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].descriptions.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces") | List, items: Dictionary |  |  |  | L2 Subinterfaces<br>Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed ethernet interfaces with subinterfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the subinterface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -224,6 +248,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_in</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].mac_acl_in") | String |  |  |  | MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_out</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].mac_acl_out") | String |  |  |  | MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
@@ -294,6 +320,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -369,12 +398,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces.<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
@@ -398,6 +428,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "connected_endpoints.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].descriptions.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "connected_endpoints.[].adapters.[].subinterfaces") | List, items: Dictionary |  |  |  | L2 Subinterfaces<br>Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed ethernet interfaces with subinterfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the subinterface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "connected_endpoints.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "connected_endpoints.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -413,6 +452,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "connected_endpoints.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "connected_endpoints.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_in</samp>](## "connected_endpoints.[].adapters.[].mac_acl_in") | String |  |  |  | MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_acl_out</samp>](## "connected_endpoints.[].adapters.[].mac_acl_out") | String |  |  |  | MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
@@ -483,6 +524,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "connected_endpoints.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "connected_endpoints.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "connected_endpoints.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "connected_endpoints.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "connected_endpoints.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "connected_endpoints.[].adapters.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -558,12 +602,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces.<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].number") | Integer | Required, Unique |  | Min: 1<br>Max: 1048575 | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].description") | String |  |  |  | Description for subinterface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `subinterface` - The full subinterface name.<br>  - `subinterface_number` - The number for the subinterface.<br>  - `vlan_id` - The VLAN ID bridged to this subinterface.<br>  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.<br>  - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is the subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID encapsulation.<br>Default is the subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
@@ -629,6 +674,45 @@
             descriptions:
               - <str>
 
+            # L2 Subinterfaces
+            # Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+            # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+            # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            subinterfaces:
+
+                # Subinterface number.
+              - number: <int; 1-1048575; required; unique>
+
+                # Description for subinterface.
+                # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                # The available template fields are:
+                #   - `subinterface` - The full subinterface name.
+                #   - `subinterface_number` - The number for the subinterface.
+                #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                #   - `endpoint` - The name of the connected endpoint
+                description: <str>
+
+                # In format xxxx:xxxx:xxxx or "auto".
+                # Required for multihomed ethernet interfaces with subinterfaces.
+                short_esi: <str>
+
+                # VLAN ID to bridge.
+                # Default is the subinterface number.
+                vlan_id: <int; 1-4094>
+                encapsulation_vlan:
+
+                  # Client VLAN ID encapsulation.
+                  # Default is the subinterface number.
+                  client_dot1q: <int; 1-4094>
+
+                # EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                raw_eos_cli: <str>
+
+                # Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                structured_config: <dict>
+
             # Set adapter speed.
             # If not specified speed will be auto.
             speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
@@ -686,6 +770,12 @@
             # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
             # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
+
+            # MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_in: <str>
+
+            # MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_out: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
@@ -830,6 +920,18 @@
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
+
+            # Address locking settings applied on the port.
+            address_locking:
+
+              # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
+              # For EOS version 4.31 and higher.
+              ipv4: <bool>
+
+              # Enable address locking for IPv6.
+              # For EOS version 4.31 and higher.
+              ipv6: <bool>
 
             # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
             poe:
@@ -1055,27 +1157,37 @@
                 # Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 multiplier: <int>
 
-              # Port-Channel L2 Subinterfaces
+              # Port-Channel L2 Subinterfaces.
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
 
                   # Subinterface number.
-                - number: <int>
+                - number: <int; 1-1048575; required; unique>
+
+                  # Description for subinterface.
+                  # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                  # The available template fields are:
+                  #   - `subinterface` - The full subinterface name.
+                  #   - `subinterface_number` - The number for the subinterface.
+                  #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                  #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  #   - `endpoint` - The name of the connected endpoint
+                  description: <str>
 
                   # In format xxxx:xxxx:xxxx or "auto".
                   # Required for multihomed port-channels with subinterfaces.
                   short_esi: <str>
 
                   # VLAN ID to bridge.
-                  # Default is subinterface number.
+                  # Default is the subinterface number.
                   vlan_id: <int; 1-4094>
-
-                  # Client VLAN ID encapsulation.
-                  # Default is subinterface number.
                   encapsulation_vlan:
+
+                    # Client VLAN ID encapsulation.
+                    # Default is the subinterface number.
                     client_dot1q: <int; 1-4094>
 
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
@@ -1164,6 +1276,45 @@
             descriptions:
               - <str>
 
+            # L2 Subinterfaces
+            # Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+            # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+            # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            subinterfaces:
+
+                # Subinterface number.
+              - number: <int; 1-1048575; required; unique>
+
+                # Description for subinterface.
+                # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                # The available template fields are:
+                #   - `subinterface` - The full subinterface name.
+                #   - `subinterface_number` - The number for the subinterface.
+                #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                #   - `endpoint` - The name of the connected endpoint
+                description: <str>
+
+                # In format xxxx:xxxx:xxxx or "auto".
+                # Required for multihomed ethernet interfaces with subinterfaces.
+                short_esi: <str>
+
+                # VLAN ID to bridge.
+                # Default is the subinterface number.
+                vlan_id: <int; 1-4094>
+                encapsulation_vlan:
+
+                  # Client VLAN ID encapsulation.
+                  # Default is the subinterface number.
+                  client_dot1q: <int; 1-4094>
+
+                # EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                raw_eos_cli: <str>
+
+                # Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                structured_config: <dict>
+
             # Set adapter speed.
             # If not specified speed will be auto.
             speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
@@ -1221,6 +1372,12 @@
             # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
             # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
+
+            # MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_in: <str>
+
+            # MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_out: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
@@ -1365,6 +1522,18 @@
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
+
+            # Address locking settings applied on the port.
+            address_locking:
+
+              # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
+              # For EOS version 4.31 and higher.
+              ipv4: <bool>
+
+              # Enable address locking for IPv6.
+              # For EOS version 4.31 and higher.
+              ipv6: <bool>
 
             # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
             poe:
@@ -1590,27 +1759,37 @@
                 # Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 multiplier: <int>
 
-              # Port-Channel L2 Subinterfaces
+              # Port-Channel L2 Subinterfaces.
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
 
                   # Subinterface number.
-                - number: <int>
+                - number: <int; 1-1048575; required; unique>
+
+                  # Description for subinterface.
+                  # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                  # The available template fields are:
+                  #   - `subinterface` - The full subinterface name.
+                  #   - `subinterface_number` - The number for the subinterface.
+                  #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                  #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  #   - `endpoint` - The name of the connected endpoint
+                  description: <str>
 
                   # In format xxxx:xxxx:xxxx or "auto".
                   # Required for multihomed port-channels with subinterfaces.
                   short_esi: <str>
 
                   # VLAN ID to bridge.
-                  # Default is subinterface number.
+                  # Default is the subinterface number.
                   vlan_id: <int; 1-4094>
-
-                  # Client VLAN ID encapsulation.
-                  # Default is subinterface number.
                   encapsulation_vlan:
+
+                    # Client VLAN ID encapsulation.
+                    # Default is the subinterface number.
                     client_dot1q: <int; 1-4094>
 
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
@@ -1697,6 +1876,45 @@
             descriptions:
               - <str>
 
+            # L2 Subinterfaces
+            # Subinterfaces are only supported on routed Ethernet interfaces, which means they cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+            # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+            # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            subinterfaces:
+
+                # Subinterface number.
+              - number: <int; 1-1048575; required; unique>
+
+                # Description for subinterface.
+                # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                # The available template fields are:
+                #   - `subinterface` - The full subinterface name.
+                #   - `subinterface_number` - The number for the subinterface.
+                #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                #   - `endpoint` - The name of the connected endpoint
+                description: <str>
+
+                # In format xxxx:xxxx:xxxx or "auto".
+                # Required for multihomed ethernet interfaces with subinterfaces.
+                short_esi: <str>
+
+                # VLAN ID to bridge.
+                # Default is the subinterface number.
+                vlan_id: <int; 1-4094>
+                encapsulation_vlan:
+
+                  # Client VLAN ID encapsulation.
+                  # Default is the subinterface number.
+                  client_dot1q: <int; 1-4094>
+
+                # EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                raw_eos_cli: <str>
+
+                # Custom structured config added under ethernet_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                structured_config: <dict>
+
             # Set adapter speed.
             # If not specified speed will be auto.
             speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
@@ -1754,6 +1972,12 @@
             # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
             # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
+
+            # MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_in: <str>
+
+            # MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
+            mac_acl_out: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
@@ -1898,6 +2122,18 @@
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
+
+            # Address locking settings applied on the port.
+            address_locking:
+
+              # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
+              # For EOS version 4.31 and higher.
+              ipv4: <bool>
+
+              # Enable address locking for IPv6.
+              # For EOS version 4.31 and higher.
+              ipv6: <bool>
 
             # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
             poe:
@@ -2123,27 +2359,37 @@
                 # Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 multiplier: <int>
 
-              # Port-Channel L2 Subinterfaces
+              # Port-Channel L2 Subinterfaces.
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
 
                   # Subinterface number.
-                - number: <int>
+                - number: <int; 1-1048575; required; unique>
+
+                  # Description for subinterface.
+                  # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                  # The available template fields are:
+                  #   - `subinterface` - The full subinterface name.
+                  #   - `subinterface_number` - The number for the subinterface.
+                  #   - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  #   - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                  #   - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  #   - `endpoint` - The name of the connected endpoint
+                  description: <str>
 
                   # In format xxxx:xxxx:xxxx or "auto".
                   # Required for multihomed port-channels with subinterfaces.
                   short_esi: <str>
 
                   # VLAN ID to bridge.
-                  # Default is subinterface number.
+                  # Default is the subinterface number.
                   vlan_id: <int; 1-4094>
-
-                  # Client VLAN ID encapsulation.
-                  # Default is subinterface number.
                   encapsulation_vlan:
+
+                    # Client VLAN ID encapsulation.
+                    # Default is the subinterface number.
                     client_dot1q: <int; 1-4094>
 
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.

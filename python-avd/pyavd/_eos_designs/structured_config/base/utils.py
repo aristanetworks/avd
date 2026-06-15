@@ -54,8 +54,8 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
-            if self.inputs.mgmt_interface_vrf != "default":
-                source_interfaces.vrfs.append_new(source_interface=self.shared_utils.mgmt_interface, name=self.inputs.mgmt_interface_vrf)
+            if self.shared_utils.mgmt_interface_vrf != "default":
+                source_interfaces.vrfs.append_new(source_interface=self.shared_utils.mgmt_interface, name=self.shared_utils.mgmt_interface_vrf)
             else:
                 source_interfaces.source_interface = self.shared_utils.mgmt_interface
 
@@ -68,7 +68,7 @@ class UtilsMixin(Protocol):
             # Check for duplicate VRF
             # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
             inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if include_mgmt_interface and (inband_mgmt_vrf == self.inputs.mgmt_interface_vrf):
+            if include_mgmt_interface and (inband_mgmt_vrf == self.shared_utils.mgmt_interface_vrf):
                 msg = f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'."
                 raise AristaAvdError(msg)
 
@@ -130,3 +130,39 @@ class UtilsMixin(Protocol):
             A string representing the truncated SHA1 hash (salt), with a maximum length of 16 characters.
         """
         return sha1(string.encode(), usedforsecurity=False).hexdigest()[:16]  # NOSONAR
+
+    def _set_monitor_connectivity_hosts(
+        self: AvdStructuredConfigBaseProtocol,
+        hosts: EosDesigns.MonitorConnectivity.Hosts | EosDesigns.MonitorConnectivity.VrfsItem.Hosts,
+        monitor_connectivity_hosts: EosCliConfigGen.MonitorConnectivity.Hosts | EosCliConfigGen.MonitorConnectivity.VrfsItem.Hosts,
+        interface_sets: EosDesigns.MonitorConnectivity.InterfaceSets | EosDesigns.MonitorConnectivity.VrfsItem.InterfaceSets,
+        context: str,
+    ) -> None:
+        """
+        Populate monitor connectivity hosts from EOS Designs host entries.
+
+        Iterates over the provided design-level hosts and appends each one to the
+        CLI config gen monitor connectivity hosts list, mapping all relevant fields.
+
+        Args:
+            hosts: Source host entries from EOS Designs, either at the global or
+                VRF level of monitor connectivity configuration.
+            monitor_connectivity_hosts: Target host list in the EOS CLI config gen
+                structure where the mapped entries will be appended.
+            interface_sets: The parent interface_sets to validate host local_interfaces against.
+            context: Path prefix used in error messages (e.g. "monitor_connectivity" or "monitor_connectivity.vrfs[name=MGMT]").
+        """
+        for host in hosts:
+            if host.local_interfaces is not None and host.local_interfaces not in interface_sets:
+                msg = f"{context}.hosts[name={host.name}].local_interfaces '{host.local_interfaces}' has to be defined in {context}.interface_sets."
+                raise AristaAvdInvalidInputsError(msg)
+            monitor_connectivity_hosts.append_new(
+                name=host.name,
+                description=host.description,
+                single_line_description=host.single_line_description,
+                ip=host.ip,
+                icmp_echo_size=host.icmp_echo_size,
+                local_interfaces=host.local_interfaces,
+                address_only=host.address_only,
+                url=host.url,
+            )

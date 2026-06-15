@@ -37,13 +37,13 @@ keys:
                 load_interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Load Interval in Seconds.
                 threshold:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Threshold in kbps.
             shutdown:
@@ -52,7 +52,7 @@ keys:
                 max_delay:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Max delay in seconds.
       bgp_profiles:
@@ -69,7 +69,13 @@ keys:
               keys:
                 route_map_inout:
                   type: str
-                  description: Route Map.
+                  description: Route Map applied to both inbound and outbound directions.
+                route_map_in:
+                  type: str
+                  description: Inbound Route Map.
+                route_map_out:
+                  type: str
+                  description: Outbound Route Map.
       unit_profiles:
         type: list
         primary_key: name
@@ -85,7 +91,7 @@ keys:
                 duration:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   min: 300
                   max: 3600
                   description: |

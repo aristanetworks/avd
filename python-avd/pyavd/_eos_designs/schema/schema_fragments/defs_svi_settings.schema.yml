@@ -108,6 +108,20 @@ $defs:
         type: str
         convert_types:
           - int
+      ipv6_acl_in:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
+      ipv6_acl_out:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
       ip_helpers:
         type: list
         primary_key: ip_helper
@@ -120,10 +134,25 @@ $defs:
               description: IPv4 DHCP server IP.
             source_interface:
               type: str
-              description: Interface name to originate DHCP relay packets to DHCP server.
+              description: |-
+                Interface name to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source interface.
             source_vrf:
               type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+              description: |-
+                VRF to originate DHCP relay packets to DHCP server.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not set, EOS uses the VRF on the SVI.
               convert_types:
                 - int
       static_routes:

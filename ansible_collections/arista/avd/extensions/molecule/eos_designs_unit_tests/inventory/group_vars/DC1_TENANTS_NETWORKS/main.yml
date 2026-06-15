@@ -39,8 +39,8 @@ svi_profiles:
       - node: evpn-services-l2-only-false
         ip_address: 12.4.13.2/24
         ipv6_address: 2012:db9:413::2/64
-        ip_virtual_router_addresses: [ "12.4.13.1" ]
-        ipv6_virtual_router_addresses: [ "2012:db9:413::1" ]
+        ip_virtual_router_addresses: ["12.4.13.1"]
+        ipv6_virtual_router_addresses: ["2012:db9:413::1"]
   - profile: GENERIC_DHCP
     mtu: 1560
     enabled: false
@@ -73,4 +73,4 @@ network_services_keys:
   - name: tenant_a
   - name: tenant_b
   - name: tenant_c
-  - name: tenant_d
+  # tenant_d is defined under the static 'network_services' key.

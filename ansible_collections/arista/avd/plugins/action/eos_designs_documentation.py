@@ -22,8 +22,9 @@ try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils import get, strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
+    from pyavd.j2filters import natural_sort
 except ImportError as e:
-    EosDesignsFacts = get = strip_empties_from_dict = get_fabric_documentation = RaiseOnUse(
+    EosDesignsFacts = get = strip_empties_from_dict = get_fabric_documentation = natural_sort = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -158,7 +159,7 @@ class ActionModule(ActionBase):
             else:
                 missing.add(device)
         if missing:
-            LOGGER.warning("Could not find structured config files for '%s'. The documentation may be incomplete.", ",".join(missing))
+            LOGGER.warning("Could not find structured config files for '%s'. The documentation may be incomplete.", ",".join(natural_sort(missing)))
 
         return structured_configs
 

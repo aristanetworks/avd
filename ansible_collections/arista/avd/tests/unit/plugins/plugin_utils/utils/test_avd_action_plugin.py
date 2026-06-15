@@ -12,12 +12,12 @@ import pytest
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
 
 
-class TestAvdActionPlugin:
-    """Test suite for the AvdActionPlugin base class."""
+class TestAVDActionPlugin:
+    """Test suite for the AVDActionPlugin base class."""
 
     @pytest.fixture
     def mock_display(self) -> Generator[MagicMock, Any, None]:
@@ -42,8 +42,8 @@ class TestAvdActionPlugin:
 
             yield shared_mock_instance
 
-    def _plugin_factory(self, cls: type[AvdActionPlugin], task_args: dict[str, Any] | None = None) -> AvdActionPlugin:
-        """Factory method to instantiate the provided AvdActionPlugin class with mocks for testing."""
+    def _plugin_factory(self, cls: type[AVDActionPlugin], task_args: dict[str, Any] | None = None) -> AVDActionPlugin:
+        """Factory method to instantiate the provided AVDActionPlugin class with mocks for testing."""
         # Create mock objects for the Ansible ActionBase constructor arguments
         mock_task = MagicMock()
         mock_task.args = task_args or {}
@@ -60,8 +60,8 @@ class TestAvdActionPlugin:
     def test_wrong_logging_config(self) -> None:
         """Test that an exception is raised when _primary_logger_name is not part of the targeted loggers."""
 
-        class ActionModule(AvdActionPlugin):
-            _logging_config = AvdLoggingConfig(target_loggers=("pyavd", "anta"))
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(target_loggers=("pyavd", "anta"))
 
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
@@ -76,7 +76,7 @@ class TestAvdActionPlugin:
     def test_run_success(self) -> None:
         """Test a successful run of the plugin."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 self.result["status"] = "success"
@@ -91,7 +91,7 @@ class TestAvdActionPlugin:
     def test_run_failure_recast_as_ansible_exception(self) -> None:
         """Test that a generic exception in main() is recast as AnsibleActionFail."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 msg = "Something went wrong"
@@ -170,8 +170,8 @@ class TestAvdActionPlugin:
     def test_log_levels_set_by_verbosity(self, mock_display: MagicMock, verbosity: int, expected_levels: dict[str, int]) -> None:
         """Test that log levels are set correctly based on verbosity for both internal and external libraries."""
 
-        class ActionModule(AvdActionPlugin):
-            _logging_config = AvdLoggingConfig(target_loggers=tuple(expected_levels.keys()))
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(target_loggers=tuple(expected_levels.keys()))
 
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
@@ -198,7 +198,7 @@ class TestAvdActionPlugin:
     def test_default_logging_behavior(self, mock_display: MagicMock, verbosity: int, expected_methods_called: list[str]) -> None:
         """Test the end-to-end default logging behavior (live display on, save logs off)."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 self.logger.debug("A debug message.")
@@ -248,8 +248,8 @@ class TestAvdActionPlugin:
     ) -> None:
         """Test that context variables are added and the log format is changed based on the logging config."""
 
-        class ActionModule(AvdActionPlugin):
-            _logging_config = AvdLoggingConfig(add_hostname_context=add_hostname, add_role_context=add_role)
+        class ActionModule(AVDActionPlugin):
+            _logging_config = AVDLoggingConfig(add_hostname_context=add_hostname, add_role_context=add_role)
 
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
@@ -267,7 +267,7 @@ class TestAvdActionPlugin:
     def test_logging_with_save_logs(self) -> None:
         """Test that logs are saved to the result."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 self.logger.warning("A warning to save.")
@@ -285,7 +285,7 @@ class TestAvdActionPlugin:
     def test_logging_with_live_display_false(self, mock_display: MagicMock) -> None:
         """Test that logs are never displayed in Ansible."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 self.logger.info("This should not be displayed live.")
@@ -310,7 +310,7 @@ class TestAvdActionPlugin:
     def test_warning_capture(self, warning_type: type[Warning], message: str, expected_key: str) -> None:
         """Test that Python warnings are captured and added to the correct list in the result."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
                 warnings.warn(message, warning_type, stacklevel=1)
@@ -328,7 +328,7 @@ class TestAvdActionPlugin:
     def test_handles_dirty_logger_state(self) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
 
-        class ActionModule(AvdActionPlugin):
+        class ActionModule(AVDActionPlugin):
             def main(self, task_vars: dict[str, Any]) -> None:
                 _task_vars = task_vars
 
@@ -342,14 +342,22 @@ class TestAvdActionPlugin:
         # Create a "sticky" handler and add it to the AVD logger BEFORE the test
         logger = logging.getLogger("ansible_collections.arista.avd")
         sticky_handler = logging.StreamHandler()
-        logger.addHandler(sticky_handler)
+        original_handlers = logger.handlers[:]
+        original_level = logger.level
+        original_propagate = logger.propagate
 
-        plugin = self._plugin_factory(ActionModule)
-        plugin.run()
+        try:
+            logger.addHandler(sticky_handler)
+            # pytest 9.1.0 can attach multiple capture/live-log handlers to non-propagating loggers.
+            # The plugin should restore all existing handlers, including pytest-owned handlers.
+            expected_handlers = [*original_handlers, sticky_handler]
 
-        # Assert that ONLY the sticky handler has been restored after execution
-        assert len(logger.handlers) == 1
-        assert logger.handlers[0] is sticky_handler
+            plugin = self._plugin_factory(ActionModule)
+            plugin.run()
 
-        # Final cleanup for other tests
-        logger.removeHandler(sticky_handler)
+            assert logger.handlers == expected_handlers
+            assert logger.level == original_level
+            assert logger.propagate == original_propagate
+        finally:
+            logger.removeHandler(sticky_handler)
+            sticky_handler.close()

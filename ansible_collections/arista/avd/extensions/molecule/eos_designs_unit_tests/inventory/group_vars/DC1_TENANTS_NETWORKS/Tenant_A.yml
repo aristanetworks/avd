@@ -45,7 +45,7 @@ tenant_a:
           # test ospf authentication on vlan interface
           - id: 113
             name: Tenant_A_OP_Zone_4
-            tags: [ DC1_LEAF1 ]
+            tags: [DC1_LEAF1]
             enabled: true
             ospf:
               enabled: true
@@ -127,8 +127,11 @@ tenant_a:
             nodes:
               - node: dc1-leaf1a
                 ip_address: 10.1.32.1/24
+                ipv6_address: 2001:db8:132::1/64
                 ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
                 ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+                ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+                ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
                 static_routes:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1
@@ -208,6 +211,18 @@ tenant_a:
                 role: destination
                 session_settings:
                   encapsulation_gre_metadata_tx: true
+          # Test monitor session on subinterface
+          - interfaces: [Ethernet7.7]
+            ip_addresses: [10.10.20.27/24]
+            nodes: [dc1-bl1b]
+            mtu: 9000
+            enabled: true
+            description: "test_monitor_session_on_sub_interface"
+            monitor_sessions:
+              - name: Monitor_session_on_sub_interface
+                role: source
+                source_settings:
+                  direction: rx
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
@@ -291,11 +306,11 @@ tenant_a:
           - type: import
             address_family: vpn-ipv4
             route_target: '65000:123'
-            nodes: [ dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b ]
+            nodes: [dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b]
           - type: export
             address_family: vpn-ipv4
             route_target: '65000:123'
-            nodes: [ dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b ]
+            nodes: [dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b]
           - type: import
             address_family: evpn
             route_target: '65000:456'
@@ -434,4 +449,28 @@ ipv4_acls:
       - action: permit
         protocol: ip
         source: interface_ip
+        destination: any
+
+ipv6_acls:
+  # ACL with remark + source and destination interface_ip substitution.
+  # Covers: remark skipping, source substitution, destination substitution, name suffix appended.
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - remark: This remark entry will be skipped and does not require source and destination.
+      - sequence: 30
+        action: deny
+        protocol: ipv6
+        source: interface_ip
+        destination: any
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: interface_ip
+  # ACL with static entries - no substitution, name is not modified.
+  # Covers: static ACL path where changed=False and name stays unchanged.
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: 2001:db8::/32
         destination: any

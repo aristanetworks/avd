@@ -8,6 +8,19 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>traffic_policies</samp>](## "traffic_policies") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;cpu_traffic_policy</samp>](## "traffic_policies.cpu_traffic_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf_all</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.name") | String | Required |  |  | Traffic policy name for all VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enforcement_ip_ttl_expired</samp>](## "traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired") | Boolean |  |  |  | Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_implicit_permit_disabled</samp>](## "traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled") | Boolean |  |  |  | Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "traffic_policies.vrfs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "traffic_policies.vrfs.[].cpu") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.name") | String | Required |  |  | Traffic-policy name.<br>Currently this is always configured with "fallback traffic-policy none". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy_input_physical</samp>](## "traffic_policies.vrfs.[].traffic_policy_input_physical") | String |  |  |  | Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF. |
     | [<samp>&nbsp;&nbsp;options</samp>](## "traffic_policies.options") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_per_interface</samp>](## "traffic_policies.options.counter_per_interface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_interface_poll_interval</samp>](## "traffic_policies.options.counter_interface_poll_interval") | Integer |  |  | Min: 2<br>Max: 60 | Interval between consecutive polls in seconds. |
@@ -102,6 +115,36 @@
 
     ```yaml
     traffic_policies:
+      cpu_traffic_policy:
+        vrf_all:
+
+          # Traffic policy name for all VRFs.
+          name: <str; required>
+
+          # Enforce CPU traffic-policy on management ports.
+          enforcement_management: <bool>
+
+        # Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+        enforcement_ip_ttl_expired: <bool>
+
+        # Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules.
+        fragment_implicit_permit_disabled: <bool>
+      vrfs:
+
+          # VRF name.
+        - name: <str; required; unique>
+          cpu:
+            traffic_policy: # required
+
+              # Traffic-policy name.
+              # Currently this is always configured with "fallback traffic-policy none".
+              name: <str; required>
+
+              # Enforce CPU traffic-policy on management ports.
+              enforcement_management: <bool>
+
+          # Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
+          traffic_policy_input_physical: <str>
       options:
         counter_per_interface: <bool>
 

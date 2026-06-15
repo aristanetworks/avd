@@ -36,10 +36,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].nodes.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].nodes.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].nodes.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -97,10 +99,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -243,6 +247,14 @@
             # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
             ipv4_acl_out: <str>
 
+            # Name of the IPv6 access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_in: <str>
+
+            # Name of the IPv6 access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_out: <str>
+
             # IP helper for DHCP relay.
             ip_helpers:
 
@@ -250,9 +262,22 @@
               - ip_helper: <str; required; unique>
 
                 # Interface name to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source interface.
                 source_interface: <str>
 
-                # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                # VRF to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                #   An error will be raised if inband management is not configured for the device.
+                # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source VRF name.
+                # - If not set, EOS uses the VRF on the SVI.
                 source_vrf: <str>
 
             # Static routes to be configured on every device where the SVI is configured.
@@ -424,6 +449,14 @@
         # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         ipv4_acl_out: <str>
 
+        # Name of the IPv6 access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_in: <str>
+
+        # Name of the IPv6 access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_out: <str>
+
         # IP helper for DHCP relay.
         ip_helpers:
 
@@ -431,9 +464,22 @@
           - ip_helper: <str; required; unique>
 
             # Interface name to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+            # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+            # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source interface.
             source_interface: <str>
 
-            # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+            # VRF to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+            #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+            #   An error will be raised if inband management is not configured for the device.
+            # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source VRF name.
+            # - If not set, EOS uses the VRF on the SVI.
             source_vrf: <str>
 
         # Static routes to be configured on every device where the SVI is configured.

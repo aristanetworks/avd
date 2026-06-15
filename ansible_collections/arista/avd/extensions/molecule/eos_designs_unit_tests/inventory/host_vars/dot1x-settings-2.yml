@@ -22,8 +22,21 @@ dot1x_settings:
     username_format:
       delimiter: colon
       letter_case: uppercase
+    delay: 200
+    hold_period: 100
   radius_av_pairs:
     service_type: true
+    framed_mtu: 1500
+  # `device_profiling.enabled` is omitted so it takes its default (false). The early-return
+  # fires before the accounting validation, so the sub-keys below are ignored and it is safe
+  # to combine with `accounting.mode: stop-only`.
+  device_profiling:
+    lldp:
+      system_name:
+        enabled: true
+        auth_only: true
+      system_description:
+        enabled: true
 
 aaa_settings:
   radius:

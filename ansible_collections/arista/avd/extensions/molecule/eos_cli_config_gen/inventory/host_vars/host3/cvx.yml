@@ -9,3 +9,9 @@ cvx:
         password_type: 7
     vxlan:
       vtep_mac_learning: control-plane
+    openstack:
+      shutdown: false
+      ip_access_group_name: ACL-OS
+      ipv6_access_group_name: ACL-V6-IN
+      network_type_driver:
+        vlan: default

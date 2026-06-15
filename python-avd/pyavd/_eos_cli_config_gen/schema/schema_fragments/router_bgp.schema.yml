@@ -2766,6 +2766,8 @@ keys:
                 default_originate:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
                     always:
                       type: bool
                       description: Always advertise a default route to this peer.
@@ -2810,6 +2812,17 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                default_originate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
                 additional_paths:
                   type: dict
                   $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
@@ -3566,6 +3579,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:
@@ -3884,6 +3902,10 @@ keys:
                   min: 1
                   max: 3600
                   description: Number of seconds.
+            no_graceful_restart:
+              type: bool
+              description: |
+                Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`. `graceful_restart` takes precedence.
             networks:
               type: list
               primary_key: prefix

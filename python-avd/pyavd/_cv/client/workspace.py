@@ -28,7 +28,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceStreamRequest,
 )
 
-from .async_decorators import GRPCRequestHandler
+from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, CVWorkspaceFailed
 
@@ -183,6 +183,36 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    @LimitCvVersion(min_ver="2026.2.0")
+    @GRPCRequestHandler()
+    async def rebase_workspace(
+        self: CVClientProtocol,
+        workspace_id: str,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> WorkspaceConfig:
+        """
+        Request a rebase of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
+
+        Parameters:
+            workspace_id: Unique identifier the workspace.
+            timeout: Timeout in seconds.
+
+        Returns:
+            WorkspaceConfig object after being set including any server-generated values.
+        """
+        request = WorkspaceConfigSetRequest(
+            WorkspaceConfig(
+                key=WorkspaceKey(workspace_id=workspace_id),
+                request=Request.REBASE,
+                request_params=RequestParams(
+                    request_id=f"req-{uuid4()}",
+                ),
+            ),
+        )
+        client = WorkspaceConfigServiceStub(self._channel)
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        return response.value
+
     @GRPCRequestHandler()
     async def delete_workspace(
         self: CVClientProtocol,
@@ -234,7 +264,7 @@ class WorkspaceMixin(Protocol):
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_response(
         self: CVClientProtocol,
         workspace_id: str,
@@ -282,7 +312,7 @@ class WorkspaceMixin(Protocol):
         # TODO: Consider raising a more specific CVWorkspaceFailed exception.
         raise CVResourceNotFound(msg)
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_state(
         self: CVClientProtocol,
         workspace_id: str,
@@ -322,7 +352,7 @@ class WorkspaceMixin(Protocol):
         msg = f"Workspace '{workspace_id}' has not reached desired state '{state}'."
         raise CVWorkspaceFailed(msg)
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_workspace_build_details(
         self: CVClientProtocol,
         workspace_id: str,

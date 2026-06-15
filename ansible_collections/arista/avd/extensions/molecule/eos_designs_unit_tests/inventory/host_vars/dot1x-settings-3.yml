@@ -10,11 +10,25 @@ l2leaf:
 dot1x_settings:
   enabled: true
   accounting:
-    enabled: false
+    enabled: true
   bypass_bpdu: false
   bypass_lldp: false
   dynamic_authorization:
     enabled: false
+  device_profiling:
+    enabled: true
+    dhcp:
+      hostname:
+        auth_only: true
+      parameter_request_list:
+        enabled: false
+      vendor_class_id:
+        auth_only: true
+    lldp:
+      system_name:
+        auth_only: true
+      system_description:
+        enabled: false
 
 aaa_settings:
   radius:

@@ -1,0 +1,51 @@
+---
+# Test case for both monitor_layer1 and monitor_connectivity together
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.52
+  nodes:
+    - name: monitor-combined-settings
+      id: 152
+      bgp_as: 152
+
+logging_settings:
+  hosts:
+    - name: syslog.example.com
+  monitor_layer1:
+    enabled: true
+    logging_transceiver:
+      enabled: true
+
+monitor_connectivity:
+  # global address_only not set
+  interval: 10
+  interface_sets:
+    - name: SET_LOOPBACK0
+      interfaces: [ Loopback0 ]
+    - name: SET_LOOPBACK1
+      interfaces: [ Loopback1 ]
+    - name: SET_LOOPBACK2
+      interfaces: [ Loopback2 ]
+  hosts:
+    - name: INTERNET_CHECK
+      # local address_only: true with local_interfaces
+      local_interfaces: SET_LOOPBACK0
+      address_only: true
+      ip: 8.8.4.4
+    - name: INTERNET_CHECK_1
+      # local address_only not set no local_interfaces
+      ip: 8.8.4.5
+    - name: INTERNET_CHECK_2
+      local_interfaces: SET_LOOPBACK1
+      # local address_only: false
+      address_only: false
+      ip: 8.8.4.6
+    - name: INTERNET_CHECK_3
+      # local address_only not set with local_interfaces
+      local_interfaces: SET_LOOPBACK2
+      ip: 8.8.4.7

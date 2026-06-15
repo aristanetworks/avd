@@ -41,11 +41,15 @@ dot1x:
   protocol_lldp_bypass: true
   protocol_bpdu_bypass: true
   dynamic_authorization: true
+  mac_based_authentication:
+    delay: 200
+    hold_period: 100
   radius_av_pair_username_format:
     delimiter: colon
     mac_string_case: uppercase
   radius_av_pair:
     service_type: true
+    framed_mtu: 1500
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

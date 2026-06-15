@@ -833,6 +833,15 @@ keys:
                       valid_values:
                         - forwardable
                         - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                    - str
             sync_message:
               type: dict
               keys:
@@ -1203,7 +1212,11 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
-
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: |-
+            CPU traffic policy name.
+            Fallback to the CPU traffic policy applied to the VRF in which this interface is configured.
         mpls:
           type: dict
           keys:

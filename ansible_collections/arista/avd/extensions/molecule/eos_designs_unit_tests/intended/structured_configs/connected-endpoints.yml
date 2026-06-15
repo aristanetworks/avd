@@ -21,7 +21,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT1
+  description: Interface description Ethernet1 custom_server_OLD_SW-1/2_ENDPOINT_PORT1
   shutdown: false
   channel_group:
     id: 1
@@ -32,7 +32,7 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
 - name: Ethernet2
-  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT2
+  description: Interface description Ethernet2 custom_server_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
   channel_group:
     id: 1
@@ -56,6 +56,8 @@ ethernet_interfaces:
 - name: Ethernet4
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
+  mac_access_group_in: acl-on-endpoints
+  mac_access_group_out: acl-on-endpoints
   metadata:
     peer: OLD_SW-1/4
     peer_type: custom_server
@@ -153,17 +155,6 @@ ethernet_interfaces:
     peer: OLD_SW-1/9
     peer_type: custom_server
     peer_key: servers
-- name: Ethernet25
-  description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
-  shutdown: false
-  channel_group:
-    id: 25
-    mode: active
-  metadata:
-    peer: OLD_SW-1/12
-    peer_interface: Endpoint_port6
-    peer_type: custom_server
-    peer_key: servers
 - name: Ethernet12
   description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
@@ -233,6 +224,7 @@ ethernet_interfaces:
 - name: Ethernet14
   description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED
   shutdown: false
+  mac_access_group_in: acl_remark
   poe:
     disabled: true
   ptp:
@@ -273,6 +265,8 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
   channel_group:
     id: 15
     mode: active
@@ -293,6 +287,8 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream
+  mac_access_group_in: acl-on-port-profile
+  mac_access_group_out: acl-on-port-profile
   channel_group:
     id: 15
     mode: active
@@ -594,6 +590,64 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Ethernet42
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: true
+  metadata:
+    peer: ADDRESS_LOCKING_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 111
+- name: Ethernet43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet44
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet46
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -624,6 +678,25 @@ ip_radius:
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
+mac_access_lists:
+- name: acl-on-endpoints
+  entries:
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+  - sequence: 10
+    action: deny 01:80:c2:00:00:00 00:00:00:00:00:00 any
+- name: acl_remark
+  entries:
+  - sequence: 10
+    action: remark acl with remark
+- name: acl-on-port-profile
+  counters_per_entry: true
+  entries:
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+- name: no-entries
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -637,7 +710,8 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: Port channel description custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
+  description: Port channel description Port-Channel1 custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION PORT-CHANNEL1
+    CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
   switchport:
     enabled: true
@@ -675,6 +749,7 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 100
 - name: Port-Channel20.200
+  description: Port-Channel20.200-200-200-200-custom_server-OLD_SW-1/9
   encapsulation_vlan:
     client:
       encapsulation: dot1q
@@ -682,16 +757,13 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
-- name: Port-Channel25
-  description: CUSTOM_SERVER_OLD_SW-1/12
-  shutdown: false
-  switchport:
-    enabled: false
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
+  mac_access_group_in: acl-on-endpoints
+  mac_access_group_out: no-entries
   switchport:
     enabled: true
 - name: Port-Channel15
@@ -776,6 +848,23 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Port-Channel43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
 radius_server:
   vrfs:
   - name: MGMT
