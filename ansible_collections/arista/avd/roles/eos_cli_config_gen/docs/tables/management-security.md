@@ -107,7 +107,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificate</samp>](## "management_security.ssl_profiles.[].certificate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file</samp>](## "management_security.ssl_profiles.[].certificate.file") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.ssl_profiles.[].certificate.key") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_certificate</samp>](## "management_security.ssl_profiles.[].certificate.auto_certificate") | String |  |  |  | Automatically managed certificate profile.<br>This is mutually exclusive with `file` and `key`, if `auto_certificate` is specified, `file` and `key` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_certificate</samp>](## "management_security.ssl_profiles.[].certificate.auto_certificate") | String |  |  |  | Automatically managed certificate profile.<br>This is mutually exclusive with 'file' and 'key', if 'auto_certificate' is specified, 'file' and 'key' are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certificate_revocation_lists</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists") | List, items: String |  |  |  | List of CRLs (Certificate Revocation List).<br>If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.ssl_profiles.[].certificate_revocation_lists.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;shared_secret_profiles</samp>](## "management_security.shared_secret_profiles") | List, items: Dictionary |  |  |  |  |
@@ -359,7 +359,7 @@
             key: <str>
 
             # Automatically managed certificate profile.
-            # This is mutually exclusive with `file` and `key`, if `auto_certificate` is specified, `file` and `key` are ignored.
+            # This is mutually exclusive with 'file' and 'key', if 'auto_certificate' is specified, 'file' and 'key' are ignored.
             auto_certificate: <str>
 
           # List of CRLs (Certificate Revocation List).
