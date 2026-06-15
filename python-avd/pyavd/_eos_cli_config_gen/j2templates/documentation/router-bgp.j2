@@ -554,16 +554,23 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
 #### Router BGP EVPN Address Family
+{%         set evpn_af_list_items = namespace(started=false) %}
 {%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is **enabled**
+{%             set evpn_af_list_items.started = true %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}
 
 - Next-hop resolution is **disabled**
+{%             set evpn_af_list_items.started = true %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_unchanged is arista.avd.defined(true) %}
+{%             if not evpn_af_list_items.started %}
+
+{%             endif %}
 - Next-hop-unchanged is explicitly configured (default behaviour)
+{%             set evpn_af_list_items.started = true %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined() %}
 
@@ -578,13 +585,18 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 endif %}
 - Next-hop MPLS resolution {{ rib_position[loop.index0] }}-RIB : {{ evpn_mpls_resolution_rib }}
 {%             endfor %}
+{%             set evpn_af_list_items.started = true %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.layer_2_fec_in_place_update.enabled is arista.avd.defined(true) %}
+{%             if not evpn_af_list_items.started %}
+
+{%             endif %}
 {%             if router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout is arista.avd.defined %}
 - Layer-2 In-place FEC update tracking timeout: {{ router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout }} seconds
 {%             else %}
 - Layer-2 In-place FEC update operation enabled
 {%             endif %}
+{%             set evpn_af_list_items.started = true %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
