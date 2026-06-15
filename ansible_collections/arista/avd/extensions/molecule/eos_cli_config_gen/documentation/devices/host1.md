@@ -1700,6 +1700,9 @@ ip radius vrf abc source-interface Loopback10
 
 | Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
 | ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| LDAP_NO_SERVERS | ldap | - | - | - | - |
+| LDAP_NO_VRF_FIRST | ldap | default | 10.10.10.250 | - | - |
+| LDAP_NO_VRF_FIRST | ldap | mgt | 10.10.10.251 | - | - |
 | TACACS | tacacs+ | mgt | 10.10.11.157 | - | - |
 | TACACS | tacacs+ | default | 10.10.11.249 | - | - |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 | - | - |
@@ -1729,6 +1732,12 @@ aaa group server ldap LADP2
 aaa group server ldap LDAP1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
+!
+aaa group server ldap LDAP_NO_SERVERS
+!
+aaa group server ldap LDAP_NO_VRF_FIRST
+   server 10.10.10.250
+   server 10.10.10.251 vrf mgt
 !
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
