@@ -299,6 +299,10 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: |-
+                  VRF used to reach the DHCP server.
+                  If not set, the VRF of the destination matches the VRF of this interface.
+                  Use the `default` to reach the DHCP server through the default VRF.
                 convert_types:
                   - int
               local_interface:
