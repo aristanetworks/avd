@@ -784,7 +784,7 @@ vlan_interfaces:
           preferred_lifetime: 50
           no_autoconfig_flag: true
   - name: Vlan341
-    description: IP addess as dhcp and Install default-route obtained via DHCP
+    description: IP address as dhcp and Install default-route obtained via DHCP
     ip_address: dhcp
     dhcp_client_accept_default_route: true
     arp_gratuitous_accept: true

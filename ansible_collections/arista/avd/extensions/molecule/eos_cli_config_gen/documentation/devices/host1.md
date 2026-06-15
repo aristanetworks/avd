@@ -7430,7 +7430,7 @@ interface Tunnel5
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | v6 nd new structure | default | - | - |
-| Vlan341 | IP addess as dhcp and Install default-route obtained via DHCP | default | - | - |
+| Vlan341 | IP address as dhcp and Install default-route obtained via DHCP | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7900,7 +7900,7 @@ interface Vlan340
    ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
 !
 interface Vlan341
-   description IP addess as dhcp and Install default-route obtained via DHCP
+   description IP address as dhcp and Install default-route obtained via DHCP
    ip address dhcp
    arp gratuitous accept
    dhcp client accept default-route
