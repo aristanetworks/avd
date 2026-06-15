@@ -6,6 +6,7 @@ from typing import Protocol
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, StructuredConfigGeneratorProtocol
 
 from .ethernet_interfaces import EthernetInterfacesMixin
+from .mac_access_lists import MacAccessListsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .utils import UtilsMixin
 
@@ -13,6 +14,7 @@ from .utils import UtilsMixin
 class AvdStructuredConfigConnectedEndpointsProtocol(
     EthernetInterfacesMixin,
     PortChannelInterfacesMixin,
+    MacAccessListsMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
     Protocol,
