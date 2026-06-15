@@ -51,6 +51,9 @@ keys:
           error_correction_encoding:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
+          fabric_capacity_low:
+            type: dict
+            $ref: "eos_designs#/$defs/detect_and_recovery"
           hardware_speed_group:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
@@ -102,6 +105,9 @@ keys:
             type: dict
             $ref: "eos_designs#/$defs/recovery_only"
           tapagg:
+            type: dict
+            $ref: "eos_designs#/$defs/detect_and_recovery"
+          tpid:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
           transceiver_adapter:

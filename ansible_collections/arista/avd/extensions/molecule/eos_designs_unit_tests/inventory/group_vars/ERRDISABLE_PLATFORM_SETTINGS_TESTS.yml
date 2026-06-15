@@ -56,6 +56,18 @@ l3leaf:
             - Ethernet3
           uplink_switches:
             - errdisable-veos-lab
+    - group: errdisable-7280r3-group
+      nodes:
+        - name: errdisable-7280r3
+          id: 4
+          # 7280R3 platform: tpid and fabric_capacity_low are supported (not filtered out).
+          platform: 7280R3
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet4
+          uplink_switches:
+            - errdisable-veos-lab
     - group: errdisable-custom-platform-group
       nodes:
         - name: errdisable-custom-platform
@@ -98,6 +110,14 @@ errdisable_settings:
       detection: true
       recovery: true
       recovery_interval: 120
+    fabric_capacity_low:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    tpid:
+      detection: true
+      recovery: true
+      recovery_interval: 300
     # Expected to be filtered out on virtual platforms (vEOS-lab, cEOSLab)
     error_correction_encoding:
       detection: true

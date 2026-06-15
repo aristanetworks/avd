@@ -44,6 +44,17 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet4
+  description: P2P_errdisable-7280r3_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.6/31
+  metadata:
+    peer: errdisable-7280r3
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 - name: Ethernet5
   description: P2P_errdisable-custom-platform_Ethernet1
   shutdown: false
@@ -120,6 +131,12 @@ router_bgp:
     metadata:
       peer: errdisable-7280r
     description: errdisable-7280r_Ethernet1
+  - ip_address: 10.10.50.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-7280r3
+    description: errdisable-7280r3_Ethernet1
   - ip_address: 10.10.50.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'

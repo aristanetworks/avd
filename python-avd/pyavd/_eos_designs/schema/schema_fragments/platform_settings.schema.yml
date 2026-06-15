@@ -68,6 +68,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -86,6 +89,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false
@@ -118,6 +124,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -136,6 +145,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false
@@ -169,10 +181,16 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             switchcard_unreachable:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -199,7 +217,13 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -224,10 +248,16 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -257,6 +287,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -275,6 +308,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false
@@ -304,7 +340,13 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -332,7 +374,13 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -358,7 +406,13 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -390,6 +444,12 @@ keys:
             dot1x_phone_classification:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
+            tpid:
+              detection: false
+              recovery: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -412,7 +472,13 @@ keys:
               recovery: false
             dot1x_session_replace:
               detection: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
         reload_delay:
           mlag: 300
@@ -457,10 +523,16 @@ keys:
             dot1x_phone_classification:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -486,6 +558,9 @@ keys:
             dot1x_phone_classification:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             port_breakout:
               detection: false
               recovery: false
@@ -499,6 +574,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -524,6 +602,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -542,6 +623,9 @@ keys:
             stuck_queue:
               recovery: false
             switchcard_unreachable:
+              detection: false
+              recovery: false
+            tpid:
               detection: false
               recovery: false
             transceiver_adapter:
@@ -573,6 +657,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -595,6 +682,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false
@@ -688,10 +778,16 @@ keys:
             dot1x_phone_classification:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             tap_port_init:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
         management_interface: Management0
         reload_delay:
           mlag: 300
@@ -722,6 +818,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -744,6 +843,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false
@@ -777,6 +879,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -795,6 +900,9 @@ keys:
             stuck_queue:
               recovery: false
             switchcard_unreachable:
+              detection: false
+              recovery: false
+            tpid:
               detection: false
               recovery: false
             transceiver_adapter:
@@ -826,6 +934,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -844,6 +955,9 @@ keys:
             stuck_queue:
               recovery: false
             switchcard_unreachable:
+              detection: false
+              recovery: false
+            tpid:
               detection: false
               recovery: false
             transceiver_adapter:
@@ -870,6 +984,9 @@ keys:
             dot1x:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             storm_control:
               detection: false
               recovery: false
@@ -882,6 +999,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
           subinterface_monitor_session: false
         digital_twin:
           platform: vEOS-lab
@@ -906,6 +1026,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -921,6 +1044,9 @@ keys:
             speed_misconfigured:
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -944,6 +1070,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -959,6 +1088,9 @@ keys:
             speed_misconfigured:
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -985,6 +1117,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1008,6 +1143,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1058,6 +1196,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1081,6 +1222,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1134,6 +1278,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1157,6 +1304,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1198,6 +1348,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1221,6 +1374,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1265,6 +1421,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1286,6 +1445,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1322,6 +1484,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1343,6 +1508,9 @@ keys:
               detection: false
               recovery: false
             tap_port_init:
+              recovery: false
+            tpid:
+              detection: false
               recovery: false
             transceiver_adapter:
               detection: false
@@ -1371,6 +1539,9 @@ keys:
             error_correction_encoding:
               detection: false
               recovery: false
+            fabric_capacity_low:
+              detection: false
+              recovery: false
             hardware_speed_group:
               detection: false
               recovery: false
@@ -1395,6 +1566,9 @@ keys:
               recovery: false
             tapagg:
               detection: false
+            tpid:
+              detection: false
+              recovery: false
             transceiver_adapter:
               detection: false
               recovery: false

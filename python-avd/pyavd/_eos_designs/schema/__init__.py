@@ -19137,6 +19137,38 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class FabricCapacityLow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool
+                """Default value: `False`"""
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        FabricCapacityLow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
             class HardwareSpeedGroup(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -19597,6 +19629,38 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Tpid(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool
+                """Default value: `False`"""
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Tpid.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
             class TransceiverAdapter(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -19782,6 +19846,7 @@ class EosDesigns(EosDesignsRootModel):
                 "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
                 "dot1x_session_replace": {"type": Dot1xSessionReplace},
                 "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                "fabric_capacity_low": {"type": FabricCapacityLow},
                 "hardware_speed_group": {"type": HardwareSpeedGroup},
                 "hitless_reload_down": {"type": HitlessReloadDown},
                 "interface_speed": {"type": InterfaceSpeed},
@@ -19799,6 +19864,7 @@ class EosDesigns(EosDesignsRootModel):
                 "switchcard_unreachable": {"type": SwitchcardUnreachable},
                 "tap_port_init": {"type": TapPortInit},
                 "tapagg": {"type": Tapagg},
+                "tpid": {"type": Tpid},
                 "transceiver_adapter": {"type": TransceiverAdapter},
                 "uplink_failure_detection": {"type": UplinkFailureDetection},
                 "xcvr_misconfigured": {"type": XcvrMisconfigured},
@@ -19821,6 +19887,8 @@ class EosDesigns(EosDesignsRootModel):
             dot1x_session_replace: Dot1xSessionReplace
             """Subclass of AvdModel."""
             error_correction_encoding: ErrorCorrectionEncoding
+            """Subclass of AvdModel."""
+            fabric_capacity_low: FabricCapacityLow
             """Subclass of AvdModel."""
             hardware_speed_group: HardwareSpeedGroup
             """Subclass of AvdModel."""
@@ -19856,6 +19924,8 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             tapagg: Tapagg
             """Subclass of AvdModel."""
+            tpid: Tpid
+            """Subclass of AvdModel."""
             transceiver_adapter: TransceiverAdapter
             """Subclass of AvdModel."""
             uplink_failure_detection: UplinkFailureDetection
@@ -19882,6 +19952,7 @@ class EosDesigns(EosDesignsRootModel):
                     dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
                     dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
                     error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                    fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
                     hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
                     hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
                     interface_speed: InterfaceSpeed | UndefinedType = Undefined,
@@ -19899,6 +19970,7 @@ class EosDesigns(EosDesignsRootModel):
                     switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
                     tap_port_init: TapPortInit | UndefinedType = Undefined,
                     tapagg: Tapagg | UndefinedType = Undefined,
+                    tpid: Tpid | UndefinedType = Undefined,
                     transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
                     uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
                     xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
@@ -19921,6 +19993,7 @@ class EosDesigns(EosDesignsRootModel):
                         dot1x_phone_classification: Subclass of AvdModel.
                         dot1x_session_replace: Subclass of AvdModel.
                         error_correction_encoding: Subclass of AvdModel.
+                        fabric_capacity_low: Subclass of AvdModel.
                         hardware_speed_group: Subclass of AvdModel.
                         hitless_reload_down: Subclass of AvdModel.
                         interface_speed: Subclass of AvdModel.
@@ -19938,6 +20011,7 @@ class EosDesigns(EosDesignsRootModel):
                         switchcard_unreachable: Subclass of AvdModel.
                         tap_port_init: Subclass of AvdModel.
                         tapagg: Subclass of AvdModel.
+                        tpid: Subclass of AvdModel.
                         transceiver_adapter: Subclass of AvdModel.
                         uplink_failure_detection: Subclass of AvdModel.
                         xcvr_misconfigured: Subclass of AvdModel.
@@ -40019,6 +40093,30 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class FabricCapacityLow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            FabricCapacityLow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
                 class HardwareSpeedGroup(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -40397,6 +40495,30 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class Tpid(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tpid.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
                 class TransceiverAdapter(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -40544,6 +40666,7 @@ class EosDesigns(EosDesignsRootModel):
                     "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
                     "dot1x_session_replace": {"type": Dot1xSessionReplace},
                     "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                    "fabric_capacity_low": {"type": FabricCapacityLow},
                     "hardware_speed_group": {"type": HardwareSpeedGroup},
                     "hitless_reload_down": {"type": HitlessReloadDown},
                     "interface_speed": {"type": InterfaceSpeed},
@@ -40561,6 +40684,7 @@ class EosDesigns(EosDesignsRootModel):
                     "switchcard_unreachable": {"type": SwitchcardUnreachable},
                     "tap_port_init": {"type": TapPortInit},
                     "tapagg": {"type": Tapagg},
+                    "tpid": {"type": Tpid},
                     "transceiver_adapter": {"type": TransceiverAdapter},
                     "uplink_failure_detection": {"type": UplinkFailureDetection},
                     "xcvr_misconfigured": {"type": XcvrMisconfigured},
@@ -40583,6 +40707,8 @@ class EosDesigns(EosDesignsRootModel):
                 dot1x_session_replace: Dot1xSessionReplace
                 """Subclass of AvdModel."""
                 error_correction_encoding: ErrorCorrectionEncoding
+                """Subclass of AvdModel."""
+                fabric_capacity_low: FabricCapacityLow
                 """Subclass of AvdModel."""
                 hardware_speed_group: HardwareSpeedGroup
                 """Subclass of AvdModel."""
@@ -40618,6 +40744,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 tapagg: Tapagg
                 """Subclass of AvdModel."""
+                tpid: Tpid
+                """Subclass of AvdModel."""
                 transceiver_adapter: TransceiverAdapter
                 """Subclass of AvdModel."""
                 uplink_failure_detection: UplinkFailureDetection
@@ -40644,6 +40772,7 @@ class EosDesigns(EosDesignsRootModel):
                         dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
                         dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
                         error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                        fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
                         hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
                         hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
                         interface_speed: InterfaceSpeed | UndefinedType = Undefined,
@@ -40661,6 +40790,7 @@ class EosDesigns(EosDesignsRootModel):
                         switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
                         tap_port_init: TapPortInit | UndefinedType = Undefined,
                         tapagg: Tapagg | UndefinedType = Undefined,
+                        tpid: Tpid | UndefinedType = Undefined,
                         transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
                         uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
                         xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
@@ -40683,6 +40813,7 @@ class EosDesigns(EosDesignsRootModel):
                             dot1x_phone_classification: Subclass of AvdModel.
                             dot1x_session_replace: Subclass of AvdModel.
                             error_correction_encoding: Subclass of AvdModel.
+                            fabric_capacity_low: Subclass of AvdModel.
                             hardware_speed_group: Subclass of AvdModel.
                             hitless_reload_down: Subclass of AvdModel.
                             interface_speed: Subclass of AvdModel.
@@ -40700,6 +40831,7 @@ class EosDesigns(EosDesignsRootModel):
                             switchcard_unreachable: Subclass of AvdModel.
                             tap_port_init: Subclass of AvdModel.
                             tapagg: Subclass of AvdModel.
+                            tpid: Subclass of AvdModel.
                             transceiver_adapter: Subclass of AvdModel.
                             uplink_failure_detection: Subclass of AvdModel.
                             xcvr_misconfigured: Subclass of AvdModel.
@@ -41710,6 +41842,30 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class FabricCapacityLow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            FabricCapacityLow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
                 class HardwareSpeedGroup(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -42088,6 +42244,30 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class Tpid(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tpid.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
                 class TransceiverAdapter(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -42235,6 +42415,7 @@ class EosDesigns(EosDesignsRootModel):
                     "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
                     "dot1x_session_replace": {"type": Dot1xSessionReplace},
                     "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                    "fabric_capacity_low": {"type": FabricCapacityLow},
                     "hardware_speed_group": {"type": HardwareSpeedGroup},
                     "hitless_reload_down": {"type": HitlessReloadDown},
                     "interface_speed": {"type": InterfaceSpeed},
@@ -42252,6 +42433,7 @@ class EosDesigns(EosDesignsRootModel):
                     "switchcard_unreachable": {"type": SwitchcardUnreachable},
                     "tap_port_init": {"type": TapPortInit},
                     "tapagg": {"type": Tapagg},
+                    "tpid": {"type": Tpid},
                     "transceiver_adapter": {"type": TransceiverAdapter},
                     "uplink_failure_detection": {"type": UplinkFailureDetection},
                     "xcvr_misconfigured": {"type": XcvrMisconfigured},
@@ -42274,6 +42456,8 @@ class EosDesigns(EosDesignsRootModel):
                 dot1x_session_replace: Dot1xSessionReplace
                 """Subclass of AvdModel."""
                 error_correction_encoding: ErrorCorrectionEncoding
+                """Subclass of AvdModel."""
+                fabric_capacity_low: FabricCapacityLow
                 """Subclass of AvdModel."""
                 hardware_speed_group: HardwareSpeedGroup
                 """Subclass of AvdModel."""
@@ -42309,6 +42493,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 tapagg: Tapagg
                 """Subclass of AvdModel."""
+                tpid: Tpid
+                """Subclass of AvdModel."""
                 transceiver_adapter: TransceiverAdapter
                 """Subclass of AvdModel."""
                 uplink_failure_detection: UplinkFailureDetection
@@ -42335,6 +42521,7 @@ class EosDesigns(EosDesignsRootModel):
                         dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
                         dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
                         error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                        fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
                         hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
                         hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
                         interface_speed: InterfaceSpeed | UndefinedType = Undefined,
@@ -42352,6 +42539,7 @@ class EosDesigns(EosDesignsRootModel):
                         switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
                         tap_port_init: TapPortInit | UndefinedType = Undefined,
                         tapagg: Tapagg | UndefinedType = Undefined,
+                        tpid: Tpid | UndefinedType = Undefined,
                         transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
                         uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
                         xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
@@ -42374,6 +42562,7 @@ class EosDesigns(EosDesignsRootModel):
                             dot1x_phone_classification: Subclass of AvdModel.
                             dot1x_session_replace: Subclass of AvdModel.
                             error_correction_encoding: Subclass of AvdModel.
+                            fabric_capacity_low: Subclass of AvdModel.
                             hardware_speed_group: Subclass of AvdModel.
                             hitless_reload_down: Subclass of AvdModel.
                             interface_speed: Subclass of AvdModel.
@@ -42391,6 +42580,7 @@ class EosDesigns(EosDesignsRootModel):
                             switchcard_unreachable: Subclass of AvdModel.
                             tap_port_init: Subclass of AvdModel.
                             tapagg: Subclass of AvdModel.
+                            tpid: Subclass of AvdModel.
                             transceiver_adapter: Subclass of AvdModel.
                             uplink_failure_detection: Subclass of AvdModel.
                             xcvr_misconfigured: Subclass of AvdModel.
@@ -107035,6 +107225,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107042,6 +107233,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "speed_misconfigured": {"recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107063,6 +107255,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107070,6 +107263,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "speed_misconfigured": {"recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107092,8 +107286,10 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107112,7 +107308,9 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107131,8 +107329,10 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107153,6 +107353,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107160,6 +107361,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "speed_misconfigured": {"recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107180,7 +107382,9 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107199,7 +107403,9 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107217,7 +107423,9 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107237,6 +107445,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_session_replace": {"detection": False},
                                 "tap_port_init": {"recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107254,7 +107464,9 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107295,8 +107507,10 @@ class EosDesigns(EosDesignsRootModel):
                             "errdisable_causes": {
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -107315,11 +107529,13 @@ class EosDesigns(EosDesignsRootModel):
                                 "acl": {"recovery": False},
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "port_breakout": {"detection": False, "recovery": False},
                                 "storm_control": {"detection": False, "recovery": False},
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -107338,6 +107554,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107345,6 +107562,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "storm_control": {"detection": False, "recovery": False},
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107365,6 +107583,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107373,6 +107592,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107441,8 +107661,10 @@ class EosDesigns(EosDesignsRootModel):
                             "errdisable_causes": {
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                         },
                         "management_interface": "Management0",
@@ -107464,6 +107686,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107472,6 +107695,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107494,6 +107718,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107501,6 +107726,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "storm_control": {"detection": False, "recovery": False},
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107521,6 +107747,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107528,6 +107755,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "storm_control": {"detection": False, "recovery": False},
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                             "subinterface_monitor_session": False,
@@ -107547,11 +107775,13 @@ class EosDesigns(EosDesignsRootModel):
                             "errdisable_causes": {
                                 "acl": {"recovery": False},
                                 "dot1x": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "storm_control": {"detection": False, "recovery": False},
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                             },
                             "subinterface_monitor_session": False,
                         },
@@ -107572,12 +107802,14 @@ class EosDesigns(EosDesignsRootModel):
                             "errdisable_causes": {
                                 "dot1x": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
                                 "port_breakout": {"detection": False, "recovery": False},
                                 "speed_misconfigured": {"recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107594,12 +107826,14 @@ class EosDesigns(EosDesignsRootModel):
                             "errdisable_causes": {
                                 "dot1x": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
                                 "port_breakout": {"detection": False, "recovery": False},
                                 "speed_misconfigured": {"recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107617,6 +107851,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_coa": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107626,6 +107861,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                                 "xcvr_misconfigured": {"detection": False, "recovery": False},
                                 "xcvr_overheat": {"detection": False, "recovery": False},
@@ -107656,6 +107892,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107665,6 +107902,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                                 "xcvr_misconfigured": {"detection": False, "recovery": False},
                                 "xcvr_overheat": {"detection": False, "recovery": False},
@@ -107696,6 +107934,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "dot1x_session_replace": {"detection": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107705,6 +107944,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                                 "xcvr_misconfigured": {"detection": False, "recovery": False},
                                 "xcvr_overheat": {"detection": False, "recovery": False},
@@ -107730,6 +107970,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "acl": {"detection": False, "recovery": False},
                                 "dot1x": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107739,6 +107980,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                                 "xcvr_misconfigured": {"detection": False, "recovery": False},
                                 "xcvr_overheat": {"detection": False, "recovery": False},
@@ -107766,6 +108008,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "acl": {"detection": False, "recovery": False},
                                 "dot1x": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107774,6 +108017,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107798,6 +108042,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "dot1x": {"detection": False, "recovery": False},
                                 "dot1x_phone_classification": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107806,6 +108051,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "stuck_queue": {"recovery": False},
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                         },
@@ -107827,6 +108073,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "acl": {"detection": False, "recovery": False},
                                 "dot1x": {"detection": False, "recovery": False},
                                 "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
                                 "hardware_speed_group": {"detection": False, "recovery": False},
                                 "interface_speed": {"detection": False, "recovery": False},
                                 "internal_error": {"detection": False, "recovery": False},
@@ -107836,6 +108083,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "switchcard_unreachable": {"detection": False, "recovery": False},
                                 "tap_port_init": {"recovery": False},
                                 "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
                                 "transceiver_adapter": {"detection": False, "recovery": False},
                             },
                             "subinterface_monitor_session": False,
@@ -109514,7 +109762,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "720DP-24S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-48S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["722XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "720DT-48S", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT-24S"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R2"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}}}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "720DP-24S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-48S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["722XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "720DT-48S", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT-24S"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R2"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """

@@ -43,6 +43,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.error_correction_encoding.detection") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.error_correction_encoding.recovery") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.error_correction_encoding.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "errdisable_settings.causes.fabric_capacity_low") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.fabric_capacity_low.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.fabric_capacity_low.recovery") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.fabric_capacity_low.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "errdisable_settings.causes.hardware_speed_group") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.hardware_speed_group.detection") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.hardware_speed_group.recovery") | Boolean |  | `False` |  |  |
@@ -100,6 +104,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.tapagg.detection") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.tapagg.recovery") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.tapagg.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "errdisable_settings.causes.tpid") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.tpid.detection") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.tpid.recovery") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_interval</samp>](## "errdisable_settings.causes.tpid.recovery_interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for each recovery cause in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "errdisable_settings.causes.transceiver_adapter") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "errdisable_settings.causes.transceiver_adapter.detection") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "errdisable_settings.causes.transceiver_adapter.recovery") | Boolean |  | `False` |  |  |
@@ -235,6 +243,12 @@
 
           # Interval for each recovery cause in seconds.
           recovery_interval: <int; 30-86400>
+        fabric_capacity_low:
+          detection: <bool>
+          recovery: <bool; default=False>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
         hardware_speed_group:
           detection: <bool>
           recovery: <bool; default=False>
@@ -319,6 +333,12 @@
           # Interval for each recovery cause in seconds.
           recovery_interval: <int; 30-86400>
         tapagg:
+          detection: <bool>
+          recovery: <bool; default=False>
+
+          # Interval for each recovery cause in seconds.
+          recovery_interval: <int; 30-86400>
+        tpid:
           detection: <bool>
           recovery: <bool; default=False>
 

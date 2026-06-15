@@ -98,6 +98,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.detection") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.recovery") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.detection") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.recovery") | Boolean |  | `True` |  |  |
@@ -139,6 +142,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg.detection") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tapagg.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.tpid.recovery") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.detection") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "custom_platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.recovery") | Boolean |  | `True` |  |  |
@@ -360,6 +366,9 @@
             error_correction_encoding:
               detection: <bool; default=True>
               recovery: <bool; default=True>
+            fabric_capacity_low:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
             hardware_speed_group:
               detection: <bool; default=True>
               recovery: <bool; default=True>
@@ -399,6 +408,9 @@
             tap_port_init:
               recovery: <bool; default=True>
             tapagg:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            tpid:
               detection: <bool; default=True>
               recovery: <bool; default=True>
             transceiver_adapter:

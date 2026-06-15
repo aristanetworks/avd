@@ -381,6 +381,15 @@ $defs:
                     recovery:
                       type: bool
                       default: true
+                fabric_capacity_low:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 hardware_speed_group:
                   type: dict
                   keys:
@@ -496,6 +505,15 @@ $defs:
                       type: bool
                       default: true
                 tapagg:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                tpid:
                   type: dict
                   keys:
                     detection:
