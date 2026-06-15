@@ -80,7 +80,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             request_id=workspace_config.request_params.request_id,
         )
         # Form a list of known inactive existing devices
-        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device._streaming is False]:
+        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is False]:
             msg = f"Inactive devices present: {inactive_devices}"
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
