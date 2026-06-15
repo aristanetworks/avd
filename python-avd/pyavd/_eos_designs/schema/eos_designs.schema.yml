@@ -14938,6 +14938,58 @@ $defs:
             description: In seconds <0-4294967295> or infinite.
             convert_types:
             - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in
+              Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers
+              dns_servers_lifetime:
+                type: int
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: 'VRF used to reach the DHCP server.
+
+                    If not set, the VRF of the destination matches the VRF of this
+                    interface.
+
+                    Use the `default` to reach the DHCP server through the default
+                    VRF.'
+                  convert_types:
+                  - int
+                local_interface:
+                  type: str
+                  description: 'Local interface to communicate with DHCP server.
+
+                    Mutually exclusive with `source_address` and takes precedence
+                    over it.'
+                source_address:
+                  type: str
+                  description: 'Source IPv6 address to communicate with DHCP server.
+
+                    Mutually exclusive with `local_interface`, which takes precedence
+                    if both are set.'
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the
+                    relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.

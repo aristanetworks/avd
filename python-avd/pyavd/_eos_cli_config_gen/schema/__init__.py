@@ -9503,6 +9503,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -9529,7 +9535,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.
@@ -72172,6 +72182,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -72198,7 +72214,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.

@@ -28,6 +28,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].nodes.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
@@ -91,6 +103,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
@@ -213,6 +237,45 @@
 
               # In seconds <0-4294967295> or infinite.
               preferred_lifetime: <str>
+
+              # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+              ra_dns_servers:
+                servers: # >=1 items
+
+                    # IPv6 address of DNS server.
+                  - address: <str; required; unique>
+
+                    # Specifies the lifetime period for this server in seconds.
+                    # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                    lifetime: <int; 0-4294967295>
+
+                # Router Advertisement DNS server lifetime value in seconds.
+                dns_servers_lifetime: <int; 0-4294967295>
+
+            # IPv6 DHCP relay settings.
+            ipv6_dhcp_relay:
+
+              # List of IPv6 DHCP relay destinations.
+              destinations:
+
+                  # DHCP server's IPv6 address.
+                - address: <str; required; unique>
+
+                  # VRF used to reach the DHCP server.
+                  # If not set, the VRF of the destination matches the VRF of this interface.
+                  # Use the `default` to reach the DHCP server through the default VRF.
+                  vrf: <str>
+
+                  # Local interface to communicate with DHCP server.
+                  # Mutually exclusive with `source_address` and takes precedence over it.
+                  local_interface: <str>
+
+                  # Source IPv6 address to communicate with DHCP server.
+                  # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+                  source_address: <str>
+
+                  # Override the default link address specified in the relayed DHCP packet.
+                  link_address: <str>
 
             # Secondary IPv4 VXLAN Anycast IP addresses.
             ip_address_virtual_secondaries:
@@ -415,6 +478,45 @@
 
           # In seconds <0-4294967295> or infinite.
           preferred_lifetime: <str>
+
+          # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+          ra_dns_servers:
+            servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
+
+        # IPv6 DHCP relay settings.
+        ipv6_dhcp_relay:
+
+          # List of IPv6 DHCP relay destinations.
+          destinations:
+
+              # DHCP server's IPv6 address.
+            - address: <str; required; unique>
+
+              # VRF used to reach the DHCP server.
+              # If not set, the VRF of the destination matches the VRF of this interface.
+              # Use the `default` to reach the DHCP server through the default VRF.
+              vrf: <str>
+
+              # Local interface to communicate with DHCP server.
+              # Mutually exclusive with `source_address` and takes precedence over it.
+              local_interface: <str>
+
+              # Source IPv6 address to communicate with DHCP server.
+              # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+              source_address: <str>
+
+              # Override the default link address specified in the relayed DHCP packet.
+              link_address: <str>
 
         # Secondary IPv4 VXLAN Anycast IP addresses.
         ip_address_virtual_secondaries:
