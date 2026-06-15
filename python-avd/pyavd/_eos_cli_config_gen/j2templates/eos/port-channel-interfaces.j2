@@ -417,11 +417,6 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.lacp_fallback_timeout is arista.avd.defined %}
    port-channel lacp fallback timeout {{ port_channel_interface.lacp_fallback_timeout }}
 {%     endif %}
-{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
-   no loop-protection
-{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
-   loop-protection
-{%     endif %}
 {%     if port_channel_interface.l2_mtu is arista.avd.defined %}
    l2 mtu {{ port_channel_interface.l2_mtu }}
 {%     endif %}
@@ -757,6 +752,11 @@ interface {{ port_channel_interface.name }}
    logging event storm-control discards
 {%     elif port_channel_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
    no logging event storm-control discards
+{%     endif %}
+{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
 {%     endif %}
 {%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
    spanning-tree portfast
