@@ -113,8 +113,8 @@ class Dot1xMixin(Protocol):
 
         if not self.inputs.dot1x_settings.dynamic_authorization.enabled:
             msg = (
-                "Set 'dot1x_settings.dynamic_authorization.enabled: true' to use 'dot1x_settings.web_authentication' "
-                "— captive portal requires RADIUS CoA to authorize the session after portal login."
+                "'dot1x_settings.web_authentication' requires 'dot1x_settings.dynamic_authorization.enabled: true' "
+                "since captive portal relies on RADIUS CoA to authorize the session after portal login."
             )
             raise AristaAvdInvalidInputsError(msg)
 
