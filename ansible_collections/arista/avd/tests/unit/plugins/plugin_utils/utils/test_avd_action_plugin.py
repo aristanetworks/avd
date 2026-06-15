@@ -350,7 +350,7 @@ class TestAVDActionPlugin:
             logger.addHandler(sticky_handler)
             # pytest 9.1.0 can attach multiple capture/live-log handlers to non-propagating loggers.
             # The plugin should restore all existing handlers, including pytest-owned handlers.
-            expected_handlers = original_handlers + [sticky_handler]
+            expected_handlers = [*original_handlers, sticky_handler]
 
             plugin = self._plugin_factory(ActionModule)
             plugin.run()
