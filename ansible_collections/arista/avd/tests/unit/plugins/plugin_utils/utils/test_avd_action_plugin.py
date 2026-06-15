@@ -342,14 +342,22 @@ class TestAVDActionPlugin:
         # Create a "sticky" handler and add it to the AVD logger BEFORE the test
         logger = logging.getLogger("ansible_collections.arista.avd")
         sticky_handler = logging.StreamHandler()
-        logger.addHandler(sticky_handler)
+        original_handlers = logger.handlers[:]
+        original_level = logger.level
+        original_propagate = logger.propagate
 
-        plugin = self._plugin_factory(ActionModule)
-        plugin.run()
+        try:
+            logger.addHandler(sticky_handler)
+            # pytest 9.1.0 can attach multiple capture/live-log handlers to non-propagating loggers.
+            # The plugin should restore all existing handlers, including pytest-owned handlers.
+            expected_handlers = original_handlers + [sticky_handler]
 
-        # Assert that ONLY the sticky handler has been restored after execution
-        assert len(logger.handlers) == 1
-        assert logger.handlers[0] is sticky_handler
+            plugin = self._plugin_factory(ActionModule)
+            plugin.run()
 
-        # Final cleanup for other tests
-        logger.removeHandler(sticky_handler)
+            assert logger.handlers == expected_handlers
+            assert logger.level == original_level
+            assert logger.propagate == original_propagate
+        finally:
+            logger.removeHandler(sticky_handler)
+            sticky_handler.close()
