@@ -2029,7 +2029,7 @@ address locking
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
 | ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
 | auto-certificate-profile | - | - | - | auto-est | - | - | - |
-| certificate-profile | - | eAPI.crt | eAPI.key | AVD_AUTO_CERTIFICATE_PROFILE | - | ca.crl<br>intermediate.crl | False |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | - | ca.crl<br>intermediate.crl | False |
 | cipher-list-profile | - | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
 | SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | - | True |
 | test1-chain-cert | - | - | - | - | - | - | - |
@@ -2191,7 +2191,6 @@ management security
    !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
-      certificate auto-certificate AVD_AUTO_CERTIFICATE_PROFILE
       crl ca.crl
       crl intermediate.crl
    !
