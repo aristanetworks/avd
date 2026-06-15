@@ -1,5 +1,5 @@
 ---
-# Testcase for `eos_config_future.monitor_layer1_render_without_enabled`:
+# Testcase for `eos_config_future.render_monitor_layer1_without_enabled`:
 # the `monitor layer1` block must render based on a sub-setting without
 # `monitor_layer1.enabled: true`.
 monitor_layer1:
