@@ -392,13 +392,13 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management0 | - | oob | default | - | - | - | - | - | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | True | default-route, route-preference | True | - | - |
-| Management3 | IPv6 ND new structure test | oob | MGMT | 2001:db8:100::1/64 | - | True | default-route, route-preference | True | True | capacity: 1500, expire: 350, refresh-always |
-| Management42 | - | oob | default | auto-config | - | - | - | - | - | - |
-| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management0 | - | oob | default | - | - | - | - | - | - | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 |
+| Management3 | IPv6 ND new structure test | oob | MGMT | 2001:db8:100::1/64 | - | True | default-route, route-preference | True | True | capacity: 1500, expire: 350, refresh-always | - |
+| Management42 | - | oob | default | auto-config | - | - | - | - | - | - | - |
+| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - | - | - | - | - | - | - |
 
 ##### Interface Redundancy
 
@@ -454,6 +454,9 @@ interface Management1
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   ipv6 nd ra dns-servers lifetime 200
+   ipv6 nd ra dns-server ca::ca:64
+   ipv6 nd ra dns-server cafe::cafe:64 lifetime 100
    redundancy fallback-delay infinity
    redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
@@ -1310,6 +1313,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
+| OpenStack | True | Regions: REGION_1, REGION_2, REGION_3, REGION_5 |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -1324,6 +1328,28 @@ cvx
    service mcs
       redis password 7 <removed>
       no shutdown
+   !
+   service openstack
+      ip access-group ACL-OS-IN
+      ipv6 access-group ACL-V6-OS
+      no shutdown
+      grace-period 600
+      network type-driver vlan arista
+      authentication role BOSS
+      name-resolution interval 20
+      !
+      region REGION_1
+         keystone auth-url https://keystone.example.com/v3/
+      !
+      region REGION_2
+         username BOB tenant TEST_2 password 7 11243C44
+         keystone auth-url https://10.10.10.2/v3/
+      !
+      region REGION_3
+         keystone auth-url https://10.10.10.3:5000/v3/
+      !
+      region REGION_5
+         keystone auth-url http://keystone.legacy.net:8123/v2.0/
    !
    service vxlan
       no shutdown
@@ -1674,6 +1700,9 @@ ip radius vrf abc source-interface Loopback10
 
 | Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
 | ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| LDAP_NO_SERVERS | ldap | - | - | - | - |
+| LDAP_NO_VRF_FIRST | ldap | default | 10.10.10.250 | - | - |
+| LDAP_NO_VRF_FIRST | ldap | mgt | 10.10.10.251 | - | - |
 | TACACS | tacacs+ | mgt | 10.10.11.157 | - | - |
 | TACACS | tacacs+ | default | 10.10.11.249 | - | - |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 | - | - |
@@ -1703,6 +1732,12 @@ aaa group server ldap LADP2
 aaa group server ldap LDAP1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
+!
+aaa group server ldap LDAP_NO_SERVERS
+!
+aaa group server ldap LDAP_NO_VRF_FIRST
+   server 10.10.10.250
+   server 10.10.10.251 vrf mgt
 !
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
@@ -2484,7 +2519,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy
    no shutdown
 ```
 
@@ -4302,6 +4337,8 @@ no lacp rate-limit default
 
 STP mode: **rapid-pvst**
 
+STP Loop Guard: **True**
+
 #### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
@@ -4331,6 +4368,7 @@ spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
+spanning-tree guard loop default
 ```
 
 ### Synchronous Ethernet (SyncE) Settings
@@ -5003,16 +5041,16 @@ interface Dps1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | - | - | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - |
-| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- |
-| Ethernet90 | IPv6 ND new structure test | - | 2001:db8:90::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2000, expire: 400, refresh-always | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet90 | IPv6 ND new structure test | - | 2001:db8:90::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2000, expire: 400, refresh-always | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -5294,6 +5332,9 @@ interface Ethernet4
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
+   ipv6 nd ra dns-servers lifetime 200
+   ipv6 nd ra dns-server ca::ca:64
+   ipv6 nd ra dns-server cafe::cafe:64 lifetime 100
    tcp mss ceiling ipv4 65
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
@@ -6435,12 +6476,12 @@ interface Ethernet90
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | - | - |
-| Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 
 ##### VRRP Details
 
@@ -6784,6 +6825,9 @@ interface Port-Channel100.101
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
+   ipv6 nd ra dns-servers lifetime 200
+   ipv6 nd ra dns-server ca::ca:64
+   ipv6 nd ra dns-server cafe::cafe:64 lifetime 100
 !
 interface Port-Channel100.102
    description IFL for TENANT02
@@ -7285,13 +7329,13 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | True | default-route, route-preference | True | - | - | - | - |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | - | - | - | - | - | test-in | test-out |
-| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - |
-| Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | - | - | - | - | - | - | test-in | test-out |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - | - |
+| Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7311,6 +7355,9 @@ interface Tunnel1
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   ipv6 nd ra dns-servers lifetime 200
+   ipv6 nd ra dns-server ca::ca:64
+   ipv6 nd ra dns-server cafe::cafe:64 lifetime 100
    tcp mss ceiling ipv4 666 ingress
    ip access-group test-in in
    ip access-group test-out out
@@ -7501,26 +7548,26 @@ interface Tunnel5
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | capacity: 900, expire: 250, refresh-always | - | - |
-| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1000, expire: 300, refresh-always | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | capacity: 900, expire: 250, refresh-always | - | - | - |
+| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1000, expire: 300, refresh-always | - | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - | - | - |
 
 ##### VRRP Details
 
@@ -7914,6 +7961,9 @@ interface Vlan1001
    ipv6 address a1::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+   ipv6 nd ra dns-servers lifetime 200
+   ipv6 nd ra dns-server ca::ca:64
+   ipv6 nd ra dns-server cafe::cafe:64 lifetime 100
    ip address virtual 10.1.1.1/24
 !
 interface Vlan1002
@@ -8679,6 +8729,7 @@ router traffic-engineering
 | 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 700 | 10.255.0.1 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8726,6 +8777,19 @@ router traffic-engineering
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 700 | all-interfaces | False |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 700 | 10.255.0.1/32 | 100 |
+| 700 | 10.255.0.2/32 | 200 |
 
 #### Router OSPF Areas
 
@@ -8837,6 +8901,14 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+router ospf 700
+   router-id 10.255.0.1
+   segment-routing mpls
+      no shutdown
+      prefix-segment 10.255.0.1/32 index 100
+      prefix-segment 10.255.0.2/32 index 200
+      adjacency-segment allocation all-interfaces
 !
 ip ospf router-id output-format hostnames
 ```
@@ -10758,6 +10830,7 @@ router bgp 65101
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.3
+      no graceful-restart
       evpn multicast
          address-family ipv4
             transit
@@ -13681,6 +13754,7 @@ Errdisable recovery timer interval: 300 seconds
 | dot1x-phone-classification | True | True | - |
 | dot1x-session-replace | True | True | - |
 | error-correction-encoding | True | True | - |
+| fabric-capacity-low | True | True | - |
 | hardware-speed-group | True | True | - |
 | hitless-reload-down | - | True | - |
 | interface-speed | True | True | - |
@@ -13697,6 +13771,7 @@ Errdisable recovery timer interval: 300 seconds
 | stuck-queue | - | True | - |
 | switchcard-unreachable | True | True | - |
 | tapagg | True | True | - |
+| tpid | True | True | - |
 | transceiver-adapter | True | True | - |
 | uplink-failure-detection | - | True | - |
 | xcvr-misconfigured | True | True | - |
@@ -13713,6 +13788,7 @@ errdisable detect cause dot1x-coa
 errdisable detect cause dot1x-phone-classification
 errdisable detect cause dot1x-session-replace
 errdisable detect cause error-correction-encoding
+errdisable detect cause fabric-capacity-low
 errdisable detect cause hardware-speed-group
 errdisable detect cause interface-speed
 errdisable detect cause internal-error
@@ -13721,16 +13797,20 @@ errdisable detect cause port-breakout
 errdisable detect cause storm-control
 errdisable detect cause switchcard-unreachable
 errdisable detect cause tapagg
+errdisable detect cause tpid
 errdisable detect cause transceiver-adapter
 errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause acl
 errdisable recovery cause arp-inspection
+errdisable recovery cause bpduguard
+errdisable recovery cause dot1x
 errdisable recovery cause dot1x-coa
 errdisable recovery cause dot1x-phone-classification
 errdisable recovery cause dot1x-session-replace
 errdisable recovery cause error-correction-encoding
+errdisable recovery cause fabric-capacity-low
 errdisable recovery cause hardware-speed-group
 errdisable recovery cause hitless-reload-down
 errdisable recovery cause interface-speed
@@ -13746,6 +13826,7 @@ errdisable recovery cause storm-control
 errdisable recovery cause stuck-queue
 errdisable recovery cause switchcard-unreachable
 errdisable recovery cause tapagg
+errdisable recovery cause tpid
 errdisable recovery cause transceiver-adapter
 errdisable recovery cause uplink-failure-detection
 errdisable recovery cause xcvr-misconfigured
@@ -15040,12 +15121,16 @@ Default maintenance unit profile: **UP1**
 
 #### Maintenance profiles
 
-| BGP profile | Initiator route-map |
-| ----------- | ------------------- |
-| bgp2 | SystemGenerated |
-| BP1 | RM-MAINTENANCE |
-| BP2 | RM-MAINTENANCE2 |
-| BP3 | RM-MAINTENANCE3 |
+| BGP profile | Initiator route-map in | Initiator route-map out | Initiator route-map inout |
+| ----------- | ---------------------- | ----------------------- | ------------------------- |
+| BP1 | - | - | RM-MAINTENANCE |
+| BP2 | - | - | RM-MAINTENANCE2 |
+| BP3 | - | - | RM-MAINTENANCE3 |
+| BP4 | RM-MAINTENANCE-IN | - | - |
+| BP5 | - | RM-MAINTENANCE-OUT | - |
+| BP6 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | - |
+| BP7 | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT | RM-MAINTENANCE-INOUT |
+| bgp2 | - | - | - |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
 | ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
@@ -15076,6 +15161,21 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp BP4
+      initiator route-map RM-MAINTENANCE-IN in
+   !
+   profile bgp BP5
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP6
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP7
+      initiator route-map RM-MAINTENANCE-INOUT inout
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
    !
    profile bgp bgp2
    profile bgp BP1 default

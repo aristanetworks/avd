@@ -145,10 +145,12 @@ async def deploy_to_cv(
             username=cloudvision.username,
             password=cloudvision.password,
             verify_certs=cloudvision.verify_certs,
+            use_system_certs=cloudvision.deploy_future.use_system_certs,
             proxy_host=cloudvision.proxy_host,
             proxy_port=cloudvision.proxy_port,
             proxy_username=cloudvision.proxy_username,
             proxy_password=cloudvision.proxy_password,
+            grpc_channel_configuration=cloudvision.grpc_channel_configuration,
         ) as cv_client:
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
@@ -157,7 +159,7 @@ async def deploy_to_cv(
             verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
             try:
-                # Verify devices exist and update CVDevice objects with _exists_on_cv.
+                # Verify devices exist and update CVDevice objects with exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
                     devices=devices,

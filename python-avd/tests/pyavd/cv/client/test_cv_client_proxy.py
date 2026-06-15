@@ -46,9 +46,10 @@ async def test_cv_client_no_verify_certs() -> None:
 
     with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
         async with CVClient(servers=servers, token=token, verify_certs=False) as cvclient:
-            ssl_context = cvclient._ssl_context()
+            ssl_context = cvclient._tls.grpc_ssl
             assert ssl_context.check_hostname is False
             assert ssl_context.verify_mode == ssl.CERT_NONE
+            assert cvclient._tls.requests_verify is False
 
 
 @pytest.mark.asyncio

@@ -2,6 +2,33 @@ type: l2leaf
 mgmt_ipv4:
   gateway: 192.168.0.1
 
+mac_acls:
+  - name: acl-on-port-profile
+    entries:
+      - sequence: 10
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
+      - sequence: 5
+        action: permit
+        source: any
+        destination: 01:00:0c:cc:cc:cd
+        destination_wildcard: 00:00:00:00:00:00
+  - name: acl-on-network-port
+    entries:
+      - sequence: 5
+        action: permit
+        source: any
+        destination: 01:00:0c:cc:cc:cd
+        destination_wildcard: 00:00:00:00:00:00
+      - sequence: 10
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
+  - name: no-entries
+
 port_profiles:
   - profile: common
     mode: access
@@ -25,6 +52,8 @@ port_profiles:
     phone_vlan: 300
     native_vlan: 100
     phone_trunk_mode: untagged
+    mac_acl_in: acl-on-port-profile
+    mac_acl_out: acl-on-port-profile
 
 network_ports:
   - switches:
@@ -66,6 +95,8 @@ network_ports:
       - Ethernet5-6
     description: "N: {endpoint}"
     endpoint: blah
+    mac_acl_in: acl-on-network-port
+    mac_acl_out: acl-on-network-port
 
   - switches:
       - network-ports-tests.2
@@ -98,6 +129,8 @@ network_ports:
     port_channel:
       channel_id: 44
       mode: "active"
+    mac_acl_in: acl-on-network-port
+    mac_acl_out: acl-on-network-port
     monitor_sessions:
       - name: DMF
         role: source

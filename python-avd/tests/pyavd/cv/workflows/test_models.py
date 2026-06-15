@@ -2,15 +2,45 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from contextlib import AbstractContextManager
+from contextlib import nullcontext as does_not_raise
+from logging import DEBUG
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 import pytest
+from grpclib.config import Configuration
 
-from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
-from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import (
+    AVD_ENTITY_PREFIX,
+    AvdChangeControl,
+    AvdChangeControlTemplate,
+    AvdConfiglet,
+    AvdContainer,
+    AvdDevice,
+    AvdManifest,
+    AvdWorkspace,
+    AvdWorkspaceBuildWarningsConfig,
+    CVChangeControl,
+    CVDeployFuture,
+    CVDevice,
+    CVDeviceTag,
+    CVEosConfig,
+    CVGRPCChannelConfiguration,
+    CVGRPCKeepalives,
+    CVInterfaceTag,
+    CVManifest,
+    CVPathfinderMetadata,
+    CVStudioInputs,
+    CVWorkspace,
+    CVWorkspaceBuildConfigValidationError,
+    CVWorkspaceBuildConfigValidationResult,
+    CVWorkspaceBuildConfigValidationWarning,
+    CVWorkspaceDeviceBuildResult,
+    DeployToCvResult,
+)
 
 from .helpers import generate_id
 
@@ -189,114 +219,6 @@ class TestCVManifestGeneration:
         assert id1.startswith(AVD_ENTITY_PREFIX)
 
 
-class TestCVContainerMatching:
-    @pytest.fixture
-    def test_cv_container(self) -> CVContainer:
-        """Creates a single CVContainer instance for matching tests."""
-        # Setup data to create one container instance.
-        avd_cfg = AvdConfiglet(name="test_cfg", file=Path("test.cfg"))
-        avd_container = AvdContainer(
-            name="TEST_CONTAINER", description="Test Description", tag_query="app:test", match_policy="match_all", configlets=("test_cfg",)
-        )
-
-        # Manually create dependent objects for CVContainer constructor.
-        # In a real scenario, we'd run CVManifest.from_avd_manifest, but here we can isolate CVContainer.
-        configlet_id = generate_id(avd_cfg.name)
-        container_id = generate_id(avd_container.name)
-
-        return CVContainer(
-            avd_container=avd_container,
-            id=container_id,
-            is_root=True,
-            configlet_ids=(configlet_id,),
-            child_ids=(),
-        )
-
-    def test_matches_configlet_assignment_success(self, test_cv_container: CVContainer) -> None:
-        """Tests successful match between local CVContainer and remote ConfigletAssignment."""
-        # Create an API object that perfectly matches test_cv_container.
-        api_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
-            display_name=test_cv_container.name,
-            description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
-            query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        assert test_cv_container.matches_configlet_assignment(api_assignment) is True
-
-    @pytest.mark.parametrize(
-        "mismatch_field",
-        [
-            pytest.param("id", id="mismatch on id field"),
-            pytest.param("name", id="mismatch on name field"),
-            pytest.param("description", id="mismatch on description field"),
-            pytest.param("configlet_ids", id="mismatch on configlet_ids field"),
-            pytest.param("tag_query", id="mismatch on tag_query field"),
-            pytest.param("child_ids", id="mismatch on child_ids field"),
-            pytest.param("match_policy", id="mismatch on match_policy field"),
-        ],
-    )
-    def test_matches_configlet_assignment_mismatch(self, test_cv_container: CVContainer, mismatch_field: str) -> None:
-        """Tests mismatch detection for each field individually."""
-        # Create a mock remote object that perfectly matches test_cv_container.
-        mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
-            display_name=test_cv_container.name,
-            description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
-            query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        # Introduce a mismatch based on the test parameter using match case.
-        match mismatch_field:
-            case "id":
-                mock_assignment.key.configlet_assignment_id = "wrong-id"
-            case "name":
-                mock_assignment.display_name = "Wrong Name"
-            case "description":
-                mock_assignment.description = "Wrong Description"
-            case "configlet_ids":
-                mock_assignment.configlet_ids.values = ["wrong-configlet-id"]
-            case "tag_query":
-                mock_assignment.query = "wrong-query"
-            case "child_ids":
-                mock_assignment.child_assignment_ids.values = ["wrong-child-id"]
-            case "match_policy":
-                mock_assignment.match_policy = MatchPolicy.MATCH_FIRST  # Change to match_first
-
-        # Assert failure.
-        assert test_cv_container.matches_configlet_assignment(mock_assignment) is False
-
-    def test_description_none_matches_empty_string(self) -> None:
-        """Tests that a local container with description=None matches a remote with description=''."""
-        # Create container with description=None.
-        avd_container = AvdContainer(name="NO_DESC_CONTAINER", tag_query="q1", description=None)
-        cv_container = CVContainer(
-            avd_container=avd_container,
-            id=generate_id(avd_container.name),
-            is_root=True,
-        )
-
-        # Create mock assignment with description="".
-        mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=cv_container.id),
-            display_name=cv_container.name,
-            description="",  # Remote side has empty string
-            configlet_ids=RepeatedString(values=[]),
-            query=cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=[]),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        # Verify api_tuple logic (self.description or "") works.
-        assert cv_container.matches_configlet_assignment(mock_assignment) is True
-
-
 class TestAvdConfigletFromDict:
     def test_success(self) -> None:
         """Tests successful creation of AvdConfiglet from a valid dictionary."""
@@ -328,6 +250,7 @@ class TestAvdContainerFromDict:
         assert container.tag_query == "role:minimal"
         assert container.description is None
         assert container.match_policy == "match_all"
+        assert container.preserve_existing_sub_containers is False
         assert not container.configlets
         assert not container.sub_containers
 
@@ -338,11 +261,13 @@ class TestAvdContainerFromDict:
             "tag_query": "all",
             "description": "Root container",
             "match_policy": "match_first",
+            "preserve_existing_sub_containers": True,
             "configlets": [{"name": "cfg1"}, {"name": "cfg2"}],
             "sub_containers": [
                 {
                     "name": "Child1",
                     "tag_query": "rack:1",
+                    "preserve_existing_sub_containers": True,
                     "configlets": [{"name": "cfg_child"}],
                 }
             ],
@@ -351,6 +276,7 @@ class TestAvdContainerFromDict:
         assert container.name == "Root"
         assert container.description == "Root container"
         assert container.match_policy == "match_first"
+        assert container.preserve_existing_sub_containers is True
         assert container.configlets == ("cfg1", "cfg2")
         assert len(container.sub_containers) == 1
 
@@ -358,6 +284,7 @@ class TestAvdContainerFromDict:
         assert isinstance(child, AvdContainer)
         assert child.name == "Child1"
         assert child.tag_query == "rack:1"
+        assert child.preserve_existing_sub_containers is True
         assert child.configlets == ("cfg_child",)
 
     @pytest.mark.parametrize(
@@ -448,3 +375,387 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+class TestAvdWorkspaceBuildWarningsConfigFromDict:
+    def test_success_defaults(self) -> None:
+        """Tests that from_dict with an empty dict produces default values."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({})
+        assert config.enabled is True
+        assert isinstance(config.suppress_patterns, tuple)
+        assert not config.suppress_patterns
+        assert config.suppress_portfast is False
+
+    def test_success_list_to_tuple(self) -> None:
+        """Tests that a list passed for suppress_patterns is converted to a tuple."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({"suppress_patterns": ["pattern1", "pattern2"]})
+        assert config.suppress_patterns == ("pattern1", "pattern2")
+
+    def test_success_full(self) -> None:
+        """Tests successful creation with all fields specified."""
+        config = AvdWorkspaceBuildWarningsConfig.from_dict({"enabled": False, "suppress_patterns": ["p1"], "suppress_portfast": True})
+        assert config.enabled is False
+        assert config.suppress_patterns == ("p1",)
+        assert config.suppress_portfast is True
+
+    @pytest.mark.parametrize(
+        ("invalid_data", "match_str"),
+        [
+            pytest.param(None, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="none_input"),
+            pytest.param("string", "Invalid AvdWorkspaceBuildWarningsConfig definition", id="string_input"),
+            pytest.param({"suppress_patterns": 42}, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="non_iterable_suppress_patterns"),
+            pytest.param({"unknown_key": True}, "Invalid AvdWorkspaceBuildWarningsConfig definition", id="unknown_key"),
+        ],
+    )
+    def test_invalid_data_failure(self, invalid_data: Any, match_str: str) -> None:
+        """Tests that ValueError is raised for invalid input data."""
+        with pytest.raises(ValueError, match=match_str):
+            AvdWorkspaceBuildWarningsConfig.from_dict(invalid_data)
+
+
+# === CVGRPCKeepalives Tests ===
+
+
+class TestCVGRPCKeepalives:
+    def test_defaults(self) -> None:
+        """Tests that CVGRPCKeepalives is created with expected default values."""
+        keepalives = CVGRPCKeepalives()
+        assert keepalives.enabled is False
+        assert keepalives.keepalive_time == 60
+        assert keepalives.keepalive_timeout == 20
+        assert keepalives.permit_without_calls is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVGRPCKeepalives accepts custom values including explicit enable."""
+        keepalives = CVGRPCKeepalives(enabled=True, keepalive_time=30, keepalive_timeout=10, permit_without_calls=True)
+        assert keepalives.enabled is True
+        assert keepalives.keepalive_time == 30
+        assert keepalives.keepalive_timeout == 10
+        assert keepalives.permit_without_calls is True
+
+    @pytest.mark.parametrize(
+        ("enabled", "keepalive_time", "expected_exception"),
+        [
+            pytest.param(True, 29, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 29"), id="ENABLED_TIME_29_BELOW_MIN"),
+            pytest.param(True, 1, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 1"), id="ENABLED_TIME_1_BELOW_MIN"),
+            pytest.param(True, 30, does_not_raise(), id="ENABLED_TIME_AT_MIN"),
+            pytest.param(True, 60, does_not_raise(), id="ENABLED_TIME_DEFAULT"),
+            pytest.param(False, 29, does_not_raise(), id="DISABLED_TIME_BELOW_MIN_OK"),
+        ],
+    )
+    def test_keepalive_time_validation(self, enabled: bool, keepalive_time: int, expected_exception: AbstractContextManager) -> None:
+        """Tests that keepalive_time >= 30 is enforced only when enabled=True."""
+        with expected_exception:
+            CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
+
+
+# === CVGRPCChannelConfiguration Tests ===
+
+
+class TestCVGRPCChannelConfiguration:
+    def test_as_grpclib_configuration_disabled_returns_default_configuration(self) -> None:
+        """Tests that as_grpclib_configuration returns a default Configuration when keepalives are disabled."""
+        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
+        config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        # _http2_max_pings_without_data is only set to 0 when keepalives are enabled
+        assert config._http2_max_pings_without_data != 0
+
+    def test_as_grpclib_configuration_enabled_returns_configuration(self) -> None:
+        """Tests that as_grpclib_configuration builds a grpclib Configuration from the keepalive fields."""
+        channel_config = CVGRPCChannelConfiguration(
+            grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+        )
+        config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        assert config._keepalive_time == 45
+        assert config._keepalive_timeout == 15
+        assert config._keepalive_permit_without_calls is True
+        assert config._http2_max_pings_without_data == 0
+        assert config._http2_min_sent_ping_interval_without_data == 45
+
+    def test_as_grpclib_configuration_type_error_falls_back_to_default_configuration(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that a TypeError from grpclib Configuration falls back to a default Configuration and logs a warning."""
+        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True))
+        # Raise on first Configuration() call. Succeed on second
+        with (
+            caplog.at_level(DEBUG),
+            patch(
+                "pyavd._cv.workflows.models.Configuration",
+                side_effect=[TypeError("unexpected keyword argument"), Configuration()],
+            ),
+        ):
+            config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        assert "gRPC keepalives will not be enabled" in caplog.text
+
+
+# === CVDeployFuture Tests ===
+
+
+class TestCVDeployFuture:
+    def test_defaults(self) -> None:
+        """Tests that CVDeployFuture is created with expected default values."""
+        future = CVDeployFuture()
+        assert future.use_system_certs is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVDeployFuture accepts explicit values for all fields."""
+        future = CVDeployFuture(use_system_certs=True)
+        assert future.use_system_certs is True
+
+
+# === CVChangeControl Tests ===
+
+
+class TestCVChangeControl:
+    def test_get_result(self) -> None:
+        template = AvdChangeControlTemplate(name="template-name", id="template-id")
+        cc = CVChangeControl(
+            avd_change_control=AvdChangeControl(name="avd-cc-name", description="avd-cc-desc", requested_state="approved", change_control_template=template),
+            id="cc-id",
+            state="approved",
+            name="cc-name",
+            description="cc-desc",
+        )
+        result = cc.get_result()
+        assert "avd_change_control" not in result
+        assert result["id"] == "cc-id"
+        assert result["state"] == "approved"
+        assert result["name"] == "cc-name"
+        assert result["description"] == "cc-desc"
+        assert result["requested_state"] == "approved"
+        assert result["change_control_template"] == {"name": "template-name", "id": "template-id"}
+
+
+class TestCVWorkspace:
+    def test_get_result(self) -> None:
+        ws = CVWorkspace(
+            avd_workspace=AvdWorkspace(name="workspace-name", description="workspace-description", requested_state="submitted"),
+            state="submitted",
+            change_control_id="cc-id",
+            build_id="build-id",
+        )
+        result = ws.get_result()
+        assert "avd_workspace" not in result
+        assert result["name"] == "workspace-name"
+        assert result["description"] == "workspace-description"
+        assert result["requested_state"] == "submitted"
+        assert result["state"] == "submitted"
+        assert result["change_control_id"] == "cc-id"
+        assert result["build_id"] == "build-id"
+        assert result["device_build_results"] == []
+
+
+class TestCVDevice:
+    def test_get_result(self) -> None:
+        device = CVDevice(
+            avd_device=AvdDevice(hostname="avd-leaf1", serial_number="sn54321", system_mac_address="55:44:33:22:11:00"),
+            serial_number="sn12345",
+            system_mac_address="00:11:22:33:44:55",
+            exists_on_cv=True,
+            streaming=True,
+        )
+        result = device.get_result()
+        assert result["hostname"] == "avd-leaf1"
+        assert result["serial_number"] == "sn12345"
+        assert result["system_mac_address"] == "00:11:22:33:44:55"
+        assert result["exists_on_cv"] is True
+        assert result["streaming"] is True
+
+
+class TestDeployToCvResult:
+    def test_get_result(self) -> None:
+        cv_device_1 = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="snleaf1"), serial_number="snleaf1", system_mac_address="00:11:22:33:44:55")
+        cv_device_2 = CVDevice(avd_device=AvdDevice(hostname="leaf2"), serial_number="snleaf2", system_mac_address=None)
+
+        validation_result = CVWorkspaceBuildConfigValidationResult(
+            errors=[CVWorkspaceBuildConfigValidationError(error_msg="syntax error", line_num=5, configlet_name="AVD_leaf1")],
+            warnings=[CVWorkspaceBuildConfigValidationWarning(warning_msg="portfast warning", line_num=3, configlet_name="AVD_leaf1")],
+        )
+
+        child_container = AvdContainer(name="CHILD", tag_query="role:leaf", description="child desc", configlets=("cfg1",))
+        root_container = AvdContainer(name="ROOT", tag_query="all", description="root desc", configlets=("cfg2",), sub_containers=(child_container,))
+
+        result_obj = DeployToCvResult(
+            failed=True,
+            errors=["error1"],
+            warnings=["warning1"],
+            workspace=CVWorkspace(
+                avd_workspace=AvdWorkspace(id="ws-id", name="workspace-name", description="workspace-description", requested_state="submitted", force=True),
+                state="submitted",
+                change_control_id="cc-id",
+                build_id="build-id",
+                device_build_results=[CVWorkspaceDeviceBuildResult(device=cv_device_1, config_validation=validation_result)],
+            ),
+            change_control=CVChangeControl(
+                avd_change_control=AvdChangeControl(
+                    name="avd-cc-name",
+                    description="avd-cc-desc",
+                    requested_state="approved",
+                    change_control_template=AvdChangeControlTemplate(name="template-name", id="template-id"),
+                ),
+                id="cc-id",
+                state="approved",
+                name="cc-name",
+                description="cc-desc",
+            ),
+            deployed_configs=[CVEosConfig(file="intended/leaf1.cfg", device=cv_device_1, configlet_name="AVD_leaf1")],
+            deployed_static_config_containers=[root_container],
+            deployed_static_config_configlets=[AvdConfiglet(name="cfg1", file="path/cfg1.cfg")],
+            deployed_device_tags=[CVDeviceTag(label="dc", value="DC1", device=cv_device_1)],
+            deployed_interface_tags=[CVInterfaceTag(label="speed", value="100G", device=cv_device_1, interface="Ethernet1")],
+            deployed_studio_inputs=[CVStudioInputs(studio_id="studio-1", inputs={"key": "val"}, input_path=["root", "sub"])],
+            deployed_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "transit"}, device=cv_device_2)],
+            skipped_configs=[CVEosConfig(file="intended/leaf2.cfg", device=cv_device_2)],
+            skipped_static_config_containers=[child_container],
+            skipped_device_tags=[CVDeviceTag(label="dc", value="DC2")],
+            skipped_interface_tags=[CVInterfaceTag(label="speed", value="10G")],
+            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "edge"})],
+            removed_configs=["removed/leaf1.cfg"],
+            removed_static_config_containers=["OLD_CONTAINER"],
+            removed_static_config_configlets=["OLD_CONFIGLET"],
+            removed_device_tags=[CVDeviceTag(label="old_dc", value="old_val")],
+            removed_interface_tags=[CVInterfaceTag(label="old_speed", value="old_val")],
+        )
+
+        result = result_obj.get_result()
+
+        assert result["failed"] is True
+        assert result["errors"] == ["error1"]
+        assert result["warnings"] == ["warning1"]
+
+        # workspace
+        result_workspace = result["workspace"]
+        assert "avd_workspace" not in result_workspace
+        assert result_workspace["name"] == "workspace-name"
+        assert result_workspace["description"] == "workspace-description"
+        assert result_workspace["id"] == "ws-id"
+        assert result_workspace["requested_state"] == "submitted"
+        assert result_workspace["force"] is True
+        assert result_workspace["state"] == "submitted"
+        assert result_workspace["change_control_id"] == "cc-id"
+        assert result_workspace["build_id"] == "build-id"
+        assert result_workspace["build_warnings"] == {"enabled": True, "suppress_patterns": (), "suppress_portfast": False}
+
+        result_workspace_device_duild_results = result_workspace["device_build_results"][0]
+        assert "avd_device" not in result_workspace_device_duild_results["device"]
+        assert result_workspace_device_duild_results["device"]["hostname"] == "leaf1"
+        assert result_workspace_device_duild_results["device"]["serial_number"] == "snleaf1"
+        assert result_workspace_device_duild_results["device"]["system_mac_address"] == "00:11:22:33:44:55"
+        assert result_workspace_device_duild_results["device"]["exists_on_cv"] is None
+        assert result_workspace_device_duild_results["device"]["streaming"] is None
+        assert result_workspace_device_duild_results["config_validation"]["errors"][0]["error_msg"] == "syntax error"
+        assert result_workspace_device_duild_results["config_validation"]["errors"][0]["line_num"] == 5
+        assert result_workspace_device_duild_results["config_validation"]["errors"][0]["configlet_name"] == "AVD_leaf1"
+        assert result_workspace_device_duild_results["config_validation"]["warnings"][0]["warning_msg"] == "portfast warning"
+        assert result_workspace_device_duild_results["config_validation"]["warnings"][0]["line_num"] == 3
+        assert result_workspace_device_duild_results["config_validation"]["warnings"][0]["configlet_name"] == "AVD_leaf1"
+
+        # change_control
+        result_change_control = result["change_control"]
+        assert "avd_change_control" not in result_change_control
+        assert result_change_control["name"] == "cc-name"
+        assert result_change_control["description"] == "cc-desc"
+        assert result_change_control["id"] == "cc-id"
+        assert result_change_control["change_control_template"] == {"name": "template-name", "id": "template-id"}
+        assert result_change_control["requested_state"] == "approved"
+        assert result_change_control["state"] == "approved"
+
+        # deployed_configs
+        result_deployed_configs = result["deployed_configs"][0]
+        assert result_deployed_configs["file"] == "intended/leaf1.cfg"
+        assert result_deployed_configs["configlet_name"] == "AVD_leaf1"
+        assert "avd_device" not in result_deployed_configs["device"]
+        assert result_deployed_configs["device"]["hostname"] == "leaf1"
+        assert result_deployed_configs["device"]["serial_number"] == "snleaf1"
+        assert result_deployed_configs["device"]["system_mac_address"] == "00:11:22:33:44:55"
+        assert result_deployed_configs["device"]["exists_on_cv"] is None
+        assert result_deployed_configs["device"]["streaming"] is None
+
+        # deployed_static_config_containers
+        result_deployed_static_config_containers = result["deployed_static_config_containers"][0]
+        assert result_deployed_static_config_containers["name"] == "ROOT"
+        assert result_deployed_static_config_containers["tag_query"] == "all"
+        assert result_deployed_static_config_containers["description"] == "root desc"
+        assert result_deployed_static_config_containers["match_policy"] == "match_all"
+        assert result_deployed_static_config_containers["configlets"] == ("cfg2",)
+        result_deployed_static_config_subcontainers = result_deployed_static_config_containers["sub_containers"][0]
+        assert result_deployed_static_config_subcontainers["name"] == "CHILD"
+        assert result_deployed_static_config_subcontainers["tag_query"] == "role:leaf"
+        assert result_deployed_static_config_subcontainers["description"] == "child desc"
+        assert result_deployed_static_config_subcontainers["configlets"] == ("cfg1",)
+
+        # deployed_static_config_configlets
+        result_deployed_static_config_configlets = result["deployed_static_config_configlets"][0]
+        assert result_deployed_static_config_configlets["name"] == "cfg1"
+        assert result_deployed_static_config_configlets["file"] == "path/cfg1.cfg"
+
+        # deployed_device_tags
+        result_deployed_device_tags = result["deployed_device_tags"][0]
+        assert result_deployed_device_tags["label"] == "dc"
+        assert result_deployed_device_tags["value"] == "DC1"
+        assert "avd_device" not in result_deployed_device_tags["device"]
+        assert result_deployed_device_tags["device"]["hostname"] == "leaf1"
+
+        # deployed_interface_tags
+        result_deployed_interface_tags = result["deployed_interface_tags"][0]
+        assert result_deployed_interface_tags["label"] == "speed"
+        assert result_deployed_interface_tags["value"] == "100G"
+        assert result_deployed_interface_tags["interface"] == "Ethernet1"
+        assert result_deployed_interface_tags["device"]["hostname"] == "leaf1"
+
+        # deployed_studio_inputs
+        result_deployed_studio_inputs = result["deployed_studio_inputs"][0]
+        assert result_deployed_studio_inputs["studio_id"] == "studio-1"
+        assert result_deployed_studio_inputs["inputs"] == {"key": "val"}
+        assert result_deployed_studio_inputs["input_path"] == ["root", "sub"]
+
+        # deployed_cv_pathfinder_metadata
+        result_deployed_cv_pathfinder_metadata = result["deployed_cv_pathfinder_metadata"][0]
+        assert result_deployed_cv_pathfinder_metadata["metadata"] == {"role": "transit"}
+        assert "avd_device" not in result_deployed_cv_pathfinder_metadata["device"]
+        assert result_deployed_cv_pathfinder_metadata["device"]["hostname"] == "leaf2"
+        assert result_deployed_cv_pathfinder_metadata["device"]["serial_number"] == "snleaf2"
+        assert result_deployed_cv_pathfinder_metadata["device"]["system_mac_address"] is None
+
+        # skipped_configs
+        skipped_result_deployed_configs = result["skipped_configs"][0]
+        assert skipped_result_deployed_configs["file"] == "intended/leaf2.cfg"
+        assert skipped_result_deployed_configs["configlet_name"] is None
+        assert skipped_result_deployed_configs["device"]["hostname"] == "leaf2"
+
+        # skipped_static_config_containers
+        assert result["skipped_static_config_containers"][0]["name"] == "CHILD"
+
+        # skipped_device_tags — device is None
+        skipped_result_deployed_device_tags = result["skipped_device_tags"][0]
+        assert skipped_result_deployed_device_tags["label"] == "dc"
+        assert skipped_result_deployed_device_tags["value"] == "DC2"
+        assert skipped_result_deployed_device_tags["device"] is None
+
+        # skipped_interface_tags — device and interface are None
+        skipped_result_deployed_interface_tags = result["skipped_interface_tags"][0]
+        assert skipped_result_deployed_interface_tags["label"] == "speed"
+        assert skipped_result_deployed_interface_tags["value"] == "10G"
+        assert skipped_result_deployed_interface_tags["device"] is None
+        assert skipped_result_deployed_interface_tags["interface"] is None
+
+        # skipped_cv_pathfinder_metadata — device is None
+        skipped_result_deployed_cv_pathfinder_metadata = result["skipped_cv_pathfinder_metadata"][0]
+        assert skipped_result_deployed_cv_pathfinder_metadata["metadata"] == {"role": "edge"}
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"] is None
+
+        assert result["removed_configs"] == ["removed/leaf1.cfg"]
+        assert result["removed_static_config_containers"] == ["OLD_CONTAINER"]
+        assert result["removed_static_config_configlets"] == ["OLD_CONFIGLET"]
+
+        # removed_device_tags
+        assert result["removed_device_tags"][0]["label"] == "old_dc"
+        assert result["removed_device_tags"][0]["value"] == "old_val"
+        assert result["removed_device_tags"][0]["device"] is None
+
+        # removed_interface_tags
+        assert result["removed_interface_tags"][0]["label"] == "old_speed"
+        assert result["removed_interface_tags"][0]["value"] == "old_val"
+        assert result["removed_interface_tags"][0]["device"] is None

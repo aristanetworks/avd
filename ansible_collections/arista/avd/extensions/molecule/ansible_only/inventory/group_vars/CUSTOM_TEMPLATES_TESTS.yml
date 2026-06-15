@@ -9,8 +9,8 @@ node_type_keys:
     default_evpn_role: server
     interface_descriptions:
       # Override interface description templates with our custom templates
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-deprecated.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-deprecated.j2'
       mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'
       mlag_port_channel_interfaces: 'custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2'
       connected_endpoints_ethernet_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
@@ -41,8 +41,8 @@ node_type_keys:
       mlag_ibgp_peering_ip_secondary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
     interface_descriptions:
       # Override interface description templates with our custom templates
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-deprecated.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-deprecated.j2'
       mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'
       mlag_port_channel_interfaces: 'custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2'
       connected_endpoints_ethernet_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
@@ -59,8 +59,8 @@ node_type_keys:
     uplink_type: port-channel
     interface_descriptions:
       # Override interface description templates with our custom templates
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-deprecated.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-deprecated.j2'
 
 ip_offset_10: 10
 ip_offset_20: 20
