@@ -672,6 +672,18 @@ cv_grpc_keepalives:
   enabled: true
 ```
 
+## Future cv_deploy Behaviors
+
+Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version.
+
+```yaml
+# Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
+cv_deploy_future:
+  # Use system certificates instead of Python's bundled certificate store.
+  # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+  use_system_certs: <bool; default=false>
+```
+
 ## License
 
 Project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/LICENSE)

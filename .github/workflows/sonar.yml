@@ -45,26 +45,6 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           merge-multiple: true
 
-      - name: Download eos_designs compiled templates from pytest
-        continue-on-error: true
-        uses: actions/download-artifact@v8
-        with:
-          name: pytest-eos-designs-compiled-templates
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-          merge-multiple: true
-
-      - name: Download eos_cli_config_gen compiled templates from pytest
-        continue-on-error: true
-        uses: actions/download-artifact@v8
-        with:
-          name: pytest-eos-cli-config-gen-compiled-templates
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
-          merge-multiple: true
-
       - name: Get PR context
         # Source: https://github.com/orgs/community/discussions/25220#discussioncomment-11316244
         id: pr-context
