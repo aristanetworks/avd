@@ -23,7 +23,7 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.15.16",
+    "ruff==0.15.17",
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "twine>=6.2.0",
