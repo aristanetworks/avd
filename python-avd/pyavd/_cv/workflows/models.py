@@ -63,6 +63,14 @@ class CVGRPCChannelConfiguration:
 
 
 @dataclass
+class CVDeployFuture:
+    """Opt-in to future cv_deploy behaviors which will become defaults in a future major version."""
+
+    use_system_certs: bool = False
+    """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR. Will become the default in AVD 7.0."""
+
+
+@dataclass
 class CloudVision:
     servers: str | list[str]
     token: str | None
@@ -74,6 +82,7 @@ class CloudVision:
     proxy_username: str | None
     proxy_password: str | None
     grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
+    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
 
 
 @dataclass(frozen=True)

@@ -24,6 +24,7 @@ from pyavd._cv.workflows.models import (
     AvdWorkspace,
     AvdWorkspaceBuildWarningsConfig,
     CVChangeControl,
+    CVDeployFuture,
     CVDevice,
     CVDeviceTag,
     CVEosConfig,
@@ -487,6 +488,24 @@ class TestCVGRPCChannelConfiguration:
             config = channel_config.as_grpclib_configuration()
         assert isinstance(config, Configuration)
         assert "gRPC keepalives will not be enabled" in caplog.text
+
+
+# === CVDeployFuture Tests ===
+
+
+class TestCVDeployFuture:
+    def test_defaults(self) -> None:
+        """Tests that CVDeployFuture is created with expected default values."""
+        future = CVDeployFuture()
+        assert future.use_system_certs is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVDeployFuture accepts explicit values for all fields."""
+        future = CVDeployFuture(use_system_certs=True)
+        assert future.use_system_certs is True
+
+
+# === CVChangeControl Tests ===
 
 
 class TestCVChangeControl:
