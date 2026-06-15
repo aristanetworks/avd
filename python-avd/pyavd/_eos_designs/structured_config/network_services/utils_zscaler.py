@@ -9,7 +9,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._cv.client import CVClient
-from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.workflows.models import AvdDevice, CVDevice
 from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -64,7 +64,13 @@ class UtilsZscalerMixin(Protocol):
         wan_site_location = self.shared_utils.wan_site.location
 
         async with CVClient(servers=[cv_server], token=cv_token) as cv_client:
-            cv_device = CVDevice(self.shared_utils.hostname, self.shared_utils.serial_number, self.shared_utils.system_mac_address)
+            cv_device = CVDevice(
+                avd_device=AvdDevice(
+                    hostname=self.shared_utils.hostname,
+                    serial_number=self.shared_utils.serial_number,
+                    system_mac_address=self.shared_utils.system_mac_address,
+                )
+            )
             cv_inventory_devices: list[CVDevice] = await verify_devices_in_cloudvision_inventory(
                 devices=[cv_device],
                 skip_missing_devices=True,

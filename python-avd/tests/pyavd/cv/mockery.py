@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, NoReturn
 from grpclib import GRPCError, Status
 from grpclib.exceptions import ProtocolError, StreamTerminatedError
 
-from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.workflows.models import AvdDevice, CVDevice
 from pyavd._utils import get_v2
 
 if TYPE_CHECKING:
@@ -46,10 +46,10 @@ def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | Non
         list[CVDevice]: List of CVDevice instances.
     """
     if hostnames:
-        return [CVDevice(item) for item in hostnames]
+        return [CVDevice(avd_device=AvdDevice(hostname=item)) for item in hostnames]
     if device_count:
-        return [CVDevice(str(item), str(item), str(item)) for item in range(device_count)]
-    return [CVDevice(str(item), str(item), str(item)) for item in range(1000000)]
+        return [CVDevice(avd_device=AvdDevice(hostname=str(item), serial_number=str(item), system_mac_address=str(item))) for item in range(device_count)]
+    return [CVDevice(avd_device=AvdDevice(hostname=str(item), serial_number=str(item), system_mac_address=str(item))) for item in range(1000000)]
 
 
 def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
