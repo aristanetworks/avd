@@ -2,7 +2,7 @@
 # changed post merge
 name: "Label for Release Notes"
 
-"on":
+"on": # zizmor: ignore[dangerous-triggers] Runs after merge or title edits and only uses trusted base-branch action code to maintain release-note labels.
   pull_request_target:
     types:
       - closed
@@ -19,8 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/rn-pr-labeler-action
         with:
           auto_create_label: true

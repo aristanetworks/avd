@@ -1,7 +1,7 @@
 ---
 name: "Pull Request Comment"
 
-"on":
+"on": # zizmor: ignore[dangerous-triggers] Uses pull_request_target only to create a static reviewer help comment from PR metadata, not to check out or execute PR code.
   pull_request_target:
     types:
       - opened
@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/github-script@v9
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           BODY: |
             Review docs on [Read the Docs](https://ansible-avd--${{ github.event.pull_request.number }}.org.readthedocs.build/en/${{ github.event.pull_request.number }}/)
@@ -62,5 +62,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${{ env.BODY }}`
+              body: process.env.BODY
             })
