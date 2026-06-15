@@ -3,21 +3,71 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from datetime import datetime
+from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal
+from typing import Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
-from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
+from grpclib.config import Configuration
+
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
+
+from .utils import get_result
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
 
-if TYPE_CHECKING:
-    from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
+LOGGER = getLogger(__name__)
+
+
+@dataclass
+class CVGRPCKeepalives:
+    enabled: bool = False
+    keepalive_time: int = 60
+    keepalive_timeout: int = 20
+    permit_without_calls: bool = False
+
+    def __post_init__(self) -> None:
+        if self.enabled and self.keepalive_time < 30:
+            msg = f"Invalid CVGRPCKeepalives settings. keepalive_time must be >= 30s, got {self.keepalive_time}."
+            raise ValueError(msg)
+
+
+@dataclass
+class CVGRPCChannelConfiguration:
+    """Advanced configuration settings of the gRPC channel."""
+
+    grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
+    """Keepalive settings of the gRPC channel."""
+
+    def as_grpclib_configuration(self) -> Configuration:
+        if not self.grpc_keepalives.enabled:
+            return Configuration()
+        try:
+            return Configuration(
+                _keepalive_time=self.grpc_keepalives.keepalive_time,
+                _keepalive_timeout=self.grpc_keepalives.keepalive_timeout,
+                _keepalive_permit_without_calls=self.grpc_keepalives.permit_without_calls,
+                # Disable the grpclib default cap of 2 pings without data so keepalives
+                # continue for the duration of the deployment.
+                _http2_max_pings_without_data=0,
+                # Override grpclib's 300s rate-limit so pings fire at the configured interval.
+                _http2_min_sent_ping_interval_without_data=self.grpc_keepalives.keepalive_time,
+            )
+        except TypeError:
+            LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
+            return Configuration()
+
+
+@dataclass
+class CVDeployFuture:
+    """Opt-in to future cv_deploy behaviors which will become defaults in a future major version."""
+
+    use_system_certs: bool = False
+    """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR. Will become the default in AVD 7.0."""
 
 
 @dataclass
@@ -31,15 +81,15 @@ class CloudVision:
     proxy_port: int | None
     proxy_username: str | None
     proxy_password: str | None
+    grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
+    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
 
 
-@dataclass
-class CVChangeControl:
+@dataclass(frozen=True)
+class AvdChangeControl:
     name: str | None = None
     description: str | None = None
-    id: str | None = None
-    """ `id` should not be set on the request. It will be updated with the ID of the created Change Control. """
-    change_control_template: CVChangeControlTemplate | None = None
+    change_control_template: AvdChangeControlTemplate | None = None
     requested_state: Literal["pending approval", "approved", "running", "completed", "deleted"] = "pending approval"
     """
     The requested state for the Change Control.
@@ -50,11 +100,49 @@ class CVChangeControl:
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
-    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
 
 
 @dataclass
-class CVChangeControlTemplate:
+class CVChangeControl:
+    avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
+    id: str | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    name: str | None = None
+    description: str | None = None
+
+    def __post_init__(self) -> None:
+        """
+        Use intended name and/or description as initial state.
+
+        Replacing empty strings with None.
+        """
+        if not self.name:
+            self.name = self.avd_change_control.name or None
+        if not self.description:
+            self.description = self.avd_change_control.description or None
+
+    @property
+    def change_control_template(self) -> AvdChangeControlTemplate | None:
+        return self.avd_change_control.change_control_template
+
+    @property
+    def requested_state(self) -> Literal["pending approval", "approved", "running", "completed", "deleted"]:
+        return self.avd_change_control.requested_state
+
+    def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "id": self.id,
+            "change_control_template": get_result(self.change_control_template),
+            "requested_state": self.requested_state,
+            "state": self.state,
+        }
+
+
+@dataclass(frozen=True)
+class AvdChangeControlTemplate:
     name: str
     id: str | None = None
 
@@ -165,18 +253,29 @@ class CVWorkspaceDeviceBuildResult:
     """Configuration validation results."""
 
 
-@dataclass
-class CVWorkspaceBuildWarningsConfig:
+@dataclass(frozen=True)
+class AvdWorkspaceBuildWarningsConfig:
     enabled: bool = True
     """Fetch and expose Workspace build warnings."""
-    suppress_patterns: list[str] = field(default_factory=list)
-    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
+    suppress_patterns: tuple[str, ...] = field(default_factory=tuple)
+    """Arbitrary tuple of the EOS CLI warning string patterns to suppress."""
     suppress_portfast: bool = False
     """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
 
+    @classmethod
+    def from_dict(cls, data: dict) -> AvdWorkspaceBuildWarningsConfig:
+        """Build an AvdWorkspaceBuildWarningsConfig instance from an input dictionary."""
+        try:
+            copied_data = data.copy()
+            suppress_patterns = tuple(copied_data.pop("suppress_patterns", ()))
+            return cls(suppress_patterns=suppress_patterns, **copied_data)
+        except (AttributeError, TypeError) as e:
+            msg = f"Invalid AvdWorkspaceBuildWarningsConfig definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
 
-@dataclass
-class CVWorkspace:
+
+@dataclass(frozen=True)
+class AvdWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
     id: str = field(default_factory=lambda: f"ws-{uuid4()}")
@@ -194,26 +293,59 @@ class CVWorkspace:
     """
     force: bool = False
     """ Force submit the workspace even if some devices are not actively streaming to CloudVision."""
-    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
-    """The final state of the Workspace. Do not set this manually."""
-    change_control_id: str | None = None
-    """Do not set this manually."""
-    build_id: str | None = None
-    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
-    build_warnings: CVWorkspaceBuildWarningsConfig = field(default_factory=CVWorkspaceBuildWarningsConfig)
+    build_warnings: AvdWorkspaceBuildWarningsConfig = field(default_factory=AvdWorkspaceBuildWarningsConfig)
     """Configuration settings to control fetching and exposing Workspace build warnings."""
-    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
-    """Details of per-device Workspace build results. Do not set this manually."""
 
 
 @dataclass
-class DeployChangeControlResult:
-    failed: bool = False
-    errors: list = field(default_factory=list)
-    warnings: list = field(default_factory=list)
-    change_control: CVChangeControl | None = None
-    deployed_devices: list[CVDevice] = field(default_factory=list)
-    skipped_devices: list[CVDevice] = field(default_factory=list)
+class CVWorkspace:
+    avd_workspace: AvdWorkspace = field(default_factory=AvdWorkspace)
+    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
+    """The current state of the Workspace."""
+    change_control_id: str | None = None
+    build_id: str | None = None
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
+    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
+    """Details of per-device Workspace build results."""
+
+    @property
+    def name(self) -> str:
+        return self.avd_workspace.name
+
+    @property
+    def description(self) -> str | None:
+        return self.avd_workspace.description
+
+    @property
+    def id(self) -> str:
+        return self.avd_workspace.id
+
+    @property
+    def requested_state(self) -> Literal["pending", "built", "submitted", "abandoned", "deleted"]:
+        return self.avd_workspace.requested_state
+
+    @property
+    def force(self) -> bool:
+        return self.avd_workspace.force
+
+    @property
+    def build_warnings(self) -> AvdWorkspaceBuildWarningsConfig:
+        return self.avd_workspace.build_warnings
+
+    def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "id": self.id,
+            "requested_state": self.requested_state,
+            "force": self.force,
+            "state": self.state,
+            "change_control_id": self.change_control_id,
+            "build_id": self.build_id,
+            "build_warnings": get_result(self.build_warnings),
+            "device_build_results": get_result(self.device_build_results),
+        }
 
 
 @dataclass
@@ -221,7 +353,7 @@ class DeployToCvResult:
     failed: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
-    workspace: CVWorkspace | None = field(default_factory=CVWorkspace)
+    workspace: CVWorkspace | None = None
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_static_config_containers: list[AvdContainer] = field(default_factory=list)
@@ -241,9 +373,13 @@ class DeployToCvResult:
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
 
+    def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
+        return {f.name: get_result(getattr(self, f.name)) for f in fields(self)}
 
-@dataclass
-class CVDevice:
+
+@dataclass(frozen=True)
+class AvdDevice:
     hostname: str
     """
     Device hostname or intended hostname.
@@ -252,13 +388,41 @@ class CVDevice:
     """
     serial_number: str | None = None
     system_mac_address: str | None = None
-    _exists_on_cv: bool | None = None
-    """ Do not set this manually. """
-    _streaming: bool | None = None
-    """
-    Device's streaming status.
-    Do not set this manually.
-    """
+
+
+@dataclass
+class CVDevice:
+    avd_device: AvdDevice
+    serial_number: str | None = None
+    system_mac_address: str | None = None
+    exists_on_cv: bool | None = None
+    streaming: bool | None = None
+    """Device's streaming status."""
+
+    def __post_init__(self) -> None:
+        """
+        Use intended serial_number and/or system_mac_address as initial state.
+
+        Replacing empty strings with None.
+        """
+        if not self.serial_number:
+            self.serial_number = self.avd_device.serial_number or None
+        if not self.system_mac_address:
+            self.system_mac_address = self.avd_device.system_mac_address or None
+
+    @property
+    def hostname(self) -> str:
+        return self.avd_device.hostname
+
+    def get_result(self) -> dict[str, Any]:
+        """Return a representation of this object for the Ansible module result."""
+        return {
+            "hostname": self.hostname,
+            "serial_number": self.serial_number,
+            "system_mac_address": self.system_mac_address,
+            "exists_on_cv": self.exists_on_cv,
+            "streaming": self.streaming,
+        }
 
 
 @dataclass
@@ -314,7 +478,7 @@ class DuplicatedDevices:
 @dataclass(frozen=True)
 class AvdConfiglet:
     """
-    Input configlet generated by AVD.
+    Input configlet from the static configuration manifest.
 
     Can be assigned to one or more containers.
     """
@@ -335,7 +499,7 @@ class AvdConfiglet:
 @dataclass(frozen=True)
 class AvdContainer:
     """
-    Input container generated by AVD.
+    Input container from the static configuration manifest.
 
     Containers are recursive, allowing for a nested hierarchy.
     """
@@ -346,6 +510,7 @@ class AvdContainer:
     match_policy: Literal["match_all", "match_first"] = field(default="match_all")
     configlets: tuple[str, ...] = field(default_factory=tuple)
     sub_containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
+    preserve_existing_sub_containers: bool = False
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdContainer:
@@ -367,7 +532,7 @@ class AvdContainer:
 @dataclass(frozen=True)
 class AvdManifest:
     """
-    Input manifest generated by AVD.
+    Input static configuration manifest.
 
     This model defines the desired state for containers and configlets in the "Static Configuration" Studio.
 
@@ -513,26 +678,3 @@ class CVContainer:
     @property
     def match_policy(self) -> str:
         return self.avd_container.match_policy
-
-    @property
-    def api_tuple(self) -> tuple[Any, ...]:
-        """Return a tuple representation of the container compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description or "", list(self.configlet_ids), self.tag_query, list(self.child_ids), self.match_policy)
-
-    def matches_configlet_assignment(self, configlet_assignment: ConfigletAssignment) -> bool:
-        """
-        Check if this container state matches a ConfigletAssignment from CVClient APIs.
-
-        This is primarily used to determine if the local configuration has diverged from the
-        remote configuration, indicating whether an update is required.
-        """
-        reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
-        return self.api_tuple == (
-            configlet_assignment.key.configlet_assignment_id,
-            configlet_assignment.display_name,
-            configlet_assignment.description,
-            configlet_assignment.configlet_ids.values,
-            configlet_assignment.query,
-            configlet_assignment.child_assignment_ids.values,
-            reversed_match_policy_map.get(configlet_assignment.match_policy.value),
-        )

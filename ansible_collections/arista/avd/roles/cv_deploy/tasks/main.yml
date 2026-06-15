@@ -41,6 +41,7 @@
         cv_username: "{{ cv_username | arista.avd.default }}"
         cv_password: "{{ cv_password | arista.avd.default }}"
         cv_verify_certs: "{{ cv_verify_certs }}"
+        cv_deploy_future: "{{ cv_deploy_future | default(omit) }}"
         proxy_host: "{{ proxy_host | arista.avd.default }}"
         proxy_port: "{{ proxy_port }}"
         proxy_username: "{{ proxy_username | arista.avd.default }}"
@@ -71,6 +72,7 @@
         return_details: "{{ cv_register_detailed_results }}"
         preview_features:
           read_from_validated_inputs: true
+        grpc_keepalives: "{{ cv_grpc_keepalives }}"
         tmp_dir: "{{ cv_deploy_tmp_dir }}"
       register: cv_deploy_results
 

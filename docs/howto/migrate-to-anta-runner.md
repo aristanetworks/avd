@@ -330,7 +330,7 @@ For more details, see [Validation Profiles](../../ansible_collections/arista/avd
 
 In `eos_validate_state`, accepted transceiver manufacturers were configured using the `accepted_xcvr_manufacturers` variable.
 
-In `anta_runner`, this setting has moved to `eos_designs` and is configured through `validation_profiles`:
+In `anta_runner`, this setting has moved to `eos_designs` and is configured through `validation_profiles`.
 
 <div class="grid" markdown>
 
