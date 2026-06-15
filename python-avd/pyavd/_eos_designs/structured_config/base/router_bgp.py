@@ -60,7 +60,7 @@ class RouterBgpMixin(Protocol):
         if self.inputs.bgp_graceful_restart.enabled:
             self.structured_config.router_bgp.graceful_restart._update(enabled=True, restart_time=self.inputs.bgp_graceful_restart.restart_time)
 
-        # Add neighbors
+        # Add IPv4 neighbors
         self.structured_config.router_bgp.neighbors.extend(self.shared_utils.l3_bgp_neighbors)
         for neighbor in self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.address_family_ipv4.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)
