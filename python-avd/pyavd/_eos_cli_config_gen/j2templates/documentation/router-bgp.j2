@@ -1009,7 +1009,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set redistribute_route = vlan_aware_bundle.redistribute_routes | arista.avd.default("") | list %}
 {%             set no_redistribute_route = vlan_aware_bundle.no_redistribute_routes | arista.avd.default("") | map("replace","","no ",1) | list %}
 {%             set redistribution = redistribute_route + no_redistribute_route %}
-| {{ vlan_aware_bundle.name }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} | {{ vlans }} |
+{%             if redistribution | length == 0 %}
+{%                 set redistribution = ["-"] %}
+{%             endif %}
+| {{ vlan_aware_bundle.name }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ redistribution | join("<br>") }} | {{ vlans }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.vlans is arista.avd.defined %}
@@ -1041,7 +1044,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set redistribute_route = vlan.redistribute_routes | arista.avd.default("") | list %}
 {%             set no_redistribute_route = vlan.no_redistribute_routes | arista.avd.default("") | map("replace","","no ",1) | list %}
 {%             set redistribution = redistribute_route + no_redistribute_route %}
-| {{ vlan.id }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} |
+{%             if redistribution | length == 0 %}
+{%                 set redistribution = ["-"] %}
+{%             endif %}
+| {{ vlan.id }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ redistribution | join("<br>") }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.vpws is arista.avd.defined %}

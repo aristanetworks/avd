@@ -5147,7 +5147,7 @@ interface Dps1
 | --------- | ------- |
 | Ethernet23 | fire-code<br>reed-solomon |
 | Ethernet24 | Disabled |
-| Ethernet24/1 |  |
+| Ethernet24/1 | - |
 | Ethernet81/1 | fire-code<br>reed-solomon |
 
 #### Priority Flow Control

@@ -195,6 +195,7 @@ ASN Notation: asplain
 | Ethernet42 | BGP_COVERAGE_IPV4 | PG-COVERAGE | - | PF-COVERAGE |
 
 #### Router BGP EVPN Address Family
+
 - Layer-2 In-place FEC update operation enabled
 
 ##### EVPN Host Flapping Settings
@@ -222,7 +223,7 @@ ASN Notation: asplain
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| BGP-COVERAGE-BUNDLE | 192.0.2.44:500 | 500:500<br>remote 500:501 | - | - |  | 500 |
+| BGP-COVERAGE-BUNDLE | 192.0.2.44:500 | 500:500<br>remote 500:501 | - | - | - | 500 |
 
 #### Router BGP VLANs
 

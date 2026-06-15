@@ -778,6 +778,9 @@
 {%                 if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
 {%                     do enabled.append('reed-solomon') %}
 {%                 endif %}
+{%                 if enabled | length == 0 %}
+{%                     set enabled = ['-'] %}
+{%                 endif %}
 {%             endif %}
 | {{ ethernet_interface.name }} | {{ enabled | join('<br>') }} |
 {%         endfor %}
