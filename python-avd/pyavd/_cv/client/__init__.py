@@ -24,6 +24,7 @@ from .inventory import InventoryMixin
 from .models import CVTLSSettings
 from .proxy import HTTPProxyManager
 from .studio import StudioMixin
+from .studio_topology import StudioTopologyMixin
 from .swg import SwgMixin
 from .tag import TagMixin
 from .utils import UtilsMixin
@@ -46,6 +47,7 @@ class CVClientProtocol(
     ConfigletMixin,
     InventoryMixin,
     StudioMixin,
+    StudioTopologyMixin,
     SwgMixin,
     TagMixin,
     WorkspaceMixin,

@@ -32,6 +32,7 @@ __all__ = (
     "Settings",
     "EmailSettings",
     "AzureOAuth",
+    "OAuth2ClientCredentials",
     "HttpSettings",
     "HttpHeaders",
     "HeaderValues",
@@ -959,7 +960,7 @@ class EmailSettings(aristaproto.Message):
 @dataclass(eq=False, repr=False)
 class AzureOAuth(aristaproto.Message):
     """
-    AzureOAuth contains the settings for the sending of emails on Azure smtp server
+    AzureOAuth contains the settings for authenticating against Azure using OAuth2
     """
 
     client_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
@@ -980,6 +981,33 @@ class AzureOAuth(aristaproto.Message):
 
     scopes: "___fmp__.RepeatedString" = aristaproto.message_field(5)
     """scopes are the scopes that auth is granted for"""
+
+
+@dataclass(eq=False, repr=False)
+class OAuth2ClientCredentials(aristaproto.Message):
+    """
+    OAuth2ClientCredentials contains generic settings for authenticating webhook
+    requests using the OAuth2 client credentials (including OpenID Connect) flow.
+    """
+
+    client_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    """client_id of the OAuth2 client"""
+
+    client_secret: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    """client_secret for the OAuth2 client"""
+
+    token_url: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    """
+    token_url is the full URL of the OAuth2/OIDC token endpoint
+    e.g. https://example.com/oauth2/token
+    """
+
+    scope: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    """
+    scope is the optional OAuth2 scope string requested for the access token.
+    Multiple scopes can be defined by separating them with spaces,
+    e.g. \"scope1 scope2 scope3\".
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -1088,8 +1116,12 @@ class WebhookSettings(aristaproto.Message):
 
     azure_o_auth: "AzureOAuth" = aristaproto.message_field(1)
     """
-    azure_o_auth used for auth when using an Azure smtp server
-    uses auth_username
+    azure_o_auth used for auth when using Azure to authenticate webhook requests
+    """
+
+    oauth2_client_credentials: "OAuth2ClientCredentials" = aristaproto.message_field(2)
+    """
+    oauth2_client_credentials used for generic OAuth2/OIDC client-credentials auth for webhook
     """
 
 
@@ -1506,6 +1538,11 @@ class Matches(aristaproto.Message):
     intf_tags: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     intf_tags is a string tag query that is used to match on the event's interface tags
+    """
+
+    virtual_tags: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    """
+    virtual_tags is a string tag query that is used to match on the event's virtual tags
     """
 
     rule_ids: "___fmp__.RepeatedString" = aristaproto.message_field(6)

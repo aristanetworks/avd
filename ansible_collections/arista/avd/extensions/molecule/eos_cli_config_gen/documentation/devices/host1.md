@@ -7462,6 +7462,7 @@ interface Tunnel5
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | v6 nd new structure | default | - | - |
+| Vlan341 | IP address as dhcp and Install default-route obtained via DHCP | default | - | - |
 | Vlan361 | TCP MSS ceiling - IPv4 | default | - | - |
 | Vlan362 | TCP MSS ceiling - IPv6 | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
@@ -7514,6 +7515,7 @@ interface Tunnel5
 | Vlan338 | default | - | - | - | - | - |
 | Vlan339 | default | - | - | - | - | - |
 | Vlan340 | default | - | - | - | - | - |
+| Vlan341 | default | dhcp | - | - | - | - |
 | Vlan361 | default | - | - | - | - | - |
 | Vlan362 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
@@ -7932,6 +7934,14 @@ interface Vlan340
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
+!
+interface Vlan341
+   description IP address as dhcp and Install default-route obtained via DHCP
+   ip address dhcp
+   arp gratuitous accept
+   dhcp client accept default-route
+   ip verify unicast source reachable-via rx
+   ip directed-broadcast
 !
 interface Vlan361
    description TCP MSS ceiling - IPv4
