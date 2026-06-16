@@ -578,6 +578,14 @@ port_channel_interfaces:
       pbr:
         input: MyPolicy
 
+  - name: Port-Channel21
+    description: Test1 - loop protection true
+    loop_protection: true
+
+  - name: Port-Channel22
+    description: Test2 - loop protection false
+    loop_protection: false
+
   - name: Port-Channel99
     description: MCAST
     switchport:
