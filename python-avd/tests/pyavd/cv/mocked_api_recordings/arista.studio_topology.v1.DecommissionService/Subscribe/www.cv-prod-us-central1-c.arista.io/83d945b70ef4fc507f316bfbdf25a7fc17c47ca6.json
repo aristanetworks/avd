@@ -1,0 +1,7 @@
+{
+    "payload": [
+        {
+            "type": "INITIAL_SYNC_COMPLETE"
+        }
+    ]
+}
