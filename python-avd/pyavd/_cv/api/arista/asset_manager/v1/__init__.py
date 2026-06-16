@@ -7,165 +7,119 @@
 # This file has been @generated
 
 __all__ = (
-    "Source",
-    "AssetType",
     "AccessType",
-    "DeviceTenantAssignmentSortableField",
-    "LicenseTenantAssignmentSortableField",
-    "SalesOrderKey",
-    "PurchaseOrder",
-    "SalesOrderFilter",
-    "SalesOrder",
-    "UserInfo",
-    "DeviceKey",
-    "DeviceTenantAssignment",
-    "DeviceTenantAssignConfig",
-    "LicenseTenantAssignment",
-    "LicenseTenantAssignConfig",
-    "TenantKey",
-    "CustomerInfo",
     "AllowedTenants",
-    "MetaResponse",
+    "AllowedTenantsBatchedStreamRequest",
+    "AllowedTenantsBatchedStreamResponse",
     "AllowedTenantsRequest",
     "AllowedTenantsResponse",
+    "AllowedTenantsServiceStub",
     "AllowedTenantsSomeRequest",
     "AllowedTenantsSomeResponse",
     "AllowedTenantsStreamRequest",
     "AllowedTenantsStreamResponse",
-    "AllowedTenantsBatchedStreamRequest",
-    "AllowedTenantsBatchedStreamResponse",
-    "DeviceTenantAssignConfigRequest",
-    "DeviceTenantAssignConfigResponse",
-    "DeviceTenantAssignConfigSomeRequest",
-    "DeviceTenantAssignConfigSomeResponse",
-    "DeviceTenantAssignConfigStreamRequest",
-    "DeviceTenantAssignConfigStreamResponse",
+    "AssetType",
+    "CustomerInfo",
+    "DeviceKey",
+    "DeviceTenantAssignConfig",
     "DeviceTenantAssignConfigBatchedStreamRequest",
     "DeviceTenantAssignConfigBatchedStreamResponse",
-    "DeviceTenantAssignConfigSetRequest",
-    "DeviceTenantAssignConfigSetResponse",
-    "DeviceTenantAssignConfigSetSomeRequest",
-    "DeviceTenantAssignConfigSetSomeResponse",
+    "DeviceTenantAssignConfigDeleteAllRequest",
+    "DeviceTenantAssignConfigDeleteAllResponse",
     "DeviceTenantAssignConfigDeleteRequest",
     "DeviceTenantAssignConfigDeleteResponse",
     "DeviceTenantAssignConfigDeleteSomeRequest",
     "DeviceTenantAssignConfigDeleteSomeResponse",
-    "DeviceTenantAssignConfigDeleteAllRequest",
-    "DeviceTenantAssignConfigDeleteAllResponse",
-    "DeviceTenantAssignmentRequest",
-    "DeviceTenantAssignmentResponse",
-    "DeviceTenantAssignmentSomeRequest",
-    "DeviceTenantAssignmentSomeResponse",
-    "DeviceTenantAssignmentStreamRequest",
-    "DeviceTenantAssignmentStreamResponse",
+    "DeviceTenantAssignConfigRequest",
+    "DeviceTenantAssignConfigResponse",
+    "DeviceTenantAssignConfigServiceStub",
+    "DeviceTenantAssignConfigSetRequest",
+    "DeviceTenantAssignConfigSetResponse",
+    "DeviceTenantAssignConfigSetSomeRequest",
+    "DeviceTenantAssignConfigSetSomeResponse",
+    "DeviceTenantAssignConfigSomeRequest",
+    "DeviceTenantAssignConfigSomeResponse",
+    "DeviceTenantAssignConfigStreamRequest",
+    "DeviceTenantAssignConfigStreamResponse",
+    "DeviceTenantAssignment",
     "DeviceTenantAssignmentBatchedStreamRequest",
     "DeviceTenantAssignmentBatchedStreamResponse",
     "DeviceTenantAssignmentPageRequest",
-    "LicenseTenantAssignConfigRequest",
-    "LicenseTenantAssignConfigResponse",
-    "LicenseTenantAssignConfigSomeRequest",
-    "LicenseTenantAssignConfigSomeResponse",
-    "LicenseTenantAssignConfigStreamRequest",
-    "LicenseTenantAssignConfigStreamResponse",
+    "DeviceTenantAssignmentRequest",
+    "DeviceTenantAssignmentResponse",
+    "DeviceTenantAssignmentServiceStub",
+    "DeviceTenantAssignmentSomeRequest",
+    "DeviceTenantAssignmentSomeResponse",
+    "DeviceTenantAssignmentSortableField",
+    "DeviceTenantAssignmentStreamRequest",
+    "DeviceTenantAssignmentStreamResponse",
+    "LicenseTenantAssignConfig",
     "LicenseTenantAssignConfigBatchedStreamRequest",
     "LicenseTenantAssignConfigBatchedStreamResponse",
-    "LicenseTenantAssignConfigSetRequest",
-    "LicenseTenantAssignConfigSetResponse",
-    "LicenseTenantAssignConfigSetSomeRequest",
-    "LicenseTenantAssignConfigSetSomeResponse",
+    "LicenseTenantAssignConfigDeleteAllRequest",
+    "LicenseTenantAssignConfigDeleteAllResponse",
     "LicenseTenantAssignConfigDeleteRequest",
     "LicenseTenantAssignConfigDeleteResponse",
     "LicenseTenantAssignConfigDeleteSomeRequest",
     "LicenseTenantAssignConfigDeleteSomeResponse",
-    "LicenseTenantAssignConfigDeleteAllRequest",
-    "LicenseTenantAssignConfigDeleteAllResponse",
-    "LicenseTenantAssignmentRequest",
-    "LicenseTenantAssignmentResponse",
-    "LicenseTenantAssignmentSomeRequest",
-    "LicenseTenantAssignmentSomeResponse",
-    "LicenseTenantAssignmentStreamRequest",
-    "LicenseTenantAssignmentStreamResponse",
+    "LicenseTenantAssignConfigRequest",
+    "LicenseTenantAssignConfigResponse",
+    "LicenseTenantAssignConfigServiceStub",
+    "LicenseTenantAssignConfigSetRequest",
+    "LicenseTenantAssignConfigSetResponse",
+    "LicenseTenantAssignConfigSetSomeRequest",
+    "LicenseTenantAssignConfigSetSomeResponse",
+    "LicenseTenantAssignConfigSomeRequest",
+    "LicenseTenantAssignConfigSomeResponse",
+    "LicenseTenantAssignConfigStreamRequest",
+    "LicenseTenantAssignConfigStreamResponse",
+    "LicenseTenantAssignment",
     "LicenseTenantAssignmentBatchedStreamRequest",
     "LicenseTenantAssignmentBatchedStreamResponse",
     "LicenseTenantAssignmentPageRequest",
+    "LicenseTenantAssignmentRequest",
+    "LicenseTenantAssignmentResponse",
+    "LicenseTenantAssignmentServiceStub",
+    "LicenseTenantAssignmentSomeRequest",
+    "LicenseTenantAssignmentSomeResponse",
+    "LicenseTenantAssignmentSortableField",
+    "LicenseTenantAssignmentStreamRequest",
+    "LicenseTenantAssignmentStreamResponse",
+    "MetaResponse",
+    "PurchaseOrder",
+    "SalesOrder",
+    "SalesOrderBatchedStreamRequest",
+    "SalesOrderBatchedStreamResponse",
+    "SalesOrderFilter",
+    "SalesOrderKey",
     "SalesOrderRequest",
     "SalesOrderResponse",
+    "SalesOrderServiceStub",
     "SalesOrderSomeRequest",
     "SalesOrderSomeResponse",
     "SalesOrderStreamRequest",
     "SalesOrderStreamResponse",
-    "SalesOrderBatchedStreamRequest",
-    "SalesOrderBatchedStreamResponse",
-    "AllowedTenantsServiceStub",
-    "AllowedTenantsServiceBase",
-    "DeviceTenantAssignConfigServiceStub",
-    "DeviceTenantAssignConfigServiceBase",
-    "DeviceTenantAssignmentServiceStub",
-    "DeviceTenantAssignmentServiceBase",
-    "LicenseTenantAssignConfigServiceStub",
-    "LicenseTenantAssignConfigServiceBase",
-    "LicenseTenantAssignmentServiceStub",
-    "LicenseTenantAssignmentServiceBase",
-    "SalesOrderServiceStub",
-    "SalesOrderServiceBase",
+    "Source",
+    "TenantKey",
+    "UserInfo",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class Source(aristaproto.Enum):
-    """
-    Source inducates different type of actors that can do asset_manager operations.
-    """
-
-    UNSPECIFIED = 0
-    """SOURCE_UNSPECIFIED indicates an unknown source"""
-
-    VENDOR = 1
-    """SOURCE_VENDOR indicates assignment was done by the vendor (Arista)."""
-
-    TAC = 2
-    """SOURCE_TAC indidcates assignment was done by Arista TAC."""
-
-    CUSTOMER = 3
-    """SOURCE_CUSTOMER indicates assignment was done directly by customer."""
-
-
-class AssetType(aristaproto.Enum):
-    """AssetType represent type of assets which can be procurred"""
-
-    UNSPECIFIED = 0
-    """ASSET_TYPE_UNSPECIFIED indicates unknown asset type"""
-
-    DEVICES = 1
-    """ASSET_TYPE_DEVICES indicate asset type of devices"""
-
-    LICENSES = 2
-    """ASSET_TYPE_LICENSES indicates asset type of licenses"""
-
-    DEVICES_AND_LICENSES = 3
-    """
-    ASSET_TYPE_DEVICES_AND_LICENSES indicates asset type for both
-    device and license
-    """
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class AccessType(aristaproto.Enum):
@@ -174,375 +128,434 @@ class AccessType(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """ACCESS_TYPE_UNSPECIFIED indicates an unknown access level."""
+    """
+    ACCESS_TYPE_UNSPECIFIED indicates an unknown access level.
+    """
 
     READ = 1
-    """ACCESS_TYPE_READ indicates read-only access."""
+    """
+    ACCESS_TYPE_READ indicates read-only access.
+    """
 
     READ_WRITE = 2
-    """ACCESS_TYPE_READ_WRITE indicates read and write access."""
+    """
+    ACCESS_TYPE_READ_WRITE indicates read and write access.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ACCESS_TYPE_UNSPECIFIED",
+            1: "ACCESS_TYPE_READ",
+            2: "ACCESS_TYPE_READ_WRITE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ACCESS_TYPE_UNSPECIFIED": 0,
+            "ACCESS_TYPE_READ": 1,
+            "ACCESS_TYPE_READ_WRITE": 2,
+        }
+
+
+class AssetType(aristaproto.Enum):
+    """
+    AssetType represent type of assets which can be procurred
+    """
+
+    UNSPECIFIED = 0
+    """
+    ASSET_TYPE_UNSPECIFIED indicates unknown asset type
+    """
+
+    DEVICES = 1
+    """
+    ASSET_TYPE_DEVICES indicate asset type of devices
+    """
+
+    LICENSES = 2
+    """
+    ASSET_TYPE_LICENSES indicates asset type of licenses
+    """
+
+    DEVICES_AND_LICENSES = 3
+    """
+    ASSET_TYPE_DEVICES_AND_LICENSES indicates asset type for both
+    device and license
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ASSET_TYPE_UNSPECIFIED",
+            1: "ASSET_TYPE_DEVICES",
+            2: "ASSET_TYPE_LICENSES",
+            3: "ASSET_TYPE_DEVICES_AND_LICENSES",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ASSET_TYPE_UNSPECIFIED": 0,
+            "ASSET_TYPE_DEVICES": 1,
+            "ASSET_TYPE_LICENSES": 2,
+            "ASSET_TYPE_DEVICES_AND_LICENSES": 3,
+        }
 
 
 class DeviceTenantAssignmentSortableField(aristaproto.Enum):
     UNSPECIFIED = 0
+
     KEY_DEVICE_ID = -1475536042
+
     MODEL_NAME = -1529362212
+
     TENANT_ID = 590923987
+
     SHIPPING_DATE = 190779440
+
     SALES_ORDER_NUMBER = -988583176
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_UNSPECIFIED",
+            -1475536042: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_KEY_DEVICE_ID",
+            -1529362212: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_MODEL_NAME",
+            590923987: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_TENANT_ID",
+            190779440: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SHIPPING_DATE",
+            -988583176: "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SALES_ORDER_NUMBER",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_UNSPECIFIED": 0,
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_KEY_DEVICE_ID": -1475536042,
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_MODEL_NAME": -1529362212,
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_TENANT_ID": 590923987,
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SHIPPING_DATE": 190779440,
+            "DEVICE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SALES_ORDER_NUMBER": -988583176,
+        }
 
 
 class LicenseTenantAssignmentSortableField(aristaproto.Enum):
     UNSPECIFIED = 0
+
     SKU = -651451878
+
     SALES_ORDER_NUMBER = -988583176
+
     START_DATE = -787429676
+
     END_DATE = 1326735083
+
     TENANT_ID = 590923987
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_UNSPECIFIED",
+            -651451878: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SKU",
+            -988583176: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SALES_ORDER_NUMBER",
+            -787429676: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_START_DATE",
+            1326735083: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_END_DATE",
+            590923987: "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_TENANT_ID",
+        }
 
-@dataclass(eq=False, repr=False)
-class SalesOrderKey(aristaproto.Message):
-    """SalesOrderKey uniquely identifies a sales order"""
-
-    sales_order_number: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_INT64)
-    """sales_order_number is the invoice number of the entire order"""
-
-
-@dataclass(eq=False, repr=False)
-class PurchaseOrder(aristaproto.Message):
-    """
-    PurchaseOrder represents unique identifier assigned to an
-    order, either by a business partner or customer
-    """
-
-    partner_purchase_order: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    partner_purchase_order represents unique identifier assigned
-    to a purchase order (PO) by a business partner
-    """
-
-    customer_purchase_order: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    customer_purchase_order represents unique identifier assigned
-    to a purchase order (PO) by customer
-    """
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_UNSPECIFIED": 0,
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SKU": -651451878,
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_SALES_ORDER_NUMBER": -988583176,
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_START_DATE": -787429676,
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_END_DATE": 1326735083,
+            "LICENSE_TENANT_ASSIGNMENT_SORTABLE_FIELD_TENANT_ID": 590923987,
+        }
 
 
-@dataclass(eq=False, repr=False)
-class SalesOrderFilter(aristaproto.Message):
+class Source(aristaproto.Enum):
     """
-    SalesOrderFilter is used to filter sales orders based
-    on various parameters
+    Source inducates different type of actors that can do asset_manager operations.
     """
 
-    customer_ids: "___fmp__.RepeatedInt64" = aristaproto.message_field(1)
+    UNSPECIFIED = 0
     """
-    customer_ids represents the customers to which different
-    assets of a sales order are assigned
-    """
-
-    tenant_ids: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """
-    tenant_ids represents the tenants to which different
-    assets of a sales order are assigned
+    SOURCE_UNSPECIFIED indicates an unknown source
     """
 
-    device_serial: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    VENDOR = 1
     """
-    device_serial represents a device which is present in
-    the given sales order
-    """
-
-    device_model: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    device_model corresponds to the model of a device which
-    is present in the given sales order
+    SOURCE_VENDOR indicates assignment was done by the vendor (Arista).
     """
 
-    feature: "__license_v1__.Feature" = aristaproto.enum_field(5)
+    TAC = 2
     """
-    feature is the name of the feature for which the
-    license was purchased
+    SOURCE_TAC indidcates assignment was done by Arista TAC.
     """
 
-    asset_type: "AssetType" = aristaproto.enum_field(6)
+    CUSTOMER = 3
     """
-    asset_type denotes which type of assets are present in a
-    sales order
+    SOURCE_CUSTOMER indicates assignment was done directly by customer.
     """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SOURCE_UNSPECIFIED",
+            1: "SOURCE_VENDOR",
+            2: "SOURCE_TAC",
+            3: "SOURCE_CUSTOMER",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SOURCE_UNSPECIFIED": 0,
+            "SOURCE_VENDOR": 1,
+            "SOURCE_TAC": 2,
+            "SOURCE_CUSTOMER": 3,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class SalesOrder(aristaproto.Message):
-    """SalesOrder represent sales order information for purchase"""
-
-    key: "SalesOrderKey" = aristaproto.message_field(1)
-    """key uniquely identifies a sales order"""
-
-    last_invoiced_at: datetime = aristaproto.message_field(2)
+class AllowedTenants(aristaproto.Message):
     """
-    last_invoiced_at represents the latest timestamp at which an asset
-    (a device or a license) in the given sales order was invoiced
-    """
-
-    customer_names: "___fmp__.RepeatedString" = aristaproto.message_field(3)
-    """
-    customer_names represents the list of customers to which the
-    assets of the given sales order belong into
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UserInfo(aristaproto.Message):
-    """UserInfo contains information about a user within a system."""
-
-    user_tenant: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    user_tenant represents the tenant identifier associated
-    with the user.
-    """
-
-    user_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """user_name represents the name of the user."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceKey(aristaproto.Message):
-    """DeviceKey uniquely identifies the device"""
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id uniquely identifies the device via its serial number"""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignment(aristaproto.Message):
-    """
-    DeviceTenantAssignment represents tenant/customer information for a device
-    This api could also be used to get a list of all devices assigned to a tenant
-    id. Example : get list of devices assigned to a tenant
+    AllowedTenants represents a list of authorized
+    customers whose assets (devices/licenses) the tenant key has
+    permission to view or move.
     ```
     Request :
      {
-       \"partial_eq_filter\": [
-          {
-              \"tenant_id\" : \"Tenant1\"
-          }
-       ]
+       "key" : {
+         "tenant_id": "tenant_1"
+       }
      }
-    Response :
-     {
-       \"key\" : {
-         \"device_id\": \"JPA22270020\"
-       },
-       \"model_name\": \"DCS-7500\",
-       ...
-     },
-     {
-       \"key\" : {
-         \"device_id\": \"JPA22270022\"
-       },
-       \"model_name\": \"DCS-7130\",
-       ...
-     }
+    Response:
+    {
+        "access_type": "ACCESS_TYPE_READ_WRITE",
+        "customer_info": {
+              "customer_id": 1234,
+              "customer_name": "customer_id1",
+              "allowed_tenant_ids": [
+                "tenant_1",
+                "tenant_2",
+                "tenant_3"
+              ]
+        }
+    }
     ```
     """
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key is device serial to uniquely identify a device"""
-
-    model_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """model_name describes the hardware model of this device."""
-
-    customer_id: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT64)
+    key: "TenantKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    customer_id uniquely identifies a customer. Customer refers
-    to the entity (organization or business) that subscribes to
-    and utilizes CloudVision services. A customer could have
-    single or multiple tenants tailored to its specific needs,
-    such as different departments, branches, or subsidiaries.
+    key is used to identify a tenant
     """
 
-    preferred_customer_name: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    customer_info: "CustomerInfo | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    preferred_customer_name is preffered name associated with
-    customer id. This name is indicative and might differ from
-    actual customer name
-    """
-
-    tenant_id: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    tenant_id uniquely identifies a tenant. Tenant represents an
-    organization within CloudVision dedicated to a specific
-    segment of the customer's operations.
+    customer_info represents a customer whose
+    assets(devices/licenses)can be managed by key tenant_id.
     """
 
-    shipping_date: datetime = aristaproto.message_field(6)
-    """shipping_date is the date on which the order was fulfilled"""
-
-    sales_order_number: Optional[int] = aristaproto.message_field(7, wraps=aristaproto.TYPE_INT64)
-    """sales_order_number is the invoice number of the entire order"""
-
-    source: "Source" = aristaproto.enum_field(8)
-    """source is the source of device data"""
-
-    updated_by_user: "UserInfo" = aristaproto.message_field(9)
+    access_type: "AccessType" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: AccessType(0))
     """
-    updated_by_user represents information of user who performed
-    last device assignment.
+    access_type represents the level of access the tenant has to the customer's assets.
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenants", AllowedTenants)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfig(aristaproto.Message):
-    """DeviceTenantAssignConfig describes a device tenant modify request"""
+class AllowedTenantsBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[AllowedTenants]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies a device"""
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
 
-    source_tenant_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """source_tenant_id is the existing tenant for a device"""
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
 
-    destination_tenant_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """destination_tenant_id is the new tenant for a device"""
+    For GetAll, the fields start and end can be used as follows:
 
-    metadata: "___fmp__.MapStringString" = aristaproto.message_field(4)
-    """metadata is the additional data for request"""
+      * end: Returns the state of each AllowedTenants at end.
+        * Each AllowedTenants response is fully-specified (all fields set).
+      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
+        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AllowedTenants at start, followed by updates
+        until end.
+        * Each AllowedTenants response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsBatchedStreamRequest", AllowedTenantsBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignment(aristaproto.Message):
+class AllowedTenantsBatchedStreamResponse(aristaproto.Message):
+    responses: "list[AllowedTenantsStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    LicenseTenantAssignment represents tenant/customer information for a license
-    This api could also be used to get a list of all licenses assigned to a tenant
-    id. Example : get list of licenses assigned to a tenant
-    ```
-    Request :
-     {
-       \"partial_eq_filter\": [
-          {
-              \"tenant_id\" : \"Tenant1\"
-          }
-       ]
-     }
-    Response :
-     {
-       \"key\" : {
-         \"license_uuid\": \"19898989\"
-       },
-       \"sku\": \"LIC-FIX-4-MACSEC\",
-       ...
-     },
-     {
-       \"key\" : {
-         \"license_uuid\": \"29898989\"
-       },
-       \"sku\": \"LIC-FIX-4-MACSEC\",
-       ...
-     }
-    ```
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    """key is used to uniquely identify a license"""
 
-    sku: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    sku represents the name of the sku which is the combination
-    of platform and feature name.
-    """
-
-    feature: "__license_v1__.Feature" = aristaproto.enum_field(3)
-    """
-    feature is the name of the feature for which the
-    license was purchased.
-    """
-
-    invoice_number: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT64)
-    """invoice_number represent invoice number on which order is paid"""
-
-    invoice_line_number: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    invoice_line_number identifies a unique line in case of multiple line in an invoice
-    """
-
-    customer_id: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT64)
-    """
-    customer_id uniquely identifies a customer. Customer refers
-    to the entity (organization or business) that subscribes to
-    and utilizes CloudVision services. A customer could have
-    single or multiple tenants tailored to its specific needs,
-    such as different departments, branches, or subsidiaries.
-    """
-
-    preferred_customer_name: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """
-    preferred_customer_name is preferred name associated with
-    customer id. This name is indicative and might differ from
-    actual customer name
-    """
-
-    sales_order_number: Optional[int] = aristaproto.message_field(8, wraps=aristaproto.TYPE_INT64)
-    """sales_order_number is integer number for an order"""
-
-    start_date: datetime = aristaproto.message_field(9)
-    """start_date denotes date from which license validity begins"""
-
-    end_date: datetime = aristaproto.message_field(10)
-    """end_date indicates the date when the license validity expires"""
-
-    tenant_id: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
-    """
-    tenant_id uniquely identifies a tenant. Tenant represents an
-    organization within CloudVision dedicated to a specific
-    segment of the customer's operations.
-    """
-
-    platform_class: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
-    """platform_class is the platform class of the license."""
-
-    updated_by_user: "UserInfo" = aristaproto.message_field(13)
-    """
-    updated_by_user represents information of user who performed
-    last license assignment.
-    """
-
-    assigned_device: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
-    """
-    assigned_device represents the device to which the license
-    is assigned to currently
-    """
-
-    license_bundle_uuid: Optional[str] = aristaproto.message_field(15, wraps=aristaproto.TYPE_STRING)
-    """
-    license_bundle_uuid corresponds to the bundle id to which
-    the license belongs to
-    """
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsBatchedStreamResponse", AllowedTenantsBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfig(aristaproto.Message):
-    """LicenseTenantAssignConfig describes a license tenant modify request"""
+class AllowedTenantsRequest(aristaproto.Message):
+    key: "TenantKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a AllowedTenants instance to retrieve.
+    This value must be populated.
+    """
 
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    """key is used to uniquely identify a license"""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
 
-    source_tenant_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """source_tenant_id is the existing tenant for a license"""
 
-    destination_tenant_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """destination_tenant_id is the new tenant for a license"""
-
-    metadata: "___fmp__.MapStringString" = aristaproto.message_field(4)
-    """metadata is the additional data for request"""
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsRequest", AllowedTenantsRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TenantKey(aristaproto.Message):
-    """TenantKey is used to uniquely identify a tenant"""
+class AllowedTenantsResponse(aristaproto.Message):
+    value: "AllowedTenants | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
 
-    tenant_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """tenant_id is unique id assigned to every tenant"""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    AllowedTenants instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsResponse", AllowedTenantsResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AllowedTenantsSomeRequest(aristaproto.Message):
+    keys: "list[TenantKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsSomeRequest", AllowedTenantsSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AllowedTenantsSomeResponse(aristaproto.Message):
+    value: "AllowedTenants | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    AllowedTenants instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsSomeResponse", AllowedTenantsSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AllowedTenantsStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[AllowedTenants]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each AllowedTenants at end.
+        * Each AllowedTenants response is fully-specified (all fields set).
+      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
+        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AllowedTenants at start, followed by updates
+        until end.
+        * Each AllowedTenants response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsStreamRequest", AllowedTenantsStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AllowedTenantsStreamResponse(aristaproto.Message):
+    value: "AllowedTenants | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this AllowedTenants's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the AllowedTenants value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "AllowedTenantsStreamResponse", AllowedTenantsStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -555,369 +568,75 @@ class CustomerInfo(aristaproto.Message):
     such as different departments, branches, or subsidiaries.
     """
 
-    customer_id: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_INT64)
-    """customer_id uniquely identifies a customer."""
+    customer_id: "int | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    customer_id uniquely identifies a customer.
+    """
 
-    customer_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    customer_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     customer_name is the name associated with corresponding
     customer_id.
     """
 
-    allowed_tenant_ids: "___fmp__.RepeatedString" = aristaproto.message_field(3)
+    allowed_tenant_ids: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     allowed_tenant_ids represents a list of tenant ids
     of a single customer eligible for Asset Management.
     """
 
 
-@dataclass(eq=False, repr=False)
-class AllowedTenants(aristaproto.Message):
-    """
-    AllowedTenants represents a list of authorized
-    customers whose assets (devices/licenses) the tenant key has
-    permission to view or move.
-    ```
-    Request :
-     {
-       \"key\" : {
-         \"tenant_id\": \"tenant_1\"
-       }
-     }
-    Response:
-    {
-        \"access_type\": \"ACCESS_TYPE_READ_WRITE\",
-        \"customer_info\": {
-              \"customer_id\": 1234,
-              \"customer_name\": \"customer_id1\",
-              \"allowed_tenant_ids\": [
-                \"tenant_1\",
-                \"tenant_2\",
-                \"tenant_3\"
-              ]
-        }
-    }
-    ```
-    """
-
-    key: "TenantKey" = aristaproto.message_field(1)
-    """key is used to identify a tenant"""
-
-    customer_info: "CustomerInfo" = aristaproto.message_field(2)
-    """
-    customer_info represents a customer whose
-    assets(devices/licenses)can be managed by key tenant_id.
-    """
-
-    access_type: "AccessType" = aristaproto.enum_field(3)
-    """
-    access_type represents the level of access the tenant has to the customer's assets.
-    """
+default_message_pool.register_message("arista.asset_manager.v1", "CustomerInfo", CustomerInfo)
 
 
 @dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class DeviceKey(aristaproto.Message):
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    DeviceKey uniquely identifies the device
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Count is the number of items present under the conditions of the request.
+    device_id uniquely identifies the device via its serial number
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceKey", DeviceKey)
 
 
 @dataclass(eq=False, repr=False)
-class AllowedTenantsRequest(aristaproto.Message):
-    key: "TenantKey" = aristaproto.message_field(1)
+class DeviceTenantAssignConfig(aristaproto.Message):
     """
-    Key uniquely identifies a AllowedTenants instance to retrieve.
-    This value must be populated.
+    DeviceTenantAssignConfig describes a device tenant modify request
     """
 
-    time: datetime = aristaproto.message_field(2)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsResponse(aristaproto.Message):
-    value: "AllowedTenants" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    key uniquely identifies a device
     """
 
-    time: datetime = aristaproto.message_field(2)
+    source_tenant_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    AllowedTenants instance in this response.
+    source_tenant_id is the existing tenant for a device
+    """
+
+    destination_tenant_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    destination_tenant_id is the new tenant for a device
+    """
+
+    metadata: "___fmp__.MapStringString | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    metadata is the additional data for request
     """
 
 
-@dataclass(eq=False, repr=False)
-class AllowedTenantsSomeRequest(aristaproto.Message):
-    keys: List["TenantKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsSomeResponse(aristaproto.Message):
-    value: "AllowedTenants" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    AllowedTenants instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["AllowedTenants"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each AllowedTenants at end.
-        * Each AllowedTenants response is fully-specified (all fields set).
-      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
-        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each AllowedTenants at start, followed by updates
-        until end.
-        * Each AllowedTenants response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsStreamResponse(aristaproto.Message):
-    value: "AllowedTenants" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this AllowedTenants's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the AllowedTenants value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["AllowedTenants"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each AllowedTenants at end.
-        * Each AllowedTenants response is fully-specified (all fields set).
-      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
-        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each AllowedTenants at start, followed by updates
-        until end.
-        * Each AllowedTenants response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AllowedTenantsBatchedStreamResponse(aristaproto.Message):
-    responses: List["AllowedTenantsStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceTenantAssignConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigResponse(aristaproto.Message):
-    value: "DeviceTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceTenantAssignConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSomeResponse(aristaproto.Message):
-    value: "DeviceTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceTenantAssignConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceTenantAssignConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceTenantAssignConfig at end.
-        * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
-        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
-        until end.
-        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigStreamResponse(aristaproto.Message):
-    value: "DeviceTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceTenantAssignConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceTenantAssignConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfig", DeviceTenantAssignConfig)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceTenantAssignConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[DeviceTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -926,7 +645,7 @@ class DeviceTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -943,7 +662,7 @@ class DeviceTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -952,9 +671,12 @@ class DeviceTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigBatchedStreamRequest", DeviceTenantAssignConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceTenantAssignConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[DeviceTenantAssignConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -962,69 +684,69 @@ class DeviceTenantAssignConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSetRequest(aristaproto.Message):
-    value: "DeviceTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    DeviceTenantAssignConfig carries the value to set into the datastore.
-    See the documentation on the DeviceTenantAssignConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigBatchedStreamResponse", DeviceTenantAssignConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSetResponse(aristaproto.Message):
-    value: "DeviceTenantAssignConfig" = aristaproto.message_field(1)
+class DeviceTenantAssignConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the DeviceTenantAssignConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteAllRequest", DeviceTenantAssignConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSetSomeRequest(aristaproto.Message):
-    values: List["DeviceTenantAssignConfig"] = aristaproto.message_field(1)
+class DeviceTenantAssignConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of DeviceTenantAssignConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the DeviceTenantAssignConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigSetSomeResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteAllResponse", DeviceTenantAssignConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfigDeleteRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which DeviceTenantAssignConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteRequest", DeviceTenantAssignConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfigDeleteResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key echoes back the key of the deleted DeviceTenantAssignConfig instance.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1034,10 +756,18 @@ class DeviceTenantAssignConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteResponse", DeviceTenantAssignConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceTenantAssignConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    """key contains a list of DeviceTenantAssignConfig keys to delete"""
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of DeviceTenantAssignConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteSomeRequest", DeviceTenantAssignConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -1046,58 +776,35 @@ class DeviceTenantAssignConfigDeleteSomeResponse(aristaproto.Message):
     DeviceTenantAssignConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigDeleteSomeResponse", DeviceTenantAssignConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceTenantAssignConfig"] = aristaproto.message_field(1)
+class DeviceTenantAssignConfigRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "DeviceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the DeviceTenantAssignConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceTenantAssignment instance to retrieve.
+    Key uniquely identifies a DeviceTenantAssignConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigRequest", DeviceTenantAssignConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentResponse(aristaproto.Message):
-    value: "DeviceTenantAssignment" = aristaproto.message_field(1)
+class DeviceTenantAssignConfigResponse(aristaproto.Message):
+    value: "DeviceTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1105,374 +812,37 @@ class DeviceTenantAssignmentResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    DeviceTenantAssignment instance in this response.
+    DeviceTenantAssignConfig instance in this response.
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigResponse", DeviceTenantAssignConfigResponse)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class DeviceTenantAssignConfigSetRequest(aristaproto.Message):
+    value: "DeviceTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    DeviceTenantAssignConfig carries the value to set into the datastore.
+    See the documentation on the DeviceTenantAssignConfig struct for which fields are required.
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSetRequest", DeviceTenantAssignConfigSetRequest)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentSomeResponse(aristaproto.Message):
-    value: "DeviceTenantAssignment" = aristaproto.message_field(1)
+class DeviceTenantAssignConfigSetResponse(aristaproto.Message):
+    value: "DeviceTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceTenantAssignment instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceTenantAssignment"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceTenantAssignment at end.
-        * Each DeviceTenantAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-        until end.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentStreamResponse(aristaproto.Message):
-    value: "DeviceTenantAssignment" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceTenantAssignment's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceTenantAssignment value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceTenantAssignment"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceTenantAssignment at end.
-        * Each DeviceTenantAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-        until end.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceTenantAssignmentStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceTenantAssignmentPageRequest(aristaproto.Message):
-    page: int = aristaproto.uint64_field(1)
-    """Page is the window-index to fetch."""
-
-    page_length: int = aristaproto.uint64_field(2)
-    """
-    Page_length is the size of the page. Combined with page, this will return:
-       start = (page * page_length)
-       end = start + page_length
-       return sorted_table[start..end]
-    Page length should be consistent across requests for the same client-context
-    """
-
-    sort_field: "DeviceTenantAssignmentSortableField" = aristaproto.enum_field(3)
-    """Sort_field is the field or subfield of the resource to sort by"""
-
-    sort_dir: "___fmp__.SortDirection" = aristaproto.enum_field(4)
-    """Sort_dir is the direction of the sort, ascending or descending"""
-
-    partial_eq_filter: List["DeviceTenantAssignment"] = aristaproto.message_field(5)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(7)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetPage, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceTenantAssignment at end.
-        * Each DeviceTenantAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-        until end.
-        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigRequest(aristaproto.Message):
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a LicenseTenantAssignConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigResponse(aristaproto.Message):
-    value: "LicenseTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    LicenseTenantAssignConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSomeRequest(aristaproto.Message):
-    keys: List["__license_v1__.PurchasedLicenseKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSomeResponse(aristaproto.Message):
-    value: "LicenseTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    LicenseTenantAssignConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["LicenseTenantAssignConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each LicenseTenantAssignConfig at end.
-        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
-        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
-        until end.
-        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigStreamResponse(aristaproto.Message):
-    value: "LicenseTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this LicenseTenantAssignConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the LicenseTenantAssignConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["LicenseTenantAssignConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each LicenseTenantAssignConfig at end.
-        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
-        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
-        until end.
-        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["LicenseTenantAssignConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSetRequest(aristaproto.Message):
-    value: "LicenseTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    LicenseTenantAssignConfig carries the value to set into the datastore.
-    See the documentation on the LicenseTenantAssignConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSetResponse(aristaproto.Message):
-    value: "LicenseTenantAssignConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the LicenseTenantAssignConfigSetRequest as well
+    Value carries all the values given in the DeviceTenantAssignConfigSetRequest as well
     as any server-generated values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
@@ -1482,42 +852,616 @@ class LicenseTenantAssignConfigSetResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSetResponse", DeviceTenantAssignConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSetSomeRequest(aristaproto.Message):
-    values: List["LicenseTenantAssignConfig"] = aristaproto.message_field(1)
+class DeviceTenantAssignConfigSetSomeRequest(aristaproto.Message):
+    values: "list[DeviceTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    value contains a list of LicenseTenantAssignConfig values to write.
+    value contains a list of DeviceTenantAssignConfig values to write.
     It is possible to provide more values than can fit within either:
         - the maxiumum send size of the client
         - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    See gRPC "maximum message size" documentation for more information.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSetSomeRequest", DeviceTenantAssignConfigSetSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigSetSomeResponse(aristaproto.Message):
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class DeviceTenantAssignConfigSetSomeResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSetSomeResponse", DeviceTenantAssignConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignConfigSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSomeRequest", DeviceTenantAssignConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignConfigSomeResponse(aristaproto.Message):
+    value: "DeviceTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceTenantAssignConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigSomeResponse", DeviceTenantAssignConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceTenantAssignConfig at end.
+        * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigStreamRequest", DeviceTenantAssignConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignConfigStreamResponse(aristaproto.Message):
+    value: "DeviceTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceTenantAssignConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceTenantAssignConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignConfigStreamResponse", DeviceTenantAssignConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignment(aristaproto.Message):
+    """
+    DeviceTenantAssignment represents tenant/customer information for a device
+    This api could also be used to get a list of all devices assigned to a tenant
+    id. Example : get list of devices assigned to a tenant
+    ```
+    Request :
+     {
+       "partial_eq_filter": [
+          {
+              "tenant_id" : "Tenant1"
+          }
+       ]
+     }
+    Response :
+     {
+       "key" : {
+         "device_id": "JPA22270020"
+       },
+       "model_name": "DCS-7500",
+       ...
+     },
+     {
+       "key" : {
+         "device_id": "JPA22270022"
+       },
+       "model_name": "DCS-7130",
+       ...
+     }
+    ```
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is device serial to uniquely identify a device
+    """
+
+    model_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    model_name describes the hardware model of this device.
+    """
+
+    customer_id: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    customer_id uniquely identifies a customer. Customer refers
+    to the entity (organization or business) that subscribes to
+    and utilizes CloudVision services. A customer could have
+    single or multiple tenants tailored to its specific needs,
+    such as different departments, branches, or subsidiaries.
+    """
+
+    preferred_customer_name: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    preferred_customer_name is preffered name associated with
+    customer id. This name is indicative and might differ from
+    actual customer name
+    """
+
+    tenant_id: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    tenant_id uniquely identifies a tenant. Tenant represents an
+    organization within CloudVision dedicated to a specific
+    segment of the customer's operations.
+    """
+
+    shipping_date: "datetime.datetime | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    shipping_date is the date on which the order was fulfilled
+    """
+
+    sales_order_number: "int | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    sales_order_number is the invoice number of the entire order
+    """
+
+    source: "Source" = aristaproto.field(8, aristaproto.TYPE_ENUM, default_factory=lambda: Source(0))
+    """
+    source is the source of device data
+    """
+
+    updated_by_user: "UserInfo | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    updated_by_user represents information of user who performed
+    last device assignment.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignment", DeviceTenantAssignment)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceTenantAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentBatchedStreamRequest", DeviceTenantAssignmentBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceTenantAssignmentStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentBatchedStreamResponse", DeviceTenantAssignmentBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentPageRequest(aristaproto.Message):
+    page: "int" = aristaproto.field(1, aristaproto.TYPE_UINT64)
+    """
+    Page is the window-index to fetch.
+    """
+
+    page_length: "int" = aristaproto.field(2, aristaproto.TYPE_UINT64)
+    """
+    Page_length is the size of the page. Combined with page, this will return:
+       start = (page * page_length)
+       end = start + page_length
+       return sorted_table[start..end]
+    Page length should be consistent across requests for the same client-context
+    """
+
+    sort_field: "DeviceTenantAssignmentSortableField" = aristaproto.field(
+        3, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceTenantAssignmentSortableField(0)
+    )
+    """
+    Sort_field is the field or subfield of the resource to sort by
+    """
+
+    sort_dir: "___fmp__.SortDirection" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.SortDirection(0))
+    """
+    Sort_dir is the direction of the sort, ascending or descending
+    """
+
+    partial_eq_filter: "list[DeviceTenantAssignment]" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetPage, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentPageRequest", DeviceTenantAssignmentPageRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceTenantAssignment instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentRequest", DeviceTenantAssignmentRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentResponse(aristaproto.Message):
+    value: "DeviceTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceTenantAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentResponse", DeviceTenantAssignmentResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentSomeRequest", DeviceTenantAssignmentSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentSomeResponse(aristaproto.Message):
+    value: "DeviceTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceTenantAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentSomeResponse", DeviceTenantAssignmentSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceTenantAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentStreamRequest", DeviceTenantAssignmentStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceTenantAssignmentStreamResponse(aristaproto.Message):
+    value: "DeviceTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceTenantAssignment's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceTenantAssignment value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "DeviceTenantAssignmentStreamResponse", DeviceTenantAssignmentStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfig(aristaproto.Message):
+    """
+    LicenseTenantAssignConfig describes a license tenant modify request
+    """
+
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is used to uniquely identify a license
+    """
+
+    source_tenant_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    source_tenant_id is the existing tenant for a license
+    """
+
+    destination_tenant_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    destination_tenant_id is the new tenant for a license
+    """
+
+    metadata: "___fmp__.MapStringString | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    metadata is the additional data for request
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfig", LicenseTenantAssignConfig)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[LicenseTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each LicenseTenantAssignConfig at end.
+        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigBatchedStreamRequest", LicenseTenantAssignConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[LicenseTenantAssignConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message(
+    "arista.asset_manager.v1", "LicenseTenantAssignConfigBatchedStreamResponse", LicenseTenantAssignConfigBatchedStreamResponse
+)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[LicenseTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteAllRequest", LicenseTenantAssignConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the LicenseTenantAssignConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteAllResponse", LicenseTenantAssignConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignConfigDeleteRequest(aristaproto.Message):
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which LicenseTenantAssignConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteRequest", LicenseTenantAssignConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignConfigDeleteResponse(aristaproto.Message):
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key echoes back the key of the deleted LicenseTenantAssignConfig instance.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1527,10 +1471,18 @@ class LicenseTenantAssignConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteResponse", LicenseTenantAssignConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["__license_v1__.PurchasedLicenseKey"] = aristaproto.message_field(1)
-    """key contains a list of LicenseTenantAssignConfig keys to delete"""
+    keys: "list[__license__v1__.PurchasedLicenseKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of LicenseTenantAssignConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteSomeRequest", LicenseTenantAssignConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -1539,58 +1491,35 @@ class LicenseTenantAssignConfigDeleteSomeResponse(aristaproto.Message):
     LicenseTenantAssignConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigDeleteSomeResponse", LicenseTenantAssignConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["LicenseTenantAssignConfig"] = aristaproto.message_field(1)
+class LicenseTenantAssignConfigRequest(aristaproto.Message):
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(3)
-    """
-    This is the key of the LicenseTenantAssignConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentRequest(aristaproto.Message):
-    key: "__license_v1__.PurchasedLicenseKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a LicenseTenantAssignment instance to retrieve.
+    Key uniquely identifies a LicenseTenantAssignConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigRequest", LicenseTenantAssignConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentResponse(aristaproto.Message):
-    value: "LicenseTenantAssignment" = aristaproto.message_field(1)
+class LicenseTenantAssignConfigResponse(aristaproto.Message):
+    value: "LicenseTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1598,26 +1527,92 @@ class LicenseTenantAssignmentResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    LicenseTenantAssignment instance in this response.
+    LicenseTenantAssignConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigResponse", LicenseTenantAssignConfigResponse)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentSomeRequest(aristaproto.Message):
-    keys: List["__license_v1__.PurchasedLicenseKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class LicenseTenantAssignConfigSetRequest(aristaproto.Message):
+    value: "LicenseTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    LicenseTenantAssignConfig carries the value to set into the datastore.
+    See the documentation on the LicenseTenantAssignConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSetRequest", LicenseTenantAssignConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigSetResponse(aristaproto.Message):
+    value: "LicenseTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the LicenseTenantAssignConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSetResponse", LicenseTenantAssignConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigSetSomeRequest(aristaproto.Message):
+    values: "list[LicenseTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of LicenseTenantAssignConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSetSomeRequest", LicenseTenantAssignConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigSetSomeResponse(aristaproto.Message):
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSetSomeResponse", LicenseTenantAssignConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignConfigSomeRequest(aristaproto.Message):
+    keys: "list[__license__v1__.PurchasedLicenseKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSomeRequest", LicenseTenantAssignConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentSomeResponse(aristaproto.Message):
-    value: "LicenseTenantAssignment" = aristaproto.message_field(1)
+class LicenseTenantAssignConfigSomeResponse(aristaproto.Message):
+    value: "LicenseTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1625,22 +1620,25 @@ class LicenseTenantAssignmentSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    LicenseTenantAssignment instance in this response.
+    LicenseTenantAssignConfig instance in this response.
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigSomeResponse", LicenseTenantAssignConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["LicenseTenantAssignment"] = aristaproto.message_field(1)
+class LicenseTenantAssignConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[LicenseTenantAssignConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1649,50 +1647,181 @@ class LicenseTenantAssignmentStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseTenantAssignment at end.
-        * Each LicenseTenantAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
-        * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
+      * end: Returns the state of each LicenseTenantAssignConfig at end.
+        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
         until end.
-        * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
           be partial.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigStreamRequest", LicenseTenantAssignConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class LicenseTenantAssignmentStreamResponse(aristaproto.Message):
-    value: "LicenseTenantAssignment" = aristaproto.message_field(1)
+class LicenseTenantAssignConfigStreamResponse(aristaproto.Message):
+    value: "LicenseTenantAssignConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Time holds the timestamp of this LicenseTenantAssignment's last modification.
+    Time holds the timestamp of this LicenseTenantAssignConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
-    Operation indicates how the LicenseTenantAssignment value in this response should be considered.
+    Operation indicates how the LicenseTenantAssignConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
     once all initial data is streamed and the client begins to receive modification updates,
     you should not see INITIAL again.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignConfigStreamResponse", LicenseTenantAssignConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class LicenseTenantAssignment(aristaproto.Message):
+    """
+    LicenseTenantAssignment represents tenant/customer information for a license
+    This api could also be used to get a list of all licenses assigned to a tenant
+    id. Example : get list of licenses assigned to a tenant
+    ```
+    Request :
+     {
+       "partial_eq_filter": [
+          {
+              "tenant_id" : "Tenant1"
+          }
+       ]
+     }
+    Response :
+     {
+       "key" : {
+         "license_uuid": "19898989"
+       },
+       "sku": "LIC-FIX-4-MACSEC",
+       ...
+     },
+     {
+       "key" : {
+         "license_uuid": "29898989"
+       },
+       "sku": "LIC-FIX-4-MACSEC",
+       ...
+     }
+    ```
+    """
+
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is used to uniquely identify a license
+    """
+
+    sku: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sku represents the name of the sku which is the combination
+    of platform and feature name.
+    """
+
+    feature: "__license__v1__.Feature" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __license__v1__.Feature(0))
+    """
+    feature is the name of the feature for which the
+    license was purchased.
+    """
+
+    invoice_number: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    invoice_number represent invoice number on which order is paid
+    """
+
+    invoice_line_number: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    invoice_line_number identifies a unique line in case of multiple line in an invoice
+    """
+
+    customer_id: "int | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    customer_id uniquely identifies a customer. Customer refers
+    to the entity (organization or business) that subscribes to
+    and utilizes CloudVision services. A customer could have
+    single or multiple tenants tailored to its specific needs,
+    such as different departments, branches, or subsidiaries.
+    """
+
+    preferred_customer_name: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    preferred_customer_name is preferred name associated with
+    customer id. This name is indicative and might differ from
+    actual customer name
+    """
+
+    sales_order_number: "int | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    sales_order_number is integer number for an order
+    """
+
+    start_date: "datetime.datetime | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    start_date denotes date from which license validity begins
+    """
+
+    end_date: "datetime.datetime | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    end_date indicates the date when the license validity expires
+    """
+
+    tenant_id: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    tenant_id uniquely identifies a tenant. Tenant represents an
+    organization within CloudVision dedicated to a specific
+    segment of the customer's operations.
+    """
+
+    platform_class: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    platform_class is the platform class of the license.
+    """
+
+    updated_by_user: "UserInfo | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    updated_by_user represents information of user who performed
+    last license assignment.
+    """
+
+    assigned_device: "str | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    assigned_device represents the device to which the license
+    is assigned to currently
+    """
+
+    license_bundle_uuid: "str | None" = aristaproto.field(15, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    license_bundle_uuid corresponds to the bundle id to which
+    the license belongs to
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignment", LicenseTenantAssignment)
+
+
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignmentBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["LicenseTenantAssignment"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[LicenseTenantAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1701,7 +1830,7 @@ class LicenseTenantAssignmentBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1718,7 +1847,7 @@ class LicenseTenantAssignmentBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1727,9 +1856,12 @@ class LicenseTenantAssignmentBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentBatchedStreamRequest", LicenseTenantAssignmentBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignmentBatchedStreamResponse(aristaproto.Message):
-    responses: List["LicenseTenantAssignmentStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[LicenseTenantAssignmentStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1737,12 +1869,17 @@ class LicenseTenantAssignmentBatchedStreamResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentBatchedStreamResponse", LicenseTenantAssignmentBatchedStreamResponse)
+
+
 @dataclass(eq=False, repr=False)
 class LicenseTenantAssignmentPageRequest(aristaproto.Message):
-    page: int = aristaproto.uint64_field(1)
-    """Page is the window-index to fetch."""
+    page: "int" = aristaproto.field(1, aristaproto.TYPE_UINT64)
+    """
+    Page is the window-index to fetch.
+    """
 
-    page_length: int = aristaproto.uint64_field(2)
+    page_length: "int" = aristaproto.field(2, aristaproto.TYPE_UINT64)
     """
     Page_length is the size of the page. Combined with page, this will return:
        start = (page * page_length)
@@ -1751,13 +1888,19 @@ class LicenseTenantAssignmentPageRequest(aristaproto.Message):
     Page length should be consistent across requests for the same client-context
     """
 
-    sort_field: "LicenseTenantAssignmentSortableField" = aristaproto.enum_field(3)
-    """Sort_field is the field or subfield of the resource to sort by"""
+    sort_field: "LicenseTenantAssignmentSortableField" = aristaproto.field(
+        3, aristaproto.TYPE_ENUM, default_factory=lambda: LicenseTenantAssignmentSortableField(0)
+    )
+    """
+    Sort_field is the field or subfield of the resource to sort by
+    """
 
-    sort_dir: "___fmp__.SortDirection" = aristaproto.enum_field(4)
-    """Sort_dir is the direction of the sort, ascending or descending"""
+    sort_dir: "___fmp__.SortDirection" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.SortDirection(0))
+    """
+    Sort_dir is the direction of the sort, ascending or descending
+    """
 
-    partial_eq_filter: List["LicenseTenantAssignment"] = aristaproto.message_field(5)
+    partial_eq_filter: "list[LicenseTenantAssignment]" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1766,7 +1909,7 @@ class LicenseTenantAssignmentPageRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(7)
+    time: "__time__.TimeBounds | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1784,24 +1927,30 @@ class LicenseTenantAssignmentPageRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentPageRequest", LicenseTenantAssignmentPageRequest)
+
+
 @dataclass(eq=False, repr=False)
-class SalesOrderRequest(aristaproto.Message):
-    key: "SalesOrderKey" = aristaproto.message_field(1)
+class LicenseTenantAssignmentRequest(aristaproto.Message):
+    key: "__license__v1__.PurchasedLicenseKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Key uniquely identifies a SalesOrder instance to retrieve.
+    Key uniquely identifies a LicenseTenantAssignment instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentRequest", LicenseTenantAssignmentRequest)
+
+
 @dataclass(eq=False, repr=False)
-class SalesOrderResponse(aristaproto.Message):
-    value: "SalesOrder" = aristaproto.message_field(1)
+class LicenseTenantAssignmentResponse(aristaproto.Message):
+    value: "LicenseTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1809,26 +1958,33 @@ class SalesOrderResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    SalesOrder instance in this response.
+    LicenseTenantAssignment instance in this response.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentResponse", LicenseTenantAssignmentResponse)
+
+
 @dataclass(eq=False, repr=False)
-class SalesOrderSomeRequest(aristaproto.Message):
-    keys: List["SalesOrderKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class LicenseTenantAssignmentSomeRequest(aristaproto.Message):
+    keys: "list[__license__v1__.PurchasedLicenseKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentSomeRequest", LicenseTenantAssignmentSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class SalesOrderSomeResponse(aristaproto.Message):
-    value: "SalesOrder" = aristaproto.message_field(1)
+class LicenseTenantAssignmentSomeResponse(aristaproto.Message):
+    value: "LicenseTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1836,22 +1992,25 @@ class SalesOrderSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    SalesOrder instance in this response.
+    LicenseTenantAssignment instance in this response.
     """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentSomeResponse", LicenseTenantAssignmentSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class SalesOrderStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SalesOrder"] = aristaproto.message_field(1)
+class LicenseTenantAssignmentStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[LicenseTenantAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1860,55 +2019,130 @@ class SalesOrderStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    filter: "SalesOrderFilter" = aristaproto.message_field(2)
-    """
-    For each SalesOrder in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given SalesOrder is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each SalesOrder at end.
-        * Each SalesOrder response is fully-specified (all fields set).
-      * start: Returns the state of each SalesOrder at start, followed by updates until now.
-        * Each SalesOrder response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SalesOrder at start, followed by updates
+      * end: Returns the state of each LicenseTenantAssignment at end.
+        * Each LicenseTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
         until end.
-        * Each SalesOrder response at start is fully-specified, but updates until end may
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
           be partial.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentStreamRequest", LicenseTenantAssignmentStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class SalesOrderStreamResponse(aristaproto.Message):
-    value: "SalesOrder" = aristaproto.message_field(1)
+class LicenseTenantAssignmentStreamResponse(aristaproto.Message):
+    value: "LicenseTenantAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this SalesOrder's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Operation indicates how the SalesOrder value in this response should be considered.
+    Time holds the timestamp of this LicenseTenantAssignment's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the LicenseTenantAssignment value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
     once all initial data is streamed and the client begins to receive modification updates,
     you should not see INITIAL again.
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "LicenseTenantAssignmentStreamResponse", LicenseTenantAssignmentStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class PurchaseOrder(aristaproto.Message):
+    """
+    PurchaseOrder represents unique identifier assigned to an
+    order, either by a business partner or customer
+    """
+
+    partner_purchase_order: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    partner_purchase_order represents unique identifier assigned
+    to a purchase order (PO) by a business partner
+    """
+
+    customer_purchase_order: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    customer_purchase_order represents unique identifier assigned
+    to a purchase order (PO) by customer
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "PurchaseOrder", PurchaseOrder)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrder(aristaproto.Message):
+    """
+    SalesOrder represent sales order information for purchase
+    """
+
+    key: "SalesOrderKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies a sales order
+    """
+
+    last_invoiced_at: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_invoiced_at represents the latest timestamp at which an asset
+    (a device or a license) in the given sales order was invoiced
+    """
+
+    customer_names: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    customer_names represents the list of customers to which the
+    assets of the given sales order belong into
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrder", SalesOrder)
+
+
 @dataclass(eq=False, repr=False)
 class SalesOrderBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SalesOrder"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[SalesOrder]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1917,14 +2151,14 @@ class SalesOrderBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    filter: "SalesOrderFilter" = aristaproto.message_field(2)
+    filter: "SalesOrderFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     For each SalesOrder in the list, all populated fields are considered ANDed together
     as a filtering operation. Similarly, the list itself is ORed such that any individual
     filter that matches a given SalesOrder is streamed to the user.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1941,7 +2175,7 @@ class SalesOrderBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1950,9 +2184,12 @@ class SalesOrderBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderBatchedStreamRequest", SalesOrderBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SalesOrderBatchedStreamResponse(aristaproto.Message):
-    responses: List["SalesOrderStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[SalesOrderStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1960,2169 +2197,1508 @@ class SalesOrderBatchedStreamResponse(aristaproto.Message):
     """
 
 
-class AllowedTenantsServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderBatchedStreamResponse", SalesOrderBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderFilter(aristaproto.Message):
+    """
+    SalesOrderFilter is used to filter sales orders based
+    on various parameters
+    """
+
+    customer_ids: "___fmp__.RepeatedInt64 | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    customer_ids represents the customers to which different
+    assets of a sales order are assigned
+    """
+
+    tenant_ids: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    tenant_ids represents the tenants to which different
+    assets of a sales order are assigned
+    """
+
+    device_serial: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_serial represents a device which is present in
+    the given sales order
+    """
+
+    device_model: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_model corresponds to the model of a device which
+    is present in the given sales order
+    """
+
+    feature: "__license__v1__.Feature" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: __license__v1__.Feature(0))
+    """
+    feature is the name of the feature for which the
+    license was purchased
+    """
+
+    asset_type: "AssetType" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: AssetType(0))
+    """
+    asset_type denotes which type of assets are present in a
+    sales order
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderFilter", SalesOrderFilter)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderKey(aristaproto.Message):
+    """
+    SalesOrderKey uniquely identifies a sales order
+    """
+
+    sales_order_number: "int | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    sales_order_number is the invoice number of the entire order
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderKey", SalesOrderKey)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderRequest(aristaproto.Message):
+    key: "SalesOrderKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a SalesOrder instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderRequest", SalesOrderRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderResponse(aristaproto.Message):
+    value: "SalesOrder | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SalesOrder instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderResponse", SalesOrderResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderSomeRequest(aristaproto.Message):
+    keys: "list[SalesOrderKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderSomeRequest", SalesOrderSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderSomeResponse(aristaproto.Message):
+    value: "SalesOrder | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SalesOrder instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderSomeResponse", SalesOrderSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SalesOrder]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "SalesOrderFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each SalesOrder in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given SalesOrder is streamed to the user.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each SalesOrder at end.
+        * Each SalesOrder response is fully-specified (all fields set).
+      * start: Returns the state of each SalesOrder at start, followed by updates until now.
+        * Each SalesOrder response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SalesOrder at start, followed by updates
+        until end.
+        * Each SalesOrder response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderStreamRequest", SalesOrderStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SalesOrderStreamResponse(aristaproto.Message):
+    value: "SalesOrder | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this SalesOrder's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the SalesOrder value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "SalesOrderStreamResponse", SalesOrderStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TenantKey(aristaproto.Message):
+    """
+    TenantKey is used to uniquely identify a tenant
+    """
+
+    tenant_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    tenant_id is unique id assigned to every tenant
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "TenantKey", TenantKey)
+
+
+@dataclass(eq=False, repr=False)
+class UserInfo(aristaproto.Message):
+    """
+    UserInfo contains information about a user within a system.
+    """
+
+    user_tenant: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user_tenant represents the tenant identifier associated
+    with the user.
+    """
+
+    user_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user_name represents the name of the user.
+    """
+
+
+default_message_pool.register_message("arista.asset_manager.v1", "UserInfo", UserInfo)
+
+
+class AllowedTenantsServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        allowed_tenants_request: "AllowedTenantsRequest",
+        message: "AllowedTenantsRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AllowedTenantsResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.AllowedTenantsService/GetOne",
-            allowed_tenants_request,
+            message,
             AllowedTenantsResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        allowed_tenants_some_request: "AllowedTenantsSomeRequest",
+        message: "AllowedTenantsSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AllowedTenantsSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/GetSome",
-            allowed_tenants_some_request,
+            message,
             AllowedTenantsSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        allowed_tenants_stream_request: "AllowedTenantsStreamRequest",
+        message: "AllowedTenantsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AllowedTenantsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/GetAll",
-            allowed_tenants_stream_request,
+            message,
             AllowedTenantsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        allowed_tenants_stream_request: "AllowedTenantsStreamRequest",
+        message: "AllowedTenantsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AllowedTenantsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/Subscribe",
-            allowed_tenants_stream_request,
+            message,
             AllowedTenantsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        allowed_tenants_stream_request: "AllowedTenantsStreamRequest",
+        message: "AllowedTenantsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.AllowedTenantsService/GetMeta",
-            allowed_tenants_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        allowed_tenants_stream_request: "AllowedTenantsStreamRequest",
+        message: "AllowedTenantsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/SubscribeMeta",
-            allowed_tenants_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        allowed_tenants_batched_stream_request: "AllowedTenantsBatchedStreamRequest",
+        message: "AllowedTenantsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AllowedTenantsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/GetAllBatched",
-            allowed_tenants_batched_stream_request,
+            message,
             AllowedTenantsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        allowed_tenants_batched_stream_request: "AllowedTenantsBatchedStreamRequest",
+        message: "AllowedTenantsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AllowedTenantsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.AllowedTenantsService/SubscribeBatched",
-            allowed_tenants_batched_stream_request,
+            message,
             AllowedTenantsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceTenantAssignConfigServiceStub(aristaproto.ServiceStub):
+class DeviceTenantAssignConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_tenant_assign_config_request: "DeviceTenantAssignConfigRequest",
+        message: "DeviceTenantAssignConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceTenantAssignConfigResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetOne",
-            device_tenant_assign_config_request,
+            message,
             DeviceTenantAssignConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_tenant_assign_config_some_request: "DeviceTenantAssignConfigSomeRequest",
+        message: "DeviceTenantAssignConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetSome",
-            device_tenant_assign_config_some_request,
+            message,
             DeviceTenantAssignConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest",
+        message: "DeviceTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetAll",
-            device_tenant_assign_config_stream_request,
+            message,
             DeviceTenantAssignConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest",
+        message: "DeviceTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Subscribe",
-            device_tenant_assign_config_stream_request,
+            message,
             DeviceTenantAssignConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest",
+        message: "DeviceTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetMeta",
-            device_tenant_assign_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest",
+        message: "DeviceTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SubscribeMeta",
-            device_tenant_assign_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        device_tenant_assign_config_set_request: "DeviceTenantAssignConfigSetRequest",
+        message: "DeviceTenantAssignConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceTenantAssignConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Set",
-            device_tenant_assign_config_set_request,
+            message,
             DeviceTenantAssignConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        device_tenant_assign_config_set_some_request: "DeviceTenantAssignConfigSetSomeRequest",
+        message: "DeviceTenantAssignConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SetSome",
-            device_tenant_assign_config_set_some_request,
+            message,
             DeviceTenantAssignConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        device_tenant_assign_config_delete_request: "DeviceTenantAssignConfigDeleteRequest",
+        message: "DeviceTenantAssignConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceTenantAssignConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Delete",
-            device_tenant_assign_config_delete_request,
+            message,
             DeviceTenantAssignConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        device_tenant_assign_config_delete_some_request: "DeviceTenantAssignConfigDeleteSomeRequest",
+        message: "DeviceTenantAssignConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/DeleteSome",
-            device_tenant_assign_config_delete_some_request,
+            message,
             DeviceTenantAssignConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        device_tenant_assign_config_delete_all_request: "DeviceTenantAssignConfigDeleteAllRequest",
+        message: "DeviceTenantAssignConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/DeleteAll",
-            device_tenant_assign_config_delete_all_request,
+            message,
             DeviceTenantAssignConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_tenant_assign_config_batched_stream_request: "DeviceTenantAssignConfigBatchedStreamRequest",
+        message: "DeviceTenantAssignConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetAllBatched",
-            device_tenant_assign_config_batched_stream_request,
+            message,
             DeviceTenantAssignConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_tenant_assign_config_batched_stream_request: "DeviceTenantAssignConfigBatchedStreamRequest",
+        message: "DeviceTenantAssignConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SubscribeBatched",
-            device_tenant_assign_config_batched_stream_request,
+            message,
             DeviceTenantAssignConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceTenantAssignmentServiceStub(aristaproto.ServiceStub):
+class DeviceTenantAssignmentServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_tenant_assignment_request: "DeviceTenantAssignmentRequest",
+        message: "DeviceTenantAssignmentRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceTenantAssignmentResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetOne",
-            device_tenant_assignment_request,
+            message,
             DeviceTenantAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_tenant_assignment_some_request: "DeviceTenantAssignmentSomeRequest",
+        message: "DeviceTenantAssignmentSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetSome",
-            device_tenant_assignment_some_request,
+            message,
             DeviceTenantAssignmentSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest",
+        message: "DeviceTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetAll",
-            device_tenant_assignment_stream_request,
+            message,
             DeviceTenantAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest",
+        message: "DeviceTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/Subscribe",
-            device_tenant_assignment_stream_request,
+            message,
             DeviceTenantAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest",
+        message: "DeviceTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetMeta",
-            device_tenant_assignment_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest",
+        message: "DeviceTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/SubscribeMeta",
-            device_tenant_assignment_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_tenant_assignment_batched_stream_request: "DeviceTenantAssignmentBatchedStreamRequest",
+        message: "DeviceTenantAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetAllBatched",
-            device_tenant_assignment_batched_stream_request,
+            message,
             DeviceTenantAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_tenant_assignment_batched_stream_request: "DeviceTenantAssignmentBatchedStreamRequest",
+        message: "DeviceTenantAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/SubscribeBatched",
-            device_tenant_assignment_batched_stream_request,
+            message,
             DeviceTenantAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_page(
         self,
-        device_tenant_assignment_page_request: "DeviceTenantAssignmentPageRequest",
+        message: "DeviceTenantAssignmentPageRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceTenantAssignmentResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetPage",
-            device_tenant_assignment_page_request,
+            message,
             DeviceTenantAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class LicenseTenantAssignConfigServiceStub(aristaproto.ServiceStub):
+class LicenseTenantAssignConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        license_tenant_assign_config_request: "LicenseTenantAssignConfigRequest",
+        message: "LicenseTenantAssignConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "LicenseTenantAssignConfigResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetOne",
-            license_tenant_assign_config_request,
+            message,
             LicenseTenantAssignConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        license_tenant_assign_config_some_request: "LicenseTenantAssignConfigSomeRequest",
+        message: "LicenseTenantAssignConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetSome",
-            license_tenant_assign_config_some_request,
+            message,
             LicenseTenantAssignConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest",
+        message: "LicenseTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetAll",
-            license_tenant_assign_config_stream_request,
+            message,
             LicenseTenantAssignConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest",
+        message: "LicenseTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Subscribe",
-            license_tenant_assign_config_stream_request,
+            message,
             LicenseTenantAssignConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest",
+        message: "LicenseTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetMeta",
-            license_tenant_assign_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest",
+        message: "LicenseTenantAssignConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SubscribeMeta",
-            license_tenant_assign_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        license_tenant_assign_config_set_request: "LicenseTenantAssignConfigSetRequest",
+        message: "LicenseTenantAssignConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "LicenseTenantAssignConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Set",
-            license_tenant_assign_config_set_request,
+            message,
             LicenseTenantAssignConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        license_tenant_assign_config_set_some_request: "LicenseTenantAssignConfigSetSomeRequest",
+        message: "LicenseTenantAssignConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SetSome",
-            license_tenant_assign_config_set_some_request,
+            message,
             LicenseTenantAssignConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        license_tenant_assign_config_delete_request: "LicenseTenantAssignConfigDeleteRequest",
+        message: "LicenseTenantAssignConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "LicenseTenantAssignConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Delete",
-            license_tenant_assign_config_delete_request,
+            message,
             LicenseTenantAssignConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        license_tenant_assign_config_delete_some_request: "LicenseTenantAssignConfigDeleteSomeRequest",
+        message: "LicenseTenantAssignConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/DeleteSome",
-            license_tenant_assign_config_delete_some_request,
+            message,
             LicenseTenantAssignConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        license_tenant_assign_config_delete_all_request: "LicenseTenantAssignConfigDeleteAllRequest",
+        message: "LicenseTenantAssignConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/DeleteAll",
-            license_tenant_assign_config_delete_all_request,
+            message,
             LicenseTenantAssignConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        license_tenant_assign_config_batched_stream_request: "LicenseTenantAssignConfigBatchedStreamRequest",
+        message: "LicenseTenantAssignConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetAllBatched",
-            license_tenant_assign_config_batched_stream_request,
+            message,
             LicenseTenantAssignConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        license_tenant_assign_config_batched_stream_request: "LicenseTenantAssignConfigBatchedStreamRequest",
+        message: "LicenseTenantAssignConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SubscribeBatched",
-            license_tenant_assign_config_batched_stream_request,
+            message,
             LicenseTenantAssignConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class LicenseTenantAssignmentServiceStub(aristaproto.ServiceStub):
+class LicenseTenantAssignmentServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        license_tenant_assignment_request: "LicenseTenantAssignmentRequest",
+        message: "LicenseTenantAssignmentRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "LicenseTenantAssignmentResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetOne",
-            license_tenant_assignment_request,
+            message,
             LicenseTenantAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        license_tenant_assignment_some_request: "LicenseTenantAssignmentSomeRequest",
+        message: "LicenseTenantAssignmentSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetSome",
-            license_tenant_assignment_some_request,
+            message,
             LicenseTenantAssignmentSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest",
+        message: "LicenseTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetAll",
-            license_tenant_assignment_stream_request,
+            message,
             LicenseTenantAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest",
+        message: "LicenseTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/Subscribe",
-            license_tenant_assignment_stream_request,
+            message,
             LicenseTenantAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest",
+        message: "LicenseTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetMeta",
-            license_tenant_assignment_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest",
+        message: "LicenseTenantAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/SubscribeMeta",
-            license_tenant_assignment_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        license_tenant_assignment_batched_stream_request: "LicenseTenantAssignmentBatchedStreamRequest",
+        message: "LicenseTenantAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetAllBatched",
-            license_tenant_assignment_batched_stream_request,
+            message,
             LicenseTenantAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        license_tenant_assignment_batched_stream_request: "LicenseTenantAssignmentBatchedStreamRequest",
+        message: "LicenseTenantAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/SubscribeBatched",
-            license_tenant_assignment_batched_stream_request,
+            message,
             LicenseTenantAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_page(
         self,
-        license_tenant_assignment_page_request: "LicenseTenantAssignmentPageRequest",
+        message: "LicenseTenantAssignmentPageRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[LicenseTenantAssignmentResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetPage",
-            license_tenant_assignment_page_request,
+            message,
             LicenseTenantAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SalesOrderServiceStub(aristaproto.ServiceStub):
+class SalesOrderServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        sales_order_request: "SalesOrderRequest",
+        message: "SalesOrderRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SalesOrderResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.SalesOrderService/GetOne",
-            sales_order_request,
+            message,
             SalesOrderResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        sales_order_some_request: "SalesOrderSomeRequest",
+        message: "SalesOrderSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SalesOrderSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/GetSome",
-            sales_order_some_request,
+            message,
             SalesOrderSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        sales_order_stream_request: "SalesOrderStreamRequest",
+        message: "SalesOrderStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SalesOrderStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/GetAll",
-            sales_order_stream_request,
+            message,
             SalesOrderStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        sales_order_stream_request: "SalesOrderStreamRequest",
+        message: "SalesOrderStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SalesOrderStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/Subscribe",
-            sales_order_stream_request,
+            message,
             SalesOrderStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        sales_order_stream_request: "SalesOrderStreamRequest",
+        message: "SalesOrderStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.asset_manager.v1.SalesOrderService/GetMeta",
-            sales_order_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        sales_order_stream_request: "SalesOrderStreamRequest",
+        message: "SalesOrderStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/SubscribeMeta",
-            sales_order_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        sales_order_batched_stream_request: "SalesOrderBatchedStreamRequest",
+        message: "SalesOrderBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SalesOrderBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/GetAllBatched",
-            sales_order_batched_stream_request,
+            message,
             SalesOrderBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        sales_order_batched_stream_request: "SalesOrderBatchedStreamRequest",
+        message: "SalesOrderBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SalesOrderBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.asset_manager.v1.SalesOrderService/SubscribeBatched",
-            sales_order_batched_stream_request,
+            message,
             SalesOrderBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-from ...license import v1 as __license_v1__
-
-
-class AllowedTenantsServiceBase(ServiceBase):
-    async def get_one(self, allowed_tenants_request: "AllowedTenantsRequest") -> "AllowedTenantsResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, allowed_tenants_some_request: "AllowedTenantsSomeRequest") -> AsyncIterator[AllowedTenantsSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, allowed_tenants_stream_request: "AllowedTenantsStreamRequest") -> AsyncIterator[AllowedTenantsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, allowed_tenants_stream_request: "AllowedTenantsStreamRequest") -> AsyncIterator[AllowedTenantsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, allowed_tenants_stream_request: "AllowedTenantsStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, allowed_tenants_stream_request: "AllowedTenantsStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, allowed_tenants_batched_stream_request: "AllowedTenantsBatchedStreamRequest"
-    ) -> AsyncIterator[AllowedTenantsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, allowed_tenants_batched_stream_request: "AllowedTenantsBatchedStreamRequest"
-    ) -> AsyncIterator[AllowedTenantsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AllowedTenantsRequest, AllowedTenantsResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AllowedTenantsSomeRequest, AllowedTenantsSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AllowedTenantsStreamRequest, AllowedTenantsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AllowedTenantsStreamRequest, AllowedTenantsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AllowedTenantsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AllowedTenantsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[AllowedTenantsBatchedStreamRequest, AllowedTenantsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[AllowedTenantsBatchedStreamRequest, AllowedTenantsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.AllowedTenantsService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AllowedTenantsRequest,
-                AllowedTenantsResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsSomeRequest,
-                AllowedTenantsSomeResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsStreamRequest,
-                AllowedTenantsStreamResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsStreamRequest,
-                AllowedTenantsStreamResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AllowedTenantsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsBatchedStreamRequest,
-                AllowedTenantsBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.AllowedTenantsService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AllowedTenantsBatchedStreamRequest,
-                AllowedTenantsBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceTenantAssignConfigServiceBase(ServiceBase):
-    async def get_one(self, device_tenant_assign_config_request: "DeviceTenantAssignConfigRequest") -> "DeviceTenantAssignConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, device_tenant_assign_config_some_request: "DeviceTenantAssignConfigSomeRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_tenant_assign_config_stream_request: "DeviceTenantAssignConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, device_tenant_assign_config_set_request: "DeviceTenantAssignConfigSetRequest") -> "DeviceTenantAssignConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, device_tenant_assign_config_set_some_request: "DeviceTenantAssignConfigSetSomeRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, device_tenant_assign_config_delete_request: "DeviceTenantAssignConfigDeleteRequest") -> "DeviceTenantAssignConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, device_tenant_assign_config_delete_some_request: "DeviceTenantAssignConfigDeleteSomeRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, device_tenant_assign_config_delete_all_request: "DeviceTenantAssignConfigDeleteAllRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_tenant_assign_config_batched_stream_request: "DeviceTenantAssignConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_tenant_assign_config_batched_stream_request: "DeviceTenantAssignConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigRequest, DeviceTenantAssignConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigSomeRequest, DeviceTenantAssignConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigStreamRequest, DeviceTenantAssignConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigStreamRequest, DeviceTenantAssignConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigSetRequest, DeviceTenantAssignConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigSetSomeRequest, DeviceTenantAssignConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigDeleteRequest, DeviceTenantAssignConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigDeleteSomeRequest, DeviceTenantAssignConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigDeleteAllRequest, DeviceTenantAssignConfigDeleteAllResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigBatchedStreamRequest, DeviceTenantAssignConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignConfigBatchedStreamRequest, DeviceTenantAssignConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignConfigRequest,
-                DeviceTenantAssignConfigResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigSomeRequest,
-                DeviceTenantAssignConfigSomeResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigStreamRequest,
-                DeviceTenantAssignConfigStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigStreamRequest,
-                DeviceTenantAssignConfigStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignConfigSetRequest,
-                DeviceTenantAssignConfigSetResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigSetSomeRequest,
-                DeviceTenantAssignConfigSetSomeResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignConfigDeleteRequest,
-                DeviceTenantAssignConfigDeleteResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigDeleteSomeRequest,
-                DeviceTenantAssignConfigDeleteSomeResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigDeleteAllRequest,
-                DeviceTenantAssignConfigDeleteAllResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigBatchedStreamRequest,
-                DeviceTenantAssignConfigBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignConfigBatchedStreamRequest,
-                DeviceTenantAssignConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceTenantAssignmentServiceBase(ServiceBase):
-    async def get_one(self, device_tenant_assignment_request: "DeviceTenantAssignmentRequest") -> "DeviceTenantAssignmentResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_tenant_assignment_some_request: "DeviceTenantAssignmentSomeRequest") -> AsyncIterator[DeviceTenantAssignmentSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_tenant_assignment_stream_request: "DeviceTenantAssignmentStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_tenant_assignment_batched_stream_request: "DeviceTenantAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_tenant_assignment_batched_stream_request: "DeviceTenantAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceTenantAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_page(self, device_tenant_assignment_page_request: "DeviceTenantAssignmentPageRequest") -> AsyncIterator[DeviceTenantAssignmentResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentRequest, DeviceTenantAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentSomeRequest, DeviceTenantAssignmentSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentStreamRequest, DeviceTenantAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentStreamRequest, DeviceTenantAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignmentBatchedStreamRequest, DeviceTenantAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceTenantAssignmentBatchedStreamRequest, DeviceTenantAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_page(self, stream: "grpclib.server.Stream[DeviceTenantAssignmentPageRequest, DeviceTenantAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_page,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignmentRequest,
-                DeviceTenantAssignmentResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentSomeRequest,
-                DeviceTenantAssignmentSomeResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentStreamRequest,
-                DeviceTenantAssignmentStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentStreamRequest,
-                DeviceTenantAssignmentStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceTenantAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentBatchedStreamRequest,
-                DeviceTenantAssignmentBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentBatchedStreamRequest,
-                DeviceTenantAssignmentBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.DeviceTenantAssignmentService/GetPage": grpclib.const.Handler(
-                self.__rpc_get_page,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceTenantAssignmentPageRequest,
-                DeviceTenantAssignmentResponse,
-            ),
-        }
-
-
-class LicenseTenantAssignConfigServiceBase(ServiceBase):
-    async def get_one(self, license_tenant_assign_config_request: "LicenseTenantAssignConfigRequest") -> "LicenseTenantAssignConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, license_tenant_assign_config_some_request: "LicenseTenantAssignConfigSomeRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, license_tenant_assign_config_stream_request: "LicenseTenantAssignConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, license_tenant_assign_config_set_request: "LicenseTenantAssignConfigSetRequest") -> "LicenseTenantAssignConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, license_tenant_assign_config_set_some_request: "LicenseTenantAssignConfigSetSomeRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, license_tenant_assign_config_delete_request: "LicenseTenantAssignConfigDeleteRequest") -> "LicenseTenantAssignConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, license_tenant_assign_config_delete_some_request: "LicenseTenantAssignConfigDeleteSomeRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, license_tenant_assign_config_delete_all_request: "LicenseTenantAssignConfigDeleteAllRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, license_tenant_assign_config_batched_stream_request: "LicenseTenantAssignConfigBatchedStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, license_tenant_assign_config_batched_stream_request: "LicenseTenantAssignConfigBatchedStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigRequest, LicenseTenantAssignConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigSomeRequest, LicenseTenantAssignConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigStreamRequest, LicenseTenantAssignConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigStreamRequest, LicenseTenantAssignConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigSetRequest, LicenseTenantAssignConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigSetSomeRequest, LicenseTenantAssignConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigDeleteRequest, LicenseTenantAssignConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigDeleteSomeRequest, LicenseTenantAssignConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigDeleteAllRequest, LicenseTenantAssignConfigDeleteAllResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigBatchedStreamRequest, LicenseTenantAssignConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignConfigBatchedStreamRequest, LicenseTenantAssignConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignConfigRequest,
-                LicenseTenantAssignConfigResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigSomeRequest,
-                LicenseTenantAssignConfigSomeResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigStreamRequest,
-                LicenseTenantAssignConfigStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigStreamRequest,
-                LicenseTenantAssignConfigStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignConfigSetRequest,
-                LicenseTenantAssignConfigSetResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigSetSomeRequest,
-                LicenseTenantAssignConfigSetSomeResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignConfigDeleteRequest,
-                LicenseTenantAssignConfigDeleteResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigDeleteSomeRequest,
-                LicenseTenantAssignConfigDeleteSomeResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigDeleteAllRequest,
-                LicenseTenantAssignConfigDeleteAllResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigBatchedStreamRequest,
-                LicenseTenantAssignConfigBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignConfigBatchedStreamRequest,
-                LicenseTenantAssignConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class LicenseTenantAssignmentServiceBase(ServiceBase):
-    async def get_one(self, license_tenant_assignment_request: "LicenseTenantAssignmentRequest") -> "LicenseTenantAssignmentResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, license_tenant_assignment_some_request: "LicenseTenantAssignmentSomeRequest"
-    ) -> AsyncIterator[LicenseTenantAssignmentSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, license_tenant_assignment_stream_request: "LicenseTenantAssignmentStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, license_tenant_assignment_batched_stream_request: "LicenseTenantAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, license_tenant_assignment_batched_stream_request: "LicenseTenantAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[LicenseTenantAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_page(self, license_tenant_assignment_page_request: "LicenseTenantAssignmentPageRequest") -> AsyncIterator[LicenseTenantAssignmentResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentRequest, LicenseTenantAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentSomeRequest, LicenseTenantAssignmentSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentStreamRequest, LicenseTenantAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentStreamRequest, LicenseTenantAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignmentBatchedStreamRequest, LicenseTenantAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[LicenseTenantAssignmentBatchedStreamRequest, LicenseTenantAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_page(self, stream: "grpclib.server.Stream[LicenseTenantAssignmentPageRequest, LicenseTenantAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_page,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignmentRequest,
-                LicenseTenantAssignmentResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentSomeRequest,
-                LicenseTenantAssignmentSomeResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentStreamRequest,
-                LicenseTenantAssignmentStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentStreamRequest,
-                LicenseTenantAssignmentStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                LicenseTenantAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentBatchedStreamRequest,
-                LicenseTenantAssignmentBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentBatchedStreamRequest,
-                LicenseTenantAssignmentBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.LicenseTenantAssignmentService/GetPage": grpclib.const.Handler(
-                self.__rpc_get_page,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                LicenseTenantAssignmentPageRequest,
-                LicenseTenantAssignmentResponse,
-            ),
-        }
-
-
-class SalesOrderServiceBase(ServiceBase):
-    async def get_one(self, sales_order_request: "SalesOrderRequest") -> "SalesOrderResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, sales_order_some_request: "SalesOrderSomeRequest") -> AsyncIterator[SalesOrderSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, sales_order_stream_request: "SalesOrderStreamRequest") -> AsyncIterator[SalesOrderStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, sales_order_stream_request: "SalesOrderStreamRequest") -> AsyncIterator[SalesOrderStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, sales_order_stream_request: "SalesOrderStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, sales_order_stream_request: "SalesOrderStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, sales_order_batched_stream_request: "SalesOrderBatchedStreamRequest") -> AsyncIterator[SalesOrderBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, sales_order_batched_stream_request: "SalesOrderBatchedStreamRequest") -> AsyncIterator[SalesOrderBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SalesOrderRequest, SalesOrderResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SalesOrderSomeRequest, SalesOrderSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SalesOrderStreamRequest, SalesOrderStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SalesOrderStreamRequest, SalesOrderStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SalesOrderStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SalesOrderStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SalesOrderBatchedStreamRequest, SalesOrderBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SalesOrderBatchedStreamRequest, SalesOrderBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.asset_manager.v1.SalesOrderService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SalesOrderRequest,
-                SalesOrderResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderSomeRequest,
-                SalesOrderSomeResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderStreamRequest,
-                SalesOrderStreamResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderStreamRequest,
-                SalesOrderStreamResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SalesOrderStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderBatchedStreamRequest,
-                SalesOrderBatchedStreamResponse,
-            ),
-            "/arista.asset_manager.v1.SalesOrderService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SalesOrderBatchedStreamRequest,
-                SalesOrderBatchedStreamResponse,
-            ),
-        }
+from ...license import v1 as __license__v1__

@@ -7,314 +7,139 @@
 # This file has been @generated
 
 __all__ = (
-    "MacType",
-    "Likelihood",
-    "IdentifierType",
-    "IdentifierSource",
-    "Explanation",
-    "DeviceType",
-    "DeviceStatus",
-    "IdentifierSourceList",
-    "Identifier",
-    "IdentifierList",
-    "ExplanationList",
-    "Location",
-    "LocationList",
-    "DeviceInfo",
     "Device",
+    "DeviceInfo",
     "DeviceMap",
-    "EndpointLocationKey",
+    "DeviceStatus",
+    "DeviceType",
     "EndpointLocation",
-    "MetaResponse",
+    "EndpointLocationBatchedStreamRequest",
+    "EndpointLocationBatchedStreamResponse",
+    "EndpointLocationKey",
     "EndpointLocationRequest",
     "EndpointLocationResponse",
+    "EndpointLocationServiceStub",
     "EndpointLocationSomeRequest",
     "EndpointLocationSomeResponse",
     "EndpointLocationStreamRequest",
     "EndpointLocationStreamResponse",
-    "EndpointLocationBatchedStreamRequest",
-    "EndpointLocationBatchedStreamResponse",
-    "EndpointLocationServiceStub",
-    "EndpointLocationServiceBase",
+    "Explanation",
+    "ExplanationList",
+    "Identifier",
+    "IdentifierList",
+    "IdentifierSource",
+    "IdentifierSourceList",
+    "IdentifierType",
+    "Likelihood",
+    "Location",
+    "LocationList",
+    "MacType",
+    "MetaResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
-class MacType(aristaproto.Enum):
+class DeviceStatus(aristaproto.Enum):
     """
-    MacType describes how the MAC address was learned on the port location.
-    """
-
-    UNSPECIFIED = 0
-    """MAC_TYPE_UNSPECIFIED is the default unspecified MAC type."""
-
-    LEARNED_DYNAMIC = 1
-    """
-    MAC_TYPE_LEARNED_DYNAMIC indicates a MAC that is dynamically learned in hardware.
-    """
-
-    LEARNED_SECURE = 2
-    """
-    MAC_TYPE_LEARNED_SECURE indicates a MAC that is learned in hardware on a port-security protect interface.
-    """
-
-    CONFIGURED_DYNAMIC = 3
-    """MAC_TYPE_CONFIGURED_DYNAMIC indicates a configured dynamic MAC."""
-
-    CONFIGURED_SECURE = 4
-    """
-    MAC_TYPE_CONFIGURED_SECURE indicates a MAC configured on an interface with Port Security: Protect mode enabled
-    """
-
-    CONFIGURED_STATIC = 5
-    """MAC_TYPE_CONFIGURED_STATIC indicates a statically configured MAC."""
-
-    PEER_DYNAMIC = 6
-    """
-    MAC_TYPE_PEER_DYNAMIC indicates a dynamically learned MAC discovered via an MLAG peer.
-    """
-
-    PEER_STATIC = 7
-    """
-    MAC_TYPE_PEER_STATIC indicates a statically configured MAC discovered via an MLAG peer.
-    """
-
-    PEER_SECURE = 8
-    """
-    MAC_TYPE_PEER_SECURE indicates a secure MAC learned from an MLAG peer.
-    """
-
-    LEARNED_REMOTE = 9
-    """
-    MAC_TYPE_LEARNED_REMOTE indicates a MAC learned remotely behind a VxLAN VTEP.
-    """
-
-    CONFIGURED_REMOTE = 10
-    """
-    MAC_TYPE_CONFIGURED_REMOTE indicates a MAC configured behind a VxLAN VTEP.
-    """
-
-    RECEIVED_REMOTE = 11
-    """
-    MAC_TYPE_RECEIVED_REMOTE indicates a MAC received from a VxLAN controller.
-    """
-
-    PEER_LEARNED_REMOTE = 12
-    """
-    MAC_TYPE_PEER_LEARNED_REMOTE indicates a remote MAC learned on a peer VTEP.
-    """
-
-    PEER_CONFIGURED_REMOTE = 13
-    """
-    MAC_TYPE_PEER_CONFIGURED_REMOTE indicates an MLAG peer configured remote MAC.
-    """
-
-    PEER_RECEIVED_REMOTE = 14
-    """
-    MAC_TYPE_PEER_RECEIVED_REMOTE indicates a remote MAC received from a VxLAN controller by the MLAG peer.
-    """
-
-    EVPN_DYNAMIC_REMOTE = 15
-    """MAC_TYPE_EVPN_DYNAMIC_REMOTE indicates an EVPN dynamic remote MAC."""
-
-    EVPN_CONFIGURED_REMOTE = 16
-    """
-    MAC_TYPE_EVPN_CONFIGURED_REMOTE indicates an EVPN configured remote MAC.
-    """
-
-    PEER_EVPN_REMOTE = 17
-    """MAC_TYPE_PEER_EVPN_REMOTE indicates an MLAG peer EVPN remote MAC."""
-
-    CONFIGURED_ROUTER = 18
-    """
-    MAC_TYPE_CONFIGURED_ROUTER indicates a configured MAC used in routing.
-    """
-
-    PEER_ROUTER = 19
-    """MAC_TYPE_PEER_ROUTER indicates an MLAG peer specific router MAC."""
-
-    EVPN_INTF_DYNAMIC = 20
-    """
-    MAC_TYPE_EVPN_INTF_DYNAMIC indicates a MAC advertised by EVPN when a dynamic MAC is learned on ESI (Ethernet Segment Identifier).
-    """
-
-    EVPN_INTF_STATIC = 21
-    """MAC_TYPE_EVPN_INTF_STATIC indicates a MAC configured on EVPN ESI."""
-
-    AUTHENTICATED = 22
-    """MAC_TYPE_AUTHENTICATED indicates a MAC authenticated via 802.1X."""
-
-    PEER_AUTHENTICATED = 23
-    """
-    MAC_TYPE_PEER_AUTHENTICATED indicates a MAC authenticated by 802.1X and learned on an MLAG peer.
-    """
-
-    PENDING_SECURE = 24
-    """MAC_TYPE_PENDING_SECURE indicates a secure MAC in a pending state."""
-
-    SOFTWARE_LEARNED_DYNAMIC = 25
-    """
-    MAC_TYPE_SOFTWARE_LEARNED_DYNAMIC indicates a MAC learned behind VTEP in software in the case of a VxLAN remote MAC.
-    """
-
-    PROGRAMMED_STATIC = 26
-    """
-    MAC_TYPE_PROGRAMMED_STATIC indicates a programmed static MAC address.
-    """
-
-    EVPN_VESPA_DYNAMIC = 27
-    """
-    MAC_TYPE_EVPN_VESPA_DYNAMIC indicates a MAC received over BGP from a member of the same VESPA GW (Gateway) Set.
-    """
-
-    EVPN_INTF_DYNAMIC_FRR = 28
-    """
-    MAC_TYPE_EVPN_INTF_DYNAMIC_FRR indicates an ESI MAC protected by an EVPN FRR backup tunnel.
-    """
-
-    EVPN_INTF_STATIC_FRR = 29
-    """
-    MAC_TYPE_EVPN_INTF_STATIC_FRR indicates an ESI Static MAC protected by an EVPN FRR backup tunnel.
-    """
-
-    LEARNED_DYNAMIC_FRR = 30
-    """
-    MAC_TYPE_LEARNED_DYNAMIC_FRR indicates a MAC learned dynamically and protected by an EVPN FRR backup tunnel.
-    """
-
-    CONFIGURED_STATIC_FRR = 31
-    """
-    MAC_TYPE_CONFIGURED_STATIC_FRR indicates a MAC configured statically and protected by an EVPN FRR backup tunnel.
-    """
-
-    VPLS_DYNAMIC_REMOTE = 32
-    """
-    MAC_TYPE_VPLS_DYNAMIC_REMOTE indicates a remote MAC learned dynamically from the VPLS.
-    """
-
-    CONFIGURED_SYS = 33
-    """
-    MAC_TYPE_CONFIGURED_SYS indicates a system MAC address configured on an interface.
-    """
-
-    OTHER = 99999
-    """MAC_TYPE_OTHER is used for capturing future MAC types."""
-
-
-class Likelihood(aristaproto.Enum):
-    """Likelihood indicates a level of confidence."""
-
-    UNSPECIFIED = 0
-    """LIKELIHOOD_UNSPECIFIED is the default unspecified likelihood."""
-
-    VERY_LIKELY = 1
-    """LIKELIHOOD_VERY_LIKELY indicates very high confidence."""
-
-    LIKELY = 2
-    """LIKELIHOOD_LIKELY indicates high confidence."""
-
-    SOMEWHAT_LIKELY = 3
-    """LIKELIHOOD_SOMEWHAT_LIKELY indicates medium confidence."""
-
-    LESS_LIKELY = 4
-    """LIKELIHOOD_LESS_LIKELY indicates low confidence."""
-
-
-class IdentifierType(aristaproto.Enum):
-    """IdentifierType defines the set of ways for identifying endpoints."""
-
-    UNSPECIFIED = 0
-    """IDENTIFIER_TYPE_UNSPECIFIED is the default unspecified identifier."""
-
-    MAC_ADDR = 1
-    """IDENTIFIER_TYPE_MAC_ADDR indicates a MAC address identifier."""
-
-    IPV4_ADDR = 2
-    """IDENTIFIER_TYPE_IPV4_ADDR indicates an IPv4 address identifier."""
-
-    IPV6_ADDR = 3
-    """IDENTIFIER_TYPE_IPV6_ADDR indicates an IPv6 address identifier."""
-
-    INVENTORY_DEVICE_ID = 4
-    """
-    IDENTIFIER_TYPE_INVENTORY_DEVICE_ID indicates an inventory device identifier.
-    """
-
-    PRIMARY_MANAGEMENT_IP = 5
-    """
-    IDENTIFIER_TYPE_PRIMARY_MANAGEMENT_IP indicates a primary management IP identifier.
-    """
-
-    HOSTNAME = 6
-    """IDENTIFIER_TYPE_HOSTNAME indicates a hostname identifier."""
-
-    USERNAME = 7
-    """
-    IDENTIFIER_TYPE_USERNAME indicates a username identifier.
-    Deprecated - do not return usernames of wifi endpoints anymore
-    """
-
-    OTHER = 99999
-    """IDENTIFIER_TYPE_OTHER is used for an unknown identifier."""
-
-
-class IdentifierSource(aristaproto.Enum):
-    """
-    IdentifierSource defines the set of network protocols and other
-    information sources where an identifier was found.
+    DeviceStatus is the network status of a device.
     """
 
     UNSPECIFIED = 0
     """
-    IDENTIFIER_SOURCE_UNSPECIFIED is the default unspecified identifier source.
+    DEVICE_STATUS_UNSPECIFIED is the default unspecified device status.
     """
 
-    FDB = 1
-    """IDENTIFIER_SOURCE_FDB indicates a forwarding table."""
-
-    ARP = 2
-    """IDENTIFIER_SOURCE_ARP indicates ARP (IPv4)."""
-
-    NEIGHBOR = 3
-    """IDENTIFIER_SOURCE_NEIGHBOR indicates NDP (IPv6)."""
-
-    DEVICE_INVENTORY = 4
+    ACTIVE = 1
     """
-    IDENTIFIER_SOURCE_DEVICE_INVENTORY indicates that an endpoint is in the
-    CloudVision inventory.
+    DEVICE_STATUS_ACTIVE indicates a device is streaming its telemetry data
+    to CloudVision.
     """
 
-    LLDP = 5
-    """IDENTIFIER_SOURCE_LLDP indicates LLDP."""
-
-    DHCP = 6
-    """IDENTIFIER_SOURCE_DHCP indicates DHCP."""
-
-    WIFI = 7
+    INACTIVE = 2
     """
-    IDENTIFIER_SOURCE_WIFI indicates a WiFi endpoint that was learned through
-    a wireless manager.
+    DEVICE_STATUS_INACTIVE indicates a device is either not streaming its
+    telemetry data to CloudVision or has been decommissioned from CloudVision.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DEVICE_STATUS_UNSPECIFIED",
+            1: "DEVICE_STATUS_ACTIVE",
+            2: "DEVICE_STATUS_INACTIVE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DEVICE_STATUS_UNSPECIFIED": 0,
+            "DEVICE_STATUS_ACTIVE": 1,
+            "DEVICE_STATUS_INACTIVE": 2,
+        }
+
+
+class DeviceType(aristaproto.Enum):
+    """
+    DeviceType defines a broad set of categories for
+    all queried devices.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DEVICE_TYPE_UNSPECIFIED is the default unspecified device type.
+    """
+
+    INVENTORY = 1
+    """
+    DEVICE_TYPE_INVENTORY indicates a device in the CloudVision inventory.
+    """
+
+    ENDPOINT = 2
+    """
+    DEVICE_TYPE_ENDPOINT indicates an endpoint that does not exist
+    in the CloudVision inventory.
+    """
+
+    WIFI_ENDPOINT = 3
+    """
+    DEVICE_TYPE_WIFI_ENDPOINT indicates a WiFi client/endpoint that does not
+    exist in the CloudVision inventory.
     Deprecated - do not support searches for wifi endpoints anymore
     """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DEVICE_TYPE_UNSPECIFIED",
+            1: "DEVICE_TYPE_INVENTORY",
+            2: "DEVICE_TYPE_ENDPOINT",
+            3: "DEVICE_TYPE_WIFI_ENDPOINT",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DEVICE_TYPE_UNSPECIFIED": 0,
+            "DEVICE_TYPE_INVENTORY": 1,
+            "DEVICE_TYPE_ENDPOINT": 2,
+            "DEVICE_TYPE_WIFI_ENDPOINT": 3,
+        }
 
 
 class Explanation(aristaproto.Enum):
@@ -325,7 +150,9 @@ class Explanation(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """EXPLANATION_UNSPECIFIED is the default unspecified explanation."""
+    """
+    EXPLANATION_UNSPECIFIED is the default unspecified explanation.
+    """
 
     DIRECT_CONNECTION = 1
     """
@@ -387,152 +214,547 @@ class Explanation(aristaproto.Enum):
     """
 
     ACCESS_PORT = 11
-    """EXPLANATION_ACCESS_PORT indicates that a location is an access port."""
-
-
-class DeviceType(aristaproto.Enum):
     """
-    DeviceType defines a broad set of categories for
-    all queried devices.
+    EXPLANATION_ACCESS_PORT indicates that a location is an access port.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "EXPLANATION_UNSPECIFIED",
+            1: "EXPLANATION_DIRECT_CONNECTION",
+            2: "EXPLANATION_NON_INVENTORY_CONNECTION",
+            3: "EXPLANATION_NO_CONNECTION",
+            4: "EXPLANATION_INVENTORY_CONNECTION",
+            5: "EXPLANATION_OWN_PORT_INVENTORY_DEVICE",
+            6: "EXPLANATION_DIRECT_CONNECTION_INVENTORY_DEVICE",
+            7: "EXPLANATION_NO_CONNECTION_INVENTORY_DEVICE",
+            8: "EXPLANATION_OTHER_CONNECTION_INVENTORY_DEVICE",
+            9: "EXPLANATION_VIRTUAL",
+            10: "EXPLANATION_WIRELESS_CONNECTION",
+            11: "EXPLANATION_ACCESS_PORT",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "EXPLANATION_UNSPECIFIED": 0,
+            "EXPLANATION_DIRECT_CONNECTION": 1,
+            "EXPLANATION_NON_INVENTORY_CONNECTION": 2,
+            "EXPLANATION_NO_CONNECTION": 3,
+            "EXPLANATION_INVENTORY_CONNECTION": 4,
+            "EXPLANATION_OWN_PORT_INVENTORY_DEVICE": 5,
+            "EXPLANATION_DIRECT_CONNECTION_INVENTORY_DEVICE": 6,
+            "EXPLANATION_NO_CONNECTION_INVENTORY_DEVICE": 7,
+            "EXPLANATION_OTHER_CONNECTION_INVENTORY_DEVICE": 8,
+            "EXPLANATION_VIRTUAL": 9,
+            "EXPLANATION_WIRELESS_CONNECTION": 10,
+            "EXPLANATION_ACCESS_PORT": 11,
+        }
+
+
+class IdentifierSource(aristaproto.Enum):
+    """
+    IdentifierSource defines the set of network protocols and other
+    information sources where an identifier was found.
     """
 
     UNSPECIFIED = 0
-    """DEVICE_TYPE_UNSPECIFIED is the default unspecified device type."""
-
-    INVENTORY = 1
     """
-    DEVICE_TYPE_INVENTORY indicates a device in the CloudVision inventory.
+    IDENTIFIER_SOURCE_UNSPECIFIED is the default unspecified identifier source.
     """
 
-    ENDPOINT = 2
+    FDB = 1
     """
-    DEVICE_TYPE_ENDPOINT indicates an endpoint that does not exist
-    in the CloudVision inventory.
+    IDENTIFIER_SOURCE_FDB indicates a forwarding table.
     """
 
-    WIFI_ENDPOINT = 3
+    ARP = 2
     """
-    DEVICE_TYPE_WIFI_ENDPOINT indicates a WiFi client/endpoint that does not
-    exist in the CloudVision inventory.
+    IDENTIFIER_SOURCE_ARP indicates ARP (IPv4).
+    """
+
+    NEIGHBOR = 3
+    """
+    IDENTIFIER_SOURCE_NEIGHBOR indicates NDP (IPv6).
+    """
+
+    DEVICE_INVENTORY = 4
+    """
+    IDENTIFIER_SOURCE_DEVICE_INVENTORY indicates that an endpoint is in the
+    CloudVision inventory.
+    """
+
+    LLDP = 5
+    """
+    IDENTIFIER_SOURCE_LLDP indicates LLDP.
+    """
+
+    DHCP = 6
+    """
+    IDENTIFIER_SOURCE_DHCP indicates DHCP.
+    """
+
+    WIFI = 7
+    """
+    IDENTIFIER_SOURCE_WIFI indicates a WiFi endpoint that was learned through
+    a wireless manager.
     Deprecated - do not support searches for wifi endpoints anymore
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "IDENTIFIER_SOURCE_UNSPECIFIED",
+            1: "IDENTIFIER_SOURCE_FDB",
+            2: "IDENTIFIER_SOURCE_ARP",
+            3: "IDENTIFIER_SOURCE_NEIGHBOR",
+            4: "IDENTIFIER_SOURCE_DEVICE_INVENTORY",
+            5: "IDENTIFIER_SOURCE_LLDP",
+            6: "IDENTIFIER_SOURCE_DHCP",
+            7: "IDENTIFIER_SOURCE_WIFI",
+        }
 
-class DeviceStatus(aristaproto.Enum):
-    """DeviceStatus is the network status of a device."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "IDENTIFIER_SOURCE_UNSPECIFIED": 0,
+            "IDENTIFIER_SOURCE_FDB": 1,
+            "IDENTIFIER_SOURCE_ARP": 2,
+            "IDENTIFIER_SOURCE_NEIGHBOR": 3,
+            "IDENTIFIER_SOURCE_DEVICE_INVENTORY": 4,
+            "IDENTIFIER_SOURCE_LLDP": 5,
+            "IDENTIFIER_SOURCE_DHCP": 6,
+            "IDENTIFIER_SOURCE_WIFI": 7,
+        }
+
+
+class IdentifierType(aristaproto.Enum):
+    """
+    IdentifierType defines the set of ways for identifying endpoints.
+    """
 
     UNSPECIFIED = 0
-    """DEVICE_STATUS_UNSPECIFIED is the default unspecified device status."""
-
-    ACTIVE = 1
     """
-    DEVICE_STATUS_ACTIVE indicates a device is streaming its telemetry data
-    to CloudVision.
+    IDENTIFIER_TYPE_UNSPECIFIED is the default unspecified identifier.
     """
 
-    INACTIVE = 2
+    MAC_ADDR = 1
     """
-    DEVICE_STATUS_INACTIVE indicates a device is either not streaming its
-    telemetry data to CloudVision or has been decommissioned from CloudVision.
+    IDENTIFIER_TYPE_MAC_ADDR indicates a MAC address identifier.
     """
+
+    IPV4_ADDR = 2
+    """
+    IDENTIFIER_TYPE_IPV4_ADDR indicates an IPv4 address identifier.
+    """
+
+    IPV6_ADDR = 3
+    """
+    IDENTIFIER_TYPE_IPV6_ADDR indicates an IPv6 address identifier.
+    """
+
+    INVENTORY_DEVICE_ID = 4
+    """
+    IDENTIFIER_TYPE_INVENTORY_DEVICE_ID indicates an inventory device identifier.
+    """
+
+    PRIMARY_MANAGEMENT_IP = 5
+    """
+    IDENTIFIER_TYPE_PRIMARY_MANAGEMENT_IP indicates a primary management IP identifier.
+    """
+
+    HOSTNAME = 6
+    """
+    IDENTIFIER_TYPE_HOSTNAME indicates a hostname identifier.
+    """
+
+    USERNAME = 7
+    """
+    IDENTIFIER_TYPE_USERNAME indicates a username identifier.
+    Deprecated - do not return usernames of wifi endpoints anymore
+    """
+
+    OTHER = 99999
+    """
+    IDENTIFIER_TYPE_OTHER is used for an unknown identifier.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "IDENTIFIER_TYPE_UNSPECIFIED",
+            1: "IDENTIFIER_TYPE_MAC_ADDR",
+            2: "IDENTIFIER_TYPE_IPV4_ADDR",
+            3: "IDENTIFIER_TYPE_IPV6_ADDR",
+            4: "IDENTIFIER_TYPE_INVENTORY_DEVICE_ID",
+            5: "IDENTIFIER_TYPE_PRIMARY_MANAGEMENT_IP",
+            6: "IDENTIFIER_TYPE_HOSTNAME",
+            7: "IDENTIFIER_TYPE_USERNAME",
+            99999: "IDENTIFIER_TYPE_OTHER",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "IDENTIFIER_TYPE_UNSPECIFIED": 0,
+            "IDENTIFIER_TYPE_MAC_ADDR": 1,
+            "IDENTIFIER_TYPE_IPV4_ADDR": 2,
+            "IDENTIFIER_TYPE_IPV6_ADDR": 3,
+            "IDENTIFIER_TYPE_INVENTORY_DEVICE_ID": 4,
+            "IDENTIFIER_TYPE_PRIMARY_MANAGEMENT_IP": 5,
+            "IDENTIFIER_TYPE_HOSTNAME": 6,
+            "IDENTIFIER_TYPE_USERNAME": 7,
+            "IDENTIFIER_TYPE_OTHER": 99999,
+        }
+
+
+class Likelihood(aristaproto.Enum):
+    """
+    Likelihood indicates a level of confidence.
+    """
+
+    UNSPECIFIED = 0
+    """
+    LIKELIHOOD_UNSPECIFIED is the default unspecified likelihood.
+    """
+
+    VERY_LIKELY = 1
+    """
+    LIKELIHOOD_VERY_LIKELY indicates very high confidence.
+    """
+
+    LIKELY = 2
+    """
+    LIKELIHOOD_LIKELY indicates high confidence.
+    """
+
+    SOMEWHAT_LIKELY = 3
+    """
+    LIKELIHOOD_SOMEWHAT_LIKELY indicates medium confidence.
+    """
+
+    LESS_LIKELY = 4
+    """
+    LIKELIHOOD_LESS_LIKELY indicates low confidence.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "LIKELIHOOD_UNSPECIFIED",
+            1: "LIKELIHOOD_VERY_LIKELY",
+            2: "LIKELIHOOD_LIKELY",
+            3: "LIKELIHOOD_SOMEWHAT_LIKELY",
+            4: "LIKELIHOOD_LESS_LIKELY",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "LIKELIHOOD_UNSPECIFIED": 0,
+            "LIKELIHOOD_VERY_LIKELY": 1,
+            "LIKELIHOOD_LIKELY": 2,
+            "LIKELIHOOD_SOMEWHAT_LIKELY": 3,
+            "LIKELIHOOD_LESS_LIKELY": 4,
+        }
+
+
+class MacType(aristaproto.Enum):
+    """
+    MacType describes how the MAC address was learned on the port location.
+    """
+
+    UNSPECIFIED = 0
+    """
+    MAC_TYPE_UNSPECIFIED is the default unspecified MAC type.
+    """
+
+    LEARNED_DYNAMIC = 1
+    """
+    MAC_TYPE_LEARNED_DYNAMIC indicates a MAC that is dynamically learned in hardware.
+    """
+
+    LEARNED_SECURE = 2
+    """
+    MAC_TYPE_LEARNED_SECURE indicates a MAC that is learned in hardware on a port-security protect interface.
+    """
+
+    CONFIGURED_DYNAMIC = 3
+    """
+    MAC_TYPE_CONFIGURED_DYNAMIC indicates a configured dynamic MAC.
+    """
+
+    CONFIGURED_SECURE = 4
+    """
+    MAC_TYPE_CONFIGURED_SECURE indicates a MAC configured on an interface with Port Security: Protect mode enabled
+    """
+
+    CONFIGURED_STATIC = 5
+    """
+    MAC_TYPE_CONFIGURED_STATIC indicates a statically configured MAC.
+    """
+
+    PEER_DYNAMIC = 6
+    """
+    MAC_TYPE_PEER_DYNAMIC indicates a dynamically learned MAC discovered via an MLAG peer.
+    """
+
+    PEER_STATIC = 7
+    """
+    MAC_TYPE_PEER_STATIC indicates a statically configured MAC discovered via an MLAG peer.
+    """
+
+    PEER_SECURE = 8
+    """
+    MAC_TYPE_PEER_SECURE indicates a secure MAC learned from an MLAG peer.
+    """
+
+    LEARNED_REMOTE = 9
+    """
+    MAC_TYPE_LEARNED_REMOTE indicates a MAC learned remotely behind a VxLAN VTEP.
+    """
+
+    CONFIGURED_REMOTE = 10
+    """
+    MAC_TYPE_CONFIGURED_REMOTE indicates a MAC configured behind a VxLAN VTEP.
+    """
+
+    RECEIVED_REMOTE = 11
+    """
+    MAC_TYPE_RECEIVED_REMOTE indicates a MAC received from a VxLAN controller.
+    """
+
+    PEER_LEARNED_REMOTE = 12
+    """
+    MAC_TYPE_PEER_LEARNED_REMOTE indicates a remote MAC learned on a peer VTEP.
+    """
+
+    PEER_CONFIGURED_REMOTE = 13
+    """
+    MAC_TYPE_PEER_CONFIGURED_REMOTE indicates an MLAG peer configured remote MAC.
+    """
+
+    PEER_RECEIVED_REMOTE = 14
+    """
+    MAC_TYPE_PEER_RECEIVED_REMOTE indicates a remote MAC received from a VxLAN controller by the MLAG peer.
+    """
+
+    EVPN_DYNAMIC_REMOTE = 15
+    """
+    MAC_TYPE_EVPN_DYNAMIC_REMOTE indicates an EVPN dynamic remote MAC.
+    """
+
+    EVPN_CONFIGURED_REMOTE = 16
+    """
+    MAC_TYPE_EVPN_CONFIGURED_REMOTE indicates an EVPN configured remote MAC.
+    """
+
+    PEER_EVPN_REMOTE = 17
+    """
+    MAC_TYPE_PEER_EVPN_REMOTE indicates an MLAG peer EVPN remote MAC.
+    """
+
+    CONFIGURED_ROUTER = 18
+    """
+    MAC_TYPE_CONFIGURED_ROUTER indicates a configured MAC used in routing.
+    """
+
+    PEER_ROUTER = 19
+    """
+    MAC_TYPE_PEER_ROUTER indicates an MLAG peer specific router MAC.
+    """
+
+    EVPN_INTF_DYNAMIC = 20
+    """
+    MAC_TYPE_EVPN_INTF_DYNAMIC indicates a MAC advertised by EVPN when a dynamic MAC is learned on ESI (Ethernet Segment Identifier).
+    """
+
+    EVPN_INTF_STATIC = 21
+    """
+    MAC_TYPE_EVPN_INTF_STATIC indicates a MAC configured on EVPN ESI.
+    """
+
+    AUTHENTICATED = 22
+    """
+    MAC_TYPE_AUTHENTICATED indicates a MAC authenticated via 802.1X.
+    """
+
+    PEER_AUTHENTICATED = 23
+    """
+    MAC_TYPE_PEER_AUTHENTICATED indicates a MAC authenticated by 802.1X and learned on an MLAG peer.
+    """
+
+    PENDING_SECURE = 24
+    """
+    MAC_TYPE_PENDING_SECURE indicates a secure MAC in a pending state.
+    """
+
+    SOFTWARE_LEARNED_DYNAMIC = 25
+    """
+    MAC_TYPE_SOFTWARE_LEARNED_DYNAMIC indicates a MAC learned behind VTEP in software in the case of a VxLAN remote MAC.
+    """
+
+    PROGRAMMED_STATIC = 26
+    """
+    MAC_TYPE_PROGRAMMED_STATIC indicates a programmed static MAC address.
+    """
+
+    EVPN_VESPA_DYNAMIC = 27
+    """
+    MAC_TYPE_EVPN_VESPA_DYNAMIC indicates a MAC received over BGP from a member of the same VESPA GW (Gateway) Set.
+    """
+
+    EVPN_INTF_DYNAMIC_FRR = 28
+    """
+    MAC_TYPE_EVPN_INTF_DYNAMIC_FRR indicates an ESI MAC protected by an EVPN FRR backup tunnel.
+    """
+
+    EVPN_INTF_STATIC_FRR = 29
+    """
+    MAC_TYPE_EVPN_INTF_STATIC_FRR indicates an ESI Static MAC protected by an EVPN FRR backup tunnel.
+    """
+
+    LEARNED_DYNAMIC_FRR = 30
+    """
+    MAC_TYPE_LEARNED_DYNAMIC_FRR indicates a MAC learned dynamically and protected by an EVPN FRR backup tunnel.
+    """
+
+    CONFIGURED_STATIC_FRR = 31
+    """
+    MAC_TYPE_CONFIGURED_STATIC_FRR indicates a MAC configured statically and protected by an EVPN FRR backup tunnel.
+    """
+
+    VPLS_DYNAMIC_REMOTE = 32
+    """
+    MAC_TYPE_VPLS_DYNAMIC_REMOTE indicates a remote MAC learned dynamically from the VPLS.
+    """
+
+    CONFIGURED_SYS = 33
+    """
+    MAC_TYPE_CONFIGURED_SYS indicates a system MAC address configured on an interface.
+    """
+
+    OTHER = 99999
+    """
+    MAC_TYPE_OTHER is used for capturing future MAC types.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "MAC_TYPE_UNSPECIFIED",
+            1: "MAC_TYPE_LEARNED_DYNAMIC",
+            2: "MAC_TYPE_LEARNED_SECURE",
+            3: "MAC_TYPE_CONFIGURED_DYNAMIC",
+            4: "MAC_TYPE_CONFIGURED_SECURE",
+            5: "MAC_TYPE_CONFIGURED_STATIC",
+            6: "MAC_TYPE_PEER_DYNAMIC",
+            7: "MAC_TYPE_PEER_STATIC",
+            8: "MAC_TYPE_PEER_SECURE",
+            9: "MAC_TYPE_LEARNED_REMOTE",
+            10: "MAC_TYPE_CONFIGURED_REMOTE",
+            11: "MAC_TYPE_RECEIVED_REMOTE",
+            12: "MAC_TYPE_PEER_LEARNED_REMOTE",
+            13: "MAC_TYPE_PEER_CONFIGURED_REMOTE",
+            14: "MAC_TYPE_PEER_RECEIVED_REMOTE",
+            15: "MAC_TYPE_EVPN_DYNAMIC_REMOTE",
+            16: "MAC_TYPE_EVPN_CONFIGURED_REMOTE",
+            17: "MAC_TYPE_PEER_EVPN_REMOTE",
+            18: "MAC_TYPE_CONFIGURED_ROUTER",
+            19: "MAC_TYPE_PEER_ROUTER",
+            20: "MAC_TYPE_EVPN_INTF_DYNAMIC",
+            21: "MAC_TYPE_EVPN_INTF_STATIC",
+            22: "MAC_TYPE_AUTHENTICATED",
+            23: "MAC_TYPE_PEER_AUTHENTICATED",
+            24: "MAC_TYPE_PENDING_SECURE",
+            25: "MAC_TYPE_SOFTWARE_LEARNED_DYNAMIC",
+            26: "MAC_TYPE_PROGRAMMED_STATIC",
+            27: "MAC_TYPE_EVPN_VESPA_DYNAMIC",
+            28: "MAC_TYPE_EVPN_INTF_DYNAMIC_FRR",
+            29: "MAC_TYPE_EVPN_INTF_STATIC_FRR",
+            30: "MAC_TYPE_LEARNED_DYNAMIC_FRR",
+            31: "MAC_TYPE_CONFIGURED_STATIC_FRR",
+            32: "MAC_TYPE_VPLS_DYNAMIC_REMOTE",
+            33: "MAC_TYPE_CONFIGURED_SYS",
+            99999: "MAC_TYPE_OTHER",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "MAC_TYPE_UNSPECIFIED": 0,
+            "MAC_TYPE_LEARNED_DYNAMIC": 1,
+            "MAC_TYPE_LEARNED_SECURE": 2,
+            "MAC_TYPE_CONFIGURED_DYNAMIC": 3,
+            "MAC_TYPE_CONFIGURED_SECURE": 4,
+            "MAC_TYPE_CONFIGURED_STATIC": 5,
+            "MAC_TYPE_PEER_DYNAMIC": 6,
+            "MAC_TYPE_PEER_STATIC": 7,
+            "MAC_TYPE_PEER_SECURE": 8,
+            "MAC_TYPE_LEARNED_REMOTE": 9,
+            "MAC_TYPE_CONFIGURED_REMOTE": 10,
+            "MAC_TYPE_RECEIVED_REMOTE": 11,
+            "MAC_TYPE_PEER_LEARNED_REMOTE": 12,
+            "MAC_TYPE_PEER_CONFIGURED_REMOTE": 13,
+            "MAC_TYPE_PEER_RECEIVED_REMOTE": 14,
+            "MAC_TYPE_EVPN_DYNAMIC_REMOTE": 15,
+            "MAC_TYPE_EVPN_CONFIGURED_REMOTE": 16,
+            "MAC_TYPE_PEER_EVPN_REMOTE": 17,
+            "MAC_TYPE_CONFIGURED_ROUTER": 18,
+            "MAC_TYPE_PEER_ROUTER": 19,
+            "MAC_TYPE_EVPN_INTF_DYNAMIC": 20,
+            "MAC_TYPE_EVPN_INTF_STATIC": 21,
+            "MAC_TYPE_AUTHENTICATED": 22,
+            "MAC_TYPE_PEER_AUTHENTICATED": 23,
+            "MAC_TYPE_PENDING_SECURE": 24,
+            "MAC_TYPE_SOFTWARE_LEARNED_DYNAMIC": 25,
+            "MAC_TYPE_PROGRAMMED_STATIC": 26,
+            "MAC_TYPE_EVPN_VESPA_DYNAMIC": 27,
+            "MAC_TYPE_EVPN_INTF_DYNAMIC_FRR": 28,
+            "MAC_TYPE_EVPN_INTF_STATIC_FRR": 29,
+            "MAC_TYPE_LEARNED_DYNAMIC_FRR": 30,
+            "MAC_TYPE_CONFIGURED_STATIC_FRR": 31,
+            "MAC_TYPE_VPLS_DYNAMIC_REMOTE": 32,
+            "MAC_TYPE_CONFIGURED_SYS": 33,
+            "MAC_TYPE_OTHER": 99999,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class IdentifierSourceList(aristaproto.Message):
-    """IdentifierSourceList is a list of IdentifierSource."""
-
-    values: List["IdentifierSource"] = aristaproto.enum_field(1)
-    """values is an unordered list of unique IdentifierSource."""
-
-
-@dataclass(eq=False, repr=False)
-class Identifier(aristaproto.Message):
-    """Identifier holds device identification information."""
-
-    type: "IdentifierType" = aristaproto.enum_field(1)
-    """type is the identifier type corresponding to value."""
-
-    value: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+class Device(aristaproto.Message):
     """
-    value is the string representation of the identifier. Its interpretation
-    depends on type.
+    Device holds information for a device matching a search term.
     """
 
-    source_list: "IdentifierSourceList" = aristaproto.message_field(3)
+    identifier_list: "IdentifierList | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    source_list is the set of sources where this identifier was discovered.
+    identifier_list holds the unique identifiers for the device.
     """
 
-
-@dataclass(eq=False, repr=False)
-class IdentifierList(aristaproto.Message):
-    """IdentifierList is a list of Identifier."""
-
-    values: List["Identifier"] = aristaproto.message_field(1)
+    device_type: "DeviceType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceType(0))
     """
-    values is an unordered list of Identifier where each Identifier has a
-    unique type and value combination.
+    device_type is the broad category of the device.
+    """
+
+    location_list: "LocationList | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    location_list is the list of possible locations of the device.
+    It is ordered from most likely to least likely.
+    """
+
+    device_status: "DeviceStatus" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceStatus(0))
+    """
+    device_status is the network status of the device.
+    """
+
+    device_info: "DeviceInfo | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    device_info holds various attributes of the device.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ExplanationList(aristaproto.Message):
-    """ExplanationList is a list of Explanation."""
-
-    values: List["Explanation"] = aristaproto.enum_field(1)
-    """
-    values is a list of unique Explanation. Currently, this will
-    always contain one value, but in the future it may contain
-    more.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Location(aristaproto.Message):
-    """
-    Location is a port (device_id, interface, vlan_id) on which
-    at least one identifier has been discovered.
-    """
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id identifies the device of the port."""
-
-    device_status: "DeviceStatus" = aristaproto.enum_field(2)
-    """device_status is the status of the device identified by device_id."""
-
-    interface: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """interface is the interface of the port."""
-
-    vlan_id: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """vlan_id identifies the VLAN of the port."""
-
-    learned_time: datetime = aristaproto.message_field(5)
-    """learned_time is when the port learned its identifiers."""
-
-    mac_type: "MacType" = aristaproto.enum_field(6)
-    """mac_type is how the port learned its MAC address identifier."""
-
-    likelihood: "Likelihood" = aristaproto.enum_field(7)
-    """
-    likelihood is the probability level that the port is directly connected
-    to the queried endpoint.
-    """
-
-    explanation_list: "ExplanationList" = aristaproto.message_field(8)
-    """
-    explanation_list holds the reasons that the port was assigned likelihood.
-    """
-
-    identifier_list: "IdentifierList" = aristaproto.message_field(9)
-    """identifier_list holds the discovered identifiers of the port."""
-
-
-@dataclass(eq=False, repr=False)
-class LocationList(aristaproto.Message):
-    """LocationList is a list of Location."""
-
-    values: List["Location"] = aristaproto.message_field(1)
-    """values is a list of unique Location."""
+default_message_pool.register_message("arista.endpointlocation.v1", "Device", Device)
 
 
 @dataclass(eq=False, repr=False)
@@ -541,37 +763,45 @@ class DeviceInfo(aristaproto.Message):
     DeviceInfo holds various attributes of a device (typically an endpoint) from Fingerbank.
     """
 
-    device_name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_name is the name of the device."""
+    device_name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_name is the name of the device.
+    """
 
-    mobile: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """mobile indicates whether the device is a mobile."""
+    mobile: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    mobile indicates whether the device is a mobile.
+    """
 
-    tablet: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """tablet indicates whether the device is a tablet."""
+    tablet: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    tablet indicates whether the device is a tablet.
+    """
 
-    score: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    score: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     score is a value from 0 to 100 that indicates how confident we are
     that the device has device_name.
     Fingerbank API documentation of score: https://api.fingerbank.org/api_doc/2/combinations.html
     """
 
-    version: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """version is the version of device_name."""
+    version: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version is the version of device_name.
+    """
 
-    mac_vendor: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    mac_vendor: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     mac_vendor is the enterprise that assigns the MAC address of the device.
     """
 
-    classification: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    classification: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     classification is the broadest category to which device_name belongs.
     This is the highest level in hierarchy.
     """
 
-    hierarchy: "___fmp__.RepeatedString" = aristaproto.message_field(8)
+    hierarchy: "___fmp__.RepeatedString | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
     """
     hierarchy is a list of categorizations of the device from most broad
     to most specific. The first element is always classification and the
@@ -579,56 +809,30 @@ class DeviceInfo(aristaproto.Message):
 
     For example,
 
-    [\"VoIP Device\", \"FooInc VoIP\", \"FooInc PhoneSet IP\", \"FooInc PhoneSet IP Model123\"]
+    ["VoIP Device", "FooInc VoIP", "FooInc PhoneSet IP", "FooInc PhoneSet IP Model123"]
 
-    In this hierarchy, \"VoIP Device\" is classification and \"FooInc PhoneSet IP Model123\"
+    In this hierarchy, "VoIP Device" is classification and "FooInc PhoneSet IP Model123"
     is device_name.
     """
 
 
-@dataclass(eq=False, repr=False)
-class Device(aristaproto.Message):
-    """Device holds information for a device matching a search term."""
-
-    identifier_list: "IdentifierList" = aristaproto.message_field(1)
-    """identifier_list holds the unique identifiers for the device."""
-
-    device_type: "DeviceType" = aristaproto.enum_field(2)
-    """device_type is the broad category of the device."""
-
-    location_list: "LocationList" = aristaproto.message_field(3)
-    """
-    location_list is the list of possible locations of the device.
-    It is ordered from most likely to least likely.
-    """
-
-    device_status: "DeviceStatus" = aristaproto.enum_field(4)
-    """device_status is the network status of the device."""
-
-    device_info: "DeviceInfo" = aristaproto.message_field(5)
-    """device_info holds various attributes of the device."""
+default_message_pool.register_message("arista.endpointlocation.v1", "DeviceInfo", DeviceInfo)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceMap(aristaproto.Message):
-    """DeviceMap is a collection of Device."""
+    """
+    DeviceMap is a collection of Device.
+    """
 
-    values: Dict[str, "Device"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: "dict[str, Device]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE))
     """
     values is a map from most specific identifier to Device.
     The key could be device serial number or MAC address.
     """
 
 
-@dataclass(eq=False, repr=False)
-class EndpointLocationKey(aristaproto.Message):
-    """EndpointLocationKey holds a search term used to locate an endpoint."""
-
-    search_term: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    search_term is used to match against identifiers on devices.
-    This could be a MAC/IP address, hostname, etc.
-    """
+default_message_pool.register_message("arista.endpointlocation.v1", "DeviceMap", DeviceMap)
 
 
 @dataclass(eq=False, repr=False)
@@ -638,157 +842,24 @@ class EndpointLocation(aristaproto.Message):
     endpoints.
     """
 
-    key: "EndpointLocationKey" = aristaproto.message_field(1)
-    """key holds a search term used to locate an endpoint."""
+    key: "EndpointLocationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key holds a search term used to locate an endpoint.
+    """
 
-    device_map: "DeviceMap" = aristaproto.message_field(2)
+    device_map: "DeviceMap | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     device_map holds the devices (and their potential locations)
     that match the search term.
     """
 
 
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationRequest(aristaproto.Message):
-    key: "EndpointLocationKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a EndpointLocation instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationResponse(aristaproto.Message):
-    value: "EndpointLocation" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    EndpointLocation instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationSomeRequest(aristaproto.Message):
-    keys: List["EndpointLocationKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationSomeResponse(aristaproto.Message):
-    value: "EndpointLocation" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    EndpointLocation instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["EndpointLocation"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each EndpointLocation at end.
-        * Each EndpointLocation response is fully-specified (all fields set).
-      * start: Returns the state of each EndpointLocation at start, followed by updates until now.
-        * Each EndpointLocation response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each EndpointLocation at start, followed by updates
-        until end.
-        * Each EndpointLocation response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointLocationStreamResponse(aristaproto.Message):
-    value: "EndpointLocation" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this EndpointLocation's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the EndpointLocation value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocation", EndpointLocation)
 
 
 @dataclass(eq=False, repr=False)
 class EndpointLocationBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["EndpointLocation"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[EndpointLocation]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -797,7 +868,7 @@ class EndpointLocationBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -814,7 +885,7 @@ class EndpointLocationBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -823,9 +894,12 @@ class EndpointLocationBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationBatchedStreamRequest", EndpointLocationBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class EndpointLocationBatchedStreamResponse(aristaproto.Message):
-    responses: List["EndpointLocationStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[EndpointLocationStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -833,292 +907,500 @@ class EndpointLocationBatchedStreamResponse(aristaproto.Message):
     """
 
 
-class EndpointLocationServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationBatchedStreamResponse", EndpointLocationBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationKey(aristaproto.Message):
+    """
+    EndpointLocationKey holds a search term used to locate an endpoint.
+    """
+
+    search_term: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    search_term is used to match against identifiers on devices.
+    This could be a MAC/IP address, hostname, etc.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationKey", EndpointLocationKey)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationRequest(aristaproto.Message):
+    key: "EndpointLocationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a EndpointLocation instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationRequest", EndpointLocationRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationResponse(aristaproto.Message):
+    value: "EndpointLocation | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    EndpointLocation instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationResponse", EndpointLocationResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationSomeRequest(aristaproto.Message):
+    keys: "list[EndpointLocationKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationSomeRequest", EndpointLocationSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationSomeResponse(aristaproto.Message):
+    value: "EndpointLocation | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    EndpointLocation instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationSomeResponse", EndpointLocationSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[EndpointLocation]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each EndpointLocation at end.
+        * Each EndpointLocation response is fully-specified (all fields set).
+      * start: Returns the state of each EndpointLocation at start, followed by updates until now.
+        * Each EndpointLocation response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each EndpointLocation at start, followed by updates
+        until end.
+        * Each EndpointLocation response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationStreamRequest", EndpointLocationStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EndpointLocationStreamResponse(aristaproto.Message):
+    value: "EndpointLocation | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this EndpointLocation's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the EndpointLocation value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "EndpointLocationStreamResponse", EndpointLocationStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExplanationList(aristaproto.Message):
+    """
+    ExplanationList is a list of Explanation.
+    """
+
+    values: "list[Explanation]" = aristaproto.field(1, aristaproto.TYPE_ENUM, repeated=True)
+    """
+    values is a list of unique Explanation. Currently, this will
+    always contain one value, but in the future it may contain
+    more.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "ExplanationList", ExplanationList)
+
+
+@dataclass(eq=False, repr=False)
+class Identifier(aristaproto.Message):
+    """
+    Identifier holds device identification information.
+    """
+
+    type: "IdentifierType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: IdentifierType(0))
+    """
+    type is the identifier type corresponding to value.
+    """
+
+    value: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value is the string representation of the identifier. Its interpretation
+    depends on type.
+    """
+
+    source_list: "IdentifierSourceList | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    source_list is the set of sources where this identifier was discovered.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "Identifier", Identifier)
+
+
+@dataclass(eq=False, repr=False)
+class IdentifierList(aristaproto.Message):
+    """
+    IdentifierList is a list of Identifier.
+    """
+
+    values: "list[Identifier]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is an unordered list of Identifier where each Identifier has a
+    unique type and value combination.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "IdentifierList", IdentifierList)
+
+
+@dataclass(eq=False, repr=False)
+class IdentifierSourceList(aristaproto.Message):
+    """
+    IdentifierSourceList is a list of IdentifierSource.
+    """
+
+    values: "list[IdentifierSource]" = aristaproto.field(1, aristaproto.TYPE_ENUM, repeated=True)
+    """
+    values is an unordered list of unique IdentifierSource.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "IdentifierSourceList", IdentifierSourceList)
+
+
+@dataclass(eq=False, repr=False)
+class Location(aristaproto.Message):
+    """
+    Location is a port (device_id, interface, vlan_id) on which
+    at least one identifier has been discovered.
+    """
+
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id identifies the device of the port.
+    """
+
+    device_status: "DeviceStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceStatus(0))
+    """
+    device_status is the status of the device identified by device_id.
+    """
+
+    interface: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    interface is the interface of the port.
+    """
+
+    vlan_id: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    vlan_id identifies the VLAN of the port.
+    """
+
+    learned_time: "datetime.datetime | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    learned_time is when the port learned its identifiers.
+    """
+
+    mac_type: "MacType" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: MacType(0))
+    """
+    mac_type is how the port learned its MAC address identifier.
+    """
+
+    likelihood: "Likelihood" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: Likelihood(0))
+    """
+    likelihood is the probability level that the port is directly connected
+    to the queried endpoint.
+    """
+
+    explanation_list: "ExplanationList | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    explanation_list holds the reasons that the port was assigned likelihood.
+    """
+
+    identifier_list: "IdentifierList | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    identifier_list holds the discovered identifiers of the port.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "Location", Location)
+
+
+@dataclass(eq=False, repr=False)
+class LocationList(aristaproto.Message):
+    """
+    LocationList is a list of Location.
+    """
+
+    values: "list[Location]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of unique Location.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "LocationList", LocationList)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.endpointlocation.v1", "MetaResponse", MetaResponse)
+
+
+class EndpointLocationServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        endpoint_location_request: "EndpointLocationRequest",
+        message: "EndpointLocationRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "EndpointLocationResponse":
+
         return await self._unary_unary(
             "/arista.endpointlocation.v1.EndpointLocationService/GetOne",
-            endpoint_location_request,
+            message,
             EndpointLocationResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        endpoint_location_some_request: "EndpointLocationSomeRequest",
+        message: "EndpointLocationSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EndpointLocationSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/GetSome",
-            endpoint_location_some_request,
+            message,
             EndpointLocationSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        endpoint_location_stream_request: "EndpointLocationStreamRequest",
+        message: "EndpointLocationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EndpointLocationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/GetAll",
-            endpoint_location_stream_request,
+            message,
             EndpointLocationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        endpoint_location_stream_request: "EndpointLocationStreamRequest",
+        message: "EndpointLocationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EndpointLocationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/Subscribe",
-            endpoint_location_stream_request,
+            message,
             EndpointLocationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        endpoint_location_stream_request: "EndpointLocationStreamRequest",
+        message: "EndpointLocationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.endpointlocation.v1.EndpointLocationService/GetMeta",
-            endpoint_location_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        endpoint_location_stream_request: "EndpointLocationStreamRequest",
+        message: "EndpointLocationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/SubscribeMeta",
-            endpoint_location_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        endpoint_location_batched_stream_request: "EndpointLocationBatchedStreamRequest",
+        message: "EndpointLocationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EndpointLocationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/GetAllBatched",
-            endpoint_location_batched_stream_request,
+            message,
             EndpointLocationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        endpoint_location_batched_stream_request: "EndpointLocationBatchedStreamRequest",
+        message: "EndpointLocationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EndpointLocationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.endpointlocation.v1.EndpointLocationService/SubscribeBatched",
-            endpoint_location_batched_stream_request,
+            message,
             EndpointLocationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class EndpointLocationServiceBase(ServiceBase):
-    async def get_one(self, endpoint_location_request: "EndpointLocationRequest") -> "EndpointLocationResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, endpoint_location_some_request: "EndpointLocationSomeRequest") -> AsyncIterator[EndpointLocationSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, endpoint_location_stream_request: "EndpointLocationStreamRequest") -> AsyncIterator[EndpointLocationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, endpoint_location_stream_request: "EndpointLocationStreamRequest") -> AsyncIterator[EndpointLocationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, endpoint_location_stream_request: "EndpointLocationStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, endpoint_location_stream_request: "EndpointLocationStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, endpoint_location_batched_stream_request: "EndpointLocationBatchedStreamRequest"
-    ) -> AsyncIterator[EndpointLocationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, endpoint_location_batched_stream_request: "EndpointLocationBatchedStreamRequest"
-    ) -> AsyncIterator[EndpointLocationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[EndpointLocationRequest, EndpointLocationResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[EndpointLocationSomeRequest, EndpointLocationSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[EndpointLocationStreamRequest, EndpointLocationStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[EndpointLocationStreamRequest, EndpointLocationStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EndpointLocationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EndpointLocationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[EndpointLocationBatchedStreamRequest, EndpointLocationBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[EndpointLocationBatchedStreamRequest, EndpointLocationBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.endpointlocation.v1.EndpointLocationService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EndpointLocationRequest,
-                EndpointLocationResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationSomeRequest,
-                EndpointLocationSomeResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationStreamRequest,
-                EndpointLocationStreamResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationStreamRequest,
-                EndpointLocationStreamResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EndpointLocationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationBatchedStreamRequest,
-                EndpointLocationBatchedStreamResponse,
-            ),
-            "/arista.endpointlocation.v1.EndpointLocationService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EndpointLocationBatchedStreamRequest,
-                EndpointLocationBatchedStreamResponse,
-            ),
-        }

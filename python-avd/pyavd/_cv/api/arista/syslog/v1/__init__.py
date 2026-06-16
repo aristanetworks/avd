@@ -7,87 +7,103 @@
 # This file has been @generated
 
 __all__ = (
-    "TransportProtocol",
-    "Format",
-    "ExportResult",
-    "ExportKey",
-    "ExportSuccess",
-    "ExportError",
-    "ExportStats",
-    "ExportConfig",
-    "ExportFormatConfig",
     "Export",
-    "MetaResponse",
-    "ExportRequest",
-    "ExportResponse",
-    "ExportSomeRequest",
-    "ExportSomeResponse",
-    "ExportStreamRequest",
-    "ExportStreamResponse",
-    "ExportConfigRequest",
-    "ExportConfigResponse",
-    "ExportConfigSomeRequest",
-    "ExportConfigSomeResponse",
-    "ExportConfigStreamRequest",
-    "ExportConfigStreamResponse",
-    "ExportConfigSetRequest",
-    "ExportConfigSetResponse",
-    "ExportConfigSetSomeRequest",
-    "ExportConfigSetSomeResponse",
+    "ExportConfig",
+    "ExportConfigDeleteAllRequest",
+    "ExportConfigDeleteAllResponse",
     "ExportConfigDeleteRequest",
     "ExportConfigDeleteResponse",
     "ExportConfigDeleteSomeRequest",
     "ExportConfigDeleteSomeResponse",
-    "ExportConfigDeleteAllRequest",
-    "ExportConfigDeleteAllResponse",
+    "ExportConfigRequest",
+    "ExportConfigResponse",
+    "ExportConfigServiceStub",
+    "ExportConfigSetRequest",
+    "ExportConfigSetResponse",
+    "ExportConfigSetSomeRequest",
+    "ExportConfigSetSomeResponse",
+    "ExportConfigSomeRequest",
+    "ExportConfigSomeResponse",
+    "ExportConfigStreamRequest",
+    "ExportConfigStreamResponse",
+    "ExportError",
+    "ExportFormatConfig",
     "ExportFormatConfigRequest",
     "ExportFormatConfigResponse",
-    "ExportFormatConfigStreamRequest",
-    "ExportFormatConfigStreamResponse",
+    "ExportFormatConfigServiceStub",
     "ExportFormatConfigSetRequest",
     "ExportFormatConfigSetResponse",
+    "ExportFormatConfigStreamRequest",
+    "ExportFormatConfigStreamResponse",
+    "ExportKey",
+    "ExportRequest",
+    "ExportResponse",
+    "ExportResult",
     "ExportServiceStub",
-    "ExportServiceBase",
-    "ExportConfigServiceStub",
-    "ExportConfigServiceBase",
-    "ExportFormatConfigServiceStub",
-    "ExportFormatConfigServiceBase",
+    "ExportSomeRequest",
+    "ExportSomeResponse",
+    "ExportStats",
+    "ExportStreamRequest",
+    "ExportStreamResponse",
+    "ExportSuccess",
+    "Format",
+    "MetaResponse",
+    "TransportProtocol",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
-class TransportProtocol(aristaproto.Enum):
+class ExportResult(aristaproto.Enum):
     """
-    TransportProtocol defines the set of transport protocols to be used for export.
+    ExportResult defines the set of possible results of an export operation.
     """
 
     UNSPECIFIED = 0
-    """TRANSPORT_PROTOCOL_UNSPECIFIED indicates unspecified protocol."""
+    """
+    EXPORT_RESULT_UNSPECIFIED indicates unspecified export operation.
+    """
 
-    UDP = 1
-    """TRANSPORT_PROTOCOL_UDP indicates the User Datagram Protocol (UDP)."""
+    SUCCESS = 1
+    """
+    EXPORT_RESULT_SUCCESS indicates a successful export operation.
+    """
 
-    TCP = 2
-    """TRANSPORT_PROTOCOL_TCP indicates the TCP over TLS protocol."""
+    FAILURE = 2
+    """
+    EXPORT_RESULT_FAILURE indicates an unsuccessful export operation.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "EXPORT_RESULT_UNSPECIFIED",
+            1: "EXPORT_RESULT_SUCCESS",
+            2: "EXPORT_RESULT_FAILURE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "EXPORT_RESULT_UNSPECIFIED": 0,
+            "EXPORT_RESULT_SUCCESS": 1,
+            "EXPORT_RESULT_FAILURE": 2,
+        }
 
 
 class Format(aristaproto.Enum):
@@ -96,7 +112,9 @@ class Format(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """FORMAT_UNSPECIFIED indicates unspecified format."""
+    """
+    FORMAT_UNSPECIFIED indicates unspecified format.
+    """
 
     RFC3164 = 1
     """
@@ -109,283 +127,229 @@ class Format(aristaproto.Enum):
     """
 
     CUSTOM = 3
-    """FORMAT_CUSTOM indicates a native custom format with a UTC timestamp."""
-
-
-class ExportResult(aristaproto.Enum):
     """
-    ExportResult defines the set of possible results of an export operation.
+    FORMAT_CUSTOM indicates a native custom format with a UTC timestamp.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "FORMAT_UNSPECIFIED",
+            1: "FORMAT_RFC3164",
+            2: "FORMAT_RFC5424",
+            3: "FORMAT_CUSTOM",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "FORMAT_UNSPECIFIED": 0,
+            "FORMAT_RFC3164": 1,
+            "FORMAT_RFC5424": 2,
+            "FORMAT_CUSTOM": 3,
+        }
+
+
+class TransportProtocol(aristaproto.Enum):
+    """
+    TransportProtocol defines the set of transport protocols to be used for export.
     """
 
     UNSPECIFIED = 0
-    """EXPORT_RESULT_UNSPECIFIED indicates unspecified export operation."""
-
-    SUCCESS = 1
-    """EXPORT_RESULT_SUCCESS indicates a successful export operation."""
-
-    FAILURE = 2
-    """EXPORT_RESULT_FAILURE indicates an unsuccessful export operation."""
-
-
-@dataclass(eq=False, repr=False)
-class ExportKey(aristaproto.Message):
     """
-    ExportKey uniquely identifies a syslog server to which to export logs.
+    TRANSPORT_PROTOCOL_UNSPECIFIED indicates unspecified protocol.
     """
 
-    hostname_or_ip: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """hostname_or_ip is the IP address or hostname of the syslog server."""
-
-    port_num: "___fmp__.Port" = aristaproto.message_field(2)
-    """port_num is the destination port number of the syslog server."""
-
-    protocol: "TransportProtocol" = aristaproto.enum_field(3)
-    """protocol defines the transport protocol for the syslog export."""
-
-
-@dataclass(eq=False, repr=False)
-class ExportSuccess(aristaproto.Message):
+    UDP = 1
     """
-    ExportSuccess provides the details of the last successful export operation.
+    TRANSPORT_PROTOCOL_UDP indicates the User Datagram Protocol (UDP).
     """
 
-    timestamp: datetime = aristaproto.message_field(1)
+    TCP = 2
     """
-    timestamp provides the timestamp of last successful export opeartion.
-    """
-
-    log_timestamp: datetime = aristaproto.message_field(2)
-    """
-    log_timestamp provides the timestamp of the last successful audit log.
+    TRANSPORT_PROTOCOL_TCP indicates the TCP over TLS protocol.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "TRANSPORT_PROTOCOL_UNSPECIFIED",
+            1: "TRANSPORT_PROTOCOL_UDP",
+            2: "TRANSPORT_PROTOCOL_TCP",
+        }
 
-@dataclass(eq=False, repr=False)
-class ExportError(aristaproto.Message):
-    """ExportError provides the details of the most recent export error."""
-
-    timestamp: datetime = aristaproto.message_field(1)
-    """timestamp provides the timestamp of the export error."""
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """error indicates the export error."""
-
-    detail: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """detail indicates the audit log that was not exported."""
-
-    log_timestamp: datetime = aristaproto.message_field(4)
-    """
-    log_timestamp provides the timestamp of the last audit log
-    that was not exported due to error.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportStats(aristaproto.Message):
-    """
-    ExportStats provide statistics of export operations to a syslog sever.
-    """
-
-    num_success: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_UINT64)
-    """num_success indicates the count of successful exports."""
-
-    num_errors: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_UINT64)
-    """num_errors indicates the count of export errors."""
-
-    last_result: "ExportResult" = aristaproto.enum_field(3)
-    """last_result provides the status of the last export operation."""
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfig(aristaproto.Message):
-    """ExportConfig is used to configure a syslog server."""
-
-    key: "ExportKey" = aristaproto.message_field(1)
-    """key uniquely identifies a syslog server."""
-
-
-@dataclass(eq=False, repr=False)
-class ExportFormatConfig(aristaproto.Message):
-    """
-    ExportFormatConfig is used to confgure a global format for
-    exporting logs to all the configured syslog servers.
-    """
-
-    format: "Format" = aristaproto.enum_field(1)
-    """format defines the syslog format to be used for export."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "TRANSPORT_PROTOCOL_UNSPECIFIED": 0,
+            "TRANSPORT_PROTOCOL_UDP": 1,
+            "TRANSPORT_PROTOCOL_TCP": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
 class Export(aristaproto.Message):
-    """Export provides the export status for a syslog server."""
-
-    key: "ExportKey" = aristaproto.message_field(1)
-    """key uniquely identifies a syslog server."""
-
-    stats: "ExportStats" = aristaproto.message_field(2)
-    """stats contains the statistics for all export operations."""
-
-    last_error: "ExportError" = aristaproto.message_field(3)
-    """last_error provides the details of the last export error."""
-
-    last_success: "ExportSuccess" = aristaproto.message_field(4)
-    """last_success provides details of last successful export."""
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
+    Export provides the export status for a syslog server.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    key uniquely identifies a syslog server.
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    stats: "ExportStats | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Count is the number of items present under the conditions of the request.
+    stats contains the statistics for all export operations.
     """
+
+    last_error: "ExportError | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    last_error provides the details of the last export error.
+    """
+
+    last_success: "ExportSuccess | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    last_success provides details of last successful export.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "Export", Export)
 
 
 @dataclass(eq=False, repr=False)
-class ExportRequest(aristaproto.Message):
-    key: "ExportKey" = aristaproto.message_field(1)
+class ExportConfig(aristaproto.Message):
     """
-    Key uniquely identifies a Export instance to retrieve.
-    This value must be populated.
+    ExportConfig is used to configure a syslog server.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    key uniquely identifies a syslog server.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ExportResponse(aristaproto.Message):
-    value: "Export" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Export instance in this response.
-    """
+default_message_pool.register_message("arista.syslog.v1", "ExportConfig", ExportConfig)
 
 
 @dataclass(eq=False, repr=False)
-class ExportSomeRequest(aristaproto.Message):
-    keys: List["ExportKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class ExportConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ExportConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportSomeResponse(aristaproto.Message):
-    value: "Export" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Export instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Export"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
     This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
 
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Export at end.
-        * Each Export response is fully-specified (all fields set).
-      * start: Returns the state of each Export at start, followed by updates until now.
-        * Each Export response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Export at start, followed by updates
-        until end.
-        * Each Export response at start is fully-specified, but updates until end may
-          be partial.
-    """
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteAllRequest", ExportConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ExportStreamResponse(aristaproto.Message):
-    value: "Export" = aristaproto.message_field(1)
+class ExportConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Export's last modification."""
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    key: "ExportKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the Export value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    This is the key of the ExportConfig instance that failed to be deleted.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteAllResponse", ExportConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigDeleteRequest(aristaproto.Message):
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which ExportConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteRequest", ExportConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigDeleteResponse(aristaproto.Message):
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ExportConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteResponse", ExportConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[ExportKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ExportConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteSomeRequest", ExportConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    ExportConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigDeleteSomeResponse", ExportConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ExportConfigRequest(aristaproto.Message):
-    key: "ExportKey" = aristaproto.message_field(1)
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a ExportConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigRequest", ExportConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ExportConfigResponse(aristaproto.Message):
-    value: "ExportConfig" = aristaproto.message_field(1)
+    value: "ExportConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -393,26 +357,92 @@ class ExportConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ExportConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigResponse", ExportConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigSetRequest(aristaproto.Message):
+    value: "ExportConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ExportConfig carries the value to set into the datastore.
+    See the documentation on the ExportConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSetRequest", ExportConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigSetResponse(aristaproto.Message):
+    value: "ExportConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ExportConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSetResponse", ExportConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ExportConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ExportConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSetSomeRequest", ExportConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportConfigSetSomeResponse(aristaproto.Message):
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSetSomeResponse", ExportConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ExportConfigSomeRequest(aristaproto.Message):
-    keys: List["ExportKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ExportKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSomeRequest", ExportConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ExportConfigSomeResponse(aristaproto.Message):
-    value: "ExportConfig" = aristaproto.message_field(1)
+    value: "ExportConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -420,22 +450,25 @@ class ExportConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ExportConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigSomeResponse", ExportConfigSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ExportConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ExportConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ExportConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -444,7 +477,7 @@ class ExportConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -462,19 +495,24 @@ class ExportConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigStreamRequest", ExportConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ExportConfigStreamResponse(aristaproto.Message):
-    value: "ExportConfig" = aristaproto.message_field(1)
+    value: "ExportConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this ExportConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ExportConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ExportConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -483,24 +521,109 @@ class ExportConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ExportConfigSetRequest(aristaproto.Message):
-    value: "ExportConfig" = aristaproto.message_field(1)
-    """
-    ExportConfig carries the value to set into the datastore.
-    See the documentation on the ExportConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.syslog.v1", "ExportConfigStreamResponse", ExportConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ExportConfigSetResponse(aristaproto.Message):
-    value: "ExportConfig" = aristaproto.message_field(1)
+class ExportError(aristaproto.Message):
     """
-    Value carries all the values given in the ExportConfigSetRequest as well
+    ExportError provides the details of the most recent export error.
+    """
+
+    timestamp: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    timestamp provides the timestamp of the export error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error indicates the export error.
+    """
+
+    detail: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    detail indicates the audit log that was not exported.
+    """
+
+    log_timestamp: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    log_timestamp provides the timestamp of the last audit log
+    that was not exported due to error.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportError", ExportError)
+
+
+@dataclass(eq=False, repr=False)
+class ExportFormatConfig(aristaproto.Message):
+    """
+    ExportFormatConfig is used to confgure a global format for
+    exporting logs to all the configured syslog servers.
+    """
+
+    format: "Format" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: Format(0))
+    """
+    format defines the syslog format to be used for export.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfig", ExportFormatConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ExportFormatConfigRequest(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigRequest", ExportFormatConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportFormatConfigResponse(aristaproto.Message):
+    value: "ExportFormatConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ExportFormatConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigResponse", ExportFormatConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportFormatConfigSetRequest(aristaproto.Message):
+    value: "ExportFormatConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ExportFormatConfig carries the value to set into the datastore.
+    See the documentation on the ExportFormatConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigSetRequest", ExportFormatConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportFormatConfigSetResponse(aristaproto.Message):
+    value: "ExportFormatConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ExportFormatConfigSetRequest as well
     as any server-generated values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
@@ -510,122 +633,12 @@ class ExportConfigSetResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ExportConfigSetSomeRequest(aristaproto.Message):
-    values: List["ExportConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of ExportConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigSetSomeResponse(aristaproto.Message):
-    key: "ExportKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteRequest(aristaproto.Message):
-    key: "ExportKey" = aristaproto.message_field(1)
-    """
-    Key indicates which ExportConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteResponse(aristaproto.Message):
-    key: "ExportKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ExportConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ExportKey"] = aristaproto.message_field(1)
-    """key contains a list of ExportConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteSomeResponse(aristaproto.Message):
-    """ExportConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "ExportKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ExportConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "ExportKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ExportConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class ExportFormatConfigRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ExportFormatConfigResponse(aristaproto.Message):
-    value: "ExportFormatConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ExportFormatConfig instance in this response.
-    """
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigSetResponse", ExportFormatConfigSetResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ExportFormatConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ExportFormatConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ExportFormatConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -634,7 +647,7 @@ class ExportFormatConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -652,21 +665,24 @@ class ExportFormatConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigStreamRequest", ExportFormatConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ExportFormatConfigStreamResponse(aristaproto.Message):
-    value: "ExportFormatConfig" = aristaproto.message_field(1)
+    value: "ExportFormatConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this ExportFormatConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ExportFormatConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -675,795 +691,700 @@ class ExportFormatConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ExportFormatConfigSetRequest(aristaproto.Message):
-    value: "ExportFormatConfig" = aristaproto.message_field(1)
-    """
-    ExportFormatConfig carries the value to set into the datastore.
-    See the documentation on the ExportFormatConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.syslog.v1", "ExportFormatConfigStreamResponse", ExportFormatConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ExportFormatConfigSetResponse(aristaproto.Message):
-    value: "ExportFormatConfig" = aristaproto.message_field(1)
+class ExportKey(aristaproto.Message):
     """
-    Value carries all the values given in the ExportFormatConfigSetRequest as well
-    as any server-generated values.
+    ExportKey uniquely identifies a syslog server to which to export logs.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    hostname_or_ip: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    hostname_or_ip is the IP address or hostname of the syslog server.
     """
 
+    port_num: "___fmp__.Port | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    port_num is the destination port number of the syslog server.
+    """
 
-class ExportServiceStub(aristaproto.ServiceStub):
+    protocol: "TransportProtocol" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: TransportProtocol(0))
+    """
+    protocol defines the transport protocol for the syslog export.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportKey", ExportKey)
+
+
+@dataclass(eq=False, repr=False)
+class ExportRequest(aristaproto.Message):
+    key: "ExportKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Export instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportRequest", ExportRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportResponse(aristaproto.Message):
+    value: "Export | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Export instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportResponse", ExportResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportSomeRequest(aristaproto.Message):
+    keys: "list[ExportKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportSomeRequest", ExportSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportSomeResponse(aristaproto.Message):
+    value: "Export | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Export instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportSomeResponse", ExportSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportStats(aristaproto.Message):
+    """
+    ExportStats provide statistics of export operations to a syslog sever.
+    """
+
+    num_success: "int | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt64Value, optional=True)
+    """
+    num_success indicates the count of successful exports.
+    """
+
+    num_errors: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt64Value, optional=True)
+    """
+    num_errors indicates the count of export errors.
+    """
+
+    last_result: "ExportResult" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: ExportResult(0))
+    """
+    last_result provides the status of the last export operation.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportStats", ExportStats)
+
+
+@dataclass(eq=False, repr=False)
+class ExportStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Export]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Export at end.
+        * Each Export response is fully-specified (all fields set).
+      * start: Returns the state of each Export at start, followed by updates until now.
+        * Each Export response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Export at start, followed by updates
+        until end.
+        * Each Export response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportStreamRequest", ExportStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ExportStreamResponse(aristaproto.Message):
+    value: "Export | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Export's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Export value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportStreamResponse", ExportStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExportSuccess(aristaproto.Message):
+    """
+    ExportSuccess provides the details of the last successful export operation.
+    """
+
+    timestamp: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    timestamp provides the timestamp of last successful export opeartion.
+    """
+
+    log_timestamp: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    log_timestamp provides the timestamp of the last successful audit log.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "ExportSuccess", ExportSuccess)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.syslog.v1", "MetaResponse", MetaResponse)
+
+
+class ExportConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        export_request: "ExportRequest",
+        message: "ExportConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ExportResponse":
-        return await self._unary_unary(
-            "/arista.syslog.v1.ExportService/GetOne",
-            export_request,
-            ExportResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        export_some_request: "ExportSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ExportSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.syslog.v1.ExportService/GetSome",
-            export_some_request,
-            ExportSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        export_stream_request: "ExportStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ExportStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.syslog.v1.ExportService/GetAll",
-            export_stream_request,
-            ExportStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        export_stream_request: "ExportStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ExportStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.syslog.v1.ExportService/Subscribe",
-            export_stream_request,
-            ExportStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        export_stream_request: "ExportStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.syslog.v1.ExportService/GetMeta",
-            export_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        export_stream_request: "ExportStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.syslog.v1.ExportService/SubscribeMeta",
-            export_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ExportConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        export_config_request: "ExportConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ExportConfigResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportConfigService/GetOne",
-            export_config_request,
+            message,
             ExportConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        export_config_some_request: "ExportConfigSomeRequest",
+        message: "ExportConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/GetSome",
-            export_config_some_request,
+            message,
             ExportConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        export_config_stream_request: "ExportConfigStreamRequest",
+        message: "ExportConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/GetAll",
-            export_config_stream_request,
+            message,
             ExportConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        export_config_stream_request: "ExportConfigStreamRequest",
+        message: "ExportConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/Subscribe",
-            export_config_stream_request,
+            message,
             ExportConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        export_config_stream_request: "ExportConfigStreamRequest",
+        message: "ExportConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportConfigService/GetMeta",
-            export_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        export_config_stream_request: "ExportConfigStreamRequest",
+        message: "ExportConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/SubscribeMeta",
-            export_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        export_config_set_request: "ExportConfigSetRequest",
+        message: "ExportConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ExportConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportConfigService/Set",
-            export_config_set_request,
+            message,
             ExportConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        export_config_set_some_request: "ExportConfigSetSomeRequest",
+        message: "ExportConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/SetSome",
-            export_config_set_some_request,
+            message,
             ExportConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        export_config_delete_request: "ExportConfigDeleteRequest",
+        message: "ExportConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ExportConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportConfigService/Delete",
-            export_config_delete_request,
+            message,
             ExportConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        export_config_delete_some_request: "ExportConfigDeleteSomeRequest",
+        message: "ExportConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/DeleteSome",
-            export_config_delete_some_request,
+            message,
             ExportConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        export_config_delete_all_request: "ExportConfigDeleteAllRequest",
+        message: "ExportConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportConfigService/DeleteAll",
-            export_config_delete_all_request,
+            message,
             ExportConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ExportFormatConfigServiceStub(aristaproto.ServiceStub):
+class ExportFormatConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        export_format_config_request: "ExportFormatConfigRequest",
+        message: "ExportFormatConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ExportFormatConfigResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportFormatConfigService/GetOne",
-            export_format_config_request,
+            message,
             ExportFormatConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        export_format_config_stream_request: "ExportFormatConfigStreamRequest",
+        message: "ExportFormatConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportFormatConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportFormatConfigService/GetAll",
-            export_format_config_stream_request,
+            message,
             ExportFormatConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        export_format_config_stream_request: "ExportFormatConfigStreamRequest",
+        message: "ExportFormatConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ExportFormatConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportFormatConfigService/Subscribe",
-            export_format_config_stream_request,
+            message,
             ExportFormatConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        export_format_config_stream_request: "ExportFormatConfigStreamRequest",
+        message: "ExportFormatConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.syslog.v1.ExportFormatConfigService/SubscribeMeta",
-            export_format_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        export_format_config_set_request: "ExportFormatConfigSetRequest",
+        message: "ExportFormatConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ExportFormatConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.syslog.v1.ExportFormatConfigService/Set",
-            export_format_config_set_request,
+            message,
             ExportFormatConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
+
+
+class ExportServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ExportRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ExportResponse":
+
+        return await self._unary_unary(
+            "/arista.syslog.v1.ExportService/GetOne",
+            message,
+            ExportResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ExportSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ExportSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.syslog.v1.ExportService/GetSome",
+            message,
+            ExportSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ExportStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ExportStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.syslog.v1.ExportService/GetAll",
+            message,
+            ExportStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ExportStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ExportStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.syslog.v1.ExportService/Subscribe",
+            message,
+            ExportStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ExportStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.syslog.v1.ExportService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ExportStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.syslog.v1.ExportService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class ExportServiceBase(ServiceBase):
-    async def get_one(self, export_request: "ExportRequest") -> "ExportResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, export_some_request: "ExportSomeRequest") -> AsyncIterator[ExportSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, export_stream_request: "ExportStreamRequest") -> AsyncIterator[ExportStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, export_stream_request: "ExportStreamRequest") -> AsyncIterator[ExportStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, export_stream_request: "ExportStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, export_stream_request: "ExportStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ExportRequest, ExportResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ExportSomeRequest, ExportSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ExportStreamRequest, ExportStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ExportStreamRequest, ExportStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ExportStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ExportStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.syslog.v1.ExportService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportRequest,
-                ExportResponse,
-            ),
-            "/arista.syslog.v1.ExportService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportSomeRequest,
-                ExportSomeResponse,
-            ),
-            "/arista.syslog.v1.ExportService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportStreamRequest,
-                ExportStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportStreamRequest,
-                ExportStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.syslog.v1.ExportService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class ExportConfigServiceBase(ServiceBase):
-    async def get_one(self, export_config_request: "ExportConfigRequest") -> "ExportConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, export_config_some_request: "ExportConfigSomeRequest") -> AsyncIterator[ExportConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, export_config_stream_request: "ExportConfigStreamRequest") -> AsyncIterator[ExportConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, export_config_stream_request: "ExportConfigStreamRequest") -> AsyncIterator[ExportConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, export_config_stream_request: "ExportConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, export_config_stream_request: "ExportConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, export_config_set_request: "ExportConfigSetRequest") -> "ExportConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, export_config_set_some_request: "ExportConfigSetSomeRequest") -> AsyncIterator[ExportConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, export_config_delete_request: "ExportConfigDeleteRequest") -> "ExportConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, export_config_delete_some_request: "ExportConfigDeleteSomeRequest") -> AsyncIterator[ExportConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, export_config_delete_all_request: "ExportConfigDeleteAllRequest") -> AsyncIterator[ExportConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ExportConfigRequest, ExportConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ExportConfigSomeRequest, ExportConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ExportConfigStreamRequest, ExportConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ExportConfigStreamRequest, ExportConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ExportConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ExportConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ExportConfigSetRequest, ExportConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ExportConfigSetSomeRequest, ExportConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ExportConfigDeleteRequest, ExportConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ExportConfigDeleteSomeRequest, ExportConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ExportConfigDeleteAllRequest, ExportConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.syslog.v1.ExportConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportConfigRequest,
-                ExportConfigResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigSomeRequest,
-                ExportConfigSomeResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigStreamRequest,
-                ExportConfigStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigStreamRequest,
-                ExportConfigStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportConfigSetRequest,
-                ExportConfigSetResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigSetSomeRequest,
-                ExportConfigSetSomeResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportConfigDeleteRequest,
-                ExportConfigDeleteResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigDeleteSomeRequest,
-                ExportConfigDeleteSomeResponse,
-            ),
-            "/arista.syslog.v1.ExportConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportConfigDeleteAllRequest,
-                ExportConfigDeleteAllResponse,
-            ),
-        }
-
-
-class ExportFormatConfigServiceBase(ServiceBase):
-    async def get_one(self, export_format_config_request: "ExportFormatConfigRequest") -> "ExportFormatConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, export_format_config_stream_request: "ExportFormatConfigStreamRequest") -> AsyncIterator[ExportFormatConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, export_format_config_stream_request: "ExportFormatConfigStreamRequest") -> AsyncIterator[ExportFormatConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, export_format_config_stream_request: "ExportFormatConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, export_format_config_set_request: "ExportFormatConfigSetRequest") -> "ExportFormatConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ExportFormatConfigRequest, ExportFormatConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ExportFormatConfigStreamRequest, ExportFormatConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ExportFormatConfigStreamRequest, ExportFormatConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ExportFormatConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ExportFormatConfigSetRequest, ExportFormatConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.syslog.v1.ExportFormatConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportFormatConfigRequest,
-                ExportFormatConfigResponse,
-            ),
-            "/arista.syslog.v1.ExportFormatConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportFormatConfigStreamRequest,
-                ExportFormatConfigStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportFormatConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportFormatConfigStreamRequest,
-                ExportFormatConfigStreamResponse,
-            ),
-            "/arista.syslog.v1.ExportFormatConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ExportFormatConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.syslog.v1.ExportFormatConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ExportFormatConfigSetRequest,
-                ExportFormatConfigSetResponse,
-            ),
-        }

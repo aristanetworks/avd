@@ -26,7 +26,7 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVChangeControlFailed
+from .exceptions import CVChangeControlFailed, CVClientException
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -73,9 +73,12 @@ class ChangeControlMixin(Protocol):
             key=ChangeControlKey(id=change_control_id),
             time=time,
         )
-        client = ChangeControlServiceStub(self._channel)
+        client = self.new_stub(ChangeControlServiceStub)
 
-        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+        response = await client.get_one(request, timeout=timeout)
+        if response.value is None:
+            msg = f"CloudVision returned an empty Change Control response for '{change_control_id}'."
+            raise CVClientException(msg)
 
         return response.value
 
@@ -106,9 +109,12 @@ class ChangeControlMixin(Protocol):
                 change=ChangeConfig(name=name, notes=description),
             ),
         )
-        client = ChangeControlConfigServiceStub(self._channel)
+        client = self.new_stub(ChangeControlConfigServiceStub)
 
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        response = await client.set(request, timeout=timeout)
+        if response.value is None:
+            msg = f"CloudVision returned an empty Change Control config response for '{change_control_id}'."
+            raise CVClientException(msg)
 
         return response.value
 
@@ -141,9 +147,12 @@ class ChangeControlMixin(Protocol):
                 version=timestamp,
             ),
         )
-        client = ApproveConfigServiceStub(self._channel)
+        client = self.new_stub(ApproveConfigServiceStub)
 
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        response = await client.set(request, timeout=timeout)
+        if response.value is None:
+            msg = f"CloudVision returned an empty Change Control approval response for '{change_control_id}'."
+            raise CVClientException(msg)
 
         return response.value
 
@@ -171,9 +180,12 @@ class ChangeControlMixin(Protocol):
                 start=FlagConfig(value=True, notes=description),
             ),
         )
-        client = ChangeControlConfigServiceStub(self._channel)
+        client = self.new_stub(ChangeControlConfigServiceStub)
 
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        response = await client.set(request, timeout=timeout)
+        if response.value is None:
+            msg = f"CloudVision returned an empty Change Control start response for '{change_control_id}'."
+            raise CVClientException(msg)
 
         return response.value
 
@@ -204,11 +216,11 @@ class ChangeControlMixin(Protocol):
                 ),
             ],
         )
-        client = ChangeControlServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ChangeControlServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
             LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
-            if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
+            if response.value is not None and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
                 LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
                 return response.value
 

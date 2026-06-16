@@ -11,8 +11,8 @@ from os import environ
 from pathlib import Path
 from typing import TYPE_CHECKING, NoReturn
 
-from grpclib import GRPCError, Status
-from grpclib.exceptions import ProtocolError, StreamTerminatedError
+import grpc
+from grpc.aio import AioRpcError, Metadata
 
 from pyavd._cv.workflows.models import AvdDevice, CVDevice
 from pyavd._utils import get_v2
@@ -22,9 +22,8 @@ if TYPE_CHECKING:
     from typing import Any, TypeVar
 
     from aristaproto import Message
-    from aristaproto.grpc.grpclib_client import MetadataLike, ServiceStub
-    from grpclib._typing import IProtoMessage
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio import ServiceStub
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
     from pyavd._cv.client import CVClient
 
@@ -32,6 +31,11 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 RECORDING_DIR = Path(__file__).parent / "api_recordings"
+DEFAULT_CV_SERVER = "www.cv-prod-us-central1-c.arista.io"
+
+
+def get_cv_server() -> str:
+    return environ.get("CV_SERVER", DEFAULT_CV_SERVER)
 
 
 def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:
@@ -52,7 +56,7 @@ def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | Non
     return [CVDevice(avd_device=AvdDevice(hostname=str(item), serial_number=str(item), system_mac_address=str(item))) for item in range(1000000)]
 
 
-def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
+def get_recording_file(route: str, request: Message, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
     digest = sha1(str(request).encode("UTF-8"), usedforsecurity=False).hexdigest()
     recording_file = recording_dir / Path(route.strip("/")) / cv_server / f"{digest}.json"
     LOGGER.debug("get_recording_file:\nRoute: '%s'\nRequest: '%s'\nRecording file: '%s'", route, request, recording_file)
@@ -62,19 +66,13 @@ def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recor
 
 
 def _serialize_exception(e: Exception) -> str:
-    """Serialize a known exception raised by the grpclib to a JSON string for recording."""
+    """Serialize a known exception raised by grpcio to a JSON string for recording."""
     # non-OK gRPC status (e.g. NOT_FOUND, UNAVAILABLE)
-    if isinstance(e, GRPCError):
-        raise_dict = {"type": "GRPCError", "status": str(e.args[0]).removeprefix("Status."), "message": e.args[1]}
-    # RST_STREAM from server, TCP connection lost, GOAWAY frame, or HTTP/2 protocol error.
-    elif isinstance(e, StreamTerminatedError):
-        raise_dict = {"type": "StreamTerminatedError", "message": e.args[0]}
+    if isinstance(e, AioRpcError):
+        raise_dict = {"type": "AioRpcError", "status": e.code().name, "message": e.details()}
     # Local grpc-timeout deadline expired
     elif isinstance(e, AsyncioTimeoutError):
         raise_dict = {"type": "AsyncioTimeoutError", "message": e.args[0]}
-    # Client code violated the gRPC protocol (e.g. double recv, send after end).
-    elif isinstance(e, ProtocolError):
-        raise_dict = {"type": "ProtocolError", "message": e.args[0]}
     # Unknown/new exception - serialize dynamically.
     else:
         raise_dict = {"type": type(e).__name__}
@@ -86,17 +84,26 @@ def _serialize_exception(e: Exception) -> str:
 async def recording_unary_unary(
     self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     *,
     timeout: float | None = None,
-    deadline: Deadline | None = None,
     metadata: MetadataLike | None = None,
+    credentials: grpc.CallCredentials | None = None,
+    wait_for_ready: bool | None = None,
 ) -> T_Message:
     LOGGER.info("recording_unary_unary: Recording API request: %s", request)
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server())
     try:
-        result = await self._org_unary_unary(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata)
+        result = await self._org_unary_unary(
+            route,
+            request,
+            response_type,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
     # Catch returned gRPC Exception (like Workspace is not found, etc.)
     except Exception as e:
         LOGGER.debug("recording_unary_unary: Got exception executing request '%s': %s", request, e)
@@ -112,19 +119,28 @@ async def recording_unary_unary(
 async def recording_unary_stream(
     self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     *,
     timeout: float | None = None,
-    deadline: Deadline | None = None,
     metadata: MetadataLike | None = None,
+    credentials: grpc.CallCredentials | None = None,
+    wait_for_ready: bool | None = None,
 ) -> AsyncIterator[T_Message]:
     LOGGER.info("recording_unary_stream: Recording API request: %s", request)
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server())
     messages_as_json = []
     exception_only = False
     try:
-        async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
+        async for message in self._org_unary_stream(
+            route,
+            request,
+            response_type,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
             messages_as_json.append(message.to_json(indent=4))
             yield message
     # Catch returned gRPC Exception
@@ -150,14 +166,14 @@ async def recording_unary_stream(
 
 
 async def playback_unary_unary(
-    self: ServiceStub,
+    _self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> T_Message:
     LOGGER.info("playback_unary_unary: Playing back recording for API request: %s", request)
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server())
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = recording_file.read_text()
@@ -165,14 +181,14 @@ async def playback_unary_unary(
 
 
 async def playback_unary_stream(
-    self: ServiceStub,
+    _self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> AsyncIterator[T_Message]:
     LOGGER.info("playback_unary_stream: Playing back recording for API request: %s", request)
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server())
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = recording_file.read_text()
@@ -185,15 +201,15 @@ async def playback_unary_stream(
 # that are used during the tests like in mockery.py::playback_static_recording_unary_stream.
 # These static recordings are not updated/impacted by RECORDING env var and must be changed manually (when needed).
 async def playback_static_recording_unary_unary(
-    self: ServiceStub,
+    _self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> T_Message:
     LOGGER.info("playback_static_recording_unary_unary: Playing back static recording for API request: %s", request)
     recording_dir = Path(__file__).parent / "mocked_api_recordings"
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host, recording_dir=recording_dir)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server(), recording_dir=recording_dir)
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
@@ -203,15 +219,15 @@ async def playback_static_recording_unary_unary(
 
 
 async def playback_static_recording_unary_stream(
-    self: ServiceStub,
+    _self: ServiceStub,
     route: str,
-    request: IProtoMessage,
+    request: Message,
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> AsyncIterator[T_Message]:
     LOGGER.info("playback_static_recording_unary_stream: Playing back static recording for API request: %s", request)
     recording_dir = Path(__file__).parent / "mocked_api_recordings"
-    recording_file = get_recording_file(route, request, cv_server=self.channel._host, recording_dir=recording_dir)
+    recording_file = get_recording_file(route, request, cv_server=get_cv_server(), recording_dir=recording_dir)
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
@@ -228,7 +244,7 @@ async def playback_static_recording_unary_stream(
 
 async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
     class MockedChannel:
-        def close(self) -> None:
+        async def close(self) -> None:
             pass
 
         def request(self, *_args: tuple[Any, ...], **_kwargs: dict[str, Any]) -> NoReturn:
@@ -238,9 +254,7 @@ async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
             )
             raise NotImplementedError(msg)
 
-    self._channel = MockedChannel()
-    self._channel._host = self._servers[0]
-    self._metadata = {}
+    self.grpc._channel = MockedChannel()
     return self
 
 
@@ -251,14 +265,10 @@ def raise_recorded_exception(recorded_exception: dict[str, Any]) -> None:
     exception_message = get_v2(recorded_exception, "message")
 
     match exception_type:
-        case "GRPCError":
-            raise GRPCError(Status[exception_status], exception_message)
-        case "StreamTerminatedError":
-            raise StreamTerminatedError(exception_message)
+        case "AioRpcError":
+            raise AioRpcError(grpc.StatusCode[exception_status], Metadata(), Metadata(), details=exception_message)
         case "AsyncioTimeoutError":
             raise AsyncioTimeoutError(exception_message)
-        case "ProtocolError":
-            raise ProtocolError(exception_message)
         case _:
             msg = f"Unknown recorded exception type '{exception_type}'"
             if exception_message:

@@ -8,37 +8,33 @@
 
 __all__ = (
     "Acknowledgement",
-    "HighestExposure",
-    "BugExposureKey",
     "BugExposure",
-    "MetaResponse",
+    "BugExposureKey",
     "BugExposureRequest",
     "BugExposureResponse",
+    "BugExposureServiceStub",
     "BugExposureStreamRequest",
     "BugExposureStreamResponse",
-    "BugExposureServiceStub",
-    "BugExposureServiceBase",
+    "HighestExposure",
+    "MetaResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class Acknowledgement(aristaproto.Enum):
@@ -50,13 +46,35 @@ class Acknowledgement(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """Unacknowledged and acknowledged bugs will be computed"""
+    """
+    Unacknowledged and acknowledged bugs will be computed
+    """
 
     UNACKNOWLEDGED = 1
-    """Only unacknowledged bugs will be computed"""
+    """
+    Only unacknowledged bugs will be computed
+    """
 
     ACKNOWLEDGED = 2
-    """Only acknowledged bugs will be computed"""
+    """
+    Only acknowledged bugs will be computed
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ACKNOWLEDGEMENT_UNSPECIFIED",
+            1: "ACKNOWLEDGEMENT_UNACKNOWLEDGED",
+            2: "ACKNOWLEDGEMENT_ACKNOWLEDGED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ACKNOWLEDGEMENT_UNSPECIFIED": 0,
+            "ACKNOWLEDGEMENT_UNACKNOWLEDGED": 1,
+            "ACKNOWLEDGEMENT_ACKNOWLEDGED": 2,
+        }
 
 
 class HighestExposure(aristaproto.Enum):
@@ -74,30 +92,37 @@ class HighestExposure(aristaproto.Enum):
     """
 
     NONE = 1
-    """Not exposed to bugs"""
+    """
+    Not exposed to bugs
+    """
 
     LOW = 2
-    """Highest exposure is to a low priority bug"""
+    """
+    Highest exposure is to a low priority bug
+    """
 
     HIGH = 3
-    """Highest exposure is to a high priority bug"""
-
-
-@dataclass(eq=False, repr=False)
-class BugExposureKey(aristaproto.Message):
     """
-    BugExposureKey is the key type for
-    BugExposure model
+    Highest exposure is to a high priority bug
     """
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the device ID"""
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "HIGHEST_EXPOSURE_UNSPECIFIED",
+            1: "HIGHEST_EXPOSURE_NONE",
+            2: "HIGHEST_EXPOSURE_LOW",
+            3: "HIGHEST_EXPOSURE_HIGH",
+        }
 
-    acknowledgement: "Acknowledgement" = aristaproto.enum_field(2)
-    """
-    acknowledgement is one of the options for
-    Acknowledgement enum
-    """
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "HIGHEST_EXPOSURE_UNSPECIFIED": 0,
+            "HIGHEST_EXPOSURE_NONE": 1,
+            "HIGHEST_EXPOSURE_LOW": 2,
+            "HIGHEST_EXPOSURE_HIGH": 3,
+        }
 
 
 @dataclass(eq=False, repr=False)
@@ -107,88 +132,95 @@ class BugExposure(aristaproto.Message):
     the exposure a device has to bugs
     """
 
-    key: "BugExposureKey" = aristaproto.message_field(1)
+    key: "BugExposureKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     BugExposureKey is the key of
     BugExposure
     """
 
-    bug_ids: "___fmp__.RepeatedInt32" = aristaproto.message_field(2)
+    bug_ids: "___fmp__.RepeatedInt32 | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     bug_ids is a list of bug alerts affecting the device
     with type Bug
     """
 
-    cve_ids: "___fmp__.RepeatedInt32" = aristaproto.message_field(3)
+    cve_ids: "___fmp__.RepeatedInt32 | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     cve_ids is a list of bug alerts affecting the device
     with type CVE
     """
 
-    bug_count: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
+    bug_count: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
     """
     bug_count is the number of bug alerts
     with type Bug
     """
 
-    cve_count: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
+    cve_count: "int | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
     """
     cve_count is the number of bug alerts
     with type CVE
     """
 
-    highest_bug_exposure: "HighestExposure" = aristaproto.enum_field(6)
+    highest_bug_exposure: "HighestExposure" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: HighestExposure(0))
     """
     highest_bug_exposure is the highest exposure
     with type Bug
     """
 
-    highest_cve_exposure: "HighestExposure" = aristaproto.enum_field(7)
+    highest_cve_exposure: "HighestExposure" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: HighestExposure(0))
     """
     highest_cve_exposure is the highest exposure
     with type CVE
     """
 
 
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposure", BugExposure)
+
+
 @dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class BugExposureKey(aristaproto.Message):
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    BugExposureKey is the key type for
+    BugExposure model
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Count is the number of items present under the conditions of the request.
+    device_id is the device ID
     """
+
+    acknowledgement: "Acknowledgement" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: Acknowledgement(0))
+    """
+    acknowledgement is one of the options for
+    Acknowledgement enum
+    """
+
+
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposureKey", BugExposureKey)
 
 
 @dataclass(eq=False, repr=False)
 class BugExposureRequest(aristaproto.Message):
-    key: "BugExposureKey" = aristaproto.message_field(1)
+    key: "BugExposureKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a BugExposure instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposureRequest", BugExposureRequest)
+
+
 @dataclass(eq=False, repr=False)
 class BugExposureResponse(aristaproto.Message):
-    value: "BugExposure" = aristaproto.message_field(1)
+    value: "BugExposure | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -196,16 +228,19 @@ class BugExposureResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     BugExposure instance in this response.
     """
 
 
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposureResponse", BugExposureResponse)
+
+
 @dataclass(eq=False, repr=False)
 class BugExposureStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["BugExposure"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[BugExposure]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -214,7 +249,7 @@ class BugExposureStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -234,19 +269,24 @@ class BugExposureStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposureStreamRequest", BugExposureStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class BugExposureStreamResponse(aristaproto.Message):
-    value: "BugExposure" = aristaproto.message_field(1)
+    value: "BugExposure | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this BugExposure's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this BugExposure's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the BugExposure value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -255,181 +295,139 @@ class BugExposureStreamResponse(aristaproto.Message):
     """
 
 
-class BugExposureServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.bugexposure.v1", "BugExposureStreamResponse", BugExposureStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.bugexposure.v1", "MetaResponse", MetaResponse)
+
+
+class BugExposureServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        bug_exposure_request: "BugExposureRequest",
+        message: "BugExposureRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "BugExposureResponse":
+
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetOne",
-            bug_exposure_request,
+            message,
             BugExposureResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        bug_exposure_stream_request: "BugExposureStreamRequest",
+        message: "BugExposureStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[BugExposureStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/GetAll",
-            bug_exposure_stream_request,
+            message,
             BugExposureStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        bug_exposure_stream_request: "BugExposureStreamRequest",
+        message: "BugExposureStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[BugExposureStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/Subscribe",
-            bug_exposure_stream_request,
+            message,
             BugExposureStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        bug_exposure_stream_request: "BugExposureStreamRequest",
+        message: "BugExposureStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetMeta",
-            bug_exposure_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        bug_exposure_stream_request: "BugExposureStreamRequest",
+        message: "BugExposureStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/SubscribeMeta",
-            bug_exposure_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class BugExposureServiceBase(ServiceBase):
-    async def get_one(self, bug_exposure_request: "BugExposureRequest") -> "BugExposureResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[BugExposureStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[BugExposureStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[BugExposureRequest, BugExposureResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, BugExposureStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, BugExposureStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.bugexposure.v1.BugExposureService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                BugExposureRequest,
-                BugExposureResponse,
-            ),
-            "/arista.bugexposure.v1.BugExposureService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                BugExposureStreamRequest,
-                BugExposureStreamResponse,
-            ),
-            "/arista.bugexposure.v1.BugExposureService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                BugExposureStreamRequest,
-                BugExposureStreamResponse,
-            ),
-            "/arista.bugexposure.v1.BugExposureService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                BugExposureStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.bugexposure.v1.BugExposureService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                BugExposureStreamRequest,
-                MetaResponse,
-            ),
-        }

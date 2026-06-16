@@ -50,7 +50,7 @@ async def test_deploy_to_cv(
     Exact test steps:
     -   description: Fetch Workspace status
         request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/6fad0460874042bff3bf74e8b5d4e12ca25f1646.json'
 
     -   description: Create Workspace
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
@@ -64,12 +64,12 @@ async def test_deploy_to_cv(
     -   description: Fetch device status
         request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
             time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/effc85b759a4d35ba98ae7c22bcef828c070752d.json'
+        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/a3473bce063d1d8db187aa99e2286e8853822b39.json'
 
     -   description: Fetch I&T Studio inputs
         request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
             time=None)'
-        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/0ab698a68a7f9f86eeda70fba362f57cb2f07fc4.json'
+        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/c9a361b5f47289f9e0cee62bbaaa168df6ebe3b9.json'
 
     -   description: Create configlet
         request: 'ConfigletConfigSetSomeRequest(values=[ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
@@ -85,26 +85,42 @@ async def test_deploy_to_cv(
     -   description: Fetch Configlet assignments
         request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
             path=RepeatedString(values=['configletAssignmentRoots'])), time=None)'
-        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/218b79449463543915f8e63e66bdbbbd249333d3.json'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/c87b2b58fe3743bd25d89daac56bbcaf1de47f50.json'
 
     -   description: Fetch Configlet assignments
-        request: 'InputsConfigStreamRequest(partial_eq_filter=InputsConfig(key=InputsKey(studio_id='studio-static-configlet',
-            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', path=RepeatedString(values=['configletAssignmentRoots'])), remove=True), time=None)'
-        targeted_file: 'arista.studio.v1.InputsConfigService/GetAll/www.cv-prod-us-central1-c.arista.io/1fbe2ebb45ada87974e6a6228efcce717950d89d.json'
+        request: 'InputsConfigStreamRequest(partial_eq_filter=[InputsConfig(key=InputsKey(studio_id='studio-static-configlet',
+            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', path=RepeatedString(values=['configletAssignmentRoots'])), remove=True)])'
+        targeted_file: 'arista.studio.v1.InputsConfigService/GetAll/www.cv-prod-us-central1-c.arista.io/e919febc2dec9143cadd9b55161aae5086a32272.json'
 
     -   description: Fetch Configlet assignments
         request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='', path=RepeatedString(values=['configletAssignmentRoots'])),
             time=None)'
-        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/b45e9b96ea9c215914828995f6c62354ae80296f.json'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/2695f8bf207b6cfb0f3e39d989db1245a59ef5a8.json'
 
     -   description: Fetch configlets assignments
         request: Too long. Please consult JSON file for details.
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/15b2c867c1abf9b0d425ca76fa4327294c18c376.json'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/4f362046a608b9c0d365f5b8af3cf2e8dae52d66.json'
+
+    -   description: Create configlet assignments
+        request: 'ConfigletAssignmentConfigSetSomeRequest(values=[ConfigletAssignmentConfig(key=ConfigletAssignmentKey(workspace_id=
+            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-B51AA89B6E51E89E1422107EDE3A9438'), display_name='avd-ci-leaf2',
+            description='Configuration created and uploaded by AVD for avd-ci-leaf2', configlet_ids=RepeatedString(values=
+            ['avd-B51AA89B6E51E89E1422107EDE3A9438']), query='device:B51AA89B6E51E89E1422107EDE3A9438', match_policy=<MatchPolicy.MATCH_ALL: 2>,
+            child_assignment_ids=RepeatedString(values=None))])'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/
+            79bd3c1ee98406e74e4810ff0d8895fc3e602961.json'
+
+    -   description: Update root configlet assignment children
+        request: 'ConfigletAssignmentConfigSetRequest(value=ConfigletAssignmentConfig(key=ConfigletAssignmentKey(workspace_id=
+            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'), configlet_ids=RepeatedString(values=None),
+            match_policy=<MatchPolicy.MATCH_ALL: 2>, child_assignment_ids=RepeatedString(values=['avd-B51AA89B6E51E89E1422107EDE3A9438'])))'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+            8e0dad0c20fc5f217be860195d8916721724a7e4.json'
 
     -   description: Build Workspace
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
             request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/f4718a9ef72056a50d7666e8d40074fd373b24e6.json'
 
     -   description: Fetch build results
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
@@ -114,17 +130,17 @@ async def test_deploy_to_cv(
         request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
             workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78bf781229'))], time=None)'
         targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
-            f451562f4f8c0dc37965a23121bb11dd6efc0f6a.json'
+            4d6031f452ea1fb1718b2fff3ec37d4fb2594554.json'
 
     -   description: Submit Workspace (UNFORCED use case)
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
             request=Request.SUBMIT, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ba83e98eab07691e8b079958618ab2973822bfe8.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/dc43e8052333db424deab3d2fc084c4d4109a112.json'
 
     -   description: Submit Workspace (FORCED use case)
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
             request=Request.SUBMIT_FORCE, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/47049c8a6b520f110540f81bcd892ba0e4954908.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/e0ee78aaa706da8a8f08c7db86e58060c082fc7e.json'
 
     -   description: Fetch submit results
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'

@@ -1,6 +1,6 @@
 {
 	"raise": {
-		"type": "GRPCError",
+		"type": "AioRpcError",
 		"status": "NOT_FOUND",
 		"message": "workspace does not exist: ws-missing-workspace-id"
 	}

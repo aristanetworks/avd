@@ -7,120 +7,116 @@
 # This file has been @generated
 
 __all__ = (
-    "ActionLanguage",
-    "ActionType",
-    "ActionAudit",
-    "ActionKey",
-    "ActionArgDefinition",
-    "ActionSchema",
-    "ActionCore",
     "Action",
-    "ActionConfig",
-    "ActionArgValue",
-    "ActionArgValues",
     "ActionArgConfig",
-    "ActionRunKey",
-    "ActionRunConfig",
-    "ActionRun",
-    "MetaResponse",
-    "ActionRequest",
-    "ActionResponse",
-    "ActionSomeRequest",
-    "ActionSomeResponse",
-    "ActionStreamRequest",
-    "ActionStreamResponse",
-    "ActionArgConfigRequest",
-    "ActionArgConfigResponse",
-    "ActionArgConfigSomeRequest",
-    "ActionArgConfigSomeResponse",
-    "ActionArgConfigStreamRequest",
-    "ActionArgConfigStreamResponse",
-    "ActionArgConfigSetRequest",
-    "ActionArgConfigSetResponse",
-    "ActionArgConfigSetSomeRequest",
-    "ActionArgConfigSetSomeResponse",
+    "ActionArgConfigDeleteAllRequest",
+    "ActionArgConfigDeleteAllResponse",
     "ActionArgConfigDeleteRequest",
     "ActionArgConfigDeleteResponse",
     "ActionArgConfigDeleteSomeRequest",
     "ActionArgConfigDeleteSomeResponse",
-    "ActionArgConfigDeleteAllRequest",
-    "ActionArgConfigDeleteAllResponse",
-    "ActionConfigRequest",
-    "ActionConfigResponse",
-    "ActionConfigSomeRequest",
-    "ActionConfigSomeResponse",
-    "ActionConfigStreamRequest",
-    "ActionConfigStreamResponse",
-    "ActionConfigSetRequest",
-    "ActionConfigSetResponse",
-    "ActionConfigSetSomeRequest",
-    "ActionConfigSetSomeResponse",
+    "ActionArgConfigRequest",
+    "ActionArgConfigResponse",
+    "ActionArgConfigServiceStub",
+    "ActionArgConfigSetRequest",
+    "ActionArgConfigSetResponse",
+    "ActionArgConfigSetSomeRequest",
+    "ActionArgConfigSetSomeResponse",
+    "ActionArgConfigSomeRequest",
+    "ActionArgConfigSomeResponse",
+    "ActionArgConfigStreamRequest",
+    "ActionArgConfigStreamResponse",
+    "ActionArgDefinition",
+    "ActionArgValue",
+    "ActionArgValues",
+    "ActionAudit",
+    "ActionConfig",
+    "ActionConfigDeleteAllRequest",
+    "ActionConfigDeleteAllResponse",
     "ActionConfigDeleteRequest",
     "ActionConfigDeleteResponse",
     "ActionConfigDeleteSomeRequest",
     "ActionConfigDeleteSomeResponse",
-    "ActionConfigDeleteAllRequest",
-    "ActionConfigDeleteAllResponse",
-    "ActionRunRequest",
-    "ActionRunResponse",
-    "ActionRunSomeRequest",
-    "ActionRunSomeResponse",
-    "ActionRunStreamRequest",
-    "ActionRunStreamResponse",
-    "ActionRunConfigRequest",
-    "ActionRunConfigResponse",
-    "ActionRunConfigSomeRequest",
-    "ActionRunConfigSomeResponse",
-    "ActionRunConfigStreamRequest",
-    "ActionRunConfigStreamResponse",
-    "ActionRunConfigSetRequest",
-    "ActionRunConfigSetResponse",
-    "ActionRunConfigSetSomeRequest",
-    "ActionRunConfigSetSomeResponse",
+    "ActionConfigRequest",
+    "ActionConfigResponse",
+    "ActionConfigServiceStub",
+    "ActionConfigSetRequest",
+    "ActionConfigSetResponse",
+    "ActionConfigSetSomeRequest",
+    "ActionConfigSetSomeResponse",
+    "ActionConfigSomeRequest",
+    "ActionConfigSomeResponse",
+    "ActionConfigStreamRequest",
+    "ActionConfigStreamResponse",
+    "ActionCore",
+    "ActionKey",
+    "ActionLanguage",
+    "ActionRequest",
+    "ActionResponse",
+    "ActionRun",
+    "ActionRunConfig",
+    "ActionRunConfigDeleteAllRequest",
+    "ActionRunConfigDeleteAllResponse",
     "ActionRunConfigDeleteRequest",
     "ActionRunConfigDeleteResponse",
     "ActionRunConfigDeleteSomeRequest",
     "ActionRunConfigDeleteSomeResponse",
-    "ActionRunConfigDeleteAllRequest",
-    "ActionRunConfigDeleteAllResponse",
-    "ActionServiceStub",
-    "ActionServiceBase",
-    "ActionArgConfigServiceStub",
-    "ActionArgConfigServiceBase",
-    "ActionConfigServiceStub",
-    "ActionConfigServiceBase",
-    "ActionRunServiceStub",
-    "ActionRunServiceBase",
+    "ActionRunConfigRequest",
+    "ActionRunConfigResponse",
     "ActionRunConfigServiceStub",
-    "ActionRunConfigServiceBase",
+    "ActionRunConfigSetRequest",
+    "ActionRunConfigSetResponse",
+    "ActionRunConfigSetSomeRequest",
+    "ActionRunConfigSetSomeResponse",
+    "ActionRunConfigSomeRequest",
+    "ActionRunConfigSomeResponse",
+    "ActionRunConfigStreamRequest",
+    "ActionRunConfigStreamResponse",
+    "ActionRunKey",
+    "ActionRunRequest",
+    "ActionRunResponse",
+    "ActionRunServiceStub",
+    "ActionRunSomeRequest",
+    "ActionRunSomeResponse",
+    "ActionRunStreamRequest",
+    "ActionRunStreamResponse",
+    "ActionSchema",
+    "ActionServiceStub",
+    "ActionSomeRequest",
+    "ActionSomeResponse",
+    "ActionStreamRequest",
+    "ActionStreamResponse",
+    "ActionType",
+    "MetaResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class ActionLanguage(aristaproto.Enum):
-    """ActionLanguage is the language of an action."""
+    """
+    ActionLanguage is the language of an action.
+    """
 
     UNSPECIFIED = 0
-    """ACTION_LANGUAGE_UNSPECIFIED is the default value for this type."""
+    """
+    ACTION_LANGUAGE_UNSPECIFIED is the default value for this type.
+    """
 
     PYTHON_2 = 1
     """
@@ -138,12 +134,34 @@ class ActionLanguage(aristaproto.Enum):
     (e.g. as used in ZTP).
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ACTION_LANGUAGE_UNSPECIFIED",
+            1: "ACTION_LANGUAGE_PYTHON_2",
+            2: "ACTION_LANGUAGE_PYTHON_3",
+            3: "ACTION_LANGUAGE_GO_TEMPLATE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ACTION_LANGUAGE_UNSPECIFIED": 0,
+            "ACTION_LANGUAGE_PYTHON_2": 1,
+            "ACTION_LANGUAGE_PYTHON_3": 2,
+            "ACTION_LANGUAGE_GO_TEMPLATE": 3,
+        }
+
 
 class ActionType(aristaproto.Enum):
-    """ActionType is the type of an action."""
+    """
+    ActionType is the type of an action.
+    """
 
     UNSPECIFIED = 0
-    """ACTION_TYPE_UNSPECIFIED is the default value for this type."""
+    """
+    ACTION_TYPE_UNSPECIFIED is the default value for this type.
+    """
 
     CHANGECONTROL_CUSTOM = 1
     """
@@ -188,175 +206,78 @@ class ActionType(aristaproto.Enum):
     * StudioID (optional, if running in the context of a Studio): the ID of the Studio
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ACTION_TYPE_UNSPECIFIED",
+            1: "ACTION_TYPE_CHANGECONTROL_CUSTOM",
+            2: "ACTION_TYPE_CHANGECONTROL_BUILT_IN",
+            3: "ACTION_TYPE_STUDIO_AUTOFILL",
+            4: "ACTION_TYPE_PACKAGING_INSTALL_HOOK",
+            5: "ACTION_TYPE_ZTP_BOOTSTRAP",
+            6: "ACTION_TYPE_STUDIO_BUILD_HOOK",
+        }
 
-@dataclass(eq=False, repr=False)
-class ActionAudit(aristaproto.Message):
-    """
-    ActionAudit contains additional information for the Action state model.
-    """
-
-    created_at: datetime = aristaproto.message_field(1)
-    """created_at records the time when the action was originally created."""
-
-    created_by: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """created_by records the user who created the action."""
-
-    last_modified_at: datetime = aristaproto.message_field(3)
-    """
-    last_modified_at records the time when the action was most recently modified.
-    """
-
-    last_modified_by: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    last_modified_by records the user who most recently modified the action.
-    """
-
-    from_package: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    from_package indicates that this action was created by a package, and can only be modified
-    by the packaging service.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionKey(aristaproto.Message):
-    """ActionKey is the model key of an action."""
-
-    id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    id uniquely identifies the action. Although chosen by the caller, it is recommended
-    to be a random UUID.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionArgDefinition(aristaproto.Message):
-    """
-    ActionArgDefinition is the definition of an argument (static or dynamic).
-    """
-
-    required: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    required indicates that this argument must always be set when calling the action.
-    """
-
-    default: "ActionArgValue" = aristaproto.message_field(2)
-    """
-    default is the default value for this argument. If set to null, there is no default
-    value.
-    """
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is a user-friendly description of the argument."""
-
-    hidden: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """
-    hidden can be set to true to indicate that the value of this argument can be set, but not
-    retrieved from this API.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionSchema(aristaproto.Message):
-    """
-    ActionSchema is the schema of an action. Corresponds to the definition of multiple
-    arguments.
-    """
-
-    values: Dict[str, "ActionArgDefinition"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is a map of argument name to its defintion."""
-
-
-@dataclass(eq=False, repr=False)
-class ActionCore(aristaproto.Message):
-    """ActionCore contains the core fields of an action."""
-
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the user-friendly name of the action."""
-
-    type: "ActionType" = aristaproto.enum_field(2)
-    """type is the specific type of the action."""
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is a user-friendly description of the action."""
-
-    static_args: "ActionSchema" = aristaproto.message_field(4)
-    """
-    static_args defines arguments which can be permanently changed for subsequent runs
-    of this action (set ActionArgConfig to accomplish that). The names of arguments in
-    static_args cannot also appear in dynamic_args.
-    """
-
-    dynamic_args: "ActionSchema" = aristaproto.message_field(5)
-    """
-    dynamic_args defines arguments which are scoped to a specific run of the action.
-    The names of arguments in dynamic_args cannot also appear in static_args.
-    """
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ACTION_TYPE_UNSPECIFIED": 0,
+            "ACTION_TYPE_CHANGECONTROL_CUSTOM": 1,
+            "ACTION_TYPE_CHANGECONTROL_BUILT_IN": 2,
+            "ACTION_TYPE_STUDIO_AUTOFILL": 3,
+            "ACTION_TYPE_PACKAGING_INSTALL_HOOK": 4,
+            "ACTION_TYPE_ZTP_BOOTSTRAP": 5,
+            "ACTION_TYPE_STUDIO_BUILD_HOOK": 6,
+        }
 
 
 @dataclass(eq=False, repr=False)
 class Action(aristaproto.Message):
-    """Action is the state model of an action."""
-
-    key: "ActionKey" = aristaproto.message_field(1)
-    """key uniquely identifies the action."""
-
-    core: "ActionCore" = aristaproto.message_field(2)
-    """core contains some common attributes (state/config) of the action."""
-
-    audit: "ActionAudit" = aristaproto.message_field(3)
-    """audit contains meta information about the action."""
-
-    language: "ActionLanguage" = aristaproto.enum_field(4)
-    """language specifies the language of the action body, if applicable."""
-
-    body: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """body contains the action code (script), if applicable."""
-
-
-@dataclass(eq=False, repr=False)
-class ActionConfig(aristaproto.Message):
     """
-    ActionConfig is the config of an action. Unimplemented for builtin actions
+    Action is the state model of an action.
     """
 
-    key: "ActionKey" = aristaproto.message_field(1)
-    """key uniquely identifies the action."""
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the action.
+    """
 
-    core: "ActionCore" = aristaproto.message_field(2)
-    """core contains some common attributes (state/config) of the action."""
+    core: "ActionCore | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    core contains some common attributes (state/config) of the action.
+    """
 
-    language: "ActionLanguage" = aristaproto.enum_field(3)
-    """language specifies the language of the action body, if applicable."""
+    audit: "ActionAudit | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    audit contains meta information about the action.
+    """
 
-    body: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """body contains the action code (script), if applicable."""
+    language: "ActionLanguage" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: ActionLanguage(0))
+    """
+    language specifies the language of the action body, if applicable.
+    """
+
+    body: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    body contains the action code (script), if applicable.
+    """
 
 
-@dataclass(eq=False, repr=False)
-class ActionArgValue(aristaproto.Message):
-    """ActionArgValue contains the value of one argument of an action."""
-
-    value: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """value is the string value to set the argument for runtime."""
-
-
-@dataclass(eq=False, repr=False)
-class ActionArgValues(aristaproto.Message):
-    """ActionArgValues contains the values of the arguments of an action."""
-
-    values: Dict[str, "ActionArgValue"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is a map of arg name to value."""
+default_message_pool.register_message("arista.action.v1", "Action", Action)
 
 
 @dataclass(eq=False, repr=False)
 class ActionArgConfig(aristaproto.Message):
-    """ActionArgConfig is the model for the definition of static arguments"""
+    """
+    ActionArgConfig is the model for the definition of static arguments
+    """
 
-    key: "ActionKey" = aristaproto.message_field(1)
-    """key uniquely identifies the action to which the arguments apply."""
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the action to which the arguments apply.
+    """
 
-    static_args: "ActionArgValues" = aristaproto.message_field(2)
+    static_args: "ActionArgValues | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     static_args contains the arguments that are to be applied to all subsequent runs
     of the action. Argument names and values must adhere to the ActionSchema static_args.
@@ -367,240 +288,127 @@ class ActionArgConfig(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionRunKey(aristaproto.Message):
-    """
-    ActionRunKey is the model key that can uniquely identify an action run.
-    """
-
-    run_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """run_id uniquely identifies an action run"""
+default_message_pool.register_message("arista.action.v1", "ActionArgConfig", ActionArgConfig)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfig(aristaproto.Message):
+class ActionArgConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ActionArgConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    ActionRunConfig is the configuration of a single execution of an action. Creating a record under
-    a new key triggers a run. Attempting to set again an existing entry is an error.
-    """
-
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    """
-    key uniquely identifies the ActionRunConfig and the corresponding ActionRun.
-    """
-
-    action_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """action_id uniquely identifies the Action being run."""
-
-    dynamic_args: "ActionArgValues" = aristaproto.message_field(3)
-    """
-    dynamic_args contains the values of dynamic arguments defined for the action.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRun(aristaproto.Message):
-    """
-    ActionRun is the state of a single run (single execution) of an action.
-    """
-
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    """
-    key uniquely identifies the ActionRun and the corresponding ActionRunConfig.
-    """
-
-    action_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """action_id uniquely identifies the Action being run."""
-
-    created_at: datetime = aristaproto.message_field(3)
-    """created_at records the time when the action run has been requested."""
-
-    created_by: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """created_by records the user who requested the action execution."""
-
-    finished_at: datetime = aristaproto.message_field(8)
-    """finished_at records the time when the action finished running."""
-
-    is_finished: Optional[bool] = aristaproto.message_field(9, wraps=aristaproto.TYPE_BOOL)
-    """
-    is_finished is true only when the action has finished running and the fields `code`,
-    `output`, `error`, and `finished_at` are assigned their final values.
-    """
-
-    code: Optional[int] = aristaproto.message_field(10, wraps=aristaproto.TYPE_INT32)
-    """
-    code contains the exit code of the action.
-
-    The `code` may be ignored if `error` is empty or nil.
-    """
-
-    output: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
-    """
-    output contains the output produced by the action, truncated to the first 100,000 bytes.
-    """
-
-    error: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
-    """
-    error contains a failure description for unsuccessful runs, either caused by the body
-    or by the execution environment.
-
-    Often it is a python traceback which contains multiple newline characters.
-    Maximum size is 100,000 bytes.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRequest(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Action instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionResponse(aristaproto.Message):
-    value: "Action" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Action instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionSomeRequest(aristaproto.Message):
-    keys: List["ActionKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionSomeResponse(aristaproto.Message):
-    value: "Action" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-
-
-@dataclass(eq=False, repr=False)
-class ActionStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Action"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
     This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
 
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Action at end.
-        * Each Action response is fully-specified (all fields set).
-      * start: Returns the state of each Action at start, followed by updates until now.
-        * Each Action response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Action at start, followed by updates
-        until end.
-        * Each Action response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteAllRequest", ActionArgConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionStreamResponse(aristaproto.Message):
-    value: "Action" = aristaproto.message_field(1)
+class ActionArgConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Action's last modification."""
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    key: "ActionKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the Action value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    This is the key of the ActionArgConfig instance that failed to be deleted.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteAllResponse", ActionArgConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigDeleteRequest(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which ActionArgConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteRequest", ActionArgConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigDeleteResponse(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ActionArgConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteResponse", ActionArgConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[ActionKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ActionArgConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteSomeRequest", ActionArgConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    ActionArgConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigDeleteSomeResponse", ActionArgConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionArgConfigRequest(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a ActionArgConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigRequest", ActionArgConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionArgConfigResponse(aristaproto.Message):
-    value: "ActionArgConfig" = aristaproto.message_field(1)
+    value: "ActionArgConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -608,26 +416,92 @@ class ActionArgConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ActionArgConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigResponse", ActionArgConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigSetRequest(aristaproto.Message):
+    value: "ActionArgConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ActionArgConfig carries the value to set into the datastore.
+    See the documentation on the ActionArgConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSetRequest", ActionArgConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigSetResponse(aristaproto.Message):
+    value: "ActionArgConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ActionArgConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSetResponse", ActionArgConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ActionArgConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ActionArgConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSetSomeRequest", ActionArgConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionArgConfigSetSomeResponse(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSetSomeResponse", ActionArgConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ActionArgConfigSomeRequest(aristaproto.Message):
-    keys: List["ActionKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ActionKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSomeRequest", ActionArgConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionArgConfigSomeResponse(aristaproto.Message):
-    value: "ActionArgConfig" = aristaproto.message_field(1)
+    value: "ActionArgConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -635,18 +509,21 @@ class ActionArgConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigSomeResponse", ActionArgConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionArgConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionArgConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ActionArgConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -655,7 +532,7 @@ class ActionArgConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -675,21 +552,24 @@ class ActionArgConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigStreamRequest", ActionArgConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionArgConfigStreamResponse(aristaproto.Message):
-    value: "ActionArgConfig" = aristaproto.message_field(1)
+    value: "ActionArgConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this ActionArgConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ActionArgConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -698,67 +578,199 @@ class ActionArgConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionArgConfigSetRequest(aristaproto.Message):
-    value: "ActionArgConfig" = aristaproto.message_field(1)
-    """
-    ActionArgConfig carries the value to set into the datastore.
-    See the documentation on the ActionArgConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionArgConfigStreamResponse", ActionArgConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigSetResponse(aristaproto.Message):
-    value: "ActionArgConfig" = aristaproto.message_field(1)
+class ActionArgDefinition(aristaproto.Message):
     """
-    Value carries all the values given in the ActionArgConfigSetRequest as well
-    as any server-generated values.
+    ActionArgDefinition is the definition of an argument (static or dynamic).
     """
 
-    time: datetime = aristaproto.message_field(2)
+    required: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
+    required indicates that this argument must always be set when calling the action.
+    """
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    default: "ActionArgValue | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
+    default is the default value for this argument. If set to null, there is no default
+    value.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a user-friendly description of the argument.
+    """
+
+    hidden: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    hidden can be set to true to indicate that the value of this argument can be set, but not
+    retrieved from this API.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgDefinition", ActionArgDefinition)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigSetSomeRequest(aristaproto.Message):
-    values: List["ActionArgConfig"] = aristaproto.message_field(1)
+class ActionArgValue(aristaproto.Message):
     """
-    value contains a list of ActionArgConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    ActionArgValue contains the value of one argument of an action.
     """
+
+    value: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value is the string value to set the argument for runtime.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgValue", ActionArgValue)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigSetSomeResponse(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class ActionArgValues(aristaproto.Message):
+    """
+    ActionArgValues contains the values of the arguments of an action.
+    """
+
+    values: "dict[str, ActionArgValue]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is a map of arg name to value.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionArgValues", ActionArgValues)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteRequest(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
+class ActionAudit(aristaproto.Message):
     """
-    Key indicates which ActionArgConfig instance to remove.
+    ActionAudit contains additional information for the Action state model.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at records the time when the action was originally created.
+    """
+
+    created_by: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by records the user who created the action.
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at records the time when the action was most recently modified.
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by records the user who most recently modified the action.
+    """
+
+    from_package: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    from_package indicates that this action was created by a package, and can only be modified
+    by the packaging service.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionAudit", ActionAudit)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfig(aristaproto.Message):
+    """
+    ActionConfig is the config of an action. Unimplemented for builtin actions
+    """
+
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the action.
+    """
+
+    core: "ActionCore | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    core contains some common attributes (state/config) of the action.
+    """
+
+    language: "ActionLanguage" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: ActionLanguage(0))
+    """
+    language specifies the language of the action body, if applicable.
+    """
+
+    body: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    body contains the action code (script), if applicable.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfig", ActionConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ActionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteAllRequest", ActionConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "ActionKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the ActionConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteAllResponse", ActionConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigDeleteRequest(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which ActionConfig instance to remove.
     This field must always be set.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteResponse(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ActionArgConfig instance."""
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteRequest", ActionConfigDeleteRequest)
 
-    time: datetime = aristaproto.message_field(2)
+
+@dataclass(eq=False, repr=False)
+class ActionConfigDeleteResponse(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ActionConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -768,70 +780,55 @@ class ActionArgConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ActionKey"] = aristaproto.message_field(1)
-    """key contains a list of ActionArgConfig keys to delete"""
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteResponse", ActionConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteSomeResponse(aristaproto.Message):
+class ActionConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[ActionKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    ActionArgConfigDeleteSomeResponse is only sent when there is an error.
+    key contains a list of ActionConfig keys to delete
     """
 
-    key: "ActionKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
 
-
-@dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionArgConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteSomeRequest", ActionConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionArgConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class ActionConfigDeleteSomeResponse(aristaproto.Message):
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
+    ActionConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
 
-    key: "ActionKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ActionArgConfig instance that failed to be deleted.
-    """
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigDeleteSomeResponse", ActionConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionConfigRequest(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a ActionConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionConfigRequest", ActionConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionConfigResponse(aristaproto.Message):
-    value: "ActionConfig" = aristaproto.message_field(1)
+    value: "ActionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -839,26 +836,92 @@ class ActionConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ActionConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionConfigResponse", ActionConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigSetRequest(aristaproto.Message):
+    value: "ActionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ActionConfig carries the value to set into the datastore.
+    See the documentation on the ActionConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigSetRequest", ActionConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigSetResponse(aristaproto.Message):
+    value: "ActionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ActionConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigSetResponse", ActionConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ActionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ActionConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigSetSomeRequest", ActionConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionConfigSetSomeResponse(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigSetSomeResponse", ActionConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ActionConfigSomeRequest(aristaproto.Message):
-    keys: List["ActionKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ActionKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionConfigSomeRequest", ActionConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionConfigSomeResponse(aristaproto.Message):
-    value: "ActionConfig" = aristaproto.message_field(1)
+    value: "ActionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -866,18 +929,21 @@ class ActionConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionConfigSomeResponse", ActionConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ActionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -886,7 +952,7 @@ class ActionConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -906,19 +972,24 @@ class ActionConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionConfigStreamRequest", ActionConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionConfigStreamResponse(aristaproto.Message):
-    value: "ActionConfig" = aristaproto.message_field(1)
+    value: "ActionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this ActionConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ActionConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ActionConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -927,67 +998,249 @@ class ActionConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionConfigSetRequest(aristaproto.Message):
-    value: "ActionConfig" = aristaproto.message_field(1)
-    """
-    ActionConfig carries the value to set into the datastore.
-    See the documentation on the ActionConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionConfigStreamResponse", ActionConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigSetResponse(aristaproto.Message):
-    value: "ActionConfig" = aristaproto.message_field(1)
+class ActionCore(aristaproto.Message):
     """
-    Value carries all the values given in the ActionConfigSetRequest as well
-    as any server-generated values.
+    ActionCore contains the core fields of an action.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
+    name is the user-friendly name of the action.
+    """
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    type: "ActionType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ActionType(0))
     """
+    type is the specific type of the action.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a user-friendly description of the action.
+    """
+
+    static_args: "ActionSchema | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    static_args defines arguments which can be permanently changed for subsequent runs
+    of this action (set ActionArgConfig to accomplish that). The names of arguments in
+    static_args cannot also appear in dynamic_args.
+    """
+
+    dynamic_args: "ActionSchema | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    dynamic_args defines arguments which are scoped to a specific run of the action.
+    The names of arguments in dynamic_args cannot also appear in static_args.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionCore", ActionCore)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigSetSomeRequest(aristaproto.Message):
-    values: List["ActionConfig"] = aristaproto.message_field(1)
+class ActionKey(aristaproto.Message):
     """
-    value contains a list of ActionConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    ActionKey is the model key of an action.
     """
+
+    id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    id uniquely identifies the action. Although chosen by the caller, it is recommended
+    to be a random UUID.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionKey", ActionKey)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigSetSomeResponse(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class ActionRequest(aristaproto.Message):
+    key: "ActionKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Action instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRequest", ActionRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigDeleteRequest(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
+class ActionResponse(aristaproto.Message):
+    value: "Action | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Key indicates which ActionConfig instance to remove.
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Action instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionResponse", ActionResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRun(aristaproto.Message):
+    """
+    ActionRun is the state of a single run (single execution) of an action.
+    """
+
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the ActionRun and the corresponding ActionRunConfig.
+    """
+
+    action_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    action_id uniquely identifies the Action being run.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at records the time when the action run has been requested.
+    """
+
+    created_by: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by records the user who requested the action execution.
+    """
+
+    finished_at: "datetime.datetime | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    finished_at records the time when the action finished running.
+    """
+
+    is_finished: "bool | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_finished is true only when the action has finished running and the fields `code`,
+    `output`, `error`, and `finished_at` are assigned their final values.
+    """
+
+    code: "int | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    code contains the exit code of the action.
+
+    The `code` may be ignored if `error` is empty or nil.
+    """
+
+    output: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    output contains the output produced by the action, truncated to the first 100,000 bytes.
+    """
+
+    error: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error contains a failure description for unsuccessful runs, either caused by the body
+    or by the execution environment.
+
+    Often it is a python traceback which contains multiple newline characters.
+    Maximum size is 100,000 bytes.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRun", ActionRun)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfig(aristaproto.Message):
+    """
+    ActionRunConfig is the configuration of a single execution of an action. Creating a record under
+    a new key triggers a run. Attempting to set again an existing entry is an error.
+    """
+
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the ActionRunConfig and the corresponding ActionRun.
+    """
+
+    action_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    action_id uniquely identifies the Action being run.
+    """
+
+    dynamic_args: "ActionArgValues | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    dynamic_args contains the values of dynamic arguments defined for the action.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfig", ActionRunConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ActionRunConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteAllRequest", ActionRunConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "ActionRunKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the ActionRunConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteAllResponse", ActionRunConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigDeleteRequest(aristaproto.Message):
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which ActionRunConfig instance to remove.
     This field must always be set.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionConfigDeleteResponse(aristaproto.Message):
-    key: "ActionKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ActionConfig instance."""
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteRequest", ActionRunConfigDeleteRequest)
 
-    time: datetime = aristaproto.message_field(2)
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigDeleteResponse(aristaproto.Message):
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ActionRunConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -997,181 +1250,55 @@ class ActionConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ActionKey"] = aristaproto.message_field(1)
-    """key contains a list of ActionConfig keys to delete"""
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteResponse", ActionRunConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigDeleteSomeResponse(aristaproto.Message):
-    """ActionConfigDeleteSomeResponse is only sent when there is an error."""
+class ActionRunConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[ActionRunKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ActionRunConfig keys to delete
+    """
 
-    key: "ActionKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteSomeRequest", ActionRunConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionConfig"] = aristaproto.message_field(1)
+class ActionRunConfigDeleteSomeResponse(aristaproto.Message):
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    ActionRunConfigDeleteSomeResponse is only sent when there is an error.
     """
 
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
 
-@dataclass(eq=False, repr=False)
-class ActionConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "ActionKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ActionConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
 
 
-@dataclass(eq=False, repr=False)
-class ActionRunRequest(aristaproto.Message):
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ActionRun instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunResponse(aristaproto.Message):
-    value: "ActionRun" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ActionRun instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunSomeRequest(aristaproto.Message):
-    keys: List["ActionRunKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunSomeResponse(aristaproto.Message):
-    value: "ActionRun" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionRun"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ActionRun at end.
-        * Each ActionRun response is fully-specified (all fields set).
-      * start: Returns the state of each ActionRun at start, followed by updates until now.
-        * Each ActionRun response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ActionRun at start, followed by updates
-        until end.
-        * Each ActionRun response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunStreamResponse(aristaproto.Message):
-    value: "ActionRun" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this ActionRun's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ActionRun value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigDeleteSomeResponse", ActionRunConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionRunConfigRequest(aristaproto.Message):
-    key: "ActionRunKey" = aristaproto.message_field(1)
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a ActionRunConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigRequest", ActionRunConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionRunConfigResponse(aristaproto.Message):
-    value: "ActionRunConfig" = aristaproto.message_field(1)
+    value: "ActionRunConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1179,26 +1306,92 @@ class ActionRunConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ActionRunConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigResponse", ActionRunConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigSetRequest(aristaproto.Message):
+    value: "ActionRunConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ActionRunConfig carries the value to set into the datastore.
+    See the documentation on the ActionRunConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSetRequest", ActionRunConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigSetResponse(aristaproto.Message):
+    value: "ActionRunConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ActionRunConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSetResponse", ActionRunConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ActionRunConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ActionRunConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSetSomeRequest", ActionRunConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionRunConfigSetSomeResponse(aristaproto.Message):
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSetSomeResponse", ActionRunConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ActionRunConfigSomeRequest(aristaproto.Message):
-    keys: List["ActionRunKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ActionRunKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSomeRequest", ActionRunConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionRunConfigSomeResponse(aristaproto.Message):
-    value: "ActionRunConfig" = aristaproto.message_field(1)
+    value: "ActionRunConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1206,18 +1399,21 @@ class ActionRunConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigSomeResponse", ActionRunConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ActionRunConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionRunConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ActionRunConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1226,7 +1422,7 @@ class ActionRunConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1246,21 +1442,24 @@ class ActionRunConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigStreamRequest", ActionRunConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ActionRunConfigStreamResponse(aristaproto.Message):
-    value: "ActionRunConfig" = aristaproto.message_field(1)
+    value: "ActionRunConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this ActionRunConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ActionRunConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1269,1673 +1468,1236 @@ class ActionRunConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ActionRunConfigSetRequest(aristaproto.Message):
-    value: "ActionRunConfig" = aristaproto.message_field(1)
-    """
-    ActionRunConfig carries the value to set into the datastore.
-    See the documentation on the ActionRunConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.action.v1", "ActionRunConfigStreamResponse", ActionRunConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigSetResponse(aristaproto.Message):
-    value: "ActionRunConfig" = aristaproto.message_field(1)
+class ActionRunKey(aristaproto.Message):
     """
-    Value carries all the values given in the ActionRunConfigSetRequest as well
-    as any server-generated values.
+    ActionRunKey is the model key that can uniquely identify an action run.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    run_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
+    run_id uniquely identifies an action run
+    """
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+
+default_message_pool.register_message("arista.action.v1", "ActionRunKey", ActionRunKey)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigSetSomeRequest(aristaproto.Message):
-    values: List["ActionRunConfig"] = aristaproto.message_field(1)
+class ActionRunRequest(aristaproto.Message):
+    key: "ActionRunKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    value contains a list of ActionRunConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    Key uniquely identifies a ActionRun instance to retrieve.
+    This value must be populated.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunRequest", ActionRunRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigSetSomeResponse(aristaproto.Message):
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class ActionRunResponse(aristaproto.Message):
+    value: "ActionRun | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ActionRun instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunResponse", ActionRunResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteRequest(aristaproto.Message):
-    key: "ActionRunKey" = aristaproto.message_field(1)
+class ActionRunSomeRequest(aristaproto.Message):
+    keys: "list[ActionRunKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Key indicates which ActionRunConfig instance to remove.
-    This field must always be set.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunSomeRequest", ActionRunSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteResponse(aristaproto.Message):
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ActionRunConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
+class ActionRunSomeResponse(aristaproto.Message):
+    value: "ActionRun | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
     """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunSomeResponse", ActionRunSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ActionRunKey"] = aristaproto.message_field(1)
-    """key contains a list of ActionRunConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteSomeResponse(aristaproto.Message):
+class ActionRunStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ActionRun]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    ActionRunConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "ActionRunKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ActionRunConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ActionRun at end.
+        * Each ActionRun response is fully-specified (all fields set).
+      * start: Returns the state of each ActionRun at start, followed by updates until now.
+        * Each ActionRun response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ActionRun at start, followed by updates
+        until end.
+        * Each ActionRun response at start is fully-specified, but updates until end may
+          be partial.
+
+    This field is not allowed in the Subscribe RPC.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionRunStreamRequest", ActionRunStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ActionRunConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class ActionRunStreamResponse(aristaproto.Message):
+    value: "ActionRun | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "ActionRunKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ActionRunConfig instance that failed to be deleted.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ActionRun's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ActionRun value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
 
-class ActionServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.action.v1", "ActionRunStreamResponse", ActionRunStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionSchema(aristaproto.Message):
+    """
+    ActionSchema is the schema of an action. Corresponds to the definition of multiple
+    arguments.
+    """
+
+    values: "dict[str, ActionArgDefinition]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is a map of argument name to its defintion.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionSchema", ActionSchema)
+
+
+@dataclass(eq=False, repr=False)
+class ActionSomeRequest(aristaproto.Message):
+    keys: "list[ActionKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionSomeRequest", ActionSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionSomeResponse(aristaproto.Message):
+    value: "Action | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.action.v1", "ActionSomeResponse", ActionSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ActionStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Action]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Action at end.
+        * Each Action response is fully-specified (all fields set).
+      * start: Returns the state of each Action at start, followed by updates until now.
+        * Each Action response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Action at start, followed by updates
+        until end.
+        * Each Action response at start is fully-specified, but updates until end may
+          be partial.
+
+    This field is not allowed in the Subscribe RPC.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionStreamRequest", ActionStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ActionStreamResponse(aristaproto.Message):
+    value: "Action | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Action's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Action value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "ActionStreamResponse", ActionStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.action.v1", "MetaResponse", MetaResponse)
+
+
+class ActionArgConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        action_request: "ActionRequest",
+        message: "ActionArgConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ActionResponse":
-        return await self._unary_unary(
-            "/arista.action.v1.ActionService/GetOne",
-            action_request,
-            ActionResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        action_some_request: "ActionSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionService/GetSome",
-            action_some_request,
-            ActionSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        action_stream_request: "ActionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionService/GetAll",
-            action_stream_request,
-            ActionStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        action_stream_request: "ActionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionService/Subscribe",
-            action_stream_request,
-            ActionStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        action_stream_request: "ActionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.action.v1.ActionService/GetMeta",
-            action_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        action_stream_request: "ActionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionService/SubscribeMeta",
-            action_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ActionArgConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        action_arg_config_request: "ActionArgConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionArgConfigResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionArgConfigService/GetOne",
-            action_arg_config_request,
+            message,
             ActionArgConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        action_arg_config_some_request: "ActionArgConfigSomeRequest",
+        message: "ActionArgConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/GetSome",
-            action_arg_config_some_request,
+            message,
             ActionArgConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        action_arg_config_stream_request: "ActionArgConfigStreamRequest",
+        message: "ActionArgConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/GetAll",
-            action_arg_config_stream_request,
+            message,
             ActionArgConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        action_arg_config_stream_request: "ActionArgConfigStreamRequest",
+        message: "ActionArgConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/Subscribe",
-            action_arg_config_stream_request,
+            message,
             ActionArgConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        action_arg_config_stream_request: "ActionArgConfigStreamRequest",
+        message: "ActionArgConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionArgConfigService/GetMeta",
-            action_arg_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        action_arg_config_stream_request: "ActionArgConfigStreamRequest",
+        message: "ActionArgConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/SubscribeMeta",
-            action_arg_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        action_arg_config_set_request: "ActionArgConfigSetRequest",
+        message: "ActionArgConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionArgConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionArgConfigService/Set",
-            action_arg_config_set_request,
+            message,
             ActionArgConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        action_arg_config_set_some_request: "ActionArgConfigSetSomeRequest",
+        message: "ActionArgConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/SetSome",
-            action_arg_config_set_some_request,
+            message,
             ActionArgConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        action_arg_config_delete_request: "ActionArgConfigDeleteRequest",
+        message: "ActionArgConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionArgConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionArgConfigService/Delete",
-            action_arg_config_delete_request,
+            message,
             ActionArgConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        action_arg_config_delete_some_request: "ActionArgConfigDeleteSomeRequest",
+        message: "ActionArgConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/DeleteSome",
-            action_arg_config_delete_some_request,
+            message,
             ActionArgConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        action_arg_config_delete_all_request: "ActionArgConfigDeleteAllRequest",
+        message: "ActionArgConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionArgConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionArgConfigService/DeleteAll",
-            action_arg_config_delete_all_request,
+            message,
             ActionArgConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ActionConfigServiceStub(aristaproto.ServiceStub):
+class ActionConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        action_config_request: "ActionConfigRequest",
+        message: "ActionConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionConfigResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionConfigService/GetOne",
-            action_config_request,
+            message,
             ActionConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        action_config_some_request: "ActionConfigSomeRequest",
+        message: "ActionConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/GetSome",
-            action_config_some_request,
+            message,
             ActionConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        action_config_stream_request: "ActionConfigStreamRequest",
+        message: "ActionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/GetAll",
-            action_config_stream_request,
+            message,
             ActionConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        action_config_stream_request: "ActionConfigStreamRequest",
+        message: "ActionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/Subscribe",
-            action_config_stream_request,
+            message,
             ActionConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        action_config_stream_request: "ActionConfigStreamRequest",
+        message: "ActionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionConfigService/GetMeta",
-            action_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        action_config_stream_request: "ActionConfigStreamRequest",
+        message: "ActionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/SubscribeMeta",
-            action_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        action_config_set_request: "ActionConfigSetRequest",
+        message: "ActionConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionConfigService/Set",
-            action_config_set_request,
+            message,
             ActionConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        action_config_set_some_request: "ActionConfigSetSomeRequest",
+        message: "ActionConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/SetSome",
-            action_config_set_some_request,
+            message,
             ActionConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        action_config_delete_request: "ActionConfigDeleteRequest",
+        message: "ActionConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionConfigService/Delete",
-            action_config_delete_request,
+            message,
             ActionConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        action_config_delete_some_request: "ActionConfigDeleteSomeRequest",
+        message: "ActionConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/DeleteSome",
-            action_config_delete_some_request,
+            message,
             ActionConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        action_config_delete_all_request: "ActionConfigDeleteAllRequest",
+        message: "ActionConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionConfigService/DeleteAll",
-            action_config_delete_all_request,
+            message,
             ActionConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ActionRunServiceStub(aristaproto.ServiceStub):
+class ActionRunConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        action_run_request: "ActionRunRequest",
+        message: "ActionRunConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ActionRunResponse":
-        return await self._unary_unary(
-            "/arista.action.v1.ActionRunService/GetOne",
-            action_run_request,
-            ActionRunResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        action_run_some_request: "ActionRunSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionRunSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionRunService/GetSome",
-            action_run_some_request,
-            ActionRunSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        action_run_stream_request: "ActionRunStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionRunStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionRunService/GetAll",
-            action_run_stream_request,
-            ActionRunStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        action_run_stream_request: "ActionRunStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ActionRunStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionRunService/Subscribe",
-            action_run_stream_request,
-            ActionRunStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        action_run_stream_request: "ActionRunStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.action.v1.ActionRunService/GetMeta",
-            action_run_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        action_run_stream_request: "ActionRunStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.action.v1.ActionRunService/SubscribeMeta",
-            action_run_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ActionRunConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        action_run_config_request: "ActionRunConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionRunConfigResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionRunConfigService/GetOne",
-            action_run_config_request,
+            message,
             ActionRunConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        action_run_config_some_request: "ActionRunConfigSomeRequest",
+        message: "ActionRunConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/GetSome",
-            action_run_config_some_request,
+            message,
             ActionRunConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        action_run_config_stream_request: "ActionRunConfigStreamRequest",
+        message: "ActionRunConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/GetAll",
-            action_run_config_stream_request,
+            message,
             ActionRunConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        action_run_config_stream_request: "ActionRunConfigStreamRequest",
+        message: "ActionRunConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/Subscribe",
-            action_run_config_stream_request,
+            message,
             ActionRunConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        action_run_config_stream_request: "ActionRunConfigStreamRequest",
+        message: "ActionRunConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionRunConfigService/GetMeta",
-            action_run_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        action_run_config_stream_request: "ActionRunConfigStreamRequest",
+        message: "ActionRunConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/SubscribeMeta",
-            action_run_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        action_run_config_set_request: "ActionRunConfigSetRequest",
+        message: "ActionRunConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionRunConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionRunConfigService/Set",
-            action_run_config_set_request,
+            message,
             ActionRunConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        action_run_config_set_some_request: "ActionRunConfigSetSomeRequest",
+        message: "ActionRunConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/SetSome",
-            action_run_config_set_some_request,
+            message,
             ActionRunConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        action_run_config_delete_request: "ActionRunConfigDeleteRequest",
+        message: "ActionRunConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ActionRunConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.action.v1.ActionRunConfigService/Delete",
-            action_run_config_delete_request,
+            message,
             ActionRunConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        action_run_config_delete_some_request: "ActionRunConfigDeleteSomeRequest",
+        message: "ActionRunConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/DeleteSome",
-            action_run_config_delete_some_request,
+            message,
             ActionRunConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        action_run_config_delete_all_request: "ActionRunConfigDeleteAllRequest",
+        message: "ActionRunConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ActionRunConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.action.v1.ActionRunConfigService/DeleteAll",
-            action_run_config_delete_all_request,
+            message,
             ActionRunConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class ActionRunServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ActionRunRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ActionRunResponse":
+
+        return await self._unary_unary(
+            "/arista.action.v1.ActionRunService/GetOne",
+            message,
+            ActionRunResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ActionRunSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionRunSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionRunService/GetSome",
+            message,
+            ActionRunSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ActionRunStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionRunStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionRunService/GetAll",
+            message,
+            ActionRunStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ActionRunStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionRunStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionRunService/Subscribe",
+            message,
+            ActionRunStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ActionRunStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.action.v1.ActionRunService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ActionRunStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionRunService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class ActionServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ActionRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ActionResponse":
+
+        return await self._unary_unary(
+            "/arista.action.v1.ActionService/GetOne",
+            message,
+            ActionResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ActionSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionService/GetSome",
+            message,
+            ActionSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ActionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionService/GetAll",
+            message,
+            ActionStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ActionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ActionStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionService/Subscribe",
+            message,
+            ActionStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ActionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.action.v1.ActionService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ActionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.action.v1.ActionService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class ActionServiceBase(ServiceBase):
-    async def get_one(self, action_request: "ActionRequest") -> "ActionResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, action_some_request: "ActionSomeRequest") -> AsyncIterator[ActionSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, action_stream_request: "ActionStreamRequest") -> AsyncIterator[ActionStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, action_stream_request: "ActionStreamRequest") -> AsyncIterator[ActionStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, action_stream_request: "ActionStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, action_stream_request: "ActionStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ActionRequest, ActionResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ActionSomeRequest, ActionSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ActionStreamRequest, ActionStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ActionStreamRequest, ActionStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ActionStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ActionStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.action.v1.ActionService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRequest,
-                ActionResponse,
-            ),
-            "/arista.action.v1.ActionService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionSomeRequest,
-                ActionSomeResponse,
-            ),
-            "/arista.action.v1.ActionService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionStreamRequest,
-                ActionStreamResponse,
-            ),
-            "/arista.action.v1.ActionService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionStreamRequest,
-                ActionStreamResponse,
-            ),
-            "/arista.action.v1.ActionService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class ActionArgConfigServiceBase(ServiceBase):
-    async def get_one(self, action_arg_config_request: "ActionArgConfigRequest") -> "ActionArgConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, action_arg_config_some_request: "ActionArgConfigSomeRequest") -> AsyncIterator[ActionArgConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, action_arg_config_stream_request: "ActionArgConfigStreamRequest") -> AsyncIterator[ActionArgConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, action_arg_config_stream_request: "ActionArgConfigStreamRequest") -> AsyncIterator[ActionArgConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, action_arg_config_stream_request: "ActionArgConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, action_arg_config_stream_request: "ActionArgConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, action_arg_config_set_request: "ActionArgConfigSetRequest") -> "ActionArgConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, action_arg_config_set_some_request: "ActionArgConfigSetSomeRequest") -> AsyncIterator[ActionArgConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, action_arg_config_delete_request: "ActionArgConfigDeleteRequest") -> "ActionArgConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, action_arg_config_delete_some_request: "ActionArgConfigDeleteSomeRequest") -> AsyncIterator[ActionArgConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, action_arg_config_delete_all_request: "ActionArgConfigDeleteAllRequest") -> AsyncIterator[ActionArgConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ActionArgConfigRequest, ActionArgConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ActionArgConfigSomeRequest, ActionArgConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ActionArgConfigStreamRequest, ActionArgConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ActionArgConfigStreamRequest, ActionArgConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ActionArgConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ActionArgConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ActionArgConfigSetRequest, ActionArgConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ActionArgConfigSetSomeRequest, ActionArgConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ActionArgConfigDeleteRequest, ActionArgConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ActionArgConfigDeleteSomeRequest, ActionArgConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ActionArgConfigDeleteAllRequest, ActionArgConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.action.v1.ActionArgConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionArgConfigRequest,
-                ActionArgConfigResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigSomeRequest,
-                ActionArgConfigSomeResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigStreamRequest,
-                ActionArgConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigStreamRequest,
-                ActionArgConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionArgConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionArgConfigSetRequest,
-                ActionArgConfigSetResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigSetSomeRequest,
-                ActionArgConfigSetSomeResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionArgConfigDeleteRequest,
-                ActionArgConfigDeleteResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigDeleteSomeRequest,
-                ActionArgConfigDeleteSomeResponse,
-            ),
-            "/arista.action.v1.ActionArgConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionArgConfigDeleteAllRequest,
-                ActionArgConfigDeleteAllResponse,
-            ),
-        }
-
-
-class ActionConfigServiceBase(ServiceBase):
-    async def get_one(self, action_config_request: "ActionConfigRequest") -> "ActionConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, action_config_some_request: "ActionConfigSomeRequest") -> AsyncIterator[ActionConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, action_config_stream_request: "ActionConfigStreamRequest") -> AsyncIterator[ActionConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, action_config_stream_request: "ActionConfigStreamRequest") -> AsyncIterator[ActionConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, action_config_stream_request: "ActionConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, action_config_stream_request: "ActionConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, action_config_set_request: "ActionConfigSetRequest") -> "ActionConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, action_config_set_some_request: "ActionConfigSetSomeRequest") -> AsyncIterator[ActionConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, action_config_delete_request: "ActionConfigDeleteRequest") -> "ActionConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, action_config_delete_some_request: "ActionConfigDeleteSomeRequest") -> AsyncIterator[ActionConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, action_config_delete_all_request: "ActionConfigDeleteAllRequest") -> AsyncIterator[ActionConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ActionConfigRequest, ActionConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ActionConfigSomeRequest, ActionConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ActionConfigStreamRequest, ActionConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ActionConfigStreamRequest, ActionConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ActionConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ActionConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ActionConfigSetRequest, ActionConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ActionConfigSetSomeRequest, ActionConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ActionConfigDeleteRequest, ActionConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ActionConfigDeleteSomeRequest, ActionConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ActionConfigDeleteAllRequest, ActionConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.action.v1.ActionConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionConfigRequest,
-                ActionConfigResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigSomeRequest,
-                ActionConfigSomeResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigStreamRequest,
-                ActionConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigStreamRequest,
-                ActionConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionConfigSetRequest,
-                ActionConfigSetResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigSetSomeRequest,
-                ActionConfigSetSomeResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionConfigDeleteRequest,
-                ActionConfigDeleteResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigDeleteSomeRequest,
-                ActionConfigDeleteSomeResponse,
-            ),
-            "/arista.action.v1.ActionConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionConfigDeleteAllRequest,
-                ActionConfigDeleteAllResponse,
-            ),
-        }
-
-
-class ActionRunServiceBase(ServiceBase):
-    async def get_one(self, action_run_request: "ActionRunRequest") -> "ActionRunResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, action_run_some_request: "ActionRunSomeRequest") -> AsyncIterator[ActionRunSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, action_run_stream_request: "ActionRunStreamRequest") -> AsyncIterator[ActionRunStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, action_run_stream_request: "ActionRunStreamRequest") -> AsyncIterator[ActionRunStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, action_run_stream_request: "ActionRunStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, action_run_stream_request: "ActionRunStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ActionRunRequest, ActionRunResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ActionRunSomeRequest, ActionRunSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ActionRunStreamRequest, ActionRunStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ActionRunStreamRequest, ActionRunStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ActionRunStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ActionRunStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.action.v1.ActionRunService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunRequest,
-                ActionRunResponse,
-            ),
-            "/arista.action.v1.ActionRunService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunSomeRequest,
-                ActionRunSomeResponse,
-            ),
-            "/arista.action.v1.ActionRunService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunStreamRequest,
-                ActionRunStreamResponse,
-            ),
-            "/arista.action.v1.ActionRunService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunStreamRequest,
-                ActionRunStreamResponse,
-            ),
-            "/arista.action.v1.ActionRunService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionRunService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class ActionRunConfigServiceBase(ServiceBase):
-    async def get_one(self, action_run_config_request: "ActionRunConfigRequest") -> "ActionRunConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, action_run_config_some_request: "ActionRunConfigSomeRequest") -> AsyncIterator[ActionRunConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, action_run_config_stream_request: "ActionRunConfigStreamRequest") -> AsyncIterator[ActionRunConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, action_run_config_stream_request: "ActionRunConfigStreamRequest") -> AsyncIterator[ActionRunConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, action_run_config_stream_request: "ActionRunConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, action_run_config_stream_request: "ActionRunConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, action_run_config_set_request: "ActionRunConfigSetRequest") -> "ActionRunConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, action_run_config_set_some_request: "ActionRunConfigSetSomeRequest") -> AsyncIterator[ActionRunConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, action_run_config_delete_request: "ActionRunConfigDeleteRequest") -> "ActionRunConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, action_run_config_delete_some_request: "ActionRunConfigDeleteSomeRequest") -> AsyncIterator[ActionRunConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, action_run_config_delete_all_request: "ActionRunConfigDeleteAllRequest") -> AsyncIterator[ActionRunConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ActionRunConfigRequest, ActionRunConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ActionRunConfigSomeRequest, ActionRunConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ActionRunConfigStreamRequest, ActionRunConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ActionRunConfigStreamRequest, ActionRunConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ActionRunConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ActionRunConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ActionRunConfigSetRequest, ActionRunConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ActionRunConfigSetSomeRequest, ActionRunConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ActionRunConfigDeleteRequest, ActionRunConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ActionRunConfigDeleteSomeRequest, ActionRunConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ActionRunConfigDeleteAllRequest, ActionRunConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.action.v1.ActionRunConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunConfigRequest,
-                ActionRunConfigResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigSomeRequest,
-                ActionRunConfigSomeResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigStreamRequest,
-                ActionRunConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigStreamRequest,
-                ActionRunConfigStreamResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunConfigSetRequest,
-                ActionRunConfigSetResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigSetSomeRequest,
-                ActionRunConfigSetSomeResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ActionRunConfigDeleteRequest,
-                ActionRunConfigDeleteResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigDeleteSomeRequest,
-                ActionRunConfigDeleteSomeResponse,
-            ),
-            "/arista.action.v1.ActionRunConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ActionRunConfigDeleteAllRequest,
-                ActionRunConfigDeleteAllResponse,
-            ),
-        }

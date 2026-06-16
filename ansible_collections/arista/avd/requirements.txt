@@ -2,14 +2,13 @@
 # Please do not edit it manually.
 
 anta>=1.8.0
-aristaproto>=0.1.1
+aristaproto[grpcio]>=2.0.0.dev0
 deepmerge>=1.1.0
 distlib>=0.3.9
-grpclib>=0.4.8
+grpcio>=1.72.1
 jinja2>=3.0
 netaddr>=0.7.19
 pyavd==6.3.0.dev0
 pyavd-utils==0.0.6
-python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
 requests>=2.27.0

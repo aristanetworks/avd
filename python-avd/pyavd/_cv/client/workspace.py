@@ -88,9 +88,9 @@ class WorkspaceMixin(Protocol):
             ),
             time=time,
         )
-        client = WorkspaceServiceStub(self._channel)
+        client = self.new_stub(WorkspaceServiceStub)
 
-        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+        response = await client.get_one(request, timeout=timeout)
 
         return response.value
 
@@ -121,8 +121,8 @@ class WorkspaceMixin(Protocol):
                 description=description,
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         return response.value
 
     @GRPCRequestHandler()
@@ -150,8 +150,8 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         return response.value
 
     @GRPCRequestHandler()
@@ -179,8 +179,8 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         return response.value
 
     @LimitCvVersion(min_ver="2026.2.0")
@@ -209,8 +209,8 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         return response.value
 
     @GRPCRequestHandler()
@@ -230,8 +230,8 @@ class WorkspaceMixin(Protocol):
             WorkspaceConfig object after being set including any server-generated values.
         """
         request = WorkspaceConfigDeleteRequest(key=WorkspaceKey(workspace_id=workspace_id))
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.delete(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.delete(request, timeout=timeout)
         return response.key
 
     @GRPCRequestHandler()
@@ -259,8 +259,8 @@ class WorkspaceMixin(Protocol):
                 request_params=RequestParams(request_id=f"req-{uuid4()}"),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
@@ -292,9 +292,13 @@ class WorkspaceMixin(Protocol):
                 ),
             ],
         )
-        client = WorkspaceServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
+            if getattr(response, "value", None) is None:
+                LOGGER.debug("wait_for_workspace_response: Got workspace update without value: %s", response)
+                continue
+
             if request_id in response.value.responses.values:
                 LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
                 if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
@@ -340,10 +344,10 @@ class WorkspaceMixin(Protocol):
                 ),
             ],
         )
-        client = WorkspaceServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            if hasattr(response, "value") and response.value.state == WORKSPACE_STATE_MAP[state]:
+            if getattr(response, "value", None) is not None and response.value.state == WORKSPACE_STATE_MAP[state]:
                 LOGGER.debug("wait_for_workspace_state: Workspace reached desired state (%s): %s", state, response)
                 return response.value
             LOGGER.debug("wait_for_workspace_state: Got workspace update: %s", response)
@@ -380,7 +384,7 @@ class WorkspaceMixin(Protocol):
             ],
             time=time,
         )
-        client = WorkspaceBuildDetailsServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceBuildDetailsServiceStub)
+        responses = client.get_all(request, timeout=timeout)
 
         return [response.value async for response in responses]

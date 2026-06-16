@@ -7,361 +7,174 @@
 # This file has been @generated
 
 __all__ = (
-    "WorkspaceState",
-    "Request",
-    "ResponseStatus",
-    "ResponseCode",
-    "BuildState",
+    "AuthzResult",
     "BuildStage",
-    "HierarchyErrorCode",
-    "DeviceAuthzStatus",
-    "HierarchyBuildStatusCode",
-    "ConfigValidationSkipCause",
-    "ImageValidationSkipCause",
+    "BuildStageState",
+    "BuildState",
+    "ConfigSyncResult",
     "ConfigSyncSkipCause",
-    "SyncOperation",
-    "EntityType",
-    "DiffType",
-    "DiffOp",
-    "RequestParams",
-    "Response",
-    "Responses",
-    "WorkspaceKey",
-    "WorkspaceConfig",
-    "Workspace",
-    "InputError",
-    "InputErrors",
-    "HierarchyError",
-    "HierarchyErrors",
-    "InputWarning",
-    "InputWarnings",
-    "InputValidationResult",
-    "InputValidationResults",
-    "TemplateError",
-    "TemplateErrors",
+    "ConfigValidationResult",
+    "ConfigValidationSkipCause",
     "ConfigletBuildResult",
     "ConfigletBuildResults",
-    "ConfigValidationResult",
-    "ImageValidationResult",
-    "ConfigSyncResult",
-    "BuildStageState",
-    "AuthzResult",
-    "StudioBuildDetails",
-    "HierarchyBuildStatus",
-    "WorkspaceBuildKey",
-    "WorkspaceBuild",
-    "WorkspaceBuildDetailsKey",
-    "WorkspaceBuildDetails",
-    "WorkspaceSyncKey",
-    "WorkspaceSyncConfig",
-    "StudioGeneratedConfigurationKey",
-    "StudioGeneratedConfiguration",
+    "DeviceAuthzStatus",
+    "DiffEntries",
     "DiffEntry",
     "DiffKey",
-    "DiffEntries",
-    "WorkspaceDiffSet",
-    "WorkspaceDiffSets",
-    "WorkspaceDiffs",
+    "DiffOp",
+    "DiffType",
+    "EntityType",
+    "HierarchyBuildStatus",
+    "HierarchyBuildStatusCode",
+    "HierarchyError",
+    "HierarchyErrorCode",
+    "HierarchyErrors",
+    "ImageValidationResult",
+    "ImageValidationSkipCause",
+    "InputError",
+    "InputErrors",
+    "InputValidationResult",
+    "InputValidationResults",
+    "InputWarning",
+    "InputWarnings",
     "MetaResponse",
+    "Request",
+    "RequestParams",
+    "Response",
+    "ResponseCode",
+    "ResponseStatus",
+    "Responses",
+    "StudioBuildDetails",
+    "StudioGeneratedConfiguration",
+    "StudioGeneratedConfigurationBatchedStreamRequest",
+    "StudioGeneratedConfigurationBatchedStreamResponse",
+    "StudioGeneratedConfigurationKey",
     "StudioGeneratedConfigurationRequest",
     "StudioGeneratedConfigurationResponse",
+    "StudioGeneratedConfigurationServiceStub",
     "StudioGeneratedConfigurationSomeRequest",
     "StudioGeneratedConfigurationSomeResponse",
     "StudioGeneratedConfigurationStreamRequest",
     "StudioGeneratedConfigurationStreamResponse",
-    "StudioGeneratedConfigurationBatchedStreamRequest",
-    "StudioGeneratedConfigurationBatchedStreamResponse",
-    "WorkspaceRequest",
-    "WorkspaceResponse",
-    "WorkspaceSomeRequest",
-    "WorkspaceSomeResponse",
-    "WorkspaceStreamRequest",
-    "WorkspaceStreamResponse",
+    "SyncOperation",
+    "TemplateError",
+    "TemplateErrors",
+    "Workspace",
     "WorkspaceBatchedStreamRequest",
     "WorkspaceBatchedStreamResponse",
-    "WorkspaceBuildRequest",
-    "WorkspaceBuildResponse",
-    "WorkspaceBuildSomeRequest",
-    "WorkspaceBuildSomeResponse",
-    "WorkspaceBuildStreamRequest",
-    "WorkspaceBuildStreamResponse",
+    "WorkspaceBuild",
     "WorkspaceBuildBatchedStreamRequest",
     "WorkspaceBuildBatchedStreamResponse",
+    "WorkspaceBuildDetails",
+    "WorkspaceBuildDetailsBatchedStreamRequest",
+    "WorkspaceBuildDetailsBatchedStreamResponse",
+    "WorkspaceBuildDetailsKey",
     "WorkspaceBuildDetailsRequest",
     "WorkspaceBuildDetailsResponse",
+    "WorkspaceBuildDetailsServiceStub",
     "WorkspaceBuildDetailsSomeRequest",
     "WorkspaceBuildDetailsSomeResponse",
     "WorkspaceBuildDetailsStreamRequest",
     "WorkspaceBuildDetailsStreamResponse",
-    "WorkspaceBuildDetailsBatchedStreamRequest",
-    "WorkspaceBuildDetailsBatchedStreamResponse",
-    "WorkspaceConfigRequest",
-    "WorkspaceConfigResponse",
-    "WorkspaceConfigSomeRequest",
-    "WorkspaceConfigSomeResponse",
-    "WorkspaceConfigStreamRequest",
-    "WorkspaceConfigStreamResponse",
+    "WorkspaceBuildKey",
+    "WorkspaceBuildRequest",
+    "WorkspaceBuildResponse",
+    "WorkspaceBuildServiceStub",
+    "WorkspaceBuildSomeRequest",
+    "WorkspaceBuildSomeResponse",
+    "WorkspaceBuildStreamRequest",
+    "WorkspaceBuildStreamResponse",
+    "WorkspaceConfig",
     "WorkspaceConfigBatchedStreamRequest",
     "WorkspaceConfigBatchedStreamResponse",
-    "WorkspaceConfigSetRequest",
-    "WorkspaceConfigSetResponse",
-    "WorkspaceConfigSetSomeRequest",
-    "WorkspaceConfigSetSomeResponse",
+    "WorkspaceConfigDeleteAllRequest",
+    "WorkspaceConfigDeleteAllResponse",
     "WorkspaceConfigDeleteRequest",
     "WorkspaceConfigDeleteResponse",
     "WorkspaceConfigDeleteSomeRequest",
     "WorkspaceConfigDeleteSomeResponse",
-    "WorkspaceConfigDeleteAllRequest",
-    "WorkspaceConfigDeleteAllResponse",
+    "WorkspaceConfigRequest",
+    "WorkspaceConfigResponse",
+    "WorkspaceConfigServiceStub",
+    "WorkspaceConfigSetRequest",
+    "WorkspaceConfigSetResponse",
+    "WorkspaceConfigSetSomeRequest",
+    "WorkspaceConfigSetSomeResponse",
+    "WorkspaceConfigSomeRequest",
+    "WorkspaceConfigSomeResponse",
+    "WorkspaceConfigStreamRequest",
+    "WorkspaceConfigStreamResponse",
+    "WorkspaceDiffSet",
+    "WorkspaceDiffSets",
+    "WorkspaceDiffs",
+    "WorkspaceDiffsBatchedStreamRequest",
+    "WorkspaceDiffsBatchedStreamResponse",
     "WorkspaceDiffsRequest",
     "WorkspaceDiffsResponse",
+    "WorkspaceDiffsServiceStub",
     "WorkspaceDiffsSomeRequest",
     "WorkspaceDiffsSomeResponse",
     "WorkspaceDiffsStreamRequest",
     "WorkspaceDiffsStreamResponse",
-    "WorkspaceDiffsBatchedStreamRequest",
-    "WorkspaceDiffsBatchedStreamResponse",
-    "WorkspaceSyncConfigRequest",
-    "WorkspaceSyncConfigResponse",
-    "WorkspaceSyncConfigSomeRequest",
-    "WorkspaceSyncConfigSomeResponse",
-    "WorkspaceSyncConfigStreamRequest",
-    "WorkspaceSyncConfigStreamResponse",
+    "WorkspaceKey",
+    "WorkspaceRequest",
+    "WorkspaceResponse",
+    "WorkspaceServiceStub",
+    "WorkspaceSomeRequest",
+    "WorkspaceSomeResponse",
+    "WorkspaceState",
+    "WorkspaceStreamRequest",
+    "WorkspaceStreamResponse",
+    "WorkspaceSyncConfig",
     "WorkspaceSyncConfigBatchedStreamRequest",
     "WorkspaceSyncConfigBatchedStreamResponse",
-    "WorkspaceSyncConfigSetRequest",
-    "WorkspaceSyncConfigSetResponse",
-    "WorkspaceSyncConfigSetSomeRequest",
-    "WorkspaceSyncConfigSetSomeResponse",
+    "WorkspaceSyncConfigDeleteAllRequest",
+    "WorkspaceSyncConfigDeleteAllResponse",
     "WorkspaceSyncConfigDeleteRequest",
     "WorkspaceSyncConfigDeleteResponse",
     "WorkspaceSyncConfigDeleteSomeRequest",
     "WorkspaceSyncConfigDeleteSomeResponse",
-    "WorkspaceSyncConfigDeleteAllRequest",
-    "WorkspaceSyncConfigDeleteAllResponse",
-    "StudioGeneratedConfigurationServiceStub",
-    "StudioGeneratedConfigurationServiceBase",
-    "WorkspaceServiceStub",
-    "WorkspaceServiceBase",
-    "WorkspaceBuildServiceStub",
-    "WorkspaceBuildServiceBase",
-    "WorkspaceBuildDetailsServiceStub",
-    "WorkspaceBuildDetailsServiceBase",
-    "WorkspaceConfigServiceStub",
-    "WorkspaceConfigServiceBase",
-    "WorkspaceDiffsServiceStub",
-    "WorkspaceDiffsServiceBase",
+    "WorkspaceSyncConfigRequest",
+    "WorkspaceSyncConfigResponse",
     "WorkspaceSyncConfigServiceStub",
-    "WorkspaceSyncConfigServiceBase",
+    "WorkspaceSyncConfigSetRequest",
+    "WorkspaceSyncConfigSetResponse",
+    "WorkspaceSyncConfigSetSomeRequest",
+    "WorkspaceSyncConfigSetSomeResponse",
+    "WorkspaceSyncConfigSomeRequest",
+    "WorkspaceSyncConfigSomeResponse",
+    "WorkspaceSyncConfigStreamRequest",
+    "WorkspaceSyncConfigStreamResponse",
+    "WorkspaceSyncKey",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class WorkspaceState(aristaproto.Enum):
-    """
-    WorkspaceState enumerates the general states of a workspace. Some of these states
-    are derived as a result of executing a specific request on the workspace (see Request).
-    """
-
-    UNSPECIFIED = 0
-    """WORKSPACE_STATE_UNSPECIFIED indicates unspecified workspace state."""
-
-    PENDING = 1
-    """
-    WORKSPACE_STATE_PENDING indicates that the changes in the workspace are open and
-    have not been submitted.
-    """
-
-    SUBMITTED = 2
-    """
-    WORKSPACE_STATE_SUBMITTED indicates that the changes in the workspace have been
-    submitted to the mainline.
-    """
-
-    ABANDONED = 3
-    """
-    WORKSPACE_STATE_ABANDONED indicates that the workspace has been intentionally
-    closed, and may no longer be updated.
-    """
-
-    CONFLICTS = 4
-    """
-    WORKSPACE_STATE_CONFLICTS indicates that the changes in the workspace are in
-    conflict with the current state of the system.
-    """
-
-    ROLLED_BACK = 5
-    """
-    WORKSPACE_STATE_ROLLED_BACK indicates that the workspace was submitted, but
-    has been rolled back (the changes have been undone).
-    """
-
-
-class Request(aristaproto.Enum):
-    """
-    Request enumerates the set of asynchronous operations that can be performed on a
-    workspace.
-    """
-
-    UNSPECIFIED = 0
-    """REQUEST_UNSPECIFIED describes unspecified request."""
-
-    START_BUILD = 1
-    """
-    REQUEST_START_BUILD describes a request to start building a workspace. This kicks
-    of a multi-stage operation to compile and validate the changes in a workspace (see
-    BuildStage for more details).
-    """
-
-    CANCEL_BUILD = 2
-    """
-    REQUEST_CANCEL_BUILD describes a request to stop building a workspace.
-    """
-
-    SUBMIT = 3
-    """
-    REQUEST_SUBMIT describes a request to submit a workspace to the mainline. Before
-    submission, some checks are made that can cause the request to fail. E.g., if there
-    is a modified configuration for a non-streaming device in the workspace, then the
-    request will fail. Once submitted, changes are applied and change controls are
-    created (if necessary).
-    """
-
-    ABANDON = 4
-    """
-    REQUEST_ABANDON describes a request to abandon a workspace. This operation does
-    not delete the workspace from the system, but closes it to any further updates.
-    """
-
-    ROLLBACK = 5
-    """
-    REQUEST_ROLLBACK describes a request to rollback a submitted workspace, undoing
-    corresponding changes in the mainline.
-    """
-
-    SUBMIT_FORCE = 6
-    """
-    REQUEST_SUBMIT_FORCE describes a request to submit a workspace without making any
-    checks that could normally cause the submission to fail. See REQUEST_SUBMIT for
-    more details.
-    """
-
-    REBASE = 7
-    """
-    REQUEST_REBASE describes a request to rebase a workspace. This operation updates
-    workspace state to reflect the latest mainline content, and re-applies workspace
-    changes on top of that.
-    """
-
-
-class ResponseStatus(aristaproto.Enum):
-    """
-    ResponseStatus enumerates the set of execution statuses of a Response.
-    """
-
-    UNSPECIFIED = 0
-    """RESPONSE_STATUS_UNSPECIFIED indicates unspecified response status."""
-
-    SUCCESS = 1
-    """
-    RESPONSE_STATUS_SUCCESS indicates that the original Request was successful
-    in its execution.
-    """
-
-    FAIL = 2
-    """
-    RESPONSE_STATUS_FAIL indicates that the original Request was unsuccessful
-    in its execution.
-    """
-
-
-class ResponseCode(aristaproto.Enum):
-    """
-    ResponseCode is a code for a Response indicating a particular scenario.
-    """
-
-    UNSPECIFIED = 0
-    """RESPONSE_CODE_UNSPECIFIED indicates unspecified response code."""
-
-    INACTIVE_DEVICES_EXIST = 1
-    """
-    RESPONSE_CODE_INACTIVE_DEVICES_EXIST indicates that there are devices that have inactive
-    streaming status.
-    """
-
-    DECOMMISSION_DEVICES_INCOMPLETE = 2
-    """
-    RESPONSE_CODE_DECOMMISSION_DEVICES_INCOMPLETE indicates that the decommission process is
-    incomplete for devices.
-    """
-
-    SYNCHRONIZATION_REQUIRED = 3
-    """
-    RESPONSE_CODE_SYNCHRONIZATION_REQUIRED indicates that synchronization is required.
-    """
-
-
-class BuildState(aristaproto.Enum):
-    """
-    BuildState enumerates the set of states that a BuildStage can be in during a
-    workspace build cycle.
-    """
-
-    UNSPECIFIED = 0
-    """BUILD_STATE_UNSPECIFIED indicates unspecified build state."""
-
-    IN_PROGRESS = 1
-    """
-    BUILD_STATE_IN_PROGRESS indicates that the BuildStage was started but has
-    not yet completed.
-    """
-
-    CANCELED = 2
-    """
-    BUILD_STATE_CANCELED indicates that the BuildStage was started but then
-    stopped before completion.
-    """
-
-    SUCCESS = 3
-    """
-    BUILD_STATE_SUCCESS indicates that the BuildStage was started and ran to
-    completion successfully.
-    """
-
-    FAIL = 4
-    """
-    BUILD_STATE_FAIL indicates that the BuildStage was started and ran to
-    completion unsuccessfully.
-    """
-
-    SKIPPED = 5
-    """BUILD_STATE_SKIPPED indicates that the BuildStage was not run."""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class BuildStage(aristaproto.Enum):
-    """BuildStage enumerates the types of stages of a build of a workspace."""
+    """
+    BuildStage enumerates the types of stages of a build of a workspace.
+    """
 
     UNSPECIFIED = 0
-    """BUILD_STAGE_UNSPECIFIED indicates unspecified build stage."""
+    """
+    BUILD_STAGE_UNSPECIFIED indicates unspecified build stage.
+    """
 
     INPUT_VALIDATION = 1
     """
@@ -388,77 +201,160 @@ class BuildStage(aristaproto.Enum):
     generated images (e.g., checks device compatibility).
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "BUILD_STAGE_UNSPECIFIED",
+            1: "BUILD_STAGE_INPUT_VALIDATION",
+            2: "BUILD_STAGE_CONFIGLET_BUILD",
+            3: "BUILD_STAGE_CONFIG_VALIDATION",
+            4: "BUILD_STAGE_IMAGE_VALIDATION",
+        }
 
-class HierarchyErrorCode(aristaproto.Enum):
-    """HierarchyErrorCode is an error code related to hierarchy."""
-
-    UNSPECIFIED = 0
-    """
-    HIERARCHY_ERROR_CODE_UNSPECIFIED indicates unspecified hierarchy error code.
-    """
-
-    INPUT_VALIDATION = 1
-    """
-    HIERARCHY_ERROR_CODE_INPUT_VALIDATION indicates an input validation error
-    for software image assignments in hierarchy.
-    """
-
-
-class DeviceAuthzStatus(aristaproto.Enum):
-    """
-    DeviceAuthzStatus holds the result of the authorization check on device.
-    """
-
-    UNSPECIFIED = 0
-    """
-    DEVICE_AUTHZ_STATUS_UNSPECIFIED indicates the authorization check is pending.
-    """
-
-    AUTHORIZED = 1
-    """
-    DEVICE_AUTHZ_STATUS_AUTHORIZED indicates the subject
-    is authorized to provision this device.
-    """
-
-    UNAUTHORIZED = 2
-    """
-    DEVICE_AUTHZ_STATUS_UNAUTHORIZED indicates the subject
-    is unauthorized to provision this device.
-    """
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "BUILD_STAGE_UNSPECIFIED": 0,
+            "BUILD_STAGE_INPUT_VALIDATION": 1,
+            "BUILD_STAGE_CONFIGLET_BUILD": 2,
+            "BUILD_STAGE_CONFIG_VALIDATION": 3,
+            "BUILD_STAGE_IMAGE_VALIDATION": 4,
+        }
 
 
-class HierarchyBuildStatusCode(aristaproto.Enum):
+class BuildState(aristaproto.Enum):
     """
-    HierarchyBuildStatusCode enumerates the various statuses for a build.
-    duplicated from hierarchy.v1.BuildStatus
+    BuildState enumerates the set of states that a BuildStage can be in during a
+    workspace build cycle.
     """
 
     UNSPECIFIED = 0
     """
-    HIERARCHY_BUILD_STATUS_CODE_UNSPECIFIED is the default value indicating an unspecified build status.
+    BUILD_STATE_UNSPECIFIED indicates unspecified build state.
     """
 
-    RUNNING = 1
+    IN_PROGRESS = 1
     """
-    HIERARCHY_BUILD_STATUS_CODE_RUNNING indicates that the build is running.
-    """
-
-    SUCCESS = 2
-    """
-    HIERARCHY_BUILD_STATUS_CODE_SUCCESS indicates that the build has completed successfully
-    without any errors.
+    BUILD_STATE_IN_PROGRESS indicates that the BuildStage was started but has
+    not yet completed.
     """
 
-    FAILURE = 3
+    CANCELED = 2
     """
-    HIERARCHY_BUILD_STATUS_CODE_FAILURE indicates that the build has completed unsuccesfully
-    with errors.
+    BUILD_STATE_CANCELED indicates that the BuildStage was started but then
+    stopped before completion.
     """
 
-    CANCELED = 4
+    SUCCESS = 3
     """
-    HIERARCHY_BUILD_STATUS_CODE_CANCELED indicates that the build was canceled.
+    BUILD_STATE_SUCCESS indicates that the BuildStage was started and ran to
+    completion successfully.
     """
+
+    FAIL = 4
+    """
+    BUILD_STATE_FAIL indicates that the BuildStage was started and ran to
+    completion unsuccessfully.
+    """
+
+    SKIPPED = 5
+    """
+    BUILD_STATE_SKIPPED indicates that the BuildStage was not run.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "BUILD_STATE_UNSPECIFIED",
+            1: "BUILD_STATE_IN_PROGRESS",
+            2: "BUILD_STATE_CANCELED",
+            3: "BUILD_STATE_SUCCESS",
+            4: "BUILD_STATE_FAIL",
+            5: "BUILD_STATE_SKIPPED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "BUILD_STATE_UNSPECIFIED": 0,
+            "BUILD_STATE_IN_PROGRESS": 1,
+            "BUILD_STATE_CANCELED": 2,
+            "BUILD_STATE_SUCCESS": 3,
+            "BUILD_STATE_FAIL": 4,
+            "BUILD_STATE_SKIPPED": 5,
+        }
+
+
+class ConfigSyncSkipCause(aristaproto.Enum):
+    """
+    ConfigSyncSkipCause enumerates the set of reasons a device can skip config sync.
+    """
+
+    UNSPECIFIED = 0
+    """
+    CONFIG_SYNC_SKIP_CAUSE_UNSPECIFIED indicates that config sync skip cause is
+    unspecified.
+    """
+
+    INACTIVE = 1
+    """
+    CONFIG_SYNC_SKIP_CAUSE_INACTIVE indicates that config sync is skipped because
+    device is not streaming.
+    """
+
+    PRE_PROVISIONED = 2
+    """
+    CONFIG_SYNC_SKIP_CAUSE_PRE_PROVISIONED indicates that config sync is skipped
+    because device is pre-provisioned.
+    """
+
+    IN_COMPLIANCE = 3
+    """
+    CONFIG_SYNC_SKIP_CAUSE_IN_COMPLIANCE indicates that config sync is skipped
+    because device is in compliance.
+    """
+
+    NO_CONFIG_SOURCES = 4
+    """
+    CONFIG_SYNC_SKIP_CAUSE_NO_CONFIG_SOURCES indicates that the sync was
+    skipped because the device has no config sources.
+    """
+
+    DEVICE_DECOMMISSIONED = 5
+    """
+    CONFIG_SYNC_SKIP_CAUSE_DEVICE_DECOMMISSIONED indicates that sync was
+    skipped because the device is decommissioned in the workspace.
+    """
+
+    DEVICE_REPLACED = 6
+    """
+    CONFIG_SYNC_SKIP_CAUSE_DEVICE_REPLACED indicates that sync was
+    skipped because the device is replaced in the workspace.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_SYNC_SKIP_CAUSE_UNSPECIFIED",
+            1: "CONFIG_SYNC_SKIP_CAUSE_INACTIVE",
+            2: "CONFIG_SYNC_SKIP_CAUSE_PRE_PROVISIONED",
+            3: "CONFIG_SYNC_SKIP_CAUSE_IN_COMPLIANCE",
+            4: "CONFIG_SYNC_SKIP_CAUSE_NO_CONFIG_SOURCES",
+            5: "CONFIG_SYNC_SKIP_CAUSE_DEVICE_DECOMMISSIONED",
+            6: "CONFIG_SYNC_SKIP_CAUSE_DEVICE_REPLACED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_SYNC_SKIP_CAUSE_UNSPECIFIED": 0,
+            "CONFIG_SYNC_SKIP_CAUSE_INACTIVE": 1,
+            "CONFIG_SYNC_SKIP_CAUSE_PRE_PROVISIONED": 2,
+            "CONFIG_SYNC_SKIP_CAUSE_IN_COMPLIANCE": 3,
+            "CONFIG_SYNC_SKIP_CAUSE_NO_CONFIG_SOURCES": 4,
+            "CONFIG_SYNC_SKIP_CAUSE_DEVICE_DECOMMISSIONED": 5,
+            "CONFIG_SYNC_SKIP_CAUSE_DEVICE_REPLACED": 6,
+        }
 
 
 class ConfigValidationSkipCause(aristaproto.Enum):
@@ -509,6 +405,362 @@ class ConfigValidationSkipCause(aristaproto.Enum):
     skipped because the device is replaced in the workspace.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_VALIDATION_SKIP_CAUSE_UNSPECIFIED",
+            1: "CONFIG_VALIDATION_SKIP_CAUSE_INACTIVE",
+            2: "CONFIG_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED",
+            3: "CONFIG_VALIDATION_SKIP_CAUSE_CONFIG_UNCHANGED",
+            4: "CONFIG_VALIDATION_SKIP_CAUSE_NO_CONFIG_SOURCES",
+            5: "CONFIG_VALIDATION_SKIP_CAUSE_DEVICE_DECOMMISSIONED",
+            6: "CONFIG_VALIDATION_SKIP_CAUSE_DEVICE_REPLACED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_VALIDATION_SKIP_CAUSE_UNSPECIFIED": 0,
+            "CONFIG_VALIDATION_SKIP_CAUSE_INACTIVE": 1,
+            "CONFIG_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED": 2,
+            "CONFIG_VALIDATION_SKIP_CAUSE_CONFIG_UNCHANGED": 3,
+            "CONFIG_VALIDATION_SKIP_CAUSE_NO_CONFIG_SOURCES": 4,
+            "CONFIG_VALIDATION_SKIP_CAUSE_DEVICE_DECOMMISSIONED": 5,
+            "CONFIG_VALIDATION_SKIP_CAUSE_DEVICE_REPLACED": 6,
+        }
+
+
+class DeviceAuthzStatus(aristaproto.Enum):
+    """
+    DeviceAuthzStatus holds the result of the authorization check on device.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DEVICE_AUTHZ_STATUS_UNSPECIFIED indicates the authorization check is pending.
+    """
+
+    AUTHORIZED = 1
+    """
+    DEVICE_AUTHZ_STATUS_AUTHORIZED indicates the subject
+    is authorized to provision this device.
+    """
+
+    UNAUTHORIZED = 2
+    """
+    DEVICE_AUTHZ_STATUS_UNAUTHORIZED indicates the subject
+    is unauthorized to provision this device.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DEVICE_AUTHZ_STATUS_UNSPECIFIED",
+            1: "DEVICE_AUTHZ_STATUS_AUTHORIZED",
+            2: "DEVICE_AUTHZ_STATUS_UNAUTHORIZED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DEVICE_AUTHZ_STATUS_UNSPECIFIED": 0,
+            "DEVICE_AUTHZ_STATUS_AUTHORIZED": 1,
+            "DEVICE_AUTHZ_STATUS_UNAUTHORIZED": 2,
+        }
+
+
+class DiffOp(aristaproto.Enum):
+    """
+    DiffOp enumerates the types of operations that can occur within a diff.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DIFF_OP_UNSPECIFIED indicates an unspecified diff operation.
+    """
+
+    ADD = 1
+    """
+    DIFF_OP_ADD indicates the addition of a new item.
+    """
+
+    DELETE = 2
+    """
+    DIFF_OP_DELETE indicates the deletion of an item.
+    """
+
+    CHANGE = 3
+    """
+    DIFF_OP_CHANGE indicates modification of an item.
+    """
+
+    MOVE = 4
+    """
+    DIFF_OP_MOVE indicates change in position of an item in a list.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DIFF_OP_UNSPECIFIED",
+            1: "DIFF_OP_ADD",
+            2: "DIFF_OP_DELETE",
+            3: "DIFF_OP_CHANGE",
+            4: "DIFF_OP_MOVE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DIFF_OP_UNSPECIFIED": 0,
+            "DIFF_OP_ADD": 1,
+            "DIFF_OP_DELETE": 2,
+            "DIFF_OP_CHANGE": 3,
+            "DIFF_OP_MOVE": 4,
+        }
+
+
+class DiffType(aristaproto.Enum):
+    """
+    DiffType enumerates types of diff.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DIFF_TYPE_UNSPECIFIED is the default, unspecified value.
+    """
+
+    REBASE = 1
+    """
+    DIFF_TYPE_REBASE represents a diff generated during a workspace rebase operation.
+    it means that we return two sets of diffs - one for what happened in the workspace
+    relative to its original mainline, and another for what happened between original
+    mainline and latest mainline.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DIFF_TYPE_UNSPECIFIED",
+            1: "DIFF_TYPE_REBASE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DIFF_TYPE_UNSPECIFIED": 0,
+            "DIFF_TYPE_REBASE": 1,
+        }
+
+
+class EntityType(aristaproto.Enum):
+    """
+    EntityType enumerates the different types of entities that can be
+    compared or referenced in a diff operation.
+    """
+
+    UNSPECIFIED = 0
+    """
+    ENTITY_TYPE_UNSPECIFIED indicates an unspecified entity type.
+    """
+
+    STUDIO = 1
+    """
+    ENTITY_TYPE_STUDIO indicates the Studio entity type.
+    """
+
+    INPUTS = 2
+    """
+    ENTITY_TYPE_INPUTS indicates the Inputs entity type.
+    """
+
+    ASSIGNED_TAGS = 3
+    """
+    ENTITY_TYPE_ASSIGNED_TAGS indicates the AssignedTags entity type.
+    """
+
+    BUILD_HOOK = 4
+    """
+    ENTITY_TYPE_BUILD_HOOK indicates the BuildHook entity type.
+    """
+
+    AUTOFILL_ACTION = 5
+    """
+    ENTITY_TYPE_AUTOFILL_ACTION indicates the AutofillAction entity type.
+    """
+
+    CONFIGLET = 6
+    """
+    ENTITY_TYPE_CONFIGLET indicates the Configlet entity type for
+    static configuration studio.
+    """
+
+    CONFIGLET_ASSIGNMENT = 7
+    """
+    ENTITY_TYPE_CONFIGLET_ASSIGNMENT indicates the ConfigletAssignment
+    entity type for static configuration studio.
+    """
+
+    TAG = 8
+    """
+    ENTITY_TYPE_TAG indicates the tags entity type.
+    """
+
+    TAG_ASSIGNMENT = 9
+    """
+    ENTITY_TYPE_TAG_ASSIGNMENT indicates the tag assignment entity type.
+    """
+
+    FIXTURE_INSTANCE = 10
+    """
+    ENTITY_TYPE_FIXTURE_INSTANCE indicates the FixtureInstance entity type.
+    """
+
+    FIXTURE_CLASS = 11
+    """
+    ENTITY_TYPE_FIXTURE_CLASS indicates the FixtureClass entity type.
+    """
+
+    PROCESSOR = 12
+    """
+    ENTITY_TYPE_PROCESSOR indicates the Processor entity type.
+    """
+
+    NODE = 13
+    """
+    ENTITY_TYPE_NODE indicates the Node entity type.
+    """
+
+    DEPENDENCIES = 14
+    """
+    ENTITY_TYPE_DEPENDENCIES indicates the dependencies entity type.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ENTITY_TYPE_UNSPECIFIED",
+            1: "ENTITY_TYPE_STUDIO",
+            2: "ENTITY_TYPE_INPUTS",
+            3: "ENTITY_TYPE_ASSIGNED_TAGS",
+            4: "ENTITY_TYPE_BUILD_HOOK",
+            5: "ENTITY_TYPE_AUTOFILL_ACTION",
+            6: "ENTITY_TYPE_CONFIGLET",
+            7: "ENTITY_TYPE_CONFIGLET_ASSIGNMENT",
+            8: "ENTITY_TYPE_TAG",
+            9: "ENTITY_TYPE_TAG_ASSIGNMENT",
+            10: "ENTITY_TYPE_FIXTURE_INSTANCE",
+            11: "ENTITY_TYPE_FIXTURE_CLASS",
+            12: "ENTITY_TYPE_PROCESSOR",
+            13: "ENTITY_TYPE_NODE",
+            14: "ENTITY_TYPE_DEPENDENCIES",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ENTITY_TYPE_UNSPECIFIED": 0,
+            "ENTITY_TYPE_STUDIO": 1,
+            "ENTITY_TYPE_INPUTS": 2,
+            "ENTITY_TYPE_ASSIGNED_TAGS": 3,
+            "ENTITY_TYPE_BUILD_HOOK": 4,
+            "ENTITY_TYPE_AUTOFILL_ACTION": 5,
+            "ENTITY_TYPE_CONFIGLET": 6,
+            "ENTITY_TYPE_CONFIGLET_ASSIGNMENT": 7,
+            "ENTITY_TYPE_TAG": 8,
+            "ENTITY_TYPE_TAG_ASSIGNMENT": 9,
+            "ENTITY_TYPE_FIXTURE_INSTANCE": 10,
+            "ENTITY_TYPE_FIXTURE_CLASS": 11,
+            "ENTITY_TYPE_PROCESSOR": 12,
+            "ENTITY_TYPE_NODE": 13,
+            "ENTITY_TYPE_DEPENDENCIES": 14,
+        }
+
+
+class HierarchyBuildStatusCode(aristaproto.Enum):
+    """
+    HierarchyBuildStatusCode enumerates the various statuses for a build.
+    duplicated from hierarchy.v1.BuildStatus
+    """
+
+    UNSPECIFIED = 0
+    """
+    HIERARCHY_BUILD_STATUS_CODE_UNSPECIFIED is the default value indicating an unspecified build status.
+    """
+
+    RUNNING = 1
+    """
+    HIERARCHY_BUILD_STATUS_CODE_RUNNING indicates that the build is running.
+    """
+
+    SUCCESS = 2
+    """
+    HIERARCHY_BUILD_STATUS_CODE_SUCCESS indicates that the build has completed successfully
+    without any errors.
+    """
+
+    FAILURE = 3
+    """
+    HIERARCHY_BUILD_STATUS_CODE_FAILURE indicates that the build has completed unsuccesfully
+    with errors.
+    """
+
+    CANCELED = 4
+    """
+    HIERARCHY_BUILD_STATUS_CODE_CANCELED indicates that the build was canceled.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "HIERARCHY_BUILD_STATUS_CODE_UNSPECIFIED",
+            1: "HIERARCHY_BUILD_STATUS_CODE_RUNNING",
+            2: "HIERARCHY_BUILD_STATUS_CODE_SUCCESS",
+            3: "HIERARCHY_BUILD_STATUS_CODE_FAILURE",
+            4: "HIERARCHY_BUILD_STATUS_CODE_CANCELED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "HIERARCHY_BUILD_STATUS_CODE_UNSPECIFIED": 0,
+            "HIERARCHY_BUILD_STATUS_CODE_RUNNING": 1,
+            "HIERARCHY_BUILD_STATUS_CODE_SUCCESS": 2,
+            "HIERARCHY_BUILD_STATUS_CODE_FAILURE": 3,
+            "HIERARCHY_BUILD_STATUS_CODE_CANCELED": 4,
+        }
+
+
+class HierarchyErrorCode(aristaproto.Enum):
+    """
+    HierarchyErrorCode is an error code related to hierarchy.
+    """
+
+    UNSPECIFIED = 0
+    """
+    HIERARCHY_ERROR_CODE_UNSPECIFIED indicates unspecified hierarchy error code.
+    """
+
+    INPUT_VALIDATION = 1
+    """
+    HIERARCHY_ERROR_CODE_INPUT_VALIDATION indicates an input validation error
+    for software image assignments in hierarchy.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "HIERARCHY_ERROR_CODE_UNSPECIFIED",
+            1: "HIERARCHY_ERROR_CODE_INPUT_VALIDATION",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "HIERARCHY_ERROR_CODE_UNSPECIFIED": 0,
+            "HIERARCHY_ERROR_CODE_INPUT_VALIDATION": 1,
+        }
+
 
 class ImageValidationSkipCause(aristaproto.Enum):
     """
@@ -558,575 +810,293 @@ class ImageValidationSkipCause(aristaproto.Enum):
     skipped because the device is replaced.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "IMAGE_VALIDATION_SKIP_CAUSE_UNSPECIFIED",
+            1: "IMAGE_VALIDATION_SKIP_CAUSE_INACTIVE",
+            2: "IMAGE_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED",
+            3: "IMAGE_VALIDATION_SKIP_CAUSE_IMAGE_UNCHANGED",
+            4: "IMAGE_VALIDATION_SKIP_CAUSE_NO_PROPOSED_SOFTWARE",
+            5: "IMAGE_VALIDATION_SKIP_CAUSE_DEVICE_DECOMMISSIONED",
+            6: "IMAGE_VALIDATION_SKIP_CAUSE_DEVICE_REPLACED",
+        }
 
-class ConfigSyncSkipCause(aristaproto.Enum):
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "IMAGE_VALIDATION_SKIP_CAUSE_UNSPECIFIED": 0,
+            "IMAGE_VALIDATION_SKIP_CAUSE_INACTIVE": 1,
+            "IMAGE_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED": 2,
+            "IMAGE_VALIDATION_SKIP_CAUSE_IMAGE_UNCHANGED": 3,
+            "IMAGE_VALIDATION_SKIP_CAUSE_NO_PROPOSED_SOFTWARE": 4,
+            "IMAGE_VALIDATION_SKIP_CAUSE_DEVICE_DECOMMISSIONED": 5,
+            "IMAGE_VALIDATION_SKIP_CAUSE_DEVICE_REPLACED": 6,
+        }
+
+
+class Request(aristaproto.Enum):
     """
-    ConfigSyncSkipCause enumerates the set of reasons a device can skip config sync.
+    Request enumerates the set of asynchronous operations that can be performed on a
+    workspace.
     """
 
     UNSPECIFIED = 0
     """
-    CONFIG_SYNC_SKIP_CAUSE_UNSPECIFIED indicates that config sync skip cause is
-    unspecified.
+    REQUEST_UNSPECIFIED describes unspecified request.
     """
 
-    INACTIVE = 1
+    START_BUILD = 1
     """
-    CONFIG_SYNC_SKIP_CAUSE_INACTIVE indicates that config sync is skipped because
-    device is not streaming.
-    """
-
-    PRE_PROVISIONED = 2
-    """
-    CONFIG_SYNC_SKIP_CAUSE_PRE_PROVISIONED indicates that config sync is skipped
-    because device is pre-provisioned.
+    REQUEST_START_BUILD describes a request to start building a workspace. This kicks
+    of a multi-stage operation to compile and validate the changes in a workspace (see
+    BuildStage for more details).
     """
 
-    IN_COMPLIANCE = 3
+    CANCEL_BUILD = 2
     """
-    CONFIG_SYNC_SKIP_CAUSE_IN_COMPLIANCE indicates that config sync is skipped
-    because device is in compliance.
-    """
-
-    NO_CONFIG_SOURCES = 4
-    """
-    CONFIG_SYNC_SKIP_CAUSE_NO_CONFIG_SOURCES indicates that the sync was
-    skipped because the device has no config sources.
+    REQUEST_CANCEL_BUILD describes a request to stop building a workspace.
     """
 
-    DEVICE_DECOMMISSIONED = 5
+    SUBMIT = 3
     """
-    CONFIG_SYNC_SKIP_CAUSE_DEVICE_DECOMMISSIONED indicates that sync was
-    skipped because the device is decommissioned in the workspace.
+    REQUEST_SUBMIT describes a request to submit a workspace to the mainline. Before
+    submission, some checks are made that can cause the request to fail. E.g., if there
+    is a modified configuration for a non-streaming device in the workspace, then the
+    request will fail. Once submitted, changes are applied and change controls are
+    created (if necessary).
     """
 
-    DEVICE_REPLACED = 6
+    ABANDON = 4
     """
-    CONFIG_SYNC_SKIP_CAUSE_DEVICE_REPLACED indicates that sync was
-    skipped because the device is replaced in the workspace.
+    REQUEST_ABANDON describes a request to abandon a workspace. This operation does
+    not delete the workspace from the system, but closes it to any further updates.
     """
+
+    ROLLBACK = 5
+    """
+    REQUEST_ROLLBACK describes a request to rollback a submitted workspace, undoing
+    corresponding changes in the mainline.
+    """
+
+    SUBMIT_FORCE = 6
+    """
+    REQUEST_SUBMIT_FORCE describes a request to submit a workspace without making any
+    checks that could normally cause the submission to fail. See REQUEST_SUBMIT for
+    more details.
+    """
+
+    REBASE = 7
+    """
+    REQUEST_REBASE describes a request to rebase a workspace. This operation updates
+    workspace state to reflect the latest mainline content, and re-applies workspace
+    changes on top of that.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "REQUEST_UNSPECIFIED",
+            1: "REQUEST_START_BUILD",
+            2: "REQUEST_CANCEL_BUILD",
+            3: "REQUEST_SUBMIT",
+            4: "REQUEST_ABANDON",
+            5: "REQUEST_ROLLBACK",
+            6: "REQUEST_SUBMIT_FORCE",
+            7: "REQUEST_REBASE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "REQUEST_UNSPECIFIED": 0,
+            "REQUEST_START_BUILD": 1,
+            "REQUEST_CANCEL_BUILD": 2,
+            "REQUEST_SUBMIT": 3,
+            "REQUEST_ABANDON": 4,
+            "REQUEST_ROLLBACK": 5,
+            "REQUEST_SUBMIT_FORCE": 6,
+            "REQUEST_REBASE": 7,
+        }
+
+
+class ResponseCode(aristaproto.Enum):
+    """
+    ResponseCode is a code for a Response indicating a particular scenario.
+    """
+
+    UNSPECIFIED = 0
+    """
+    RESPONSE_CODE_UNSPECIFIED indicates unspecified response code.
+    """
+
+    INACTIVE_DEVICES_EXIST = 1
+    """
+    RESPONSE_CODE_INACTIVE_DEVICES_EXIST indicates that there are devices that have inactive
+    streaming status.
+    """
+
+    DECOMMISSION_DEVICES_INCOMPLETE = 2
+    """
+    RESPONSE_CODE_DECOMMISSION_DEVICES_INCOMPLETE indicates that the decommission process is
+    incomplete for devices.
+    """
+
+    SYNCHRONIZATION_REQUIRED = 3
+    """
+    RESPONSE_CODE_SYNCHRONIZATION_REQUIRED indicates that synchronization is required.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "RESPONSE_CODE_UNSPECIFIED",
+            1: "RESPONSE_CODE_INACTIVE_DEVICES_EXIST",
+            2: "RESPONSE_CODE_DECOMMISSION_DEVICES_INCOMPLETE",
+            3: "RESPONSE_CODE_SYNCHRONIZATION_REQUIRED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "RESPONSE_CODE_UNSPECIFIED": 0,
+            "RESPONSE_CODE_INACTIVE_DEVICES_EXIST": 1,
+            "RESPONSE_CODE_DECOMMISSION_DEVICES_INCOMPLETE": 2,
+            "RESPONSE_CODE_SYNCHRONIZATION_REQUIRED": 3,
+        }
+
+
+class ResponseStatus(aristaproto.Enum):
+    """
+    ResponseStatus enumerates the set of execution statuses of a Response.
+    """
+
+    UNSPECIFIED = 0
+    """
+    RESPONSE_STATUS_UNSPECIFIED indicates unspecified response status.
+    """
+
+    SUCCESS = 1
+    """
+    RESPONSE_STATUS_SUCCESS indicates that the original Request was successful
+    in its execution.
+    """
+
+    FAIL = 2
+    """
+    RESPONSE_STATUS_FAIL indicates that the original Request was unsuccessful
+    in its execution.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "RESPONSE_STATUS_UNSPECIFIED",
+            1: "RESPONSE_STATUS_SUCCESS",
+            2: "RESPONSE_STATUS_FAIL",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "RESPONSE_STATUS_UNSPECIFIED": 0,
+            "RESPONSE_STATUS_SUCCESS": 1,
+            "RESPONSE_STATUS_FAIL": 2,
+        }
 
 
 class SyncOperation(aristaproto.Enum):
-    """SyncOperation enumerates sync operations."""
+    """
+    SyncOperation enumerates sync operations.
+    """
 
     UNSPECIFIED = 0
-    """SYNC_OPERATION_UNSPECIFIED indicates unspecified sync operation."""
+    """
+    SYNC_OPERATION_UNSPECIFIED indicates unspecified sync operation.
+    """
 
     CONFIG = 1
-    """SYNC_OPERATION_CONFIG indicates config sync operation."""
-
-
-class EntityType(aristaproto.Enum):
     """
-    EntityType enumerates the different types of entities that can be
-    compared or referenced in a diff operation.
+    SYNC_OPERATION_CONFIG indicates config sync operation.
     """
 
-    UNSPECIFIED = 0
-    """ENTITY_TYPE_UNSPECIFIED indicates an unspecified entity type."""
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SYNC_OPERATION_UNSPECIFIED",
+            1: "SYNC_OPERATION_CONFIG",
+        }
 
-    STUDIO = 1
-    """ENTITY_TYPE_STUDIO indicates the Studio entity type."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SYNC_OPERATION_UNSPECIFIED": 0,
+            "SYNC_OPERATION_CONFIG": 1,
+        }
 
-    INPUTS = 2
-    """ENTITY_TYPE_INPUTS indicates the Inputs entity type."""
 
-    ASSIGNED_TAGS = 3
-    """ENTITY_TYPE_ASSIGNED_TAGS indicates the AssignedTags entity type."""
-
-    BUILD_HOOK = 4
-    """ENTITY_TYPE_BUILD_HOOK indicates the BuildHook entity type."""
-
-    AUTOFILL_ACTION = 5
+class WorkspaceState(aristaproto.Enum):
     """
-    ENTITY_TYPE_AUTOFILL_ACTION indicates the AutofillAction entity type.
-    """
-
-    CONFIGLET = 6
-    """
-    ENTITY_TYPE_CONFIGLET indicates the Configlet entity type for
-    static configuration studio.
-    """
-
-    CONFIGLET_ASSIGNMENT = 7
-    """
-    ENTITY_TYPE_CONFIGLET_ASSIGNMENT indicates the ConfigletAssignment
-    entity type for static configuration studio.
-    """
-
-    TAG = 8
-    """ENTITY_TYPE_TAG indicates the tags entity type."""
-
-    TAG_ASSIGNMENT = 9
-    """ENTITY_TYPE_TAG_ASSIGNMENT indicates the tag assignment entity type."""
-
-    FIXTURE_INSTANCE = 10
-    """
-    ENTITY_TYPE_FIXTURE_INSTANCE indicates the FixtureInstance entity type.
-    """
-
-    FIXTURE_CLASS = 11
-    """ENTITY_TYPE_FIXTURE_CLASS indicates the FixtureClass entity type."""
-
-    PROCESSOR = 12
-    """ENTITY_TYPE_PROCESSOR indicates the Processor entity type."""
-
-    NODE = 13
-    """ENTITY_TYPE_NODE indicates the Node entity type."""
-
-    DEPENDENCIES = 14
-    """ENTITY_TYPE_DEPENDENCIES indicates the dependencies entity type."""
-
-
-class DiffType(aristaproto.Enum):
-    """DiffType enumerates types of diff."""
-
-    UNSPECIFIED = 0
-    """DIFF_TYPE_UNSPECIFIED is the default, unspecified value."""
-
-    REBASE = 1
-    """
-    DIFF_TYPE_REBASE represents a diff generated during a workspace rebase operation.
-    it means that we return two sets of diffs - one for what happened in the workspace
-    relative to its original mainline, and another for what happened between original
-    mainline and latest mainline.
-    """
-
-
-class DiffOp(aristaproto.Enum):
-    """
-    DiffOp enumerates the types of operations that can occur within a diff.
+    WorkspaceState enumerates the general states of a workspace. Some of these states
+    are derived as a result of executing a specific request on the workspace (see Request).
     """
 
     UNSPECIFIED = 0
-    """DIFF_OP_UNSPECIFIED indicates an unspecified diff operation."""
-
-    ADD = 1
-    """DIFF_OP_ADD indicates the addition of a new item."""
-
-    DELETE = 2
-    """DIFF_OP_DELETE indicates the deletion of an item."""
-
-    CHANGE = 3
-    """DIFF_OP_CHANGE indicates modification of an item."""
-
-    MOVE = 4
-    """DIFF_OP_MOVE indicates change in position of an item in a list."""
-
-
-@dataclass(eq=False, repr=False)
-class RequestParams(aristaproto.Message):
-    """RequestParams define the parameters for a Request."""
-
-    request_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
-    request_id is the unique ID of the request. This is used to identify
-    the Response for the request in Responses.
+    WORKSPACE_STATE_UNSPECIFIED indicates unspecified workspace state.
     """
 
-
-@dataclass(eq=False, repr=False)
-class Response(aristaproto.Message):
-    """Response is a response to a Request."""
-
-    status: "ResponseStatus" = aristaproto.enum_field(1)
-    """status is the execution status of the response."""
-
-    message: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """message is a string that provides more details about the response."""
-
-    code: "ResponseCode" = aristaproto.enum_field(3)
-    """code is the code of the response."""
-
-
-@dataclass(eq=False, repr=False)
-class Responses(aristaproto.Message):
-    """Responses is a collection of responses for completed requests."""
-
-    values: Dict[str, "Response"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is a map from request ID to Response."""
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceKey(aristaproto.Message):
-    """WorkspaceKey uniquely identifies a workspace."""
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the unique ID of the workspace."""
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfig(aristaproto.Message):
-    """WorkspaceConfig holds the configuration of a workspace."""
-
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """key identifies the workspace."""
-
-    display_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """display_name is the user-defined name of the workspace."""
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is a brief description of the workspace."""
-
-    request: "Request" = aristaproto.enum_field(4)
+    PENDING = 1
     """
-    request (if not REQUEST_UNSPECIFIED) kicks off an asynchronous operation
-    on the workspace.
+    WORKSPACE_STATE_PENDING indicates that the changes in the workspace are open and
+    have not been submitted.
     """
 
-    request_params: "RequestParams" = aristaproto.message_field(5)
-    """request_params specify the parameters for `request`."""
-
-    exclude_network_provisioning: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
+    SUBMITTED = 2
     """
-    exclude_network_provisioning is a flag used to manage the migration
-    from Network Provisioning to Studios. When set to true, it prevents Network
-    Provisioning components from being included in the build process and in the
-    designed config generated upon submission.
-    This flag is set exclusively at the start of the migration process.
-    This field must not be set for workspaces in \"Studios-only\" mode or after a
-    migration is complete. Any attempt to submit a workspace where this field is
-    true in these states will result in a failure.
+    WORKSPACE_STATE_SUBMITTED indicates that the changes in the workspace have been
+    submitted to the mainline.
     """
 
-
-@dataclass(eq=False, repr=False)
-class Workspace(aristaproto.Message):
-    """Workspace holds the status of a workspace."""
-
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """key identifies the workspace."""
-
-    created_at: datetime = aristaproto.message_field(2)
-    """created_at indicates when the workspace was created."""
-
-    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """created_by indicates who created the workspace."""
-
-    last_modified_at: datetime = aristaproto.message_field(4)
-    """last_modified_at indicates when the workspace was last updated."""
-
-    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """last_modified_by indicates who last updated the workspace."""
-
-    state: "WorkspaceState" = aristaproto.enum_field(6)
-    """state describes the status of the workspace."""
-
-    last_build_id: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    ABANDONED = 3
     """
-    last_build_id is the last build ID that was set in a WorkspaceBuild
-    for this workspace.
+    WORKSPACE_STATE_ABANDONED indicates that the workspace has been intentionally
+    closed, and may no longer be updated.
     """
 
-    responses: "Responses" = aristaproto.message_field(8)
+    CONFLICTS = 4
     """
-    responses are the responses for all requests that have been executed
-    thusfar for this workspace.
-    """
-
-    cc_ids: "___fmp__.RepeatedString" = aristaproto.message_field(9)
-    """
-    cc_ids are the IDs of any change controls that were created as a result
-    of submitting this workspace.
+    WORKSPACE_STATE_CONFLICTS indicates that the changes in the workspace are in
+    conflict with the current state of the system.
     """
 
-    needs_build: Optional[bool] = aristaproto.message_field(10, wraps=aristaproto.TYPE_BOOL)
+    ROLLED_BACK = 5
     """
-    needs_build indicates whether a rebuild of the workspace is necessary
-    in order to submit it.
-    """
-
-    last_rebased_at: datetime = aristaproto.message_field(11)
-    """last_rebased_at indicates when the workspace was last rebased."""
-
-    needs_rebase: Optional[bool] = aristaproto.message_field(12, wraps=aristaproto.TYPE_BOOL)
-    """
-    needs_rebase indicates whether a rebase of the workspace is necessary
-    in order to submit it.
+    WORKSPACE_STATE_ROLLED_BACK indicates that the workspace was submitted, but
+    has been rolled back (the changes have been undone).
     """
 
-    display_name: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
-    """display_name is the user-defined name of the workspace."""
-
-    description: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
-    """description is a brief description of the workspace."""
-
-    exclude_network_provisioning: Optional[bool] = aristaproto.message_field(15, wraps=aristaproto.TYPE_BOOL)
-    """
-    exclude_network_provisioning indicates whether the workspace is
-    configured to exclude Network Provisioning.
-    """
-
-    decommission_request_ids: "___fmp__.MapStringString" = aristaproto.message_field(16)
-    """
-    decommission_request_ids provides, for each device staged for
-    decommission in this workspace, the corresponding request UUID passed
-    to inventory.v1.DeviceDecommissioningConfig. These request UUIDs can
-    be used to track the status using the inventory.v1.DeviceDecommissioning
-    resource.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InputError(aristaproto.Message):
-    """
-    InputError holds the details for an error on a studio input field or value.
-    """
-
-    field_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """field_id is the ID of the input field."""
-
-    path: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """path is the path leading up to the input field."""
-
-    members: "___fmp__.RepeatedString" = aristaproto.message_field(3)
-    """members are the members of the input field (if it is a group)."""
-
-    message: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """message is the error message."""
-
-
-@dataclass(eq=False, repr=False)
-class InputErrors(aristaproto.Message):
-    """InputErrors is a list of InputError."""
-
-    values: List["InputError"] = aristaproto.message_field(1)
-    """values is a list of InputError."""
-
-
-@dataclass(eq=False, repr=False)
-class HierarchyError(aristaproto.Message):
-    """
-    HierarchyError holds the details for a hierarchy
-    validation error.
-    """
-
-    message: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """message is the error message."""
-
-    code: "HierarchyErrorCode" = aristaproto.enum_field(2)
-    """code is the error code of hierarchy error."""
-
-
-@dataclass(eq=False, repr=False)
-class HierarchyErrors(aristaproto.Message):
-    """HierarchyErrors is a list of HierarchyError."""
-
-    values: List["HierarchyError"] = aristaproto.message_field(1)
-    """values is a list of HierarchyError."""
-
-
-@dataclass(eq=False, repr=False)
-class InputWarning(aristaproto.Message):
-    """
-    InputWarning holds the details for a warning on a studio input field or value.
-    """
-
-    field_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """field_id is the ID of the input field."""
-
-    path: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """path is the path leading up to the input field."""
-
-    members: "___fmp__.RepeatedString" = aristaproto.message_field(3)
-    """members are the members of the input field (if it is a group)."""
-
-    message: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """message is the warning message."""
-
-
-@dataclass(eq=False, repr=False)
-class InputWarnings(aristaproto.Message):
-    """InputWarnings is a list of InputWarning."""
-
-    values: List["InputWarning"] = aristaproto.message_field(1)
-    """values is a list of InputWarning."""
-
-
-@dataclass(eq=False, repr=False)
-class InputValidationResult(aristaproto.Message):
-    """
-    InputValidationResult holds the result of an input validation build stage.
-    """
-
-    input_schema_errors: "InputErrors" = aristaproto.message_field(1)
-    """input_schema_errors are errors for fields in the input schema."""
-
-    input_value_errors: "InputErrors" = aristaproto.message_field(2)
-    """
-    input_value_errors are errors for values assigned to fields in the input schema.
-    """
-
-    other_errors: "___fmp__.RepeatedString" = aristaproto.message_field(3)
-    """other_errors are other miscellaneous errors."""
-
-    input_warnings: "InputWarnings" = aristaproto.message_field(5)
-    """
-    input_warnings are warnings for values assigned to fields in the input schema.
-    """
-
-    hierarchy_errors: "HierarchyErrors" = aristaproto.message_field(6)
-    """hierarchy_errors are errors for hierarchy."""
-
-
-@dataclass(eq=False, repr=False)
-class InputValidationResults(aristaproto.Message):
-    """
-    InputValidationResults is a collection of InputValidationResult (one per studio).
-    """
-
-    values: Dict[str, "InputValidationResult"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is map from studio ID to InputValidationResult."""
-
-
-@dataclass(eq=False, repr=False)
-class TemplateError(aristaproto.Message):
-    """
-    TemplateError holds details for an error that occured while evaluating a studio
-    template against its inputs.
-    """
-
-    line_num: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_UINT32)
-    """line_num is the number of the line on which the error occurred."""
-
-    exception: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    exception is the type of the exception thrown during the script execution.
-    E.g., AssertionError, etc.
-    """
-
-    detail: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """detail holds the details of the exception. E.g., a full backtrace."""
-
-    exception_msg: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    exception_msg is the message of the exception thrown during the script execution.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TemplateErrors(aristaproto.Message):
-    """TemplateErrors is a list of TemplateError."""
-
-    values: List["TemplateError"] = aristaproto.message_field(1)
-    """values is a list of TemplateError."""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletBuildResult(aristaproto.Message):
-    """ConfigletBuildResult holds the result of a configlet build stage."""
-
-    template_errors: "TemplateErrors" = aristaproto.message_field(1)
-    """
-    template_errors are errors that occured during studio template evaluation.
-    """
-
-    generated_config: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    generated_config is the EOS CLI config that was generated from the stage.
-    """
-
-    other_error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """other_error is any other miscellaneous error."""
-
-    execution_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    execution_id is the unique ID for the execution of the template. This ID
-    can be used to retrieve logs generated by the template.
-    """
-
-    input_errors: "InputErrors" = aristaproto.message_field(5)
-    """
-    input_errors are errors in input fields that are raised by the template.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletBuildResults(aristaproto.Message):
-    """
-    ConfigletBuildResults is a collection of ConfigletBuildResult (one per studio).
-    """
-
-    values: Dict[str, "ConfigletBuildResult"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is a map from studio ID to ConfigletBuildResult."""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigValidationResult(aristaproto.Message):
-    """
-    ConfigValidationResult holds the result of a config validation stage.
-    """
-
-    summary: "__configstatus_v1__.ConfigSummary" = aristaproto.message_field(1)
-    """summary is a summary of the changes to the previous config."""
-
-    errors: "__configstatus_v1__.ConfigErrors" = aristaproto.message_field(2)
-    """errors are any errors detected in the generated config."""
-
-    warnings: "__configstatus_v1__.ConfigErrors" = aristaproto.message_field(3)
-    """warnings are any warnings about the generated config."""
-
-    config_sources: "__configstatus_v1__.ConfigSources" = aristaproto.message_field(4)
-    """config_sources identify the entities that generated the config."""
-
-    only_filter_inputs_changed: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
-    """
-    only_filter_inputs_changed indicates there is a change in filters
-    but no change in the config or no config sources found.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ImageValidationResult(aristaproto.Message):
-    """ImageValidationResult holds the result of an image validation stage."""
-
-    summary: "__imagestatus_v1__.ImageSummary" = aristaproto.message_field(1)
-    """summary is a summary of the changes to the previous image."""
-
-    errors: "__imagestatus_v1__.ImageErrors" = aristaproto.message_field(2)
-    """errors are any errors detected in the generated image."""
-
-    warnings: "__imagestatus_v1__.ImageWarnings" = aristaproto.message_field(3)
-    """warnings are any warnings about the generated image."""
-
-    image_input_error: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """image_input_error indicates any errors in image inputs."""
-
-    infos: "__imagestatus_v1__.ImageInfos" = aristaproto.message_field(5)
-    """infos are any info messages about the generated image."""
-
-    image_source: "__imagestatus_v1__.ImageSource" = aristaproto.enum_field(6)
-    """image_source identifies the source of the image."""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigSyncResult(aristaproto.Message):
-    """ConfigSyncResult holds the result of config sync operation."""
-
-    summary: "__configstatus_v1__.ConfigSummary" = aristaproto.message_field(1)
-    """summary is a summary of the changes to the running config."""
-
-    errors: "__configstatus_v1__.ConfigErrors" = aristaproto.message_field(2)
-    """errors are any errors detected during sync."""
-
-    config_sources: "__configstatus_v1__.ConfigSources" = aristaproto.message_field(3)
-    """
-    config_sources identify the entities that generated the designed config.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class BuildStageState(aristaproto.Message):
-    """BuildStageState holds the state per build stage."""
-
-    values: Dict[str, "BuildState"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_ENUM)
-    """
-    values is a map from build stage to build state.
-    The possible keys to this map are BUILD_STAGE_UNSPECIFIED,
-    BUILD_STAGE_INPUT_VALIDATION, BUILD_STAGE_CONFIGLET_BUILD,
-    BUILD_STAGE_CONFIG_VALIDATION and BUILD_STAGE_IMAGE_VALIDATION.
-    """
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "WORKSPACE_STATE_UNSPECIFIED",
+            1: "WORKSPACE_STATE_PENDING",
+            2: "WORKSPACE_STATE_SUBMITTED",
+            3: "WORKSPACE_STATE_ABANDONED",
+            4: "WORKSPACE_STATE_CONFLICTS",
+            5: "WORKSPACE_STATE_ROLLED_BACK",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "WORKSPACE_STATE_UNSPECIFIED": 0,
+            "WORKSPACE_STATE_PENDING": 1,
+            "WORKSPACE_STATE_SUBMITTED": 2,
+            "WORKSPACE_STATE_ABANDONED": 3,
+            "WORKSPACE_STATE_CONFLICTS": 4,
+            "WORKSPACE_STATE_ROLLED_BACK": 5,
+        }
 
 
 @dataclass(eq=False, repr=False)
@@ -1135,234 +1105,175 @@ class AuthzResult(aristaproto.Message):
     AuthzResult has the result of the authorization check for workspace changes.
     """
 
-    has_unauthorized_tag_change: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
+    has_unauthorized_tag_change: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     has_unauthorized_tag_change is true when there is a tag assignment that results
     in change in permissions and the subject is not authorized to do it.
     """
 
-    has_unauthorized_device_change: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
+    has_unauthorized_device_change: "bool | None" = aristaproto.field(
+        2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True
+    )
     """
     has_unauthorized_device_change is true when there is atleast 1 device
     for which the subject doesn't have provision permission.
     """
 
-    error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     error is an error message that is set when either of the above values
     are true.
     """
 
 
-@dataclass(eq=False, repr=False)
-class StudioBuildDetails(aristaproto.Message):
-    """
-    StudioBuildDetails is a collection of per studio results that are not specific to a device.
-    """
-
-    input_validation_results: "InputValidationResults" = aristaproto.message_field(1)
-    """
-    input_validation_results is a map from studio ID to InputValidationResult.
-    """
+default_message_pool.register_message("arista.workspace.v1", "AuthzResult", AuthzResult)
 
 
 @dataclass(eq=False, repr=False)
-class HierarchyBuildStatus(aristaproto.Message):
+class BuildStageState(aristaproto.Message):
     """
-    HierarchyBuildStatus reference to the hierarchy build part of this workspace build
-    """
-
-    build_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    build_id is the reference to the hierarchy build.
-    It uniquely identifies the hierarchy build
+    BuildStageState holds the state per build stage.
     """
 
-    build_status: "HierarchyBuildStatusCode" = aristaproto.enum_field(2)
-    """build_status ststus of the build on its completion"""
+    values: "dict[str, BuildState]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_ENUM))
+    """
+    values is a map from build stage to build state.
+    The possible keys to this map are BUILD_STAGE_UNSPECIFIED,
+    BUILD_STAGE_INPUT_VALIDATION, BUILD_STAGE_CONFIGLET_BUILD,
+    BUILD_STAGE_CONFIG_VALIDATION and BUILD_STAGE_IMAGE_VALIDATION.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "BuildStageState", BuildStageState)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceBuildKey(aristaproto.Message):
-    """WorkspaceBuildKey uniquely identifies a build for a workspace."""
+class ConfigletBuildResult(aristaproto.Message):
+    """
+    ConfigletBuildResult holds the result of a configlet build stage.
+    """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the ID of the workspace."""
+    template_errors: "TemplateErrors | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    template_errors are errors that occured during studio template evaluation.
+    """
 
-    build_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """build_id is the ID of the build."""
+    generated_config: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    generated_config is the EOS CLI config that was generated from the stage.
+    """
+
+    other_error: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    other_error is any other miscellaneous error.
+    """
+
+    execution_id: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    execution_id is the unique ID for the execution of the template. This ID
+    can be used to retrieve logs generated by the template.
+    """
+
+    input_errors: "InputErrors | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_errors are errors in input fields that are raised by the template.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "ConfigletBuildResult", ConfigletBuildResult)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceBuild(aristaproto.Message):
-    """WorkspaceBuild holds the details for a build of a workspace."""
-
-    key: "WorkspaceBuildKey" = aristaproto.message_field(1)
-    """key identifies the build."""
-
-    state: "BuildState" = aristaproto.enum_field(2)
-    """state is the execution status of the build."""
-
-    error: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+class ConfigletBuildResults(aristaproto.Message):
     """
-    error is an error message that is set if the build fails early before
-    the per-device build result is computed.
+    ConfigletBuildResults is a collection of ConfigletBuildResult (one per studio).
     """
 
-    built_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """built_by is the details of subject who built the workspace."""
-
-    authz_result: "AuthzResult" = aristaproto.message_field(6)
-    """authz_result has the result of authorization check."""
-
-    studio_build_details: "StudioBuildDetails" = aristaproto.message_field(7)
+    values: "dict[str, ConfigletBuildResult]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
     """
-    studio_build_details has per studio results that are not specific to a device.
+    values is a map from studio ID to ConfigletBuildResult.
     """
 
-    hierarchy_build_status: "HierarchyBuildStatus" = aristaproto.message_field(8)
-    """
-    hierarchy_build_status from the hierarchy build part of this workspace build
-    """
+
+default_message_pool.register_message("arista.workspace.v1", "ConfigletBuildResults", ConfigletBuildResults)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsKey(aristaproto.Message):
+class ConfigSyncResult(aristaproto.Message):
     """
-    WorkspaceBuildDetailsKey uniquely identifies a build for a particular
-    device in a workspace.
+    ConfigSyncResult holds the result of config sync operation.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the ID of the workspace."""
+    summary: "__configstatus__v1__.ConfigSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    summary is a summary of the changes to the running config.
+    """
 
-    build_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """build_id is the ID of the build."""
+    errors: "__configstatus__v1__.ConfigErrors | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    errors are any errors detected during sync.
+    """
 
-    device_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """device_id is the ID of the device."""
+    config_sources: "__configstatus__v1__.ConfigSources | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    config_sources identify the entities that generated the designed config.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "ConfigSyncResult", ConfigSyncResult)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceBuildDetails(aristaproto.Message):
+class ConfigValidationResult(aristaproto.Message):
     """
-    WorkspaceBuildDetails holds the details for a build of a device in a workspace.
-    """
-
-    key: "WorkspaceBuildDetailsKey" = aristaproto.message_field(1)
-    """key identifies the build."""
-
-    state: "BuildState" = aristaproto.enum_field(2)
-    """state is the execution status of the build."""
-
-    stage: "BuildStage" = aristaproto.enum_field(3)
-    """stage is the stage of the build."""
-
-    input_validation_results: "InputValidationResults" = aristaproto.message_field(4)
-    """
-    input_validation_results are the results of the input validation stage.
+    ConfigValidationResult holds the result of a config validation stage.
     """
 
-    configlet_build_results: "ConfigletBuildResults" = aristaproto.message_field(5)
+    summary: "__configstatus__v1__.ConfigSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    configlet_build_results are the results of the configlet build stage.
-    """
-
-    config_validation_result: "ConfigValidationResult" = aristaproto.message_field(6)
-    """
-    config_validation_result is the result of the config validation stage.
+    summary is a summary of the changes to the previous config.
     """
 
-    image_validation_result: "ImageValidationResult" = aristaproto.message_field(7)
-    """image_validation_result is the result of the image validation stage."""
-
-    config_validation_skip_cause: "ConfigValidationSkipCause" = aristaproto.enum_field(8)
+    errors: "__configstatus__v1__.ConfigErrors | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    config_validation_skip_cause is the reason, if any, that the config
-    validation stage was skipped.
+    errors are any errors detected in the generated config.
     """
 
-    image_validation_skip_cause: "ImageValidationSkipCause" = aristaproto.enum_field(9)
+    warnings: "__configstatus__v1__.ConfigErrors | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    image_validation_skip_cause is the reason, if any, that the image
-    validation stage was skipped.
+    warnings are any warnings about the generated config.
     """
 
-    build_stage_state: "BuildStageState" = aristaproto.message_field(10)
-    """build_stage_state is the state for each build stage."""
+    config_sources: "__configstatus__v1__.ConfigSources | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    config_sources identify the entities that generated the config.
+    """
 
-    authz_status: "DeviceAuthzStatus" = aristaproto.enum_field(11)
-    """authz_status is the status of provision permission for the device."""
+    only_filter_inputs_changed: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    only_filter_inputs_changed indicates there is a change in filters
+    but no change in the config or no config sources found.
+    """
 
-    config_sync_result: "ConfigSyncResult" = aristaproto.message_field(12)
-    """config_sync_result is the result of the config sync."""
 
-    config_sync_skip_cause: "ConfigSyncSkipCause" = aristaproto.enum_field(13)
-    """config_sync_skip_cause is the reason for skipping the config sync."""
+default_message_pool.register_message("arista.workspace.v1", "ConfigValidationResult", ConfigValidationResult)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncKey(aristaproto.Message):
+class DiffEntries(aristaproto.Message):
     """
-    WorkspaceSyncKey uniquely identifies sync operations to be performed
-    in a workspace.
-    """
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the ID of the workspace."""
-
-    sync_operation: "SyncOperation" = aristaproto.enum_field(2)
-    """sync_operation is type of sync operation to be performed on devices."""
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceSyncConfig(aristaproto.Message):
-    """
-    WorkspaceSyncConfig holds the list of devices to be synced in workspace.
+    DiffEntries is a container for a list of individual diff entries.
     """
 
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
+    values: "list[DiffEntry]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    key uniquely identifies sync operations to be performed in workspace.
-    """
-
-    device_ids: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """device_ids is the list of device Ids to be synced in the workspace."""
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationKey(aristaproto.Message):
-    """
-    StudioGeneratedConfigurationKey identifies a generated config, either mainline or one unique to
-    a workspace and build. To retrieve config from mainline, use \"\" for workspace_id and build_id.
+    values contains a list of DiffEntry messages, each representing a change.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the ID of the workspace."""
 
-    build_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """build_id is the ID of the build."""
-
-    device_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """device_id is the ID of the device."""
-
-    studio: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """studio is the ID of the studio."""
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfiguration(aristaproto.Message):
-    """
-    StudioGeneratedConfiguration returns the configuration generated by a studio for a given device.
-    """
-
-    key: "StudioGeneratedConfigurationKey" = aristaproto.message_field(1)
-    """key identifies the config."""
-
-    generated_config: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    generated_config is the switch configuration generated by the studio.
-    """
+default_message_pool.register_message("arista.workspace.v1", "DiffEntries", DiffEntries)
 
 
 @dataclass(eq=False, repr=False)
@@ -1371,32 +1282,38 @@ class DiffEntry(aristaproto.Message):
     DiffEntry represents a change detected between two versions of an entity.
     """
 
-    op: "DiffOp" = aristaproto.enum_field(1)
-    """op is the type of diff operation."""
+    op: "DiffOp" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
+    """
+    op is the type of diff operation.
+    """
 
-    path: "___fmp__.RepeatedString" = aristaproto.message_field(2)
+    path: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     path to the changed field or attribute, represented as a sequence of field names or indices.
     """
 
-    value_a: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """value_a is the value from workspace_a."""
+    value_a: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value_a is the value from workspace_a.
+    """
 
-    value_b: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """value_b is the value from workspace_b."""
+    value_b: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value_b is the value from workspace_b.
+    """
 
-    index_b: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_UINT32)
+    index_b: "int | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     index_b is the new position of an array element in workspace_b (only for MOVE).
     MOVE represents relocating a single element while preserving
     the relative order of all others. Detected using LCS.
     Example:
-      workspace_a: users = [\"u1\",\"u2\",\"u3\"]
-      workspace_b: users = [\"u2\",\"u1\",\"u3\"]
-      DiffEntry for \"u2\": path = [\"1\"], op = MOVE, index_b = 0
+      workspace_a: users = ["u1","u2","u3"]
+      workspace_b: users = ["u2","u1","u3"]
+      DiffEntry for "u2": path = ["1"], op = MOVE, index_b = 0
     """
 
-    key_path: "___fmp__.RepeatedString" = aristaproto.message_field(6)
+    key_path: "___fmp__.RepeatedString | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
     """
     key_path is used to locate list elements when they have
     stable keys instead of numeric indices.
@@ -1408,29 +1325,38 @@ class DiffEntry(aristaproto.Message):
     Example:
 
     ```
-    users = [{\"id\":\"u1\",\"name\":\"Alice\"}]
-    key_path = [\"users\", \"[id=u1]\", \"name\"]
-    path     = [\"users\", \"0\", \"name\"]
+    users = [{"id":"u1","name":"Alice"}]
+    key_path = ["users", "[id=u1]", "name"]
+    path     = ["users", "0", "name"]
     ```
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "DiffEntry", DiffEntry)
+
+
 @dataclass(eq=False, repr=False)
 class DiffKey(aristaproto.Message):
-    """DiffKey represents the key that identifies a diff for an entity."""
+    """
+    DiffKey represents the key that identifies a diff for an entity.
+    """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the unique ID of the workspace."""
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the unique ID of the workspace.
+    """
 
-    diff_type: "DiffType" = aristaproto.enum_field(2)
+    diff_type: "DiffType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: DiffType(0))
     """
     diff_type categorizes a diff by its purpose, a rebase or modification.
     """
 
-    entity_type: "EntityType" = aristaproto.enum_field(3)
-    """entity_type is the type of entity being compared."""
+    entity_type: "EntityType" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: EntityType(0))
+    """
+    entity_type is the type of entity being compared.
+    """
 
-    entity_ids: "___fmp__.RepeatedString" = aristaproto.message_field(4)
+    entity_ids: "___fmp__.RepeatedString | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
     """
     entity_ids uniquely identifies the entity in the workspace. It is represented
     by [key1, value1, key2, value2, ...]
@@ -1461,46 +1387,1727 @@ class DiffKey(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class DiffEntries(aristaproto.Message):
-    """DiffEntries is a container for a list of individual diff entries."""
-
-    values: List["DiffEntry"] = aristaproto.message_field(1)
-    """
-    values contains a list of DiffEntry messages, each representing a change.
-    """
+default_message_pool.register_message("arista.workspace.v1", "DiffKey", DiffKey)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceDiffSet(aristaproto.Message):
-    """WorkspaceDiffSet represents diffs between two specific workspaces."""
-
-    workspace_a: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+class HierarchyBuildStatus(aristaproto.Message):
     """
-    workspace_a is the unique identifier for the first workspace being compared.
+    HierarchyBuildStatus reference to the hierarchy build part of this workspace build
     """
 
-    workspace_b: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    build_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    workspace_b is the unique identifier for the second workspace being compared.
+    build_id is the reference to the hierarchy build.
+    It uniquely identifies the hierarchy build
     """
 
-    entries: "DiffEntries" = aristaproto.message_field(3)
-    """entries indicates multiple entity diffs."""
+    build_status: "HierarchyBuildStatusCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: HierarchyBuildStatusCode(0))
+    """
+    build_status ststus of the build on its completion
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "HierarchyBuildStatus", HierarchyBuildStatus)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceDiffSets(aristaproto.Message):
+class HierarchyError(aristaproto.Message):
     """
-    WorkspaceDiffSets represents a collection of WorkspaceDiffSet messages,
-    allowing for the representation of diffs across multiple pairs of workspaces.
+    HierarchyError holds the details for a hierarchy
+    validation error.
     """
 
-    values: List["WorkspaceDiffSet"] = aristaproto.message_field(1)
+    message: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    values contains a list of WorkspaceDiffSet messages, each detailing the differences
-    between a pair of workspaces.
+    message is the error message.
     """
+
+    code: "HierarchyErrorCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: HierarchyErrorCode(0))
+    """
+    code is the error code of hierarchy error.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "HierarchyError", HierarchyError)
+
+
+@dataclass(eq=False, repr=False)
+class HierarchyErrors(aristaproto.Message):
+    """
+    HierarchyErrors is a list of HierarchyError.
+    """
+
+    values: "list[HierarchyError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of HierarchyError.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "HierarchyErrors", HierarchyErrors)
+
+
+@dataclass(eq=False, repr=False)
+class ImageValidationResult(aristaproto.Message):
+    """
+    ImageValidationResult holds the result of an image validation stage.
+    """
+
+    summary: "__imagestatus__v1__.ImageSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    summary is a summary of the changes to the previous image.
+    """
+
+    errors: "__imagestatus__v1__.ImageErrors | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    errors are any errors detected in the generated image.
+    """
+
+    warnings: "__imagestatus__v1__.ImageWarnings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    warnings are any warnings about the generated image.
+    """
+
+    image_input_error: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    image_input_error indicates any errors in image inputs.
+    """
+
+    infos: "__imagestatus__v1__.ImageInfos | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    infos are any info messages about the generated image.
+    """
+
+    image_source: "__imagestatus__v1__.ImageSource" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: __imagestatus__v1__.ImageSource(0))
+    """
+    image_source identifies the source of the image.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "ImageValidationResult", ImageValidationResult)
+
+
+@dataclass(eq=False, repr=False)
+class InputError(aristaproto.Message):
+    """
+    InputError holds the details for an error on a studio input field or value.
+    """
+
+    field_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    field_id is the ID of the input field.
+    """
+
+    path: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    path is the path leading up to the input field.
+    """
+
+    members: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    members are the members of the input field (if it is a group).
+    """
+
+    message: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    message is the error message.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputError", InputError)
+
+
+@dataclass(eq=False, repr=False)
+class InputErrors(aristaproto.Message):
+    """
+    InputErrors is a list of InputError.
+    """
+
+    values: "list[InputError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of InputError.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputErrors", InputErrors)
+
+
+@dataclass(eq=False, repr=False)
+class InputValidationResult(aristaproto.Message):
+    """
+    InputValidationResult holds the result of an input validation build stage.
+    """
+
+    input_schema_errors: "InputErrors | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_schema_errors are errors for fields in the input schema.
+    """
+
+    input_value_errors: "InputErrors | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_value_errors are errors for values assigned to fields in the input schema.
+    """
+
+    other_errors: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    other_errors are other miscellaneous errors.
+    """
+
+    input_warnings: "InputWarnings | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_warnings are warnings for values assigned to fields in the input schema.
+    """
+
+    hierarchy_errors: "HierarchyErrors | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    hierarchy_errors are errors for hierarchy.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputValidationResult", InputValidationResult)
+
+
+@dataclass(eq=False, repr=False)
+class InputValidationResults(aristaproto.Message):
+    """
+    InputValidationResults is a collection of InputValidationResult (one per studio).
+    """
+
+    values: "dict[str, InputValidationResult]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is map from studio ID to InputValidationResult.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputValidationResults", InputValidationResults)
+
+
+@dataclass(eq=False, repr=False)
+class InputWarning(aristaproto.Message):
+    """
+    InputWarning holds the details for a warning on a studio input field or value.
+    """
+
+    field_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    field_id is the ID of the input field.
+    """
+
+    path: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    path is the path leading up to the input field.
+    """
+
+    members: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    members are the members of the input field (if it is a group).
+    """
+
+    message: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    message is the warning message.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputWarning", InputWarning)
+
+
+@dataclass(eq=False, repr=False)
+class InputWarnings(aristaproto.Message):
+    """
+    InputWarnings is a list of InputWarning.
+    """
+
+    values: "list[InputWarning]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of InputWarning.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "InputWarnings", InputWarnings)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RequestParams(aristaproto.Message):
+    """
+    RequestParams define the parameters for a Request.
+    """
+
+    request_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    request_id is the unique ID of the request. This is used to identify
+    the Response for the request in Responses.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "RequestParams", RequestParams)
+
+
+@dataclass(eq=False, repr=False)
+class Response(aristaproto.Message):
+    """
+    Response is a response to a Request.
+    """
+
+    status: "ResponseStatus" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ResponseStatus(0))
+    """
+    status is the execution status of the response.
+    """
+
+    message: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    message is a string that provides more details about the response.
+    """
+
+    code: "ResponseCode" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: ResponseCode(0))
+    """
+    code is the code of the response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "Response", Response)
+
+
+@dataclass(eq=False, repr=False)
+class Responses(aristaproto.Message):
+    """
+    Responses is a collection of responses for completed requests.
+    """
+
+    values: "dict[str, Response]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE))
+    """
+    values is a map from request ID to Response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "Responses", Responses)
+
+
+@dataclass(eq=False, repr=False)
+class StudioBuildDetails(aristaproto.Message):
+    """
+    StudioBuildDetails is a collection of per studio results that are not specific to a device.
+    """
+
+    input_validation_results: "InputValidationResults | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_validation_results is a map from studio ID to InputValidationResult.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioBuildDetails", StudioBuildDetails)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfiguration(aristaproto.Message):
+    """
+    StudioGeneratedConfiguration returns the configuration generated by a studio for a given device.
+    """
+
+    key: "StudioGeneratedConfigurationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the config.
+    """
+
+    generated_config: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    generated_config is the switch configuration generated by the studio.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfiguration", StudioGeneratedConfiguration)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[StudioGeneratedConfiguration]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each StudioGeneratedConfiguration at end.
+        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
+      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
+        until end.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message(
+    "arista.workspace.v1", "StudioGeneratedConfigurationBatchedStreamRequest", StudioGeneratedConfigurationBatchedStreamRequest
+)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationBatchedStreamResponse(aristaproto.Message):
+    responses: "list[StudioGeneratedConfigurationStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message(
+    "arista.workspace.v1", "StudioGeneratedConfigurationBatchedStreamResponse", StudioGeneratedConfigurationBatchedStreamResponse
+)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationKey(aristaproto.Message):
+    """
+    StudioGeneratedConfigurationKey identifies a generated config, either mainline or one unique to
+    a workspace and build. To retrieve config from mainline, use "" for workspace_id and build_id.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of the workspace.
+    """
+
+    build_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    build_id is the ID of the build.
+    """
+
+    device_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the ID of the device.
+    """
+
+    studio: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    studio is the ID of the studio.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationKey", StudioGeneratedConfigurationKey)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationRequest(aristaproto.Message):
+    key: "StudioGeneratedConfigurationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a StudioGeneratedConfiguration instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationRequest", StudioGeneratedConfigurationRequest)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationResponse(aristaproto.Message):
+    value: "StudioGeneratedConfiguration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    StudioGeneratedConfiguration instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationResponse", StudioGeneratedConfigurationResponse)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationSomeRequest(aristaproto.Message):
+    keys: "list[StudioGeneratedConfigurationKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationSomeRequest", StudioGeneratedConfigurationSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationSomeResponse(aristaproto.Message):
+    value: "StudioGeneratedConfiguration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    StudioGeneratedConfiguration instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationSomeResponse", StudioGeneratedConfigurationSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[StudioGeneratedConfiguration]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each StudioGeneratedConfiguration at end.
+        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
+      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
+        until end.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationStreamRequest", StudioGeneratedConfigurationStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class StudioGeneratedConfigurationStreamResponse(aristaproto.Message):
+    value: "StudioGeneratedConfiguration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this StudioGeneratedConfiguration's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the StudioGeneratedConfiguration value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "StudioGeneratedConfigurationStreamResponse", StudioGeneratedConfigurationStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateError(aristaproto.Message):
+    """
+    TemplateError holds details for an error that occured while evaluating a studio
+    template against its inputs.
+    """
+
+    line_num: "int | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    line_num is the number of the line on which the error occurred.
+    """
+
+    exception: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    exception is the type of the exception thrown during the script execution.
+    E.g., AssertionError, etc.
+    """
+
+    detail: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    detail holds the details of the exception. E.g., a full backtrace.
+    """
+
+    exception_msg: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    exception_msg is the message of the exception thrown during the script execution.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "TemplateError", TemplateError)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateErrors(aristaproto.Message):
+    """
+    TemplateErrors is a list of TemplateError.
+    """
+
+    values: "list[TemplateError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of TemplateError.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "TemplateErrors", TemplateErrors)
+
+
+@dataclass(eq=False, repr=False)
+class Workspace(aristaproto.Message):
+    """
+    Workspace holds the status of a workspace.
+    """
+
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the workspace.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at indicates when the workspace was created.
+    """
+
+    created_by: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by indicates who created the workspace.
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at indicates when the workspace was last updated.
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by indicates who last updated the workspace.
+    """
+
+    state: "WorkspaceState" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: WorkspaceState(0))
+    """
+    state describes the status of the workspace.
+    """
+
+    last_build_id: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_build_id is the last build ID that was set in a WorkspaceBuild
+    for this workspace.
+    """
+
+    responses: "Responses | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    responses are the responses for all requests that have been executed
+    thusfar for this workspace.
+    """
+
+    cc_ids: "___fmp__.RepeatedString | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cc_ids are the IDs of any change controls that were created as a result
+    of submitting this workspace.
+    """
+
+    needs_build: "bool | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    needs_build indicates whether a rebuild of the workspace is necessary
+    in order to submit it.
+    """
+
+    last_rebased_at: "datetime.datetime | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_rebased_at indicates when the workspace was last rebased.
+    """
+
+    needs_rebase: "bool | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    needs_rebase indicates whether a rebase of the workspace is necessary
+    in order to submit it.
+    """
+
+    display_name: "str | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the user-defined name of the workspace.
+    """
+
+    description: "str | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a brief description of the workspace.
+    """
+
+    exclude_network_provisioning: "bool | None" = aristaproto.field(15, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    exclude_network_provisioning indicates whether the workspace is
+    configured to exclude Network Provisioning.
+    """
+
+    decommission_request_ids: "___fmp__.MapStringString | None" = aristaproto.field(16, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    decommission_request_ids provides, for each device staged for
+    decommission in this workspace, the corresponding request UUID passed
+    to inventory.v1.DeviceDecommissioningConfig. These request UUIDs can
+    be used to track the status using the inventory.v1.DeviceDecommissioning
+    resource.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "Workspace", Workspace)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Workspace]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Workspace at end.
+        * Each Workspace response is fully-specified (all fields set).
+      * start: Returns the state of each Workspace at start, followed by updates until now.
+        * Each Workspace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Workspace at start, followed by updates
+        until end.
+        * Each Workspace response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBatchedStreamRequest", WorkspaceBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBatchedStreamResponse(aristaproto.Message):
+    responses: "list[WorkspaceStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBatchedStreamResponse", WorkspaceBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuild(aristaproto.Message):
+    """
+    WorkspaceBuild holds the details for a build of a workspace.
+    """
+
+    key: "WorkspaceBuildKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the build.
+    """
+
+    state: "BuildState" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: BuildState(0))
+    """
+    state is the execution status of the build.
+    """
+
+    error: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error is an error message that is set if the build fails early before
+    the per-device build result is computed.
+    """
+
+    built_by: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    built_by is the details of subject who built the workspace.
+    """
+
+    authz_result: "AuthzResult | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    authz_result has the result of authorization check.
+    """
+
+    studio_build_details: "StudioBuildDetails | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    studio_build_details has per studio results that are not specific to a device.
+    """
+
+    hierarchy_build_status: "HierarchyBuildStatus | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    hierarchy_build_status from the hierarchy build part of this workspace build
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuild", WorkspaceBuild)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceBuild]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceBuild at end.
+        * Each WorkspaceBuild response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
+        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
+        until end.
+        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildBatchedStreamRequest", WorkspaceBuildBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildBatchedStreamResponse(aristaproto.Message):
+    responses: "list[WorkspaceBuildStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildBatchedStreamResponse", WorkspaceBuildBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetails(aristaproto.Message):
+    """
+    WorkspaceBuildDetails holds the details for a build of a device in a workspace.
+    """
+
+    key: "WorkspaceBuildDetailsKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the build.
+    """
+
+    state: "BuildState" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: BuildState(0))
+    """
+    state is the execution status of the build.
+    """
+
+    stage: "BuildStage" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: BuildStage(0))
+    """
+    stage is the stage of the build.
+    """
+
+    input_validation_results: "InputValidationResults | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    input_validation_results are the results of the input validation stage.
+    """
+
+    configlet_build_results: "ConfigletBuildResults | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    configlet_build_results are the results of the configlet build stage.
+    """
+
+    config_validation_result: "ConfigValidationResult | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    config_validation_result is the result of the config validation stage.
+    """
+
+    image_validation_result: "ImageValidationResult | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    image_validation_result is the result of the image validation stage.
+    """
+
+    config_validation_skip_cause: "ConfigValidationSkipCause" = aristaproto.field(
+        8, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigValidationSkipCause(0)
+    )
+    """
+    config_validation_skip_cause is the reason, if any, that the config
+    validation stage was skipped.
+    """
+
+    image_validation_skip_cause: "ImageValidationSkipCause" = aristaproto.field(9, aristaproto.TYPE_ENUM, default_factory=lambda: ImageValidationSkipCause(0))
+    """
+    image_validation_skip_cause is the reason, if any, that the image
+    validation stage was skipped.
+    """
+
+    build_stage_state: "BuildStageState | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    build_stage_state is the state for each build stage.
+    """
+
+    authz_status: "DeviceAuthzStatus" = aristaproto.field(11, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceAuthzStatus(0))
+    """
+    authz_status is the status of provision permission for the device.
+    """
+
+    config_sync_result: "ConfigSyncResult | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    config_sync_result is the result of the config sync.
+    """
+
+    config_sync_skip_cause: "ConfigSyncSkipCause" = aristaproto.field(13, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigSyncSkipCause(0))
+    """
+    config_sync_skip_cause is the reason for skipping the config sync.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetails", WorkspaceBuildDetails)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceBuildDetails]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceBuildDetails at end.
+        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
+        until end.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsBatchedStreamRequest", WorkspaceBuildDetailsBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsBatchedStreamResponse(aristaproto.Message):
+    responses: "list[WorkspaceBuildDetailsStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsBatchedStreamResponse", WorkspaceBuildDetailsBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsKey(aristaproto.Message):
+    """
+    WorkspaceBuildDetailsKey uniquely identifies a build for a particular
+    device in a workspace.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of the workspace.
+    """
+
+    build_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    build_id is the ID of the build.
+    """
+
+    device_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the ID of the device.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsKey", WorkspaceBuildDetailsKey)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsRequest(aristaproto.Message):
+    key: "WorkspaceBuildDetailsKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a WorkspaceBuildDetails instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsRequest", WorkspaceBuildDetailsRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsResponse(aristaproto.Message):
+    value: "WorkspaceBuildDetails | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceBuildDetails instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsResponse", WorkspaceBuildDetailsResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceBuildDetailsKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsSomeRequest", WorkspaceBuildDetailsSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsSomeResponse(aristaproto.Message):
+    value: "WorkspaceBuildDetails | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceBuildDetails instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsSomeResponse", WorkspaceBuildDetailsSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceBuildDetails]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceBuildDetails at end.
+        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
+        until end.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsStreamRequest", WorkspaceBuildDetailsStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsStreamResponse(aristaproto.Message):
+    value: "WorkspaceBuildDetails | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this WorkspaceBuildDetails's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the WorkspaceBuildDetails value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildDetailsStreamResponse", WorkspaceBuildDetailsStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildKey(aristaproto.Message):
+    """
+    WorkspaceBuildKey uniquely identifies a build for a workspace.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of the workspace.
+    """
+
+    build_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    build_id is the ID of the build.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildKey", WorkspaceBuildKey)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildRequest(aristaproto.Message):
+    key: "WorkspaceBuildKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a WorkspaceBuild instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildRequest", WorkspaceBuildRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildResponse(aristaproto.Message):
+    value: "WorkspaceBuild | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceBuild instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildResponse", WorkspaceBuildResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceBuildKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildSomeRequest", WorkspaceBuildSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildSomeResponse(aristaproto.Message):
+    value: "WorkspaceBuild | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceBuild instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildSomeResponse", WorkspaceBuildSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceBuild]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceBuild at end.
+        * Each WorkspaceBuild response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
+        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
+        until end.
+        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildStreamRequest", WorkspaceBuildStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildStreamResponse(aristaproto.Message):
+    value: "WorkspaceBuild | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this WorkspaceBuild's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the WorkspaceBuild value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceBuildStreamResponse", WorkspaceBuildStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfig(aristaproto.Message):
+    """
+    WorkspaceConfig holds the configuration of a workspace.
+    """
+
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the workspace.
+    """
+
+    display_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the user-defined name of the workspace.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a brief description of the workspace.
+    """
+
+    request: "Request" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: Request(0))
+    """
+    request (if not REQUEST_UNSPECIFIED) kicks off an asynchronous operation
+    on the workspace.
+    """
+
+    request_params: "RequestParams | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    request_params specify the parameters for `request`.
+    """
+
+    exclude_network_provisioning: "bool | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    exclude_network_provisioning is a flag used to manage the migration
+    from Network Provisioning to Studios. When set to true, it prevents Network
+    Provisioning components from being included in the build process and in the
+    designed config generated upon submission.
+    This flag is set exclusively at the start of the migration process.
+    This field must not be set for workspaces in "Studios-only" mode or after a
+    migration is complete. Any attempt to submit a workspace where this field is
+    true in these states will result in a failure.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfig", WorkspaceConfig)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceConfig at end.
+        * Each WorkspaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
+        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
+        until end.
+        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigBatchedStreamRequest", WorkspaceConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[WorkspaceConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigBatchedStreamResponse", WorkspaceConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteAllRequest", WorkspaceConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "WorkspaceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the WorkspaceConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteAllResponse", WorkspaceConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteRequest(aristaproto.Message):
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which WorkspaceConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteRequest", WorkspaceConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteResponse(aristaproto.Message):
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted WorkspaceConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteResponse", WorkspaceConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of WorkspaceConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteSomeRequest", WorkspaceConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    WorkspaceConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigDeleteSomeResponse", WorkspaceConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigRequest(aristaproto.Message):
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a WorkspaceConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigRequest", WorkspaceConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigResponse(aristaproto.Message):
+    value: "WorkspaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigResponse", WorkspaceConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSetRequest(aristaproto.Message):
+    value: "WorkspaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    WorkspaceConfig carries the value to set into the datastore.
+    See the documentation on the WorkspaceConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSetRequest", WorkspaceConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSetResponse(aristaproto.Message):
+    value: "WorkspaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the WorkspaceConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSetResponse", WorkspaceConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSetSomeRequest(aristaproto.Message):
+    values: "list[WorkspaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of WorkspaceConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSetSomeRequest", WorkspaceConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSetSomeResponse(aristaproto.Message):
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSetSomeResponse", WorkspaceConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSomeRequest", WorkspaceConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSomeResponse(aristaproto.Message):
+    value: "WorkspaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigSomeResponse", WorkspaceConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceConfig at end.
+        * Each WorkspaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
+        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
+        until end.
+        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigStreamRequest", WorkspaceConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigStreamResponse(aristaproto.Message):
+    value: "WorkspaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this WorkspaceConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the WorkspaceConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceConfigStreamResponse", WorkspaceConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -1510,7 +3117,7 @@ class WorkspaceDiffs(aristaproto.Message):
     workspace of a given type.
     """
 
-    key: "DiffKey" = aristaproto.message_field(1)
+    key: "DiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     key uniquely identifies this particular collection of diffs.
     It sets the primary context, indicating which workspace
@@ -1519,14 +3126,14 @@ class WorkspaceDiffs(aristaproto.Message):
     that is primarily being analyzed.
     """
 
-    diffs: "WorkspaceDiffSets" = aristaproto.message_field(2)
+    diffs: "WorkspaceDiffSets | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     diffs contains a collection of comparisons between pairs of workspaces.
     Each entry within 'values' in WorkspaceDiffSets defines a specific pair
     of workspaces being compared:
-    'workspace_a' typically represents the \"source\",
+    'workspace_a' typically represents the "source",
     e.g., the current mainline, or an older version.
-    'workspace_b' typically represents the \"target\",
+    'workspace_b' typically represents the "target",
     e.g., the current workspace
     identified in the top-level DiffKey.workspace_id.
     The differences described in 'entries' are calculated from
@@ -1534,95 +3141,12 @@ class WorkspaceDiffs(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffs", WorkspaceDiffs)
 
 
 @dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationRequest(aristaproto.Message):
-    key: "StudioGeneratedConfigurationKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a StudioGeneratedConfiguration instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationResponse(aristaproto.Message):
-    value: "StudioGeneratedConfiguration" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    StudioGeneratedConfiguration instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationSomeRequest(aristaproto.Message):
-    keys: List["StudioGeneratedConfigurationKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationSomeResponse(aristaproto.Message):
-    value: "StudioGeneratedConfiguration" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    StudioGeneratedConfiguration instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["StudioGeneratedConfiguration"] = aristaproto.message_field(1)
+class WorkspaceDiffsBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceDiffs]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1631,76 +3155,24 @@ class StudioGeneratedConfigurationStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each StudioGeneratedConfiguration at end.
-        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
-      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
-        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
+      * end: Returns the state of each WorkspaceDiffs at end.
+        * Each WorkspaceDiffs response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
+        * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
         until end.
-        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
+        * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
           be partial.
     """
 
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationStreamResponse(aristaproto.Message):
-    value: "StudioGeneratedConfiguration" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this StudioGeneratedConfiguration's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the StudioGeneratedConfiguration value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["StudioGeneratedConfiguration"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each StudioGeneratedConfiguration at end.
-        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
-      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
-        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
-        until end.
-        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1709,9 +3181,12 @@ class StudioGeneratedConfigurationBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsBatchedStreamRequest", WorkspaceDiffsBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class StudioGeneratedConfigurationBatchedStreamResponse(aristaproto.Message):
-    responses: List["StudioGeneratedConfigurationStreamResponse"] = aristaproto.message_field(1)
+class WorkspaceDiffsBatchedStreamResponse(aristaproto.Message):
+    responses: "list[WorkspaceDiffsStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1719,792 +3194,72 @@ class StudioGeneratedConfigurationBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class WorkspaceRequest(aristaproto.Message):
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Workspace instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsBatchedStreamResponse", WorkspaceDiffsBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceResponse(aristaproto.Message):
-    value: "Workspace" = aristaproto.message_field(1)
+class WorkspaceDiffSet(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    WorkspaceDiffSet represents diffs between two specific workspaces.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    workspace_a: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Workspace instance in this response.
+    workspace_a is the unique identifier for the first workspace being compared.
+    """
+
+    workspace_b: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_b is the unique identifier for the second workspace being compared.
+    """
+
+    entries: "DiffEntries | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    entries indicates multiple entity diffs.
     """
 
 
-@dataclass(eq=False, repr=False)
-class WorkspaceSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffSet", WorkspaceDiffSet)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSomeResponse(aristaproto.Message):
-    value: "Workspace" = aristaproto.message_field(1)
+class WorkspaceDiffSets(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    WorkspaceDiffSets represents a collection of WorkspaceDiffSet messages,
+    allowing for the representation of diffs across multiple pairs of workspaces.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    values: "list[WorkspaceDiffSet]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
+    values contains a list of WorkspaceDiffSet messages, each detailing the differences
+    between a pair of workspaces.
     """
 
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Workspace instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Workspace"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Workspace at end.
-        * Each Workspace response is fully-specified (all fields set).
-      * start: Returns the state of each Workspace at start, followed by updates until now.
-        * Each Workspace response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Workspace at start, followed by updates
-        until end.
-        * Each Workspace response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceStreamResponse(aristaproto.Message):
-    value: "Workspace" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Workspace's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Workspace value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Workspace"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Workspace at end.
-        * Each Workspace response is fully-specified (all fields set).
-      * start: Returns the state of each Workspace at start, followed by updates until now.
-        * Each Workspace response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Workspace at start, followed by updates
-        until end.
-        * Each Workspace response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildRequest(aristaproto.Message):
-    key: "WorkspaceBuildKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a WorkspaceBuild instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildResponse(aristaproto.Message):
-    value: "WorkspaceBuild" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceBuild instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceBuildKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildSomeResponse(aristaproto.Message):
-    value: "WorkspaceBuild" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceBuild instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceBuild"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceBuild at end.
-        * Each WorkspaceBuild response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
-        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
-        until end.
-        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildStreamResponse(aristaproto.Message):
-    value: "WorkspaceBuild" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this WorkspaceBuild's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the WorkspaceBuild value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceBuild"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceBuild at end.
-        * Each WorkspaceBuild response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
-        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
-        until end.
-        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceBuildStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsRequest(aristaproto.Message):
-    key: "WorkspaceBuildDetailsKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a WorkspaceBuildDetails instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsResponse(aristaproto.Message):
-    value: "WorkspaceBuildDetails" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceBuildDetails instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceBuildDetailsKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsSomeResponse(aristaproto.Message):
-    value: "WorkspaceBuildDetails" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceBuildDetails instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceBuildDetails"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceBuildDetails at end.
-        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
-        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
-        until end.
-        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsStreamResponse(aristaproto.Message):
-    value: "WorkspaceBuildDetails" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this WorkspaceBuildDetails's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the WorkspaceBuildDetails value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceBuildDetails"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceBuildDetails at end.
-        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
-        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
-        until end.
-        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceBuildDetailsBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceBuildDetailsStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigRequest(aristaproto.Message):
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a WorkspaceConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigResponse(aristaproto.Message):
-    value: "WorkspaceConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSomeResponse(aristaproto.Message):
-    value: "WorkspaceConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceConfig at end.
-        * Each WorkspaceConfig response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
-        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
-        until end.
-        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigStreamResponse(aristaproto.Message):
-    value: "WorkspaceConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this WorkspaceConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the WorkspaceConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceConfig at end.
-        * Each WorkspaceConfig response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
-        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
-        until end.
-        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSetRequest(aristaproto.Message):
-    value: "WorkspaceConfig" = aristaproto.message_field(1)
-    """
-    WorkspaceConfig carries the value to set into the datastore.
-    See the documentation on the WorkspaceConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSetResponse(aristaproto.Message):
-    value: "WorkspaceConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the WorkspaceConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSetSomeRequest(aristaproto.Message):
-    values: List["WorkspaceConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of WorkspaceConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigSetSomeResponse(aristaproto.Message):
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteRequest(aristaproto.Message):
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key indicates which WorkspaceConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteResponse(aristaproto.Message):
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted WorkspaceConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceKey"] = aristaproto.message_field(1)
-    """key contains a list of WorkspaceConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    WorkspaceConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WorkspaceConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "WorkspaceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the WorkspaceConfig instance that failed to be deleted.
-    """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffSets", WorkspaceDiffSets)
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsRequest(aristaproto.Message):
-    key: "DiffKey" = aristaproto.message_field(1)
+    key: "DiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a WorkspaceDiffs instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsRequest", WorkspaceDiffsRequest)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsResponse(aristaproto.Message):
-    value: "WorkspaceDiffs" = aristaproto.message_field(1)
+    value: "WorkspaceDiffs | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2512,26 +3267,33 @@ class WorkspaceDiffsResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     WorkspaceDiffs instance in this response.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsResponse", WorkspaceDiffsResponse)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsSomeRequest(aristaproto.Message):
-    keys: List["DiffKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[DiffKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsSomeRequest", WorkspaceDiffsSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsSomeResponse(aristaproto.Message):
-    value: "WorkspaceDiffs" = aristaproto.message_field(1)
+    value: "WorkspaceDiffs | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2539,22 +3301,25 @@ class WorkspaceDiffsSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     WorkspaceDiffs instance in this response.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsSomeResponse", WorkspaceDiffsSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceDiffs"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[WorkspaceDiffs]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -2563,7 +3328,7 @@ class WorkspaceDiffsStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2581,19 +3346,24 @@ class WorkspaceDiffsStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsStreamRequest", WorkspaceDiffsStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceDiffsStreamResponse(aristaproto.Message):
-    value: "WorkspaceDiffs" = aristaproto.message_field(1)
+    value: "WorkspaceDiffs | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this WorkspaceDiffs's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this WorkspaceDiffs's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the WorkspaceDiffs value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -2602,71 +3372,45 @@ class WorkspaceDiffsStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class WorkspaceDiffsBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceDiffs"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each WorkspaceDiffs at end.
-        * Each WorkspaceDiffs response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
-        * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
-        until end.
-        * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceDiffsStreamResponse", WorkspaceDiffsStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceDiffsBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceDiffsStreamResponse"] = aristaproto.message_field(1)
+class WorkspaceKey(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    WorkspaceKey uniquely identifies a workspace.
     """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the unique ID of the workspace.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceKey", WorkspaceKey)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigRequest(aristaproto.Message):
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
+class WorkspaceRequest(aristaproto.Message):
+    key: "WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Key uniquely identifies a WorkspaceSyncConfig instance to retrieve.
+    Key uniquely identifies a Workspace instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceRequest", WorkspaceRequest)
+
+
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigResponse(aristaproto.Message):
-    value: "WorkspaceSyncConfig" = aristaproto.message_field(1)
+class WorkspaceResponse(aristaproto.Message):
+    value: "Workspace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2674,26 +3418,33 @@ class WorkspaceSyncConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceSyncConfig instance in this response.
+    Workspace instance in this response.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceResponse", WorkspaceResponse)
+
+
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceSyncKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class WorkspaceSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSomeRequest", WorkspaceSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSomeResponse(aristaproto.Message):
-    value: "WorkspaceSyncConfig" = aristaproto.message_field(1)
+class WorkspaceSomeResponse(aristaproto.Message):
+    value: "Workspace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2701,22 +3452,25 @@ class WorkspaceSyncConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    WorkspaceSyncConfig instance in this response.
+    Workspace instance in this response.
     """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSomeResponse", WorkspaceSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceSyncConfig"] = aristaproto.message_field(1)
+class WorkspaceStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Workspace]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -2725,50 +3479,76 @@ class WorkspaceSyncConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each WorkspaceSyncConfig at end.
-        * Each WorkspaceSyncConfig response is fully-specified (all fields set).
-      * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
-        * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
+      * end: Returns the state of each Workspace at end.
+        * Each Workspace response is fully-specified (all fields set).
+      * start: Returns the state of each Workspace at start, followed by updates until now.
+        * Each Workspace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Workspace at start, followed by updates
         until end.
-        * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
+        * Each Workspace response at start is fully-specified, but updates until end may
           be partial.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceStreamRequest", WorkspaceStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigStreamResponse(aristaproto.Message):
-    value: "WorkspaceSyncConfig" = aristaproto.message_field(1)
+class WorkspaceStreamResponse(aristaproto.Message):
+    value: "Workspace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Time holds the timestamp of this WorkspaceSyncConfig's last modification.
+    Time holds the timestamp of this Workspace's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
-    Operation indicates how the WorkspaceSyncConfig value in this response should be considered.
+    Operation indicates how the Workspace value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
     once all initial data is streamed and the client begins to receive modification updates,
     you should not see INITIAL again.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceStreamResponse", WorkspaceStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfig(aristaproto.Message):
+    """
+    WorkspaceSyncConfig holds the list of devices to be synced in workspace.
+    """
+
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies sync operations to be performed in workspace.
+    """
+
+    device_ids: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    device_ids is the list of device Ids to be synced in the workspace.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfig", WorkspaceSyncConfig)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceSyncConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceSyncConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[WorkspaceSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -2777,7 +3557,7 @@ class WorkspaceSyncConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2794,7 +3574,7 @@ class WorkspaceSyncConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -2803,9 +3583,12 @@ class WorkspaceSyncConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigBatchedStreamRequest", WorkspaceSyncConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceSyncConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceSyncConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[WorkspaceSyncConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -2813,67 +3596,69 @@ class WorkspaceSyncConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSetRequest(aristaproto.Message):
-    value: "WorkspaceSyncConfig" = aristaproto.message_field(1)
-    """
-    WorkspaceSyncConfig carries the value to set into the datastore.
-    See the documentation on the WorkspaceSyncConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigBatchedStreamResponse", WorkspaceSyncConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSetResponse(aristaproto.Message):
-    value: "WorkspaceSyncConfig" = aristaproto.message_field(1)
+class WorkspaceSyncConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the WorkspaceSyncConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteAllRequest", WorkspaceSyncConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSetSomeRequest(aristaproto.Message):
-    values: List["WorkspaceSyncConfig"] = aristaproto.message_field(1)
+class WorkspaceSyncConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of WorkspaceSyncConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "WorkspaceSyncKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the WorkspaceSyncConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigSetSomeResponse(aristaproto.Message):
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteAllResponse", WorkspaceSyncConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceSyncConfigDeleteRequest(aristaproto.Message):
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which WorkspaceSyncConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteRequest", WorkspaceSyncConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceSyncConfigDeleteResponse(aristaproto.Message):
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted WorkspaceSyncConfig instance."""
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted WorkspaceSyncConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -2883,10 +3668,18 @@ class WorkspaceSyncConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteResponse", WorkspaceSyncConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class WorkspaceSyncConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["WorkspaceSyncKey"] = aristaproto.message_field(1)
-    """key contains a list of WorkspaceSyncConfig keys to delete"""
+    keys: "list[WorkspaceSyncKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of WorkspaceSyncConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteSomeRequest", WorkspaceSyncConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -2895,2388 +3688,1615 @@ class WorkspaceSyncConfigDeleteSomeResponse(aristaproto.Message):
     WorkspaceSyncConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "WorkspaceSyncKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigDeleteSomeResponse", WorkspaceSyncConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["WorkspaceSyncConfig"] = aristaproto.message_field(1)
+class WorkspaceSyncConfigRequest(aristaproto.Message):
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    Key uniquely identifies a WorkspaceSyncConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigRequest", WorkspaceSyncConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigResponse(aristaproto.Message):
+    value: "WorkspaceSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceSyncConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigResponse", WorkspaceSyncConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSetRequest(aristaproto.Message):
+    value: "WorkspaceSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    WorkspaceSyncConfig carries the value to set into the datastore.
+    See the documentation on the WorkspaceSyncConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSetRequest", WorkspaceSyncConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSetResponse(aristaproto.Message):
+    value: "WorkspaceSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the WorkspaceSyncConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSetResponse", WorkspaceSyncConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSetSomeRequest(aristaproto.Message):
+    values: "list[WorkspaceSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of WorkspaceSyncConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSetSomeRequest", WorkspaceSyncConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSetSomeResponse(aristaproto.Message):
+    key: "WorkspaceSyncKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSetSomeResponse", WorkspaceSyncConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSomeRequest(aristaproto.Message):
+    keys: "list[WorkspaceSyncKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSomeRequest", WorkspaceSyncConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigSomeResponse(aristaproto.Message):
+    value: "WorkspaceSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceSyncConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigSomeResponse", WorkspaceSyncConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[WorkspaceSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each WorkspaceSyncConfig at end.
+        * Each WorkspaceSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
+        until end.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigStreamRequest", WorkspaceSyncConfigStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class WorkspaceSyncConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class WorkspaceSyncConfigStreamResponse(aristaproto.Message):
+    value: "WorkspaceSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "WorkspaceSyncKey" = aristaproto.message_field(3)
-    """
-    This is the key of the WorkspaceSyncConfig instance that failed to be deleted.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this WorkspaceSyncConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the WorkspaceSyncConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
 
-class StudioGeneratedConfigurationServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncConfigStreamResponse", WorkspaceSyncConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceSyncKey(aristaproto.Message):
+    """
+    WorkspaceSyncKey uniquely identifies sync operations to be performed
+    in a workspace.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of the workspace.
+    """
+
+    sync_operation: "SyncOperation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: SyncOperation(0))
+    """
+    sync_operation is type of sync operation to be performed on devices.
+    """
+
+
+default_message_pool.register_message("arista.workspace.v1", "WorkspaceSyncKey", WorkspaceSyncKey)
+
+
+class StudioGeneratedConfigurationServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        studio_generated_configuration_request: "StudioGeneratedConfigurationRequest",
+        message: "StudioGeneratedConfigurationRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "StudioGeneratedConfigurationResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/GetOne",
-            studio_generated_configuration_request,
+            message,
             StudioGeneratedConfigurationResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        studio_generated_configuration_some_request: "StudioGeneratedConfigurationSomeRequest",
+        message: "StudioGeneratedConfigurationSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[StudioGeneratedConfigurationSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/GetSome",
-            studio_generated_configuration_some_request,
+            message,
             StudioGeneratedConfigurationSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest",
+        message: "StudioGeneratedConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[StudioGeneratedConfigurationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/GetAll",
-            studio_generated_configuration_stream_request,
+            message,
             StudioGeneratedConfigurationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest",
+        message: "StudioGeneratedConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[StudioGeneratedConfigurationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/Subscribe",
-            studio_generated_configuration_stream_request,
+            message,
             StudioGeneratedConfigurationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest",
+        message: "StudioGeneratedConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/GetMeta",
-            studio_generated_configuration_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest",
+        message: "StudioGeneratedConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/SubscribeMeta",
-            studio_generated_configuration_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        studio_generated_configuration_batched_stream_request: "StudioGeneratedConfigurationBatchedStreamRequest",
+        message: "StudioGeneratedConfigurationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[StudioGeneratedConfigurationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/GetAllBatched",
-            studio_generated_configuration_batched_stream_request,
+            message,
             StudioGeneratedConfigurationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        studio_generated_configuration_batched_stream_request: "StudioGeneratedConfigurationBatchedStreamRequest",
+        message: "StudioGeneratedConfigurationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[StudioGeneratedConfigurationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.StudioGeneratedConfigurationService/SubscribeBatched",
-            studio_generated_configuration_batched_stream_request,
+            message,
             StudioGeneratedConfigurationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class WorkspaceServiceStub(aristaproto.ServiceStub):
+class WorkspaceBuildDetailsServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        workspace_request: "WorkspaceRequest",
+        message: "WorkspaceBuildDetailsRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "WorkspaceResponse":
-        return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceService/GetOne",
-            workspace_request,
-            WorkspaceResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        workspace_some_request: "WorkspaceSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/GetSome",
-            workspace_some_request,
-            WorkspaceSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        workspace_stream_request: "WorkspaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/GetAll",
-            workspace_stream_request,
-            WorkspaceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        workspace_stream_request: "WorkspaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/Subscribe",
-            workspace_stream_request,
-            WorkspaceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        workspace_stream_request: "WorkspaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceService/GetMeta",
-            workspace_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        workspace_stream_request: "WorkspaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/SubscribeMeta",
-            workspace_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        workspace_batched_stream_request: "WorkspaceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/GetAllBatched",
-            workspace_batched_stream_request,
-            WorkspaceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        workspace_batched_stream_request: "WorkspaceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceService/SubscribeBatched",
-            workspace_batched_stream_request,
-            WorkspaceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        workspace_build_request: "WorkspaceBuildRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "WorkspaceBuildResponse":
-        return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceBuildService/GetOne",
-            workspace_build_request,
-            WorkspaceBuildResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        workspace_build_some_request: "WorkspaceBuildSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBuildSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/GetSome",
-            workspace_build_some_request,
-            WorkspaceBuildSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        workspace_build_stream_request: "WorkspaceBuildStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBuildStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/GetAll",
-            workspace_build_stream_request,
-            WorkspaceBuildStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        workspace_build_stream_request: "WorkspaceBuildStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBuildStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/Subscribe",
-            workspace_build_stream_request,
-            WorkspaceBuildStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        workspace_build_stream_request: "WorkspaceBuildStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceBuildService/GetMeta",
-            workspace_build_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        workspace_build_stream_request: "WorkspaceBuildStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/SubscribeMeta",
-            workspace_build_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        workspace_build_batched_stream_request: "WorkspaceBuildBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBuildBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/GetAllBatched",
-            workspace_build_batched_stream_request,
-            WorkspaceBuildBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        workspace_build_batched_stream_request: "WorkspaceBuildBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceBuildBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceBuildService/SubscribeBatched",
-            workspace_build_batched_stream_request,
-            WorkspaceBuildBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        workspace_build_details_request: "WorkspaceBuildDetailsRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceBuildDetailsResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetOne",
-            workspace_build_details_request,
+            message,
             WorkspaceBuildDetailsResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        workspace_build_details_some_request: "WorkspaceBuildDetailsSomeRequest",
+        message: "WorkspaceBuildDetailsSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceBuildDetailsSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetSome",
-            workspace_build_details_some_request,
+            message,
             WorkspaceBuildDetailsSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        message: "WorkspaceBuildDetailsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceBuildDetailsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAll",
-            workspace_build_details_stream_request,
+            message,
             WorkspaceBuildDetailsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        message: "WorkspaceBuildDetailsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceBuildDetailsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/Subscribe",
-            workspace_build_details_stream_request,
+            message,
             WorkspaceBuildDetailsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        message: "WorkspaceBuildDetailsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetMeta",
-            workspace_build_details_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        message: "WorkspaceBuildDetailsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeMeta",
-            workspace_build_details_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        workspace_build_details_batched_stream_request: "WorkspaceBuildDetailsBatchedStreamRequest",
+        message: "WorkspaceBuildDetailsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceBuildDetailsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAllBatched",
-            workspace_build_details_batched_stream_request,
+            message,
             WorkspaceBuildDetailsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        workspace_build_details_batched_stream_request: "WorkspaceBuildDetailsBatchedStreamRequest",
+        message: "WorkspaceBuildDetailsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceBuildDetailsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeBatched",
-            workspace_build_details_batched_stream_request,
+            message,
             WorkspaceBuildDetailsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
+class WorkspaceBuildServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        workspace_config_request: "WorkspaceConfigRequest",
+        message: "WorkspaceBuildRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "WorkspaceBuildResponse":
+
+        return await self._unary_unary(
+            "/arista.workspace.v1.WorkspaceBuildService/GetOne",
+            message,
+            WorkspaceBuildResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "WorkspaceBuildSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBuildSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/GetSome",
+            message,
+            WorkspaceBuildSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "WorkspaceBuildStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBuildStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/GetAll",
+            message,
+            WorkspaceBuildStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "WorkspaceBuildStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBuildStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/Subscribe",
+            message,
+            WorkspaceBuildStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "WorkspaceBuildStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.workspace.v1.WorkspaceBuildService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "WorkspaceBuildStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "WorkspaceBuildBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBuildBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/GetAllBatched",
+            message,
+            WorkspaceBuildBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "WorkspaceBuildBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBuildBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildService/SubscribeBatched",
+            message,
+            WorkspaceBuildBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class WorkspaceConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "WorkspaceConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceConfigResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/GetOne",
-            workspace_config_request,
+            message,
             WorkspaceConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        workspace_config_some_request: "WorkspaceConfigSomeRequest",
+        message: "WorkspaceConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetSome",
-            workspace_config_some_request,
+            message,
             WorkspaceConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        workspace_config_stream_request: "WorkspaceConfigStreamRequest",
+        message: "WorkspaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetAll",
-            workspace_config_stream_request,
+            message,
             WorkspaceConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        workspace_config_stream_request: "WorkspaceConfigStreamRequest",
+        message: "WorkspaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/Subscribe",
-            workspace_config_stream_request,
+            message,
             WorkspaceConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        workspace_config_stream_request: "WorkspaceConfigStreamRequest",
+        message: "WorkspaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/GetMeta",
-            workspace_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        workspace_config_stream_request: "WorkspaceConfigStreamRequest",
+        message: "WorkspaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SubscribeMeta",
-            workspace_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        workspace_config_set_request: "WorkspaceConfigSetRequest",
+        message: "WorkspaceConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/Set",
-            workspace_config_set_request,
+            message,
             WorkspaceConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest",
+        message: "WorkspaceConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SetSome",
-            workspace_config_set_some_request,
+            message,
             WorkspaceConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        workspace_config_delete_request: "WorkspaceConfigDeleteRequest",
+        message: "WorkspaceConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/Delete",
-            workspace_config_delete_request,
+            message,
             WorkspaceConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        workspace_config_delete_some_request: "WorkspaceConfigDeleteSomeRequest",
+        message: "WorkspaceConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/DeleteSome",
-            workspace_config_delete_some_request,
+            message,
             WorkspaceConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest",
+        message: "WorkspaceConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/DeleteAll",
-            workspace_config_delete_all_request,
+            message,
             WorkspaceConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        workspace_config_batched_stream_request: "WorkspaceConfigBatchedStreamRequest",
+        message: "WorkspaceConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetAllBatched",
-            workspace_config_batched_stream_request,
+            message,
             WorkspaceConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        workspace_config_batched_stream_request: "WorkspaceConfigBatchedStreamRequest",
+        message: "WorkspaceConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SubscribeBatched",
-            workspace_config_batched_stream_request,
+            message,
             WorkspaceConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class WorkspaceDiffsServiceStub(aristaproto.ServiceStub):
+class WorkspaceDiffsServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        workspace_diffs_request: "WorkspaceDiffsRequest",
+        message: "WorkspaceDiffsRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceDiffsResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceDiffsService/GetOne",
-            workspace_diffs_request,
+            message,
             WorkspaceDiffsResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        workspace_diffs_some_request: "WorkspaceDiffsSomeRequest",
+        message: "WorkspaceDiffsSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceDiffsSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/GetSome",
-            workspace_diffs_some_request,
+            message,
             WorkspaceDiffsSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest",
+        message: "WorkspaceDiffsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceDiffsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/GetAll",
-            workspace_diffs_stream_request,
+            message,
             WorkspaceDiffsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest",
+        message: "WorkspaceDiffsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceDiffsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/Subscribe",
-            workspace_diffs_stream_request,
+            message,
             WorkspaceDiffsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest",
+        message: "WorkspaceDiffsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceDiffsService/GetMeta",
-            workspace_diffs_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest",
+        message: "WorkspaceDiffsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/SubscribeMeta",
-            workspace_diffs_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        workspace_diffs_batched_stream_request: "WorkspaceDiffsBatchedStreamRequest",
+        message: "WorkspaceDiffsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceDiffsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/GetAllBatched",
-            workspace_diffs_batched_stream_request,
+            message,
             WorkspaceDiffsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        workspace_diffs_batched_stream_request: "WorkspaceDiffsBatchedStreamRequest",
+        message: "WorkspaceDiffsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceDiffsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceDiffsService/SubscribeBatched",
-            workspace_diffs_batched_stream_request,
+            message,
             WorkspaceDiffsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class WorkspaceSyncConfigServiceStub(aristaproto.ServiceStub):
+class WorkspaceServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        workspace_sync_config_request: "WorkspaceSyncConfigRequest",
+        message: "WorkspaceRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "WorkspaceSyncConfigResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "WorkspaceResponse":
+
         return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetOne",
-            workspace_sync_config_request,
-            WorkspaceSyncConfigResponse,
+            "/arista.workspace.v1.WorkspaceService/GetOne",
+            message,
+            WorkspaceResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        workspace_sync_config_some_request: "WorkspaceSyncConfigSomeRequest",
+        message: "WorkspaceSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceSyncConfigSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetSome",
-            workspace_sync_config_some_request,
-            WorkspaceSyncConfigSomeResponse,
+            "/arista.workspace.v1.WorkspaceService/GetSome",
+            message,
+            WorkspaceSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest",
+        message: "WorkspaceStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceSyncConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetAll",
-            workspace_sync_config_stream_request,
-            WorkspaceSyncConfigStreamResponse,
+            "/arista.workspace.v1.WorkspaceService/GetAll",
+            message,
+            WorkspaceStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest",
+        message: "WorkspaceStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[WorkspaceSyncConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/Subscribe",
-            workspace_sync_config_stream_request,
-            WorkspaceSyncConfigStreamResponse,
+            "/arista.workspace.v1.WorkspaceService/Subscribe",
+            message,
+            WorkspaceStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest",
+        message: "WorkspaceStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetMeta",
-            workspace_sync_config_stream_request,
+            "/arista.workspace.v1.WorkspaceService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest",
+        message: "WorkspaceStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.workspace.v1.WorkspaceSyncConfigService/SubscribeMeta",
-            workspace_sync_config_stream_request,
+            "/arista.workspace.v1.WorkspaceService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "WorkspaceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceService/GetAllBatched",
+            message,
+            WorkspaceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "WorkspaceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceService/SubscribeBatched",
+            message,
+            WorkspaceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class WorkspaceSyncConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "WorkspaceSyncConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "WorkspaceSyncConfigResponse":
+
+        return await self._unary_unary(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/GetOne",
+            message,
+            WorkspaceSyncConfigResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "WorkspaceSyncConfigSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceSyncConfigSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/GetSome",
+            message,
+            WorkspaceSyncConfigSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "WorkspaceSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceSyncConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/GetAll",
+            message,
+            WorkspaceSyncConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "WorkspaceSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[WorkspaceSyncConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/Subscribe",
+            message,
+            WorkspaceSyncConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "WorkspaceSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "WorkspaceSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceSyncConfigService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        workspace_sync_config_set_request: "WorkspaceSyncConfigSetRequest",
+        message: "WorkspaceSyncConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceSyncConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceSyncConfigService/Set",
-            workspace_sync_config_set_request,
+            message,
             WorkspaceSyncConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        workspace_sync_config_set_some_request: "WorkspaceSyncConfigSetSomeRequest",
+        message: "WorkspaceSyncConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceSyncConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceSyncConfigService/SetSome",
-            workspace_sync_config_set_some_request,
+            message,
             WorkspaceSyncConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        workspace_sync_config_delete_request: "WorkspaceSyncConfigDeleteRequest",
+        message: "WorkspaceSyncConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "WorkspaceSyncConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceSyncConfigService/Delete",
-            workspace_sync_config_delete_request,
+            message,
             WorkspaceSyncConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        workspace_sync_config_delete_some_request: "WorkspaceSyncConfigDeleteSomeRequest",
+        message: "WorkspaceSyncConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceSyncConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceSyncConfigService/DeleteSome",
-            workspace_sync_config_delete_some_request,
+            message,
             WorkspaceSyncConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        workspace_sync_config_delete_all_request: "WorkspaceSyncConfigDeleteAllRequest",
+        message: "WorkspaceSyncConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceSyncConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceSyncConfigService/DeleteAll",
-            workspace_sync_config_delete_all_request,
+            message,
             WorkspaceSyncConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        workspace_sync_config_batched_stream_request: "WorkspaceSyncConfigBatchedStreamRequest",
+        message: "WorkspaceSyncConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceSyncConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceSyncConfigService/GetAllBatched",
-            workspace_sync_config_batched_stream_request,
+            message,
             WorkspaceSyncConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        workspace_sync_config_batched_stream_request: "WorkspaceSyncConfigBatchedStreamRequest",
+        message: "WorkspaceSyncConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[WorkspaceSyncConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceSyncConfigService/SubscribeBatched",
-            workspace_sync_config_batched_stream_request,
+            message,
             WorkspaceSyncConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-from ...configstatus import v1 as __configstatus_v1__
-from ...imagestatus import v1 as __imagestatus_v1__
-
-
-class StudioGeneratedConfigurationServiceBase(ServiceBase):
-    async def get_one(self, studio_generated_configuration_request: "StudioGeneratedConfigurationRequest") -> "StudioGeneratedConfigurationResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, studio_generated_configuration_some_request: "StudioGeneratedConfigurationSomeRequest"
-    ) -> AsyncIterator[StudioGeneratedConfigurationSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest"
-    ) -> AsyncIterator[StudioGeneratedConfigurationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest"
-    ) -> AsyncIterator[StudioGeneratedConfigurationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, studio_generated_configuration_stream_request: "StudioGeneratedConfigurationStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, studio_generated_configuration_batched_stream_request: "StudioGeneratedConfigurationBatchedStreamRequest"
-    ) -> AsyncIterator[StudioGeneratedConfigurationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, studio_generated_configuration_batched_stream_request: "StudioGeneratedConfigurationBatchedStreamRequest"
-    ) -> AsyncIterator[StudioGeneratedConfigurationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationRequest, StudioGeneratedConfigurationResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationSomeRequest, StudioGeneratedConfigurationSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationStreamRequest, StudioGeneratedConfigurationStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationStreamRequest, StudioGeneratedConfigurationStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationBatchedStreamRequest, StudioGeneratedConfigurationBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[StudioGeneratedConfigurationBatchedStreamRequest, StudioGeneratedConfigurationBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                StudioGeneratedConfigurationRequest,
-                StudioGeneratedConfigurationResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationSomeRequest,
-                StudioGeneratedConfigurationSomeResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationStreamRequest,
-                StudioGeneratedConfigurationStreamResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationStreamRequest,
-                StudioGeneratedConfigurationStreamResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                StudioGeneratedConfigurationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationBatchedStreamRequest,
-                StudioGeneratedConfigurationBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.StudioGeneratedConfigurationService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                StudioGeneratedConfigurationBatchedStreamRequest,
-                StudioGeneratedConfigurationBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceServiceBase(ServiceBase):
-    async def get_one(self, workspace_request: "WorkspaceRequest") -> "WorkspaceResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_some_request: "WorkspaceSomeRequest") -> AsyncIterator[WorkspaceSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator[WorkspaceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator[WorkspaceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_stream_request: "WorkspaceStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest") -> AsyncIterator[WorkspaceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest") -> AsyncIterator[WorkspaceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceRequest, WorkspaceResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceSomeRequest, WorkspaceSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, WorkspaceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, WorkspaceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[WorkspaceBatchedStreamRequest, WorkspaceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[WorkspaceBatchedStreamRequest, WorkspaceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceRequest,
-                WorkspaceResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSomeRequest,
-                WorkspaceSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceStreamRequest,
-                WorkspaceStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceStreamRequest,
-                WorkspaceStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBatchedStreamRequest,
-                WorkspaceBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBatchedStreamRequest,
-                WorkspaceBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceBuildServiceBase(ServiceBase):
-    async def get_one(self, workspace_build_request: "WorkspaceBuildRequest") -> "WorkspaceBuildResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_build_some_request: "WorkspaceBuildSomeRequest") -> AsyncIterator[WorkspaceBuildSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator[WorkspaceBuildStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator[WorkspaceBuildStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, workspace_build_batched_stream_request: "WorkspaceBuildBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceBuildBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, workspace_build_batched_stream_request: "WorkspaceBuildBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceBuildBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceBuildRequest, WorkspaceBuildResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceBuildSomeRequest, WorkspaceBuildSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, WorkspaceBuildStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, WorkspaceBuildStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[WorkspaceBuildBatchedStreamRequest, WorkspaceBuildBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[WorkspaceBuildBatchedStreamRequest, WorkspaceBuildBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceBuildService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceBuildRequest,
-                WorkspaceBuildResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildSomeRequest,
-                WorkspaceBuildSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildStreamRequest,
-                WorkspaceBuildStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildStreamRequest,
-                WorkspaceBuildStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceBuildStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildBatchedStreamRequest,
-                WorkspaceBuildBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildBatchedStreamRequest,
-                WorkspaceBuildBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceBuildDetailsServiceBase(ServiceBase):
-    async def get_one(self, workspace_build_details_request: "WorkspaceBuildDetailsRequest") -> "WorkspaceBuildDetailsResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_build_details_some_request: "WorkspaceBuildDetailsSomeRequest") -> AsyncIterator[WorkspaceBuildDetailsSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest") -> AsyncIterator[WorkspaceBuildDetailsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest"
-    ) -> AsyncIterator[WorkspaceBuildDetailsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, workspace_build_details_batched_stream_request: "WorkspaceBuildDetailsBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceBuildDetailsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, workspace_build_details_batched_stream_request: "WorkspaceBuildDetailsBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceBuildDetailsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsRequest, WorkspaceBuildDetailsResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsSomeRequest, WorkspaceBuildDetailsSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, WorkspaceBuildDetailsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, WorkspaceBuildDetailsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsBatchedStreamRequest, WorkspaceBuildDetailsBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[WorkspaceBuildDetailsBatchedStreamRequest, WorkspaceBuildDetailsBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceBuildDetailsRequest,
-                WorkspaceBuildDetailsResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsSomeRequest,
-                WorkspaceBuildDetailsSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsStreamRequest,
-                WorkspaceBuildDetailsStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsStreamRequest,
-                WorkspaceBuildDetailsStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceBuildDetailsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsBatchedStreamRequest,
-                WorkspaceBuildDetailsBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceBuildDetailsBatchedStreamRequest,
-                WorkspaceBuildDetailsBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceConfigServiceBase(ServiceBase):
-    async def get_one(self, workspace_config_request: "WorkspaceConfigRequest") -> "WorkspaceConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_config_some_request: "WorkspaceConfigSomeRequest") -> AsyncIterator[WorkspaceConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator[WorkspaceConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator[WorkspaceConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, workspace_config_set_request: "WorkspaceConfigSetRequest") -> "WorkspaceConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest") -> AsyncIterator[WorkspaceConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, workspace_config_delete_request: "WorkspaceConfigDeleteRequest") -> "WorkspaceConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, workspace_config_delete_some_request: "WorkspaceConfigDeleteSomeRequest") -> AsyncIterator[WorkspaceConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest") -> AsyncIterator[WorkspaceConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, workspace_config_batched_stream_request: "WorkspaceConfigBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, workspace_config_batched_stream_request: "WorkspaceConfigBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceConfigRequest, WorkspaceConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceConfigSomeRequest, WorkspaceConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceConfigStreamRequest, WorkspaceConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceConfigStreamRequest, WorkspaceConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[WorkspaceConfigSetRequest, WorkspaceConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[WorkspaceConfigSetSomeRequest, WorkspaceConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[WorkspaceConfigDeleteRequest, WorkspaceConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[WorkspaceConfigDeleteSomeRequest, WorkspaceConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[WorkspaceConfigDeleteAllRequest, WorkspaceConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[WorkspaceConfigBatchedStreamRequest, WorkspaceConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[WorkspaceConfigBatchedStreamRequest, WorkspaceConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceConfigRequest,
-                WorkspaceConfigResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigSomeRequest,
-                WorkspaceConfigSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigStreamRequest,
-                WorkspaceConfigStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigStreamRequest,
-                WorkspaceConfigStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceConfigSetRequest,
-                WorkspaceConfigSetResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigSetSomeRequest,
-                WorkspaceConfigSetSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceConfigDeleteRequest,
-                WorkspaceConfigDeleteResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigDeleteSomeRequest,
-                WorkspaceConfigDeleteSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigDeleteAllRequest,
-                WorkspaceConfigDeleteAllResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigBatchedStreamRequest,
-                WorkspaceConfigBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceConfigBatchedStreamRequest,
-                WorkspaceConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceDiffsServiceBase(ServiceBase):
-    async def get_one(self, workspace_diffs_request: "WorkspaceDiffsRequest") -> "WorkspaceDiffsResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_diffs_some_request: "WorkspaceDiffsSomeRequest") -> AsyncIterator[WorkspaceDiffsSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest") -> AsyncIterator[WorkspaceDiffsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest") -> AsyncIterator[WorkspaceDiffsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_diffs_stream_request: "WorkspaceDiffsStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, workspace_diffs_batched_stream_request: "WorkspaceDiffsBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceDiffsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, workspace_diffs_batched_stream_request: "WorkspaceDiffsBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceDiffsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceDiffsRequest, WorkspaceDiffsResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceDiffsSomeRequest, WorkspaceDiffsSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceDiffsStreamRequest, WorkspaceDiffsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceDiffsStreamRequest, WorkspaceDiffsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceDiffsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceDiffsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[WorkspaceDiffsBatchedStreamRequest, WorkspaceDiffsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[WorkspaceDiffsBatchedStreamRequest, WorkspaceDiffsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceDiffsService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceDiffsRequest,
-                WorkspaceDiffsResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsSomeRequest,
-                WorkspaceDiffsSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsStreamRequest,
-                WorkspaceDiffsStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsStreamRequest,
-                WorkspaceDiffsStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceDiffsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsBatchedStreamRequest,
-                WorkspaceDiffsBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceDiffsService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceDiffsBatchedStreamRequest,
-                WorkspaceDiffsBatchedStreamResponse,
-            ),
-        }
-
-
-class WorkspaceSyncConfigServiceBase(ServiceBase):
-    async def get_one(self, workspace_sync_config_request: "WorkspaceSyncConfigRequest") -> "WorkspaceSyncConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, workspace_sync_config_some_request: "WorkspaceSyncConfigSomeRequest") -> AsyncIterator[WorkspaceSyncConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest") -> AsyncIterator[WorkspaceSyncConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest") -> AsyncIterator[WorkspaceSyncConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, workspace_sync_config_stream_request: "WorkspaceSyncConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, workspace_sync_config_set_request: "WorkspaceSyncConfigSetRequest") -> "WorkspaceSyncConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, workspace_sync_config_set_some_request: "WorkspaceSyncConfigSetSomeRequest") -> AsyncIterator[WorkspaceSyncConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, workspace_sync_config_delete_request: "WorkspaceSyncConfigDeleteRequest") -> "WorkspaceSyncConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, workspace_sync_config_delete_some_request: "WorkspaceSyncConfigDeleteSomeRequest"
-    ) -> AsyncIterator[WorkspaceSyncConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, workspace_sync_config_delete_all_request: "WorkspaceSyncConfigDeleteAllRequest"
-    ) -> AsyncIterator[WorkspaceSyncConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, workspace_sync_config_batched_stream_request: "WorkspaceSyncConfigBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceSyncConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, workspace_sync_config_batched_stream_request: "WorkspaceSyncConfigBatchedStreamRequest"
-    ) -> AsyncIterator[WorkspaceSyncConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigRequest, WorkspaceSyncConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigSomeRequest, WorkspaceSyncConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigStreamRequest, WorkspaceSyncConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigStreamRequest, WorkspaceSyncConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigSetRequest, WorkspaceSyncConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigSetSomeRequest, WorkspaceSyncConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigDeleteRequest, WorkspaceSyncConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigDeleteSomeRequest, WorkspaceSyncConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[WorkspaceSyncConfigDeleteAllRequest, WorkspaceSyncConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[WorkspaceSyncConfigBatchedStreamRequest, WorkspaceSyncConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[WorkspaceSyncConfigBatchedStreamRequest, WorkspaceSyncConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceSyncConfigRequest,
-                WorkspaceSyncConfigResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigSomeRequest,
-                WorkspaceSyncConfigSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigStreamRequest,
-                WorkspaceSyncConfigStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigStreamRequest,
-                WorkspaceSyncConfigStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceSyncConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceSyncConfigSetRequest,
-                WorkspaceSyncConfigSetResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigSetSomeRequest,
-                WorkspaceSyncConfigSetSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                WorkspaceSyncConfigDeleteRequest,
-                WorkspaceSyncConfigDeleteResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigDeleteSomeRequest,
-                WorkspaceSyncConfigDeleteSomeResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigDeleteAllRequest,
-                WorkspaceSyncConfigDeleteAllResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigBatchedStreamRequest,
-                WorkspaceSyncConfigBatchedStreamResponse,
-            ),
-            "/arista.workspace.v1.WorkspaceSyncConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                WorkspaceSyncConfigBatchedStreamRequest,
-                WorkspaceSyncConfigBatchedStreamResponse,
-            ),
-        }
+from ...configstatus import v1 as __configstatus__v1__
+from ...imagestatus import v1 as __imagestatus__v1__

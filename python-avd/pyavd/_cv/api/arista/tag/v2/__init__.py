@@ -7,132 +7,149 @@
 # This file has been @generated
 
 __all__ = (
-    "ElementType",
-    "ElementSubType",
     "CreatorType",
-    "TagKey",
-    "TagConfig",
-    "Tag",
-    "TagAssignmentKey",
-    "TagAssignmentConfig",
-    "TagAssignment",
-    "ElementFilter",
-    "ElementSearchFilter",
-    "ElementKey",
     "Element",
-    "MetaResponse",
+    "ElementBatchedStreamRequest",
+    "ElementBatchedStreamResponse",
+    "ElementFilter",
+    "ElementKey",
     "ElementRequest",
     "ElementResponse",
+    "ElementSearchFilter",
+    "ElementServiceStub",
     "ElementSomeRequest",
     "ElementSomeResponse",
     "ElementStreamRequest",
     "ElementStreamResponse",
-    "ElementBatchedStreamRequest",
-    "ElementBatchedStreamResponse",
-    "TagRequest",
-    "TagResponse",
-    "TagSomeRequest",
-    "TagSomeResponse",
-    "TagStreamRequest",
-    "TagStreamResponse",
-    "TagBatchedStreamRequest",
-    "TagBatchedStreamResponse",
-    "TagAssignmentRequest",
-    "TagAssignmentResponse",
-    "TagAssignmentSomeRequest",
-    "TagAssignmentSomeResponse",
-    "TagAssignmentStreamRequest",
-    "TagAssignmentStreamResponse",
+    "ElementSubType",
+    "ElementType",
+    "MetaResponse",
+    "Tag",
+    "TagAssignment",
     "TagAssignmentBatchedStreamRequest",
     "TagAssignmentBatchedStreamResponse",
-    "TagAssignmentConfigRequest",
-    "TagAssignmentConfigResponse",
-    "TagAssignmentConfigSomeRequest",
-    "TagAssignmentConfigSomeResponse",
-    "TagAssignmentConfigStreamRequest",
-    "TagAssignmentConfigStreamResponse",
+    "TagAssignmentConfig",
     "TagAssignmentConfigBatchedStreamRequest",
     "TagAssignmentConfigBatchedStreamResponse",
-    "TagAssignmentConfigSetRequest",
-    "TagAssignmentConfigSetResponse",
-    "TagAssignmentConfigSetSomeRequest",
-    "TagAssignmentConfigSetSomeResponse",
+    "TagAssignmentConfigDeleteAllRequest",
+    "TagAssignmentConfigDeleteAllResponse",
     "TagAssignmentConfigDeleteRequest",
     "TagAssignmentConfigDeleteResponse",
     "TagAssignmentConfigDeleteSomeRequest",
     "TagAssignmentConfigDeleteSomeResponse",
-    "TagAssignmentConfigDeleteAllRequest",
-    "TagAssignmentConfigDeleteAllResponse",
-    "TagConfigRequest",
-    "TagConfigResponse",
-    "TagConfigSomeRequest",
-    "TagConfigSomeResponse",
-    "TagConfigStreamRequest",
-    "TagConfigStreamResponse",
+    "TagAssignmentConfigRequest",
+    "TagAssignmentConfigResponse",
+    "TagAssignmentConfigServiceStub",
+    "TagAssignmentConfigSetRequest",
+    "TagAssignmentConfigSetResponse",
+    "TagAssignmentConfigSetSomeRequest",
+    "TagAssignmentConfigSetSomeResponse",
+    "TagAssignmentConfigSomeRequest",
+    "TagAssignmentConfigSomeResponse",
+    "TagAssignmentConfigStreamRequest",
+    "TagAssignmentConfigStreamResponse",
+    "TagAssignmentKey",
+    "TagAssignmentRequest",
+    "TagAssignmentResponse",
+    "TagAssignmentServiceStub",
+    "TagAssignmentSomeRequest",
+    "TagAssignmentSomeResponse",
+    "TagAssignmentStreamRequest",
+    "TagAssignmentStreamResponse",
+    "TagBatchedStreamRequest",
+    "TagBatchedStreamResponse",
+    "TagConfig",
     "TagConfigBatchedStreamRequest",
     "TagConfigBatchedStreamResponse",
-    "TagConfigSetRequest",
-    "TagConfigSetResponse",
-    "TagConfigSetSomeRequest",
-    "TagConfigSetSomeResponse",
+    "TagConfigDeleteAllRequest",
+    "TagConfigDeleteAllResponse",
     "TagConfigDeleteRequest",
     "TagConfigDeleteResponse",
     "TagConfigDeleteSomeRequest",
     "TagConfigDeleteSomeResponse",
-    "TagConfigDeleteAllRequest",
-    "TagConfigDeleteAllResponse",
-    "ElementServiceStub",
-    "ElementServiceBase",
-    "TagServiceStub",
-    "TagServiceBase",
-    "TagAssignmentServiceStub",
-    "TagAssignmentServiceBase",
-    "TagAssignmentConfigServiceStub",
-    "TagAssignmentConfigServiceBase",
+    "TagConfigRequest",
+    "TagConfigResponse",
     "TagConfigServiceStub",
-    "TagConfigServiceBase",
+    "TagConfigSetRequest",
+    "TagConfigSetResponse",
+    "TagConfigSetSomeRequest",
+    "TagConfigSetSomeResponse",
+    "TagConfigSomeRequest",
+    "TagConfigSomeResponse",
+    "TagConfigStreamRequest",
+    "TagConfigStreamResponse",
+    "TagKey",
+    "TagRequest",
+    "TagResponse",
+    "TagServiceStub",
+    "TagSomeRequest",
+    "TagSomeResponse",
+    "TagStreamRequest",
+    "TagStreamResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
-class ElementType(aristaproto.Enum):
+class CreatorType(aristaproto.Enum):
     """
-    ElementType enumerates the types of network elements that can
-    be associated with tags.
+    CreatorType enumerates the types of entities that can create
+    a tag.
     """
 
     UNSPECIFIED = 0
-    """ELEMENT_TYPE_UNSPECIFIED is the default value."""
-
-    DEVICE = 1
-    """ELEMENT_TYPE_DEVICE is used for device tags."""
-
-    INTERFACE = 2
-    """ELEMENT_TYPE_INTERFACE is used for interface tags."""
-
-    VIRTUAL = 3
     """
-    ELEMENT_TYPE_VIRTUAL is used for virtual entities(applications/services) tags.
+    CREATOR_TYPE_UNSPECIFIED is the default value.
     """
+
+    SYSTEM = 1
+    """
+    CREATOR_TYPE_SYSTEM is used for system tags.
+    """
+
+    USER = 2
+    """
+    CREATOR_TYPE_USER is used for user tags.
+    """
+
+    EXTERNAL = 3
+    """
+    CREATOR_TYPE_EXTERNAL is used for tags created from external sources.
+    For E.g., vCenter
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CREATOR_TYPE_UNSPECIFIED",
+            1: "CREATOR_TYPE_SYSTEM",
+            2: "CREATOR_TYPE_USER",
+            3: "CREATOR_TYPE_EXTERNAL",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CREATOR_TYPE_UNSPECIFIED": 0,
+            "CREATOR_TYPE_SYSTEM": 1,
+            "CREATOR_TYPE_USER": 2,
+            "CREATOR_TYPE_EXTERNAL": 3,
+        }
 
 
 class ElementSubType(aristaproto.Enum):
@@ -142,7 +159,9 @@ class ElementSubType(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """ELEMENT_SUB_TYPE_UNSPECIFIED is the default value."""
+    """
+    ELEMENT_SUB_TYPE_UNSPECIFIED is the default value.
+    """
 
     DEVICE = 1
     """
@@ -178,268 +197,191 @@ class ElementSubType(aristaproto.Enum):
     a service but not vice-versa.
     """
 
-
-class CreatorType(aristaproto.Enum):
+    CONNECTIVITY_MONITOR_PROBE = 6
     """
-    CreatorType enumerates the types of entities that can create
-    a tag.
+    ELEMENT_SUB_TYPE_CONNECTIVITY_MONITOR_PROBE is used for connectivity monitor probe tags.
+    A connectivity monitor probe represents a configured probe (ICMP, HTTP, or TCP) that
+    monitors connectivity to a specific target from a device.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ELEMENT_SUB_TYPE_UNSPECIFIED",
+            1: "ELEMENT_SUB_TYPE_DEVICE",
+            2: "ELEMENT_SUB_TYPE_VDS",
+            3: "ELEMENT_SUB_TYPE_WORKLOAD_SERVER",
+            4: "ELEMENT_SUB_TYPE_VM",
+            5: "ELEMENT_SUB_TYPE_APPLICATION",
+            6: "ELEMENT_SUB_TYPE_CONNECTIVITY_MONITOR_PROBE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ELEMENT_SUB_TYPE_UNSPECIFIED": 0,
+            "ELEMENT_SUB_TYPE_DEVICE": 1,
+            "ELEMENT_SUB_TYPE_VDS": 2,
+            "ELEMENT_SUB_TYPE_WORKLOAD_SERVER": 3,
+            "ELEMENT_SUB_TYPE_VM": 4,
+            "ELEMENT_SUB_TYPE_APPLICATION": 5,
+            "ELEMENT_SUB_TYPE_CONNECTIVITY_MONITOR_PROBE": 6,
+        }
+
+
+class ElementType(aristaproto.Enum):
+    """
+    ElementType enumerates the types of network elements that can
+    be associated with tags.
     """
 
     UNSPECIFIED = 0
-    """CREATOR_TYPE_UNSPECIFIED is the default value."""
-
-    SYSTEM = 1
-    """CREATOR_TYPE_SYSTEM is used for system tags."""
-
-    USER = 2
-    """CREATOR_TYPE_USER is used for user tags."""
-
-    EXTERNAL = 3
     """
-    CREATOR_TYPE_EXTERNAL is used for tags created from external sources.
-    For E.g., vCenter
+    ELEMENT_TYPE_UNSPECIFIED is the default value.
     """
+
+    DEVICE = 1
+    """
+    ELEMENT_TYPE_DEVICE is used for device tags.
+    """
+
+    INTERFACE = 2
+    """
+    ELEMENT_TYPE_INTERFACE is used for interface tags.
+    """
+
+    VIRTUAL = 3
+    """
+    ELEMENT_TYPE_VIRTUAL is used for virtual entities(applications/services) tags.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ELEMENT_TYPE_UNSPECIFIED",
+            1: "ELEMENT_TYPE_DEVICE",
+            2: "ELEMENT_TYPE_INTERFACE",
+            3: "ELEMENT_TYPE_VIRTUAL",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ELEMENT_TYPE_UNSPECIFIED": 0,
+            "ELEMENT_TYPE_DEVICE": 1,
+            "ELEMENT_TYPE_INTERFACE": 2,
+            "ELEMENT_TYPE_VIRTUAL": 3,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class TagKey(aristaproto.Message):
-    """TagKey uniquely identifies a tag."""
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+class Element(aristaproto.Message):
     """
-    workspace_id is the ID of a workspace. The special ID \"\"
-    identifies the location where merged tags reside.
+    Element holds basic information about a tagged or untagged network
+    element.
     """
 
-    element_type: "ElementType" = aristaproto.enum_field(2)
+    key: "ElementKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    element_type is the category of network element to which
-    this tag can be assigned.
+    key uniquely identifies the element.
     """
 
-    label: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """label is an arbitrary label."""
 
-    value: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """value is an arbitrary value."""
-
-    element_sub_type: "ElementSubType" = aristaproto.enum_field(5)
-    """
-    element_sub_type is the sub-category of network element
-    to which this tag can be assigned.
-    """
+default_message_pool.register_message("arista.tag.v2", "Element", Element)
 
 
 @dataclass(eq=False, repr=False)
-class TagConfig(aristaproto.Message):
+class ElementBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Element]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    TagConfig holds a configuration for a user tag.
-    The tags that belong to entities other than ELEMENT_SUB_TYPE_DEVICE
-    will always be present in mainline only.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
 
-    key: "TagKey" = aristaproto.message_field(1)
+    filter: "ElementFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    key identifies a tag. The special workspace ID \"\" for
-    merged tags should not be set here.
-    """
-
-    remove: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """
-    remove indicates whether to remove (true) or add (false,
-    unset) the tag identified by the key if the encompassing
-    workspace merges.
+    For each Element in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given Element is streamed to the user.
     """
 
-
-@dataclass(eq=False, repr=False)
-class Tag(aristaproto.Message):
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Tag holds a merge-preview or the existing merged state (if the
-    workspace ID is \"\") of a tag.
-    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
 
-    key: "TagKey" = aristaproto.message_field(1)
-    """key identifies a tag."""
+    For GetAll, the fields start and end can be used as follows:
 
-    creator_type: "CreatorType" = aristaproto.enum_field(2)
-    """creator_type is the creator type of the tag."""
-
-    assigned: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    assigned indicates whether the tag is assigned
-    (true) or not (false).
+      * end: Returns the state of each Element at end.
+        * Each Element response is fully-specified (all fields set).
+      * start: Returns the state of each Element at start, followed by updates until now.
+        * Each Element response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Element at start, followed by updates
+        until end.
+        * Each Element response at start is fully-specified, but updates until end may
+          be partial.
     """
 
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentKey(aristaproto.Message):
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
-    TagAssignmentKey uniquely identifies an assignment between
-    a tag and a network element.
-    """
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    workspace_id is the ID of a workspace. The special ID \"\"
-    identifies the location where merged assignments reside.
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
     """
 
-    element_type: "ElementType" = aristaproto.enum_field(2)
-    """
-     element_type is the element type of a tag. What should
-     be set per element type:
 
-     ELEMENT_TYPE_DEVICE: device_id
-     ELEMENT_TYPE_INTERFACE: device_id, interface_id
-     ELEMENT_TYPE_VIRTUAL:
-    		primary_entity_id -> application_id
-    		secondary_entity_id -> service_id
-    """
-
-    label: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """label is the label of a tag."""
-
-    value: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """value is the value of a tag."""
-
-    device_id: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """device_id identifies a device."""
-
-    interface_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """interface_id identifies an interface on a device."""
-
-    element_sub_type: "ElementSubType" = aristaproto.enum_field(7)
-    """element_sub_type is the element sub-type of a tag."""
-
-    primary_entity_id: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
-    """
-    primary_entity_id holds unique identifiers of an application/device.
-    The primary entity is the entity which can exist by itself or can be
-    associated with a secondary entity.
-    """
-
-    secondary_entity_id: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
-    """
-    secondary_entity_id holds unique identifier of a service/interface. The secondary
-    entity is the entity which cannot exist by itself and always has to be associated
-    with a primary entity.
-    """
+default_message_pool.register_message("arista.tag.v2", "ElementBatchedStreamRequest", ElementBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentConfig(aristaproto.Message):
+class ElementBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ElementStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    TagAssignmentConfig holds a configuration for an assignment
-    between a tag and a network element.
-    The tag assignments that belong to entities other than ELEMENT_SUB_TYPE_DEVICE
-    will always be present in mainline only.
-    """
-
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    """
-    key identifies an assignment. The special workspace ID \"\"
-    for merged assignments should not be set here.
-    """
-
-    remove: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """
-    remove indicates whether to remove (true) or add (false,
-    unset) the assignment identified by the key if the
-    encompassing workspace merges.
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignment(aristaproto.Message):
-    """
-    TagAssignment holds a merge-preview or the existing merged
-    state (if the workspace ID is \"\") of an assignment between
-    a tag and a network element.
-    """
-
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    """key identifies an assignment."""
-
-    tag_creator_type: "CreatorType" = aristaproto.enum_field(2)
-    """
-    tag_creator_type is the creator type of the tag
-    involved in the assignment.
-    """
+default_message_pool.register_message("arista.tag.v2", "ElementBatchedStreamResponse", ElementBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ElementFilter(aristaproto.Message):
-    """ElementFilter is a custom filter for elements."""
-
-    search: "ElementSearchFilter" = aristaproto.message_field(1)
-    """search can be used to search for elements via a tag query."""
-
-
-@dataclass(eq=False, repr=False)
-class ElementSearchFilter(aristaproto.Message):
     """
-    ElementSearchFilter is a filter that can be used to search for a set of
-    elements using a tag query.
+    ElementFilter is a custom filter for elements.
     """
 
-    query_element_type: "ElementType" = aristaproto.enum_field(1)
+    search: "ElementSearchFilter | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    query_element_type (required) indicates the type of element against which
-    the query will be executed. To search by sub-type, use the special \"type:\"
-    tag from within the query.
+    search can be used to search for elements via a tag query.
     """
 
-    query: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    query (required) is a tag query. This is a string that specifies a set of
-    tag assignment conditions. For example:
 
-    - \"Campus:SF\"
-        Match any device that has the \"Campus:SF\" tag assigned to it.
-        I.e., match any device in the SF campus.
-    - \"Campus:*\"
-        Match any device that has any \"Campus:\" tag assigned to it.
-        I.e., match any device in any campus.
-    - \"Campus:SF AND Role:Spine\"
-        Match any device that has the \"Campus:SF\" and \"Role:Spine\"
-        tag assigned to it.
-        I.e., match any spine device in the SF campus.
-
-    TODO: Link to grammar file.
-    """
-
-    workspace_id: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
-    """
-    workspace_id is the ID of a workspace. If set, it indicates that the
-    search space should be constrained only to the elements that are known
-    or configured in the given workspace.
-    """
-
-    exclude_unregistered_elements: Optional[bool] = aristaproto.message_field(11, wraps=aristaproto.TYPE_BOOL)
-    """
-    exclude_unregistered_elements indicates whether elements that are not registered
-    in the Inventory and Topology (I&T) Studio should be excluded from the results.
-    """
-
-    ignore_topology_tags: Optional[bool] = aristaproto.message_field(12, wraps=aristaproto.TYPE_BOOL)
-    """
-    ignore_topology_tags indicates whether topology_hint tags should be ignored during
-    the execution of the query.
-    """
+default_message_pool.register_message("arista.tag.v2", "ElementFilter", ElementFilter)
 
 
 @dataclass(eq=False, repr=False)
 class ElementKey(aristaproto.Message):
-    """ElementKey uniquely identifies a tagged or untagged network element."""
+    """
+    ElementKey uniquely identifies a tagged or untagged network element.
+    """
 
-    type: "ElementType" = aristaproto.enum_field(1)
-    """type is the type of the element."""
+    type: "ElementType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ElementType(0))
+    """
+    type is the type of the element.
+    """
 
-    sub_type: "ElementSubType" = aristaproto.enum_field(2)
-    """sub_type is the sub-type of the element."""
+    sub_type: "ElementSubType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ElementSubType(0))
+    """
+    sub_type is the sub-type of the element.
+    """
 
-    primary_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    primary_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     primary_id is the device ID of the element. The value of
     this ID is based on type and sub_type:
@@ -459,7 +401,7 @@ class ElementKey(aristaproto.Message):
         id: <application_id>
     """
 
-    secondary_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    secondary_id: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     secondary_id is the interface ID of the element. The value of
     this ID is based on type and sub_type:
@@ -477,56 +419,30 @@ class ElementKey(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class Element(aristaproto.Message):
-    """
-    Element holds basic information about a tagged or untagged network
-    element.
-    """
-
-    key: "ElementKey" = aristaproto.message_field(1)
-    """key uniquely identifies the element."""
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
+default_message_pool.register_message("arista.tag.v2", "ElementKey", ElementKey)
 
 
 @dataclass(eq=False, repr=False)
 class ElementRequest(aristaproto.Message):
-    key: "ElementKey" = aristaproto.message_field(1)
+    key: "ElementKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a Element instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "ElementRequest", ElementRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ElementResponse(aristaproto.Message):
-    value: "Element" = aristaproto.message_field(1)
+    value: "Element | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -534,26 +450,91 @@ class ElementResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Element instance in this response.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "ElementResponse", ElementResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ElementSearchFilter(aristaproto.Message):
+    """
+    ElementSearchFilter is a filter that can be used to search for a set of
+    elements using a tag query.
+    """
+
+    query_element_type: "ElementType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ElementType(0))
+    """
+    query_element_type (required) indicates the type of element against which
+    the query will be executed. To search by sub-type, use the special "type:"
+    tag from within the query.
+    """
+
+    query: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    query (required) is a tag query. This is a string that specifies a set of
+    tag assignment conditions. For example:
+
+    - "Campus:SF"
+        Match any device that has the "Campus:SF" tag assigned to it.
+        I.e., match any device in the SF campus.
+    - "Campus:*"
+        Match any device that has any "Campus:" tag assigned to it.
+        I.e., match any device in any campus.
+    - "Campus:SF AND Role:Spine"
+        Match any device that has the "Campus:SF" and "Role:Spine"
+        tag assigned to it.
+        I.e., match any spine device in the SF campus.
+
+    TODO: Link to grammar file.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of a workspace. If set, it indicates that the
+    search space should be constrained only to the elements that are known
+    or configured in the given workspace.
+    """
+
+    exclude_unregistered_elements: "bool | None" = aristaproto.field(
+        11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True
+    )
+    """
+    exclude_unregistered_elements indicates whether elements that are not registered
+    in the Inventory and Topology (I&T) Studio should be excluded from the results.
+    """
+
+    ignore_topology_tags: "bool | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    ignore_topology_tags indicates whether topology_hint tags should be ignored during
+    the execution of the query.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "ElementSearchFilter", ElementSearchFilter)
+
+
 @dataclass(eq=False, repr=False)
 class ElementSomeRequest(aristaproto.Message):
-    keys: List["ElementKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ElementKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "ElementSomeRequest", ElementSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ElementSomeResponse(aristaproto.Message):
-    value: "Element" = aristaproto.message_field(1)
+    value: "Element | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -561,22 +542,25 @@ class ElementSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Element instance in this response.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "ElementSomeResponse", ElementSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ElementStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Element"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[Element]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -585,14 +569,14 @@ class ElementStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    filter: "ElementFilter" = aristaproto.message_field(2)
+    filter: "ElementFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     For each Element in the list, all populated fields are considered ANDed together
     as a filtering operation. Similarly, the list itself is ORed such that any individual
     filter that matches a given Element is streamed to the user.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -607,24 +591,27 @@ class ElementStreamRequest(aristaproto.Message):
         until end.
         * Each Element response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
+
+
+default_message_pool.register_message("arista.tag.v2", "ElementStreamRequest", ElementStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
 class ElementStreamResponse(aristaproto.Message):
-    value: "Element" = aristaproto.message_field(1)
+    value: "Element | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Element's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Element's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the Element value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -633,348 +620,86 @@ class ElementStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ElementBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Element"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "ElementFilter" = aristaproto.message_field(2)
-    """
-    For each Element in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given Element is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Element at end.
-        * Each Element response is fully-specified (all fields set).
-      * start: Returns the state of each Element at start, followed by updates until now.
-        * Each Element response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Element at start, followed by updates
-        until end.
-        * Each Element response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.tag.v2", "ElementStreamResponse", ElementStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ElementBatchedStreamResponse(aristaproto.Message):
-    responses: List["ElementStreamResponse"] = aristaproto.message_field(1)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    Time holds the timestamp of the last item included in the metadata calculation.
     """
 
-
-@dataclass(eq=False, repr=False)
-class TagRequest(aristaproto.Message):
-    key: "TagKey" = aristaproto.message_field(1)
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
-    Key uniquely identifies a Tag instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagResponse(aristaproto.Message):
-    value: "Tag" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Tag instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagSomeRequest(aristaproto.Message):
-    keys: List["TagKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagSomeResponse(aristaproto.Message):
-    value: "Tag" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Tag instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Tag"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Tag at end.
-        * Each Tag response is fully-specified (all fields set).
-      * start: Returns the state of each Tag at start, followed by updates until now.
-        * Each Tag response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Tag at start, followed by updates
-        until end.
-        * Each Tag response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagStreamResponse(aristaproto.Message):
-    value: "Tag" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Tag's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Tag value in this response should be considered.
+    Operation indicates how the value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
     once all initial data is streamed and the client begins to receive modification updates,
     you should not see INITIAL again.
     """
 
-
-@dataclass(eq=False, repr=False)
-class TagBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Tag"] = aristaproto.message_field(1)
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    Count is the number of items present under the conditions of the request.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
 
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Tag at end.
-        * Each Tag response is fully-specified (all fields set).
-      * start: Returns the state of each Tag at start, followed by updates until now.
-        * Each Tag response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Tag at start, followed by updates
-        until end.
-        * Each Tag response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.tag.v2", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagBatchedStreamResponse(aristaproto.Message):
-    responses: List["TagStreamResponse"] = aristaproto.message_field(1)
+class Tag(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    Tag holds a merge-preview or the existing merged state (if the
+    workspace ID is "") of a tag.
     """
+
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies a tag.
+    """
+
+    creator_type: "CreatorType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: CreatorType(0))
+    """
+    creator_type is the creator type of the tag.
+    """
+
+    assigned: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    assigned indicates whether the tag is assigned
+    (true) or not (false).
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "Tag", Tag)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentRequest(aristaproto.Message):
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
+class TagAssignment(aristaproto.Message):
     """
-    Key uniquely identifies a TagAssignment instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    TagAssignment holds a merge-preview or the existing merged
+    state (if the workspace ID is "") of an assignment between
+    a tag and a network element.
     """
 
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentResponse(aristaproto.Message):
-    value: "TagAssignment" = aristaproto.message_field(1)
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    key identifies an assignment.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    tag_creator_type: "CreatorType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: CreatorType(0))
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TagAssignment instance in this response.
+    tag_creator_type is the creator type of the tag
+    involved in the assignment.
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignmentSomeRequest(aristaproto.Message):
-    keys: List["TagAssignmentKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentSomeResponse(aristaproto.Message):
-    value: "TagAssignment" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TagAssignment instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagAssignment"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each TagAssignment at end.
-        * Each TagAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each TagAssignment at start, followed by updates until now.
-        * Each TagAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each TagAssignment at start, followed by updates
-        until end.
-        * Each TagAssignment response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentStreamResponse(aristaproto.Message):
-    value: "TagAssignment" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this TagAssignment's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the TagAssignment value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.tag.v2", "TagAssignment", TagAssignment)
 
 
 @dataclass(eq=False, repr=False)
 class TagAssignmentBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagAssignment"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[TagAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -983,7 +708,7 @@ class TagAssignmentBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -998,22 +723,23 @@ class TagAssignmentBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignment response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
     """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentBatchedStreamRequest", TagAssignmentBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
 class TagAssignmentBatchedStreamResponse(aristaproto.Message):
-    responses: List["TagAssignmentStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[TagAssignmentStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1021,128 +747,38 @@ class TagAssignmentBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigRequest(aristaproto.Message):
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a TagAssignmentConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentBatchedStreamResponse", TagAssignmentBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentConfigResponse(aristaproto.Message):
-    value: "TagAssignmentConfig" = aristaproto.message_field(1)
+class TagAssignmentConfig(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TagAssignmentConfig instance in this response.
+    TagAssignmentConfig holds a configuration for an assignment
+    between a tag and a network element.
+    The tag assignments that belong to entities other than ELEMENT_SUB_TYPE_DEVICE
+    will always be present in mainline only.
     """
 
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigSomeRequest(aristaproto.Message):
-    keys: List["TagAssignmentKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    key identifies an assignment. The special workspace ID ""
+    for merged assignments should not be set here.
+    """
+
+    remove: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    remove indicates whether to remove (true) or add (false,
+    unset) the assignment identified by the key if the
+    encompassing workspace merges.
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigSomeResponse(aristaproto.Message):
-    value: "TagAssignmentConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TagAssignmentConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagAssignmentConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each TagAssignmentConfig at end.
-        * Each TagAssignmentConfig response is fully-specified (all fields set).
-      * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
-        * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
-        until end.
-        * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigStreamResponse(aristaproto.Message):
-    value: "TagAssignmentConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this TagAssignmentConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the TagAssignmentConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfig", TagAssignmentConfig)
 
 
 @dataclass(eq=False, repr=False)
 class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagAssignmentConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[TagAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1151,7 +787,7 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1166,11 +802,9 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
         until end.
         * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
           be partial.
-
-    This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1179,9 +813,12 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigBatchedStreamRequest", TagAssignmentConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TagAssignmentConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["TagAssignmentConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[TagAssignmentConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1189,67 +826,69 @@ class TagAssignmentConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigSetRequest(aristaproto.Message):
-    value: "TagAssignmentConfig" = aristaproto.message_field(1)
-    """
-    TagAssignmentConfig carries the value to set into the datastore.
-    See the documentation on the TagAssignmentConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigBatchedStreamResponse", TagAssignmentConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentConfigSetResponse(aristaproto.Message):
-    value: "TagAssignmentConfig" = aristaproto.message_field(1)
+class TagAssignmentConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the TagAssignmentConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteAllRequest", TagAssignmentConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentConfigSetSomeRequest(aristaproto.Message):
-    values: List["TagAssignmentConfig"] = aristaproto.message_field(1)
+class TagAssignmentConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of TagAssignmentConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "TagAssignmentKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the TagAssignmentConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigSetSomeResponse(aristaproto.Message):
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteAllResponse", TagAssignmentConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class TagAssignmentConfigDeleteRequest(aristaproto.Message):
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which TagAssignmentConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteRequest", TagAssignmentConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TagAssignmentConfigDeleteResponse(aristaproto.Message):
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted TagAssignmentConfig instance."""
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted TagAssignmentConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1259,10 +898,18 @@ class TagAssignmentConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteResponse", TagAssignmentConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class TagAssignmentConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["TagAssignmentKey"] = aristaproto.message_field(1)
-    """key contains a list of TagAssignmentConfig keys to delete"""
+    keys: "list[TagAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of TagAssignmentConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteSomeRequest", TagAssignmentConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -1271,58 +918,35 @@ class TagAssignmentConfigDeleteSomeResponse(aristaproto.Message):
     TagAssignmentConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "TagAssignmentKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigDeleteSomeResponse", TagAssignmentConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagAssignmentConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["TagAssignmentConfig"] = aristaproto.message_field(1)
+class TagAssignmentConfigRequest(aristaproto.Message):
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagAssignmentConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "TagAssignmentKey" = aristaproto.message_field(3)
-    """
-    This is the key of the TagAssignmentConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigRequest(aristaproto.Message):
-    key: "TagKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a TagConfig instance to retrieve.
+    Key uniquely identifies a TagAssignmentConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigRequest", TagAssignmentConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
-class TagConfigResponse(aristaproto.Message):
-    value: "TagConfig" = aristaproto.message_field(1)
+class TagAssignmentConfigResponse(aristaproto.Message):
+    value: "TagAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1330,165 +954,37 @@ class TagConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    TagConfig instance in this response.
+    TagAssignmentConfig instance in this response.
     """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigResponse", TagAssignmentConfigResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagConfigSomeRequest(aristaproto.Message):
-    keys: List["TagKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class TagAssignmentConfigSetRequest(aristaproto.Message):
+    value: "TagAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    TagAssignmentConfig carries the value to set into the datastore.
+    See the documentation on the TagAssignmentConfig struct for which fields are required.
     """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSetRequest", TagAssignmentConfigSetRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TagConfigSomeResponse(aristaproto.Message):
-    value: "TagConfig" = aristaproto.message_field(1)
+class TagAssignmentConfigSetResponse(aristaproto.Message):
+    value: "TagAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TagConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each TagConfig at end.
-        * Each TagConfig response is fully-specified (all fields set).
-      * start: Returns the state of each TagConfig at start, followed by updates until now.
-        * Each TagConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each TagConfig at start, followed by updates
-        until end.
-        * Each TagConfig response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigStreamResponse(aristaproto.Message):
-    value: "TagConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this TagConfig's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the TagConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TagConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each TagConfig at end.
-        * Each TagConfig response is fully-specified (all fields set).
-      * start: Returns the state of each TagConfig at start, followed by updates until now.
-        * Each TagConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each TagConfig at start, followed by updates
-        until end.
-        * Each TagConfig response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["TagConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigSetRequest(aristaproto.Message):
-    value: "TagConfig" = aristaproto.message_field(1)
-    """
-    TagConfig carries the value to set into the datastore.
-    See the documentation on the TagConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TagConfigSetResponse(aristaproto.Message):
-    value: "TagConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the TagConfigSetRequest as well
+    Value carries all the values given in the TagAssignmentConfigSetRequest as well
     as any server-generated values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
@@ -1498,40 +994,528 @@ class TagConfigSetResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSetResponse", TagAssignmentConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
-class TagConfigSetSomeRequest(aristaproto.Message):
-    values: List["TagConfig"] = aristaproto.message_field(1)
+class TagAssignmentConfigSetSomeRequest(aristaproto.Message):
+    values: "list[TagAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    value contains a list of TagConfig values to write.
+    value contains a list of TagAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
         - the maxiumum send size of the client
         - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    See gRPC "maximum message size" documentation for more information.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSetSomeRequest", TagAssignmentConfigSetSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class TagConfigSetSomeResponse(aristaproto.Message):
-    key: "TagKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class TagAssignmentConfigSetSomeResponse(aristaproto.Message):
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSetSomeResponse", TagAssignmentConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentConfigSomeRequest(aristaproto.Message):
+    keys: "list[TagAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSomeRequest", TagAssignmentConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentConfigSomeResponse(aristaproto.Message):
+    value: "TagAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TagAssignmentConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigSomeResponse", TagAssignmentConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each TagAssignmentConfig at end.
+        * Each TagAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
+        until end.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigStreamRequest", TagAssignmentConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentConfigStreamResponse(aristaproto.Message):
+    value: "TagAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this TagAssignmentConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the TagAssignmentConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentConfigStreamResponse", TagAssignmentConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentKey(aristaproto.Message):
+    """
+    TagAssignmentKey uniquely identifies an assignment between
+    a tag and a network element.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of a workspace. The special ID ""
+    identifies the location where merged assignments reside.
+    """
+
+    element_type: "ElementType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ElementType(0))
+    """
+    element_type is the element type of a tag. What should
+    be set per element type:
+
+    ELEMENT_TYPE_DEVICE: device_id
+    ELEMENT_TYPE_INTERFACE: device_id, interface_id
+    ELEMENT_TYPE_VIRTUAL:
+    		primary_entity_id -> application_id
+    		secondary_entity_id -> service_id
+    """
+
+    label: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    label is the label of a tag.
+    """
+
+    value: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value is the value of a tag.
+    """
+
+    device_id: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id identifies a device.
+    """
+
+    interface_id: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    interface_id identifies an interface on a device.
+    """
+
+    element_sub_type: "ElementSubType" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: ElementSubType(0))
+    """
+    element_sub_type is the element sub-type of a tag.
+    """
+
+    primary_entity_id: "str | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    primary_entity_id holds unique identifiers of an application/device. 
+    The primary entity is the entity which can exist by itself or can be 
+    associated with a secondary entity.
+    """
+
+    secondary_entity_id: "str | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    secondary_entity_id holds unique identifier of a service/interface. The secondary 
+    entity is the entity which cannot exist by itself and always has to be associated 
+    with a primary entity.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentKey", TagAssignmentKey)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentRequest(aristaproto.Message):
+    key: "TagAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a TagAssignment instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentRequest", TagAssignmentRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentResponse(aristaproto.Message):
+    value: "TagAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TagAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentResponse", TagAssignmentResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentSomeRequest(aristaproto.Message):
+    keys: "list[TagAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentSomeRequest", TagAssignmentSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentSomeResponse(aristaproto.Message):
+    value: "TagAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TagAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentSomeResponse", TagAssignmentSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each TagAssignment at end.
+        * Each TagAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignment at start, followed by updates until now.
+        * Each TagAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignment at start, followed by updates
+        until end.
+        * Each TagAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentStreamRequest", TagAssignmentStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagAssignmentStreamResponse(aristaproto.Message):
+    value: "TagAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this TagAssignment's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the TagAssignment value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagAssignmentStreamResponse", TagAssignmentStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Tag]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Tag at end.
+        * Each Tag response is fully-specified (all fields set).
+      * start: Returns the state of each Tag at start, followed by updates until now.
+        * Each Tag response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Tag at start, followed by updates
+        until end.
+        * Each Tag response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagBatchedStreamRequest", TagBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagBatchedStreamResponse(aristaproto.Message):
+    responses: "list[TagStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagBatchedStreamResponse", TagBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfig(aristaproto.Message):
+    """
+    TagConfig holds a configuration for a user tag.
+    The tags that belong to entities other than ELEMENT_SUB_TYPE_DEVICE
+    will always be present in mainline only.
+    """
+
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies a tag. The special workspace ID "" for
+    merged tags should not be set here.
+    """
+
+    remove: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    remove indicates whether to remove (true) or add (false,
+    unset) the tag identified by the key if the encompassing
+    workspace merges.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfig", TagConfig)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each TagConfig at end.
+        * Each TagConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagConfig at start, followed by updates until now.
+        * Each TagConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagConfig at start, followed by updates
+        until end.
+        * Each TagConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigBatchedStreamRequest", TagConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[TagConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigBatchedStreamResponse", TagConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteAllRequest", TagConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "TagKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the TagConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteAllResponse", TagConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class TagConfigDeleteRequest(aristaproto.Message):
-    key: "TagKey" = aristaproto.message_field(1)
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which TagConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteRequest", TagConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TagConfigDeleteResponse(aristaproto.Message):
-    key: "TagKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted TagConfig instance."""
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted TagConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1541,1793 +1525,1450 @@ class TagConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteResponse", TagConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class TagConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["TagKey"] = aristaproto.message_field(1)
-    """key contains a list of TagConfig keys to delete"""
+    keys: "list[TagKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of TagConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteSomeRequest", TagConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
 class TagConfigDeleteSomeResponse(aristaproto.Message):
-    """TagConfigDeleteSomeResponse is only sent when there is an error."""
+    """
+    TagConfigDeleteSomeResponse is only sent when there is an error.
+    """
 
-    key: "TagKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigDeleteSomeResponse", TagConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TagConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["TagConfig"] = aristaproto.message_field(1)
+class TagConfigRequest(aristaproto.Message):
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    Key uniquely identifies a TagConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigRequest", TagConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigResponse(aristaproto.Message):
+    value: "TagConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TagConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigResponse", TagConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSetRequest(aristaproto.Message):
+    value: "TagConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TagConfig carries the value to set into the datastore.
+    See the documentation on the TagConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSetRequest", TagConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSetResponse(aristaproto.Message):
+    value: "TagConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the TagConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSetResponse", TagConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSetSomeRequest(aristaproto.Message):
+    values: "list[TagConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of TagConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSetSomeRequest", TagConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSetSomeResponse(aristaproto.Message):
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSetSomeResponse", TagConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSomeRequest(aristaproto.Message):
+    keys: "list[TagKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSomeRequest", TagConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigSomeResponse(aristaproto.Message):
+    value: "TagConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TagConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigSomeResponse", TagConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[TagConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each TagConfig at end.
+        * Each TagConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagConfig at start, followed by updates until now.
+        * Each TagConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagConfig at start, followed by updates
+        until end.
+        * Each TagConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigStreamRequest", TagConfigStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TagConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class TagConfigStreamResponse(aristaproto.Message):
+    value: "TagConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this TagConfig's last modification.
+    """
 
-    key: "TagKey" = aristaproto.message_field(3)
-    """This is the key of the TagConfig instance that failed to be deleted."""
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the TagConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+default_message_pool.register_message("arista.tag.v2", "TagConfigStreamResponse", TagConfigStreamResponse)
 
 
-class ElementServiceStub(aristaproto.ServiceStub):
+@dataclass(eq=False, repr=False)
+class TagKey(aristaproto.Message):
+    """
+    TagKey uniquely identifies a tag.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the ID of a workspace. The special ID ""
+    identifies the location where merged tags reside.
+    """
+
+    element_type: "ElementType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ElementType(0))
+    """
+    element_type is the category of network element to which
+    this tag can be assigned.
+    """
+
+    label: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    label is an arbitrary label.
+    """
+
+    value: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    value is an arbitrary value.
+    """
+
+    element_sub_type: "ElementSubType" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: ElementSubType(0))
+    """
+    element_sub_type is the sub-category of network element
+    to which this tag can be assigned.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagKey", TagKey)
+
+
+@dataclass(eq=False, repr=False)
+class TagRequest(aristaproto.Message):
+    key: "TagKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Tag instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagRequest", TagRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagResponse(aristaproto.Message):
+    value: "Tag | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Tag instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagResponse", TagResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagSomeRequest(aristaproto.Message):
+    keys: "list[TagKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagSomeRequest", TagSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagSomeResponse(aristaproto.Message):
+    value: "Tag | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Tag instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagSomeResponse", TagSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TagStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Tag]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Tag at end.
+        * Each Tag response is fully-specified (all fields set).
+      * start: Returns the state of each Tag at start, followed by updates until now.
+        * Each Tag response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Tag at start, followed by updates
+        until end.
+        * Each Tag response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagStreamRequest", TagStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TagStreamResponse(aristaproto.Message):
+    value: "Tag | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Tag's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Tag value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.tag.v2", "TagStreamResponse", TagStreamResponse)
+
+
+class ElementServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        element_request: "ElementRequest",
+        message: "ElementRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ElementResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.ElementService/GetOne",
-            element_request,
+            message,
             ElementResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        element_some_request: "ElementSomeRequest",
+        message: "ElementSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ElementSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/GetSome",
-            element_some_request,
+            message,
             ElementSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        element_stream_request: "ElementStreamRequest",
+        message: "ElementStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ElementStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/GetAll",
-            element_stream_request,
+            message,
             ElementStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        element_stream_request: "ElementStreamRequest",
+        message: "ElementStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ElementStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/Subscribe",
-            element_stream_request,
+            message,
             ElementStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        element_stream_request: "ElementStreamRequest",
+        message: "ElementStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.ElementService/GetMeta",
-            element_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        element_stream_request: "ElementStreamRequest",
+        message: "ElementStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/SubscribeMeta",
-            element_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        element_batched_stream_request: "ElementBatchedStreamRequest",
+        message: "ElementBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ElementBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/GetAllBatched",
-            element_batched_stream_request,
+            message,
             ElementBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        element_batched_stream_request: "ElementBatchedStreamRequest",
+        message: "ElementBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ElementBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.ElementService/SubscribeBatched",
-            element_batched_stream_request,
+            message,
             ElementBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TagServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self, tag_request: "TagRequest", *, timeout: Optional[float] = None, deadline: Optional["Deadline"] = None, metadata: Optional["MetadataLike"] = None
-    ) -> "TagResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagService/GetOne",
-            tag_request,
-            TagResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        tag_some_request: "TagSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/GetSome",
-            tag_some_request,
-            TagSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        tag_stream_request: "TagStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/GetAll",
-            tag_stream_request,
-            TagStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        tag_stream_request: "TagStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/Subscribe",
-            tag_stream_request,
-            TagStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        tag_stream_request: "TagStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagService/GetMeta",
-            tag_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        tag_stream_request: "TagStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/SubscribeMeta",
-            tag_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        tag_batched_stream_request: "TagBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/GetAllBatched",
-            tag_batched_stream_request,
-            TagBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        tag_batched_stream_request: "TagBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagService/SubscribeBatched",
-            tag_batched_stream_request,
-            TagBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class TagAssignmentServiceStub(aristaproto.ServiceStub):
+class TagAssignmentConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        tag_assignment_request: "TagAssignmentRequest",
+        message: "TagAssignmentConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "TagAssignmentResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagAssignmentService/GetOne",
-            tag_assignment_request,
-            TagAssignmentResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        tag_assignment_some_request: "TagAssignmentSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagAssignmentSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/GetSome",
-            tag_assignment_some_request,
-            TagAssignmentSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        tag_assignment_stream_request: "TagAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagAssignmentStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/GetAll",
-            tag_assignment_stream_request,
-            TagAssignmentStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        tag_assignment_stream_request: "TagAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagAssignmentStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/Subscribe",
-            tag_assignment_stream_request,
-            TagAssignmentStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        tag_assignment_stream_request: "TagAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagAssignmentService/GetMeta",
-            tag_assignment_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        tag_assignment_stream_request: "TagAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/SubscribeMeta",
-            tag_assignment_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        tag_assignment_batched_stream_request: "TagAssignmentBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagAssignmentBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/GetAllBatched",
-            tag_assignment_batched_stream_request,
-            TagAssignmentBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        tag_assignment_batched_stream_request: "TagAssignmentBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagAssignmentBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagAssignmentService/SubscribeBatched",
-            tag_assignment_batched_stream_request,
-            TagAssignmentBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        tag_assignment_config_request: "TagAssignmentConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TagAssignmentConfigResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/GetOne",
-            tag_assignment_config_request,
+            message,
             TagAssignmentConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        tag_assignment_config_some_request: "TagAssignmentConfigSomeRequest",
+        message: "TagAssignmentConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetSome",
-            tag_assignment_config_some_request,
+            message,
             TagAssignmentConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest",
+        message: "TagAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetAll",
-            tag_assignment_config_stream_request,
+            message,
             TagAssignmentConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest",
+        message: "TagAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/Subscribe",
-            tag_assignment_config_stream_request,
+            message,
             TagAssignmentConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest",
+        message: "TagAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/GetMeta",
-            tag_assignment_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest",
+        message: "TagAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SubscribeMeta",
-            tag_assignment_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        tag_assignment_config_set_request: "TagAssignmentConfigSetRequest",
+        message: "TagAssignmentConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TagAssignmentConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/Set",
-            tag_assignment_config_set_request,
+            message,
             TagAssignmentConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        tag_assignment_config_set_some_request: "TagAssignmentConfigSetSomeRequest",
+        message: "TagAssignmentConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SetSome",
-            tag_assignment_config_set_some_request,
+            message,
             TagAssignmentConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        tag_assignment_config_delete_request: "TagAssignmentConfigDeleteRequest",
+        message: "TagAssignmentConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TagAssignmentConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/Delete",
-            tag_assignment_config_delete_request,
+            message,
             TagAssignmentConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        tag_assignment_config_delete_some_request: "TagAssignmentConfigDeleteSomeRequest",
+        message: "TagAssignmentConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/DeleteSome",
-            tag_assignment_config_delete_some_request,
+            message,
             TagAssignmentConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        tag_assignment_config_delete_all_request: "TagAssignmentConfigDeleteAllRequest",
+        message: "TagAssignmentConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/DeleteAll",
-            tag_assignment_config_delete_all_request,
+            message,
             TagAssignmentConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        tag_assignment_config_batched_stream_request: "TagAssignmentConfigBatchedStreamRequest",
+        message: "TagAssignmentConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetAllBatched",
-            tag_assignment_config_batched_stream_request,
+            message,
             TagAssignmentConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        tag_assignment_config_batched_stream_request: "TagAssignmentConfigBatchedStreamRequest",
+        message: "TagAssignmentConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TagAssignmentConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SubscribeBatched",
-            tag_assignment_config_batched_stream_request,
+            message,
             TagAssignmentConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TagConfigServiceStub(aristaproto.ServiceStub):
+class TagAssignmentServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        tag_config_request: "TagConfigRequest",
+        message: "TagAssignmentRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "TagConfigResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TagAssignmentResponse":
+
         return await self._unary_unary(
-            "/arista.tag.v2.TagConfigService/GetOne",
-            tag_config_request,
-            TagConfigResponse,
+            "/arista.tag.v2.TagAssignmentService/GetOne",
+            message,
+            TagAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        tag_config_some_request: "TagConfigSomeRequest",
+        message: "TagAssignmentSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagAssignmentSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/GetSome",
-            tag_config_some_request,
-            TagConfigSomeResponse,
+            "/arista.tag.v2.TagAssignmentService/GetSome",
+            message,
+            TagAssignmentSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        tag_config_stream_request: "TagConfigStreamRequest",
+        message: "TagAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/GetAll",
-            tag_config_stream_request,
-            TagConfigStreamResponse,
+            "/arista.tag.v2.TagAssignmentService/GetAll",
+            message,
+            TagAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        tag_config_stream_request: "TagConfigStreamRequest",
+        message: "TagAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/Subscribe",
-            tag_config_stream_request,
-            TagConfigStreamResponse,
+            "/arista.tag.v2.TagAssignmentService/Subscribe",
+            message,
+            TagAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        tag_config_stream_request: "TagConfigStreamRequest",
+        message: "TagAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.tag.v2.TagConfigService/GetMeta",
-            tag_config_stream_request,
+            "/arista.tag.v2.TagAssignmentService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        tag_config_stream_request: "TagConfigStreamRequest",
+        message: "TagAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/SubscribeMeta",
-            tag_config_stream_request,
+            "/arista.tag.v2.TagAssignmentService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
-        ):
-            yield response
-
-    async def set(
-        self,
-        tag_config_set_request: "TagConfigSetRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "TagConfigSetResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagConfigService/Set",
-            tag_config_set_request,
-            TagConfigSetResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def set_some(
-        self,
-        tag_config_set_some_request: "TagConfigSetSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigSetSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/SetSome",
-            tag_config_set_some_request,
-            TagConfigSetSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete(
-        self,
-        tag_config_delete_request: "TagConfigDeleteRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "TagConfigDeleteResponse":
-        return await self._unary_unary(
-            "/arista.tag.v2.TagConfigService/Delete",
-            tag_config_delete_request,
-            TagConfigDeleteResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def delete_some(
-        self,
-        tag_config_delete_some_request: "TagConfigDeleteSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigDeleteSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/DeleteSome",
-            tag_config_delete_some_request,
-            TagConfigDeleteSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete_all(
-        self,
-        tag_config_delete_all_request: "TagConfigDeleteAllRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigDeleteAllResponse]":
-        async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/DeleteAll",
-            tag_config_delete_all_request,
-            TagConfigDeleteAllResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        tag_config_batched_stream_request: "TagConfigBatchedStreamRequest",
+        message: "TagAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/GetAllBatched",
-            tag_config_batched_stream_request,
-            TagConfigBatchedStreamResponse,
+            "/arista.tag.v2.TagAssignmentService/GetAllBatched",
+            message,
+            TagAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        tag_config_batched_stream_request: "TagConfigBatchedStreamRequest",
+        message: "TagAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TagConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.tag.v2.TagConfigService/SubscribeBatched",
-            tag_config_batched_stream_request,
+            "/arista.tag.v2.TagAssignmentService/SubscribeBatched",
+            message,
+            TagAssignmentBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class TagConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "TagConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TagConfigResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagConfigService/GetOne",
+            message,
+            TagConfigResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "TagConfigSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/GetSome",
+            message,
+            TagConfigSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "TagConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/GetAll",
+            message,
+            TagConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "TagConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/Subscribe",
+            message,
+            TagConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "TagConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagConfigService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "TagConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def set(
+        self,
+        message: "TagConfigSetRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TagConfigSetResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagConfigService/Set",
+            message,
+            TagConfigSetResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def set_some(
+        self,
+        message: "TagConfigSetSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigSetSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/SetSome",
+            message,
+            TagConfigSetSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        message: "TagConfigDeleteRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TagConfigDeleteResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagConfigService/Delete",
+            message,
+            TagConfigDeleteResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def delete_some(
+        self,
+        message: "TagConfigDeleteSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigDeleteSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/DeleteSome",
+            message,
+            TagConfigDeleteSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete_all(
+        self,
+        message: "TagConfigDeleteAllRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigDeleteAllResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/DeleteAll",
+            message,
+            TagConfigDeleteAllResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "TagConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/GetAllBatched",
+            message,
             TagConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "TagConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagConfigService/SubscribeBatched",
+            message,
+            TagConfigBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class TagServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "TagRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TagResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagService/GetOne",
+            message,
+            TagResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "TagSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/GetSome",
+            message,
+            TagSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "TagStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/GetAll",
+            message,
+            TagStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "TagStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/Subscribe",
+            message,
+            TagStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "TagStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.tag.v2.TagService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "TagStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "TagBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/GetAllBatched",
+            message,
+            TagBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "TagBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TagBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.tag.v2.TagService/SubscribeBatched",
+            message,
+            TagBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class ElementServiceBase(ServiceBase):
-    async def get_one(self, element_request: "ElementRequest") -> "ElementResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, element_some_request: "ElementSomeRequest") -> AsyncIterator[ElementSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, element_stream_request: "ElementStreamRequest") -> AsyncIterator[ElementStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, element_stream_request: "ElementStreamRequest") -> AsyncIterator[ElementStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, element_stream_request: "ElementStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, element_stream_request: "ElementStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, element_batched_stream_request: "ElementBatchedStreamRequest") -> AsyncIterator[ElementBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, element_batched_stream_request: "ElementBatchedStreamRequest") -> AsyncIterator[ElementBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ElementRequest, ElementResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ElementSomeRequest, ElementSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ElementStreamRequest, ElementStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ElementStreamRequest, ElementStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ElementStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ElementStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ElementBatchedStreamRequest, ElementBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ElementBatchedStreamRequest, ElementBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.tag.v2.ElementService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ElementRequest,
-                ElementResponse,
-            ),
-            "/arista.tag.v2.ElementService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementSomeRequest,
-                ElementSomeResponse,
-            ),
-            "/arista.tag.v2.ElementService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementStreamRequest,
-                ElementStreamResponse,
-            ),
-            "/arista.tag.v2.ElementService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementStreamRequest,
-                ElementStreamResponse,
-            ),
-            "/arista.tag.v2.ElementService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ElementStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.ElementService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.ElementService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementBatchedStreamRequest,
-                ElementBatchedStreamResponse,
-            ),
-            "/arista.tag.v2.ElementService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ElementBatchedStreamRequest,
-                ElementBatchedStreamResponse,
-            ),
-        }
-
-
-class TagServiceBase(ServiceBase):
-    async def get_one(self, tag_request: "TagRequest") -> "TagResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, tag_some_request: "TagSomeRequest") -> AsyncIterator[TagSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator[TagStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator[TagStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, tag_stream_request: "TagStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, tag_batched_stream_request: "TagBatchedStreamRequest") -> AsyncIterator[TagBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, tag_batched_stream_request: "TagBatchedStreamRequest") -> AsyncIterator[TagBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagRequest, TagResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TagSomeRequest, TagSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[TagBatchedStreamRequest, TagBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[TagBatchedStreamRequest, TagBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.tag.v2.TagService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagRequest,
-                TagResponse,
-            ),
-            "/arista.tag.v2.TagService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagSomeRequest,
-                TagSomeResponse,
-            ),
-            "/arista.tag.v2.TagService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagStreamRequest,
-                TagStreamResponse,
-            ),
-            "/arista.tag.v2.TagService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagStreamRequest,
-                TagStreamResponse,
-            ),
-            "/arista.tag.v2.TagService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagBatchedStreamRequest,
-                TagBatchedStreamResponse,
-            ),
-            "/arista.tag.v2.TagService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagBatchedStreamRequest,
-                TagBatchedStreamResponse,
-            ),
-        }
-
-
-class TagAssignmentServiceBase(ServiceBase):
-    async def get_one(self, tag_assignment_request: "TagAssignmentRequest") -> "TagAssignmentResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, tag_assignment_some_request: "TagAssignmentSomeRequest") -> AsyncIterator[TagAssignmentSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator[TagAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator[TagAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, tag_assignment_batched_stream_request: "TagAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[TagAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, tag_assignment_batched_stream_request: "TagAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[TagAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagAssignmentRequest, TagAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TagAssignmentSomeRequest, TagAssignmentSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, TagAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, TagAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[TagAssignmentBatchedStreamRequest, TagAssignmentBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[TagAssignmentBatchedStreamRequest, TagAssignmentBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.tag.v2.TagAssignmentService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentRequest,
-                TagAssignmentResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentSomeRequest,
-                TagAssignmentSomeResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentStreamRequest,
-                TagAssignmentStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentStreamRequest,
-                TagAssignmentStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentBatchedStreamRequest,
-                TagAssignmentBatchedStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentBatchedStreamRequest,
-                TagAssignmentBatchedStreamResponse,
-            ),
-        }
-
-
-class TagAssignmentConfigServiceBase(ServiceBase):
-    async def get_one(self, tag_assignment_config_request: "TagAssignmentConfigRequest") -> "TagAssignmentConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, tag_assignment_config_some_request: "TagAssignmentConfigSomeRequest") -> AsyncIterator[TagAssignmentConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator[TagAssignmentConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator[TagAssignmentConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, tag_assignment_config_set_request: "TagAssignmentConfigSetRequest") -> "TagAssignmentConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, tag_assignment_config_set_some_request: "TagAssignmentConfigSetSomeRequest") -> AsyncIterator[TagAssignmentConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, tag_assignment_config_delete_request: "TagAssignmentConfigDeleteRequest") -> "TagAssignmentConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, tag_assignment_config_delete_some_request: "TagAssignmentConfigDeleteSomeRequest"
-    ) -> AsyncIterator[TagAssignmentConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, tag_assignment_config_delete_all_request: "TagAssignmentConfigDeleteAllRequest"
-    ) -> AsyncIterator[TagAssignmentConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, tag_assignment_config_batched_stream_request: "TagAssignmentConfigBatchedStreamRequest"
-    ) -> AsyncIterator[TagAssignmentConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, tag_assignment_config_batched_stream_request: "TagAssignmentConfigBatchedStreamRequest"
-    ) -> AsyncIterator[TagAssignmentConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagAssignmentConfigRequest, TagAssignmentConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TagAssignmentConfigSomeRequest, TagAssignmentConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TagAssignmentConfigStreamRequest, TagAssignmentConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TagAssignmentConfigStreamRequest, TagAssignmentConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagAssignmentConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagAssignmentConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TagAssignmentConfigSetRequest, TagAssignmentConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[TagAssignmentConfigSetSomeRequest, TagAssignmentConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[TagAssignmentConfigDeleteRequest, TagAssignmentConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[TagAssignmentConfigDeleteSomeRequest, TagAssignmentConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[TagAssignmentConfigDeleteAllRequest, TagAssignmentConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[TagAssignmentConfigBatchedStreamRequest, TagAssignmentConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[TagAssignmentConfigBatchedStreamRequest, TagAssignmentConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.tag.v2.TagAssignmentConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentConfigRequest,
-                TagAssignmentConfigResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigSomeRequest,
-                TagAssignmentConfigSomeResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigStreamRequest,
-                TagAssignmentConfigStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigStreamRequest,
-                TagAssignmentConfigStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentConfigSetRequest,
-                TagAssignmentConfigSetResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigSetSomeRequest,
-                TagAssignmentConfigSetSomeResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagAssignmentConfigDeleteRequest,
-                TagAssignmentConfigDeleteResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigDeleteSomeRequest,
-                TagAssignmentConfigDeleteSomeResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigDeleteAllRequest,
-                TagAssignmentConfigDeleteAllResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigBatchedStreamRequest,
-                TagAssignmentConfigBatchedStreamResponse,
-            ),
-            "/arista.tag.v2.TagAssignmentConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagAssignmentConfigBatchedStreamRequest,
-                TagAssignmentConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class TagConfigServiceBase(ServiceBase):
-    async def get_one(self, tag_config_request: "TagConfigRequest") -> "TagConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, tag_config_some_request: "TagConfigSomeRequest") -> AsyncIterator[TagConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator[TagConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator[TagConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, tag_config_stream_request: "TagConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, tag_config_set_request: "TagConfigSetRequest") -> "TagConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, tag_config_set_some_request: "TagConfigSetSomeRequest") -> AsyncIterator[TagConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, tag_config_delete_request: "TagConfigDeleteRequest") -> "TagConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, tag_config_delete_some_request: "TagConfigDeleteSomeRequest") -> AsyncIterator[TagConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, tag_config_delete_all_request: "TagConfigDeleteAllRequest") -> AsyncIterator[TagConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest") -> AsyncIterator[TagConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest") -> AsyncIterator[TagConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagConfigRequest, TagConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TagConfigSomeRequest, TagConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, TagConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, TagConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TagConfigSetRequest, TagConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[TagConfigSetSomeRequest, TagConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[TagConfigDeleteRequest, TagConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[TagConfigDeleteSomeRequest, TagConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[TagConfigDeleteAllRequest, TagConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[TagConfigBatchedStreamRequest, TagConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[TagConfigBatchedStreamRequest, TagConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.tag.v2.TagConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagConfigRequest,
-                TagConfigResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigSomeRequest,
-                TagConfigSomeResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigStreamRequest,
-                TagConfigStreamResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigStreamRequest,
-                TagConfigStreamResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagConfigSetRequest,
-                TagConfigSetResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigSetSomeRequest,
-                TagConfigSetSomeResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TagConfigDeleteRequest,
-                TagConfigDeleteResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigDeleteSomeRequest,
-                TagConfigDeleteSomeResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigDeleteAllRequest,
-                TagConfigDeleteAllResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigBatchedStreamRequest,
-                TagConfigBatchedStreamResponse,
-            ),
-            "/arista.tag.v2.TagConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TagConfigBatchedStreamRequest,
-                TagConfigBatchedStreamResponse,
-            ),
-        }

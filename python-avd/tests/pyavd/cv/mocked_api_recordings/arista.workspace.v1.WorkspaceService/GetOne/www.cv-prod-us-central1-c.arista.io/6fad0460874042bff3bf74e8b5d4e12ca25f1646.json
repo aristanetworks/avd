@@ -1,6 +1,6 @@
 {
 	"raise": {
-		"type": "GRPCError",
+		"type": "AioRpcError",
 		"status": "NOT_FOUND",
 		"message": "resource not found"
 	}

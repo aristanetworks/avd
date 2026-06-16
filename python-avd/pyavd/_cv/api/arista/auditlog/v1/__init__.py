@@ -7,81 +7,50 @@
 # This file has been @generated
 
 __all__ = (
-    "Severity",
-    "CategoryType",
     "Attributes",
-    "AuditlogKey",
     "Auditlog",
-    "Filter",
-    "Category",
-    "MetaResponse",
+    "AuditlogKey",
     "AuditlogRequest",
     "AuditlogResponse",
+    "AuditlogServiceStub",
     "AuditlogSomeRequest",
     "AuditlogSomeResponse",
     "AuditlogStreamRequest",
     "AuditlogStreamResponse",
-    "AuditlogServiceStub",
-    "AuditlogServiceBase",
+    "Category",
+    "CategoryType",
+    "Filter",
+    "MetaResponse",
+    "Severity",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class Severity(aristaproto.Enum):
-    """Severity is the level of criticality of the log."""
-
-    UNSPECIFIED = 0
-    """SEVERITY_UNSPECIFIED severity"""
-
-    EMERGENCY = 1
-    """SEVERITY_EMERGENCY severity"""
-
-    ALERT = 2
-    """SEVERITY_ALERT severity"""
-
-    CRITICAL = 3
-    """SEVERITY_CRITICAL severity"""
-
-    ERROR = 4
-    """SEVERITY_ERROR severity"""
-
-    WARNING = 5
-    """SEVERITY_WARNING severity"""
-
-    NOTICE = 6
-    """SEVERITY_NOTICE severity"""
-
-    INFO = 7
-    """SEVERITY_INFO severity"""
-
-    DEBUG = 8
-    """SEVERITY_DEBUG severity"""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class CategoryType(aristaproto.Enum):
-    """CategoryType is the type of the category"""
+    """
+    CategoryType is the type of the category
+    """
 
     UNSPECIFIED = 0
-    """CATEGORY_TYPE_UNSPECIFIED categoryType"""
+    """
+    CATEGORY_TYPE_UNSPECIFIED categoryType
+    """
 
     INVENTORY = 1
     """
@@ -143,67 +112,185 @@ class CategoryType(aristaproto.Enum):
     the identifier for this category is a custom identifier defined by the user.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CATEGORY_TYPE_UNSPECIFIED",
+            1: "CATEGORY_TYPE_INVENTORY",
+            2: "CATEGORY_TYPE_CONFIGLET",
+            3: "CATEGORY_TYPE_IMAGE",
+            4: "CATEGORY_TYPE_LABEL",
+            5: "CATEGORY_TYPE_USER",
+            6: "CATEGORY_TYPE_CHANGECONTROL",
+            7: "CATEGORY_TYPE_ROLE",
+            8: "CATEGORY_TYPE_SNAPSHOT",
+            9: "CATEGORY_TYPE_EXECACTION",
+            10: "CATEGORY_TYPE_ACCESSCONTROL",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CATEGORY_TYPE_UNSPECIFIED": 0,
+            "CATEGORY_TYPE_INVENTORY": 1,
+            "CATEGORY_TYPE_CONFIGLET": 2,
+            "CATEGORY_TYPE_IMAGE": 3,
+            "CATEGORY_TYPE_LABEL": 4,
+            "CATEGORY_TYPE_USER": 5,
+            "CATEGORY_TYPE_CHANGECONTROL": 6,
+            "CATEGORY_TYPE_ROLE": 7,
+            "CATEGORY_TYPE_SNAPSHOT": 8,
+            "CATEGORY_TYPE_EXECACTION": 9,
+            "CATEGORY_TYPE_ACCESSCONTROL": 10,
+        }
+
+
+class Severity(aristaproto.Enum):
+    """
+    Severity is the level of criticality of the log.
+    """
+
+    UNSPECIFIED = 0
+    """
+    SEVERITY_UNSPECIFIED severity
+    """
+
+    EMERGENCY = 1
+    """
+    SEVERITY_EMERGENCY severity
+    """
+
+    ALERT = 2
+    """
+    SEVERITY_ALERT severity
+    """
+
+    CRITICAL = 3
+    """
+    SEVERITY_CRITICAL severity
+    """
+
+    ERROR = 4
+    """
+    SEVERITY_ERROR severity
+    """
+
+    WARNING = 5
+    """
+    SEVERITY_WARNING severity
+    """
+
+    NOTICE = 6
+    """
+    SEVERITY_NOTICE severity
+    """
+
+    INFO = 7
+    """
+    SEVERITY_INFO severity
+    """
+
+    DEBUG = 8
+    """
+    SEVERITY_DEBUG severity
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SEVERITY_UNSPECIFIED",
+            1: "SEVERITY_EMERGENCY",
+            2: "SEVERITY_ALERT",
+            3: "SEVERITY_CRITICAL",
+            4: "SEVERITY_ERROR",
+            5: "SEVERITY_WARNING",
+            6: "SEVERITY_NOTICE",
+            7: "SEVERITY_INFO",
+            8: "SEVERITY_DEBUG",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SEVERITY_UNSPECIFIED": 0,
+            "SEVERITY_EMERGENCY": 1,
+            "SEVERITY_ALERT": 2,
+            "SEVERITY_CRITICAL": 3,
+            "SEVERITY_ERROR": 4,
+            "SEVERITY_WARNING": 5,
+            "SEVERITY_NOTICE": 6,
+            "SEVERITY_INFO": 7,
+            "SEVERITY_DEBUG": 8,
+        }
+
 
 @dataclass(eq=False, repr=False)
 class Attributes(aristaproto.Message):
-    """Attributes are fields that make up the audit log."""
+    """
+    Attributes are fields that make up the audit log.
+    """
 
-    user: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """user is the CloudVision user to which the log corresponds to."""
+    user: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user is the CloudVision user to which the log corresponds to.
+    """
 
-    timestamp: datetime = aristaproto.message_field(2)
+    timestamp: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     timestamp at which the log was generated.
     eg: 2006-01-02T15:04:05.000Z
     """
 
-    severity: "Severity" = aristaproto.enum_field(3)
+    severity: "Severity" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: Severity(0))
     """
     severity is level of importance or urgency of the audit log message.
     eg: Debug, Info, Error
     """
 
-    device_name: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """device_name of the device for which audit log is sent."""
+    device_name: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_name of the device for which audit log is sent.
+    """
 
-    service: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    service: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     service name for which audit log is added.
     eg: aaa, accesscontrol, inventory
     """
 
-    message: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    message: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     message in the audit log.
-    eg: \"user logged in\"
+    eg: "user logged in"
     """
 
-    tags: "___fmp__.MapStringString" = aristaproto.message_field(7)
+    tags: "___fmp__.MapStringString | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
     """
     tags associated with the audit log.
     eg: `tags: {mnemonic: DEVICE_PROVISIONING_SUCCESS}`
     """
 
 
-@dataclass(eq=False, repr=False)
-class AuditlogKey(aristaproto.Message):
-    """AuditlogKey is the unique key for each message."""
-
-    id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """id is the unique uuid for an audit log."""
+default_message_pool.register_message("arista.auditlog.v1", "Attributes", Attributes)
 
 
 @dataclass(eq=False, repr=False)
 class Auditlog(aristaproto.Message):
-    """Auditlog contains the different fields as well as the formatted log."""
+    """
+    Auditlog contains the different fields as well as the formatted log.
+    """
 
-    key: "AuditlogKey" = aristaproto.message_field(1)
-    """key is the unique key for each message."""
+    key: "AuditlogKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the unique key for each message.
+    """
 
-    attributes: "Attributes" = aristaproto.message_field(2)
-    """attributes are the different fields that make up the audit log."""
+    attributes: "Attributes | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    attributes are the different fields that make up the audit log.
+    """
 
-    log: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    log: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     log is the formatted log message containing the different attributes
     including timestamp, serviceName, severity , userName in addition to
@@ -212,104 +299,45 @@ class Auditlog(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class Filter(aristaproto.Message):
-    """Filter are the different filters that can be applied."""
-
-    category: "Category" = aristaproto.message_field(1)
-    """
-    category filters based on category of the logs.
-    eg:
-    `{filter:[{category:{custom_type: abc}}]}`
-    filters all logs associated with the service abc.
-    """
-
-    queries: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """
-    queries is the list of strings that should be present in the log.
-    eg: `{filter:[{queries:{values:[abc]}}]}` searches for all
-    logs containing the string abc.
-    """
-
-    tags: "___fmp__.MapStringString" = aristaproto.message_field(3)
-    """
-    tags filters based on tags associated with the log.
-    eg: `{filter:[{tags:{values:{id:xyz}}}]}`
-    searches for all logs associates with the tag
-    id:xyz.
-    """
-
-    severity: "Severity" = aristaproto.enum_field(4)
-    """severity is level of importance or urgency of the audit log message."""
-
-    user: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """user filters the audit logs by given username across categories."""
+default_message_pool.register_message("arista.auditlog.v1", "Auditlog", Auditlog)
 
 
 @dataclass(eq=False, repr=False)
-class Category(aristaproto.Message):
+class AuditlogKey(aristaproto.Message):
     """
-    Category organizes audit logs into different groups using the CategoryType and the identifier
-    eg: `filter:[{category:{type:CATEGORY_TYPE_INVENTORY,identifier:abc}}]`
-    filters all logs associated with the service \"inventory\" and device abc
+    AuditlogKey is the unique key for each message.
     """
 
-    type: "CategoryType" = aristaproto.enum_field(1)
-    """type of the category."""
-
-    identifier: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    identifier is the object with which we want to filter the category.
-    eg: fetch all logs from the device with id abc
-    Here the category is inventory and the identifier is abc.
-    """
-
-    custom_type: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    custom_type is a custom category that can be created by the user.
-    this is used if none of the existing categories can support the users's usecase.
+    id is the unique uuid for an audit log.
     """
 
 
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogKey", AuditlogKey)
 
 
 @dataclass(eq=False, repr=False)
 class AuditlogRequest(aristaproto.Message):
-    key: "AuditlogKey" = aristaproto.message_field(1)
+    key: "AuditlogKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a Auditlog instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogRequest", AuditlogRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AuditlogResponse(aristaproto.Message):
-    value: "Auditlog" = aristaproto.message_field(1)
+    value: "Auditlog | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -317,26 +345,33 @@ class AuditlogResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Auditlog instance in this response.
     """
 
 
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogResponse", AuditlogResponse)
+
+
 @dataclass(eq=False, repr=False)
 class AuditlogSomeRequest(aristaproto.Message):
-    keys: List["AuditlogKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[AuditlogKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogSomeRequest", AuditlogSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AuditlogSomeResponse(aristaproto.Message):
-    value: "Auditlog" = aristaproto.message_field(1)
+    value: "Auditlog | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -344,29 +379,32 @@ class AuditlogSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Auditlog instance in this response.
     """
 
 
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogSomeResponse", AuditlogSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class AuditlogStreamRequest(aristaproto.Message):
-    filter: List["Filter"] = aristaproto.message_field(2)
+    filter: "list[Filter]" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     For each Auditlog in the list, all populated fields are considered ANDed together
     as a filtering operation. Similarly, the list itself is ORed such that any individual
     filter that matches a given Auditlog is streamed to the user.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -384,19 +422,24 @@ class AuditlogStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogStreamRequest", AuditlogStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AuditlogStreamResponse(aristaproto.Message):
-    value: "Auditlog" = aristaproto.message_field(1)
+    value: "Auditlog | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Auditlog's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Auditlog's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the Auditlog value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -405,216 +448,233 @@ class AuditlogStreamResponse(aristaproto.Message):
     """
 
 
-class AuditlogServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.auditlog.v1", "AuditlogStreamResponse", AuditlogStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Category(aristaproto.Message):
+    """
+    Category organizes audit logs into different groups using the CategoryType and the identifier
+    eg: `filter:[{category:{type:CATEGORY_TYPE_INVENTORY,identifier:abc}}]`
+    filters all logs associated with the service "inventory" and device abc
+    """
+
+    type: "CategoryType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: CategoryType(0))
+    """
+    type of the category.
+    """
+
+    identifier: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    identifier is the object with which we want to filter the category.
+    eg: fetch all logs from the device with id abc
+    Here the category is inventory and the identifier is abc.
+    """
+
+    custom_type: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    custom_type is a custom category that can be created by the user.
+    this is used if none of the existing categories can support the users's usecase.
+    """
+
+
+default_message_pool.register_message("arista.auditlog.v1", "Category", Category)
+
+
+@dataclass(eq=False, repr=False)
+class Filter(aristaproto.Message):
+    """
+    Filter are the different filters that can be applied.
+    """
+
+    category: "Category | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    category filters based on category of the logs.
+    eg:
+    `{filter:[{category:{custom_type: abc}}]}`
+    filters all logs associated with the service abc.
+    """
+
+    queries: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    queries is the list of strings that should be present in the log.
+    eg: `{filter:[{queries:{values:[abc]}}]}` searches for all
+    logs containing the string abc.
+    """
+
+    tags: "___fmp__.MapStringString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    tags filters based on tags associated with the log.
+    eg: `{filter:[{tags:{values:{id:xyz}}}]}`
+    searches for all logs associates with the tag
+    id:xyz.
+    """
+
+    severity: "Severity" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: Severity(0))
+    """
+    severity is level of importance or urgency of the audit log message.
+    """
+
+    user: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user filters the audit logs by given username across categories.
+    """
+
+
+default_message_pool.register_message("arista.auditlog.v1", "Filter", Filter)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.auditlog.v1", "MetaResponse", MetaResponse)
+
+
+class AuditlogServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        auditlog_request: "AuditlogRequest",
+        message: "AuditlogRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AuditlogResponse":
+
         return await self._unary_unary(
             "/arista.auditlog.v1.AuditlogService/GetOne",
-            auditlog_request,
+            message,
             AuditlogResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        auditlog_some_request: "AuditlogSomeRequest",
+        message: "AuditlogSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AuditlogSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/GetSome",
-            auditlog_some_request,
+            message,
             AuditlogSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        auditlog_stream_request: "AuditlogStreamRequest",
+        message: "AuditlogStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AuditlogStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/GetAll",
-            auditlog_stream_request,
+            message,
             AuditlogStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        auditlog_stream_request: "AuditlogStreamRequest",
+        message: "AuditlogStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AuditlogStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/Subscribe",
-            auditlog_stream_request,
+            message,
             AuditlogStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        auditlog_stream_request: "AuditlogStreamRequest",
+        message: "AuditlogStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.auditlog.v1.AuditlogService/GetMeta",
-            auditlog_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        auditlog_stream_request: "AuditlogStreamRequest",
+        message: "AuditlogStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/SubscribeMeta",
-            auditlog_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class AuditlogServiceBase(ServiceBase):
-    async def get_one(self, auditlog_request: "AuditlogRequest") -> "AuditlogResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, auditlog_some_request: "AuditlogSomeRequest") -> AsyncIterator[AuditlogSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[AuditlogStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[AuditlogStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, auditlog_stream_request: "AuditlogStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AuditlogRequest, AuditlogResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AuditlogSomeRequest, AuditlogSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AuditlogStreamRequest, AuditlogStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AuditlogStreamRequest, AuditlogStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AuditlogStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AuditlogStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.auditlog.v1.AuditlogService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AuditlogRequest,
-                AuditlogResponse,
-            ),
-            "/arista.auditlog.v1.AuditlogService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AuditlogSomeRequest,
-                AuditlogSomeResponse,
-            ),
-            "/arista.auditlog.v1.AuditlogService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AuditlogStreamRequest,
-                AuditlogStreamResponse,
-            ),
-            "/arista.auditlog.v1.AuditlogService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AuditlogStreamRequest,
-                AuditlogStreamResponse,
-            ),
-            "/arista.auditlog.v1.AuditlogService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AuditlogStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.auditlog.v1.AuditlogService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AuditlogStreamRequest,
-                MetaResponse,
-            ),
-        }

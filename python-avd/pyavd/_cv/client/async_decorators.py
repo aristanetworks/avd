@@ -13,8 +13,8 @@ from re import fullmatch
 from types import UnionType
 from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, get_origin
 
-from grpclib import Status
-from grpclib.exceptions import GRPCError, StreamTerminatedError
+import grpc
+from grpc.aio import AioRpcError
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVClientInvalidServerName, CVGRPCError, CVResourceNotFound, CVTimeoutError
 from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX, CVAAS_STREAMING_PREFIX
@@ -25,7 +25,7 @@ from .exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
 from .versioning import CvVersion
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Awaitable, Callable
     from inspect import BoundArguments, Signature
 
 LOGGER = getLogger(__name__)
@@ -38,6 +38,49 @@ MSG_SIZE_EXCEEDED_REGEX = re_compile(r"grpc: received message larger than max \(
 STREAM_RESET_ERROR_CODE_REGEX = re_compile(r"Stream reset by remote party, error_code: (?P<error_code>\d+)")
 
 
+def grpc_error_has_status(error: Exception, status: grpc.StatusCode) -> bool:
+    """Return True if a grpcio error has the given gRPC status."""
+    return _grpc_error_status(error) == status
+
+
+def _grpc_error_status(error: Exception) -> grpc.StatusCode | None:
+    if isinstance(error, AioRpcError):
+        return error.code()
+    return None
+
+
+def _grpc_error_message(error: Exception) -> str:
+    if isinstance(error, AioRpcError):
+        return error.details() or str(error)
+    return str(error)
+
+
+def _exception_args(error: Exception) -> tuple:
+    """Return stable exception args even when grpcio keeps details outside args."""
+    if isinstance(error, AioRpcError):
+        return (_grpc_error_summary(error),)
+
+    return error.args or (str(error),)
+
+
+def _grpc_error_summary(error: AioRpcError) -> str:
+    """Return a compact grpcio error summary compatible with existing CV exceptions and logs."""
+    status = error.code()
+    summary = f"{status}: {status.value[0]}"
+    if details := error.details():
+        return f"{summary}: {details}"
+
+    return summary
+
+
+def _grpc_error_is_stream_reset_internal_error(error: AioRpcError) -> bool:
+    """Return True for retryable HTTP/2 RST_STREAM INTERNAL_ERROR reported by grpcio."""
+    if not (matches := fullmatch(STREAM_RESET_ERROR_CODE_REGEX, _grpc_error_message(error))):
+        return False
+
+    return int(matches.group("error_code")) == 2
+
+
 class LimitCvVersion:
     """
     Decorator used to limit the supported CloudVision versions for a certain method.
@@ -47,7 +90,7 @@ class LimitCvVersion:
     The decorator will only work in CvClient class methods since it expects the _cv_client attribute on 'self'.
     """
 
-    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable]]] = {}
+    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable[..., Awaitable[Any]]]]] = {}
     """
     Map of versioned functions keyed by function name.
 
@@ -72,7 +115,7 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
+    def __call__(self, func: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -115,18 +158,18 @@ class GRPCRequestHandler:
     """
     Decorator used to handle execution of the async gRPC calls towards CloudVision.
 
-    Retries an async method upon getting gRPC Status.UNAVAILABLE (14) using exponential backoff mechanism and max retry limit.
-    Converts GRPCError or AsyncioTimeoutError instances to an instance of the relevant subclass of CVClientException.
-    Splits gRPC messages into smaller chunks (based on reported maximum supported size) if Status.RESOURCE_EXHAUSTED is received.
+    Retries an async method upon getting gRPC UNAVAILABLE (14) using exponential backoff mechanism and max retry limit.
+    Converts gRPC errors or AsyncioTimeoutError instances to an instance of the relevant subclass of CVClientException.
+    Splits gRPC messages into smaller chunks (based on reported maximum supported size) if RESOURCE_EXHAUSTED is received.
 
     Args:
-        max_retries (int): Maximum number of retry attempts for Status.UNAVAILABLE. Total attempts = 1 + max_retries.
+        max_retries (int): Maximum number of retry attempts for UNAVAILABLE. Total attempts = 1 + max_retries.
         initial_delay (int): Initial delay in seconds before the first retry.
         factor (int): Multiplier for the delay in subsequent retries.
         list_field (str): Name of the parameter to be split if Status.RESOURCE_EXHAUSTED is received.
         min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
         check_bulk_response_errors (bool): Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls.
-        retry_on_stream_reset (bool): Retry on StreamTerminatedError (RST_STREAM INTERNAL_ERROR from server) using the same backoff as UNAVAILABLE.
+        retry_on_stream_reset (bool): Retry on RST_STREAM INTERNAL_ERROR from server using the same backoff as UNAVAILABLE.
             Should be enabled for streaming calls (GetAll, GetSome, Subscribe) where transient server resets are possible.
             It is ok to enable it for calls mixing GetAll or GetSome with GetOne.
     """
@@ -138,7 +181,7 @@ class GRPCRequestHandler:
     min_items_for_splitting_attempt: int
     check_bulk_response_errors: bool
     retry_on_stream_reset: bool
-    func: Callable
+    func: Callable[..., Awaitable[Any]]
     func_signature: Signature
     bound_arguments: BoundArguments
     current_arguments_dict: dict
@@ -161,7 +204,7 @@ class GRPCRequestHandler:
         self.check_bulk_response_errors = check_bulk_response_errors
         self.retry_on_stream_reset = retry_on_stream_reset
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
+    def __call__(self, func: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -229,13 +272,13 @@ class GRPCRequestHandler:
                 attempt,
                 self.max_retries + 1,
                 func_name,
-                e,
+                _grpc_error_summary(e) if isinstance(e, AioRpcError) else e,
                 delay,
             )
             await asyncio_sleep(delay)
         else:
             msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
-            raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+            raise CVGRPCStatusUnavailable(msg, *_exception_args(e), call_args, call_kwargs)
 
     async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
@@ -252,25 +295,30 @@ class GRPCRequestHandler:
                     case AsyncioTimeoutError():
                         raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
-                    case GRPCError():
-                        match e.status:
-                            case Status.NOT_FOUND:
-                                raise CVResourceNotFound(*e.args, call_args, call_kwargs)
+                    case AioRpcError():
+                        match _grpc_error_status(e):
+                            case grpc.StatusCode.NOT_FOUND:
+                                raise CVResourceNotFound(*_exception_args(e), call_args, call_kwargs)
 
-                            case Status.CANCELLED:
-                                raise CVTimeoutError(*e.args, call_args, call_kwargs)
+                            case grpc.StatusCode.CANCELLED:
+                                raise CVTimeoutError(*_exception_args(e), call_args, call_kwargs)
 
-                            case Status.UNAVAILABLE:
+                            case grpc.StatusCode.UNAVAILABLE:
                                 await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
+                                continue
 
-                            case Status.RESOURCE_EXHAUSTED:
-                                if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
-                                    new_exception = CVMessageSizeExceeded(*e.args)
+                            case grpc.StatusCode.RESOURCE_EXHAUSTED:
+                                if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, _grpc_error_message(e)):
+                                    new_exception = CVMessageSizeExceeded(*_exception_args(e))
                                     new_exception.max_size = int(matches.group("max"))
                                     new_exception.size = int(matches.group("size"))
                                     raise new_exception
 
-                            case Status.UNKNOWN:
+                            case grpc.StatusCode.UNKNOWN:
+                                if self.retry_on_stream_reset and _grpc_error_is_stream_reset_internal_error(e):
+                                    await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
+                                    continue
+
                                 caller = call_args[0]
                                 invalid_cvaas_fqdn, hint_msg = self._invalid_cvaas_fqdn(
                                     getattr(caller, "_servers", []),
@@ -280,20 +328,14 @@ class GRPCRequestHandler:
                                     raise CVClientInvalidServerName(hint_msg)
 
                                 # gRPC UNKNOWN received from non-CVaaS endpoint or correctly configured CVaaS
-                                raise CVGRPCError(*e.args, call_args, call_kwargs)
+                                raise CVGRPCError(*_exception_args(e), call_args, call_kwargs)
+
                             case _:
                                 # All other gRPC errors are converted to CVGRPCError
-                                raise CVGRPCError(*e.args, call_args, call_kwargs)
-
-                    case StreamTerminatedError() if self.retry_on_stream_reset:
-                        # Only retry on HTTP2 RST_STREAM INTERNAL_ERROR (error_code: 2) - transient server-side fault.
-                        # Other error codes (e.g. NO_ERROR from timeout) fall through to CVClientException.
-                        if not (matches := fullmatch(STREAM_RESET_ERROR_CODE_REGEX, str(e.args[0] if e.args else ""))) or int(matches.group("error_code")) != 2:
-                            raise CVClientException(*e.args, call_args, call_kwargs)
-                        await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
+                                raise CVGRPCError(*_exception_args(e), call_args, call_kwargs)
 
                     case _:
-                        raise CVClientException(*e.args, call_args, call_kwargs)
+                        raise CVClientException(*_exception_args(e), call_args, call_kwargs)
         # Required by ruff
         return None
 

@@ -7,176 +7,113 @@
 # This file has been @generated
 
 __all__ = (
-    "ErrorCode",
-    "DiffOp",
-    "ConfigFilterCode",
-    "ConfigSyncCode",
-    "ConfigSourceType",
-    "ConfigType",
-    "ConfigError",
-    "ConfigErrors",
-    "DiffEntry",
-    "DiffEntries",
-    "ConfigSource",
-    "ConfigSources",
-    "ConfigSummary",
-    "ConfigKey",
-    "Configuration",
-    "ConfigDiffKey",
     "ConfigDiff",
-    "SummaryKey",
-    "Summary",
-    "SecurityProfile",
-    "SecurityProfileComplianceSummary",
-    "SecurityProfileDiffSummary",
-    "SecurityProfileDiff",
-    "MetaResponse",
+    "ConfigDiffBatchedStreamRequest",
+    "ConfigDiffBatchedStreamResponse",
+    "ConfigDiffKey",
     "ConfigDiffRequest",
     "ConfigDiffResponse",
+    "ConfigDiffServiceStub",
     "ConfigDiffSomeRequest",
     "ConfigDiffSomeResponse",
     "ConfigDiffStreamRequest",
     "ConfigDiffStreamResponse",
-    "ConfigDiffBatchedStreamRequest",
-    "ConfigDiffBatchedStreamResponse",
+    "ConfigError",
+    "ConfigErrors",
+    "ConfigFilterCode",
+    "ConfigKey",
+    "ConfigSource",
+    "ConfigSourceType",
+    "ConfigSources",
+    "ConfigSummary",
+    "ConfigSyncCode",
+    "ConfigType",
+    "Configuration",
+    "ConfigurationBatchedStreamRequest",
+    "ConfigurationBatchedStreamResponse",
     "ConfigurationRequest",
     "ConfigurationResponse",
+    "ConfigurationServiceStub",
     "ConfigurationSomeRequest",
     "ConfigurationSomeResponse",
     "ConfigurationStreamRequest",
     "ConfigurationStreamResponse",
-    "ConfigurationBatchedStreamRequest",
-    "ConfigurationBatchedStreamResponse",
-    "SecurityProfileRequest",
-    "SecurityProfileResponse",
-    "SecurityProfileSomeRequest",
-    "SecurityProfileSomeResponse",
-    "SecurityProfileStreamRequest",
-    "SecurityProfileStreamResponse",
+    "DiffEntries",
+    "DiffEntry",
+    "DiffOp",
+    "ErrorCode",
+    "MetaResponse",
+    "SecurityProfile",
     "SecurityProfileBatchedStreamRequest",
     "SecurityProfileBatchedStreamResponse",
+    "SecurityProfileComplianceSummary",
+    "SecurityProfileDiff",
+    "SecurityProfileDiffBatchedStreamRequest",
+    "SecurityProfileDiffBatchedStreamResponse",
     "SecurityProfileDiffRequest",
     "SecurityProfileDiffResponse",
+    "SecurityProfileDiffServiceStub",
     "SecurityProfileDiffSomeRequest",
     "SecurityProfileDiffSomeResponse",
     "SecurityProfileDiffStreamRequest",
     "SecurityProfileDiffStreamResponse",
-    "SecurityProfileDiffBatchedStreamRequest",
-    "SecurityProfileDiffBatchedStreamResponse",
+    "SecurityProfileDiffSummary",
+    "SecurityProfileDiffSummaryBatchedStreamRequest",
+    "SecurityProfileDiffSummaryBatchedStreamResponse",
     "SecurityProfileDiffSummaryRequest",
     "SecurityProfileDiffSummaryResponse",
+    "SecurityProfileDiffSummaryServiceStub",
     "SecurityProfileDiffSummarySomeRequest",
     "SecurityProfileDiffSummarySomeResponse",
     "SecurityProfileDiffSummaryStreamRequest",
     "SecurityProfileDiffSummaryStreamResponse",
-    "SecurityProfileDiffSummaryBatchedStreamRequest",
-    "SecurityProfileDiffSummaryBatchedStreamResponse",
+    "SecurityProfileRequest",
+    "SecurityProfileResponse",
+    "SecurityProfileServiceStub",
+    "SecurityProfileSomeRequest",
+    "SecurityProfileSomeResponse",
+    "SecurityProfileStreamRequest",
+    "SecurityProfileStreamResponse",
+    "Summary",
+    "SummaryBatchedStreamRequest",
+    "SummaryBatchedStreamResponse",
+    "SummaryKey",
     "SummaryRequest",
     "SummaryResponse",
+    "SummaryServiceStub",
     "SummarySomeRequest",
     "SummarySomeResponse",
     "SummaryStreamRequest",
     "SummaryStreamResponse",
-    "SummaryBatchedStreamRequest",
-    "SummaryBatchedStreamResponse",
-    "ConfigDiffServiceStub",
-    "ConfigDiffServiceBase",
-    "ConfigurationServiceStub",
-    "ConfigurationServiceBase",
-    "SecurityProfileServiceStub",
-    "SecurityProfileServiceBase",
-    "SecurityProfileDiffServiceStub",
-    "SecurityProfileDiffServiceBase",
-    "SecurityProfileDiffSummaryServiceStub",
-    "SecurityProfileDiffSummaryServiceBase",
-    "SummaryServiceStub",
-    "SummaryServiceBase",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class ErrorCode(aristaproto.Enum):
-    """
-    ErrorCode indicates warnings and errors produced during computing config
-    """
-
-    UNSPECIFIED = 0
-    """ERROR_CODE_UNSPECIFIED uninitialized value"""
-
-    DEVICE_WARNING = 1
-    """ERROR_CODE_DEVICE_WARNING indicates device warning"""
-
-    DEVICE_ERROR = 2
-    """ERROR_CODE_DEVICE_ERROR indicates device error"""
-
-    UNREACHABLE_DEVICE = 3
-    """ERROR_CODE_UNREACHABLE_DEVICE indicates the device cannot be reached"""
-
-    CONFIG_FILTER_ERROR = 4
-    """
-    ERROR_CODE_CONFIG_FILTER_ERROR indicates error from partial config management filters
-    """
-
-    INTERNAL = 5
-    """ERROR_CODE_INTERNAL indicates internal errors"""
-
-    PROPOSED_CONFIG_CHECK = 6
-    """
-    ERROR_CODE_PROPOSED_CONFIG_CHECK indicates an issue with the content of proposed configuration.
-    """
-
-
-class DiffOp(aristaproto.Enum):
-    """
-    DiffOp is the operation to a line from one side of diff to get to another
-    """
-
-    UNSPECIFIED = 0
-    """DIFF_OP_UNSPECIFIED uninitialized"""
-
-    NOP = 1
-    """DIFF_OP_NOP indicates no change. A and B are identical at this line"""
-
-    IGNORE = 2
-    """
-    DIFF_OP_IGNORE indicates a line that's ignored in either A or B.
-    One of a_line_num or b_line_num will be -1
-    """
-
-    ADD = 3
-    """DIFF_OP_ADD is an addition of a line from A"""
-
-    DELETE = 4
-    """DIFF_OP_DELETE is deletion of a line from B"""
-
-    CHANGE = 5
-    """DIFF_OP_CHANGE is a modification to a line in A"""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class ConfigFilterCode(aristaproto.Enum):
-    """ConfigFilterCode indicates if a config line matches PCM filter(s)"""
+    """
+    ConfigFilterCode indicates if a config line matches PCM filter(s)
+    """
 
     UNSPECIFIED = 0
-    """CONFIG_FILTER_CODE_UNSPECIFIED uninitialized"""
+    """
+    CONFIG_FILTER_CODE_UNSPECIFIED uninitialized
+    """
 
     MANAGED_LINE = 1
     """
@@ -188,12 +125,85 @@ class ConfigFilterCode(aristaproto.Enum):
     CONFIG_FILTER_CODE_UNMANAGED_LINE indicates config line matches unmanaged PCM filter hence is not managed
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_FILTER_CODE_UNSPECIFIED",
+            1: "CONFIG_FILTER_CODE_MANAGED_LINE",
+            2: "CONFIG_FILTER_CODE_UNMANAGED_LINE",
+        }
 
-class ConfigSyncCode(aristaproto.Enum):
-    """ConfigSyncCode indicates config synchronization status"""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_FILTER_CODE_UNSPECIFIED": 0,
+            "CONFIG_FILTER_CODE_MANAGED_LINE": 1,
+            "CONFIG_FILTER_CODE_UNMANAGED_LINE": 2,
+        }
+
+
+class ConfigSourceType(aristaproto.Enum):
+    """
+    ConfigSourceType indicates the type of source for the proposed/designed configuration
+    for the device
+    """
 
     UNSPECIFIED = 0
-    """CONFIG_SYNC_CODE_UNSPECIFIED uninitialized"""
+    """
+    CONFIG_SOURCE_TYPE_UNSPECIFIED uninitialized value
+    """
+
+    NETWORK_PROVISIONING_CONFIGLET = 1
+    """
+    CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET - configlet created from
+    the network provisioning workflow.
+    """
+
+    STUDIO = 2
+    """
+    CONFIG_SOURCE_TYPE_STUDIO - config generated from a regular studio
+    """
+
+    STUDIO_STATIC = 3
+    """
+    CONFIG_SOURCE_TYPE_STUDIO_STATIC - static config from studios framework
+    """
+
+    HIERARCHY = 5
+    """
+    CONFIG_SOURCE_TYPE_HIERARCHY - config from the hierarchy frameork
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_SOURCE_TYPE_UNSPECIFIED",
+            1: "CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET",
+            2: "CONFIG_SOURCE_TYPE_STUDIO",
+            3: "CONFIG_SOURCE_TYPE_STUDIO_STATIC",
+            5: "CONFIG_SOURCE_TYPE_HIERARCHY",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_SOURCE_TYPE_UNSPECIFIED": 0,
+            "CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET": 1,
+            "CONFIG_SOURCE_TYPE_STUDIO": 2,
+            "CONFIG_SOURCE_TYPE_STUDIO_STATIC": 3,
+            "CONFIG_SOURCE_TYPE_HIERARCHY": 5,
+        }
+
+
+class ConfigSyncCode(aristaproto.Enum):
+    """
+    ConfigSyncCode indicates config synchronization status
+    """
+
+    UNSPECIFIED = 0
+    """
+    CONFIG_SYNC_CODE_UNSPECIFIED uninitialized
+    """
 
     IN_SYNC = 1
     """
@@ -205,45 +215,431 @@ class ConfigSyncCode(aristaproto.Enum):
     CONFIG_SYNC_CODE_OUT_OF_SYNC indicates designed config and running config are not identical
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_SYNC_CODE_UNSPECIFIED",
+            1: "CONFIG_SYNC_CODE_IN_SYNC",
+            2: "CONFIG_SYNC_CODE_OUT_OF_SYNC",
+        }
 
-class ConfigSourceType(aristaproto.Enum):
-    """
-    ConfigSourceType indicates the type of source for the proposed/designed configuration
-    for the device
-    """
-
-    UNSPECIFIED = 0
-    """CONFIG_SOURCE_TYPE_UNSPECIFIED uninitialized value"""
-
-    NETWORK_PROVISIONING_CONFIGLET = 1
-    """
-    CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET - configlet created from
-    the network provisioning workflow.
-    """
-
-    STUDIO = 2
-    """CONFIG_SOURCE_TYPE_STUDIO - config generated from a regular studio"""
-
-    STUDIO_STATIC = 3
-    """
-    CONFIG_SOURCE_TYPE_STUDIO_STATIC - static config from studios framework
-    """
-
-    HIERARCHY = 5
-    """CONFIG_SOURCE_TYPE_HIERARCHY - config from the hierarchy frameork"""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_SYNC_CODE_UNSPECIFIED": 0,
+            "CONFIG_SYNC_CODE_IN_SYNC": 1,
+            "CONFIG_SYNC_CODE_OUT_OF_SYNC": 2,
+        }
 
 
 class ConfigType(aristaproto.Enum):
-    """ConfigType - specifies type of config"""
+    """
+    ConfigType - specifies type of config
+    """
 
     UNSPECIFIED = 0
-    """CONFIG_TYPE_UNSPECIFIED uninitialized value"""
+    """
+    CONFIG_TYPE_UNSPECIFIED uninitialized value
+    """
 
     RUNNING_CONFIG = 1
-    """CONFIG_TYPE_RUNNING_CONFIG uninitialized value"""
+    """
+    CONFIG_TYPE_RUNNING_CONFIG uninitialized value
+    """
 
     DESIGNED_CONFIG = 2
-    """CONFIG_TYPE_DESIGNED_CONFIG uninitialized value"""
+    """
+    CONFIG_TYPE_DESIGNED_CONFIG uninitialized value
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_TYPE_UNSPECIFIED",
+            1: "CONFIG_TYPE_RUNNING_CONFIG",
+            2: "CONFIG_TYPE_DESIGNED_CONFIG",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_TYPE_UNSPECIFIED": 0,
+            "CONFIG_TYPE_RUNNING_CONFIG": 1,
+            "CONFIG_TYPE_DESIGNED_CONFIG": 2,
+        }
+
+
+class DiffOp(aristaproto.Enum):
+    """
+    DiffOp is the operation to a line from one side of diff to get to another
+    """
+
+    UNSPECIFIED = 0
+    """
+    DIFF_OP_UNSPECIFIED uninitialized
+    """
+
+    NOP = 1
+    """
+    DIFF_OP_NOP indicates no change. A and B are identical at this line
+    """
+
+    IGNORE = 2
+    """
+    DIFF_OP_IGNORE indicates a line that's ignored in either A or B.
+    One of a_line_num or b_line_num will be -1
+    """
+
+    ADD = 3
+    """
+    DIFF_OP_ADD is an addition of a line from A
+    """
+
+    DELETE = 4
+    """
+    DIFF_OP_DELETE is deletion of a line from B
+    """
+
+    CHANGE = 5
+    """
+    DIFF_OP_CHANGE is a modification to a line in A
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DIFF_OP_UNSPECIFIED",
+            1: "DIFF_OP_NOP",
+            2: "DIFF_OP_IGNORE",
+            3: "DIFF_OP_ADD",
+            4: "DIFF_OP_DELETE",
+            5: "DIFF_OP_CHANGE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DIFF_OP_UNSPECIFIED": 0,
+            "DIFF_OP_NOP": 1,
+            "DIFF_OP_IGNORE": 2,
+            "DIFF_OP_ADD": 3,
+            "DIFF_OP_DELETE": 4,
+            "DIFF_OP_CHANGE": 5,
+        }
+
+
+class ErrorCode(aristaproto.Enum):
+    """
+    ErrorCode indicates warnings and errors produced during computing config
+    """
+
+    UNSPECIFIED = 0
+    """
+    ERROR_CODE_UNSPECIFIED uninitialized value
+    """
+
+    DEVICE_WARNING = 1
+    """
+    ERROR_CODE_DEVICE_WARNING indicates device warning
+    """
+
+    DEVICE_ERROR = 2
+    """
+    ERROR_CODE_DEVICE_ERROR indicates device error
+    """
+
+    UNREACHABLE_DEVICE = 3
+    """
+    ERROR_CODE_UNREACHABLE_DEVICE indicates the device cannot be reached
+    """
+
+    CONFIG_FILTER_ERROR = 4
+    """
+    ERROR_CODE_CONFIG_FILTER_ERROR indicates error from partial config management filters
+    """
+
+    INTERNAL = 5
+    """
+    ERROR_CODE_INTERNAL indicates internal errors
+    """
+
+    PROPOSED_CONFIG_CHECK = 6
+    """
+    ERROR_CODE_PROPOSED_CONFIG_CHECK indicates an issue with the content of proposed configuration.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ERROR_CODE_UNSPECIFIED",
+            1: "ERROR_CODE_DEVICE_WARNING",
+            2: "ERROR_CODE_DEVICE_ERROR",
+            3: "ERROR_CODE_UNREACHABLE_DEVICE",
+            4: "ERROR_CODE_CONFIG_FILTER_ERROR",
+            5: "ERROR_CODE_INTERNAL",
+            6: "ERROR_CODE_PROPOSED_CONFIG_CHECK",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ERROR_CODE_UNSPECIFIED": 0,
+            "ERROR_CODE_DEVICE_WARNING": 1,
+            "ERROR_CODE_DEVICE_ERROR": 2,
+            "ERROR_CODE_UNREACHABLE_DEVICE": 3,
+            "ERROR_CODE_CONFIG_FILTER_ERROR": 4,
+            "ERROR_CODE_INTERNAL": 5,
+            "ERROR_CODE_PROPOSED_CONFIG_CHECK": 6,
+        }
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiff(aristaproto.Message):
+    """
+    ConfigDiff - specifies the diff request
+    """
+
+    key: "ConfigDiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key represents config diff key
+    """
+
+    uri: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    uri represents the HTTP URI client can use to GET config diff and associated errors
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiff", ConfigDiff)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigDiff]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigDiff at end.
+        * Each ConfigDiff response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
+        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigDiff at start, followed by updates
+        until end.
+        * Each ConfigDiff response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffBatchedStreamRequest", ConfigDiffBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ConfigDiffStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffBatchedStreamResponse", ConfigDiffBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffKey(aristaproto.Message):
+    """
+    ConfigDiffKey uniquely identifies a configuration diff request
+    """
+
+    a_device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    a_device_id is the serial number of the device on A side (left hand side)
+    """
+
+    a_type: "ConfigType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigType(0))
+    """
+    a_type is the config type on A side (left hand side)
+    """
+
+    a_time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    a_time is the time at which to fetch config on A side (left hand side)
+    """
+
+    b_device_id: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    b_device_id is the serial number of the device on B side (right hand side)
+    """
+
+    b_type: "ConfigType" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigType(0))
+    """
+    b_type is the config type on B side (right hand side)
+    """
+
+    b_time: "datetime.datetime | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    b_time is the time at which to fetch config on B side (right hand side)
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffKey", ConfigDiffKey)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffRequest(aristaproto.Message):
+    key: "ConfigDiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a ConfigDiff instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffRequest", ConfigDiffRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffResponse(aristaproto.Message):
+    value: "ConfigDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigDiff instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffResponse", ConfigDiffResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffSomeRequest(aristaproto.Message):
+    keys: "list[ConfigDiffKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffSomeRequest", ConfigDiffSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffSomeResponse(aristaproto.Message):
+    value: "ConfigDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigDiff instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffSomeResponse", ConfigDiffSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigDiff]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigDiff at end.
+        * Each ConfigDiff response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
+        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigDiff at start, followed by updates
+        until end.
+        * Each ConfigDiff response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffStreamRequest", ConfigDiffStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigDiffStreamResponse(aristaproto.Message):
+    value: "ConfigDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ConfigDiff's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ConfigDiff value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigDiffStreamResponse", ConfigDiffStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -252,78 +648,64 @@ class ConfigError(aristaproto.Message):
     ConfigError represents errors reported by CVP/EOS when handling device configuration
     """
 
-    error_code: "ErrorCode" = aristaproto.enum_field(1)
-    """error_code - type of error."""
+    error_code: "ErrorCode" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ErrorCode(0))
+    """
+    error_code - type of error.
+    """
 
-    error_msg: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """error_msg - details of error"""
+    error_msg: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error_msg - details of error
+    """
 
-    line_num: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """line_num represents line number, if any"""
+    line_num: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    line_num represents line number, if any
+    """
 
-    configlet_name: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    configlet_name: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     configlet_name represents the originating configlet name. Configlet_name
     and line_num point to the line where config warning or config error originate.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "ConfigError", ConfigError)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigErrors(aristaproto.Message):
-    """ConfigErrors list of errors"""
+    """
+    ConfigErrors list of errors
+    """
 
-    values: List["ConfigError"] = aristaproto.message_field(1)
-    """values - list of errors"""
+    values: "list[ConfigError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values - list of errors
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigErrors", ConfigErrors)
 
 
 @dataclass(eq=False, repr=False)
-class DiffEntry(aristaproto.Message):
-    """DiffEntry represents one entry in a Diff"""
-
-    op: "DiffOp" = aristaproto.enum_field(1)
-    """op specifies type of diff operation"""
-
-    a_line_num: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """a_line_num indicates the line number in A where the diff is applied"""
-
-    b_line_num: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """b_line_num indicates the line number in B where this diff is applied"""
-
-    b_parent_line_num: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
+class ConfigKey(aristaproto.Message):
     """
-    b_parent_line_num represents the line number of the parent command in B
+    ConfigKey uniquely identifies a config request.
     """
 
-    a_line: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """a_line is the content of config line in A"""
-
-    b_line: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """b_line is the content of config line in B"""
-
-    a_filter_code: "ConfigFilterCode" = aristaproto.enum_field(7)
-    """a_filter_code represents the config filter code for the line in A"""
-
-    b_filter_code: "ConfigFilterCode" = aristaproto.enum_field(8)
-    """b_filter_code represents the config filter code for the line in B"""
-
-    a_parent_line_num: Optional[int] = aristaproto.message_field(9, wraps=aristaproto.TYPE_INT32)
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    a_parent_line_num represents the line number of the parent command in A
+    device_id is the serial number of the device
     """
 
-    is_a_default_command: Optional[bool] = aristaproto.message_field(10, wraps=aristaproto.TYPE_BOOL)
+    type: "ConfigType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigType(0))
     """
-    is_a_default_command indicates that config line in A is a default
-    command that is generated by EOS.
+    type describes the config type
     """
 
 
-@dataclass(eq=False, repr=False)
-class DiffEntries(aristaproto.Message):
-    """DiffEntries indicates potential multiple lines of config diff"""
-
-    values: List["DiffEntry"] = aristaproto.message_field(1)
-    """values - list of diff entries"""
+default_message_pool.register_message("arista.configstatus.v1", "ConfigKey", ConfigKey)
 
 
 @dataclass(eq=False, repr=False)
@@ -332,13 +714,15 @@ class ConfigSource(aristaproto.Message):
     ConfigSource describes an individual source of the proposed/designed config
     """
 
-    source_type: "ConfigSourceType" = aristaproto.enum_field(1)
-    """source_type - app type of the config snippet"""
-
-    source_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    source_type: "ConfigSourceType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigSourceType(0))
     """
-     source_id identifier to distinguish between multiple instances of the source type
-     source_id is :
+    source_type - app type of the config snippet
+    """
+
+    source_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    source_id identifier to distinguish between multiple instances of the source type
+    source_id is :
     	configlet name for CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET
     	studio id for CONFIG_SOURCE_TYPE_STUDIO
     	configlet id for CONFIG_SOURCE_TYPE_STUDIO_STATIC
@@ -346,156 +730,415 @@ class ConfigSource(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "ConfigSource", ConfigSource)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigSources(aristaproto.Message):
-    """ConfigSources is the list of sources of the proposed/designed config"""
+    """
+    ConfigSources is the list of sources of the proposed/designed config
+    """
 
-    values: List["ConfigSource"] = aristaproto.message_field(1)
-    """values - ordered list of all the config snippets present in DC"""
+    values: "list[ConfigSource]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values - ordered list of all the config snippets present in DC
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigSources", ConfigSources)
 
 
 @dataclass(eq=False, repr=False)
 class ConfigSummary(aristaproto.Message):
-    """ConfigSummary represents device configuration summary."""
+    """
+    ConfigSummary represents device configuration summary.
+    """
 
-    sync: "ConfigSyncCode" = aristaproto.enum_field(1)
-    """sync - state of DC vs RC"""
+    sync: "ConfigSyncCode" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigSyncCode(0))
+    """
+    sync - state of DC vs RC
+    """
 
-    nop_lines: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """nop_lines - Number of lines with code no-operation"""
+    nop_lines: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    nop_lines - Number of lines with code no-operation
+    """
 
-    ignored_lines: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """ignored_lines - Number of lines with code IGNORE"""
+    ignored_lines: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    ignored_lines - Number of lines with code IGNORE
+    """
 
-    added_lines: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
-    """added_lines - Number of lines with code ADD"""
+    added_lines: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    added_lines - Number of lines with code ADD
+    """
 
-    deleted_lines: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
-    """deleted_lines - Number of lines with code DELETE"""
+    deleted_lines: "int | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    deleted_lines - Number of lines with code DELETE
+    """
 
-    changed_lines: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
-    """changed_lines - Number of lines with code CHANGE"""
+    changed_lines: "int | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    changed_lines - Number of lines with code CHANGE
+    """
 
-    designed_config_errors: Optional[int] = aristaproto.message_field(7, wraps=aristaproto.TYPE_INT32)
-    """designed_config_errors - Number of designed config errors"""
+    designed_config_errors: "int | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    designed_config_errors - Number of designed config errors
+    """
 
-    designed_config_warnings: Optional[int] = aristaproto.message_field(8, wraps=aristaproto.TYPE_INT32)
-    """designed_config_warnings - Number of designed config warnings"""
+    designed_config_warnings: "int | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    designed_config_warnings - Number of designed config warnings
+    """
 
-    running_config_update_time: datetime = aristaproto.message_field(9)
+    running_config_update_time: "datetime.datetime | None" = aristaproto.field(
+        9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
     """
     running_config_update_time - Timestamp at which running config is updated
     """
 
-    designed_config_update_time: datetime = aristaproto.message_field(10)
+    designed_config_update_time: "datetime.datetime | None" = aristaproto.field(
+        10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
     """
     designed_config_update_time - Timestamp at which designed config is updated
     """
 
-    running_config_uri: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
+    running_config_uri: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     running_config_uri - The HTTP URI client can use to GET running config and associated errors
     """
 
-    designed_config_uri: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
+    designed_config_uri: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     designed_config_uri - The HTTP URI client can use to GET designed config and associated errors
     """
 
-    diff_uri: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
+    diff_uri: "str | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     diff_uri - The HTTP URI client can use to GET config diff and associated errors
     """
 
-    digest: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
-    """digest (SHA-256) of the config diff."""
+    digest: "str | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    digest (SHA-256) of the config diff.
+    """
 
 
-@dataclass(eq=False, repr=False)
-class ConfigKey(aristaproto.Message):
-    """ConfigKey uniquely identifies a config request."""
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the serial number of the device"""
-
-    type: "ConfigType" = aristaproto.enum_field(2)
-    """type describes the config type"""
+default_message_pool.register_message("arista.configstatus.v1", "ConfigSummary", ConfigSummary)
 
 
 @dataclass(eq=False, repr=False)
 class Configuration(aristaproto.Message):
-    """Configuration represents device's CLI configuration"""
+    """
+    Configuration represents device's CLI configuration
+    """
 
-    key: "ConfigKey" = aristaproto.message_field(1)
-    """key specifies the device and type of config"""
+    key: "ConfigKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key specifies the device and type of config
+    """
 
-    uri: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    uri: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     uri represents the HTTP URI client can use to GET config body and associated errors
     """
 
 
-@dataclass(eq=False, repr=False)
-class ConfigDiffKey(aristaproto.Message):
-    """ConfigDiffKey uniquely identifies a configuration diff request"""
-
-    a_device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    a_device_id is the serial number of the device on A side (left hand side)
-    """
-
-    a_type: "ConfigType" = aristaproto.enum_field(2)
-    """a_type is the config type on A side (left hand side)"""
-
-    a_time: datetime = aristaproto.message_field(3)
-    """
-    a_time is the time at which to fetch config on A side (left hand side)
-    """
-
-    b_device_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    b_device_id is the serial number of the device on B side (right hand side)
-    """
-
-    b_type: "ConfigType" = aristaproto.enum_field(5)
-    """b_type is the config type on B side (right hand side)"""
-
-    b_time: datetime = aristaproto.message_field(6)
-    """
-    b_time is the time at which to fetch config on B side (right hand side)
-    """
+default_message_pool.register_message("arista.configstatus.v1", "Configuration", Configuration)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigDiff(aristaproto.Message):
-    """ConfigDiff - specifies the diff request"""
-
-    key: "ConfigDiffKey" = aristaproto.message_field(1)
-    """key represents config diff key"""
-
-    uri: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+class ConfigurationBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Configuration]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    uri represents the HTTP URI client can use to GET config diff and associated errors
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Configuration at end.
+        * Each Configuration response is fully-specified (all fields set).
+      * start: Returns the state of each Configuration at start, followed by updates until now.
+        * Each Configuration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configuration at start, followed by updates
+        until end.
+        * Each Configuration response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationBatchedStreamRequest", ConfigurationBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class SummaryKey(aristaproto.Message):
-    """SummaryKey uniquely identifies a device summary request"""
+class ConfigurationBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ConfigurationStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the serial number of the device"""
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationBatchedStreamResponse", ConfigurationBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class Summary(aristaproto.Message):
-    """Summary - Describes the device's diff summary"""
+class ConfigurationRequest(aristaproto.Message):
+    key: "ConfigKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Configuration instance to retrieve.
+    This value must be populated.
+    """
 
-    key: "SummaryKey" = aristaproto.message_field(1)
-    """key spefies the device"""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
 
-    summary: "ConfigSummary" = aristaproto.message_field(2)
-    """summary - diff summary of the device"""
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationRequest", ConfigurationRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigurationResponse(aristaproto.Message):
+    value: "Configuration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Configuration instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationResponse", ConfigurationResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigurationSomeRequest(aristaproto.Message):
+    keys: "list[ConfigKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationSomeRequest", ConfigurationSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigurationSomeResponse(aristaproto.Message):
+    value: "Configuration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Configuration instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationSomeResponse", ConfigurationSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigurationStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Configuration]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Configuration at end.
+        * Each Configuration response is fully-specified (all fields set).
+      * start: Returns the state of each Configuration at start, followed by updates until now.
+        * Each Configuration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configuration at start, followed by updates
+        until end.
+        * Each Configuration response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationStreamRequest", ConfigurationStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigurationStreamResponse(aristaproto.Message):
+    value: "Configuration | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Configuration's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Configuration value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "ConfigurationStreamResponse", ConfigurationStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DiffEntries(aristaproto.Message):
+    """
+    DiffEntries indicates potential multiple lines of config diff
+    """
+
+    values: "list[DiffEntry]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values - list of diff entries
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "DiffEntries", DiffEntries)
+
+
+@dataclass(eq=False, repr=False)
+class DiffEntry(aristaproto.Message):
+    """
+    DiffEntry represents one entry in a Diff
+    """
+
+    op: "DiffOp" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
+    """
+    op specifies type of diff operation
+    """
+
+    a_line_num: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    a_line_num indicates the line number in A where the diff is applied
+    """
+
+    b_line_num: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    b_line_num indicates the line number in B where this diff is applied
+    """
+
+    b_parent_line_num: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    b_parent_line_num represents the line number of the parent command in B
+    """
+
+    a_line: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    a_line is the content of config line in A
+    """
+
+    b_line: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    b_line is the content of config line in B
+    """
+
+    a_filter_code: "ConfigFilterCode" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigFilterCode(0))
+    """
+    a_filter_code represents the config filter code for the line in A
+    """
+
+    b_filter_code: "ConfigFilterCode" = aristaproto.field(8, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigFilterCode(0))
+    """
+    b_filter_code represents the config filter code for the line in B
+    """
+
+    a_parent_line_num: "int | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    a_parent_line_num represents the line number of the parent command in A
+    """
+
+    is_a_default_command: "bool | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_a_default_command indicates that config line in A is a default
+    command that is generated by EOS.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "DiffEntry", DiffEntry)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -504,11 +1147,71 @@ class SecurityProfile(aristaproto.Message):
     SecurityProfile holds the EOS configuration for the security profile.
     """
 
-    key: "ConfigKey" = aristaproto.message_field(1)
-    """key uniquely identifies the configuration"""
+    key: "ConfigKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the configuration
+    """
 
-    config: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """config describes the security profile config body"""
+    config: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    config describes the security profile config body
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfile", SecurityProfile)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SecurityProfile]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each SecurityProfile at end.
+        * Each SecurityProfile response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
+        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfile at start, followed by updates
+        until end.
+        * Each SecurityProfile response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileBatchedStreamRequest", SecurityProfileBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SecurityProfileStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileBatchedStreamResponse", SecurityProfileBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -518,155 +1221,84 @@ class SecurityProfileComplianceSummary(aristaproto.Message):
     security profile configuration.
     """
 
-    sync: "ConfigSyncCode" = aristaproto.enum_field(1)
-    """sync - sync state of the device"""
+    sync: "ConfigSyncCode" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigSyncCode(0))
+    """
+    sync - sync state of the device
+    """
 
-    nop_lines: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """nop_lines is the number of lines with code no-operation"""
+    nop_lines: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    nop_lines is the number of lines with code no-operation
+    """
 
-    ignored_lines: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """ignored_lines is the number of lines with code IGNORE"""
+    ignored_lines: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    ignored_lines is the number of lines with code IGNORE
+    """
 
-    added_lines: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
-    """added_lines is the number of lines with code ADD"""
+    added_lines: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    added_lines is the number of lines with code ADD
+    """
 
-    deleted_lines: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
-    """deleted_lines is the number of lines with code DELETE"""
+    deleted_lines: "int | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    deleted_lines is the number of lines with code DELETE
+    """
 
-    changed_lines: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
-    """changed_lines is the Number of lines with code CHANGE"""
+    changed_lines: "int | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    changed_lines is the Number of lines with code CHANGE
+    """
 
-    digest: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    digest: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     digest is the digest (SHA-256 hash) of the security profile configuration diff
     """
 
-    running_config_update_time: datetime = aristaproto.message_field(8)
+    running_config_update_time: "datetime.datetime | None" = aristaproto.field(
+        8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
     """
     running_config_update_time is the timestamp at which running security profile
     or running config is updated
     """
 
-    designed_config_update_time: datetime = aristaproto.message_field(9)
+    designed_config_update_time: "datetime.datetime | None" = aristaproto.field(
+        9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
     """
     designed_config_update_time is the timestamp at which designed security profile or
     designed config is updated
     """
 
 
-@dataclass(eq=False, repr=False)
-class SecurityProfileDiffSummary(aristaproto.Message):
-    """
-    SecurityProfileDiffSummary holds device compliance summary w.r.t security profile.
-    """
-
-    key: "SummaryKey" = aristaproto.message_field(1)
-    """key uniquely identifies the Summary"""
-
-    summary: "SecurityProfileComplianceSummary" = aristaproto.message_field(2)
-    """summary is the security profile configuration compliance summary"""
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileComplianceSummary", SecurityProfileComplianceSummary)
 
 
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiff(aristaproto.Message):
-    """SecurityProfileDiff holds the security profile configuration diff."""
-
-    key: "ConfigDiffKey" = aristaproto.message_field(1)
-    """key represents security profile config diff key"""
-
-    diff: "DiffEntries" = aristaproto.message_field(2)
-    """diff represents diff entries"""
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
+    SecurityProfileDiff holds the security profile configuration diff.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
+    key: "ConfigDiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    key represents security profile config diff key
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    diff: "DiffEntries | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Count is the number of items present under the conditions of the request.
+    diff represents diff entries
     """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiff", SecurityProfileDiff)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigDiffRequest(aristaproto.Message):
-    key: "ConfigDiffKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ConfigDiff instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffResponse(aristaproto.Message):
-    value: "ConfigDiff" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigDiff instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffSomeRequest(aristaproto.Message):
-    keys: List["ConfigDiffKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffSomeResponse(aristaproto.Message):
-    value: "ConfigDiff" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigDiff instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigDiff"] = aristaproto.message_field(1)
+class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SecurityProfileDiff]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -675,74 +1307,24 @@ class ConfigDiffStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ConfigDiff at end.
-        * Each ConfigDiff response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
-        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigDiff at start, followed by updates
+      * end: Returns the state of each SecurityProfileDiff at end.
+        * Each SecurityProfileDiff response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
+        * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
         until end.
-        * Each ConfigDiff response at start is fully-specified, but updates until end may
+        * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
           be partial.
     """
 
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffStreamResponse(aristaproto.Message):
-    value: "ConfigDiff" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this ConfigDiff's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ConfigDiff value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigDiffBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigDiff"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ConfigDiff at end.
-        * Each ConfigDiff response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
-        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigDiff at start, followed by updates
-        until end.
-        * Each ConfigDiff response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -751,9 +1333,12 @@ class ConfigDiffBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffBatchedStreamRequest", SecurityProfileDiffBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class ConfigDiffBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigDiffStreamResponse"] = aristaproto.message_field(1)
+class SecurityProfileDiffBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SecurityProfileDiffStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -761,350 +1346,30 @@ class ConfigDiffBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ConfigurationRequest(aristaproto.Message):
-    key: "ConfigKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Configuration instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationResponse(aristaproto.Message):
-    value: "Configuration" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Configuration instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationSomeRequest(aristaproto.Message):
-    keys: List["ConfigKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationSomeResponse(aristaproto.Message):
-    value: "Configuration" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Configuration instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Configuration"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Configuration at end.
-        * Each Configuration response is fully-specified (all fields set).
-      * start: Returns the state of each Configuration at start, followed by updates until now.
-        * Each Configuration response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Configuration at start, followed by updates
-        until end.
-        * Each Configuration response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationStreamResponse(aristaproto.Message):
-    value: "Configuration" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Configuration's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Configuration value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Configuration"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Configuration at end.
-        * Each Configuration response is fully-specified (all fields set).
-      * start: Returns the state of each Configuration at start, followed by updates until now.
-        * Each Configuration response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Configuration at start, followed by updates
-        until end.
-        * Each Configuration response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigurationBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigurationStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileRequest(aristaproto.Message):
-    key: "ConfigKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a SecurityProfile instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileResponse(aristaproto.Message):
-    value: "SecurityProfile" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    SecurityProfile instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileSomeRequest(aristaproto.Message):
-    keys: List["ConfigKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileSomeResponse(aristaproto.Message):
-    value: "SecurityProfile" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    SecurityProfile instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfile"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each SecurityProfile at end.
-        * Each SecurityProfile response is fully-specified (all fields set).
-      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
-        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SecurityProfile at start, followed by updates
-        until end.
-        * Each SecurityProfile response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileStreamResponse(aristaproto.Message):
-    value: "SecurityProfile" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this SecurityProfile's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the SecurityProfile value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfile"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each SecurityProfile at end.
-        * Each SecurityProfile response is fully-specified (all fields set).
-      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
-        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SecurityProfile at start, followed by updates
-        until end.
-        * Each SecurityProfile response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SecurityProfileBatchedStreamResponse(aristaproto.Message):
-    responses: List["SecurityProfileStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffBatchedStreamResponse", SecurityProfileDiffBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffRequest(aristaproto.Message):
-    key: "ConfigDiffKey" = aristaproto.message_field(1)
+    key: "ConfigDiffKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a SecurityProfileDiff instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffRequest", SecurityProfileDiffRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffResponse(aristaproto.Message):
-    value: "SecurityProfileDiff" = aristaproto.message_field(1)
+    value: "SecurityProfileDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1112,26 +1377,33 @@ class SecurityProfileDiffResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     SecurityProfileDiff instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffResponse", SecurityProfileDiffResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSomeRequest(aristaproto.Message):
-    keys: List["ConfigDiffKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[ConfigDiffKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSomeRequest", SecurityProfileDiffSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSomeResponse(aristaproto.Message):
-    value: "SecurityProfileDiff" = aristaproto.message_field(1)
+    value: "SecurityProfileDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1139,22 +1411,25 @@ class SecurityProfileDiffSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     SecurityProfileDiff instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSomeResponse", SecurityProfileDiffSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfileDiff"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[SecurityProfileDiff]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1163,7 +1438,7 @@ class SecurityProfileDiffStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1181,21 +1456,24 @@ class SecurityProfileDiffStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffStreamRequest", SecurityProfileDiffStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffStreamResponse(aristaproto.Message):
-    value: "SecurityProfileDiff" = aristaproto.message_field(1)
+    value: "SecurityProfileDiff | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this SecurityProfileDiff's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the SecurityProfileDiff value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1204,9 +1482,32 @@ class SecurityProfileDiffStreamResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffStreamResponse", SecurityProfileDiffStreamResponse)
+
+
 @dataclass(eq=False, repr=False)
-class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfileDiff"] = aristaproto.message_field(1)
+class SecurityProfileDiffSummary(aristaproto.Message):
+    """
+    SecurityProfileDiffSummary holds device compliance summary w.r.t security profile.
+    """
+
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the Summary
+    """
+
+    summary: "SecurityProfileComplianceSummary | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    summary is the security profile configuration compliance summary
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummary", SecurityProfileDiffSummary)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SecurityProfileDiffSummary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1215,24 +1516,24 @@ class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each SecurityProfileDiff at end.
-        * Each SecurityProfileDiff response is fully-specified (all fields set).
-      * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
-        * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
+      * end: Returns the state of each SecurityProfileDiffSummary at end.
+        * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
         until end.
-        * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1241,9 +1542,14 @@ class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message(
+    "arista.configstatus.v1", "SecurityProfileDiffSummaryBatchedStreamRequest", SecurityProfileDiffSummaryBatchedStreamRequest
+)
+
+
 @dataclass(eq=False, repr=False)
-class SecurityProfileDiffBatchedStreamResponse(aristaproto.Message):
-    responses: List["SecurityProfileDiffStreamResponse"] = aristaproto.message_field(1)
+class SecurityProfileDiffSummaryBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SecurityProfileDiffSummaryStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1251,24 +1557,32 @@ class SecurityProfileDiffBatchedStreamResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message(
+    "arista.configstatus.v1", "SecurityProfileDiffSummaryBatchedStreamResponse", SecurityProfileDiffSummaryBatchedStreamResponse
+)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummaryRequest(aristaproto.Message):
-    key: "SummaryKey" = aristaproto.message_field(1)
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a SecurityProfileDiffSummary instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummaryRequest", SecurityProfileDiffSummaryRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummaryResponse(aristaproto.Message):
-    value: "SecurityProfileDiffSummary" = aristaproto.message_field(1)
+    value: "SecurityProfileDiffSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1276,26 +1590,33 @@ class SecurityProfileDiffSummaryResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     SecurityProfileDiffSummary instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummaryResponse", SecurityProfileDiffSummaryResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummarySomeRequest(aristaproto.Message):
-    keys: List["SummaryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[SummaryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummarySomeRequest", SecurityProfileDiffSummarySomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummarySomeResponse(aristaproto.Message):
-    value: "SecurityProfileDiffSummary" = aristaproto.message_field(1)
+    value: "SecurityProfileDiffSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1303,22 +1624,25 @@ class SecurityProfileDiffSummarySomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     SecurityProfileDiffSummary instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummarySomeResponse", SecurityProfileDiffSummarySomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummaryStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfileDiffSummary"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[SecurityProfileDiffSummary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1327,7 +1651,7 @@ class SecurityProfileDiffSummaryStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1345,21 +1669,24 @@ class SecurityProfileDiffSummaryStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummaryStreamRequest", SecurityProfileDiffSummaryStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummaryStreamResponse(aristaproto.Message):
-    value: "SecurityProfileDiffSummary" = aristaproto.message_field(1)
+    value: "SecurityProfileDiffSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this SecurityProfileDiffSummary's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the SecurityProfileDiffSummary value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1368,9 +1695,90 @@ class SecurityProfileDiffSummaryStreamResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileDiffSummaryStreamResponse", SecurityProfileDiffSummaryStreamResponse)
+
+
 @dataclass(eq=False, repr=False)
-class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SecurityProfileDiffSummary"] = aristaproto.message_field(1)
+class SecurityProfileRequest(aristaproto.Message):
+    key: "ConfigKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a SecurityProfile instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileRequest", SecurityProfileRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileResponse(aristaproto.Message):
+    value: "SecurityProfile | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecurityProfile instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileResponse", SecurityProfileResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileSomeRequest(aristaproto.Message):
+    keys: "list[ConfigKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileSomeRequest", SecurityProfileSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileSomeResponse(aristaproto.Message):
+    value: "SecurityProfile | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecurityProfile instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileSomeResponse", SecurityProfileSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SecurityProfile]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1379,24 +1787,102 @@ class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each SecurityProfileDiffSummary at end.
-        * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
-      * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
-        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
+      * end: Returns the state of each SecurityProfile at end.
+        * Each SecurityProfile response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
+        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfile at start, followed by updates
         until end.
-        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
+        * Each SecurityProfile response at start is fully-specified, but updates until end may
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileStreamRequest", SecurityProfileStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileStreamResponse(aristaproto.Message):
+    value: "SecurityProfile | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this SecurityProfile's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the SecurityProfile value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SecurityProfileStreamResponse", SecurityProfileStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Summary(aristaproto.Message):
+    """
+    Summary - Describes the device's diff summary
+    """
+
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key spefies the device
+    """
+
+    summary: "ConfigSummary | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    summary - diff summary of the device
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "Summary", Summary)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Summary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1405,9 +1891,12 @@ class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummaryBatchedStreamRequest", SummaryBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class SecurityProfileDiffSummaryBatchedStreamResponse(aristaproto.Message):
-    responses: List["SecurityProfileDiffSummaryStreamResponse"] = aristaproto.message_field(1)
+class SummaryBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SummaryStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1415,24 +1904,45 @@ class SecurityProfileDiffSummaryBatchedStreamResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummaryBatchedStreamResponse", SummaryBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryKey(aristaproto.Message):
+    """
+    SummaryKey uniquely identifies a device summary request
+    """
+
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the serial number of the device
+    """
+
+
+default_message_pool.register_message("arista.configstatus.v1", "SummaryKey", SummaryKey)
+
+
 @dataclass(eq=False, repr=False)
 class SummaryRequest(aristaproto.Message):
-    key: "SummaryKey" = aristaproto.message_field(1)
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a Summary instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummaryRequest", SummaryRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SummaryResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1440,26 +1950,33 @@ class SummaryResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Summary instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummaryResponse", SummaryResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SummarySomeRequest(aristaproto.Message):
-    keys: List["SummaryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[SummaryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummarySomeRequest", SummarySomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SummarySomeResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1467,22 +1984,25 @@ class SummarySomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Summary instance in this response.
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummarySomeResponse", SummarySomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SummaryStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[Summary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1491,7 +2011,7 @@ class SummaryStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1509,19 +2029,24 @@ class SummaryStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configstatus.v1", "SummaryStreamRequest", SummaryStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SummaryStreamResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Summary's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Summary's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the Summary value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1530,1762 +2055,1017 @@ class SummaryStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class SummaryBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Summary at end.
-        * Each Summary response is fully-specified (all fields set).
-      * start: Returns the state of each Summary at start, followed by updates until now.
-        * Each Summary response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Summary at start, followed by updates
-        until end.
-        * Each Summary response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.configstatus.v1", "SummaryStreamResponse", SummaryStreamResponse)
 
 
-@dataclass(eq=False, repr=False)
-class SummaryBatchedStreamResponse(aristaproto.Message):
-    responses: List["SummaryStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-class ConfigDiffServiceStub(aristaproto.ServiceStub):
+class ConfigDiffServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        config_diff_request: "ConfigDiffRequest",
+        message: "ConfigDiffRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ConfigDiffResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigDiffService/GetOne",
-            config_diff_request,
+            message,
             ConfigDiffResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        config_diff_some_request: "ConfigDiffSomeRequest",
+        message: "ConfigDiffSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigDiffSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetSome",
-            config_diff_some_request,
+            message,
             ConfigDiffSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        config_diff_stream_request: "ConfigDiffStreamRequest",
+        message: "ConfigDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigDiffStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetAll",
-            config_diff_stream_request,
+            message,
             ConfigDiffStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        config_diff_stream_request: "ConfigDiffStreamRequest",
+        message: "ConfigDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigDiffStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/Subscribe",
-            config_diff_stream_request,
+            message,
             ConfigDiffStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        config_diff_stream_request: "ConfigDiffStreamRequest",
+        message: "ConfigDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigDiffService/GetMeta",
-            config_diff_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        config_diff_stream_request: "ConfigDiffStreamRequest",
+        message: "ConfigDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/SubscribeMeta",
-            config_diff_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest",
+        message: "ConfigDiffBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigDiffBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetAllBatched",
-            config_diff_batched_stream_request,
+            message,
             ConfigDiffBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest",
+        message: "ConfigDiffBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigDiffBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/SubscribeBatched",
-            config_diff_batched_stream_request,
+            message,
             ConfigDiffBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ConfigurationServiceStub(aristaproto.ServiceStub):
+class ConfigurationServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        configuration_request: "ConfigurationRequest",
+        message: "ConfigurationRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ConfigurationResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigurationService/GetOne",
-            configuration_request,
+            message,
             ConfigurationResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        configuration_some_request: "ConfigurationSomeRequest",
+        message: "ConfigurationSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigurationSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetSome",
-            configuration_some_request,
+            message,
             ConfigurationSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        configuration_stream_request: "ConfigurationStreamRequest",
+        message: "ConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigurationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetAll",
-            configuration_stream_request,
+            message,
             ConfigurationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        configuration_stream_request: "ConfigurationStreamRequest",
+        message: "ConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigurationStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/Subscribe",
-            configuration_stream_request,
+            message,
             ConfigurationStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        configuration_stream_request: "ConfigurationStreamRequest",
+        message: "ConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigurationService/GetMeta",
-            configuration_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        configuration_stream_request: "ConfigurationStreamRequest",
+        message: "ConfigurationStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/SubscribeMeta",
-            configuration_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        configuration_batched_stream_request: "ConfigurationBatchedStreamRequest",
+        message: "ConfigurationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigurationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetAllBatched",
-            configuration_batched_stream_request,
+            message,
             ConfigurationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        configuration_batched_stream_request: "ConfigurationBatchedStreamRequest",
+        message: "ConfigurationBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigurationBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/SubscribeBatched",
-            configuration_batched_stream_request,
+            message,
             ConfigurationBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SecurityProfileServiceStub(aristaproto.ServiceStub):
+class SecurityProfileDiffServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        security_profile_request: "SecurityProfileRequest",
+        message: "SecurityProfileDiffRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "SecurityProfileResponse":
-        return await self._unary_unary(
-            "/arista.configstatus.v1.SecurityProfileService/GetOne",
-            security_profile_request,
-            SecurityProfileResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        security_profile_some_request: "SecurityProfileSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SecurityProfileSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/GetSome",
-            security_profile_some_request,
-            SecurityProfileSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        security_profile_stream_request: "SecurityProfileStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SecurityProfileStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/GetAll",
-            security_profile_stream_request,
-            SecurityProfileStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        security_profile_stream_request: "SecurityProfileStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SecurityProfileStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/Subscribe",
-            security_profile_stream_request,
-            SecurityProfileStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        security_profile_stream_request: "SecurityProfileStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.configstatus.v1.SecurityProfileService/GetMeta",
-            security_profile_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        security_profile_stream_request: "SecurityProfileStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/SubscribeMeta",
-            security_profile_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        security_profile_batched_stream_request: "SecurityProfileBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SecurityProfileBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/GetAllBatched",
-            security_profile_batched_stream_request,
-            SecurityProfileBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        security_profile_batched_stream_request: "SecurityProfileBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SecurityProfileBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configstatus.v1.SecurityProfileService/SubscribeBatched",
-            security_profile_batched_stream_request,
-            SecurityProfileBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        security_profile_diff_request: "SecurityProfileDiffRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SecurityProfileDiffResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetOne",
-            security_profile_diff_request,
+            message,
             SecurityProfileDiffResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        security_profile_diff_some_request: "SecurityProfileDiffSomeRequest",
+        message: "SecurityProfileDiffSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetSome",
-            security_profile_diff_some_request,
+            message,
             SecurityProfileDiffSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        message: "SecurityProfileDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetAll",
-            security_profile_diff_stream_request,
+            message,
             SecurityProfileDiffStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        message: "SecurityProfileDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/Subscribe",
-            security_profile_diff_stream_request,
+            message,
             SecurityProfileDiffStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        message: "SecurityProfileDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetMeta",
-            security_profile_diff_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        message: "SecurityProfileDiffStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeMeta",
-            security_profile_diff_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        security_profile_diff_batched_stream_request: "SecurityProfileDiffBatchedStreamRequest",
+        message: "SecurityProfileDiffBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetAllBatched",
-            security_profile_diff_batched_stream_request,
+            message,
             SecurityProfileDiffBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        security_profile_diff_batched_stream_request: "SecurityProfileDiffBatchedStreamRequest",
+        message: "SecurityProfileDiffBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeBatched",
-            security_profile_diff_batched_stream_request,
+            message,
             SecurityProfileDiffBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
+class SecurityProfileDiffSummaryServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest",
+        message: "SecurityProfileDiffSummaryRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SecurityProfileDiffSummaryResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetOne",
-            security_profile_diff_summary_request,
+            message,
             SecurityProfileDiffSummaryResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        security_profile_diff_summary_some_request: "SecurityProfileDiffSummarySomeRequest",
+        message: "SecurityProfileDiffSummarySomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSummarySomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetSome",
-            security_profile_diff_summary_some_request,
+            message,
             SecurityProfileDiffSummarySomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        message: "SecurityProfileDiffSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAll",
-            security_profile_diff_summary_stream_request,
+            message,
             SecurityProfileDiffSummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        message: "SecurityProfileDiffSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/Subscribe",
-            security_profile_diff_summary_stream_request,
+            message,
             SecurityProfileDiffSummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        message: "SecurityProfileDiffSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetMeta",
-            security_profile_diff_summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        message: "SecurityProfileDiffSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeMeta",
-            security_profile_diff_summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        security_profile_diff_summary_batched_stream_request: "SecurityProfileDiffSummaryBatchedStreamRequest",
+        message: "SecurityProfileDiffSummaryBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSummaryBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAllBatched",
-            security_profile_diff_summary_batched_stream_request,
+            message,
             SecurityProfileDiffSummaryBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        security_profile_diff_summary_batched_stream_request: "SecurityProfileDiffSummaryBatchedStreamRequest",
+        message: "SecurityProfileDiffSummaryBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SecurityProfileDiffSummaryBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeBatched",
-            security_profile_diff_summary_batched_stream_request,
+            message,
             SecurityProfileDiffSummaryBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SummaryServiceStub(aristaproto.ServiceStub):
+class SecurityProfileServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        summary_request: "SummaryRequest",
+        message: "SecurityProfileRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "SummaryResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "SecurityProfileResponse":
+
         return await self._unary_unary(
-            "/arista.configstatus.v1.SummaryService/GetOne",
-            summary_request,
-            SummaryResponse,
+            "/arista.configstatus.v1.SecurityProfileService/GetOne",
+            message,
+            SecurityProfileResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        summary_some_request: "SummarySomeRequest",
+        message: "SecurityProfileSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SummarySomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SecurityProfileSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/GetSome",
-            summary_some_request,
-            SummarySomeResponse,
+            "/arista.configstatus.v1.SecurityProfileService/GetSome",
+            message,
+            SecurityProfileSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SecurityProfileStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SummaryStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SecurityProfileStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/GetAll",
-            summary_stream_request,
-            SummaryStreamResponse,
+            "/arista.configstatus.v1.SecurityProfileService/GetAll",
+            message,
+            SecurityProfileStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SecurityProfileStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SummaryStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SecurityProfileStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/Subscribe",
-            summary_stream_request,
-            SummaryStreamResponse,
+            "/arista.configstatus.v1.SecurityProfileService/Subscribe",
+            message,
+            SecurityProfileStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SecurityProfileStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.configstatus.v1.SummaryService/GetMeta",
-            summary_stream_request,
+            "/arista.configstatus.v1.SecurityProfileService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SecurityProfileStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/SubscribeMeta",
-            summary_stream_request,
+            "/arista.configstatus.v1.SecurityProfileService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        summary_batched_stream_request: "SummaryBatchedStreamRequest",
+        message: "SecurityProfileBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SecurityProfileBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/GetAllBatched",
-            summary_batched_stream_request,
-            SummaryBatchedStreamResponse,
+            "/arista.configstatus.v1.SecurityProfileService/GetAllBatched",
+            message,
+            SecurityProfileBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        summary_batched_stream_request: "SummaryBatchedStreamRequest",
+        message: "SecurityProfileBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SecurityProfileBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configstatus.v1.SummaryService/SubscribeBatched",
-            summary_batched_stream_request,
-            SummaryBatchedStreamResponse,
+            "/arista.configstatus.v1.SecurityProfileService/SubscribeBatched",
+            message,
+            SecurityProfileBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+class SummaryServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "SummaryRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "SummaryResponse":
 
-
-class ConfigDiffServiceBase(ServiceBase):
-    async def get_one(self, config_diff_request: "ConfigDiffRequest") -> "ConfigDiffResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, config_diff_some_request: "ConfigDiffSomeRequest") -> AsyncIterator[ConfigDiffSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator[ConfigDiffStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator[ConfigDiffStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest") -> AsyncIterator[ConfigDiffBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest") -> AsyncIterator[ConfigDiffBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigDiffRequest, ConfigDiffResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigDiffSomeRequest, ConfigDiffSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
+        return await self._unary_unary(
+            "/arista.configstatus.v1.SummaryService/GetOne",
+            message,
+            SummaryResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, ConfigDiffStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, ConfigDiffStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ConfigDiffBatchedStreamRequest, ConfigDiffBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ConfigDiffBatchedStreamRequest, ConfigDiffBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.ConfigDiffService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigDiffRequest,
-                ConfigDiffResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffSomeRequest,
-                ConfigDiffSomeResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffStreamRequest,
-                ConfigDiffStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffStreamRequest,
-                ConfigDiffStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigDiffStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffBatchedStreamRequest,
-                ConfigDiffBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigDiffService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigDiffBatchedStreamRequest,
-                ConfigDiffBatchedStreamResponse,
-            ),
-        }
-
-
-class ConfigurationServiceBase(ServiceBase):
-    async def get_one(self, configuration_request: "ConfigurationRequest") -> "ConfigurationResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, configuration_some_request: "ConfigurationSomeRequest") -> AsyncIterator[ConfigurationSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator[ConfigurationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator[ConfigurationStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, configuration_stream_request: "ConfigurationStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, configuration_batched_stream_request: "ConfigurationBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigurationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, configuration_batched_stream_request: "ConfigurationBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigurationBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigurationRequest, ConfigurationResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigurationSomeRequest, ConfigurationSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, ConfigurationStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, ConfigurationStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ConfigurationBatchedStreamRequest, ConfigurationBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ConfigurationBatchedStreamRequest, ConfigurationBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.ConfigurationService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigurationRequest,
-                ConfigurationResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationSomeRequest,
-                ConfigurationSomeResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationStreamRequest,
-                ConfigurationStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationStreamRequest,
-                ConfigurationStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigurationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationBatchedStreamRequest,
-                ConfigurationBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.ConfigurationService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigurationBatchedStreamRequest,
-                ConfigurationBatchedStreamResponse,
-            ),
-        }
-
-
-class SecurityProfileServiceBase(ServiceBase):
-    async def get_one(self, security_profile_request: "SecurityProfileRequest") -> "SecurityProfileResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, security_profile_some_request: "SecurityProfileSomeRequest") -> AsyncIterator[SecurityProfileSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator[SecurityProfileStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator[SecurityProfileStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, security_profile_batched_stream_request: "SecurityProfileBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, security_profile_batched_stream_request: "SecurityProfileBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SecurityProfileRequest, SecurityProfileResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SecurityProfileSomeRequest, SecurityProfileSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SecurityProfileStreamRequest, SecurityProfileStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SecurityProfileStreamRequest, SecurityProfileStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SecurityProfileStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SecurityProfileStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SecurityProfileBatchedStreamRequest, SecurityProfileBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SecurityProfileBatchedStreamRequest, SecurityProfileBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.SecurityProfileService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileRequest,
-                SecurityProfileResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileSomeRequest,
-                SecurityProfileSomeResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileStreamRequest,
-                SecurityProfileStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileStreamRequest,
-                SecurityProfileStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileBatchedStreamRequest,
-                SecurityProfileBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileBatchedStreamRequest,
-                SecurityProfileBatchedStreamResponse,
-            ),
-        }
-
-
-class SecurityProfileDiffServiceBase(ServiceBase):
-    async def get_one(self, security_profile_diff_request: "SecurityProfileDiffRequest") -> "SecurityProfileDiffResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, security_profile_diff_some_request: "SecurityProfileDiffSomeRequest") -> AsyncIterator[SecurityProfileDiffSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator[SecurityProfileDiffStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator[SecurityProfileDiffStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, security_profile_diff_batched_stream_request: "SecurityProfileDiffBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, security_profile_diff_batched_stream_request: "SecurityProfileDiffBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SecurityProfileDiffRequest, SecurityProfileDiffResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SecurityProfileDiffSomeRequest, SecurityProfileDiffSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, SecurityProfileDiffStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, SecurityProfileDiffStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[SecurityProfileDiffBatchedStreamRequest, SecurityProfileDiffBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[SecurityProfileDiffBatchedStreamRequest, SecurityProfileDiffBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.SecurityProfileDiffService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileDiffRequest,
-                SecurityProfileDiffResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSomeRequest,
-                SecurityProfileDiffSomeResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffStreamRequest,
-                SecurityProfileDiffStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffStreamRequest,
-                SecurityProfileDiffStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileDiffStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffBatchedStreamRequest,
-                SecurityProfileDiffBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffBatchedStreamRequest,
-                SecurityProfileDiffBatchedStreamResponse,
-            ),
-        }
-
-
-class SecurityProfileDiffSummaryServiceBase(ServiceBase):
-    async def get_one(self, security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest") -> "SecurityProfileDiffSummaryResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(
-        self, security_profile_diff_summary_some_request: "SecurityProfileDiffSummarySomeRequest"
-    ) -> AsyncIterator[SecurityProfileDiffSummarySomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        self,
+        message: "SummarySomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SummarySomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/GetSome",
+            message,
+            SummarySomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
     async def get_all(
-        self, security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffSummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        self,
+        message: "SummaryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SummaryStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/GetAll",
+            message,
+            SummaryStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
     async def subscribe(
-        self, security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffSummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        self,
+        message: "SummaryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SummaryStreamResponse]":
 
-    async def get_meta(self, security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/Subscribe",
+            message,
+            SummaryStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
-    async def subscribe_meta(self, security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+    async def get_meta(
+        self,
+        message: "SummaryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.configstatus.v1.SummaryService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "SummaryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
     async def get_all_batched(
-        self, security_profile_diff_summary_batched_stream_request: "SecurityProfileDiffSummaryBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffSummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        self,
+        message: "SummaryBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/GetAllBatched",
+            message,
+            SummaryBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
     async def subscribe_batched(
-        self, security_profile_diff_summary_batched_stream_request: "SecurityProfileDiffSummaryBatchedStreamRequest"
-    ) -> AsyncIterator[SecurityProfileDiffSummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        self,
+        message: "SummaryBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryRequest, SecurityProfileDiffSummaryResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummarySomeRequest, SecurityProfileDiffSummarySomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, SecurityProfileDiffSummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, SecurityProfileDiffSummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryBatchedStreamRequest, SecurityProfileDiffSummaryBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[SecurityProfileDiffSummaryBatchedStreamRequest, SecurityProfileDiffSummaryBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileDiffSummaryRequest,
-                SecurityProfileDiffSummaryResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummarySomeRequest,
-                SecurityProfileDiffSummarySomeResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummaryStreamRequest,
-                SecurityProfileDiffSummaryStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummaryStreamRequest,
-                SecurityProfileDiffSummaryStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SecurityProfileDiffSummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummaryBatchedStreamRequest,
-                SecurityProfileDiffSummaryBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SecurityProfileDiffSummaryBatchedStreamRequest,
-                SecurityProfileDiffSummaryBatchedStreamResponse,
-            ),
-        }
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SummaryService/SubscribeBatched",
+            message,
+            SummaryBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
 
-class SummaryServiceBase(ServiceBase):
-    async def get_one(self, summary_request: "SummaryRequest") -> "SummaryResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, summary_some_request: "SummarySomeRequest") -> AsyncIterator[SummarySomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, summary_stream_request: "SummaryStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SummaryStreamRequest, SummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SummaryStreamRequest, SummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SummaryBatchedStreamRequest, SummaryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SummaryBatchedStreamRequest, SummaryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configstatus.v1.SummaryService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SummaryRequest,
-                SummaryResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummarySomeRequest,
-                SummarySomeResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                SummaryStreamResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                SummaryStreamResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryBatchedStreamRequest,
-                SummaryBatchedStreamResponse,
-            ),
-            "/arista.configstatus.v1.SummaryService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryBatchedStreamRequest,
-                SummaryBatchedStreamResponse,
-            ),
-        }
+from ....google import protobuf as ___google__protobuf__
+from ... import subscriptions as __subscriptions__
+from ... import time as __time__

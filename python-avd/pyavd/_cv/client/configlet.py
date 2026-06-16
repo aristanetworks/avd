@@ -85,8 +85,8 @@ class ConfigletMixin(Protocol):
         else:
             request.partial_eq_filter.append(ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id)))
 
-        client = ConfigletAssignmentServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletAssignmentServiceStub)
+        responses = client.get_all(request, timeout=timeout)
 
         return [response.value async for response in responses]
 
@@ -127,14 +127,14 @@ class ConfigletMixin(Protocol):
                 match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy or "match_all"),
             ),
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletAssignmentConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
 
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
     @GRPCRequestHandler(list_field="containers")
-    async def set_configlet_containers(
+    async def set_configlet_containers(  # pyright: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
@@ -166,8 +166,8 @@ class ConfigletMixin(Protocol):
                 for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
             ],
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletAssignmentConfigServiceStub)
+        responses = client.set_some(request, timeout=timeout)
 
         return [response.key async for response in responses]
 
@@ -214,6 +214,8 @@ class ConfigletMixin(Protocol):
             LOGGER.info("set_configlet_containers: Batch %s", index)
             configlet_configs.extend(await gather(*batch_coroutines))
 
+        # TODO: This fallback ignores the batched results above and calls the API a second time.
+        # It also returns ConfigletAssignmentConfig objects despite the annotated ConfigletAssignmentKey return type.
         return [
             await self.set_configlet_container(
                 workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy, timeout
@@ -244,8 +246,8 @@ class ConfigletMixin(Protocol):
                 remove=True,
             ),
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletAssignmentConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
 
         return response.value
 
@@ -278,9 +280,9 @@ class ConfigletMixin(Protocol):
         else:
             request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id)))
 
-        client = ConfigletServiceStub(self._channel)
+        client = self.new_stub(ConfigletServiceStub)
 
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        responses = client.get_all(request, timeout=timeout)
 
         return [response.value async for response in responses]
 
@@ -316,8 +318,8 @@ class ConfigletMixin(Protocol):
                 body=body,
             ),
         )
-        client = ConfigletConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
 
         return response.value
 
@@ -353,14 +355,14 @@ class ConfigletMixin(Protocol):
                 body=await to_thread(Path.read_text, Path(file), encoding="UTF-8"),
             ),
         )
-        client = ConfigletConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(ConfigletConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
 
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
     @GRPCRequestHandler(list_field="configlets", check_bulk_response_errors=True)
-    async def set_configlets_from_files(
+    async def set_configlets_from_files(  # pyright: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         configlets: list[tuple[str, str, str, str]],
@@ -388,9 +390,9 @@ class ConfigletMixin(Protocol):
                     body=await to_thread(Path.read_text, Path(file), encoding="UTF-8"),
                 )
             )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = self.new_stub(ConfigletConfigServiceStub)
 
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+        responses = client.set_some(request, timeout=timeout)
 
         return [(response.key, response.error) async for response in responses]
 
@@ -455,9 +457,13 @@ class ConfigletMixin(Protocol):
                         CVGRPCError,
                     ),
                 ):
-                    # Attempt to fetch reason of the original GRPCError exception using 'GRPCError.status' (args[0]) and 'GRPCError.message' (args[1])
+                    # Attempt to fetch reason of the original gRPC exception.
                     try:
-                        error_message = f"{configlet_config.args[0]}: {configlet_config.args[1]}"
+                        error_message = (
+                            f"{configlet_config.args[0]}: {configlet_config.args[1]}"
+                            if len(configlet_config.args) > 1 and isinstance(configlet_config.args[1], str)
+                            else str(configlet_config.args[0])
+                        )
                     # fall back to the full error if not possible
                     except (AttributeError, IndexError):
                         error_message = str(configlet_config)
@@ -503,8 +509,8 @@ class ConfigletMixin(Protocol):
                     remove=True,
                 ),
             )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = self.new_stub(ConfigletConfigServiceStub)
 
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+        responses = client.set_some(request, timeout=timeout)
 
         return [response.key async for response in responses]

@@ -46,14 +46,14 @@ async def test_verify_devices_in_cloudvision_inventory(
         -   description: Fetch device status
             request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'),
                 hostname=None, system_mac_address=None)], time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/76601a85f4ab2a9e434ec80eaeea2efc8dc02d71.json'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/cb93ca55d4e990c55560e7705c66afffdb732b2f.json'
 
     2. Verify device based on system_mac_address
         Exact test steps:
         -   description: Fetch device status
             request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname=None, system_mac_address='50:00:00:d5:5d:c0')],
                 time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/396119d5076221da87045ff93ab5041f30e9d9e0.json'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/ddb4e4f8e3cc48c48ba838415ca9cbe44e51a2e1.json'
     """
     result = await verify_devices_in_cloudvision_inventory(
         devices=input_devices,

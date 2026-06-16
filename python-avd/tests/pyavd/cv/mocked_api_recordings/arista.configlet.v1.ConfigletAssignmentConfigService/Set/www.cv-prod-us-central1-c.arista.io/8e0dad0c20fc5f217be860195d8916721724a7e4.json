@@ -1,0 +1,17 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                "configletAssignmentId": "avd-configlets"
+            },
+            "configletIds": {},
+            "matchPolicy": "MATCH_ALL",
+            "childAssignmentIds": {
+                "values": [
+                    "avd-B51AA89B6E51E89E1422107EDE3A9438"
+                ]
+            }
+        }
+    }
+}

@@ -7,95 +7,57 @@
 # This file has been @generated
 
 __all__ = (
-    "DeviceLifecycleSummaryKey",
-    "SoftwareEol",
     "DateAndModels",
-    "HardwareLifecycleSummary",
     "DeviceLifecycleSummary",
-    "MetaResponse",
+    "DeviceLifecycleSummaryKey",
     "DeviceLifecycleSummaryRequest",
     "DeviceLifecycleSummaryResponse",
+    "DeviceLifecycleSummaryServiceStub",
     "DeviceLifecycleSummaryStreamRequest",
     "DeviceLifecycleSummaryStreamResponse",
-    "DeviceLifecycleSummaryServiceStub",
-    "DeviceLifecycleSummaryServiceBase",
+    "HardwareLifecycleSummary",
+    "MetaResponse",
+    "SoftwareEol",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-@dataclass(eq=False, repr=False)
-class DeviceLifecycleSummaryKey(aristaproto.Message):
-    """
-    DeviceLifecycleSummaryKey is the key type for
-    DeviceLifecycleSummary model
-    """
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the device ID"""
-
-
-@dataclass(eq=False, repr=False)
-class SoftwareEol(aristaproto.Message):
-    """SoftwareEOL represents a software end of life"""
-
-    version: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """version of a SoftwareEOL"""
-
-    end_of_support: datetime = aristaproto.message_field(2)
-    """end_of_support of a SoftwareEOL"""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 @dataclass(eq=False, repr=False)
 class DateAndModels(aristaproto.Message):
     """
-    DateAndModels has an \"end of\" date along with
-    the models that has this exact \"end of\" date
+    DateAndModels has an "end of" date along with
+    the models that has this exact "end of" date
     """
 
-    date: datetime = aristaproto.message_field(1)
-    """\"end of\" date"""
-
-    models: "___fmp__.MapStringInt32" = aristaproto.message_field(2)
+    date: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    models with this exact \"end of\" date
+    "end of" date
+    """
+
+    models: "___fmp__.MapStringInt32 | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    models with this exact "end of" date
     mapped to its count
     """
 
 
-@dataclass(eq=False, repr=False)
-class HardwareLifecycleSummary(aristaproto.Message):
-    """HardwareLifecycleSummary represents a hardware lifecycle summary"""
-
-    end_of_life: "DateAndModels" = aristaproto.message_field(1)
-    """end_of_life of a HardwareLifecycleSummary"""
-
-    end_of_sale: "DateAndModels" = aristaproto.message_field(2)
-    """end_of_sale of a HardwareLifecycleSummary"""
-
-    end_of_tac_support: "DateAndModels" = aristaproto.message_field(3)
-    """end_of_tac_support of a HardwareLifecycleSummary"""
-
-    end_of_hardware_rma_requests: "DateAndModels" = aristaproto.message_field(4)
-    """end_of_hardware_rma_requests of a HardwareLifecycleSummary"""
+default_message_pool.register_message("arista.lifecycle.v1", "DateAndModels", DateAndModels)
 
 
 @dataclass(eq=False, repr=False)
@@ -105,64 +67,65 @@ class DeviceLifecycleSummary(aristaproto.Message):
     the lifecycle summary of a device
     """
 
-    key: "DeviceLifecycleSummaryKey" = aristaproto.message_field(1)
+    key: "DeviceLifecycleSummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     DeviceLifecycleSummaryKey is the key of
     DeviceLifecycleSummary
     """
 
-    software_eol: "SoftwareEol" = aristaproto.message_field(2)
+    software_eol: "SoftwareEol | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     software_eol is the software end of life of
     a device
     """
 
-    hardware_lifecycle_summary: "HardwareLifecycleSummary" = aristaproto.message_field(3)
+    hardware_lifecycle_summary: "HardwareLifecycleSummary | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     hardware_lifecycle_summary is the hardware lifecycle summary
     of a device
     """
 
 
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummary", DeviceLifecycleSummary)
+
+
 @dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class DeviceLifecycleSummaryKey(aristaproto.Message):
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    DeviceLifecycleSummaryKey is the key type for
+    DeviceLifecycleSummary model
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Count is the number of items present under the conditions of the request.
+    device_id is the device ID
     """
+
+
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummaryKey", DeviceLifecycleSummaryKey)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceLifecycleSummaryRequest(aristaproto.Message):
-    key: "DeviceLifecycleSummaryKey" = aristaproto.message_field(1)
+    key: "DeviceLifecycleSummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a DeviceLifecycleSummary instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummaryRequest", DeviceLifecycleSummaryRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceLifecycleSummaryResponse(aristaproto.Message):
-    value: "DeviceLifecycleSummary" = aristaproto.message_field(1)
+    value: "DeviceLifecycleSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -170,16 +133,19 @@ class DeviceLifecycleSummaryResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     DeviceLifecycleSummary instance in this response.
     """
 
 
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummaryResponse", DeviceLifecycleSummaryResponse)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceLifecycleSummaryStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceLifecycleSummary"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[DeviceLifecycleSummary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -188,7 +154,7 @@ class DeviceLifecycleSummaryStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -208,21 +174,24 @@ class DeviceLifecycleSummaryStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummaryStreamRequest", DeviceLifecycleSummaryStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DeviceLifecycleSummaryStreamResponse(aristaproto.Message):
-    value: "DeviceLifecycleSummary" = aristaproto.message_field(1)
+    value: "DeviceLifecycleSummary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this DeviceLifecycleSummary's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the DeviceLifecycleSummary value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -231,185 +200,189 @@ class DeviceLifecycleSummaryStreamResponse(aristaproto.Message):
     """
 
 
-class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.lifecycle.v1", "DeviceLifecycleSummaryStreamResponse", DeviceLifecycleSummaryStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class HardwareLifecycleSummary(aristaproto.Message):
+    """
+    HardwareLifecycleSummary represents a hardware lifecycle summary
+    """
+
+    end_of_life: "DateAndModels | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    end_of_life of a HardwareLifecycleSummary
+    """
+
+    end_of_sale: "DateAndModels | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    end_of_sale of a HardwareLifecycleSummary
+    """
+
+    end_of_tac_support: "DateAndModels | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    end_of_tac_support of a HardwareLifecycleSummary
+    """
+
+    end_of_hardware_rma_requests: "DateAndModels | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    end_of_hardware_rma_requests of a HardwareLifecycleSummary
+    """
+
+
+default_message_pool.register_message("arista.lifecycle.v1", "HardwareLifecycleSummary", HardwareLifecycleSummary)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.lifecycle.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SoftwareEol(aristaproto.Message):
+    """
+    SoftwareEOL represents a software end of life
+    """
+
+    version: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version of a SoftwareEOL
+    """
+
+    end_of_support: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    end_of_support of a SoftwareEOL
+    """
+
+
+default_message_pool.register_message("arista.lifecycle.v1", "SoftwareEOL", SoftwareEol)
+
+
+class DeviceLifecycleSummaryServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_lifecycle_summary_request: "DeviceLifecycleSummaryRequest",
+        message: "DeviceLifecycleSummaryRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceLifecycleSummaryResponse":
+
         return await self._unary_unary(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetOne",
-            device_lifecycle_summary_request,
+            message,
             DeviceLifecycleSummaryResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest",
+        message: "DeviceLifecycleSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceLifecycleSummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetAll",
-            device_lifecycle_summary_stream_request,
+            message,
             DeviceLifecycleSummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest",
+        message: "DeviceLifecycleSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceLifecycleSummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/Subscribe",
-            device_lifecycle_summary_stream_request,
+            message,
             DeviceLifecycleSummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest",
+        message: "DeviceLifecycleSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetMeta",
-            device_lifecycle_summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest",
+        message: "DeviceLifecycleSummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/SubscribeMeta",
-            device_lifecycle_summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class DeviceLifecycleSummaryServiceBase(ServiceBase):
-    async def get_one(self, device_lifecycle_summary_request: "DeviceLifecycleSummaryRequest") -> "DeviceLifecycleSummaryResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest"
-    ) -> AsyncIterator[DeviceLifecycleSummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest"
-    ) -> AsyncIterator[DeviceLifecycleSummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_lifecycle_summary_stream_request: "DeviceLifecycleSummaryStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceLifecycleSummaryRequest, DeviceLifecycleSummaryResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceLifecycleSummaryStreamRequest, DeviceLifecycleSummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceLifecycleSummaryStreamRequest, DeviceLifecycleSummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceLifecycleSummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceLifecycleSummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceLifecycleSummaryRequest,
-                DeviceLifecycleSummaryResponse,
-            ),
-            "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceLifecycleSummaryStreamRequest,
-                DeviceLifecycleSummaryStreamResponse,
-            ),
-            "/arista.lifecycle.v1.DeviceLifecycleSummaryService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceLifecycleSummaryStreamRequest,
-                DeviceLifecycleSummaryStreamResponse,
-            ),
-            "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceLifecycleSummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.lifecycle.v1.DeviceLifecycleSummaryService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceLifecycleSummaryStreamRequest,
-                MetaResponse,
-            ),
-        }

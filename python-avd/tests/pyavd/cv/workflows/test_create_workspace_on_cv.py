@@ -45,13 +45,13 @@ async def test_create_existing_workspace_on_cv(
         Exact test steps:
         -   description: Fetch Workspace
             request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560000'), time=None)'
-            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/bd1b5fdaa11249efe21fa9479c729168b06cda69.json'
+            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/121aeca27e5763f53310d0beb4e12e96395b8213.json'
 
     2. Attempt to create a Workspace which already exists and is not in a WorkspaceState.PENDING state. This raises CVResourceInvalidState.
         Exact test steps:
         -   description: Fetch Workspace
             request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560001'), time=None)'
-            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/e3c8d23b2dffba4c050956c45d0bda0124500f00.json'
+            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/edfa85d5d2375c17d152308c20334350ad7c3352.json'
     """
     with expected_exception:
         result = DeployToCvResult(workspace=CVWorkspace(AvdWorkspace(id=workspace_id)))
@@ -82,7 +82,7 @@ async def test_create_new_workspace_on_cv_success(
     Exact test steps:
     -   description: Fetch Workspace status
         request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/6fad0460874042bff3bf74e8b5d4e12ca25f1646.json'
 
     -   description: Create Workspace
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
@@ -115,10 +115,7 @@ async def test_create_new_workspace_on_cv_success(
     cv_client.get_workspace.assert_called_once_with(workspace_id=workspace_id)
     assert any(
         re.search(
-            re.compile(
-                r"wait_for_workspace_state: Got workspace update: WorkspaceStreamResponse\(value=Workspace\(state=WorkspaceState.UNSPECIFIED\), "
-                r"type=Operation.INITIAL_SYNC_COMPLETE\)"
-            ),
+            re.compile(r"wait_for_workspace_state: Got workspace update: WorkspaceStreamResponse\(type=<Operation.INITIAL_SYNC_COMPLETE: 11>\)"),
             str(record.message),
         )
         for record in caplog.records
@@ -161,7 +158,7 @@ async def test_create_new_workspace_on_cv_failure(
     Exact test steps:
     -   description: Fetch Workspace status
         request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/6fad0460874042bff3bf74e8b5d4e12ca25f1646.json'
 
     -   description: Create Workspace
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),

@@ -8,9 +8,8 @@ from datetime import datetime
 from logging import getLogger
 from pathlib import Path
 from typing import Any, Literal
+from urllib.parse import quote
 from uuid import NAMESPACE_DNS, uuid4, uuid5
-
-from grpclib.config import Configuration
 
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
@@ -37,29 +36,73 @@ class CVGRPCKeepalives:
 
 
 @dataclass
+class CVGRPCProxyConfiguration:
+    """HTTP CONNECT proxy settings for the gRPC channel."""
+
+    host: str
+    port: int = 8080
+    username: str | None = None
+    password: str | None = None
+
+    @property
+    def proxy_url(self) -> str:
+        """Build the HTTP proxy URL."""
+        if self.username and self.password:
+            username = quote(self.username, safe="")
+            password = quote(self.password, safe="")
+            return f"http://{username}:{password}@{self.host}:{self.port}"
+
+        return f"http://{self.host}:{self.port}"
+
+    def get_requests_proxies(self) -> dict[str, str]:
+        """Build requests proxy configuration."""
+        return {
+            "http": self.proxy_url,
+            "https": self.proxy_url,
+        }
+
+    def as_grpcio_channel_options(self) -> tuple[tuple[str, str], ...]:
+        """Build grpcio channel options from the configured HTTP proxy settings."""
+        return (("grpc.http_proxy", self.proxy_url),)
+
+
+@dataclass
 class CVGRPCChannelConfiguration:
     """Advanced configuration settings of the gRPC channel."""
 
     grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
     """Keepalive settings of the gRPC channel."""
 
-    def as_grpclib_configuration(self) -> Configuration:
-        if not self.grpc_keepalives.enabled:
-            return Configuration()
-        try:
-            return Configuration(
-                _keepalive_time=self.grpc_keepalives.keepalive_time,
-                _keepalive_timeout=self.grpc_keepalives.keepalive_timeout,
-                _keepalive_permit_without_calls=self.grpc_keepalives.permit_without_calls,
-                # Disable the grpclib default cap of 2 pings without data so keepalives
-                # continue for the duration of the deployment.
-                _http2_max_pings_without_data=0,
-                # Override grpclib's 300s rate-limit so pings fire at the configured interval.
-                _http2_min_sent_ping_interval_without_data=self.grpc_keepalives.keepalive_time,
+    proxy: CVGRPCProxyConfiguration | None = None
+    """HTTP CONNECT proxy settings of the gRPC channel."""
+
+    custom_user_agent: str | None = None
+    """Custom user agent suffix to append to the generated user agent."""
+
+    _ssl_target_name_override: str | None = field(default=None, init=False, repr=False, compare=False)
+
+    def as_grpcio_channel_options(self, default_user_agent: str) -> tuple[tuple[str, str | int], ...]:
+        """Build grpcio channel options from the typed gRPC channel configuration."""
+        final_user_agent = f"{default_user_agent} {self.custom_user_agent}" if self.custom_user_agent else default_user_agent
+        options: tuple[tuple[str, str | int], ...] = (("grpc.primary_user_agent", final_user_agent),)
+
+        if self._ssl_target_name_override is not None:
+            options += (("grpc.ssl_target_name_override", self._ssl_target_name_override),)
+
+        if self.grpc_keepalives.enabled:
+            options += (
+                ("grpc.keepalive_time_ms", self.grpc_keepalives.keepalive_time * 1000),
+                ("grpc.keepalive_timeout_ms", self.grpc_keepalives.keepalive_timeout * 1000),
+                ("grpc.keepalive_permit_without_calls", int(self.grpc_keepalives.permit_without_calls)),
+                # Disable the default cap of 2 pings without data so keepalives continue
+                # for the duration of the deployment.
+                ("grpc.http2.max_pings_without_data", 0),
             )
-        except TypeError:
-            LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
-            return Configuration()
+
+        if self.proxy is not None:
+            options += self.proxy.as_grpcio_channel_options()
+
+        return options
 
 
 @dataclass

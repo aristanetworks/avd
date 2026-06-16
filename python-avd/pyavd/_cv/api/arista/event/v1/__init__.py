@@ -7,120 +7,86 @@
 # This file has been @generated
 
 __all__ = (
-    "EventSeverity",
     "ComponentType",
-    "MaintenanceModeFilter",
-    "EventComponent",
-    "EventComponents",
-    "EventAck",
-    "EventRead",
-    "EventNoteConfig",
-    "EventNote",
-    "EventKey",
-    "EventData",
-    "EventNotesConfig",
-    "EventAnnotationConfig",
-    "EventNotes",
-    "EventMetadataGroup",
-    "EventMetadata",
     "Event",
-    "UserEventCreationKey",
-    "UserEventCreationConfig",
-    "EventFilter",
-    "MetaResponse",
-    "EventRequest",
-    "EventResponse",
-    "EventSomeRequest",
-    "EventSomeResponse",
-    "EventStreamRequest",
-    "EventStreamResponse",
-    "EventAnnotationConfigRequest",
-    "EventAnnotationConfigResponse",
-    "EventAnnotationConfigSomeRequest",
-    "EventAnnotationConfigSomeResponse",
-    "EventAnnotationConfigStreamRequest",
-    "EventAnnotationConfigStreamResponse",
-    "EventAnnotationConfigSetRequest",
-    "EventAnnotationConfigSetResponse",
-    "EventAnnotationConfigSetSomeRequest",
-    "EventAnnotationConfigSetSomeResponse",
+    "EventAck",
+    "EventAnnotationConfig",
+    "EventAnnotationConfigDeleteAllRequest",
+    "EventAnnotationConfigDeleteAllResponse",
     "EventAnnotationConfigDeleteRequest",
     "EventAnnotationConfigDeleteResponse",
     "EventAnnotationConfigDeleteSomeRequest",
     "EventAnnotationConfigDeleteSomeResponse",
-    "EventAnnotationConfigDeleteAllRequest",
-    "EventAnnotationConfigDeleteAllResponse",
-    "UserEventCreationConfigRequest",
-    "UserEventCreationConfigResponse",
-    "UserEventCreationConfigSomeRequest",
-    "UserEventCreationConfigSomeResponse",
-    "UserEventCreationConfigStreamRequest",
-    "UserEventCreationConfigStreamResponse",
-    "UserEventCreationConfigSetRequest",
-    "UserEventCreationConfigSetResponse",
-    "UserEventCreationConfigSetSomeRequest",
-    "UserEventCreationConfigSetSomeResponse",
+    "EventAnnotationConfigRequest",
+    "EventAnnotationConfigResponse",
+    "EventAnnotationConfigServiceStub",
+    "EventAnnotationConfigSetRequest",
+    "EventAnnotationConfigSetResponse",
+    "EventAnnotationConfigSetSomeRequest",
+    "EventAnnotationConfigSetSomeResponse",
+    "EventAnnotationConfigSomeRequest",
+    "EventAnnotationConfigSomeResponse",
+    "EventAnnotationConfigStreamRequest",
+    "EventAnnotationConfigStreamResponse",
+    "EventComponent",
+    "EventComponents",
+    "EventData",
+    "EventFilter",
+    "EventKey",
+    "EventMetadata",
+    "EventMetadataGroup",
+    "EventNote",
+    "EventNoteConfig",
+    "EventNotes",
+    "EventNotesConfig",
+    "EventRead",
+    "EventRequest",
+    "EventResponse",
+    "EventServiceStub",
+    "EventSeverity",
+    "EventSomeRequest",
+    "EventSomeResponse",
+    "EventStreamRequest",
+    "EventStreamResponse",
+    "MaintenanceModeFilter",
+    "MetaResponse",
+    "UserEventCreationConfig",
+    "UserEventCreationConfigDeleteAllRequest",
+    "UserEventCreationConfigDeleteAllResponse",
     "UserEventCreationConfigDeleteRequest",
     "UserEventCreationConfigDeleteResponse",
     "UserEventCreationConfigDeleteSomeRequest",
     "UserEventCreationConfigDeleteSomeResponse",
-    "UserEventCreationConfigDeleteAllRequest",
-    "UserEventCreationConfigDeleteAllResponse",
-    "EventServiceStub",
-    "EventServiceBase",
-    "EventAnnotationConfigServiceStub",
-    "EventAnnotationConfigServiceBase",
+    "UserEventCreationConfigRequest",
+    "UserEventCreationConfigResponse",
     "UserEventCreationConfigServiceStub",
-    "UserEventCreationConfigServiceBase",
+    "UserEventCreationConfigSetRequest",
+    "UserEventCreationConfigSetResponse",
+    "UserEventCreationConfigSetSomeRequest",
+    "UserEventCreationConfigSetSomeResponse",
+    "UserEventCreationConfigSomeRequest",
+    "UserEventCreationConfigSomeResponse",
+    "UserEventCreationConfigStreamRequest",
+    "UserEventCreationConfigStreamResponse",
+    "UserEventCreationKey",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class EventSeverity(aristaproto.Enum):
-    """EventSeverity is the severity level of the event"""
-
-    UNSPECIFIED = 0
-    """
-    EVENT_SEVERITY_UNSPECIFIED is the default value, if the severity is not specified.
-    """
-
-    INFO = 1
-    """EVENT_SEVERITY_INFO is used for generally useful information."""
-
-    WARNING = 2
-    """EVENT_SEVERITY_WARNING is used for potentially harmful conditions."""
-
-    ERROR = 3
-    """
-    EVENT_SEVERITY_ERROR is used for errors events that may allow for continued functioning.
-    """
-
-    CRITICAL = 4
-    """
-    EVENT_SEVERITY_CRITICAL is used to designate severe errors that impede functioning.
-    """
-
-    DEBUG = 5
-    """EVENT_SEVERITY_DEBUG is used for debugging useful information."""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class ComponentType(aristaproto.Enum):
@@ -134,10 +100,14 @@ class ComponentType(aristaproto.Enum):
     """
 
     DEVICE = 1
-    """COMPONENT_TYPE_DEVICE is used for device events."""
+    """
+    COMPONENT_TYPE_DEVICE is used for device events.
+    """
 
     INTERFACE = 2
-    """COMPONENT_TYPE_INTERFACE is used for device interface events."""
+    """
+    COMPONENT_TYPE_INTERFACE is used for device interface events.
+    """
 
     TURBINE = 3
     """
@@ -154,7 +124,9 @@ class ComponentType(aristaproto.Enum):
     """
 
     VDS_INTERFACE = 5
-    """COMPONENT_TYPE_VDS_INTERFACE is used for VDS interface events."""
+    """
+    COMPONENT_TYPE_VDS_INTERFACE is used for VDS interface events.
+    """
 
     VM = 6
     """
@@ -164,7 +136,9 @@ class ComponentType(aristaproto.Enum):
     """
 
     VM_INTERFACE = 7
-    """COMPONENT_TYPE_VM_INTERFACE is used for VM interface events."""
+    """
+    COMPONENT_TYPE_VM_INTERFACE is used for VM interface events.
+    """
 
     WORKLOAD_SERVER = 8
     """
@@ -178,10 +152,106 @@ class ComponentType(aristaproto.Enum):
     """
 
     APPLICATION = 10
-    """COMPONENT_TYPE_APPLICATION is used for application-service events."""
+    """
+    COMPONENT_TYPE_APPLICATION is used for application-service events.
+    """
 
     CVP_NODE = 11
-    """COMPONENT_TYPE_CVP_NODE is used for CVP node events."""
+    """
+    COMPONENT_TYPE_CVP_NODE is used for CVP node events.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "COMPONENT_TYPE_UNSPECIFIED",
+            1: "COMPONENT_TYPE_DEVICE",
+            2: "COMPONENT_TYPE_INTERFACE",
+            3: "COMPONENT_TYPE_TURBINE",
+            4: "COMPONENT_TYPE_VDS",
+            5: "COMPONENT_TYPE_VDS_INTERFACE",
+            6: "COMPONENT_TYPE_VM",
+            7: "COMPONENT_TYPE_VM_INTERFACE",
+            8: "COMPONENT_TYPE_WORKLOAD_SERVER",
+            9: "COMPONENT_TYPE_WORKLOAD_SERVER_INTERFACE",
+            10: "COMPONENT_TYPE_APPLICATION",
+            11: "COMPONENT_TYPE_CVP_NODE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "COMPONENT_TYPE_UNSPECIFIED": 0,
+            "COMPONENT_TYPE_DEVICE": 1,
+            "COMPONENT_TYPE_INTERFACE": 2,
+            "COMPONENT_TYPE_TURBINE": 3,
+            "COMPONENT_TYPE_VDS": 4,
+            "COMPONENT_TYPE_VDS_INTERFACE": 5,
+            "COMPONENT_TYPE_VM": 6,
+            "COMPONENT_TYPE_VM_INTERFACE": 7,
+            "COMPONENT_TYPE_WORKLOAD_SERVER": 8,
+            "COMPONENT_TYPE_WORKLOAD_SERVER_INTERFACE": 9,
+            "COMPONENT_TYPE_APPLICATION": 10,
+            "COMPONENT_TYPE_CVP_NODE": 11,
+        }
+
+
+class EventSeverity(aristaproto.Enum):
+    """
+    EventSeverity is the severity level of the event
+    """
+
+    UNSPECIFIED = 0
+    """
+    EVENT_SEVERITY_UNSPECIFIED is the default value, if the severity is not specified.
+    """
+
+    INFO = 1
+    """
+    EVENT_SEVERITY_INFO is used for generally useful information.
+    """
+
+    WARNING = 2
+    """
+    EVENT_SEVERITY_WARNING is used for potentially harmful conditions.
+    """
+
+    ERROR = 3
+    """
+    EVENT_SEVERITY_ERROR is used for errors events that may allow for continued functioning.
+    """
+
+    CRITICAL = 4
+    """
+    EVENT_SEVERITY_CRITICAL is used to designate severe errors that impede functioning.
+    """
+
+    DEBUG = 5
+    """
+    EVENT_SEVERITY_DEBUG is used for debugging useful information.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "EVENT_SEVERITY_UNSPECIFIED",
+            1: "EVENT_SEVERITY_INFO",
+            2: "EVENT_SEVERITY_WARNING",
+            3: "EVENT_SEVERITY_ERROR",
+            4: "EVENT_SEVERITY_CRITICAL",
+            5: "EVENT_SEVERITY_DEBUG",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "EVENT_SEVERITY_UNSPECIFIED": 0,
+            "EVENT_SEVERITY_INFO": 1,
+            "EVENT_SEVERITY_WARNING": 2,
+            "EVENT_SEVERITY_ERROR": 3,
+            "EVENT_SEVERITY_CRITICAL": 4,
+            "EVENT_SEVERITY_DEBUG": 5,
+        }
 
 
 class MaintenanceModeFilter(aristaproto.Enum):
@@ -208,113 +278,129 @@ class MaintenanceModeFilter(aristaproto.Enum):
     during maintenance mode.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "MAINTENANCE_MODE_FILTER_UNSPECIFIED",
+            1: "MAINTENANCE_MODE_FILTER_ONLY_NON_MAINTENANCE_MODE",
+            2: "MAINTENANCE_MODE_FILTER_ONLY_MAINTENANCE_MODE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "MAINTENANCE_MODE_FILTER_UNSPECIFIED": 0,
+            "MAINTENANCE_MODE_FILTER_ONLY_NON_MAINTENANCE_MODE": 1,
+            "MAINTENANCE_MODE_FILTER_ONLY_MAINTENANCE_MODE": 2,
+        }
+
 
 @dataclass(eq=False, repr=False)
-class EventComponent(aristaproto.Message):
-    """EventComponent describes an entity on which the event occurred"""
+class Event(aristaproto.Message):
+    """
+    Event is a telemetry event
+    """
 
-    type: "ComponentType" = aristaproto.enum_field(1)
-    """type is the type of component"""
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the event instance identifier
+    """
 
-    components: Dict[str, str] = aristaproto.map_field(2, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
-    """components identifies the entity on which the event occurred"""
+    severity: "EventSeverity" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: EventSeverity(0))
+    """
+    severity is the severity of the event
+    """
+
+    title: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    title is the title of the event
+    """
+
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the event
+    """
+
+    event_type: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    event_type is the type of the event
+    """
+
+    data: "EventData | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    data is the data of the event
+    """
+
+    components: "EventComponents | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    components is the components on which the event occurred
+    """
+
+    ack: "EventAck | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ack is the acknowledgement status of the event
+    """
+
+    notes: "EventNotes | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    notes is the notes of the event
+    """
+
+    last_updated_time: "datetime.datetime | None" = aristaproto.field(
+        10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
+    """
+    last_updated_time is the time of the most recent update to the event
+    """
+
+    read: "EventRead | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    read is the read status of the event
+    """
+
+    rule_id: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    rule_id is the label of the rule associated with the event
+    """
+
+    delete_time: "datetime.datetime | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    delete_time is the time when the event ended.
+    It is nil if event is still ongoing
+    """
+
+    metadata: "EventMetadata | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    metadata is the metadata tag key and value pairs of the event
+    """
 
 
-@dataclass(eq=False, repr=False)
-class EventComponents(aristaproto.Message):
-    """EventComponents contains entities on which an event occurred"""
-
-    components: List["EventComponent"] = aristaproto.message_field(1)
-    """components describes the components on which an event occurred"""
+default_message_pool.register_message("arista.event.v1", "Event", Event)
 
 
 @dataclass(eq=False, repr=False)
 class EventAck(aristaproto.Message):
-    """EventAck contains acknowledgement information of an event"""
-
-    ack: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """ack is the acknowledgement state of an event"""
-
-    acker: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """acker is the user that acknowledged the event"""
-
-    ack_time: datetime = aristaproto.message_field(3)
-    """ack_time is the time of acknowledgement"""
-
-
-@dataclass(eq=False, repr=False)
-class EventRead(aristaproto.Message):
-    """EventRead contains read information of an event"""
-
-    read: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """read is the read state of an event"""
-
-    reader: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """reader is the user that read the event"""
-
-    read_time: datetime = aristaproto.message_field(3)
-    """read_time is the time of read"""
-
-
-@dataclass(eq=False, repr=False)
-class EventNoteConfig(aristaproto.Message):
     """
-    EventNoteConfig configures a note
-
-    NOTE: note is required when used as an argument
-          to Set.
+    EventAck contains acknowledgement information of an event
     """
 
-    note: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """note is the text of the note"""
-
-
-@dataclass(eq=False, repr=False)
-class EventNote(aristaproto.Message):
-    """EventNote is the state of a note"""
-
-    note: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """note is the text of the note"""
-
-    note_creator: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """note_creator is the creator of the note"""
-
-
-@dataclass(eq=False, repr=False)
-class EventKey(aristaproto.Message):
+    ack: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
-    EventKey uniquely identifies an event
-
-    NOTE: All fields are required when used as an argument
-          to GetOne, Set or Delete.
+    ack is the acknowledgement state of an event
     """
 
-    key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """key is the event data identifier"""
-
-    timestamp: datetime = aristaproto.message_field(2)
-    """timestamp is the time the event occurred"""
-
-
-@dataclass(eq=False, repr=False)
-class EventData(aristaproto.Message):
-    """EventData is additional event data"""
-
-    data: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
-    """data is event data specific to the type of this event"""
-
-
-@dataclass(eq=False, repr=False)
-class EventNotesConfig(aristaproto.Message):
+    acker: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    EventNotesConfig configures the notes of an event
-
-    NOTE: notes is required when used as an argument
-          to Set.
+    acker is the user that acknowledged the event
     """
 
-    notes: Dict[int, "EventNoteConfig"] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
-    """notes is keyed by desired note time in Unix time, in milliseconds"""
+    ack_time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    ack_time is the time of acknowledgement
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAck", EventAck)
 
 
 @dataclass(eq=False, repr=False)
@@ -326,297 +412,148 @@ class EventAnnotationConfig(aristaproto.Message):
           required when used as an argument to Set.
     """
 
-    key: "EventKey" = aristaproto.message_field(1)
-    """key is the event instance identifier"""
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the event instance identifier
+    """
 
-    ack: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """ack is the acknowledgement state of an event"""
+    ack: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    ack is the acknowledgement state of an event
+    """
 
-    notes: "EventNotesConfig" = aristaproto.message_field(3)
-    """notes is the notes on an event"""
+    notes: "EventNotesConfig | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    notes is the notes on an event
+    """
 
-    read: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
+    read: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     read is the read state of an event. Setting this implies that an event has been read by a user
     """
 
 
-@dataclass(eq=False, repr=False)
-class EventNotes(aristaproto.Message):
-    """EventNotes is the notes of an event state"""
-
-    notes: Dict[int, "EventNote"] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
-    """notes is keyed by the time desired"""
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfig", EventAnnotationConfig)
 
 
 @dataclass(eq=False, repr=False)
-class EventMetadataGroup(aristaproto.Message):
-    """EventMetadataGroup is a single metadata tag group for an event"""
-
-    values: "___fmp__.MapStringString" = aristaproto.message_field(1)
-    """values contains a collection of metadata tag key and value pairs"""
-
-
-@dataclass(eq=False, repr=False)
-class EventMetadata(aristaproto.Message):
-    """EventMetadata is a list of all metadata tag groups for an event"""
-
-    values: List["EventMetadataGroup"] = aristaproto.message_field(1)
-    """values contains a list of metadata tag groups for the event"""
-
-
-@dataclass(eq=False, repr=False)
-class Event(aristaproto.Message):
-    """Event is a telemetry event"""
-
-    key: "EventKey" = aristaproto.message_field(1)
-    """key is the event instance identifier"""
-
-    severity: "EventSeverity" = aristaproto.enum_field(2)
-    """severity is the severity of the event"""
-
-    title: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """title is the title of the event"""
-
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the event"""
-
-    event_type: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """event_type is the type of the event"""
-
-    data: "EventData" = aristaproto.message_field(6)
-    """data is the data of the event"""
-
-    components: "EventComponents" = aristaproto.message_field(7)
-    """components is the components on which the event occurred"""
-
-    ack: "EventAck" = aristaproto.message_field(8)
-    """ack is the acknowledgement status of the event"""
-
-    notes: "EventNotes" = aristaproto.message_field(9)
-    """notes is the notes of the event"""
-
-    last_updated_time: datetime = aristaproto.message_field(10)
-    """last_updated_time is the time of the most recent update to the event"""
-
-    read: "EventRead" = aristaproto.message_field(11)
-    """read is the read status of the event"""
-
-    rule_id: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
-    """rule_id is the label of the rule associated with the event"""
-
-    delete_time: datetime = aristaproto.message_field(13)
+class EventAnnotationConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[EventAnnotationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    delete_time is the time when the event ended.
-    It is nil if event is still ongoing
-    """
-
-    metadata: "EventMetadata" = aristaproto.message_field(14)
-    """metadata is the metadata tag key and value pairs of the event"""
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationKey(aristaproto.Message):
-    """UserEventCreationKey uniquely identifies a user event request."""
-
-    key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """key is a unique string identifier"""
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfig(aristaproto.Message):
-    """
-    UserEventCreationConfig is the basis for the manual creation of new events.
-
-    NOTE: Set is the only valid operation.
-          Objects are immediately deleted upon event creation.
-          All fields are required to create a well-formed event.
-    """
-
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
-    """key is the event instance identifier"""
-
-    severity: "EventSeverity" = aristaproto.enum_field(2)
-    """severity is the severity of the event"""
-
-    title: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """title is the title of the event"""
-
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the event"""
-
-    rule_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """rule_id is the label of the rule associated with the event"""
-
-    components: "EventComponents" = aristaproto.message_field(7)
-    """components is the components on which the event occurred"""
-
-    start_time: datetime = aristaproto.message_field(8)
-    """start_time is the time point at which the event occurred"""
-
-
-@dataclass(eq=False, repr=False)
-class EventFilter(aristaproto.Message):
-    """EventFilter serves as a custom filter to events."""
-
-    maintenance_mode_filter: "MaintenanceModeFilter" = aristaproto.enum_field(1)
-    """
-    maintenance_mode_filter specifies how maintenance mode events should be filtered.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventRequest(aristaproto.Message):
-    key: "EventKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Event instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventResponse(aristaproto.Message):
-    value: "Event" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Event instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventSomeRequest(aristaproto.Message):
-    keys: List["EventKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventSomeResponse(aristaproto.Message):
-    value: "Event" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-
-
-@dataclass(eq=False, repr=False)
-class EventStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Event"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
     This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
 
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Event at end.
-        * Each Event response is fully-specified (all fields set).
-      * start: Returns the state of each Event at start, followed by updates until now.
-        * Each Event response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Event at start, followed by updates
-        until end.
-        * Each Event response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteAllRequest", EventAnnotationConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class EventStreamResponse(aristaproto.Message):
-    value: "Event" = aristaproto.message_field(1)
+class EventAnnotationConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Event's last modification."""
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    key: "EventKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the Event value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    This is the key of the EventAnnotationConfig instance that failed to be deleted.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteAllResponse", EventAnnotationConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteRequest(aristaproto.Message):
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which EventAnnotationConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteRequest", EventAnnotationConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteResponse(aristaproto.Message):
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted EventAnnotationConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteResponse", EventAnnotationConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[EventKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of EventAnnotationConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteSomeRequest", EventAnnotationConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    EventAnnotationConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigDeleteSomeResponse", EventAnnotationConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigRequest(aristaproto.Message):
-    key: "EventKey" = aristaproto.message_field(1)
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a EventAnnotationConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigRequest", EventAnnotationConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigResponse(aristaproto.Message):
-    value: "EventAnnotationConfig" = aristaproto.message_field(1)
+    value: "EventAnnotationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -624,26 +561,92 @@ class EventAnnotationConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     EventAnnotationConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigResponse", EventAnnotationConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetRequest(aristaproto.Message):
+    value: "EventAnnotationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    EventAnnotationConfig carries the value to set into the datastore.
+    See the documentation on the EventAnnotationConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSetRequest", EventAnnotationConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetResponse(aristaproto.Message):
+    value: "EventAnnotationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the EventAnnotationConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSetResponse", EventAnnotationConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetSomeRequest(aristaproto.Message):
+    values: "list[EventAnnotationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of EventAnnotationConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSetSomeRequest", EventAnnotationConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetSomeResponse(aristaproto.Message):
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSetSomeResponse", EventAnnotationConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigSomeRequest(aristaproto.Message):
-    keys: List["EventKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[EventKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSomeRequest", EventAnnotationConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigSomeResponse(aristaproto.Message):
-    value: "EventAnnotationConfig" = aristaproto.message_field(1)
+    value: "EventAnnotationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -651,18 +654,21 @@ class EventAnnotationConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigSomeResponse", EventAnnotationConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["EventAnnotationConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[EventAnnotationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -671,7 +677,7 @@ class EventAnnotationConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -691,21 +697,24 @@ class EventAnnotationConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigStreamRequest", EventAnnotationConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfigStreamResponse(aristaproto.Message):
-    value: "EventAnnotationConfig" = aristaproto.message_field(1)
+    value: "EventAnnotationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this EventAnnotationConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the EventAnnotationConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -714,69 +723,492 @@ class EventAnnotationConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class EventAnnotationConfigSetRequest(aristaproto.Message):
-    value: "EventAnnotationConfig" = aristaproto.message_field(1)
-    """
-    EventAnnotationConfig carries the value to set into the datastore.
-    See the documentation on the EventAnnotationConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.event.v1", "EventAnnotationConfigStreamResponse", EventAnnotationConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigSetResponse(aristaproto.Message):
-    value: "EventAnnotationConfig" = aristaproto.message_field(1)
+class EventComponent(aristaproto.Message):
     """
-    Value carries all the values given in the EventAnnotationConfigSetRequest as well
-    as any server-generated values.
+    EventComponent describes an entity on which the event occurred
     """
 
-    time: datetime = aristaproto.message_field(2)
+    type: "ComponentType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ComponentType(0))
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
+    type is the type of component
+    """
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    components: "dict[str, str]" = aristaproto.field(2, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_STRING))
     """
+    components identifies the entity on which the event occurred
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventComponent", EventComponent)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigSetSomeRequest(aristaproto.Message):
-    values: List["EventAnnotationConfig"] = aristaproto.message_field(1)
+class EventComponents(aristaproto.Message):
     """
-    value contains a list of EventAnnotationConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    EventComponents contains entities on which an event occurred
     """
+
+    components: "list[EventComponent]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    components describes the components on which an event occurred
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventComponents", EventComponents)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigSetSomeResponse(aristaproto.Message):
-    key: "EventKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class EventData(aristaproto.Message):
+    """
+    EventData is additional event data
+    """
+
+    data: "dict[str, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_STRING))
+    """
+    data is event data specific to the type of this event
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventData", EventData)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteRequest(aristaproto.Message):
-    key: "EventKey" = aristaproto.message_field(1)
+class EventFilter(aristaproto.Message):
     """
-    Key indicates which EventAnnotationConfig instance to remove.
+    EventFilter serves as a custom filter to events.
+    """
+
+    maintenance_mode_filter: "MaintenanceModeFilter" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: MaintenanceModeFilter(0))
+    """
+    maintenance_mode_filter specifies how maintenance mode events should be filtered.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventFilter", EventFilter)
+
+
+@dataclass(eq=False, repr=False)
+class EventKey(aristaproto.Message):
+    """
+    EventKey uniquely identifies an event
+
+    NOTE: All fields are required when used as an argument
+          to GetOne, Set or Delete.
+    """
+
+    key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    key is the event data identifier
+    """
+
+    timestamp: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    timestamp is the time the event occurred
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventKey", EventKey)
+
+
+@dataclass(eq=False, repr=False)
+class EventMetadata(aristaproto.Message):
+    """
+    EventMetadata is a list of all metadata tag groups for an event
+    """
+
+    values: "list[EventMetadataGroup]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values contains a list of metadata tag groups for the event
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventMetadata", EventMetadata)
+
+
+@dataclass(eq=False, repr=False)
+class EventMetadataGroup(aristaproto.Message):
+    """
+    EventMetadataGroup is a single metadata tag group for an event
+    """
+
+    values: "___fmp__.MapStringString | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    values contains a collection of metadata tag key and value pairs
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventMetadataGroup", EventMetadataGroup)
+
+
+@dataclass(eq=False, repr=False)
+class EventNote(aristaproto.Message):
+    """
+    EventNote is the state of a note
+    """
+
+    note: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    note is the text of the note
+    """
+
+    note_creator: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    note_creator is the creator of the note
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventNote", EventNote)
+
+
+@dataclass(eq=False, repr=False)
+class EventNoteConfig(aristaproto.Message):
+    """
+    EventNoteConfig configures a note
+
+    NOTE: note is required when used as an argument
+          to Set.
+    """
+
+    note: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    note is the text of the note
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventNoteConfig", EventNoteConfig)
+
+
+@dataclass(eq=False, repr=False)
+class EventNotes(aristaproto.Message):
+    """
+    EventNotes is the notes of an event state
+    """
+
+    notes: "dict[int, EventNote]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE))
+    """
+    notes is keyed by the time desired
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventNotes", EventNotes)
+
+
+@dataclass(eq=False, repr=False)
+class EventNotesConfig(aristaproto.Message):
+    """
+    EventNotesConfig configures the notes of an event
+
+    NOTE: notes is required when used as an argument
+          to Set.
+    """
+
+    notes: "dict[int, EventNoteConfig]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    notes is keyed by desired note time in Unix time, in milliseconds
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventNotesConfig", EventNotesConfig)
+
+
+@dataclass(eq=False, repr=False)
+class EventRead(aristaproto.Message):
+    """
+    EventRead contains read information of an event
+    """
+
+    read: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    read is the read state of an event
+    """
+
+    reader: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    reader is the user that read the event
+    """
+
+    read_time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    read_time is the time of read
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventRead", EventRead)
+
+
+@dataclass(eq=False, repr=False)
+class EventRequest(aristaproto.Message):
+    key: "EventKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Event instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventRequest", EventRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventResponse(aristaproto.Message):
+    value: "Event | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Event instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventResponse", EventResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventSomeRequest(aristaproto.Message):
+    keys: "list[EventKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventSomeRequest", EventSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventSomeResponse(aristaproto.Message):
+    value: "Event | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.event.v1", "EventSomeResponse", EventSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class EventStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Event]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Event at end.
+        * Each Event response is fully-specified (all fields set).
+      * start: Returns the state of each Event at start, followed by updates until now.
+        * Each Event response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Event at start, followed by updates
+        until end.
+        * Each Event response at start is fully-specified, but updates until end may
+          be partial.
+
+    This field is not allowed in the Subscribe RPC.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventStreamRequest", EventStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class EventStreamResponse(aristaproto.Message):
+    value: "Event | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Event's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Event value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "EventStreamResponse", EventStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfig(aristaproto.Message):
+    """
+    UserEventCreationConfig is the basis for the manual creation of new events.
+
+    NOTE: Set is the only valid operation.
+          Objects are immediately deleted upon event creation.
+          All fields are required to create a well-formed event.
+    """
+
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the event instance identifier
+    """
+
+    severity: "EventSeverity" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: EventSeverity(0))
+    """
+    severity is the severity of the event
+    """
+
+    title: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    title is the title of the event
+    """
+
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the event
+    """
+
+    rule_id: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    rule_id is the label of the rule associated with the event
+    """
+
+    components: "EventComponents | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    components is the components on which the event occurred
+    """
+
+    start_time: "datetime.datetime | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    start_time is the time point at which the event occurred
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfig", UserEventCreationConfig)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[UserEventCreationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteAllRequest", UserEventCreationConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "UserEventCreationKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the UserEventCreationConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteAllResponse", UserEventCreationConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigDeleteRequest(aristaproto.Message):
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which UserEventCreationConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteRequest", UserEventCreationConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteResponse(aristaproto.Message):
-    key: "EventKey" = aristaproto.message_field(1)
+class UserEventCreationConfigDeleteResponse(aristaproto.Message):
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Key echoes back the key of the deleted EventAnnotationConfig instance.
+    Key echoes back the key of the deleted UserEventCreationConfig instance.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -786,70 +1218,55 @@ class EventAnnotationConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["EventKey"] = aristaproto.message_field(1)
-    """key contains a list of EventAnnotationConfig keys to delete"""
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteResponse", UserEventCreationConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteSomeResponse(aristaproto.Message):
+class UserEventCreationConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[UserEventCreationKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    EventAnnotationConfigDeleteSomeResponse is only sent when there is an error.
+    key contains a list of UserEventCreationConfig keys to delete
     """
 
-    key: "EventKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
 
-
-@dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["EventAnnotationConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteSomeRequest", UserEventCreationConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class EventAnnotationConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class UserEventCreationConfigDeleteSomeResponse(aristaproto.Message):
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
+    UserEventCreationConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
 
-    key: "EventKey" = aristaproto.message_field(3)
-    """
-    This is the key of the EventAnnotationConfig instance that failed to be deleted.
-    """
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigDeleteSomeResponse", UserEventCreationConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigRequest(aristaproto.Message):
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a UserEventCreationConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigRequest", UserEventCreationConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigResponse(aristaproto.Message):
-    value: "UserEventCreationConfig" = aristaproto.message_field(1)
+    value: "UserEventCreationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -857,26 +1274,92 @@ class UserEventCreationConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     UserEventCreationConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigResponse", UserEventCreationConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigSetRequest(aristaproto.Message):
+    value: "UserEventCreationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    UserEventCreationConfig carries the value to set into the datastore.
+    See the documentation on the UserEventCreationConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSetRequest", UserEventCreationConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigSetResponse(aristaproto.Message):
+    value: "UserEventCreationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the UserEventCreationConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSetResponse", UserEventCreationConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigSetSomeRequest(aristaproto.Message):
+    values: "list[UserEventCreationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of UserEventCreationConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSetSomeRequest", UserEventCreationConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UserEventCreationConfigSetSomeResponse(aristaproto.Message):
+    key: "UserEventCreationKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSetSomeResponse", UserEventCreationConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigSomeRequest(aristaproto.Message):
-    keys: List["UserEventCreationKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[UserEventCreationKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSomeRequest", UserEventCreationConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigSomeResponse(aristaproto.Message):
-    value: "UserEventCreationConfig" = aristaproto.message_field(1)
+    value: "UserEventCreationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -884,18 +1367,21 @@ class UserEventCreationConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigSomeResponse", UserEventCreationConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["UserEventCreationConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[UserEventCreationConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -904,7 +1390,7 @@ class UserEventCreationConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -924,21 +1410,24 @@ class UserEventCreationConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigStreamRequest", UserEventCreationConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class UserEventCreationConfigStreamResponse(aristaproto.Message):
-    value: "UserEventCreationConfig" = aristaproto.message_field(1)
+    value: "UserEventCreationConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this UserEventCreationConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the UserEventCreationConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -947,1112 +1436,609 @@ class UserEventCreationConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigSetRequest(aristaproto.Message):
-    value: "UserEventCreationConfig" = aristaproto.message_field(1)
-    """
-    UserEventCreationConfig carries the value to set into the datastore.
-    See the documentation on the UserEventCreationConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.event.v1", "UserEventCreationConfigStreamResponse", UserEventCreationConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class UserEventCreationConfigSetResponse(aristaproto.Message):
-    value: "UserEventCreationConfig" = aristaproto.message_field(1)
+class UserEventCreationKey(aristaproto.Message):
     """
-    Value carries all the values given in the UserEventCreationConfigSetRequest as well
-    as any server-generated values.
+    UserEventCreationKey uniquely identifies a user event request.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    key is a unique string identifier
     """
 
 
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigSetSomeRequest(aristaproto.Message):
-    values: List["UserEventCreationConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of UserEventCreationConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
+default_message_pool.register_message("arista.event.v1", "UserEventCreationKey", UserEventCreationKey)
 
 
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigSetSomeResponse(aristaproto.Message):
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteRequest(aristaproto.Message):
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
-    """
-    Key indicates which UserEventCreationConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteResponse(aristaproto.Message):
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
-    """
-    Key echoes back the key of the deleted UserEventCreationConfig instance.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["UserEventCreationKey"] = aristaproto.message_field(1)
-    """key contains a list of UserEventCreationConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    UserEventCreationConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "UserEventCreationKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["UserEventCreationConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UserEventCreationConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "UserEventCreationKey" = aristaproto.message_field(3)
-    """
-    This is the key of the UserEventCreationConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-class EventServiceStub(aristaproto.ServiceStub):
+class EventAnnotationConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        event_request: "EventRequest",
+        message: "EventAnnotationConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "EventResponse":
-        return await self._unary_unary(
-            "/arista.event.v1.EventService/GetOne",
-            event_request,
-            EventResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        event_some_request: "EventSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[EventSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.event.v1.EventService/GetSome",
-            event_some_request,
-            EventSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        event_stream_request: "EventStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[EventStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.event.v1.EventService/GetAll",
-            event_stream_request,
-            EventStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        event_stream_request: "EventStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[EventStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.event.v1.EventService/Subscribe",
-            event_stream_request,
-            EventStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        event_stream_request: "EventStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.event.v1.EventService/GetMeta",
-            event_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        event_stream_request: "EventStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.event.v1.EventService/SubscribeMeta",
-            event_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        event_annotation_config_request: "EventAnnotationConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "EventAnnotationConfigResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/GetOne",
-            event_annotation_config_request,
+            message,
             EventAnnotationConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        event_annotation_config_some_request: "EventAnnotationConfigSomeRequest",
+        message: "EventAnnotationConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/GetSome",
-            event_annotation_config_some_request,
+            message,
             EventAnnotationConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest",
+        message: "EventAnnotationConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/GetAll",
-            event_annotation_config_stream_request,
+            message,
             EventAnnotationConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest",
+        message: "EventAnnotationConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/Subscribe",
-            event_annotation_config_stream_request,
+            message,
             EventAnnotationConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest",
+        message: "EventAnnotationConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/GetMeta",
-            event_annotation_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest",
+        message: "EventAnnotationConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/SubscribeMeta",
-            event_annotation_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        event_annotation_config_set_request: "EventAnnotationConfigSetRequest",
+        message: "EventAnnotationConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "EventAnnotationConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/Set",
-            event_annotation_config_set_request,
+            message,
             EventAnnotationConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        event_annotation_config_set_some_request: "EventAnnotationConfigSetSomeRequest",
+        message: "EventAnnotationConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/SetSome",
-            event_annotation_config_set_some_request,
+            message,
             EventAnnotationConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        event_annotation_config_delete_request: "EventAnnotationConfigDeleteRequest",
+        message: "EventAnnotationConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "EventAnnotationConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/Delete",
-            event_annotation_config_delete_request,
+            message,
             EventAnnotationConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        event_annotation_config_delete_some_request: "EventAnnotationConfigDeleteSomeRequest",
+        message: "EventAnnotationConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/DeleteSome",
-            event_annotation_config_delete_some_request,
+            message,
             EventAnnotationConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        event_annotation_config_delete_all_request: "EventAnnotationConfigDeleteAllRequest",
+        message: "EventAnnotationConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[EventAnnotationConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/DeleteAll",
-            event_annotation_config_delete_all_request,
+            message,
             EventAnnotationConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
+class EventServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        user_event_creation_config_request: "UserEventCreationConfigRequest",
+        message: "EventRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "UserEventCreationConfigResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "EventResponse":
+
         return await self._unary_unary(
-            "/arista.event.v1.UserEventCreationConfigService/GetOne",
-            user_event_creation_config_request,
-            UserEventCreationConfigResponse,
+            "/arista.event.v1.EventService/GetOne",
+            message,
+            EventResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        user_event_creation_config_some_request: "UserEventCreationConfigSomeRequest",
+        message: "EventSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UserEventCreationConfigSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[EventSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.event.v1.UserEventCreationConfigService/GetSome",
-            user_event_creation_config_some_request,
-            UserEventCreationConfigSomeResponse,
+            "/arista.event.v1.EventService/GetSome",
+            message,
+            EventSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest",
+        message: "EventStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UserEventCreationConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[EventStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.event.v1.UserEventCreationConfigService/GetAll",
-            user_event_creation_config_stream_request,
-            UserEventCreationConfigStreamResponse,
+            "/arista.event.v1.EventService/GetAll",
+            message,
+            EventStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest",
+        message: "EventStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UserEventCreationConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[EventStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.event.v1.UserEventCreationConfigService/Subscribe",
-            user_event_creation_config_stream_request,
-            UserEventCreationConfigStreamResponse,
+            "/arista.event.v1.EventService/Subscribe",
+            message,
+            EventStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest",
+        message: "EventStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.event.v1.UserEventCreationConfigService/GetMeta",
-            user_event_creation_config_stream_request,
+            "/arista.event.v1.EventService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest",
+        message: "EventStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.event.v1.UserEventCreationConfigService/SubscribeMeta",
-            user_event_creation_config_stream_request,
+            "/arista.event.v1.EventService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class UserEventCreationConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "UserEventCreationConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "UserEventCreationConfigResponse":
+
+        return await self._unary_unary(
+            "/arista.event.v1.UserEventCreationConfigService/GetOne",
+            message,
+            UserEventCreationConfigResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "UserEventCreationConfigSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UserEventCreationConfigSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.event.v1.UserEventCreationConfigService/GetSome",
+            message,
+            UserEventCreationConfigSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "UserEventCreationConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UserEventCreationConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.event.v1.UserEventCreationConfigService/GetAll",
+            message,
+            UserEventCreationConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "UserEventCreationConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UserEventCreationConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.event.v1.UserEventCreationConfigService/Subscribe",
+            message,
+            UserEventCreationConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "UserEventCreationConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.event.v1.UserEventCreationConfigService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "UserEventCreationConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.event.v1.UserEventCreationConfigService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        user_event_creation_config_set_request: "UserEventCreationConfigSetRequest",
+        message: "UserEventCreationConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "UserEventCreationConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/Set",
-            user_event_creation_config_set_request,
+            message,
             UserEventCreationConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        user_event_creation_config_set_some_request: "UserEventCreationConfigSetSomeRequest",
+        message: "UserEventCreationConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UserEventCreationConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/SetSome",
-            user_event_creation_config_set_some_request,
+            message,
             UserEventCreationConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        user_event_creation_config_delete_request: "UserEventCreationConfigDeleteRequest",
+        message: "UserEventCreationConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "UserEventCreationConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/Delete",
-            user_event_creation_config_delete_request,
+            message,
             UserEventCreationConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        user_event_creation_config_delete_some_request: "UserEventCreationConfigDeleteSomeRequest",
+        message: "UserEventCreationConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UserEventCreationConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/DeleteSome",
-            user_event_creation_config_delete_some_request,
+            message,
             UserEventCreationConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        user_event_creation_config_delete_all_request: "UserEventCreationConfigDeleteAllRequest",
+        message: "UserEventCreationConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UserEventCreationConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/DeleteAll",
-            user_event_creation_config_delete_all_request,
+            message,
             UserEventCreationConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class EventServiceBase(ServiceBase):
-    async def get_one(self, event_request: "EventRequest") -> "EventResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, event_some_request: "EventSomeRequest") -> AsyncIterator[EventSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, event_stream_request: "EventStreamRequest") -> AsyncIterator[EventStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, event_stream_request: "EventStreamRequest") -> AsyncIterator[EventStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, event_stream_request: "EventStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, event_stream_request: "EventStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[EventRequest, EventResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[EventSomeRequest, EventSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.event.v1.EventService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventRequest,
-                EventResponse,
-            ),
-            "/arista.event.v1.EventService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventSomeRequest,
-                EventSomeResponse,
-            ),
-            "/arista.event.v1.EventService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventStreamRequest,
-                EventStreamResponse,
-            ),
-            "/arista.event.v1.EventService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventStreamRequest,
-                EventStreamResponse,
-            ),
-            "/arista.event.v1.EventService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.event.v1.EventService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class EventAnnotationConfigServiceBase(ServiceBase):
-    async def get_one(self, event_annotation_config_request: "EventAnnotationConfigRequest") -> "EventAnnotationConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, event_annotation_config_some_request: "EventAnnotationConfigSomeRequest") -> AsyncIterator[EventAnnotationConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest") -> AsyncIterator[EventAnnotationConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest"
-    ) -> AsyncIterator[EventAnnotationConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, event_annotation_config_stream_request: "EventAnnotationConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, event_annotation_config_set_request: "EventAnnotationConfigSetRequest") -> "EventAnnotationConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, event_annotation_config_set_some_request: "EventAnnotationConfigSetSomeRequest"
-    ) -> AsyncIterator[EventAnnotationConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, event_annotation_config_delete_request: "EventAnnotationConfigDeleteRequest") -> "EventAnnotationConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, event_annotation_config_delete_some_request: "EventAnnotationConfigDeleteSomeRequest"
-    ) -> AsyncIterator[EventAnnotationConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, event_annotation_config_delete_all_request: "EventAnnotationConfigDeleteAllRequest"
-    ) -> AsyncIterator[EventAnnotationConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[EventAnnotationConfigRequest, EventAnnotationConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[EventAnnotationConfigSomeRequest, EventAnnotationConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[EventAnnotationConfigStreamRequest, EventAnnotationConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[EventAnnotationConfigStreamRequest, EventAnnotationConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EventAnnotationConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EventAnnotationConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[EventAnnotationConfigSetRequest, EventAnnotationConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[EventAnnotationConfigSetSomeRequest, EventAnnotationConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[EventAnnotationConfigDeleteRequest, EventAnnotationConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[EventAnnotationConfigDeleteSomeRequest, EventAnnotationConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[EventAnnotationConfigDeleteAllRequest, EventAnnotationConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.event.v1.EventAnnotationConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventAnnotationConfigRequest,
-                EventAnnotationConfigResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigSomeRequest,
-                EventAnnotationConfigSomeResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigStreamRequest,
-                EventAnnotationConfigStreamResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigStreamRequest,
-                EventAnnotationConfigStreamResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventAnnotationConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventAnnotationConfigSetRequest,
-                EventAnnotationConfigSetResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigSetSomeRequest,
-                EventAnnotationConfigSetSomeResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                EventAnnotationConfigDeleteRequest,
-                EventAnnotationConfigDeleteResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigDeleteSomeRequest,
-                EventAnnotationConfigDeleteSomeResponse,
-            ),
-            "/arista.event.v1.EventAnnotationConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                EventAnnotationConfigDeleteAllRequest,
-                EventAnnotationConfigDeleteAllResponse,
-            ),
-        }
-
-
-class UserEventCreationConfigServiceBase(ServiceBase):
-    async def get_one(self, user_event_creation_config_request: "UserEventCreationConfigRequest") -> "UserEventCreationConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, user_event_creation_config_some_request: "UserEventCreationConfigSomeRequest"
-    ) -> AsyncIterator[UserEventCreationConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest"
-    ) -> AsyncIterator[UserEventCreationConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest"
-    ) -> AsyncIterator[UserEventCreationConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, user_event_creation_config_stream_request: "UserEventCreationConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, user_event_creation_config_set_request: "UserEventCreationConfigSetRequest") -> "UserEventCreationConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, user_event_creation_config_set_some_request: "UserEventCreationConfigSetSomeRequest"
-    ) -> AsyncIterator[UserEventCreationConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, user_event_creation_config_delete_request: "UserEventCreationConfigDeleteRequest") -> "UserEventCreationConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, user_event_creation_config_delete_some_request: "UserEventCreationConfigDeleteSomeRequest"
-    ) -> AsyncIterator[UserEventCreationConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, user_event_creation_config_delete_all_request: "UserEventCreationConfigDeleteAllRequest"
-    ) -> AsyncIterator[UserEventCreationConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[UserEventCreationConfigRequest, UserEventCreationConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[UserEventCreationConfigSomeRequest, UserEventCreationConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[UserEventCreationConfigStreamRequest, UserEventCreationConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[UserEventCreationConfigStreamRequest, UserEventCreationConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[UserEventCreationConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[UserEventCreationConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[UserEventCreationConfigSetRequest, UserEventCreationConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[UserEventCreationConfigSetSomeRequest, UserEventCreationConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[UserEventCreationConfigDeleteRequest, UserEventCreationConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[UserEventCreationConfigDeleteSomeRequest, UserEventCreationConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(
-        self, stream: "grpclib.server.Stream[UserEventCreationConfigDeleteAllRequest, UserEventCreationConfigDeleteAllResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.event.v1.UserEventCreationConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UserEventCreationConfigRequest,
-                UserEventCreationConfigResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigSomeRequest,
-                UserEventCreationConfigSomeResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigStreamRequest,
-                UserEventCreationConfigStreamResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigStreamRequest,
-                UserEventCreationConfigStreamResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UserEventCreationConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UserEventCreationConfigSetRequest,
-                UserEventCreationConfigSetResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigSetSomeRequest,
-                UserEventCreationConfigSetSomeResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UserEventCreationConfigDeleteRequest,
-                UserEventCreationConfigDeleteResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigDeleteSomeRequest,
-                UserEventCreationConfigDeleteSomeResponse,
-            ),
-            "/arista.event.v1.UserEventCreationConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UserEventCreationConfigDeleteAllRequest,
-                UserEventCreationConfigDeleteAllResponse,
-            ),
-        }

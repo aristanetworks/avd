@@ -8,14 +8,25 @@
 
 __all__ = ("TimeBounds",)
 
-
+import datetime
 from dataclasses import dataclass
-from datetime import datetime
 
 import aristaproto
+
+from ...message_pool import default_message_pool
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 @dataclass(eq=False, repr=False)
 class TimeBounds(aristaproto.Message):
-    start: datetime = aristaproto.message_field(1)
-    end: datetime = aristaproto.message_field(2)
+    start: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: __google__protobuf__.Timestamp, optional=True)
+
+    end: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: __google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.time", "TimeBounds", TimeBounds)
+
+
+from ...google import protobuf as __google__protobuf__

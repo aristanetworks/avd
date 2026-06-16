@@ -65,10 +65,10 @@ class SwgMixin(Protocol):
                 address=location,
             ),
         )
-        client = EndpointConfigServiceStub(self._channel)
+        client = self.new_stub(EndpointConfigServiceStub)
 
         LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        response = await client.set(request, timeout=timeout)
 
         return response.time, response.value
 
@@ -101,9 +101,9 @@ class SwgMixin(Protocol):
                 ),
             ],
         )
-        client = EndpointStatusServiceStub(self._channel)
+        client = self.new_stub(EndpointStatusServiceStub)
 
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
             if response.time < start_time:
                 LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")

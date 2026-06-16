@@ -4,13 +4,10 @@
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG
 from pathlib import Path
 from typing import Any
-from unittest.mock import patch
 
 import pytest
-from grpclib.config import Configuration
 
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.models import (
@@ -30,6 +27,7 @@ from pyavd._cv.workflows.models import (
     CVEosConfig,
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
+    CVGRPCProxyConfiguration,
     CVInterfaceTag,
     CVManifest,
     CVPathfinderMetadata,
@@ -453,41 +451,68 @@ class TestCVGRPCKeepalives:
 
 
 class TestCVGRPCChannelConfiguration:
-    def test_as_grpclib_configuration_disabled_returns_default_configuration(self) -> None:
-        """Tests that as_grpclib_configuration returns a default Configuration when keepalives are disabled."""
+    def test_as_grpcio_channel_options_disabled_returns_user_agent_only(self) -> None:
+        """Tests that as_grpcio_channel_options only returns user-agent when keepalives are disabled."""
         channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
-        config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        # _http2_max_pings_without_data is only set to 0 when keepalives are enabled
-        assert config._http2_max_pings_without_data != 0
+        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test"),)
 
-    def test_as_grpclib_configuration_enabled_returns_configuration(self) -> None:
-        """Tests that as_grpclib_configuration builds a grpclib Configuration from the keepalive fields."""
+    def test_as_grpcio_channel_options_enabled_returns_keepalive_options(self) -> None:
+        """Tests that as_grpcio_channel_options builds grpcio channel args from the keepalive fields."""
         channel_config = CVGRPCChannelConfiguration(
             grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
         )
-        config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        assert config._keepalive_time == 45
-        assert config._keepalive_timeout == 15
-        assert config._keepalive_permit_without_calls is True
-        assert config._http2_max_pings_without_data == 0
-        assert config._http2_min_sent_ping_interval_without_data == 45
+        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
+            ("grpc.primary_user_agent", "pyavd/test"),
+            ("grpc.keepalive_time_ms", 45000),
+            ("grpc.keepalive_timeout_ms", 15000),
+            ("grpc.keepalive_permit_without_calls", 1),
+            ("grpc.http2.max_pings_without_data", 0),
+        )
 
-    def test_as_grpclib_configuration_type_error_falls_back_to_default_configuration(self, caplog: pytest.LogCaptureFixture) -> None:
-        """Tests that a TypeError from grpclib Configuration falls back to a default Configuration and logs a warning."""
-        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True))
-        # Raise on first Configuration() call. Succeed on second
-        with (
-            caplog.at_level(DEBUG),
-            patch(
-                "pyavd._cv.workflows.models.Configuration",
-                side_effect=[TypeError("unexpected keyword argument"), Configuration()],
-            ),
-        ):
-            config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        assert "gRPC keepalives will not be enabled" in caplog.text
+    def test_as_grpcio_channel_options_appends_custom_user_agent(self) -> None:
+        """Tests that custom_user_agent is appended to the generated default user-agent."""
+        channel_config = CVGRPCChannelConfiguration(custom_user_agent="custom/1.0")
+        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test custom/1.0"),)
+
+    def test_as_grpcio_channel_options_returns_ssl_target_name_override(self) -> None:
+        """Tests that as_grpcio_channel_options includes the internally computed TLS target override."""
+        channel_config = CVGRPCChannelConfiguration()
+        channel_config._ssl_target_name_override = "cv.example.com"
+        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
+            ("grpc.primary_user_agent", "pyavd/test"),
+            ("grpc.ssl_target_name_override", "cv.example.com"),
+        )
+
+    def test_as_grpcio_channel_options_returns_proxy_options(self) -> None:
+        """Tests that as_grpcio_channel_options builds grpcio proxy channel args."""
+        channel_config = CVGRPCChannelConfiguration(proxy=CVGRPCProxyConfiguration(host="proxy.example.com", port=3128))
+        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
+            ("grpc.primary_user_agent", "pyavd/test"),
+            ("grpc.http_proxy", "http://proxy.example.com:3128"),
+        )
+
+    def test_proxy_credentials_are_url_encoded(self) -> None:
+        """Tests that proxy username and password are URL-encoded for grpcio's proxy URI."""
+        proxy_config = CVGRPCProxyConfiguration(
+            host="proxy.example.com",
+            port=3128,
+            username="user@example.com",
+            password="pass word",  # noqa: S106
+        )
+        assert proxy_config.as_grpcio_channel_options() == (("grpc.http_proxy", "http://user%40example.com:pass%20word@proxy.example.com:3128"),)
+
+    def test_proxy_get_requests_proxies(self) -> None:
+        """Tests that proxy configuration builds requests proxies."""
+        proxy_config = CVGRPCProxyConfiguration(
+            host="proxy.example.com",
+            port=3128,
+            username="user@example.com",
+            password="pass word",  # noqa: S106
+        )
+        assert proxy_config.get_requests_proxies() == {
+            "http": "http://user%40example.com:pass%20word@proxy.example.com:3128",
+            "https": "http://user%40example.com:pass%20word@proxy.example.com:3128",
+        }
 
 
 # === CVDeployFuture Tests ===

@@ -52,7 +52,7 @@ class InventoryMixin(Protocol):
                         hostname=hostname,
                     ),
                 )
-        client = DeviceServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(DeviceServiceStub)
+        responses = client.get_all(request, timeout=timeout)
 
         return [response.value async for response in responses]

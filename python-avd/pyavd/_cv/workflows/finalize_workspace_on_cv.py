@@ -8,7 +8,7 @@ from re import Pattern, error
 from re import compile as re_compile
 from typing import TYPE_CHECKING
 
-from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
+from pyavd._cv.api.arista.workspace.v1 import Response, ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
 from pyavd._utils import get_v2
 
@@ -38,6 +38,31 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 }
 
 
+def _format_response(response: Response) -> str:
+    return f"Response(status=ResponseStatus.{response.status.name}, message={response.message!r}, code=ResponseCode.{response.code.name})"
+
+
+def _format_config_errors(config_errors: object | None) -> str:
+    values = getattr(config_errors, "values", None)
+    if not values:
+        return "ConfigErrors()"
+
+    formatted_errors = []
+    for config_error in values:
+        error_code = getattr(config_error, "error_code", None)
+        error_code_repr = f"ErrorCode.{error_code.name}" if error_code is not None else repr(error_code)
+        formatted_errors.append(
+            "ConfigError("
+            f"error_code={error_code_repr}, "
+            f"error_msg={getattr(config_error, 'error_msg', '')!r}, "
+            f"line_num={getattr(config_error, 'line_num', 0)}, "
+            f"configlet_name={getattr(config_error, 'configlet_name', '')!r}"
+            ")"
+        )
+
+    return f"ConfigErrors(values=[{', '.join(formatted_errors)}])"
+
+
 async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, devices: list[CVDevice], warnings: list) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
@@ -62,7 +87,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             workspace.state = "abandoned"
             LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.id)
         msg = (
-            f"Failed to build workspace {workspace.id}: {build_result}. "
+            f"Failed to build workspace {workspace.id}: {_format_response(build_result)}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
         raise CVWorkspaceBuildFailed(msg)
@@ -105,7 +130,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
             # If Workspace submission failed for any other reason - raise general exception.
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-            msg = f"Failed to submit workspace {workspace.id}: {submit_result}"
+            msg = f"Failed to submit workspace {workspace.id}: {_format_response(submit_result)}"
             raise CVWorkspaceSubmitFailed(msg)
 
         workspace.state = "submitted"
@@ -311,9 +336,11 @@ def _produce_cvworkspace_build_result(
         # Continue if device is not in the list of devices targeted by this deployment
         if device is None:
             LOGGER.warning(
-                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s'",
+                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s' "
+                "warnings=%s",
                 workspace_build_details_item.key.device_id,
                 workspace_build_details_item,
+                _format_config_errors(getattr(workspace_build_details_item.config_validation_result, "warnings", None)),
             )
             continue
 

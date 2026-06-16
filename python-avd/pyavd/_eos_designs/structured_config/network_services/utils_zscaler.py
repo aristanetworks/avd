@@ -13,11 +13,16 @@ from pyavd._cv.workflows.models import AvdDevice, CVDevice
 from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._utils import Undefined
 
 if TYPE_CHECKING:
-    from pyavd._cv.api.arista.swg.v1 import Location, VpnEndpoint
+    from typing import TypeVar
+
+    from pyavd._utils.undefined import UndefinedType
 
     from . import AvdStructuredConfigNetworkServicesProtocol
+
+    T = TypeVar("T")
 
 LOGGER = getLogger(__name__)
 
@@ -90,7 +95,9 @@ class UtilsZscalerMixin(Protocol):
             request_time, _ = await cv_client.set_swg_device(device_id=device_id, service="zscaler", location=wan_site_location)
             cv_endpoint_status = await cv_client.wait_for_swg_endpoint_status(device_id=device_id, service="zscaler", start_time=request_time)
 
-        device_location = cv_endpoint_status.device_location
+        if not (device_location := cv_endpoint_status.device_location):
+            msg = "Received incomplete data from CloudVision API. Missing 'device_location'."
+            raise AristaAvdError(msg)
 
         zscaler_endpoints = EosDesigns.ZscalerEndpoints(
             cloud_name=cast("str", cv_endpoint_status.cloud_name),
@@ -100,26 +107,41 @@ class UtilsZscalerMixin(Protocol):
             msg = f"{context} but did not get any IPsec Tunnel endpoints back from the Zscaler API."
             raise AristaAvdError(msg)
 
+        if not (vpn_endpoints := cv_endpoint_status.vpn_endpoints):
+            msg = "Received incomplete data from CloudVision API. Missing 'vpn_endpoints'."
+            raise AristaAvdError(msg)
+
         for key, cls in (
             ("primary", EosDesigns.ZscalerEndpoints.Primary),
             ("secondary", EosDesigns.ZscalerEndpoints.Secondary),
             ("tertiary", EosDesigns.ZscalerEndpoints.Tertiary),
         ):
-            if key in cv_endpoint_status.vpn_endpoints.values:
-                vpn_endpoint: VpnEndpoint = cv_endpoint_status.vpn_endpoints.values[key]
-                location: Location = vpn_endpoint.endpoint_location
+            if key in vpn_endpoints.values:
+                vpn_endpoint = vpn_endpoints.values[key]
+                if not (location := vpn_endpoint.endpoint_location):
+                    msg = f"Received incomplete data from CloudVision API. Missing 'endpoint_location' for vpn_endpoint '{key}'."
+                    raise AristaAvdError(msg)
+                if not (ip_address := vpn_endpoint.ip_address):
+                    msg = f"Received incomplete data from CloudVision API. Missing 'ip_address' for vpn_endpoint '{key}'."
+                    raise AristaAvdError(msg)
+
                 setattr(
                     zscaler_endpoints,
                     key,
                     cls(
-                        ip_address=vpn_endpoint.ip_address.value,
-                        datacenter=cast("str", vpn_endpoint.datacenter),
-                        city=cast("str", location.city),
-                        country=cast("str", location.country),
-                        region=cast("str", location.region),
-                        latitude=str(cast("float", location.latitude)),
-                        longitude=str(cast("float", location.longitude)),
+                        ip_address=ip_address.value,
+                        datacenter=value_or_undefined(vpn_endpoint.datacenter),
+                        city=value_or_undefined(location.city),
+                        country=value_or_undefined(location.country),
+                        region=value_or_undefined(location.region),
+                        latitude=str(location.latitude) if location.latitude is not None else Undefined,
+                        longitude=str(location.longitude) if location.longitude is not None else Undefined,
                     ),
                 )
 
         return zscaler_endpoints
+
+
+def value_or_undefined(value: T | None) -> T | UndefinedType:
+    """Returns the value if not None. Otherwise returns Undefined."""
+    return value if value is not None else Undefined

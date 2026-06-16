@@ -7,308 +7,217 @@
 # This file has been @generated
 
 __all__ = (
-    "Element",
-    "Operation",
-    "UpdateStatus",
-    "DeviceStatus",
-    "DecommissionStatus",
-    "ReplaceStatus",
-    "DeviceInfo",
-    "InterfaceInfo",
-    "InterfaceInfos",
-    "DeviceKey",
-    "DeviceInputConfig",
-    "InterfaceInputKey",
-    "InterfaceInputConfig",
-    "DeviceState",
-    "UpdateKey",
-    "UpdateConfig",
-    "Update",
-    "UpdateSyncConfig",
-    "RevertConfig",
-    "DecommissionConfig",
     "Decommission",
-    "ReplaceConfig",
-    "Replace",
-    "MetaResponse",
-    "DecommissionRequest",
-    "DecommissionResponse",
-    "DecommissionSomeRequest",
-    "DecommissionSomeResponse",
-    "DecommissionStreamRequest",
-    "DecommissionStreamResponse",
     "DecommissionBatchedStreamRequest",
     "DecommissionBatchedStreamResponse",
-    "DecommissionConfigRequest",
-    "DecommissionConfigResponse",
-    "DecommissionConfigSomeRequest",
-    "DecommissionConfigSomeResponse",
-    "DecommissionConfigStreamRequest",
-    "DecommissionConfigStreamResponse",
+    "DecommissionConfig",
     "DecommissionConfigBatchedStreamRequest",
     "DecommissionConfigBatchedStreamResponse",
-    "DecommissionConfigSetRequest",
-    "DecommissionConfigSetResponse",
-    "DecommissionConfigSetSomeRequest",
-    "DecommissionConfigSetSomeResponse",
+    "DecommissionConfigDeleteAllRequest",
+    "DecommissionConfigDeleteAllResponse",
     "DecommissionConfigDeleteRequest",
     "DecommissionConfigDeleteResponse",
     "DecommissionConfigDeleteSomeRequest",
     "DecommissionConfigDeleteSomeResponse",
-    "DecommissionConfigDeleteAllRequest",
-    "DecommissionConfigDeleteAllResponse",
-    "DeviceInputConfigRequest",
-    "DeviceInputConfigResponse",
-    "DeviceInputConfigSomeRequest",
-    "DeviceInputConfigSomeResponse",
-    "DeviceInputConfigStreamRequest",
-    "DeviceInputConfigStreamResponse",
+    "DecommissionConfigRequest",
+    "DecommissionConfigResponse",
+    "DecommissionConfigServiceStub",
+    "DecommissionConfigSetRequest",
+    "DecommissionConfigSetResponse",
+    "DecommissionConfigSetSomeRequest",
+    "DecommissionConfigSetSomeResponse",
+    "DecommissionConfigSomeRequest",
+    "DecommissionConfigSomeResponse",
+    "DecommissionConfigStreamRequest",
+    "DecommissionConfigStreamResponse",
+    "DecommissionRequest",
+    "DecommissionResponse",
+    "DecommissionServiceStub",
+    "DecommissionSomeRequest",
+    "DecommissionSomeResponse",
+    "DecommissionStatus",
+    "DecommissionStreamRequest",
+    "DecommissionStreamResponse",
+    "DeviceInfo",
+    "DeviceInputConfig",
     "DeviceInputConfigBatchedStreamRequest",
     "DeviceInputConfigBatchedStreamResponse",
-    "DeviceInputConfigSetRequest",
-    "DeviceInputConfigSetResponse",
-    "DeviceInputConfigSetSomeRequest",
-    "DeviceInputConfigSetSomeResponse",
+    "DeviceInputConfigDeleteAllRequest",
+    "DeviceInputConfigDeleteAllResponse",
     "DeviceInputConfigDeleteRequest",
     "DeviceInputConfigDeleteResponse",
     "DeviceInputConfigDeleteSomeRequest",
     "DeviceInputConfigDeleteSomeResponse",
-    "DeviceInputConfigDeleteAllRequest",
-    "DeviceInputConfigDeleteAllResponse",
+    "DeviceInputConfigRequest",
+    "DeviceInputConfigResponse",
+    "DeviceInputConfigServiceStub",
+    "DeviceInputConfigSetRequest",
+    "DeviceInputConfigSetResponse",
+    "DeviceInputConfigSetSomeRequest",
+    "DeviceInputConfigSetSomeResponse",
+    "DeviceInputConfigSomeRequest",
+    "DeviceInputConfigSomeResponse",
+    "DeviceInputConfigStreamRequest",
+    "DeviceInputConfigStreamResponse",
+    "DeviceKey",
+    "DeviceState",
+    "DeviceStateBatchedStreamRequest",
+    "DeviceStateBatchedStreamResponse",
     "DeviceStateRequest",
     "DeviceStateResponse",
+    "DeviceStateServiceStub",
     "DeviceStateSomeRequest",
     "DeviceStateSomeResponse",
     "DeviceStateStreamRequest",
     "DeviceStateStreamResponse",
-    "DeviceStateBatchedStreamRequest",
-    "DeviceStateBatchedStreamResponse",
-    "InterfaceInputConfigRequest",
-    "InterfaceInputConfigResponse",
-    "InterfaceInputConfigSomeRequest",
-    "InterfaceInputConfigSomeResponse",
-    "InterfaceInputConfigStreamRequest",
-    "InterfaceInputConfigStreamResponse",
+    "DeviceStatus",
+    "Element",
+    "InterfaceInfo",
+    "InterfaceInfos",
+    "InterfaceInputConfig",
     "InterfaceInputConfigBatchedStreamRequest",
     "InterfaceInputConfigBatchedStreamResponse",
-    "InterfaceInputConfigSetRequest",
-    "InterfaceInputConfigSetResponse",
-    "InterfaceInputConfigSetSomeRequest",
-    "InterfaceInputConfigSetSomeResponse",
+    "InterfaceInputConfigDeleteAllRequest",
+    "InterfaceInputConfigDeleteAllResponse",
     "InterfaceInputConfigDeleteRequest",
     "InterfaceInputConfigDeleteResponse",
     "InterfaceInputConfigDeleteSomeRequest",
     "InterfaceInputConfigDeleteSomeResponse",
-    "InterfaceInputConfigDeleteAllRequest",
-    "InterfaceInputConfigDeleteAllResponse",
-    "ReplaceRequest",
-    "ReplaceResponse",
-    "ReplaceSomeRequest",
-    "ReplaceSomeResponse",
-    "ReplaceStreamRequest",
-    "ReplaceStreamResponse",
+    "InterfaceInputConfigRequest",
+    "InterfaceInputConfigResponse",
+    "InterfaceInputConfigServiceStub",
+    "InterfaceInputConfigSetRequest",
+    "InterfaceInputConfigSetResponse",
+    "InterfaceInputConfigSetSomeRequest",
+    "InterfaceInputConfigSetSomeResponse",
+    "InterfaceInputConfigSomeRequest",
+    "InterfaceInputConfigSomeResponse",
+    "InterfaceInputConfigStreamRequest",
+    "InterfaceInputConfigStreamResponse",
+    "InterfaceInputKey",
+    "MetaResponse",
+    "Operation",
+    "Replace",
     "ReplaceBatchedStreamRequest",
     "ReplaceBatchedStreamResponse",
-    "ReplaceConfigRequest",
-    "ReplaceConfigResponse",
-    "ReplaceConfigSomeRequest",
-    "ReplaceConfigSomeResponse",
-    "ReplaceConfigStreamRequest",
-    "ReplaceConfigStreamResponse",
+    "ReplaceConfig",
     "ReplaceConfigBatchedStreamRequest",
     "ReplaceConfigBatchedStreamResponse",
-    "ReplaceConfigSetRequest",
-    "ReplaceConfigSetResponse",
-    "ReplaceConfigSetSomeRequest",
-    "ReplaceConfigSetSomeResponse",
+    "ReplaceConfigDeleteAllRequest",
+    "ReplaceConfigDeleteAllResponse",
     "ReplaceConfigDeleteRequest",
     "ReplaceConfigDeleteResponse",
     "ReplaceConfigDeleteSomeRequest",
     "ReplaceConfigDeleteSomeResponse",
-    "ReplaceConfigDeleteAllRequest",
-    "ReplaceConfigDeleteAllResponse",
-    "RevertConfigRequest",
-    "RevertConfigResponse",
-    "RevertConfigSomeRequest",
-    "RevertConfigSomeResponse",
-    "RevertConfigStreamRequest",
-    "RevertConfigStreamResponse",
+    "ReplaceConfigRequest",
+    "ReplaceConfigResponse",
+    "ReplaceConfigServiceStub",
+    "ReplaceConfigSetRequest",
+    "ReplaceConfigSetResponse",
+    "ReplaceConfigSetSomeRequest",
+    "ReplaceConfigSetSomeResponse",
+    "ReplaceConfigSomeRequest",
+    "ReplaceConfigSomeResponse",
+    "ReplaceConfigStreamRequest",
+    "ReplaceConfigStreamResponse",
+    "ReplaceRequest",
+    "ReplaceResponse",
+    "ReplaceServiceStub",
+    "ReplaceSomeRequest",
+    "ReplaceSomeResponse",
+    "ReplaceStatus",
+    "ReplaceStreamRequest",
+    "ReplaceStreamResponse",
+    "RevertConfig",
     "RevertConfigBatchedStreamRequest",
     "RevertConfigBatchedStreamResponse",
-    "RevertConfigSetRequest",
-    "RevertConfigSetResponse",
-    "RevertConfigSetSomeRequest",
-    "RevertConfigSetSomeResponse",
+    "RevertConfigDeleteAllRequest",
+    "RevertConfigDeleteAllResponse",
     "RevertConfigDeleteRequest",
     "RevertConfigDeleteResponse",
     "RevertConfigDeleteSomeRequest",
     "RevertConfigDeleteSomeResponse",
-    "RevertConfigDeleteAllRequest",
-    "RevertConfigDeleteAllResponse",
-    "UpdateRequest",
-    "UpdateResponse",
-    "UpdateSomeRequest",
-    "UpdateSomeResponse",
-    "UpdateStreamRequest",
-    "UpdateStreamResponse",
+    "RevertConfigRequest",
+    "RevertConfigResponse",
+    "RevertConfigServiceStub",
+    "RevertConfigSetRequest",
+    "RevertConfigSetResponse",
+    "RevertConfigSetSomeRequest",
+    "RevertConfigSetSomeResponse",
+    "RevertConfigSomeRequest",
+    "RevertConfigSomeResponse",
+    "RevertConfigStreamRequest",
+    "RevertConfigStreamResponse",
+    "Update",
     "UpdateBatchedStreamRequest",
     "UpdateBatchedStreamResponse",
-    "UpdateConfigRequest",
-    "UpdateConfigResponse",
-    "UpdateConfigSomeRequest",
-    "UpdateConfigSomeResponse",
-    "UpdateConfigStreamRequest",
-    "UpdateConfigStreamResponse",
+    "UpdateConfig",
     "UpdateConfigBatchedStreamRequest",
     "UpdateConfigBatchedStreamResponse",
-    "UpdateConfigSetRequest",
-    "UpdateConfigSetResponse",
-    "UpdateConfigSetSomeRequest",
-    "UpdateConfigSetSomeResponse",
+    "UpdateConfigDeleteAllRequest",
+    "UpdateConfigDeleteAllResponse",
     "UpdateConfigDeleteRequest",
     "UpdateConfigDeleteResponse",
     "UpdateConfigDeleteSomeRequest",
     "UpdateConfigDeleteSomeResponse",
-    "UpdateConfigDeleteAllRequest",
-    "UpdateConfigDeleteAllResponse",
-    "UpdateSyncConfigRequest",
-    "UpdateSyncConfigResponse",
-    "UpdateSyncConfigSomeRequest",
-    "UpdateSyncConfigSomeResponse",
-    "UpdateSyncConfigStreamRequest",
-    "UpdateSyncConfigStreamResponse",
+    "UpdateConfigRequest",
+    "UpdateConfigResponse",
+    "UpdateConfigServiceStub",
+    "UpdateConfigSetRequest",
+    "UpdateConfigSetResponse",
+    "UpdateConfigSetSomeRequest",
+    "UpdateConfigSetSomeResponse",
+    "UpdateConfigSomeRequest",
+    "UpdateConfigSomeResponse",
+    "UpdateConfigStreamRequest",
+    "UpdateConfigStreamResponse",
+    "UpdateKey",
+    "UpdateRequest",
+    "UpdateResponse",
+    "UpdateServiceStub",
+    "UpdateSomeRequest",
+    "UpdateSomeResponse",
+    "UpdateStatus",
+    "UpdateStreamRequest",
+    "UpdateStreamResponse",
+    "UpdateSyncConfig",
     "UpdateSyncConfigBatchedStreamRequest",
     "UpdateSyncConfigBatchedStreamResponse",
-    "UpdateSyncConfigSetRequest",
-    "UpdateSyncConfigSetResponse",
-    "UpdateSyncConfigSetSomeRequest",
-    "UpdateSyncConfigSetSomeResponse",
+    "UpdateSyncConfigDeleteAllRequest",
+    "UpdateSyncConfigDeleteAllResponse",
     "UpdateSyncConfigDeleteRequest",
     "UpdateSyncConfigDeleteResponse",
     "UpdateSyncConfigDeleteSomeRequest",
     "UpdateSyncConfigDeleteSomeResponse",
-    "UpdateSyncConfigDeleteAllRequest",
-    "UpdateSyncConfigDeleteAllResponse",
-    "DecommissionServiceStub",
-    "DecommissionServiceBase",
-    "DecommissionConfigServiceStub",
-    "DecommissionConfigServiceBase",
-    "DeviceInputConfigServiceStub",
-    "DeviceInputConfigServiceBase",
-    "DeviceStateServiceStub",
-    "DeviceStateServiceBase",
-    "InterfaceInputConfigServiceStub",
-    "InterfaceInputConfigServiceBase",
-    "ReplaceServiceStub",
-    "ReplaceServiceBase",
-    "ReplaceConfigServiceStub",
-    "ReplaceConfigServiceBase",
-    "RevertConfigServiceStub",
-    "RevertConfigServiceBase",
-    "UpdateServiceStub",
-    "UpdateServiceBase",
-    "UpdateConfigServiceStub",
-    "UpdateConfigServiceBase",
+    "UpdateSyncConfigRequest",
+    "UpdateSyncConfigResponse",
     "UpdateSyncConfigServiceStub",
-    "UpdateSyncConfigServiceBase",
+    "UpdateSyncConfigSetRequest",
+    "UpdateSyncConfigSetResponse",
+    "UpdateSyncConfigSetSomeRequest",
+    "UpdateSyncConfigSetSomeResponse",
+    "UpdateSyncConfigSomeRequest",
+    "UpdateSyncConfigSomeResponse",
+    "UpdateSyncConfigStreamRequest",
+    "UpdateSyncConfigStreamResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class Element(aristaproto.Enum):
-    """Element defines the fundamental types of elements in topology."""
-
-    UNSPECIFIED = 0
-    """ELEMENT_UNSPECIFIED indicates an unspecified element type."""
-
-    DEVICE = 1
-    """ELEMENT_DEVICE indicates a device."""
-
-    INTERFACE = 2
-    """ELEMENT_INTERFACE indicates an interface."""
-
-    CONNECTION = 3
-    """ELEMENT_CONNECTION indicates a connection."""
-
-
-class Operation(aristaproto.Enum):
-    """
-    Operation defines the operations that may be performed on the topology.
-    """
-
-    UNSPECIFIED = 0
-    """OPERATION_UNSPECIFIED indicates an unspecified operation."""
-
-    ADDED = 1
-    """OPERATION_ADDED indicates addition of an Element."""
-
-    MODIFIED = 2
-    """OPERATION_MODIFIED indicates modification of an Element."""
-
-    REMOVED = 3
-    """OPERATION_REMOVED indicates removal of an Element."""
-
-
-class UpdateStatus(aristaproto.Enum):
-    """
-    UpdateStatus defines the set of statuses that apply to individual topology updates.
-    """
-
-    UNSPECIFIED = 0
-    """UPDATE_STATUS_UNSPECIFIED indicates an unspecified update status."""
-
-    NEW = 1
-    """UPDATE_STATUS_NEW indicates the update is new."""
-
-    ACCEPTED = 2
-    """UPDATE_STATUS_ACCEPTED indicates the update is accepted."""
-
-    IGNORED = 3
-    """UPDATE_STATUS_IGNORED indicates the update is ignored."""
-
-
-class DeviceStatus(aristaproto.Enum):
-    """DeviceStatus defines the set of statuses that apply to a device."""
-
-    UNSPECIFIED = 0
-    """DEVICE_STATUS_UNSPECIFIED is the default unspecified device status."""
-
-    ACTIVE = 1
-    """
-    DEVICE_STATUS_ACTIVE indicates a device is streaming its telemetry data
-    to CloudVision.
-    """
-
-    INACTIVE = 2
-    """
-    DEVICE_STATUS_INACTIVE indicates a device is not streaming its telemetry data
-    to CloudVision.
-    """
-
-    EXPECTED = 3
-    """
-    DEVICE_STATUS_EXPECTED indicates a device has not yet streamed its telemetry
-    data to CloudVision.
-    """
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class DecommissionStatus(aristaproto.Enum):
@@ -332,9 +241,162 @@ class DecommissionStatus(aristaproto.Enum):
     DECOMMISSION_STATUS_FAILURE indicates an error with decommissioning the device.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DECOMMISSION_STATUS_UNSPECIFIED",
+            1: "DECOMMISSION_STATUS_SUCCESS",
+            2: "DECOMMISSION_STATUS_FAILURE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DECOMMISSION_STATUS_UNSPECIFIED": 0,
+            "DECOMMISSION_STATUS_SUCCESS": 1,
+            "DECOMMISSION_STATUS_FAILURE": 2,
+        }
+
+
+class DeviceStatus(aristaproto.Enum):
+    """
+    DeviceStatus defines the set of statuses that apply to a device.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DEVICE_STATUS_UNSPECIFIED is the default unspecified device status.
+    """
+
+    ACTIVE = 1
+    """
+    DEVICE_STATUS_ACTIVE indicates a device is streaming its telemetry data
+    to CloudVision.
+    """
+
+    INACTIVE = 2
+    """
+    DEVICE_STATUS_INACTIVE indicates a device is not streaming its telemetry data
+    to CloudVision.
+    """
+
+    EXPECTED = 3
+    """
+    DEVICE_STATUS_EXPECTED indicates a device has not yet streamed its telemetry
+    data to CloudVision.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DEVICE_STATUS_UNSPECIFIED",
+            1: "DEVICE_STATUS_ACTIVE",
+            2: "DEVICE_STATUS_INACTIVE",
+            3: "DEVICE_STATUS_EXPECTED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DEVICE_STATUS_UNSPECIFIED": 0,
+            "DEVICE_STATUS_ACTIVE": 1,
+            "DEVICE_STATUS_INACTIVE": 2,
+            "DEVICE_STATUS_EXPECTED": 3,
+        }
+
+
+class Element(aristaproto.Enum):
+    """
+    Element defines the fundamental types of elements in topology.
+    """
+
+    UNSPECIFIED = 0
+    """
+    ELEMENT_UNSPECIFIED indicates an unspecified element type.
+    """
+
+    DEVICE = 1
+    """
+    ELEMENT_DEVICE indicates a device.
+    """
+
+    INTERFACE = 2
+    """
+    ELEMENT_INTERFACE indicates an interface.
+    """
+
+    CONNECTION = 3
+    """
+    ELEMENT_CONNECTION indicates a connection.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ELEMENT_UNSPECIFIED",
+            1: "ELEMENT_DEVICE",
+            2: "ELEMENT_INTERFACE",
+            3: "ELEMENT_CONNECTION",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ELEMENT_UNSPECIFIED": 0,
+            "ELEMENT_DEVICE": 1,
+            "ELEMENT_INTERFACE": 2,
+            "ELEMENT_CONNECTION": 3,
+        }
+
+
+class Operation(aristaproto.Enum):
+    """
+    Operation defines the operations that may be performed on the topology.
+    """
+
+    UNSPECIFIED = 0
+    """
+    OPERATION_UNSPECIFIED indicates an unspecified operation.
+    """
+
+    ADDED = 1
+    """
+    OPERATION_ADDED indicates addition of an Element.
+    """
+
+    MODIFIED = 2
+    """
+    OPERATION_MODIFIED indicates modification of an Element.
+    """
+
+    REMOVED = 3
+    """
+    OPERATION_REMOVED indicates removal of an Element.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "OPERATION_UNSPECIFIED",
+            1: "OPERATION_ADDED",
+            2: "OPERATION_MODIFIED",
+            3: "OPERATION_REMOVED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "OPERATION_UNSPECIFIED": 0,
+            "OPERATION_ADDED": 1,
+            "OPERATION_MODIFIED": 2,
+            "OPERATION_REMOVED": 3,
+        }
+
 
 class ReplaceStatus(aristaproto.Enum):
-    """ReplaceStatus enumerates the status of the device."""
+    """
+    ReplaceStatus enumerates the status of the device.
+    """
 
     UNSPECIFIED = 0
     """
@@ -348,26 +410,694 @@ class ReplaceStatus(aristaproto.Enum):
     """
 
     FAILURE = 2
-    """REPLACE_STATUS_FAILURE indicates an error with replace."""
+    """
+    REPLACE_STATUS_FAILURE indicates an error with replace.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "REPLACE_STATUS_UNSPECIFIED",
+            1: "REPLACE_STATUS_SUCCESS",
+            2: "REPLACE_STATUS_FAILURE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "REPLACE_STATUS_UNSPECIFIED": 0,
+            "REPLACE_STATUS_SUCCESS": 1,
+            "REPLACE_STATUS_FAILURE": 2,
+        }
+
+
+class UpdateStatus(aristaproto.Enum):
+    """
+    UpdateStatus defines the set of statuses that apply to individual topology updates.
+    """
+
+    UNSPECIFIED = 0
+    """
+    UPDATE_STATUS_UNSPECIFIED indicates an unspecified update status.
+    """
+
+    NEW = 1
+    """
+    UPDATE_STATUS_NEW indicates the update is new.
+    """
+
+    ACCEPTED = 2
+    """
+    UPDATE_STATUS_ACCEPTED indicates the update is accepted.
+    """
+
+    IGNORED = 3
+    """
+    UPDATE_STATUS_IGNORED indicates the update is ignored.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "UPDATE_STATUS_UNSPECIFIED",
+            1: "UPDATE_STATUS_NEW",
+            2: "UPDATE_STATUS_ACCEPTED",
+            3: "UPDATE_STATUS_IGNORED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "UPDATE_STATUS_UNSPECIFIED": 0,
+            "UPDATE_STATUS_NEW": 1,
+            "UPDATE_STATUS_ACCEPTED": 2,
+            "UPDATE_STATUS_IGNORED": 3,
+        }
+
+
+@dataclass(eq=False, repr=False)
+class Decommission(aristaproto.Message):
+    """
+    Decommission is the resource that holds the decommissioning
+    state of a device.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the device in a given workspace.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at is the time at which decommissioning was first initiated.
+    """
+
+    created_by: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the name of the user who first initiated decommissioning.
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at is the time at which the decommissioning was last modified.
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by is the name of the user that last modified the status.
+    """
+
+    status: "DecommissionStatus" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: DecommissionStatus(0))
+    """
+    status is the status of the decommissioning operation.
+    """
+
+    error: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error indicates if there is a failure in decommissioning.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "Decommission", Decommission)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Decommission]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Decommission at end.
+        * Each Decommission response is fully-specified (all fields set).
+      * start: Returns the state of each Decommission at start, followed by updates until now.
+        * Each Decommission response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Decommission at start, followed by updates
+        until end.
+        * Each Decommission response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionBatchedStreamRequest", DecommissionBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DecommissionStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionBatchedStreamResponse", DecommissionBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfig(aristaproto.Message):
+    """
+    DecommissionConfig is the resource for decommissioning
+    the device from the studio.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the device for a given workspace.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfig", DecommissionConfig)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DecommissionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DecommissionConfig at end.
+        * Each DecommissionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
+        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
+        until end.
+        * Each DecommissionConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigBatchedStreamRequest", DecommissionConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DecommissionConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigBatchedStreamResponse", DecommissionConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[DecommissionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteAllRequest", DecommissionConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the DecommissionConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteAllResponse", DecommissionConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which DecommissionConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteRequest", DecommissionConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted DecommissionConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteResponse", DecommissionConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of DecommissionConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteSomeRequest", DecommissionConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    DecommissionConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigDeleteSomeResponse", DecommissionConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DecommissionConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigRequest", DecommissionConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigResponse(aristaproto.Message):
+    value: "DecommissionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DecommissionConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigResponse", DecommissionConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSetRequest(aristaproto.Message):
+    value: "DecommissionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    DecommissionConfig carries the value to set into the datastore.
+    See the documentation on the DecommissionConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSetRequest", DecommissionConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSetResponse(aristaproto.Message):
+    value: "DecommissionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the DecommissionConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSetResponse", DecommissionConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSetSomeRequest(aristaproto.Message):
+    values: "list[DecommissionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of DecommissionConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSetSomeRequest", DecommissionConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSetSomeResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSetSomeResponse", DecommissionConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSomeRequest", DecommissionConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigSomeResponse(aristaproto.Message):
+    value: "DecommissionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DecommissionConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigSomeResponse", DecommissionConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DecommissionConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DecommissionConfig at end.
+        * Each DecommissionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
+        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
+        until end.
+        * Each DecommissionConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigStreamRequest", DecommissionConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionConfigStreamResponse(aristaproto.Message):
+    value: "DecommissionConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DecommissionConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DecommissionConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionConfigStreamResponse", DecommissionConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Decommission instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionRequest", DecommissionRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionResponse(aristaproto.Message):
+    value: "Decommission | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Decommission instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionResponse", DecommissionResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionSomeRequest", DecommissionSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionSomeResponse(aristaproto.Message):
+    value: "Decommission | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Decommission instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionSomeResponse", DecommissionSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Decommission]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Decommission at end.
+        * Each Decommission response is fully-specified (all fields set).
+      * start: Returns the state of each Decommission at start, followed by updates until now.
+        * Each Decommission response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Decommission at start, followed by updates
+        until end.
+        * Each Decommission response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionStreamRequest", DecommissionStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DecommissionStreamResponse(aristaproto.Message):
+    value: "Decommission | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Decommission's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Decommission value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DecommissionStreamResponse", DecommissionStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceInfo(aristaproto.Message):
-    """DeviceInfo contains device properties."""
+    """
+    DeviceInfo contains device properties.
+    """
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id identifies the device uniquely."""
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id identifies the device uniquely.
+    """
 
-    model_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """model_name indicates the model of the device."""
+    model_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    model_name indicates the model of the device.
+    """
 
-    mac_address: "___fmp__.MacAddress" = aristaproto.message_field(3)
-    """mac_address indicates the MAC address of the device."""
+    mac_address: "___fmp__.MacAddress | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    mac_address indicates the MAC address of the device.
+    """
 
-    hostname: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """hostname indicates the hostname of the device."""
+    hostname: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    hostname indicates the hostname of the device.
+    """
 
-    match_any_device: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
+    match_any_device: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     match_any_device is an indicator to match any online device with the device
     identified by the device_id field above. An online device is any EOS device
@@ -382,7 +1112,7 @@ class DeviceInfo(aristaproto.Message):
     If this field is false, expected_serial_numbers should be provided.
     """
 
-    expected_serial_numbers: "___fmp__.RepeatedString" = aristaproto.message_field(6)
+    expected_serial_numbers: "___fmp__.RepeatedString | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
     """
     expected_serial_numbers indicates a list of possible serial numbers which can
     be expected for this device. The expected device entry specified by the device_id
@@ -391,112 +1121,403 @@ class DeviceInfo(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class InterfaceInfo(aristaproto.Message):
-    """InterfaceInfo contains interface properties."""
-
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the name of an interface."""
-
-    neighbor_device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    neighbor_device_id indicates the device ID of the neighbor to which
-    this interface is connected.
-    For an expected device, this would be a device_id (temporary UUID in case
-    the neighbour is also an expected device) of a known device resource to the
-    studios or lldp sysname in case of a non Arista device like third party
-    external router.
-    """
-
-    neighbor_interface_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    neighbor_interface_name indicates the interface on the neighbor to which
-    this interface is connected.
-    For expected devices having the neighbour as a non Arista device, this field
-    does not need to be populated.
-    """
-
-    non_provisioned: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """
-    non_provisioned indicates if the interface is connected to a non-provisioned device, ie, a
-    device which is not part of the I&T studio and cannot be provisioned by CloudVision.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInfos(aristaproto.Message):
-    """InterfaceInfos is a list of InterfaceInfo."""
-
-    values: List["InterfaceInfo"] = aristaproto.message_field(1)
-    """values is a list of InterfaceInfo."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceKey(aristaproto.Message):
-    """DeviceKey uniquely identifies the device for a workspace."""
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id identifies the workspace uniquely."""
-
-    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """device_id identifies the device uniquely."""
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInfo", DeviceInfo)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceInputConfig(aristaproto.Message):
-    """DeviceInputConfig is the desired topology input for a device."""
+    """
+    DeviceInputConfig is the desired topology input for a device.
+    """
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device ID for a given workspace."""
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the device ID for a given workspace.
+    """
 
-    device_info: "DeviceInfo" = aristaproto.message_field(2)
-    """device_info contains device properties."""
+    device_info: "DeviceInfo | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    device_info contains device properties.
+    """
 
-    remove: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    remove: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     remove if set to true will remove the device from mainline
     post workspace merge.
     """
 
-    is_expected_device: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """is_expected_device specifies if this is an expected device."""
+    is_expected_device: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_expected_device specifies if this is an expected device.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfig", DeviceInputConfig)
 
 
 @dataclass(eq=False, repr=False)
-class InterfaceInputKey(aristaproto.Message):
+class DeviceInputConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    InterfaceInputKey is the set of inputs that uniquely identify
-    the interface for a workspace.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id identifies the workspace uniquely."""
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
 
-    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """device_id identifies the device uniquely."""
+    For GetAll, the fields start and end can be used as follows:
 
-    interface_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """interface_id along with device_id identifies the interface uniquely."""
+      * end: Returns the state of each DeviceInputConfig at end.
+        * Each DeviceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
+        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
+        until end.
+        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigBatchedStreamRequest", DeviceInputConfigBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class InterfaceInputConfig(aristaproto.Message):
+class DeviceInputConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceInputConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    InterfaceInputConfig is the resource for manually adding
-    an interface in I&T studios.
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    """key uniquely identifies the interface for a given workspace."""
 
-    interface_info: "InterfaceInfo" = aristaproto.message_field(2)
-    """interface_info contains interface properties."""
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigBatchedStreamResponse", DeviceInputConfigBatchedStreamResponse)
 
-    remove: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    remove if set to true will remove the interface from mainline
-    post workspace merge.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteAllRequest", DeviceInputConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the DeviceInputConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteAllResponse", DeviceInputConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which DeviceInputConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteRequest", DeviceInputConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted DeviceInputConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteResponse", DeviceInputConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of DeviceInputConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteSomeRequest", DeviceInputConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    DeviceInputConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigDeleteSomeResponse", DeviceInputConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceInputConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigRequest", DeviceInputConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigResponse(aristaproto.Message):
+    value: "DeviceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceInputConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigResponse", DeviceInputConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSetRequest(aristaproto.Message):
+    value: "DeviceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    DeviceInputConfig carries the value to set into the datastore.
+    See the documentation on the DeviceInputConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSetRequest", DeviceInputConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSetResponse(aristaproto.Message):
+    value: "DeviceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the DeviceInputConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSetResponse", DeviceInputConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSetSomeRequest(aristaproto.Message):
+    values: "list[DeviceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of DeviceInputConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSetSomeRequest", DeviceInputConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSetSomeResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSetSomeResponse", DeviceInputConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSomeRequest", DeviceInputConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigSomeResponse(aristaproto.Message):
+    value: "DeviceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceInputConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigSomeResponse", DeviceInputConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceInputConfig at end.
+        * Each DeviceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
+        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
+        until end.
+        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigStreamRequest", DeviceInputConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInputConfigStreamResponse(aristaproto.Message):
+    value: "DeviceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceInputConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceInputConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceInputConfigStreamResponse", DeviceInputConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceKey(aristaproto.Message):
+    """
+    DeviceKey uniquely identifies the device for a workspace.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id identifies the workspace uniquely.
+    """
+
+    device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id identifies the device uniquely.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceKey", DeviceKey)
 
 
 @dataclass(eq=False, repr=False)
@@ -507,44 +1528,1771 @@ class DeviceState(aristaproto.Message):
     UpdateConfig resources.
     """
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device for a given workspace."""
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the device for a given workspace.
+    """
 
-    device_info: "DeviceInfo" = aristaproto.message_field(2)
-    """device_info contains device properties."""
+    device_info: "DeviceInfo | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    device_info contains device properties.
+    """
 
-    interface_infos: "InterfaceInfos" = aristaproto.message_field(3)
+    interface_infos: "InterfaceInfos | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     interface_infos contains interface properties of all the interfaces
     belonging to the device.
     """
 
-    device_status: "DeviceStatus" = aristaproto.enum_field(4)
-    """device_status contains the status of the device."""
+    device_status: "DeviceStatus" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: DeviceStatus(0))
+    """
+    device_status contains the status of the device.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceState", DeviceState)
 
 
 @dataclass(eq=False, repr=False)
-class UpdateKey(aristaproto.Message):
-    """UpdateKey uniquely identifies a workspace topology update."""
+class DeviceStateBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceState]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id identifies the workspace uniquely."""
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
 
-    update_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """update_id identifies the update uniquely."""
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceState at end.
+        * Each DeviceState response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceState at start, followed by updates until now.
+        * Each DeviceState response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceState at start, followed by updates
+        until end.
+        * Each DeviceState response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateBatchedStreamRequest", DeviceStateBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceStateStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateBatchedStreamResponse", DeviceStateBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceState instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateRequest", DeviceStateRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateResponse(aristaproto.Message):
+    value: "DeviceState | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceState instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateResponse", DeviceStateResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateSomeRequest", DeviceStateSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateSomeResponse(aristaproto.Message):
+    value: "DeviceState | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceState instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateSomeResponse", DeviceStateSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceState]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceState at end.
+        * Each DeviceState response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceState at start, followed by updates until now.
+        * Each DeviceState response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceState at start, followed by updates
+        until end.
+        * Each DeviceState response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateStreamRequest", DeviceStateStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStateStreamResponse(aristaproto.Message):
+    value: "DeviceState | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceState's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceState value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "DeviceStateStreamResponse", DeviceStateStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInfo(aristaproto.Message):
+    """
+    InterfaceInfo contains interface properties.
+    """
+
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    name is the name of an interface.
+    """
+
+    neighbor_device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    neighbor_device_id indicates the device ID of the neighbor to which
+    this interface is connected.
+    For an expected device, this would be a device_id (temporary UUID in case
+    the neighbour is also an expected device) of a known device resource to the
+    studios or lldp sysname in case of a non Arista device like third party
+    external router.
+    """
+
+    neighbor_interface_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    neighbor_interface_name indicates the interface on the neighbor to which
+    this interface is connected.
+    For expected devices having the neighbour as a non Arista device, this field
+    does not need to be populated.
+    """
+
+    non_provisioned: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    non_provisioned indicates if the interface is connected to a non-provisioned device, ie, a
+    device which is not part of the I&T studio and cannot be provisioned by CloudVision.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInfo", InterfaceInfo)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInfos(aristaproto.Message):
+    """
+    InterfaceInfos is a list of InterfaceInfo.
+    """
+
+    values: "list[InterfaceInfo]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of InterfaceInfo.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInfos", InterfaceInfos)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfig(aristaproto.Message):
+    """
+    InterfaceInputConfig is the resource for manually adding
+    an interface in I&T studios.
+    """
+
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the interface for a given workspace.
+    """
+
+    interface_info: "InterfaceInfo | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    interface_info contains interface properties.
+    """
+
+    remove: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    remove if set to true will remove the interface from mainline
+    post workspace merge.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfig", InterfaceInputConfig)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[InterfaceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each InterfaceInputConfig at end.
+        * Each InterfaceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
+        until end.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigBatchedStreamRequest", InterfaceInputConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[InterfaceInputConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigBatchedStreamResponse", InterfaceInputConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[InterfaceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteAllRequest", InterfaceInputConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "InterfaceInputKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the InterfaceInputConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteAllResponse", InterfaceInputConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteRequest(aristaproto.Message):
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which InterfaceInputConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteRequest", InterfaceInputConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteResponse(aristaproto.Message):
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted InterfaceInputConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteResponse", InterfaceInputConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[InterfaceInputKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of InterfaceInputConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteSomeRequest", InterfaceInputConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    InterfaceInputConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigDeleteSomeResponse", InterfaceInputConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigRequest(aristaproto.Message):
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a InterfaceInputConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigRequest", InterfaceInputConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigResponse(aristaproto.Message):
+    value: "InterfaceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    InterfaceInputConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigResponse", InterfaceInputConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSetRequest(aristaproto.Message):
+    value: "InterfaceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    InterfaceInputConfig carries the value to set into the datastore.
+    See the documentation on the InterfaceInputConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSetRequest", InterfaceInputConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSetResponse(aristaproto.Message):
+    value: "InterfaceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the InterfaceInputConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSetResponse", InterfaceInputConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSetSomeRequest(aristaproto.Message):
+    values: "list[InterfaceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of InterfaceInputConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSetSomeRequest", InterfaceInputConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSetSomeResponse(aristaproto.Message):
+    key: "InterfaceInputKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSetSomeResponse", InterfaceInputConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSomeRequest(aristaproto.Message):
+    keys: "list[InterfaceInputKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSomeRequest", InterfaceInputConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigSomeResponse(aristaproto.Message):
+    value: "InterfaceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    InterfaceInputConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigSomeResponse", InterfaceInputConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[InterfaceInputConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each InterfaceInputConfig at end.
+        * Each InterfaceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
+        until end.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigStreamRequest", InterfaceInputConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputConfigStreamResponse(aristaproto.Message):
+    value: "InterfaceInputConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this InterfaceInputConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the InterfaceInputConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputConfigStreamResponse", InterfaceInputConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInputKey(aristaproto.Message):
+    """
+    InterfaceInputKey is the set of inputs that uniquely identify
+    the interface for a workspace.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id identifies the workspace uniquely.
+    """
+
+    device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id identifies the device uniquely.
+    """
+
+    interface_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    interface_id along with device_id identifies the interface uniquely.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "InterfaceInputKey", InterfaceInputKey)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Replace(aristaproto.Message):
+    """
+    Replace is the resource that holds the status of the replace operation.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the original device for a given workspace.
+    """
+
+    replacement_device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    replacement_device_id is the device to replace the original device with.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at is the time at which the status was first set.
+    """
+
+    created_by: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the name of the user that first set the status.
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at is the time at which the status was last modified.
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by is the name of the user that last modified the status.
+    """
+
+    status: "ReplaceStatus" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: ReplaceStatus(0))
+    """
+    status indicates the status of the replace operation.
+    """
+
+    error: "str | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error provides the reason if there is a failure in replace.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "Replace", Replace)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Replace]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Replace at end.
+        * Each Replace response is fully-specified (all fields set).
+      * start: Returns the state of each Replace at start, followed by updates until now.
+        * Each Replace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Replace at start, followed by updates
+        until end.
+        * Each Replace response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceBatchedStreamRequest", ReplaceBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ReplaceStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceBatchedStreamResponse", ReplaceBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfig(aristaproto.Message):
+    """
+    ReplaceConfig is the resource for replacing a device with another device in Studios.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the original device to be replaced in a given workspace.
+    """
+
+    replacement_device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    replacement_device_id is the device to replace the original device with.
+    All references to the original device in Studios and tags will be replaced with this device.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfig", ReplaceConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ReplaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ReplaceConfig at end.
+        * Each ReplaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
+        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
+        until end.
+        * Each ReplaceConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigBatchedStreamRequest", ReplaceConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ReplaceConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigBatchedStreamResponse", ReplaceConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ReplaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteAllRequest", ReplaceConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the ReplaceConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteAllResponse", ReplaceConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which ReplaceConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteRequest", ReplaceConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ReplaceConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteResponse", ReplaceConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ReplaceConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteSomeRequest", ReplaceConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    ReplaceConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigDeleteSomeResponse", ReplaceConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a ReplaceConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigRequest", ReplaceConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigResponse(aristaproto.Message):
+    value: "ReplaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ReplaceConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigResponse", ReplaceConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSetRequest(aristaproto.Message):
+    value: "ReplaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ReplaceConfig carries the value to set into the datastore.
+    See the documentation on the ReplaceConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSetRequest", ReplaceConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSetResponse(aristaproto.Message):
+    value: "ReplaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ReplaceConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSetResponse", ReplaceConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ReplaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ReplaceConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSetSomeRequest", ReplaceConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSetSomeResponse(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSetSomeResponse", ReplaceConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSomeRequest", ReplaceConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigSomeResponse(aristaproto.Message):
+    value: "ReplaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ReplaceConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigSomeResponse", ReplaceConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ReplaceConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ReplaceConfig at end.
+        * Each ReplaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
+        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
+        until end.
+        * Each ReplaceConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigStreamRequest", ReplaceConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceConfigStreamResponse(aristaproto.Message):
+    value: "ReplaceConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ReplaceConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ReplaceConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceConfigStreamResponse", ReplaceConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Replace instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceRequest", ReplaceRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceResponse(aristaproto.Message):
+    value: "Replace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Replace instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceResponse", ReplaceResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceSomeRequest", ReplaceSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceSomeResponse(aristaproto.Message):
+    value: "Replace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Replace instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceSomeResponse", ReplaceSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Replace]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Replace at end.
+        * Each Replace response is fully-specified (all fields set).
+      * start: Returns the state of each Replace at start, followed by updates until now.
+        * Each Replace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Replace at start, followed by updates
+        until end.
+        * Each Replace response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceStreamRequest", ReplaceStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ReplaceStreamResponse(aristaproto.Message):
+    value: "Replace | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Replace's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Replace value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "ReplaceStreamResponse", ReplaceStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfig(aristaproto.Message):
+    """
+    RevertConfig is the model provided to revert a workspace.
+    """
+
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the workspace.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfig", RevertConfig)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[RevertConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each RevertConfig at end.
+        * Each RevertConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RevertConfig at start, followed by updates until now.
+        * Each RevertConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RevertConfig at start, followed by updates
+        until end.
+        * Each RevertConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigBatchedStreamRequest", RevertConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[RevertConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigBatchedStreamResponse", RevertConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[RevertConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteAllRequest", RevertConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the RevertConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteAllResponse", RevertConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteRequest(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which RevertConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteRequest", RevertConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteResponse(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted RevertConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteResponse", RevertConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[__workspace__v1__.WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of RevertConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteSomeRequest", RevertConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    RevertConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigDeleteSomeResponse", RevertConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigRequest(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a RevertConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigRequest", RevertConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigResponse(aristaproto.Message):
+    value: "RevertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    RevertConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigResponse", RevertConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSetRequest(aristaproto.Message):
+    value: "RevertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    RevertConfig carries the value to set into the datastore.
+    See the documentation on the RevertConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSetRequest", RevertConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSetResponse(aristaproto.Message):
+    value: "RevertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the RevertConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSetResponse", RevertConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSetSomeRequest(aristaproto.Message):
+    values: "list[RevertConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of RevertConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSetSomeRequest", RevertConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSetSomeResponse(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSetSomeResponse", RevertConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSomeRequest(aristaproto.Message):
+    keys: "list[__workspace__v1__.WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSomeRequest", RevertConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigSomeResponse(aristaproto.Message):
+    value: "RevertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    RevertConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigSomeResponse", RevertConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[RevertConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each RevertConfig at end.
+        * Each RevertConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RevertConfig at start, followed by updates until now.
+        * Each RevertConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RevertConfig at start, followed by updates
+        until end.
+        * Each RevertConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigStreamRequest", RevertConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RevertConfigStreamResponse(aristaproto.Message):
+    value: "RevertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this RevertConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the RevertConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "RevertConfigStreamResponse", RevertConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Update(aristaproto.Message):
+    """
+    Update represents an update on to the workspace.
+    """
+
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the update.
+    """
+
+    element: "Element" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: Element(0))
+    """
+    element indicates the type of a network element.
+    """
+
+    operation: "Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: Operation(0))
+    """
+    operation indicates the type of operation on the topology update.
+    """
+
+    status: "UpdateStatus" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: UpdateStatus(0))
+    """
+    status indicates the status of the topology update.
+    """
+
+    description: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description describes the topology update in short.
+    """
+
+    device_id: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id indicates the device associated with the update.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "Update", Update)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Update]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Update at end.
+        * Each Update response is fully-specified (all fields set).
+      * start: Returns the state of each Update at start, followed by updates until now.
+        * Each Update response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Update at start, followed by updates
+        until end.
+        * Each Update response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateBatchedStreamRequest", UpdateBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateBatchedStreamResponse(aristaproto.Message):
+    responses: "list[UpdateStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateBatchedStreamResponse", UpdateBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class UpdateConfig(aristaproto.Message):
-    """UpdateConfig contains the acceptance status of an Update."""
+    """
+    UpdateConfig contains the acceptance status of an Update.
+    """
 
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """key uniquely identifies the update."""
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the update.
+    """
 
-    status: "UpdateStatus" = aristaproto.enum_field(2)
-    """status indicates the status of the topology update."""
+    status: "UpdateStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: UpdateStatus(0))
+    """
+    status indicates the status of the topology update.
+    """
 
-    remove: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    remove: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     remove if set to true will remove the update key from mainline
     post workspace merge. This can only be set true for ignored keys
@@ -553,27 +3301,508 @@ class UpdateConfig(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfig", UpdateConfig)
+
+
 @dataclass(eq=False, repr=False)
-class Update(aristaproto.Message):
-    """Update represents an update on to the workspace."""
+class UpdateConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[UpdateConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """key uniquely identifies the update."""
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
 
-    element: "Element" = aristaproto.enum_field(2)
-    """element indicates the type of a network element."""
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
 
-    operation: "Operation" = aristaproto.enum_field(3)
-    """operation indicates the type of operation on the topology update."""
+    For GetAll, the fields start and end can be used as follows:
 
-    status: "UpdateStatus" = aristaproto.enum_field(4)
-    """status indicates the status of the topology update."""
+      * end: Returns the state of each UpdateConfig at end.
+        * Each UpdateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
+        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateConfig at start, followed by updates
+        until end.
+        * Each UpdateConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
 
-    description: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """description describes the topology update in short."""
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
 
-    device_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """device_id indicates the device associated with the update."""
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigBatchedStreamRequest", UpdateConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[UpdateConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigBatchedStreamResponse", UpdateConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[UpdateConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteAllRequest", UpdateConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "UpdateKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the UpdateConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteAllResponse", UpdateConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteRequest(aristaproto.Message):
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which UpdateConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteRequest", UpdateConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteResponse(aristaproto.Message):
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted UpdateConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteResponse", UpdateConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[UpdateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of UpdateConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteSomeRequest", UpdateConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    UpdateConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigDeleteSomeResponse", UpdateConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigRequest(aristaproto.Message):
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a UpdateConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigRequest", UpdateConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigResponse(aristaproto.Message):
+    value: "UpdateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    UpdateConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigResponse", UpdateConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSetRequest(aristaproto.Message):
+    value: "UpdateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    UpdateConfig carries the value to set into the datastore.
+    See the documentation on the UpdateConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSetRequest", UpdateConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSetResponse(aristaproto.Message):
+    value: "UpdateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the UpdateConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSetResponse", UpdateConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSetSomeRequest(aristaproto.Message):
+    values: "list[UpdateConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of UpdateConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSetSomeRequest", UpdateConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSetSomeResponse(aristaproto.Message):
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSetSomeResponse", UpdateConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSomeRequest(aristaproto.Message):
+    keys: "list[UpdateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSomeRequest", UpdateConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigSomeResponse(aristaproto.Message):
+    value: "UpdateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    UpdateConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigSomeResponse", UpdateConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[UpdateConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each UpdateConfig at end.
+        * Each UpdateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
+        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateConfig at start, followed by updates
+        until end.
+        * Each UpdateConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigStreamRequest", UpdateConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateConfigStreamResponse(aristaproto.Message):
+    value: "UpdateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this UpdateConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the UpdateConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateConfigStreamResponse", UpdateConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateKey(aristaproto.Message):
+    """
+    UpdateKey uniquely identifies a workspace topology update.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id identifies the workspace uniquely.
+    """
+
+    update_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    update_id identifies the update uniquely.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateKey", UpdateKey)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateRequest(aristaproto.Message):
+    key: "UpdateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Update instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateRequest", UpdateRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateResponse(aristaproto.Message):
+    value: "Update | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Update instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateResponse", UpdateResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSomeRequest(aristaproto.Message):
+    keys: "list[UpdateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSomeRequest", UpdateSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSomeResponse(aristaproto.Message):
+    value: "Update | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Update instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSomeResponse", UpdateSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Update]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Update at end.
+        * Each Update response is fully-specified (all fields set).
+      * start: Returns the state of each Update at start, followed by updates until now.
+        * Each Update response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Update at start, followed by updates
+        until end.
+        * Each Update response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateStreamRequest", UpdateStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateStreamResponse(aristaproto.Message):
+    value: "Update | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Update's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Update value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateStreamResponse", UpdateStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -583,10 +3812,12 @@ class UpdateSyncConfig(aristaproto.Message):
     are to be accepted.
     """
 
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the workspace."""
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the workspace.
+    """
 
-    sync_time: datetime = aristaproto.message_field(2)
+    sync_time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     sync_time indicates the desired synchronization time with the live topology.
     If the sync_time indicated in the config takes effect without error,
@@ -595,2572 +3826,12 @@ class UpdateSyncConfig(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class RevertConfig(aristaproto.Message):
-    """RevertConfig is the model provided to revert a workspace."""
-
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the workspace."""
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfig(aristaproto.Message):
-    """
-    DecommissionConfig is the resource for decommissioning
-    the device from the studio.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device for a given workspace."""
-
-
-@dataclass(eq=False, repr=False)
-class Decommission(aristaproto.Message):
-    """
-    Decommission is the resource that holds the decommissioning
-    state of a device.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device in a given workspace."""
-
-    created_at: datetime = aristaproto.message_field(2)
-    """created_at is the time at which decommissioning was first initiated."""
-
-    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    created_by is the name of the user who first initiated decommissioning.
-    """
-
-    last_modified_at: datetime = aristaproto.message_field(4)
-    """
-    last_modified_at is the time at which the decommissioning was last modified.
-    """
-
-    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    last_modified_by is the name of the user that last modified the status.
-    """
-
-    status: "DecommissionStatus" = aristaproto.enum_field(6)
-    """status is the status of the decommissioning operation."""
-
-    error: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """error indicates if there is a failure in decommissioning."""
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfig(aristaproto.Message):
-    """
-    ReplaceConfig is the resource for replacing a device with another device in Studios.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    key uniquely identifies the original device to be replaced in a given workspace.
-    """
-
-    replacement_device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    replacement_device_id is the device to replace the original device with.
-    All references to the original device in Studios and tags will be replaced with this device.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Replace(aristaproto.Message):
-    """
-    Replace is the resource that holds the status of the replace operation.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the original device for a given workspace."""
-
-    replacement_device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    replacement_device_id is the device to replace the original device with.
-    """
-
-    created_at: datetime = aristaproto.message_field(3)
-    """created_at is the time at which the status was first set."""
-
-    created_by: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """created_by is the name of the user that first set the status."""
-
-    last_modified_at: datetime = aristaproto.message_field(5)
-    """last_modified_at is the time at which the status was last modified."""
-
-    last_modified_by: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """
-    last_modified_by is the name of the user that last modified the status.
-    """
-
-    status: "ReplaceStatus" = aristaproto.enum_field(7)
-    """status indicates the status of the replace operation."""
-
-    error: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
-    """error provides the reason if there is a failure in replace."""
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Decommission instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionResponse(aristaproto.Message):
-    value: "Decommission" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Decommission instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionSomeResponse(aristaproto.Message):
-    value: "Decommission" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Decommission instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Decommission"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Decommission at end.
-        * Each Decommission response is fully-specified (all fields set).
-      * start: Returns the state of each Decommission at start, followed by updates until now.
-        * Each Decommission response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Decommission at start, followed by updates
-        until end.
-        * Each Decommission response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionStreamResponse(aristaproto.Message):
-    value: "Decommission" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Decommission's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Decommission value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Decommission"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Decommission at end.
-        * Each Decommission response is fully-specified (all fields set).
-      * start: Returns the state of each Decommission at start, followed by updates until now.
-        * Each Decommission response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Decommission at start, followed by updates
-        until end.
-        * Each Decommission response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionBatchedStreamResponse(aristaproto.Message):
-    responses: List["DecommissionStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DecommissionConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigResponse(aristaproto.Message):
-    value: "DecommissionConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DecommissionConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSomeResponse(aristaproto.Message):
-    value: "DecommissionConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DecommissionConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DecommissionConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DecommissionConfig at end.
-        * Each DecommissionConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
-        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
-        until end.
-        * Each DecommissionConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigStreamResponse(aristaproto.Message):
-    value: "DecommissionConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DecommissionConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DecommissionConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DecommissionConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DecommissionConfig at end.
-        * Each DecommissionConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
-        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
-        until end.
-        * Each DecommissionConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DecommissionConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSetRequest(aristaproto.Message):
-    value: "DecommissionConfig" = aristaproto.message_field(1)
-    """
-    DecommissionConfig carries the value to set into the datastore.
-    See the documentation on the DecommissionConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSetResponse(aristaproto.Message):
-    value: "DecommissionConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the DecommissionConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSetSomeRequest(aristaproto.Message):
-    values: List["DecommissionConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of DecommissionConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigSetSomeResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key indicates which DecommissionConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted DecommissionConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    """key contains a list of DecommissionConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    DecommissionConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DecommissionConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DecommissionConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "DeviceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the DecommissionConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceInputConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigResponse(aristaproto.Message):
-    value: "DeviceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceInputConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSomeResponse(aristaproto.Message):
-    value: "DeviceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceInputConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceInputConfig at end.
-        * Each DeviceInputConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
-        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
-        until end.
-        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigStreamResponse(aristaproto.Message):
-    value: "DeviceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceInputConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceInputConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceInputConfig at end.
-        * Each DeviceInputConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
-        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
-        until end.
-        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceInputConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSetRequest(aristaproto.Message):
-    value: "DeviceInputConfig" = aristaproto.message_field(1)
-    """
-    DeviceInputConfig carries the value to set into the datastore.
-    See the documentation on the DeviceInputConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSetResponse(aristaproto.Message):
-    value: "DeviceInputConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the DeviceInputConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSetSomeRequest(aristaproto.Message):
-    values: List["DeviceInputConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of DeviceInputConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigSetSomeResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key indicates which DeviceInputConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted DeviceInputConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    """key contains a list of DeviceInputConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    DeviceInputConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceInputConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "DeviceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the DeviceInputConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceState instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateResponse(aristaproto.Message):
-    value: "DeviceState" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceState instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateSomeResponse(aristaproto.Message):
-    value: "DeviceState" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceState instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceState"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceState at end.
-        * Each DeviceState response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceState at start, followed by updates until now.
-        * Each DeviceState response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceState at start, followed by updates
-        until end.
-        * Each DeviceState response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateStreamResponse(aristaproto.Message):
-    value: "DeviceState" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this DeviceState's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceState value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceState"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceState at end.
-        * Each DeviceState response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceState at start, followed by updates until now.
-        * Each DeviceState response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceState at start, followed by updates
-        until end.
-        * Each DeviceState response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStateBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceStateStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigRequest(aristaproto.Message):
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a InterfaceInputConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigResponse(aristaproto.Message):
-    value: "InterfaceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    InterfaceInputConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSomeRequest(aristaproto.Message):
-    keys: List["InterfaceInputKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSomeResponse(aristaproto.Message):
-    value: "InterfaceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    InterfaceInputConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["InterfaceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each InterfaceInputConfig at end.
-        * Each InterfaceInputConfig response is fully-specified (all fields set).
-      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
-        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
-        until end.
-        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigStreamResponse(aristaproto.Message):
-    value: "InterfaceInputConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this InterfaceInputConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the InterfaceInputConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["InterfaceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each InterfaceInputConfig at end.
-        * Each InterfaceInputConfig response is fully-specified (all fields set).
-      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
-        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
-        until end.
-        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["InterfaceInputConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSetRequest(aristaproto.Message):
-    value: "InterfaceInputConfig" = aristaproto.message_field(1)
-    """
-    InterfaceInputConfig carries the value to set into the datastore.
-    See the documentation on the InterfaceInputConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSetResponse(aristaproto.Message):
-    value: "InterfaceInputConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the InterfaceInputConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSetSomeRequest(aristaproto.Message):
-    values: List["InterfaceInputConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of InterfaceInputConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigSetSomeResponse(aristaproto.Message):
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteRequest(aristaproto.Message):
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    """
-    Key indicates which InterfaceInputConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteResponse(aristaproto.Message):
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    """
-    Key echoes back the key of the deleted InterfaceInputConfig instance.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["InterfaceInputKey"] = aristaproto.message_field(1)
-    """key contains a list of InterfaceInputConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    InterfaceInputConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "InterfaceInputKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["InterfaceInputConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class InterfaceInputConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "InterfaceInputKey" = aristaproto.message_field(3)
-    """
-    This is the key of the InterfaceInputConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Replace instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceResponse(aristaproto.Message):
-    value: "Replace" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Replace instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceSomeResponse(aristaproto.Message):
-    value: "Replace" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Replace instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Replace"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Replace at end.
-        * Each Replace response is fully-specified (all fields set).
-      * start: Returns the state of each Replace at start, followed by updates until now.
-        * Each Replace response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Replace at start, followed by updates
-        until end.
-        * Each Replace response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceStreamResponse(aristaproto.Message):
-    value: "Replace" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Replace's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Replace value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Replace"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Replace at end.
-        * Each Replace response is fully-specified (all fields set).
-      * start: Returns the state of each Replace at start, followed by updates until now.
-        * Each Replace response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Replace at start, followed by updates
-        until end.
-        * Each Replace response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceBatchedStreamResponse(aristaproto.Message):
-    responses: List["ReplaceStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ReplaceConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigResponse(aristaproto.Message):
-    value: "ReplaceConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ReplaceConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSomeResponse(aristaproto.Message):
-    value: "ReplaceConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ReplaceConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ReplaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ReplaceConfig at end.
-        * Each ReplaceConfig response is fully-specified (all fields set).
-      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
-        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
-        until end.
-        * Each ReplaceConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigStreamResponse(aristaproto.Message):
-    value: "ReplaceConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this ReplaceConfig's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ReplaceConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ReplaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ReplaceConfig at end.
-        * Each ReplaceConfig response is fully-specified (all fields set).
-      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
-        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
-        until end.
-        * Each ReplaceConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["ReplaceConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSetRequest(aristaproto.Message):
-    value: "ReplaceConfig" = aristaproto.message_field(1)
-    """
-    ReplaceConfig carries the value to set into the datastore.
-    See the documentation on the ReplaceConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSetResponse(aristaproto.Message):
-    value: "ReplaceConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the ReplaceConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSetSomeRequest(aristaproto.Message):
-    values: List["ReplaceConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of ReplaceConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigSetSomeResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key indicates which ReplaceConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteResponse(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ReplaceConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    """key contains a list of ReplaceConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteSomeResponse(aristaproto.Message):
-    """ReplaceConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ReplaceConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ReplaceConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "DeviceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ReplaceConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigRequest(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a RevertConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigResponse(aristaproto.Message):
-    value: "RevertConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    RevertConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSomeRequest(aristaproto.Message):
-    keys: List["__workspace_v1__.WorkspaceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSomeResponse(aristaproto.Message):
-    value: "RevertConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    RevertConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["RevertConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each RevertConfig at end.
-        * Each RevertConfig response is fully-specified (all fields set).
-      * start: Returns the state of each RevertConfig at start, followed by updates until now.
-        * Each RevertConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each RevertConfig at start, followed by updates
-        until end.
-        * Each RevertConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigStreamResponse(aristaproto.Message):
-    value: "RevertConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this RevertConfig's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the RevertConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["RevertConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each RevertConfig at end.
-        * Each RevertConfig response is fully-specified (all fields set).
-      * start: Returns the state of each RevertConfig at start, followed by updates until now.
-        * Each RevertConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each RevertConfig at start, followed by updates
-        until end.
-        * Each RevertConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["RevertConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSetRequest(aristaproto.Message):
-    value: "RevertConfig" = aristaproto.message_field(1)
-    """
-    RevertConfig carries the value to set into the datastore.
-    See the documentation on the RevertConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSetResponse(aristaproto.Message):
-    value: "RevertConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the RevertConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSetSomeRequest(aristaproto.Message):
-    values: List["RevertConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of RevertConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigSetSomeResponse(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteRequest(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key indicates which RevertConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteResponse(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted RevertConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["__workspace_v1__.WorkspaceKey"] = aristaproto.message_field(1)
-    """key contains a list of RevertConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteSomeResponse(aristaproto.Message):
-    """RevertConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["RevertConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RevertConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the RevertConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class UpdateRequest(aristaproto.Message):
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Update instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateResponse(aristaproto.Message):
-    value: "Update" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Update instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSomeRequest(aristaproto.Message):
-    keys: List["UpdateKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSomeResponse(aristaproto.Message):
-    value: "Update" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Update instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Update"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Update at end.
-        * Each Update response is fully-specified (all fields set).
-      * start: Returns the state of each Update at start, followed by updates until now.
-        * Each Update response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Update at start, followed by updates
-        until end.
-        * Each Update response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateStreamResponse(aristaproto.Message):
-    value: "Update" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Update's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Update value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Update"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Update at end.
-        * Each Update response is fully-specified (all fields set).
-      * start: Returns the state of each Update at start, followed by updates until now.
-        * Each Update response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Update at start, followed by updates
-        until end.
-        * Each Update response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateBatchedStreamResponse(aristaproto.Message):
-    responses: List["UpdateStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigRequest(aristaproto.Message):
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a UpdateConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigResponse(aristaproto.Message):
-    value: "UpdateConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    UpdateConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSomeRequest(aristaproto.Message):
-    keys: List["UpdateKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSomeResponse(aristaproto.Message):
-    value: "UpdateConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    UpdateConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each UpdateConfig at end.
-        * Each UpdateConfig response is fully-specified (all fields set).
-      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
-        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each UpdateConfig at start, followed by updates
-        until end.
-        * Each UpdateConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigStreamResponse(aristaproto.Message):
-    value: "UpdateConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this UpdateConfig's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the UpdateConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each UpdateConfig at end.
-        * Each UpdateConfig response is fully-specified (all fields set).
-      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
-        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each UpdateConfig at start, followed by updates
-        until end.
-        * Each UpdateConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["UpdateConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSetRequest(aristaproto.Message):
-    value: "UpdateConfig" = aristaproto.message_field(1)
-    """
-    UpdateConfig carries the value to set into the datastore.
-    See the documentation on the UpdateConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSetResponse(aristaproto.Message):
-    value: "UpdateConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the UpdateConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSetSomeRequest(aristaproto.Message):
-    values: List["UpdateConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of UpdateConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigSetSomeResponse(aristaproto.Message):
-    key: "UpdateKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteRequest(aristaproto.Message):
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """
-    Key indicates which UpdateConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteResponse(aristaproto.Message):
-    key: "UpdateKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted UpdateConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["UpdateKey"] = aristaproto.message_field(1)
-    """key contains a list of UpdateConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteSomeResponse(aristaproto.Message):
-    """UpdateConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "UpdateKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "UpdateKey" = aristaproto.message_field(3)
-    """
-    This is the key of the UpdateConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigRequest(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a UpdateSyncConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigResponse(aristaproto.Message):
-    value: "UpdateSyncConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    UpdateSyncConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigSomeRequest(aristaproto.Message):
-    keys: List["__workspace_v1__.WorkspaceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigSomeResponse(aristaproto.Message):
-    value: "UpdateSyncConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    UpdateSyncConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateSyncConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each UpdateSyncConfig at end.
-        * Each UpdateSyncConfig response is fully-specified (all fields set).
-      * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
-        * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
-        until end.
-        * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigStreamResponse(aristaproto.Message):
-    value: "UpdateSyncConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this UpdateSyncConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the UpdateSyncConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfig", UpdateSyncConfig)
 
 
 @dataclass(eq=False, repr=False)
 class UpdateSyncConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateSyncConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[UpdateSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -3169,7 +3840,7 @@ class UpdateSyncConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -3186,7 +3857,7 @@ class UpdateSyncConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -3195,9 +3866,12 @@ class UpdateSyncConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigBatchedStreamRequest", UpdateSyncConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class UpdateSyncConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["UpdateSyncConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[UpdateSyncConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -3205,67 +3879,69 @@ class UpdateSyncConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigSetRequest(aristaproto.Message):
-    value: "UpdateSyncConfig" = aristaproto.message_field(1)
-    """
-    UpdateSyncConfig carries the value to set into the datastore.
-    See the documentation on the UpdateSyncConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigBatchedStreamResponse", UpdateSyncConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class UpdateSyncConfigSetResponse(aristaproto.Message):
-    value: "UpdateSyncConfig" = aristaproto.message_field(1)
+class UpdateSyncConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[UpdateSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the UpdateSyncConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteAllRequest", UpdateSyncConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class UpdateSyncConfigSetSomeRequest(aristaproto.Message):
-    values: List["UpdateSyncConfig"] = aristaproto.message_field(1)
+class UpdateSyncConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of UpdateSyncConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the UpdateSyncConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class UpdateSyncConfigSetSomeResponse(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteAllResponse", UpdateSyncConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class UpdateSyncConfigDeleteRequest(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which UpdateSyncConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteRequest", UpdateSyncConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class UpdateSyncConfigDeleteResponse(aristaproto.Message):
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted UpdateSyncConfig instance."""
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted UpdateSyncConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -3275,10 +3951,18 @@ class UpdateSyncConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteResponse", UpdateSyncConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class UpdateSyncConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["__workspace_v1__.WorkspaceKey"] = aristaproto.message_field(1)
-    """key contains a list of UpdateSyncConfig keys to delete"""
+    keys: "list[__workspace__v1__.WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of UpdateSyncConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteSomeRequest", UpdateSyncConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -3287,4354 +3971,2780 @@ class UpdateSyncConfigDeleteSomeResponse(aristaproto.Message):
     UpdateSyncConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigDeleteSomeResponse", UpdateSyncConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class UpdateSyncConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["UpdateSyncConfig"] = aristaproto.message_field(1)
+class UpdateSyncConfigRequest(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    Key uniquely identifies a UpdateSyncConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigRequest", UpdateSyncConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigResponse(aristaproto.Message):
+    value: "UpdateSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    UpdateSyncConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigResponse", UpdateSyncConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSetRequest(aristaproto.Message):
+    value: "UpdateSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    UpdateSyncConfig carries the value to set into the datastore.
+    See the documentation on the UpdateSyncConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSetRequest", UpdateSyncConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSetResponse(aristaproto.Message):
+    value: "UpdateSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the UpdateSyncConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSetResponse", UpdateSyncConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSetSomeRequest(aristaproto.Message):
+    values: "list[UpdateSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of UpdateSyncConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSetSomeRequest", UpdateSyncConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSetSomeResponse(aristaproto.Message):
+    key: "__workspace__v1__.WorkspaceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSetSomeResponse", UpdateSyncConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSomeRequest(aristaproto.Message):
+    keys: "list[__workspace__v1__.WorkspaceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSomeRequest", UpdateSyncConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigSomeResponse(aristaproto.Message):
+    value: "UpdateSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    UpdateSyncConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigSomeResponse", UpdateSyncConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class UpdateSyncConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[UpdateSyncConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each UpdateSyncConfig at end.
+        * Each UpdateSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
+        until end.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigStreamRequest", UpdateSyncConfigStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class UpdateSyncConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class UpdateSyncConfigStreamResponse(aristaproto.Message):
+    value: "UpdateSyncConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "__workspace_v1__.WorkspaceKey" = aristaproto.message_field(3)
-    """
-    This is the key of the UpdateSyncConfig instance that failed to be deleted.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this UpdateSyncConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the UpdateSyncConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
 
-class DecommissionServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.studio_topology.v1", "UpdateSyncConfigStreamResponse", UpdateSyncConfigStreamResponse)
+
+
+class DecommissionConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        decommission_request: "DecommissionRequest",
+        message: "DecommissionConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "DecommissionResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.DecommissionService/GetOne",
-            decommission_request,
-            DecommissionResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        decommission_some_request: "DecommissionSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DecommissionSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/GetSome",
-            decommission_some_request,
-            DecommissionSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        decommission_stream_request: "DecommissionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DecommissionStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/GetAll",
-            decommission_stream_request,
-            DecommissionStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        decommission_stream_request: "DecommissionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DecommissionStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/Subscribe",
-            decommission_stream_request,
-            DecommissionStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        decommission_stream_request: "DecommissionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.DecommissionService/GetMeta",
-            decommission_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        decommission_stream_request: "DecommissionStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/SubscribeMeta",
-            decommission_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        decommission_batched_stream_request: "DecommissionBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DecommissionBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/GetAllBatched",
-            decommission_batched_stream_request,
-            DecommissionBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        decommission_batched_stream_request: "DecommissionBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DecommissionBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.DecommissionService/SubscribeBatched",
-            decommission_batched_stream_request,
-            DecommissionBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class DecommissionConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        decommission_config_request: "DecommissionConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DecommissionConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DecommissionConfigService/GetOne",
-            decommission_config_request,
+            message,
             DecommissionConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        decommission_config_some_request: "DecommissionConfigSomeRequest",
+        message: "DecommissionConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/GetSome",
-            decommission_config_some_request,
+            message,
             DecommissionConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        decommission_config_stream_request: "DecommissionConfigStreamRequest",
+        message: "DecommissionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/GetAll",
-            decommission_config_stream_request,
+            message,
             DecommissionConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        decommission_config_stream_request: "DecommissionConfigStreamRequest",
+        message: "DecommissionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/Subscribe",
-            decommission_config_stream_request,
+            message,
             DecommissionConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        decommission_config_stream_request: "DecommissionConfigStreamRequest",
+        message: "DecommissionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DecommissionConfigService/GetMeta",
-            decommission_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        decommission_config_stream_request: "DecommissionConfigStreamRequest",
+        message: "DecommissionConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/SubscribeMeta",
-            decommission_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        decommission_config_set_request: "DecommissionConfigSetRequest",
+        message: "DecommissionConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DecommissionConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DecommissionConfigService/Set",
-            decommission_config_set_request,
+            message,
             DecommissionConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        decommission_config_set_some_request: "DecommissionConfigSetSomeRequest",
+        message: "DecommissionConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/SetSome",
-            decommission_config_set_some_request,
+            message,
             DecommissionConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        decommission_config_delete_request: "DecommissionConfigDeleteRequest",
+        message: "DecommissionConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DecommissionConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DecommissionConfigService/Delete",
-            decommission_config_delete_request,
+            message,
             DecommissionConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        decommission_config_delete_some_request: "DecommissionConfigDeleteSomeRequest",
+        message: "DecommissionConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/DeleteSome",
-            decommission_config_delete_some_request,
+            message,
             DecommissionConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        decommission_config_delete_all_request: "DecommissionConfigDeleteAllRequest",
+        message: "DecommissionConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/DeleteAll",
-            decommission_config_delete_all_request,
+            message,
             DecommissionConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        decommission_config_batched_stream_request: "DecommissionConfigBatchedStreamRequest",
+        message: "DecommissionConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/GetAllBatched",
-            decommission_config_batched_stream_request,
+            message,
             DecommissionConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        decommission_config_batched_stream_request: "DecommissionConfigBatchedStreamRequest",
+        message: "DecommissionConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DecommissionConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DecommissionConfigService/SubscribeBatched",
-            decommission_config_batched_stream_request,
+            message,
             DecommissionConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceInputConfigServiceStub(aristaproto.ServiceStub):
+class DecommissionServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_input_config_request: "DeviceInputConfigRequest",
+        message: "DecommissionRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "DecommissionResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.DecommissionService/GetOne",
+            message,
+            DecommissionResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "DecommissionSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DecommissionSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/GetSome",
+            message,
+            DecommissionSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "DecommissionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DecommissionStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/GetAll",
+            message,
+            DecommissionStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "DecommissionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DecommissionStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/Subscribe",
+            message,
+            DecommissionStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "DecommissionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.DecommissionService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "DecommissionStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "DecommissionBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DecommissionBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/GetAllBatched",
+            message,
+            DecommissionBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "DecommissionBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DecommissionBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.DecommissionService/SubscribeBatched",
+            message,
+            DecommissionBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class DeviceInputConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "DeviceInputConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceInputConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceInputConfigService/GetOne",
-            device_input_config_request,
+            message,
             DeviceInputConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_input_config_some_request: "DeviceInputConfigSomeRequest",
+        message: "DeviceInputConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/GetSome",
-            device_input_config_some_request,
+            message,
             DeviceInputConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_input_config_stream_request: "DeviceInputConfigStreamRequest",
+        message: "DeviceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/GetAll",
-            device_input_config_stream_request,
+            message,
             DeviceInputConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_input_config_stream_request: "DeviceInputConfigStreamRequest",
+        message: "DeviceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/Subscribe",
-            device_input_config_stream_request,
+            message,
             DeviceInputConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_input_config_stream_request: "DeviceInputConfigStreamRequest",
+        message: "DeviceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceInputConfigService/GetMeta",
-            device_input_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_input_config_stream_request: "DeviceInputConfigStreamRequest",
+        message: "DeviceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/SubscribeMeta",
-            device_input_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        device_input_config_set_request: "DeviceInputConfigSetRequest",
+        message: "DeviceInputConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceInputConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceInputConfigService/Set",
-            device_input_config_set_request,
+            message,
             DeviceInputConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        device_input_config_set_some_request: "DeviceInputConfigSetSomeRequest",
+        message: "DeviceInputConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/SetSome",
-            device_input_config_set_some_request,
+            message,
             DeviceInputConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        device_input_config_delete_request: "DeviceInputConfigDeleteRequest",
+        message: "DeviceInputConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceInputConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceInputConfigService/Delete",
-            device_input_config_delete_request,
+            message,
             DeviceInputConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        device_input_config_delete_some_request: "DeviceInputConfigDeleteSomeRequest",
+        message: "DeviceInputConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/DeleteSome",
-            device_input_config_delete_some_request,
+            message,
             DeviceInputConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        device_input_config_delete_all_request: "DeviceInputConfigDeleteAllRequest",
+        message: "DeviceInputConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/DeleteAll",
-            device_input_config_delete_all_request,
+            message,
             DeviceInputConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_input_config_batched_stream_request: "DeviceInputConfigBatchedStreamRequest",
+        message: "DeviceInputConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/GetAllBatched",
-            device_input_config_batched_stream_request,
+            message,
             DeviceInputConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_input_config_batched_stream_request: "DeviceInputConfigBatchedStreamRequest",
+        message: "DeviceInputConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceInputConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceInputConfigService/SubscribeBatched",
-            device_input_config_batched_stream_request,
+            message,
             DeviceInputConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceStateServiceStub(aristaproto.ServiceStub):
+class DeviceStateServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_state_request: "DeviceStateRequest",
+        message: "DeviceStateRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceStateResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceStateService/GetOne",
-            device_state_request,
+            message,
             DeviceStateResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_state_some_request: "DeviceStateSomeRequest",
+        message: "DeviceStateSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceStateSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/GetSome",
-            device_state_some_request,
+            message,
             DeviceStateSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_state_stream_request: "DeviceStateStreamRequest",
+        message: "DeviceStateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceStateStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/GetAll",
-            device_state_stream_request,
+            message,
             DeviceStateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_state_stream_request: "DeviceStateStreamRequest",
+        message: "DeviceStateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceStateStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/Subscribe",
-            device_state_stream_request,
+            message,
             DeviceStateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_state_stream_request: "DeviceStateStreamRequest",
+        message: "DeviceStateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.DeviceStateService/GetMeta",
-            device_state_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_state_stream_request: "DeviceStateStreamRequest",
+        message: "DeviceStateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/SubscribeMeta",
-            device_state_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_state_batched_stream_request: "DeviceStateBatchedStreamRequest",
+        message: "DeviceStateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceStateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/GetAllBatched",
-            device_state_batched_stream_request,
+            message,
             DeviceStateBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_state_batched_stream_request: "DeviceStateBatchedStreamRequest",
+        message: "DeviceStateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceStateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.DeviceStateService/SubscribeBatched",
-            device_state_batched_stream_request,
+            message,
             DeviceStateBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class InterfaceInputConfigServiceStub(aristaproto.ServiceStub):
+class InterfaceInputConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        interface_input_config_request: "InterfaceInputConfigRequest",
+        message: "InterfaceInputConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "InterfaceInputConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.InterfaceInputConfigService/GetOne",
-            interface_input_config_request,
+            message,
             InterfaceInputConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        interface_input_config_some_request: "InterfaceInputConfigSomeRequest",
+        message: "InterfaceInputConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/GetSome",
-            interface_input_config_some_request,
+            message,
             InterfaceInputConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        interface_input_config_stream_request: "InterfaceInputConfigStreamRequest",
+        message: "InterfaceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/GetAll",
-            interface_input_config_stream_request,
+            message,
             InterfaceInputConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        interface_input_config_stream_request: "InterfaceInputConfigStreamRequest",
+        message: "InterfaceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/Subscribe",
-            interface_input_config_stream_request,
+            message,
             InterfaceInputConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        interface_input_config_stream_request: "InterfaceInputConfigStreamRequest",
+        message: "InterfaceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.InterfaceInputConfigService/GetMeta",
-            interface_input_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        interface_input_config_stream_request: "InterfaceInputConfigStreamRequest",
+        message: "InterfaceInputConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/SubscribeMeta",
-            interface_input_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        interface_input_config_set_request: "InterfaceInputConfigSetRequest",
+        message: "InterfaceInputConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "InterfaceInputConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.InterfaceInputConfigService/Set",
-            interface_input_config_set_request,
+            message,
             InterfaceInputConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        interface_input_config_set_some_request: "InterfaceInputConfigSetSomeRequest",
+        message: "InterfaceInputConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/SetSome",
-            interface_input_config_set_some_request,
+            message,
             InterfaceInputConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        interface_input_config_delete_request: "InterfaceInputConfigDeleteRequest",
+        message: "InterfaceInputConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "InterfaceInputConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.InterfaceInputConfigService/Delete",
-            interface_input_config_delete_request,
+            message,
             InterfaceInputConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        interface_input_config_delete_some_request: "InterfaceInputConfigDeleteSomeRequest",
+        message: "InterfaceInputConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/DeleteSome",
-            interface_input_config_delete_some_request,
+            message,
             InterfaceInputConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        interface_input_config_delete_all_request: "InterfaceInputConfigDeleteAllRequest",
+        message: "InterfaceInputConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/DeleteAll",
-            interface_input_config_delete_all_request,
+            message,
             InterfaceInputConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        interface_input_config_batched_stream_request: "InterfaceInputConfigBatchedStreamRequest",
+        message: "InterfaceInputConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/GetAllBatched",
-            interface_input_config_batched_stream_request,
+            message,
             InterfaceInputConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        interface_input_config_batched_stream_request: "InterfaceInputConfigBatchedStreamRequest",
+        message: "InterfaceInputConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[InterfaceInputConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.InterfaceInputConfigService/SubscribeBatched",
-            interface_input_config_batched_stream_request,
+            message,
             InterfaceInputConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ReplaceServiceStub(aristaproto.ServiceStub):
+class ReplaceConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        replace_request: "ReplaceRequest",
+        message: "ReplaceConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ReplaceResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.ReplaceService/GetOne",
-            replace_request,
-            ReplaceResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        replace_some_request: "ReplaceSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ReplaceSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/GetSome",
-            replace_some_request,
-            ReplaceSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        replace_stream_request: "ReplaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ReplaceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/GetAll",
-            replace_stream_request,
-            ReplaceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        replace_stream_request: "ReplaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ReplaceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/Subscribe",
-            replace_stream_request,
-            ReplaceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        replace_stream_request: "ReplaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.ReplaceService/GetMeta",
-            replace_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        replace_stream_request: "ReplaceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/SubscribeMeta",
-            replace_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        replace_batched_stream_request: "ReplaceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ReplaceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/GetAllBatched",
-            replace_batched_stream_request,
-            ReplaceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        replace_batched_stream_request: "ReplaceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ReplaceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.ReplaceService/SubscribeBatched",
-            replace_batched_stream_request,
-            ReplaceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ReplaceConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        replace_config_request: "ReplaceConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ReplaceConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.ReplaceConfigService/GetOne",
-            replace_config_request,
+            message,
             ReplaceConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        replace_config_some_request: "ReplaceConfigSomeRequest",
+        message: "ReplaceConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/GetSome",
-            replace_config_some_request,
+            message,
             ReplaceConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        replace_config_stream_request: "ReplaceConfigStreamRequest",
+        message: "ReplaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/GetAll",
-            replace_config_stream_request,
+            message,
             ReplaceConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        replace_config_stream_request: "ReplaceConfigStreamRequest",
+        message: "ReplaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/Subscribe",
-            replace_config_stream_request,
+            message,
             ReplaceConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        replace_config_stream_request: "ReplaceConfigStreamRequest",
+        message: "ReplaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.ReplaceConfigService/GetMeta",
-            replace_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        replace_config_stream_request: "ReplaceConfigStreamRequest",
+        message: "ReplaceConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/SubscribeMeta",
-            replace_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        replace_config_set_request: "ReplaceConfigSetRequest",
+        message: "ReplaceConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ReplaceConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.ReplaceConfigService/Set",
-            replace_config_set_request,
+            message,
             ReplaceConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        replace_config_set_some_request: "ReplaceConfigSetSomeRequest",
+        message: "ReplaceConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/SetSome",
-            replace_config_set_some_request,
+            message,
             ReplaceConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        replace_config_delete_request: "ReplaceConfigDeleteRequest",
+        message: "ReplaceConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ReplaceConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.ReplaceConfigService/Delete",
-            replace_config_delete_request,
+            message,
             ReplaceConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        replace_config_delete_some_request: "ReplaceConfigDeleteSomeRequest",
+        message: "ReplaceConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/DeleteSome",
-            replace_config_delete_some_request,
+            message,
             ReplaceConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        replace_config_delete_all_request: "ReplaceConfigDeleteAllRequest",
+        message: "ReplaceConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/DeleteAll",
-            replace_config_delete_all_request,
+            message,
             ReplaceConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        replace_config_batched_stream_request: "ReplaceConfigBatchedStreamRequest",
+        message: "ReplaceConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/GetAllBatched",
-            replace_config_batched_stream_request,
+            message,
             ReplaceConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        replace_config_batched_stream_request: "ReplaceConfigBatchedStreamRequest",
+        message: "ReplaceConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReplaceConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.ReplaceConfigService/SubscribeBatched",
-            replace_config_batched_stream_request,
+            message,
             ReplaceConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class RevertConfigServiceStub(aristaproto.ServiceStub):
+class ReplaceServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        revert_config_request: "RevertConfigRequest",
+        message: "ReplaceRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ReplaceResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.ReplaceService/GetOne",
+            message,
+            ReplaceResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ReplaceSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ReplaceSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/GetSome",
+            message,
+            ReplaceSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ReplaceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ReplaceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/GetAll",
+            message,
+            ReplaceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ReplaceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ReplaceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/Subscribe",
+            message,
+            ReplaceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ReplaceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.ReplaceService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ReplaceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "ReplaceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ReplaceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/GetAllBatched",
+            message,
+            ReplaceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "ReplaceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ReplaceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.ReplaceService/SubscribeBatched",
+            message,
+            ReplaceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class RevertConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "RevertConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RevertConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.RevertConfigService/GetOne",
-            revert_config_request,
+            message,
             RevertConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        revert_config_some_request: "RevertConfigSomeRequest",
+        message: "RevertConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/GetSome",
-            revert_config_some_request,
+            message,
             RevertConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        revert_config_stream_request: "RevertConfigStreamRequest",
+        message: "RevertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/GetAll",
-            revert_config_stream_request,
+            message,
             RevertConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        revert_config_stream_request: "RevertConfigStreamRequest",
+        message: "RevertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/Subscribe",
-            revert_config_stream_request,
+            message,
             RevertConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        revert_config_stream_request: "RevertConfigStreamRequest",
+        message: "RevertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.RevertConfigService/GetMeta",
-            revert_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        revert_config_stream_request: "RevertConfigStreamRequest",
+        message: "RevertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/SubscribeMeta",
-            revert_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        revert_config_set_request: "RevertConfigSetRequest",
+        message: "RevertConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RevertConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.RevertConfigService/Set",
-            revert_config_set_request,
+            message,
             RevertConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        revert_config_set_some_request: "RevertConfigSetSomeRequest",
+        message: "RevertConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/SetSome",
-            revert_config_set_some_request,
+            message,
             RevertConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        revert_config_delete_request: "RevertConfigDeleteRequest",
+        message: "RevertConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RevertConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.RevertConfigService/Delete",
-            revert_config_delete_request,
+            message,
             RevertConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        revert_config_delete_some_request: "RevertConfigDeleteSomeRequest",
+        message: "RevertConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/DeleteSome",
-            revert_config_delete_some_request,
+            message,
             RevertConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        revert_config_delete_all_request: "RevertConfigDeleteAllRequest",
+        message: "RevertConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/DeleteAll",
-            revert_config_delete_all_request,
+            message,
             RevertConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        revert_config_batched_stream_request: "RevertConfigBatchedStreamRequest",
+        message: "RevertConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/GetAllBatched",
-            revert_config_batched_stream_request,
+            message,
             RevertConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        revert_config_batched_stream_request: "RevertConfigBatchedStreamRequest",
+        message: "RevertConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RevertConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.RevertConfigService/SubscribeBatched",
-            revert_config_batched_stream_request,
+            message,
             RevertConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class UpdateServiceStub(aristaproto.ServiceStub):
+class UpdateConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        update_request: "UpdateRequest",
+        message: "UpdateConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "UpdateResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateService/GetOne",
-            update_request,
-            UpdateResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        update_some_request: "UpdateSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/GetSome",
-            update_some_request,
-            UpdateSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        update_stream_request: "UpdateStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/GetAll",
-            update_stream_request,
-            UpdateStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        update_stream_request: "UpdateStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/Subscribe",
-            update_stream_request,
-            UpdateStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        update_stream_request: "UpdateStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateService/GetMeta",
-            update_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        update_stream_request: "UpdateStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/SubscribeMeta",
-            update_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        update_batched_stream_request: "UpdateBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/GetAllBatched",
-            update_batched_stream_request,
-            UpdateBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        update_batched_stream_request: "UpdateBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateService/SubscribeBatched",
-            update_batched_stream_request,
-            UpdateBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class UpdateConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        update_config_request: "UpdateConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "UpdateConfigResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.UpdateConfigService/GetOne",
-            update_config_request,
+            message,
             UpdateConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        update_config_some_request: "UpdateConfigSomeRequest",
+        message: "UpdateConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/GetSome",
-            update_config_some_request,
+            message,
             UpdateConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        update_config_stream_request: "UpdateConfigStreamRequest",
+        message: "UpdateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/GetAll",
-            update_config_stream_request,
+            message,
             UpdateConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        update_config_stream_request: "UpdateConfigStreamRequest",
+        message: "UpdateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/Subscribe",
-            update_config_stream_request,
+            message,
             UpdateConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        update_config_stream_request: "UpdateConfigStreamRequest",
+        message: "UpdateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.UpdateConfigService/GetMeta",
-            update_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        update_config_stream_request: "UpdateConfigStreamRequest",
+        message: "UpdateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/SubscribeMeta",
-            update_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        update_config_set_request: "UpdateConfigSetRequest",
+        message: "UpdateConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "UpdateConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.UpdateConfigService/Set",
-            update_config_set_request,
+            message,
             UpdateConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        update_config_set_some_request: "UpdateConfigSetSomeRequest",
+        message: "UpdateConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/SetSome",
-            update_config_set_some_request,
+            message,
             UpdateConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        update_config_delete_request: "UpdateConfigDeleteRequest",
+        message: "UpdateConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "UpdateConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.studio_topology.v1.UpdateConfigService/Delete",
-            update_config_delete_request,
+            message,
             UpdateConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        update_config_delete_some_request: "UpdateConfigDeleteSomeRequest",
+        message: "UpdateConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/DeleteSome",
-            update_config_delete_some_request,
+            message,
             UpdateConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        update_config_delete_all_request: "UpdateConfigDeleteAllRequest",
+        message: "UpdateConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/DeleteAll",
-            update_config_delete_all_request,
+            message,
             UpdateConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        update_config_batched_stream_request: "UpdateConfigBatchedStreamRequest",
+        message: "UpdateConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/GetAllBatched",
-            update_config_batched_stream_request,
+            message,
             UpdateConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        update_config_batched_stream_request: "UpdateConfigBatchedStreamRequest",
+        message: "UpdateConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[UpdateConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.studio_topology.v1.UpdateConfigService/SubscribeBatched",
-            update_config_batched_stream_request,
+            message,
             UpdateConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class UpdateSyncConfigServiceStub(aristaproto.ServiceStub):
+class UpdateServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        update_sync_config_request: "UpdateSyncConfigRequest",
+        message: "UpdateRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "UpdateSyncConfigResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "UpdateResponse":
+
         return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetOne",
-            update_sync_config_request,
-            UpdateSyncConfigResponse,
+            "/arista.studio_topology.v1.UpdateService/GetOne",
+            message,
+            UpdateResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        update_sync_config_some_request: "UpdateSyncConfigSomeRequest",
+        message: "UpdateSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetSome",
-            update_sync_config_some_request,
-            UpdateSyncConfigSomeResponse,
+            "/arista.studio_topology.v1.UpdateService/GetSome",
+            message,
+            UpdateSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        update_sync_config_stream_request: "UpdateSyncConfigStreamRequest",
+        message: "UpdateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAll",
-            update_sync_config_stream_request,
-            UpdateSyncConfigStreamResponse,
+            "/arista.studio_topology.v1.UpdateService/GetAll",
+            message,
+            UpdateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        update_sync_config_stream_request: "UpdateSyncConfigStreamRequest",
+        message: "UpdateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Subscribe",
-            update_sync_config_stream_request,
-            UpdateSyncConfigStreamResponse,
+            "/arista.studio_topology.v1.UpdateService/Subscribe",
+            message,
+            UpdateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        update_sync_config_stream_request: "UpdateSyncConfigStreamRequest",
+        message: "UpdateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetMeta",
-            update_sync_config_stream_request,
+            "/arista.studio_topology.v1.UpdateService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        update_sync_config_stream_request: "UpdateSyncConfigStreamRequest",
+        message: "UpdateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeMeta",
-            update_sync_config_stream_request,
+            "/arista.studio_topology.v1.UpdateService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
-        ):
-            yield response
-
-    async def set(
-        self,
-        update_sync_config_set_request: "UpdateSyncConfigSetRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "UpdateSyncConfigSetResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Set",
-            update_sync_config_set_request,
-            UpdateSyncConfigSetResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def set_some(
-        self,
-        update_sync_config_set_some_request: "UpdateSyncConfigSetSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigSetSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SetSome",
-            update_sync_config_set_some_request,
-            UpdateSyncConfigSetSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete(
-        self,
-        update_sync_config_delete_request: "UpdateSyncConfigDeleteRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "UpdateSyncConfigDeleteResponse":
-        return await self._unary_unary(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Delete",
-            update_sync_config_delete_request,
-            UpdateSyncConfigDeleteResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def delete_some(
-        self,
-        update_sync_config_delete_some_request: "UpdateSyncConfigDeleteSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigDeleteSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteSome",
-            update_sync_config_delete_some_request,
-            UpdateSyncConfigDeleteSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete_all(
-        self,
-        update_sync_config_delete_all_request: "UpdateSyncConfigDeleteAllRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigDeleteAllResponse]":
-        async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteAll",
-            update_sync_config_delete_all_request,
-            UpdateSyncConfigDeleteAllResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        update_sync_config_batched_stream_request: "UpdateSyncConfigBatchedStreamRequest",
+        message: "UpdateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAllBatched",
-            update_sync_config_batched_stream_request,
-            UpdateSyncConfigBatchedStreamResponse,
+            "/arista.studio_topology.v1.UpdateService/GetAllBatched",
+            message,
+            UpdateBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        update_sync_config_batched_stream_request: "UpdateSyncConfigBatchedStreamRequest",
+        message: "UpdateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[UpdateSyncConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeBatched",
-            update_sync_config_batched_stream_request,
+            "/arista.studio_topology.v1.UpdateService/SubscribeBatched",
+            message,
+            UpdateBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class UpdateSyncConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "UpdateSyncConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "UpdateSyncConfigResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/GetOne",
+            message,
+            UpdateSyncConfigResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "UpdateSyncConfigSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/GetSome",
+            message,
+            UpdateSyncConfigSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "UpdateSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAll",
+            message,
+            UpdateSyncConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "UpdateSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/Subscribe",
+            message,
+            UpdateSyncConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "UpdateSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "UpdateSyncConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def set(
+        self,
+        message: "UpdateSyncConfigSetRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "UpdateSyncConfigSetResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/Set",
+            message,
+            UpdateSyncConfigSetResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def set_some(
+        self,
+        message: "UpdateSyncConfigSetSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigSetSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/SetSome",
+            message,
+            UpdateSyncConfigSetSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        message: "UpdateSyncConfigDeleteRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "UpdateSyncConfigDeleteResponse":
+
+        return await self._unary_unary(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/Delete",
+            message,
+            UpdateSyncConfigDeleteResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def delete_some(
+        self,
+        message: "UpdateSyncConfigDeleteSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigDeleteSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteSome",
+            message,
+            UpdateSyncConfigDeleteSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete_all(
+        self,
+        message: "UpdateSyncConfigDeleteAllRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigDeleteAllResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteAll",
+            message,
+            UpdateSyncConfigDeleteAllResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "UpdateSyncConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAllBatched",
+            message,
             UpdateSyncConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "UpdateSyncConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[UpdateSyncConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeBatched",
+            message,
+            UpdateSyncConfigBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-from ...workspace import v1 as __workspace_v1__
-
-
-class DecommissionServiceBase(ServiceBase):
-    async def get_one(self, decommission_request: "DecommissionRequest") -> "DecommissionResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, decommission_some_request: "DecommissionSomeRequest") -> AsyncIterator[DecommissionSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, decommission_stream_request: "DecommissionStreamRequest") -> AsyncIterator[DecommissionStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, decommission_stream_request: "DecommissionStreamRequest") -> AsyncIterator[DecommissionStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, decommission_stream_request: "DecommissionStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, decommission_stream_request: "DecommissionStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, decommission_batched_stream_request: "DecommissionBatchedStreamRequest"
-    ) -> AsyncIterator[DecommissionBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, decommission_batched_stream_request: "DecommissionBatchedStreamRequest"
-    ) -> AsyncIterator[DecommissionBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DecommissionRequest, DecommissionResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DecommissionSomeRequest, DecommissionSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DecommissionStreamRequest, DecommissionStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DecommissionStreamRequest, DecommissionStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DecommissionStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DecommissionStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[DecommissionBatchedStreamRequest, DecommissionBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[DecommissionBatchedStreamRequest, DecommissionBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.DecommissionService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionRequest,
-                DecommissionResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionSomeRequest,
-                DecommissionSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionStreamRequest,
-                DecommissionStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionStreamRequest,
-                DecommissionStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionBatchedStreamRequest,
-                DecommissionBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionBatchedStreamRequest,
-                DecommissionBatchedStreamResponse,
-            ),
-        }
-
-
-class DecommissionConfigServiceBase(ServiceBase):
-    async def get_one(self, decommission_config_request: "DecommissionConfigRequest") -> "DecommissionConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, decommission_config_some_request: "DecommissionConfigSomeRequest") -> AsyncIterator[DecommissionConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, decommission_config_stream_request: "DecommissionConfigStreamRequest") -> AsyncIterator[DecommissionConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, decommission_config_stream_request: "DecommissionConfigStreamRequest") -> AsyncIterator[DecommissionConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, decommission_config_stream_request: "DecommissionConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, decommission_config_stream_request: "DecommissionConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, decommission_config_set_request: "DecommissionConfigSetRequest") -> "DecommissionConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, decommission_config_set_some_request: "DecommissionConfigSetSomeRequest") -> AsyncIterator[DecommissionConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, decommission_config_delete_request: "DecommissionConfigDeleteRequest") -> "DecommissionConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, decommission_config_delete_some_request: "DecommissionConfigDeleteSomeRequest"
-    ) -> AsyncIterator[DecommissionConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, decommission_config_delete_all_request: "DecommissionConfigDeleteAllRequest"
-    ) -> AsyncIterator[DecommissionConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, decommission_config_batched_stream_request: "DecommissionConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DecommissionConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, decommission_config_batched_stream_request: "DecommissionConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DecommissionConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DecommissionConfigRequest, DecommissionConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DecommissionConfigSomeRequest, DecommissionConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DecommissionConfigStreamRequest, DecommissionConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DecommissionConfigStreamRequest, DecommissionConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DecommissionConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DecommissionConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[DecommissionConfigSetRequest, DecommissionConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[DecommissionConfigSetSomeRequest, DecommissionConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[DecommissionConfigDeleteRequest, DecommissionConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[DecommissionConfigDeleteSomeRequest, DecommissionConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[DecommissionConfigDeleteAllRequest, DecommissionConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DecommissionConfigBatchedStreamRequest, DecommissionConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DecommissionConfigBatchedStreamRequest, DecommissionConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.DecommissionConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionConfigRequest,
-                DecommissionConfigResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigSomeRequest,
-                DecommissionConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigStreamRequest,
-                DecommissionConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigStreamRequest,
-                DecommissionConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionConfigSetRequest,
-                DecommissionConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigSetSomeRequest,
-                DecommissionConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DecommissionConfigDeleteRequest,
-                DecommissionConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigDeleteSomeRequest,
-                DecommissionConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigDeleteAllRequest,
-                DecommissionConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigBatchedStreamRequest,
-                DecommissionConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DecommissionConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DecommissionConfigBatchedStreamRequest,
-                DecommissionConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceInputConfigServiceBase(ServiceBase):
-    async def get_one(self, device_input_config_request: "DeviceInputConfigRequest") -> "DeviceInputConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_input_config_some_request: "DeviceInputConfigSomeRequest") -> AsyncIterator[DeviceInputConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, device_input_config_stream_request: "DeviceInputConfigStreamRequest") -> AsyncIterator[DeviceInputConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, device_input_config_stream_request: "DeviceInputConfigStreamRequest") -> AsyncIterator[DeviceInputConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_input_config_stream_request: "DeviceInputConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_input_config_stream_request: "DeviceInputConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, device_input_config_set_request: "DeviceInputConfigSetRequest") -> "DeviceInputConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, device_input_config_set_some_request: "DeviceInputConfigSetSomeRequest") -> AsyncIterator[DeviceInputConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, device_input_config_delete_request: "DeviceInputConfigDeleteRequest") -> "DeviceInputConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, device_input_config_delete_some_request: "DeviceInputConfigDeleteSomeRequest"
-    ) -> AsyncIterator[DeviceInputConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, device_input_config_delete_all_request: "DeviceInputConfigDeleteAllRequest"
-    ) -> AsyncIterator[DeviceInputConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_input_config_batched_stream_request: "DeviceInputConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceInputConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_input_config_batched_stream_request: "DeviceInputConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceInputConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceInputConfigRequest, DeviceInputConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceInputConfigSomeRequest, DeviceInputConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceInputConfigStreamRequest, DeviceInputConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceInputConfigStreamRequest, DeviceInputConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceInputConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceInputConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[DeviceInputConfigSetRequest, DeviceInputConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[DeviceInputConfigSetSomeRequest, DeviceInputConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[DeviceInputConfigDeleteRequest, DeviceInputConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[DeviceInputConfigDeleteSomeRequest, DeviceInputConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[DeviceInputConfigDeleteAllRequest, DeviceInputConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceInputConfigBatchedStreamRequest, DeviceInputConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceInputConfigBatchedStreamRequest, DeviceInputConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.DeviceInputConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceInputConfigRequest,
-                DeviceInputConfigResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigSomeRequest,
-                DeviceInputConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigStreamRequest,
-                DeviceInputConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigStreamRequest,
-                DeviceInputConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceInputConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceInputConfigSetRequest,
-                DeviceInputConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigSetSomeRequest,
-                DeviceInputConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceInputConfigDeleteRequest,
-                DeviceInputConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigDeleteSomeRequest,
-                DeviceInputConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigDeleteAllRequest,
-                DeviceInputConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigBatchedStreamRequest,
-                DeviceInputConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceInputConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceInputConfigBatchedStreamRequest,
-                DeviceInputConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceStateServiceBase(ServiceBase):
-    async def get_one(self, device_state_request: "DeviceStateRequest") -> "DeviceStateResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_state_some_request: "DeviceStateSomeRequest") -> AsyncIterator[DeviceStateSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, device_state_stream_request: "DeviceStateStreamRequest") -> AsyncIterator[DeviceStateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, device_state_stream_request: "DeviceStateStreamRequest") -> AsyncIterator[DeviceStateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_state_stream_request: "DeviceStateStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_state_stream_request: "DeviceStateStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, device_state_batched_stream_request: "DeviceStateBatchedStreamRequest") -> AsyncIterator[DeviceStateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_state_batched_stream_request: "DeviceStateBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceStateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceStateRequest, DeviceStateResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceStateSomeRequest, DeviceStateSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceStateStreamRequest, DeviceStateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceStateStreamRequest, DeviceStateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceStateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceStateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[DeviceStateBatchedStreamRequest, DeviceStateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[DeviceStateBatchedStreamRequest, DeviceStateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.DeviceStateService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceStateRequest,
-                DeviceStateResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateSomeRequest,
-                DeviceStateSomeResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateStreamRequest,
-                DeviceStateStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateStreamRequest,
-                DeviceStateStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceStateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateBatchedStreamRequest,
-                DeviceStateBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.DeviceStateService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStateBatchedStreamRequest,
-                DeviceStateBatchedStreamResponse,
-            ),
-        }
-
-
-class InterfaceInputConfigServiceBase(ServiceBase):
-    async def get_one(self, interface_input_config_request: "InterfaceInputConfigRequest") -> "InterfaceInputConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, interface_input_config_some_request: "InterfaceInputConfigSomeRequest") -> AsyncIterator[InterfaceInputConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, interface_input_config_stream_request: "InterfaceInputConfigStreamRequest") -> AsyncIterator[InterfaceInputConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, interface_input_config_stream_request: "InterfaceInputConfigStreamRequest") -> AsyncIterator[InterfaceInputConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, interface_input_config_stream_request: "InterfaceInputConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, interface_input_config_stream_request: "InterfaceInputConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, interface_input_config_set_request: "InterfaceInputConfigSetRequest") -> "InterfaceInputConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, interface_input_config_set_some_request: "InterfaceInputConfigSetSomeRequest"
-    ) -> AsyncIterator[InterfaceInputConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, interface_input_config_delete_request: "InterfaceInputConfigDeleteRequest") -> "InterfaceInputConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, interface_input_config_delete_some_request: "InterfaceInputConfigDeleteSomeRequest"
-    ) -> AsyncIterator[InterfaceInputConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, interface_input_config_delete_all_request: "InterfaceInputConfigDeleteAllRequest"
-    ) -> AsyncIterator[InterfaceInputConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, interface_input_config_batched_stream_request: "InterfaceInputConfigBatchedStreamRequest"
-    ) -> AsyncIterator[InterfaceInputConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, interface_input_config_batched_stream_request: "InterfaceInputConfigBatchedStreamRequest"
-    ) -> AsyncIterator[InterfaceInputConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[InterfaceInputConfigRequest, InterfaceInputConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[InterfaceInputConfigSomeRequest, InterfaceInputConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[InterfaceInputConfigStreamRequest, InterfaceInputConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[InterfaceInputConfigStreamRequest, InterfaceInputConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[InterfaceInputConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[InterfaceInputConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[InterfaceInputConfigSetRequest, InterfaceInputConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[InterfaceInputConfigSetSomeRequest, InterfaceInputConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[InterfaceInputConfigDeleteRequest, InterfaceInputConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[InterfaceInputConfigDeleteSomeRequest, InterfaceInputConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[InterfaceInputConfigDeleteAllRequest, InterfaceInputConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[InterfaceInputConfigBatchedStreamRequest, InterfaceInputConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[InterfaceInputConfigBatchedStreamRequest, InterfaceInputConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.InterfaceInputConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                InterfaceInputConfigRequest,
-                InterfaceInputConfigResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigSomeRequest,
-                InterfaceInputConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigStreamRequest,
-                InterfaceInputConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigStreamRequest,
-                InterfaceInputConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                InterfaceInputConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                InterfaceInputConfigSetRequest,
-                InterfaceInputConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigSetSomeRequest,
-                InterfaceInputConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                InterfaceInputConfigDeleteRequest,
-                InterfaceInputConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigDeleteSomeRequest,
-                InterfaceInputConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigDeleteAllRequest,
-                InterfaceInputConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigBatchedStreamRequest,
-                InterfaceInputConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.InterfaceInputConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                InterfaceInputConfigBatchedStreamRequest,
-                InterfaceInputConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class ReplaceServiceBase(ServiceBase):
-    async def get_one(self, replace_request: "ReplaceRequest") -> "ReplaceResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, replace_some_request: "ReplaceSomeRequest") -> AsyncIterator[ReplaceSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, replace_stream_request: "ReplaceStreamRequest") -> AsyncIterator[ReplaceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, replace_stream_request: "ReplaceStreamRequest") -> AsyncIterator[ReplaceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, replace_stream_request: "ReplaceStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, replace_stream_request: "ReplaceStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, replace_batched_stream_request: "ReplaceBatchedStreamRequest") -> AsyncIterator[ReplaceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, replace_batched_stream_request: "ReplaceBatchedStreamRequest") -> AsyncIterator[ReplaceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ReplaceRequest, ReplaceResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ReplaceSomeRequest, ReplaceSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ReplaceStreamRequest, ReplaceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ReplaceStreamRequest, ReplaceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ReplaceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ReplaceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ReplaceBatchedStreamRequest, ReplaceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ReplaceBatchedStreamRequest, ReplaceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.ReplaceService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceRequest,
-                ReplaceResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceSomeRequest,
-                ReplaceSomeResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceStreamRequest,
-                ReplaceStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceStreamRequest,
-                ReplaceStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceBatchedStreamRequest,
-                ReplaceBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceBatchedStreamRequest,
-                ReplaceBatchedStreamResponse,
-            ),
-        }
-
-
-class ReplaceConfigServiceBase(ServiceBase):
-    async def get_one(self, replace_config_request: "ReplaceConfigRequest") -> "ReplaceConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, replace_config_some_request: "ReplaceConfigSomeRequest") -> AsyncIterator[ReplaceConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, replace_config_stream_request: "ReplaceConfigStreamRequest") -> AsyncIterator[ReplaceConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, replace_config_stream_request: "ReplaceConfigStreamRequest") -> AsyncIterator[ReplaceConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, replace_config_stream_request: "ReplaceConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, replace_config_stream_request: "ReplaceConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, replace_config_set_request: "ReplaceConfigSetRequest") -> "ReplaceConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, replace_config_set_some_request: "ReplaceConfigSetSomeRequest") -> AsyncIterator[ReplaceConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, replace_config_delete_request: "ReplaceConfigDeleteRequest") -> "ReplaceConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, replace_config_delete_some_request: "ReplaceConfigDeleteSomeRequest") -> AsyncIterator[ReplaceConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, replace_config_delete_all_request: "ReplaceConfigDeleteAllRequest") -> AsyncIterator[ReplaceConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, replace_config_batched_stream_request: "ReplaceConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ReplaceConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, replace_config_batched_stream_request: "ReplaceConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ReplaceConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ReplaceConfigRequest, ReplaceConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ReplaceConfigSomeRequest, ReplaceConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ReplaceConfigStreamRequest, ReplaceConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ReplaceConfigStreamRequest, ReplaceConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ReplaceConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ReplaceConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ReplaceConfigSetRequest, ReplaceConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ReplaceConfigSetSomeRequest, ReplaceConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ReplaceConfigDeleteRequest, ReplaceConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ReplaceConfigDeleteSomeRequest, ReplaceConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ReplaceConfigDeleteAllRequest, ReplaceConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ReplaceConfigBatchedStreamRequest, ReplaceConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ReplaceConfigBatchedStreamRequest, ReplaceConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.ReplaceConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceConfigRequest,
-                ReplaceConfigResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigSomeRequest,
-                ReplaceConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigStreamRequest,
-                ReplaceConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigStreamRequest,
-                ReplaceConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceConfigSetRequest,
-                ReplaceConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigSetSomeRequest,
-                ReplaceConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReplaceConfigDeleteRequest,
-                ReplaceConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigDeleteSomeRequest,
-                ReplaceConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigDeleteAllRequest,
-                ReplaceConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigBatchedStreamRequest,
-                ReplaceConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.ReplaceConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReplaceConfigBatchedStreamRequest,
-                ReplaceConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class RevertConfigServiceBase(ServiceBase):
-    async def get_one(self, revert_config_request: "RevertConfigRequest") -> "RevertConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, revert_config_some_request: "RevertConfigSomeRequest") -> AsyncIterator[RevertConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, revert_config_stream_request: "RevertConfigStreamRequest") -> AsyncIterator[RevertConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, revert_config_stream_request: "RevertConfigStreamRequest") -> AsyncIterator[RevertConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, revert_config_stream_request: "RevertConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, revert_config_stream_request: "RevertConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, revert_config_set_request: "RevertConfigSetRequest") -> "RevertConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, revert_config_set_some_request: "RevertConfigSetSomeRequest") -> AsyncIterator[RevertConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, revert_config_delete_request: "RevertConfigDeleteRequest") -> "RevertConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, revert_config_delete_some_request: "RevertConfigDeleteSomeRequest") -> AsyncIterator[RevertConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, revert_config_delete_all_request: "RevertConfigDeleteAllRequest") -> AsyncIterator[RevertConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, revert_config_batched_stream_request: "RevertConfigBatchedStreamRequest"
-    ) -> AsyncIterator[RevertConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, revert_config_batched_stream_request: "RevertConfigBatchedStreamRequest"
-    ) -> AsyncIterator[RevertConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[RevertConfigRequest, RevertConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[RevertConfigSomeRequest, RevertConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[RevertConfigStreamRequest, RevertConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[RevertConfigStreamRequest, RevertConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[RevertConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[RevertConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[RevertConfigSetRequest, RevertConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[RevertConfigSetSomeRequest, RevertConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[RevertConfigDeleteRequest, RevertConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[RevertConfigDeleteSomeRequest, RevertConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[RevertConfigDeleteAllRequest, RevertConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[RevertConfigBatchedStreamRequest, RevertConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[RevertConfigBatchedStreamRequest, RevertConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.RevertConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RevertConfigRequest,
-                RevertConfigResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigSomeRequest,
-                RevertConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigStreamRequest,
-                RevertConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigStreamRequest,
-                RevertConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RevertConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RevertConfigSetRequest,
-                RevertConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigSetSomeRequest,
-                RevertConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RevertConfigDeleteRequest,
-                RevertConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigDeleteSomeRequest,
-                RevertConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigDeleteAllRequest,
-                RevertConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigBatchedStreamRequest,
-                RevertConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.RevertConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RevertConfigBatchedStreamRequest,
-                RevertConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class UpdateServiceBase(ServiceBase):
-    async def get_one(self, update_request: "UpdateRequest") -> "UpdateResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, update_some_request: "UpdateSomeRequest") -> AsyncIterator[UpdateSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, update_stream_request: "UpdateStreamRequest") -> AsyncIterator[UpdateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, update_stream_request: "UpdateStreamRequest") -> AsyncIterator[UpdateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, update_stream_request: "UpdateStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, update_stream_request: "UpdateStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, update_batched_stream_request: "UpdateBatchedStreamRequest") -> AsyncIterator[UpdateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, update_batched_stream_request: "UpdateBatchedStreamRequest") -> AsyncIterator[UpdateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[UpdateRequest, UpdateResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[UpdateSomeRequest, UpdateSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[UpdateStreamRequest, UpdateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[UpdateStreamRequest, UpdateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[UpdateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[UpdateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[UpdateBatchedStreamRequest, UpdateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[UpdateBatchedStreamRequest, UpdateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.UpdateService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateRequest,
-                UpdateResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSomeRequest,
-                UpdateSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateStreamRequest,
-                UpdateStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateStreamRequest,
-                UpdateStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateBatchedStreamRequest,
-                UpdateBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateBatchedStreamRequest,
-                UpdateBatchedStreamResponse,
-            ),
-        }
-
-
-class UpdateConfigServiceBase(ServiceBase):
-    async def get_one(self, update_config_request: "UpdateConfigRequest") -> "UpdateConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, update_config_some_request: "UpdateConfigSomeRequest") -> AsyncIterator[UpdateConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, update_config_stream_request: "UpdateConfigStreamRequest") -> AsyncIterator[UpdateConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, update_config_stream_request: "UpdateConfigStreamRequest") -> AsyncIterator[UpdateConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, update_config_stream_request: "UpdateConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, update_config_stream_request: "UpdateConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, update_config_set_request: "UpdateConfigSetRequest") -> "UpdateConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, update_config_set_some_request: "UpdateConfigSetSomeRequest") -> AsyncIterator[UpdateConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, update_config_delete_request: "UpdateConfigDeleteRequest") -> "UpdateConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, update_config_delete_some_request: "UpdateConfigDeleteSomeRequest") -> AsyncIterator[UpdateConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, update_config_delete_all_request: "UpdateConfigDeleteAllRequest") -> AsyncIterator[UpdateConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, update_config_batched_stream_request: "UpdateConfigBatchedStreamRequest"
-    ) -> AsyncIterator[UpdateConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, update_config_batched_stream_request: "UpdateConfigBatchedStreamRequest"
-    ) -> AsyncIterator[UpdateConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[UpdateConfigRequest, UpdateConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[UpdateConfigSomeRequest, UpdateConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[UpdateConfigStreamRequest, UpdateConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[UpdateConfigStreamRequest, UpdateConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[UpdateConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[UpdateConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[UpdateConfigSetRequest, UpdateConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[UpdateConfigSetSomeRequest, UpdateConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[UpdateConfigDeleteRequest, UpdateConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[UpdateConfigDeleteSomeRequest, UpdateConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[UpdateConfigDeleteAllRequest, UpdateConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[UpdateConfigBatchedStreamRequest, UpdateConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[UpdateConfigBatchedStreamRequest, UpdateConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.UpdateConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateConfigRequest,
-                UpdateConfigResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigSomeRequest,
-                UpdateConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigStreamRequest,
-                UpdateConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigStreamRequest,
-                UpdateConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateConfigSetRequest,
-                UpdateConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigSetSomeRequest,
-                UpdateConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateConfigDeleteRequest,
-                UpdateConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigDeleteSomeRequest,
-                UpdateConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigDeleteAllRequest,
-                UpdateConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigBatchedStreamRequest,
-                UpdateConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateConfigBatchedStreamRequest,
-                UpdateConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class UpdateSyncConfigServiceBase(ServiceBase):
-    async def get_one(self, update_sync_config_request: "UpdateSyncConfigRequest") -> "UpdateSyncConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, update_sync_config_some_request: "UpdateSyncConfigSomeRequest") -> AsyncIterator[UpdateSyncConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, update_sync_config_stream_request: "UpdateSyncConfigStreamRequest") -> AsyncIterator[UpdateSyncConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, update_sync_config_stream_request: "UpdateSyncConfigStreamRequest") -> AsyncIterator[UpdateSyncConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, update_sync_config_stream_request: "UpdateSyncConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, update_sync_config_stream_request: "UpdateSyncConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, update_sync_config_set_request: "UpdateSyncConfigSetRequest") -> "UpdateSyncConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, update_sync_config_set_some_request: "UpdateSyncConfigSetSomeRequest") -> AsyncIterator[UpdateSyncConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, update_sync_config_delete_request: "UpdateSyncConfigDeleteRequest") -> "UpdateSyncConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, update_sync_config_delete_some_request: "UpdateSyncConfigDeleteSomeRequest"
-    ) -> AsyncIterator[UpdateSyncConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, update_sync_config_delete_all_request: "UpdateSyncConfigDeleteAllRequest") -> AsyncIterator[UpdateSyncConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, update_sync_config_batched_stream_request: "UpdateSyncConfigBatchedStreamRequest"
-    ) -> AsyncIterator[UpdateSyncConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, update_sync_config_batched_stream_request: "UpdateSyncConfigBatchedStreamRequest"
-    ) -> AsyncIterator[UpdateSyncConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[UpdateSyncConfigRequest, UpdateSyncConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[UpdateSyncConfigSomeRequest, UpdateSyncConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[UpdateSyncConfigStreamRequest, UpdateSyncConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[UpdateSyncConfigStreamRequest, UpdateSyncConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[UpdateSyncConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[UpdateSyncConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[UpdateSyncConfigSetRequest, UpdateSyncConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[UpdateSyncConfigSetSomeRequest, UpdateSyncConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[UpdateSyncConfigDeleteRequest, UpdateSyncConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[UpdateSyncConfigDeleteSomeRequest, UpdateSyncConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[UpdateSyncConfigDeleteAllRequest, UpdateSyncConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[UpdateSyncConfigBatchedStreamRequest, UpdateSyncConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[UpdateSyncConfigBatchedStreamRequest, UpdateSyncConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateSyncConfigRequest,
-                UpdateSyncConfigResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigSomeRequest,
-                UpdateSyncConfigSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigStreamRequest,
-                UpdateSyncConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigStreamRequest,
-                UpdateSyncConfigStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateSyncConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateSyncConfigSetRequest,
-                UpdateSyncConfigSetResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigSetSomeRequest,
-                UpdateSyncConfigSetSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                UpdateSyncConfigDeleteRequest,
-                UpdateSyncConfigDeleteResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigDeleteSomeRequest,
-                UpdateSyncConfigDeleteSomeResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigDeleteAllRequest,
-                UpdateSyncConfigDeleteAllResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigBatchedStreamRequest,
-                UpdateSyncConfigBatchedStreamResponse,
-            ),
-            "/arista.studio_topology.v1.UpdateSyncConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                UpdateSyncConfigBatchedStreamRequest,
-                UpdateSyncConfigBatchedStreamResponse,
-            ),
-        }
+from ...workspace import v1 as __workspace__v1__

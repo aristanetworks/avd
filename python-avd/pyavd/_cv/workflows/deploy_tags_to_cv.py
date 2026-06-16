@@ -17,12 +17,12 @@ LOGGER = getLogger(__name__)
 
 
 async def deploy_tags_to_cv(
-    tags: list[CVDeviceTag | CVInterfaceTag],
+    tags: list[CVDeviceTag] | list[CVInterfaceTag],
     workspace: CVWorkspace,
     strict: bool,
-    skipped_tags: list[CVDeviceTag | CVInterfaceTag],
-    deployed_tags: list[CVDeviceTag | CVInterfaceTag],
-    removed_tags: list[CVDeviceTag | CVInterfaceTag],
+    skipped_tags: list[CVDeviceTag] | list[CVInterfaceTag],
+    deployed_tags: list[CVDeviceTag] | list[CVInterfaceTag],
+    removed_tags: list[CVDeviceTag] | list[CVInterfaceTag],
     cv_client: CVClient,
 ) -> None:
     """

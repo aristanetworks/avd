@@ -8,9 +8,12 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable
+    from typing import TypeVar
+
+    T = TypeVar("T")
 
 
-def batch(iterable: Iterable, size: int) -> Generator[Iterable]:
+def batch(iterable: Iterable[T], size: int) -> Generator[list[T]]:
     """Returns a Generator of lists containing 'size' items. The final list may be shorter."""
     iterator = iter(iterable)
     while batch := list(islice(iterator, size)):
