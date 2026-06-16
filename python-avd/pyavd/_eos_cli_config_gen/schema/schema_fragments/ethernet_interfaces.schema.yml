@@ -139,7 +139,6 @@ keys:
               description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
-          # TODO AVD 7.0.0: Enforce at least one child key so empty dictionaries are rejected or normalized consistently.
           keys:
             enabled:
               type: bool
