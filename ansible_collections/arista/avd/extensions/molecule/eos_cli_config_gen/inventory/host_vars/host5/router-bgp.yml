@@ -5,3 +5,8 @@ router_bgp:
   bgp:
     additional_paths:
       send: backup
+  address_family_evpn:
+    next_hop_unchanged: true
+    next_hop_mpls_resolution_ribs:
+      - rib_type: tunnel-rib
+        rib_name: host5-rib

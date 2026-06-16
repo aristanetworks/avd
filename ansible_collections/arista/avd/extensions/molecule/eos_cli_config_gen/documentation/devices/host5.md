@@ -104,6 +104,12 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
+#### Router BGP EVPN Address Family
+
+- Next-hop-unchanged is explicitly configured (default behaviour)
+
+- Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
+
 #### Router BGP Device Configuration
 
 ```eos
@@ -111,6 +117,10 @@ ASN Notation: asplain
 router bgp 65005
    router-id 192.0.2.5
    bgp additional-paths send backup
+   !
+   address-family evpn
+      bgp next-hop-unchanged
+      next-hop mpls resolution ribs tunnel-rib host5-rib
 ```
 
 ## Multicast

@@ -230,6 +230,7 @@ ASN Notation: asplain
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 444 | 192.0.2.44:444 | 444:444<br>remote 444:445 | - | - | learned |
+| 445 | 192.0.2.44:445 | 445:445 | - | - | - |
 
 #### Router BGP VRFs
 
@@ -283,6 +284,10 @@ router bgp 65001
       !
       comment
       VLAN BGP coverage
+   !
+   vlan 445
+      rd 192.0.2.44:445
+      route-target both 445:445
    !
    vlan-aware-bundle BGP-COVERAGE-BUNDLE
       rd 192.0.2.44:500

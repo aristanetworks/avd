@@ -72,6 +72,11 @@ router_bgp:
       eos_cli: |-
         comment
         VLAN BGP coverage
+    - id: 445
+      rd: 192.0.2.44:445
+      route_targets:
+        both:
+          - 445:445
   vlan_aware_bundles:
     - name: BGP-COVERAGE-BUNDLE
       rd: 192.0.2.44:500
