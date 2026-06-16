@@ -49,7 +49,7 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
-{%     if vlan_interface.tcp_mss_ceiling is arista.avd.defined %}
+{%     if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or vlan_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ vlan_interface.tcp_mss_ceiling.ipv4 %}
