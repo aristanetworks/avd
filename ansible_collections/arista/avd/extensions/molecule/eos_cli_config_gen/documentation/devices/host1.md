@@ -7462,8 +7462,8 @@ interface Tunnel5
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | v6 nd new structure | default | - | - |
-| Vlan341 | test1 tcp_mss_ceiling | default | - | - |
-| Vlan342 | test2 tcp_mss_ceiling | default | - | - |
+| Vlan361 | TCP MSS ceiling - IPv4 | default | - | - |
+| Vlan362 | TCP MSS ceiling - IPv6 | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7514,8 +7514,8 @@ interface Tunnel5
 | Vlan338 | default | - | - | - | - | - |
 | Vlan339 | default | - | - | - | - | - |
 | Vlan340 | default | - | - | - | - | - |
-| Vlan341 | default | - | - | - | - | - |
-| Vlan342 | default | - | - | - | - | - |
+| Vlan361 | default | - | - | - | - | - |
+| Vlan362 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -7933,12 +7933,12 @@ interface Vlan340
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
 !
-interface Vlan341
-   description test1 tcp_mss_ceiling
+interface Vlan361
+   description TCP MSS ceiling - IPv4
    tcp mss ceiling ipv4 1350
 !
-interface Vlan342
-   description test2 tcp_mss_ceiling
+interface Vlan362
+   description TCP MSS ceiling - IPv6
    tcp mss ceiling ipv6 1350
 !
 interface Vlan501
