@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import fields, is_dataclass
+from dataclasses import MISSING, fields, is_dataclass
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -50,3 +50,37 @@ def get_result(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {k: get_result(v) for k, v in obj.items()}
     return deepcopy(obj)
+
+
+def _is_frozen_dataclass(obj: object) -> bool:
+    """Return True if object is an instance of a frozen dataclass."""
+    params = getattr(type(obj), "__dataclass_params__", None)
+    return params is not None and params.frozen
+
+
+def reset_mutable_fields(obj: object) -> None:
+    """
+    Reset all mutable fields of a cv_deploy model/dataclass instance to their original defaults.
+
+    Logic per field:
+    - Non-frozen dataclass: call reset_mutable_fields.
+    - Frozen dataclass: keep as is.
+    - Field with a regular default: set to that default.
+    - Field with a default_factory: call the factory.
+    - Any other field: skip.
+    """
+    if not is_dataclass(obj) or isinstance(obj, type):
+        return
+    for f in fields(obj):
+        value = getattr(obj, f.name)
+        if value is not None and is_dataclass(value):
+            if not _is_frozen_dataclass(value):
+                if hasattr(value, "reset_mutable_fields"):
+                    value.reset_mutable_fields()
+                else:
+                    reset_mutable_fields(value)
+            # Frozen input-based objects (AvdWorkspace, AvdChangeControl) are kept as-is.
+        elif f.default is not MISSING:
+            setattr(obj, f.name, f.default)
+        elif f.default_factory is not MISSING:
+            setattr(obj, f.name, f.default_factory())

@@ -15,7 +15,7 @@ from grpclib.config import Configuration
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 
-from .utils import get_result
+from .utils import get_result, reset_mutable_fields
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -139,6 +139,16 @@ class CVChangeControl:
             "requested_state": self.requested_state,
             "state": self.state,
         }
+
+    def reset_mutable_fields(self) -> None:
+        """
+        Reset fields populated from CloudVision at runtime.
+
+        Restores user-provided name/description from the frozen avd_change_control (mirroring __post_init__).
+        """
+        reset_mutable_fields(self)
+        self.name = self.avd_change_control.name or None
+        self.description = self.avd_change_control.description or None
 
 
 @dataclass(frozen=True)
@@ -295,6 +305,14 @@ class AvdWorkspace:
     """ Force submit the workspace even if some devices are not actively streaming to CloudVision."""
     build_warnings: AvdWorkspaceBuildWarningsConfig = field(default_factory=AvdWorkspaceBuildWarningsConfig)
     """Configuration settings to control fetching and exposing Workspace build warnings."""
+    max_sync_retries: int = 5
+    """
+    Maximum number of retry attempts to synchronize Workspace.
+    Synchronization attempts are made when:
+    - Workspace.needs_rebase == True after building a Workspace
+    - Workspace.responses.values[<request_id>].status == ResponseStatus.FAIL
+        and Workspace.responses.values[<request_id>].code == ResponseCode.SYNCHRONIZATION_REQUIRED
+    """
 
 
 @dataclass
@@ -307,6 +325,8 @@ class CVWorkspace:
     """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
+    synchronization_required: bool = False
+    """Flag reflecting runtime requirement of the CloudVision Workspace to be synchronized/rebased."""
 
     @property
     def name(self) -> str:
@@ -332,6 +352,10 @@ class CVWorkspace:
     def build_warnings(self) -> AvdWorkspaceBuildWarningsConfig:
         return self.avd_workspace.build_warnings
 
+    @property
+    def max_sync_retries(self) -> int:
+        return self.avd_workspace.max_sync_retries
+
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
         return {
@@ -346,6 +370,14 @@ class CVWorkspace:
             "build_warnings": get_result(self.build_warnings),
             "device_build_results": get_result(self.device_build_results),
         }
+
+    def reset_mutable_fields(self) -> None:
+        """
+        Reset all mutable fields of an instance to their defaults due to the CloudVision runtime requirement to synchronize Workspace.
+
+        All mutable fields populated during the lifecycle of the instance are defaulted and will be re-populated after Workspace is synchronized/rebased.
+        """
+        reset_mutable_fields(self)
 
 
 @dataclass
@@ -376,6 +408,14 @@ class DeployToCvResult:
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
         return {f.name: get_result(getattr(self, f.name)) for f in fields(self)}
+
+    def reset_mutable_fields(self) -> None:
+        """
+        Reset all mutable fields of an instance to their defaults due to the CloudVision runtime requirement to synchronize Workspace.
+
+        All mutable fields populated during the lifecycle of the instance are defaulted and will be re-populated after Workspace is synchronized/rebased.
+        """
+        reset_mutable_fields(self)
 
 
 @dataclass(frozen=True)
@@ -423,6 +463,17 @@ class CVDevice:
             "exists_on_cv": self.exists_on_cv,
             "streaming": self.streaming,
         }
+
+    def reset_mutable_fields(self) -> None:
+        """
+        Reset mutable fields populated during deployment back to their post-init state.
+
+        serial_number and system_mac_address are restored to the intended values from avd_device (mirroring __post_init__) so that verify_devices_on_cv can
+        use them as lookup keys on the next attempt.
+        """
+        reset_mutable_fields(self)
+        self.serial_number = self.avd_device.serial_number or None
+        self.system_mac_address = self.avd_device.system_mac_address or None
 
 
 @dataclass

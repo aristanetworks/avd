@@ -16,7 +16,7 @@ from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_stu
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
-from .finalize_workspace_on_cv import finalize_workspace_on_cv
+from .finalize_workspace_on_cv import finalize_workspace_on_cv, workspace_was_synchronized_on_cv
 from .models import (
     CloudVision,
     CVChangeControl,
@@ -155,92 +155,109 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-            verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+            for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
+                if workspace_sync_attempt > 0:
+                    # All state computed against the previous CloudVision mainline must be reset/discarded and re-evaluated after sync.
+                    result.reset_mutable_fields()
+                    for device in devices:
+                        device.reset_mutable_fields()
 
-            try:
-                # Verify devices exist and update CVDevice objects with exists_on_cv.
-                # Depending on skip_missing_devices we will raise or skip missing devices.
-                await verify_devices_on_cv(
-                    devices=devices,
-                    workspace_id=result.workspace.id,
-                    skip_missing_devices=skip_missing_devices,
-                    warnings=result.warnings,
-                    cv_client=cv_client,
-                )
+                try:
+                    # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
+                    verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
-                # Deploy device tags
-                await deploy_tags_to_cv(
-                    tags=device_tags,
-                    workspace=result.workspace,
-                    strict=strict_tags,
-                    skipped_tags=result.skipped_device_tags,
-                    deployed_tags=result.deployed_device_tags,
-                    removed_tags=result.removed_device_tags,
-                    cv_client=cv_client,
-                )
-
-                # Deploy interface tags
-                await deploy_tags_to_cv(
-                    tags=interface_tags,
-                    workspace=result.workspace,
-                    strict=strict_tags,
-                    skipped_tags=result.skipped_interface_tags,
-                    deployed_tags=result.deployed_interface_tags,
-                    removed_tags=result.removed_interface_tags,
-                    cv_client=cv_client,
-                )
-
-                # Deploy configs
-                # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
-                #       by building a hierarchy from the CVEosConfig objects.
-                await deploy_configs_to_cv(
-                    configs=configs,
-                    result=result,
-                    cv_client=cv_client,
-                )
-
-                # Deploy Static Configuration Studio manifest
-                # TODO: Update function docstring workflow to reflect this
-                if static_config_manifest:
-                    await deploy_static_config_studio_manifest_to_cv(
-                        manifest=static_config_manifest,
-                        deployment_result=result,
+                    # Verify devices exist and update CVDevice objects with exists_on_cv.
+                    # Depending on skip_missing_devices we will raise or skip missing devices.
+                    await verify_devices_on_cv(
+                        devices=devices,
+                        workspace_id=result.workspace.id,
+                        skip_missing_devices=skip_missing_devices,
+                        warnings=result.warnings,
                         cv_client=cv_client,
                     )
 
-                # Deploy Studio Inputs
-                await deploy_studio_inputs_to_cv(
-                    studio_inputs=studio_inputs,
-                    result=result,
+                    # Deploy device tags
+                    await deploy_tags_to_cv(
+                        tags=device_tags,
+                        workspace=result.workspace,
+                        strict=strict_tags,
+                        skipped_tags=result.skipped_device_tags,
+                        deployed_tags=result.deployed_device_tags,
+                        removed_tags=result.removed_device_tags,
+                        cv_client=cv_client,
+                    )
+
+                    # Deploy interface tags
+                    await deploy_tags_to_cv(
+                        tags=interface_tags,
+                        workspace=result.workspace,
+                        strict=strict_tags,
+                        skipped_tags=result.skipped_interface_tags,
+                        deployed_tags=result.deployed_interface_tags,
+                        removed_tags=result.removed_interface_tags,
+                        cv_client=cv_client,
+                    )
+
+                    # Deploy configs
+                    # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
+                    #       by building a hierarchy from the CVEosConfig objects.
+                    await deploy_configs_to_cv(
+                        configs=configs,
+                        result=result,
+                        cv_client=cv_client,
+                    )
+
+                    # Deploy Static Configuration Studio manifest
+                    # TODO: Update function docstring workflow to reflect this
+                    if static_config_manifest:
+                        await deploy_static_config_studio_manifest_to_cv(
+                            manifest=static_config_manifest,
+                            deployment_result=result,
+                            cv_client=cv_client,
+                        )
+
+                    # Deploy Studio Inputs
+                    await deploy_studio_inputs_to_cv(
+                        studio_inputs=studio_inputs,
+                        result=result,
+                        cv_client=cv_client,
+                    )
+
+                    # Deploy CV Pathfinder metadata
+                    await deploy_cv_pathfinder_metadata_to_cv(
+                        cv_pathfinder_metadata=cv_pathfinder_metadata,
+                        result=result,
+                        cv_client=cv_client,
+                    )
+
+                    # Delete any leftover device configs for devices managed by the static config manifest
+                    await delete_configs_from_cv(
+                        device_deployments=device_deployments,
+                        result=result,
+                        cv_client=cv_client,
+                    )
+
+                except CVClientException as e:
+                    result.errors.append(e)
+                    result.failed = True
+
+                # Build, submit or abandon Workspace. If failed, we always abandon.
+                if result.failed:
+                    await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+                    result.workspace.state = "abandoned"
+                    return result
+
+                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
+
+                if await workspace_was_synchronized_on_cv(
+                    workspace=result.workspace,
                     cv_client=cv_client,
-                )
-
-                # Deploy CV Pathfinder metadata
-                await deploy_cv_pathfinder_metadata_to_cv(
-                    cv_pathfinder_metadata=cv_pathfinder_metadata,
-                    result=result,
-                    cv_client=cv_client,
-                )
-
-                # Delete any leftover device configs for devices managed by the static config manifest
-                await delete_configs_from_cv(
-                    device_deployments=device_deployments,
-                    result=result,
-                    cv_client=cv_client,
-                )
-
-            except CVClientException as e:
-                result.errors.append(e)
-                result.failed = True
-
-            # Build, submit or abandon Workspace. If failed, we always abandon.
-            if result.failed:
-                await cv_client.abandon_workspace(workspace_id=result.workspace.id)
-                result.workspace.state = "abandoned"
-                return result
-
-            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
+                    workspace_sync_attempt=workspace_sync_attempt,
+                ):
+                    # Workspace has been synchronized on CloudVision. We need to replay all changes.
+                    continue
+                # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.
+                break
 
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:

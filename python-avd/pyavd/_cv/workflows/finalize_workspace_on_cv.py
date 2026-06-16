@@ -6,10 +6,15 @@ from __future__ import annotations
 from logging import getLogger
 from re import Pattern, error
 from re import compile as re_compile
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
-from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
+from pyavd._cv.client.exceptions import (
+    CVWorkspaceBuildFailed,
+    CVWorkspaceSubmitFailed,
+    CVWorkspaceSubmitFailedInactiveDevices,
+    CVWorkspaceSyncAttemptsExhausted,
+)
 from pyavd._utils import get_v2
 
 from .constants import EOS_CLI_WARNINGS
@@ -52,6 +57,11 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    # Check if Workspace needs to be synchronized/rebased after the build attempt
+    if cv_workspace.needs_rebase:
+        # Return to initiate Workspace sync/rebase procedure
+        workspace.synchronization_required = True
+        return
     workspace.build_id = cv_workspace.last_build_id
     workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
     if build_result.status != ResponseStatus.SUCCESS:
@@ -77,7 +87,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
             workspace_id=workspace.id,
-            request_id=workspace_config.request_params.request_id,
+            request_id=cast("str", workspace_config.request_params.request_id),
         )
         # Form a list of known inactive existing devices
         if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is False]:
@@ -85,6 +95,13 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
+
+            # Check if Workspace submission failed because it needs to be synchronized/rebased
+            if submit_result.code == ResponseCode.SYNCHRONIZATION_REQUIRED:
+                # Return to initiate Workspace sync/rebase procedure
+                workspace.synchronization_required = True
+                return
+
             # Unforced Workspace submission failed due to inactive devices.
             if submit_result.code == ResponseCode.INACTIVE_DEVICES_EXIST:
                 # Use case where some of the devices that we targeted were known to be inactive prior to Workspace submission
@@ -220,7 +237,7 @@ def _should_include_build_details(
         return True
 
     # Include if build warnings are present and they are not requested to be suppressed
-    return (
+    return bool(
         workspace.build_warnings.enabled
         and workspace_build_details_item.config_validation_result.warnings
         and _has_unsuppressed_warnings(workspace_build_details_item, compiled_workspace_build_warnings_suppress_list)
@@ -374,3 +391,21 @@ async def _process_workspace_build_details(
         compiled_workspace_build_warnings_suppress_list=compiled_workspace_build_warnings_suppress_list,
         devices=devices,
     )
+
+
+async def workspace_was_synchronized_on_cv(workspace: CVWorkspace, cv_client: CVClient, workspace_sync_attempt: int) -> bool:
+    """
+    Synchronize/rebase CloudVision Workspace if this is required based on its runtime state.
+
+    Returns:
+        True: If Workspace has been synchronized/rebased and therefore replay of all changes is needed.
+        False: If Workspace has not been synchronized/rebased and all populated states are up-to-date.
+    """
+    if workspace.synchronization_required:
+        if workspace_sync_attempt < workspace.max_sync_retries:
+            _ = await cv_client.rebase_workspace(workspace_id=workspace.id)
+            # Reset synchronization requirement flag
+            workspace.synchronization_required = False
+            return True
+        raise CVWorkspaceSyncAttemptsExhausted(workspace.max_sync_retries, workspace.name, workspace.id)
+    return False
