@@ -103,6 +103,7 @@ interface {{ vlan_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{#     TODO: AVD 7.0.0 Check for CLI order and Inherited Interface VRF #}
 {%     if vlan_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
 {%         set with_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 {%         set without_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') %}
