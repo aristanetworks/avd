@@ -69,12 +69,11 @@ class DigitalTwinMixin(Protocol):
                 self.structured_config.metadata.digital_twin._update(
                     environment=environment,
                     node_type=digital_twin_node_type,
+                    ip_addr=ip_addr,
                     version=version,
                     username=username,
                     password=password,
                 )
-                if ip_addr:
-                    self.structured_config.metadata.digital_twin._update(ip_addr=ip_addr)
                 # Set internet_access flag if node_type is cloudeos or veos
                 if (
                     act_internet_access := default(
