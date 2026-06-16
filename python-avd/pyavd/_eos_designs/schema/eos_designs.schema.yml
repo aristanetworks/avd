@@ -1268,6 +1268,91 @@ keys:
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+              port_channel:
+                type: dict
+                keys:
+                  subinterfaces:
+                    type: list
+                    primary_key: number
+                    description: 'Port-Channel L2 Subinterfaces.
+
+                      Subinterfaces are only supported on routed port-channels, which
+                      means they cannot be configured on MLAG port-channels.
+
+                      Setting `short_esi: auto` generates the short_esi automatically
+                      using a hash of configuration elements.
+
+                      Please see the notes under "EVPN A/A ESI dual-attached endpoint
+                      scenario" before setting `short_esi: auto`.
+
+                      '
+                    items:
+                      type: dict
+                      keys:
+                        number:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Subinterface number.
+                          min: 1
+                          max: 1048575
+                        description:
+                          type: str
+                          description: "Description for subinterface.\nThis can be
+                            a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                            available template fields are:\n  - `subinterface` - The
+                            full subinterface name.\n  - `subinterface_number` - The
+                            number for the subinterface.\n  - `vlan_id` - The VLAN
+                            ID bridged to this subinterface.\n  - `dot1q_client_vlan`
+                            - The Client VLAN ID encapsulation.\n  - `endpoint_type`
+                            - The `type` of the connected endpoint either set on the
+                            endpoint or taken from `connected_endpoints_keys.type`
+                            like `server`, `router` etc.\n  - `endpoint` - The name
+                            of the connected endpoint"
+                        short_esi:
+                          type: str
+                          description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                            Required for multihomed port-channels with subinterfaces.
+
+                            '
+                        vlan_id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 4094
+                          description: 'VLAN ID to bridge.
+
+                            Default is the subinterface number.
+
+                            '
+                        encapsulation_vlan:
+                          type: dict
+                          keys:
+                            client_dot1q:
+                              type: int
+                              description: 'Client VLAN ID encapsulation.
+
+                                Default is the subinterface number.
+
+                                '
+                              convert_types:
+                              - str
+                              min: 1
+                              max: 4094
+                        raw_eos_cli:
+                          type: str
+                          description: EOS CLI rendered directly on the port-channel
+                            subinterface in the final EOS configuration.
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                            for the EOS Config schema.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   custom_connected_endpoints_keys:
     $ref: eos_designs#/$defs/connected_endpoints_keys
     type: list
@@ -2528,6 +2613,41 @@ keys:
         default: true
         description: Globally enable the redistribution of static 802.1X-learned MAC
           addresses into EVPN under all configured MAC-VRFs.
+      web_authentication:
+        type: dict
+        description: 'The Web Authentication feature authenticates a supplicant via
+          a web page, generally referred to as a captive portal.
+
+          Requires `dot1x_settings.dynamic_authorization.enabled: true`.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Enable the Web Authentication feature.
+          url:
+            type: str
+            pattern: https?://[^\s/:]+(:\d+)?
+            description: 'Static captive portal URL used when the RADIUS server does
+              not provide one during the authentication workflow.
+
+              If both are configured, the RADIUS-provided URL takes precedence.
+
+              Supported format: http[s]://<hostname>[:<port>]'
+          ssl_profile:
+            type: str
+            description: 'SSL profile name, enabling HTTPS redirection on port 443.
+
+              Without this, only HTTP redirection is supported.
+
+              Can be used alone (when RADIUS provides the URL dynamically) or together
+              with `url`.'
+          start_limit_infinite:
+            type: bool
+            description: 'Disable the loop-protection mechanism that limits captive
+              portal authentication retries.
+
+              By default, EOS limits a supplicant to 16 consecutive attempts before
+              logging it off.'
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -8100,6 +8220,93 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
+        port_channel:
+          type: dict
+          keys:
+            subinterfaces:
+              type: list
+              primary_key: number
+              description: 'Port-Channel L2 Subinterfaces.
+
+                Only applicable for connected-endpoints. `Subinterfaces` key cannot
+                be used with `network_ports`
+
+                Subinterfaces are only supported on routed port-channels, which means
+                they cannot be configured on MLAG port-channels.
+
+                Setting `short_esi: auto` generates the short_esi automatically using
+                a hash of configuration elements.
+
+                Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
+                before setting `short_esi: auto`.
+
+                '
+              items:
+                type: dict
+                keys:
+                  number:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Subinterface number.
+                    min: 1
+                    max: 1048575
+                  description:
+                    type: str
+                    description: "Description for subinterface.\nThis can be a template
+                      using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                      available template fields are:\n  - `subinterface` - The full
+                      subinterface name.\n  - `subinterface_number` - The number for
+                      the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
+                      subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID
+                      encapsulation.\n  - `endpoint_type` - The `type` of the connected
+                      endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
+                      like `server`, `router` etc.\n  - `endpoint` - The name of the
+                      connected endpoint"
+                  short_esi:
+                    type: str
+                    description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                      Required for multihomed port-channels with subinterfaces.
+
+                      '
+                  vlan_id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 4094
+                    description: 'VLAN ID to bridge.
+
+                      Default is the subinterface number.
+
+                      '
+                  encapsulation_vlan:
+                    type: dict
+                    keys:
+                      client_dot1q:
+                        type: int
+                        description: 'Client VLAN ID encapsulation.
+
+                          Default is the subinterface number.
+
+                          '
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                  raw_eos_cli:
+                    type: str
+                    description: EOS CLI rendered directly on the port-channel subinterface
+                      in the final EOS configuration.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -10458,87 +10665,6 @@ $defs:
                 - str
                 description: Number of LACP BPDUs lost before deeming the peer down.
                   EOS default is 3.
-          subinterfaces:
-            type: list
-            primary_key: number
-            description: 'Port-Channel L2 Subinterfaces.
-
-              Subinterfaces are only supported on routed port-channels, which means
-              they cannot be configured on MLAG port-channels.
-
-              Setting short_esi: auto generates the short_esi automatically using
-              a hash of configuration elements.
-
-              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
-              before setting short_esi: auto.
-
-              '
-            items:
-              type: dict
-              keys:
-                number:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Subinterface number.
-                  min: 1
-                  max: 1048575
-                description:
-                  type: str
-                  description: "Description for subinterface.\nThis can be a template
-                    using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-                    available template fields are:\n  - `subinterface` - The full
-                    subinterface name.\n  - `subinterface_number` - The number for
-                    the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
-                    subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.\n
-                    \ - `endpoint_type` - The `type` of the connected endpoint either
-                    set on the endpoint or taken from `connected_endpoints_keys.type`
-                    like `server`, `router` etc.\n  - `endpoint` - The name of the
-                    connected endpoint"
-                short_esi:
-                  type: str
-                  description: 'In format xxxx:xxxx:xxxx or "auto".
-
-                    Required for multihomed port-channels with subinterfaces.
-
-                    '
-                vlan_id:
-                  type: int
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 4094
-                  description: 'VLAN ID to bridge.
-
-                    Default is the subinterface number.
-
-                    '
-                encapsulation_vlan:
-                  type: dict
-                  keys:
-                    client_dot1q:
-                      type: int
-                      description: 'Client VLAN ID encapsulation.
-
-                        Default is the subinterface number.
-
-                        '
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                raw_eos_cli:
-                  type: str
-                  description: EOS CLI rendered directly on the port-channel subinterface
-                    in the final EOS configuration.
-                structured_config:
-                  type: dict
-                  relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
-                    for the EOS Config schema.
-                  documentation_options:
-                    hide_keys: true
-                  $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in
@@ -14938,6 +15064,58 @@ $defs:
             description: In seconds <0-4294967295> or infinite.
             convert_types:
             - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in
+              Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers
+              dns_servers_lifetime:
+                type: int
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: 'VRF used to reach the DHCP server.
+
+                    If not set, the VRF of the destination matches the VRF of this
+                    interface.
+
+                    Use the `default` to reach the DHCP server through the default
+                    VRF.'
+                  convert_types:
+                  - int
+                local_interface:
+                  type: str
+                  description: 'Local interface to communicate with DHCP server.
+
+                    Mutually exclusive with `source_address` and takes precedence
+                    over it.'
+                source_address:
+                  type: str
+                  description: 'Source IPv6 address to communicate with DHCP server.
+
+                    Mutually exclusive with `local_interface`, which takes precedence
+                    if both are set.'
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the
+                    relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.

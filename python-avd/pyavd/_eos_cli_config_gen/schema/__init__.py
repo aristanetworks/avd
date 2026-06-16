@@ -6555,6 +6555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
+            "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6595,6 +6596,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        render_monitor_layer1_without_enabled: bool
+        """
+        Available from AVD 6.3.0.
+        When `true`, renders the `monitor layer1` CLI block only if
+        `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+        matter the value of `monitor_layer1.enabled` is `true` or `false`.
+        When `false` (default), renders
+        the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6605,6 +6617,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
+                render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6636,6 +6649,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `mpls.rsvp.*` setting is defined.
                        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp`
                        is defined, even if no sub-settings are set.
+                    render_monitor_layer1_without_enabled:
+                       Available from AVD 6.3.0.
+                       When `true`, renders the `monitor layer1` CLI block only if
+                       `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no
+                       matter the value of `monitor_layer1.enabled` is `true` or `false`.
+                       When `false` (default), renders
+                       the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
 
                 """
 
@@ -9483,6 +9503,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -9509,7 +9535,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.
@@ -29619,7 +29649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "logging_mac_fault": {"type": bool}, "logging_transceiver": {"type": LoggingTransceiver}}
-        enabled: bool
+        enabled: bool | None
         """Enable monitor layer1."""
         logging_mac_fault: bool | None
         """Enable MAC fault logging."""
@@ -29635,7 +29665,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 logging_mac_fault: bool | None | UndefinedType = Undefined,
                 logging_transceiver: LoggingTransceiver | UndefinedType = Undefined,
             ) -> None:
@@ -72152,6 +72182,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -72178,7 +72214,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.
@@ -73991,6 +74031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_proxy_arp": {"type": bool},
             "ip_directed_broadcast": {"type": bool},
             "ip_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ip_address_virtual": {"type": str},
@@ -74069,7 +74110,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_proxy_arp: bool | None
         ip_directed_broadcast: bool | None
         ip_address: str | None
-        """IPv4_address/Mask."""
+        """IPv4_address/Mask or dhcp."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        'dhcp'.
+        """
         ip_address_secondaries: IpAddressSecondaries
         """Subclass of AvdList with `str` items."""
         ip_virtual_router_addresses: IpVirtualRouterAddresses
@@ -74242,6 +74288,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 ip_directed_broadcast: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -74322,7 +74369,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     arp_monitor_mac_address: arp_monitor_mac_address
                     ip_proxy_arp: ip_proxy_arp
                     ip_directed_broadcast: ip_directed_broadcast
-                    ip_address: IPv4_address/Mask.
+                    ip_address: IPv4_address/Mask or dhcp.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       'dhcp'.
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ip_virtual_router_addresses: Subclass of AvdList with `str` items.
                     ip_address_virtual: IPv4_address/Mask.
