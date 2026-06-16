@@ -782,3 +782,13 @@ vlan_interfaces:
           valid_lifetime: 100
           preferred_lifetime: 50
           no_autoconfig_flag: true
+
+  - name: Vlan341
+    description: test1 tcp_mss_ceiling
+    tcp_mss_ceiling:
+      ipv4: 1350
+
+  - name: Vlan342
+    description: test2 tcp_mss_ceiling
+    tcp_mss_ceiling:
+      ipv6: 1350
