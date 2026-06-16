@@ -27,8 +27,6 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-TOPOLOGY_STUDIO_ID = "TOPOLOGY"
-
 
 class StudioTopologyMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
@@ -63,7 +61,7 @@ class StudioTopologyMixin(Protocol):
         return [(response.key, response.error) async for response in responses]
 
     @LimitCvVersion(min_ver="2025.1.0")
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_device_decommission_staging(
         self: CVClientProtocol,
         workspace_id: str,
@@ -84,7 +82,7 @@ class StudioTopologyMixin(Protocol):
             List of Decommission objects for all requested devices.
 
         Raises:
-            CVDeviceDecommissionFailed: If the stream closed before all devices reached a terminal status.
+            CVTimeoutError: If the stream closed before all devices reached a terminal status.
         """
         request = DecommissionStreamRequest(
             partial_eq_filter=[Decommission(key=DeviceKey(device_id=device_id, workspace_id=workspace_id)) for device_id in device_ids]

@@ -63,7 +63,7 @@ async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureF
         # stage_devices_for_decommission method returns only failed responses
         assert len(stage_devices_for_decommission_response) == 0
 
-        # Subscribe for decommissining updates. They all must succeed prior to next steps (building Workspace, submitting Workspace)
+        # Subscribe for decommissioning updates. They all must succeed prior to next steps (building Workspace, submitting Workspace)
         wait_for_device_decommission_staging_response = await cv_client.wait_for_device_decommission_staging(
             workspace_id=workspace.id, device_ids=target_devices
         )
@@ -208,7 +208,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
         assert len(stage_devices_for_decommission_response) == 0
 
         with pytest.raises(CVTimeoutError) as exc_info:
-            # Subscribe for decommissining updates.
+            # Subscribe for decommissioning updates.
             _ = await cv_client.wait_for_device_decommission_staging(workspace_id=workspace.id, device_ids=target_devices)
 
     assert "Decommission staging timed out for the following devices:" in str(exc_info.value)
@@ -400,7 +400,7 @@ async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest
         assert len(stage_devices_for_decommission_response) == 0
 
         with pytest.raises(CVTimeoutError, match=expected_exception_msg):
-            # Subscribe for decommissining updates.
+            # Subscribe for decommissioning updates.
             _ = await cv_client.wait_for_device_decommission_staging(workspace_id=workspace.id, device_ids=target_devices)
 
     # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
