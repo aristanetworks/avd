@@ -18,9 +18,7 @@ qos rewrite dscp
 {%     endif %}
 {%     if qos.random_detect.ecn.global_buffer is arista.avd.defined %}
 {%         set gb = qos.random_detect.ecn.global_buffer %}
-{%         if gb.units is arista.avd.defined and gb.min is arista.avd.defined and gb.max is arista.avd.defined %}
 qos random-detect ecn global-buffer minimum-threshold {{ gb.min }} {{ gb.units }} maximum-threshold {{ gb.max }} {{ gb.units }}
-{%         endif %}
 {%     endif %}
 {%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
 qos tx-queue shape rate percent adaptive

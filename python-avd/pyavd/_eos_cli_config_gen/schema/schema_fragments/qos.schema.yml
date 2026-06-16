@@ -65,7 +65,9 @@ keys:
                     required: true
                     type: str
                     valid_values: ["segments", "bytes", "kbytes", "mbytes"]
-                    description: Units to be used for the threshold values.
+                    description: |
+                      Units to be used for the threshold values.
+                      Threshold values depend on the platform
                   min:
                     type: int
                     required: true
