@@ -7,20 +7,22 @@ import tempfile
 from contextlib import nullcontext as does_not_raise
 from logging import DEBUG
 from typing import TYPE_CHECKING
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdWorkspace,
     CloudVision,
+    CVChangeControl,
     CVDeployFuture,
     CVDeviceDeployment,
     CVEosConfig,
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
     CVWorkspace,
+    DeployToCvResult,
 )
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
@@ -269,3 +271,52 @@ async def test_deploy_to_cv_deploy_future_use_system_certs(
     mocked_cv_client_cls.assert_called_once()
     _, kwargs = mocked_cv_client_cls.call_args
     assert kwargs.get("use_system_certs") == expected_use_system_certs
+
+
+@pytest.mark.asyncio
+async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> None:
+    """_finalize_change_control calls finalize_change_control_on_cv when change_control.id is set."""
+    result = DeployToCvResult(workspace=CVWorkspace(), change_control=CVChangeControl(id="cc-123"))
+
+    mock_finalize = AsyncMock()
+    with patch("pyavd._cv.workflows.deploy_to_cv.finalize_change_control_on_cv", mock_finalize):
+        await _finalize_change_control(result, mock_cv_client)
+
+    mock_finalize.assert_called_once_with(change_control=result.change_control, cv_client=mock_cv_client)
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_workspace_sync_retry() -> None:
+    """deploy_to_cv resets state and replays deployment steps when workspace_was_synchronized_on_cv returns True."""
+    mock_cv_client = AsyncMock()
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock()),
+        patch(
+            "pyavd._cv.workflows.deploy_to_cv.workspace_was_synchronized_on_cv",
+            AsyncMock(side_effect=[True, False]),
+        ) as mock_synced,
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._reset_deployment_for_workspace_sync") as mock_reset,
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(max_sync_retries=1)),
+        )
+
+    assert not result.failed
+    assert mock_synced.call_count == 2
+    mock_reset.assert_called_once()

@@ -5,6 +5,7 @@
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
+from dataclasses import dataclass, field
 from logging import DEBUG
 from pathlib import Path
 from typing import Any
@@ -917,7 +918,7 @@ class TestDeployToCvResult:
         result.reset_mutable_fields()
 
         assert result.failed is False
-        for field in (
+        for dataclass_field in (
             "errors",
             "warnings",
             "deployed_configs",
@@ -938,7 +939,7 @@ class TestDeployToCvResult:
             "removed_device_tags",
             "removed_interface_tags",
         ):
-            assert not getattr(result, field)
+            assert not getattr(result, dataclass_field)
 
     def test_reset_workspace_in_place(self) -> None:
         """The workspace object is reset in-place (its runtime fields are cleared)."""
@@ -1007,3 +1008,21 @@ class TestResetMutableFieldsUtility:
         plain_dict: dict = {"key": "value"}
         reset_mutable_fields(plain_dict)
         assert plain_dict == {"key": "value"}
+
+    def test_non_frozen_dataclass_field_without_reset_method(self) -> None:
+        """A non-frozen dataclass stored in a field that has no reset_mutable_fields is reset recursively."""
+
+        @dataclass
+        class Inner:
+            state: str = "original"
+
+        @dataclass
+        class Outer:
+            inner: Inner = field(default_factory=Inner)
+            state: str | None = None
+
+        outer = Outer(inner=Inner(state="modified"), state="original")
+        reset_mutable_fields(outer)
+
+        assert outer.state is None
+        assert outer.inner.state == "original"
