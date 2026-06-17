@@ -1673,6 +1673,75 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.delete_configlet_container.assert_not_called()
         assert not deployment_result.removed_static_config_containers
 
+    async def test_preserve_existing_containers_keeps_existing_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that root-level preservation keeps omitted managed roots and manual root positions."""
+        site1_id = generate_id("SITE1")
+        site2_id = generate_id("SITE2")
+        manual_root_id = "manual-root-001"
+        stale_cfg_id = generate_id("STALE_CFG")
+
+        existing_containers = [
+            create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+            create_grpc_container(container_id=site2_id, name="SITE2", description="", query="site:2", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [site1_id, manual_root_id, site2_id]
+
+        site1 = AvdContainer(name="SITE1", tag_query="site:1")
+        manifest = AvdManifest(containers=(site1,), preserve_existing_containers=True)
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        mock_cv_client.set_studio_inputs.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        assert not deployment_result.removed_static_config_containers
+        assert not deployment_result.removed_static_config_configlets
+
+    async def test_preserve_existing_containers_keeps_documented_ordering_when_adding_roots(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """Test that new declared roots still follow the documented managed-first ordering."""
+        site1_id = generate_id("SITE1")
+        site2_id = generate_id("SITE2")
+        site3_id = generate_id("SITE3")
+        manual_root_id = "manual-root-002"
+
+        existing_containers = [
+            create_grpc_container(container_id=site2_id, name="SITE2", description="", query="site:2"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [site2_id, manual_root_id, site1_id]
+
+        site1 = AvdContainer(name="SITE1", tag_query="site:1")
+        site3 = AvdContainer(name="SITE3", tag_query="site:3")
+        manifest = AvdManifest(containers=(site1, site3), preserve_existing_containers=True)
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert len(pushed) == 1
+        assert pushed[0][1] == "SITE3"
+
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[site2_id, site1_id, site3_id, manual_root_id],
+        )
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        assert not deployment_result.removed_static_config_containers
+
     async def test_preserve_existing_sub_containers_removes_manual_sibling(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that preserve_existing_sub_containers only preserves manifest-managed siblings."""
         sites_id = generate_id("SITES")

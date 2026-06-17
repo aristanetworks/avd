@@ -121,6 +121,9 @@ cv_workspace_build_timeout: 300
 
 # cv_static_config_manifest:
 #
+#   Preserve existing manifest-managed root containers in the Static Configuration Studio root list when they are not declared in the current manifest.
+#   preserve_existing_containers: <bool, default=false>
+#
 #   A list of dictionaries defining static configlets to be created in the Configlet Library.
 #   Configlet names must be unique across all defined configlets.
 #   configlets:
