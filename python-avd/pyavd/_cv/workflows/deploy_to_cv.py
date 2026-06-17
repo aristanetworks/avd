@@ -31,9 +31,127 @@ from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .models import AvdManifest
+    from .models import AvdManifest, CVDevice, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 LOGGER = getLogger(__name__)
+
+
+def _reset_deployment_for_workspace_sync(result: DeployToCvResult, devices: list[CVDevice]) -> None:
+    """Reset all mutable states computed against the previous CloudVision mainline."""
+    result.reset_mutable_fields()
+    for device in devices:
+        device.reset_mutable_fields()
+
+
+async def _execute_deployment_steps(
+    result: DeployToCvResult,
+    devices: list[CVDevice],
+    configs: list[CVEosConfig],
+    device_tags: list[CVDeviceTag],
+    interface_tags: list[CVInterfaceTag],
+    cv_pathfinder_metadata: list[CVPathfinderMetadata],
+    static_config_manifest: AvdManifest | None,
+    studio_inputs: list[CVStudioInputs],
+    device_deployments: list[CVDeviceDeployment],
+    skip_missing_devices: bool,
+    strict_tags: bool,
+    strict_system_mac_address: bool,
+    cv_client: CVClient,
+) -> None:
+    """Execute all deployment sub-workflows."""
+    try:
+        # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
+        verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+
+        # Verify devices exist and update CVDevice objects with exists_on_cv.
+        # Depending on skip_missing_devices we will raise or skip missing devices.
+        await verify_devices_on_cv(
+            devices=devices,
+            workspace_id=result.workspace.id,
+            skip_missing_devices=skip_missing_devices,
+            warnings=result.warnings,
+            cv_client=cv_client,
+        )
+
+        # Deploy device tags
+        await deploy_tags_to_cv(
+            tags=device_tags,
+            workspace=result.workspace,
+            strict=strict_tags,
+            skipped_tags=result.skipped_device_tags,
+            deployed_tags=result.deployed_device_tags,
+            removed_tags=result.removed_device_tags,
+            cv_client=cv_client,
+        )
+
+        # Deploy interface tags
+        await deploy_tags_to_cv(
+            tags=interface_tags,
+            workspace=result.workspace,
+            strict=strict_tags,
+            skipped_tags=result.skipped_interface_tags,
+            deployed_tags=result.deployed_interface_tags,
+            removed_tags=result.removed_interface_tags,
+            cv_client=cv_client,
+        )
+
+        # Deploy configs
+        # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
+        #       by building a hierarchy from the CVEosConfig objects.
+        await deploy_configs_to_cv(
+            configs=configs,
+            result=result,
+            cv_client=cv_client,
+        )
+
+        # Deploy Static Configuration Studio manifest
+        # TODO: Update function docstring workflow to reflect this
+        if static_config_manifest:
+            await deploy_static_config_studio_manifest_to_cv(
+                manifest=static_config_manifest,
+                deployment_result=result,
+                cv_client=cv_client,
+            )
+
+        # Deploy Studio Inputs
+        await deploy_studio_inputs_to_cv(
+            studio_inputs=studio_inputs,
+            result=result,
+            cv_client=cv_client,
+        )
+
+        # Deploy CV Pathfinder metadata
+        await deploy_cv_pathfinder_metadata_to_cv(
+            cv_pathfinder_metadata=cv_pathfinder_metadata,
+            result=result,
+            cv_client=cv_client,
+        )
+
+        # Delete any leftover device configs for devices managed by the static config manifest
+        await delete_configs_from_cv(
+            device_deployments=device_deployments,
+            result=result,
+            cv_client=cv_client,
+        )
+
+    except CVClientException as e:
+        result.errors.append(e)
+        result.failed = True
+
+
+async def _finalize_change_control(result: DeployToCvResult, cv_client: CVClient) -> None:
+    # Create/update CVChangeControl object with ID created by workspace.
+    if result.workspace.change_control_id is not None:
+        if result.change_control is None:
+            result.change_control = CVChangeControl()
+        result.change_control.id = result.workspace.change_control_id
+
+    # This is a separate "if" to allow to test stuff on a change control not created by the workspace.
+    # You can run this by setting "id" directly in the given change control object.
+    # TODO: Remove once we are done with testing (?)
+    # Run, Delete or run and wait for Change Control if the workspace created one.
+    if result.change_control is not None and result.change_control.id is not None:
+        await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
 
 
 async def deploy_to_cv(
@@ -84,6 +202,11 @@ async def deploy_to_cv(
             strict_configs: If `True` other configs associated with the devices will get removed. \
                 Otherwise other configs will be left as-is.
           We could decide to just remove config assignments under our main container to devices not mentioned in the run.
+
+    If CloudVision requires the Workspace to be synchronized/rebased (due to concurrent mainline changes), all mutable states computed against the previous
+    CloudVision mainline are reset and all deployment steps are repeated from the scratch.
+    The number of retry attempts is controlled by the `workspace.max_sync_retries`.
+    `CVWorkspaceSyncAttemptsExhausted` exception is raised if limit is reached but Workspace still requires synchronization.
 
     Returns:
         Object containing the results of the deployment including all associated objects.
@@ -158,88 +281,23 @@ async def deploy_to_cv(
             for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
                 if workspace_sync_attempt > 0:
                     # All state computed against the previous CloudVision mainline must be reset/discarded and re-evaluated after sync.
-                    result.reset_mutable_fields()
-                    for device in devices:
-                        device.reset_mutable_fields()
+                    _reset_deployment_for_workspace_sync(result, devices)
 
-                try:
-                    # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-                    verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
-
-                    # Verify devices exist and update CVDevice objects with exists_on_cv.
-                    # Depending on skip_missing_devices we will raise or skip missing devices.
-                    await verify_devices_on_cv(
-                        devices=devices,
-                        workspace_id=result.workspace.id,
-                        skip_missing_devices=skip_missing_devices,
-                        warnings=result.warnings,
-                        cv_client=cv_client,
-                    )
-
-                    # Deploy device tags
-                    await deploy_tags_to_cv(
-                        tags=device_tags,
-                        workspace=result.workspace,
-                        strict=strict_tags,
-                        skipped_tags=result.skipped_device_tags,
-                        deployed_tags=result.deployed_device_tags,
-                        removed_tags=result.removed_device_tags,
-                        cv_client=cv_client,
-                    )
-
-                    # Deploy interface tags
-                    await deploy_tags_to_cv(
-                        tags=interface_tags,
-                        workspace=result.workspace,
-                        strict=strict_tags,
-                        skipped_tags=result.skipped_interface_tags,
-                        deployed_tags=result.deployed_interface_tags,
-                        removed_tags=result.removed_interface_tags,
-                        cv_client=cv_client,
-                    )
-
-                    # Deploy configs
-                    # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
-                    #       by building a hierarchy from the CVEosConfig objects.
-                    await deploy_configs_to_cv(
-                        configs=configs,
-                        result=result,
-                        cv_client=cv_client,
-                    )
-
-                    # Deploy Static Configuration Studio manifest
-                    # TODO: Update function docstring workflow to reflect this
-                    if static_config_manifest:
-                        await deploy_static_config_studio_manifest_to_cv(
-                            manifest=static_config_manifest,
-                            deployment_result=result,
-                            cv_client=cv_client,
-                        )
-
-                    # Deploy Studio Inputs
-                    await deploy_studio_inputs_to_cv(
-                        studio_inputs=studio_inputs,
-                        result=result,
-                        cv_client=cv_client,
-                    )
-
-                    # Deploy CV Pathfinder metadata
-                    await deploy_cv_pathfinder_metadata_to_cv(
-                        cv_pathfinder_metadata=cv_pathfinder_metadata,
-                        result=result,
-                        cv_client=cv_client,
-                    )
-
-                    # Delete any leftover device configs for devices managed by the static config manifest
-                    await delete_configs_from_cv(
-                        device_deployments=device_deployments,
-                        result=result,
-                        cv_client=cv_client,
-                    )
-
-                except CVClientException as e:
-                    result.errors.append(e)
-                    result.failed = True
+                await _execute_deployment_steps(
+                    result=result,
+                    devices=devices,
+                    configs=configs,
+                    device_tags=device_tags,
+                    interface_tags=interface_tags,
+                    cv_pathfinder_metadata=cv_pathfinder_metadata,
+                    static_config_manifest=static_config_manifest,
+                    studio_inputs=studio_inputs,
+                    device_deployments=device_deployments,
+                    skip_missing_devices=skip_missing_devices,
+                    strict_tags=strict_tags,
+                    strict_system_mac_address=strict_system_mac_address,
+                    cv_client=cv_client,
+                )
 
                 # Build, submit or abandon Workspace. If failed, we always abandon.
                 if result.failed:
@@ -259,18 +317,7 @@ async def deploy_to_cv(
                 # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.
                 break
 
-            # Create/update CVChangeControl object with ID created by workspace.
-            if result.workspace.change_control_id is not None:
-                if result.change_control is None:
-                    result.change_control = CVChangeControl()
-                result.change_control.id = result.workspace.change_control_id
-
-            # This is a separate "if" to allow to test stuff on a change control not created by the workspace.
-            # You can run this by setting "id" directly in the given change control object.
-            # TODO: Remove once we are done with testing (?)
-            # Run, Delete or run and wait for Change Control if the workspace created one.
-            if result.change_control is not None and result.change_control.id is not None:
-                await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
+            await _finalize_change_control(result, cv_client)
 
     except CVClientException as e:
         result.errors.append(e)
