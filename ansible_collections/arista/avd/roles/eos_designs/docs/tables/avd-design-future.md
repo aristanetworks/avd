@@ -18,6 +18,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
+    | [<samp>&nbsp;&nbsp;render_pvst_border_when_mode_is_mstp</samp>](## "avd_design_future.render_pvst_border_when_mode_is_mstp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Pvst border parameters would not have any effect unless it's MST. |
 
 === "YAML"
 
@@ -68,4 +69,8 @@
       # Available from AVD 6.1.0.
       # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
       remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
+
+      # Available from AVD 6.3.0.
+      # Pvst border parameters would not have any effect unless it's MST.
+      render_pvst_border_when_mode_is_mstp: <bool; default=False>
     ```

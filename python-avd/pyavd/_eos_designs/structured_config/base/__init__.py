@@ -299,8 +299,13 @@ class AvdStructuredConfigBaseProtocol(
         if node_config.spanning_tree_root_super is True:
             self.structured_config.spanning_tree.root_super = True
 
-        if spanning_tree_mode == "mstp" and node_config.spanning_tree_mst_pvst_boundary:
-            self.structured_config.spanning_tree.mst.pvst_border = True
+        if node_config.spanning_tree_mst_pvst_boundary:
+            if not self.inputs.avd_design_future.render_pvst_border_when_mode_is_mstp:
+                # Enable pvst_border regardless of STP mode, legacy behavior
+                self.structured_config.spanning_tree.mst.pvst_border = True
+            else:
+                # Enable pvst_border when STP mode is mstp
+                self.structured_config.spanning_tree.mst.pvst_border = spanning_tree_mode == "mstp"
 
         if stp_po_range:
             self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
