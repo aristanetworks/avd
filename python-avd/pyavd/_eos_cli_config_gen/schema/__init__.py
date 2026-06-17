@@ -9503,6 +9503,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -9529,7 +9535,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.
@@ -72172,6 +72182,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             address: str
             """DHCP server's IPv6 address."""
             vrf: str | None
+            """
+            VRF used to reach the DHCP server.
+            If not set, the VRF of the destination matches the VRF of this
+            interface.
+            Use the `default` to reach the DHCP server through the default VRF.
+            """
             local_interface: str | None
             """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
             source_address: str | None
@@ -72198,7 +72214,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         address: DHCP server's IPv6 address.
-                        vrf: vrf
+                        vrf:
+                           VRF used to reach the DHCP server.
+                           If not set, the VRF of the destination matches the VRF of this
+                           interface.
+                           Use the `default` to reach the DHCP server through the default VRF.
                         local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
                         source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
                         link_address: Override the default link address specified in the relayed DHCP packet.
@@ -74011,6 +74031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_proxy_arp": {"type": bool},
             "ip_directed_broadcast": {"type": bool},
             "ip_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ip_address_virtual": {"type": str},
@@ -74089,7 +74110,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_proxy_arp: bool | None
         ip_directed_broadcast: bool | None
         ip_address: str | None
-        """IPv4_address/Mask."""
+        """IPv4_address/Mask or dhcp."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        'dhcp'.
+        """
         ip_address_secondaries: IpAddressSecondaries
         """Subclass of AvdList with `str` items."""
         ip_virtual_router_addresses: IpVirtualRouterAddresses
@@ -74262,6 +74288,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 ip_directed_broadcast: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -74342,7 +74369,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     arp_monitor_mac_address: arp_monitor_mac_address
                     ip_proxy_arp: ip_proxy_arp
                     ip_directed_broadcast: ip_directed_broadcast
-                    ip_address: IPv4_address/Mask.
+                    ip_address: IPv4_address/Mask or dhcp.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       'dhcp'.
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ip_virtual_router_addresses: Subclass of AvdList with `str` items.
                     ip_address_virtual: IPv4_address/Mask.

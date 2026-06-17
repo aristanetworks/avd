@@ -50,6 +50,11 @@ dot1x:
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
+  captive_portal:
+    enabled: true
+    url: https://captive.arista.com
+    ssl_profile: captive-portal-ssl-profile
+    start_limit_infinite: true
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

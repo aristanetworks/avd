@@ -104,6 +104,30 @@ class Dot1xMixin(Protocol):
         self.structured_config.dot1x.mac_based_authentication._update(
             delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
         )
+        self._configure_dot1x_web_authentication(dot1x_settings.web_authentication)
+
+    def _configure_dot1x_web_authentication(self: AvdStructuredConfigBaseProtocol, web_authentication: EosDesigns.Dot1xSettings.WebAuthentication) -> None:
+        """Configure 802.1X captive portal settings."""
+        if not web_authentication.enabled:
+            return
+
+        if not self.inputs.dot1x_settings.dynamic_authorization.enabled:
+            msg = (
+                "'dot1x_settings.web_authentication' requires 'dot1x_settings.dynamic_authorization.enabled: true' "
+                "since captive portal relies on RADIUS CoA to authorize the session after portal login."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        # TODO: AVD 7.0.0 - `start_limit_infinite` and `access_list_ipv4` are currently dropped by the eos_cli_config_gen
+        # template when `enabled` is false, even though EOS allows them to coexist with `no captive-portal`.
+        # Tracked by issue #7042; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
+
+        self.structured_config.dot1x.captive_portal = EosCliConfigGen.Dot1x.CaptivePortal(
+            enabled=web_authentication.enabled,
+            start_limit_infinite=web_authentication.start_limit_infinite,
+            ssl_profile=web_authentication.ssl_profile,
+            url=web_authentication.url,
+        )
 
     def _configure_dot1x_device_profiling(
         self: AvdStructuredConfigBaseProtocol,
