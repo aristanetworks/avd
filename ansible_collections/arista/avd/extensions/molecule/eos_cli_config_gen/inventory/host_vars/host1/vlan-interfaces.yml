@@ -783,7 +783,6 @@ vlan_interfaces:
           valid_lifetime: 100
           preferred_lifetime: 50
           no_autoconfig_flag: true
-
   - name: Vlan341
     description: IP address as dhcp and Install default-route obtained via DHCP
     ip_address: dhcp
