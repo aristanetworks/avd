@@ -1700,6 +1700,9 @@ ip radius vrf abc source-interface Loopback10
 
 | Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
 | ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| LDAP_NO_SERVERS | ldap | - | - | - | - |
+| LDAP_NO_VRF_FIRST | ldap | default | 10.10.10.250 | - | - |
+| LDAP_NO_VRF_FIRST | ldap | mgt | 10.10.10.251 | - | - |
 | TACACS | tacacs+ | mgt | 10.10.11.157 | - | - |
 | TACACS | tacacs+ | default | 10.10.11.249 | - | - |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 | - | - |
@@ -1729,6 +1732,12 @@ aaa group server ldap LADP2
 aaa group server ldap LDAP1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
+!
+aaa group server ldap LDAP_NO_SERVERS
+!
+aaa group server ldap LDAP_NO_VRF_FIRST
+   server 10.10.10.250
+   server 10.10.10.251 vrf mgt
 !
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
@@ -7453,6 +7462,7 @@ interface Tunnel5
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | v6 nd new structure | default | - | - |
+| Vlan341 | IP address as dhcp and Install default-route obtained via DHCP | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7503,6 +7513,7 @@ interface Tunnel5
 | Vlan338 | default | - | - | - | - | - |
 | Vlan339 | default | - | - | - | - | - |
 | Vlan340 | default | - | - | - | - | - |
+| Vlan341 | default | dhcp | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -7919,6 +7930,14 @@ interface Vlan340
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
+!
+interface Vlan341
+   description IP address as dhcp and Install default-route obtained via DHCP
+   ip address dhcp
+   arp gratuitous accept
+   dhcp client accept default-route
+   ip verify unicast source reachable-via rx
+   ip directed-broadcast
 !
 interface Vlan501
    description SVI Description
