@@ -4814,6 +4814,7 @@ interface Dps1
 | Ethernet24 | Disable error-correction encoding | - | - | - | - | - |
 | Ethernet24/1 | Explicit no error-correction encoding | - | - | - | - | - |
 | Ethernet24/2 | Trunk with no allowed VLANs | trunk | none | - | - | - |
+| Ethernet24/3 | Explicit no reed-solomon error-correction encoding | - | - | - | - | - |
 | Ethernet25 | Molecule MAC | - | - | - | - | - |
 | Ethernet27 | EVPN-Vxlan single-active redundancy | - | - | - | - | - |
 | Ethernet28 | EVPN-MPLS multihoming | - | - | - | - | - |
@@ -5148,6 +5149,7 @@ interface Dps1
 | Ethernet23 | fire-code<br>reed-solomon |
 | Ethernet24 | Disabled |
 | Ethernet24/1 | - |
+| Ethernet24/3 | - |
 | Ethernet81/1 | fire-code<br>reed-solomon |
 
 #### Priority Flow Control
@@ -5671,6 +5673,11 @@ interface Ethernet24/2
    description Trunk with no allowed VLANs
    switchport trunk allowed vlan none
    switchport mode trunk
+   switchport
+!
+interface Ethernet24/3
+   description Explicit no reed-solomon error-correction encoding
+   no error-correction encoding reed-solomon
    switchport
 !
 interface Ethernet25

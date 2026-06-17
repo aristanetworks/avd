@@ -949,6 +949,13 @@ ethernet_interfaces:
         allowed_vlan: none
     description: Trunk with no allowed VLANs
 
+  - name: Ethernet24/3
+    switchport:
+      enabled: true
+    description: Explicit no reed-solomon error-correction encoding
+    error_correction_encoding:
+      reed_solomon: false
+
   - name: Ethernet25
     switchport:
       enabled: true
