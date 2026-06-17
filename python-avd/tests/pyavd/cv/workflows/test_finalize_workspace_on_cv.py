@@ -8,12 +8,18 @@ from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from logging import INFO
 from typing import TYPE_CHECKING, Any
-from unittest.mock import patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
-from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
+from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
+from pyavd._cv.client.exceptions import (
+    CVWorkspaceBuildFailed,
+    CVWorkspaceSubmitFailed,
+    CVWorkspaceSubmitFailedInactiveDevices,
+    CVWorkspaceSyncAttemptsExhausted,
+)
+from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv, workspace_was_synchronized_on_cv
 from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVWorkspace, DeployToCvResult
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
@@ -579,3 +585,126 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+class TestWorkspaceWasSynchronizedOnCv:
+    """Tests for the workspace_was_synchronized_on_cv function."""
+
+    @pytest.mark.asyncio
+    async def test_returns_false_when_sync_not_required(self) -> None:
+        """When synchronization_required is False, returns False without calling rebase_workspace."""
+        mock_client = AsyncMock()
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(), synchronization_required=False)
+
+        result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=0)
+
+        assert result is False
+        mock_client.rebase_workspace.assert_not_called()
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "workspace_sync_attempt",
+        [
+            pytest.param(0, id="FIRST_ATTEMPT"),
+            pytest.param(4, id="LAST_VALID_ATTEMPT"),
+        ],
+    )
+    async def test_sync_required_within_retries_calls_rebase_and_returns_true(self, workspace_sync_attempt: int) -> None:
+        """When synchronization_required is True and attempt < max_sync_retries, rebase is called, flag is cleared, True is returned."""
+        mock_client = AsyncMock()
+        workspace = CVWorkspace(
+            avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
+            synchronization_required=True,
+        )
+
+        result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
+
+        assert result is True
+        assert workspace.synchronization_required is False
+        mock_client.rebase_workspace.assert_called_once_with(workspace_id="ws-test-id")
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "workspace_sync_attempt",
+        [
+            pytest.param(5, id="AT_MAX_RETRIES"),
+            pytest.param(10, id="ABOVE_MAX_RETRIES"),
+        ],
+    )
+    async def test_sync_required_exhausted_raises(self, workspace_sync_attempt: int) -> None:
+        """When synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSyncAttemptsExhausted is raised."""
+        mock_client = AsyncMock()
+        workspace = CVWorkspace(
+            avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
+            synchronization_required=True,
+        )
+
+        with pytest.raises(CVWorkspaceSyncAttemptsExhausted) as exc_info:
+            await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
+
+        exc = exc_info.value
+        assert exc.max_sync_retries == 5
+        assert exc.workspace_name == "test-workspace"
+        assert exc.workspace_id == "ws-test-id"
+        mock_client.rebase_workspace.assert_not_called()
+
+
+# === finalize_workspace_on_cv synchronization tests ===
+
+
+@pytest.mark.asyncio
+async def test_finalize_workspace_on_cv_build_needs_rebase_sets_synchronization_required() -> None:
+    """When cv_workspace.needs_rebase is True after build, synchronization_required is set and function returns early without changing state."""
+    mock_workspace_config = MagicMock()
+    mock_workspace_config.request_params.request_id = "req-build-id"
+    mock_cv_workspace = MagicMock()
+    mock_cv_workspace.needs_rebase = True
+    mock_cv_workspace_build_response = MagicMock()
+
+    mock_client = AsyncMock()
+    mock_client.build_workspace.return_value = mock_workspace_config
+    mock_client.wait_for_workspace_response.return_value = (mock_cv_workspace_build_response, mock_cv_workspace)
+
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id="ws-test-id", requested_state="submitted"))
+
+    result = await finalize_workspace_on_cv(workspace=workspace, cv_client=mock_client, devices=[], warnings=[])
+
+    assert result is None
+    assert workspace.synchronization_required is True
+    assert workspace.state is None
+    assert workspace.build_id is None
+
+
+@pytest.mark.asyncio
+async def test_finalize_workspace_on_cv_submit_synchronization_required() -> None:
+    """When WS submit response code is SYNCHRONIZATION_REQUIRED, synchronization_required is set and function returns early."""
+    mock_workspace_config = MagicMock()
+    mock_workspace_config.request_params.request_id = "req-build-id"
+    mock_cv_workspace_build = MagicMock()
+    mock_cv_workspace_build.needs_rebase = False
+    mock_cv_workspace_build_response = MagicMock()
+    mock_cv_workspace_build_response.status = ResponseStatus.SUCCESS
+
+    mock_submit_config = MagicMock()
+    mock_submit_config.request_params.request_id = "req-submit-id"
+    mock_cv_workspace_submit = MagicMock()
+    mock_cv_workspace_submit_response = MagicMock()
+    mock_cv_workspace_submit_response.status = ResponseStatus.FAIL
+    mock_cv_workspace_submit_response.code = ResponseCode.SYNCHRONIZATION_REQUIRED
+
+    mock_client = AsyncMock()
+    mock_client.build_workspace.return_value = mock_workspace_config
+    mock_client.wait_for_workspace_response.side_effect = [
+        (mock_cv_workspace_build_response, mock_cv_workspace_build),
+        (mock_cv_workspace_submit_response, mock_cv_workspace_submit),
+    ]
+    mock_client.get_workspace_build_details.return_value = []
+    mock_client.submit_workspace.return_value = mock_submit_config
+
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id="ws-test-id", requested_state="submitted"))
+
+    result = await finalize_workspace_on_cv(workspace=workspace, cv_client=mock_client, devices=[], warnings=[])
+
+    assert result is None
+    assert workspace.synchronization_required is True
+    assert workspace.state == "submit failed"
