@@ -99,8 +99,7 @@ l3leaf:
     platform: vEOS-LAB
   node_groups:
     - group: CV-MLAG_OSPF_L3LEAF1
-      spanning_tree_settings:
-        mst_pvst_boundary: true
+      spanning_tree_mst_pvst_boundary: true
       uplink_interface_speed: forced 40gfull
       nodes:
         - name: cv-mlag-ospf-l3leaf1a

@@ -140,8 +140,6 @@ router_ospf:
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 spanning_tree:
-  mst:
-    pvst_border: true
   no_spanning_tree_vlan: '4094'
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:

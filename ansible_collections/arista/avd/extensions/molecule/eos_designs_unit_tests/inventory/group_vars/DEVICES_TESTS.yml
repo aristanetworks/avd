@@ -45,9 +45,8 @@ device_profiles:
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27
     mlag_interfaces: [Ethernet5, Ethernet6]
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_settings:
-      priority: 4096
-      mode: mstp
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
 
   - name: L3LEAF1A
     # No parent_profile
@@ -61,9 +60,8 @@ device_profiles:
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27
     mlag_interfaces: [Ethernet5, Ethernet6]
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_settings:
-      priority: 4096
-      mode: mstp
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
 
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
@@ -76,9 +74,8 @@ device_profiles:
     mlag_peer_ipv4_pool: 10.255.1.64/27
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_settings:
-      priority: 4096
-      mode: mstp
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
 
 # use_cv_topology: true is set in hostvars for these two switches only.
 cv_topology_levels:

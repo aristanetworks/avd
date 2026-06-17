@@ -23,9 +23,8 @@ l2leaf:
     mlag_port_channel_structured_config:  # Setting structured config here but it is overridden by 'null' on group level and applied again on node level.
       description: "Port-channel description not being used because it is overridden by 'null' on node-group level."
 
-    spanning_tree_settings:
-      mode: mstp
-      priority: 16384
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
   node_groups:
     - group: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
       # Testing the inheritance works correctly when nullifying a dict in the group and then applying a new one per node.

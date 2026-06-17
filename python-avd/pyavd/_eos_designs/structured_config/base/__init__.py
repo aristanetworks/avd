@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get_v2
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -286,35 +286,26 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         node_config = self.shared_utils.node_config
-        if stp_settings := node_config.spanning_tree_settings:
-            spanning_tree_mode = stp_settings.mode
-            root_super = stp_settings.root_super
-            pvst_boundary = stp_settings.mst_pvst_boundary
-            stp_po_range = stp_settings.port_id_allocation_port_channel_range
-            loop_guard_default = stp_settings.loop_guard_default
-            priority = stp_settings.priority
-        else:
-            spanning_tree_mode = node_config.spanning_tree_mode
-            root_super = node_config.spanning_tree_root_super
-            pvst_boundary = node_config.spanning_tree_mst_pvst_boundary
-            stp_po_range = node_config.spanning_tree_port_id_allocation_port_channel_range
-            loop_guard_default = False
-            priority = node_config.spanning_tree_priority
+        stp_settings = self.inputs.spanning_tree_settings
 
-        if root_super is True:
+        spanning_tree_mode = default(node_config.spanning_tree_mode, stp_settings.mode)
+        stp_po_range = default(node_config.spanning_tree_port_id_allocation_port_channel_range, stp_settings.port_id_allocation_port_channel_range)
+        priority = node_config._get("spanning_tree_priority", stp_settings.priority)
+
+        if node_config.spanning_tree_root_super is True:
             self.structured_config.spanning_tree.root_super = True
 
-        if pvst_boundary:
+        if spanning_tree_mode == "mstp" and node_config.spanning_tree_mst_pvst_boundary:
             self.structured_config.spanning_tree.mst.pvst_border = True
 
         if stp_po_range:
             self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
 
-        if loop_guard_default:
+        if stp_settings.loop_guard_default:
             self.structured_config.spanning_tree.loop_guard_default = True
 
         if spanning_tree_mode is not None:
-            self.structured_config.spanning_tree.mode = spanning_tree_mode
+            self.structured_config.spanning_tree.mode = spanning_tree_mode # pyright: ignore[reportAttributeAccessIssue]
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
             if spanning_tree_mode == "mstp":
                 self.structured_config.spanning_tree.mst_instances.append_new(id="0", priority=priority)

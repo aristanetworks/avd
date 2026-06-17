@@ -121,10 +121,9 @@ l3leaf:
     mlag_interfaces: [Ethernet5, Ethernet6]
     mlag_peer_l3_vlan: 4090
     mlag_peer_vlan: 4092
-    spanning_tree_settings:
-      mode: mstp
-      root_super: true
-      priority: 4096
+    spanning_tree_mode: mstp
+    spanning_tree_root_super: true
+    spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
       tenants: [Tenant_A, Tenant_B, Tenant_C]
@@ -212,9 +211,8 @@ l2leaf:
     mlag: true
     mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_vlan: 4091
-    spanning_tree_settings:
-      mode: mstp
-      priority: 16384
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
     rack: "rackE"
     mlag_peer_l3_ipv4_pool: 10.255.250.0/24
     mlag_peer_ipv4_pool: 10.255.249.0/24

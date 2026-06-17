@@ -351,8 +351,7 @@ pe:
     virtual_router_mac_address: 00:1c:73:00:dc:00 # (3)!
     mpls_route_reflectors: [ rr1, rr2 ] # (4)!
     isis_system_id_prefix: '0000.0001' # (5)!
-    spanning_tree_settings:
-      mode: none # (6)!
+    spanning_tree_mode: none # (6)!
 
   node_groups: # (7)!
     - group: WAN1-PE1-2
@@ -376,7 +375,7 @@ pe:
 3. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway. It is irrelevant for the vpn-ipv4/6 services used in this example but is still mandatory to set.
 4. `mpls_route_reflectors` defines which route reflectors the pe nodes peer with for overlay route distribution.
 5. `isis_system_id_prefix` is mandatory to set when using ISIS for the underlay routing protocol. It is used to calculate the ISIS NET ID.
-6. `spanning_tree_settings.mode` defines the spanning tree mode. In this case, we are not using spanning tree since we have only routed interfaces on our pe routers.
+6. `spanning_tree_mode` defines the spanning tree mode. In this case, we are not using spanning tree since we have only routed interfaces on our pe routers.
 7. `node_groups` defines settings common to more than one node. In the l3ls-evpn design this has more utility than here, which is used to define MLAG pairs. In the MPLS design, it is mainly used to logically group devices for organizational purposes.
 
 Finally, more of the same, but this time for the rr routers:
@@ -388,8 +387,7 @@ rr:
     loopback_ipv4_pool: 10.255.2.0/27
     mpls_route_reflectors: [ rr1, rr2 ] # (1)!
     isis_system_id_prefix: '0000.0002'
-    spanning_tree_settings:
-      mode: none
+    spanning_tree_mode: none
 
   node_groups:
     - group: WAN1_RR1-2

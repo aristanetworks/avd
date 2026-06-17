@@ -8,8 +8,7 @@ l3spine:
     mlag_peer_l3_vlan: 4094
     mlag_interfaces: [Ethernet3, Ethernet4]
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_settings:
-      priority: 4096
+    spanning_tree_priority: 4096
     campus_pod: Downtown_office
   node_groups:
     - group: BGP_SPINES

@@ -1059,39 +1059,6 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
             type: str
-          spanning_tree_settings:
-            type: dict
-            documentation_options:
-              table: node-type-l2-mlag-configuration
-            keys:
-              mode:
-                type: str
-                valid_values:
-                  - mstp
-                  - rstp
-                  - rapid-pvst
-                  - none
-              priority:
-                type: int
-                convert_types:
-                  - str
-                default: 32768
-                description: |-
-                  Spanning-tree priority configured for the selected mode.
-                  For `rapid-pvst` the priority can also be set per VLAN under network services.
-              root_super:
-                type: bool
-                default: false
-              mst_pvst_boundary:
-                type: bool
-                description: Enable MST PVST border ports.
-              port_id_allocation_port_channel_range:
-                type: dict
-                $ref: "eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range"
-              loop_guard_default:
-                type: bool
-                description: Enable loopguard by default on all ports.
-                default: false
           spanning_tree_mode:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1101,10 +1068,6 @@ $defs:
               - rstp
               - rapid-pvst
               - none
-            deprecation:
-              warning: true
-              remove_in_version: 7.0.0
-              new_key: spanning_tree_settings.mode
           spanning_tree_priority:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1115,37 +1078,21 @@ $defs:
             description: |-
               Spanning-tree priority configured for the selected mode.
               For `rapid-pvst` the priority can also be set per VLAN under network services.
-            deprecation:
-              warning: true
-              remove_in_version: 7.0.0
-              new_key: spanning_tree_settings.priority
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
             default: false
-            deprecation:
-              warning: true
-              remove_in_version: 7.0.0
-              new_key: spanning_tree_settings.root_super
           spanning_tree_mst_pvst_boundary:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
             description: Enable MST PVST border ports.
-            deprecation:
-              warning: true
-              remove_in_version: 7.0.0
-              new_key: spanning_tree_settings.mst_pvst_boundary
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
               table: node-type-l2-mlag-configuration
             $ref: "eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range"
-            deprecation:
-              warning: true
-              remove_in_version: 7.0.0
-              new_key: spanning_tree_settings.port_id_allocation_port_channel_range
           virtual_router_mac_address:
             documentation_options:
               table: node-type-l2-mlag-configuration

@@ -47,9 +47,8 @@ l3leaf:
     platform: vEOS-LAB
     evpn_role: server
     evpn_route_servers: [DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A]
-    spanning_tree_settings:
-      mode: rstp
-      priority: 4096
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 4096
     virtual_router_mac_address: 00:1c:73:00:dc:01
     mlag: false
     filter:
@@ -88,9 +87,8 @@ l2leaf:
     inband_mgmt_subnet: 172.21.210.0/24
     platform: vEOS-LAB
     uplink_interfaces: [Ethernet1]
-    spanning_tree_settings:
-      mode: mstp
-      priority: 8192
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 8192
     mlag: false
     raw_eos_cli: |
       interface Loopback1011

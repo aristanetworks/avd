@@ -4,9 +4,8 @@ type: l2leaf
 l2leaf:
   defaults:
     platform: vEOS-lab
-    spanning_tree_settings:
-      mode: mstp
-      priority: 16384
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
 
   nodes:
     - name: htns-l2-leaf1

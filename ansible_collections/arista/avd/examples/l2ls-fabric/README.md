@@ -324,9 +324,8 @@ The updated changes are noted in the tabs below.
     l3spine:
       defaults:
         platform: cEOSLab
-        spanning_tree_settings:
-          mode: mstp
-          priority: 4096
+        spanning_tree_mode: mstp
+        spanning_tree_priority: 4096
         # Loopback is used to generate a router-id
         loopback_ipv4_pool: 192.168.1.0/24
         mlag_peer_ipv4_pool: 192.168.0.0/24

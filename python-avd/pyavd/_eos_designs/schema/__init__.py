@@ -8465,72 +8465,6 @@ class EosDesigns(EosDesignsRootModel):
             "forced 50gfull",
         ]
         MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-        class SpanningTreeSettings(AvdModel):
-            """Subclass of AvdModel."""
-
-            Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-            _fields: ClassVar[dict] = {
-                "mode": {"type": str},
-                "priority": {"type": int, "default": 32768},
-                "root_super": {"type": bool, "default": False},
-                "mst_pvst_boundary": {"type": bool},
-                "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                "loop_guard_default": {"type": bool, "default": False},
-            }
-            mode: Mode | None
-            priority: int
-            """
-            Spanning-tree priority configured for the selected mode.
-            For `rapid-pvst` the priority can also be
-            set per VLAN under network services.
-
-            Default value: `32768`
-            """
-            root_super: bool
-            """Default value: `False`"""
-            mst_pvst_boundary: bool | None
-            """Enable MST PVST border ports."""
-            port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-            """Specify range of port-ids to reserve for port-channels."""
-            loop_guard_default: bool
-            """
-            Enable loopguard by default on all ports.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    mode: Mode | None | UndefinedType = Undefined,
-                    priority: int | UndefinedType = Undefined,
-                    root_super: bool | UndefinedType = Undefined,
-                    mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                    port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
-                    loop_guard_default: bool | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    SpanningTreeSettings.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mode: mode
-                        priority:
-                           Spanning-tree priority configured for the selected mode.
-                           For `rapid-pvst` the priority can also be
-                           set per VLAN under network services.
-                        root_super: root_super
-                        mst_pvst_boundary: Enable MST PVST border ports.
-                        port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                        loop_guard_default: Enable loopguard by default on all ports.
-
-                    """
-
         SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -10761,7 +10695,6 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_peer_ipv6_pool": {"type": str},
             "mlag_port_channel_id": {"type": int},
             "mlag_domain_id": {"type": str},
-            "spanning_tree_settings": {"type": SpanningTreeSettings},
             "spanning_tree_mode": {"type": str},
             "spanning_tree_priority": {"type": int, "default": 32768},
             "spanning_tree_root_super": {"type": bool, "default": False},
@@ -11368,8 +11301,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         mlag_domain_id: str | None
         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-        spanning_tree_settings: SpanningTreeSettings
-        """Subclass of AvdModel."""
         spanning_tree_mode: SpanningTreeMode | None
         spanning_tree_priority: int
         """
@@ -11816,7 +11747,6 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                 spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                 spanning_tree_priority: int | UndefinedType = Undefined,
                 spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -12251,7 +12181,6 @@ class EosDesigns(EosDesignsRootModel):
                        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                        999999 > for EOS >= 4.25.0F.
                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                    spanning_tree_settings: Subclass of AvdModel.
                     spanning_tree_mode: spanning_tree_mode
                     spanning_tree_priority:
                        Spanning-tree priority configured for the selected mode.
@@ -13791,72 +13720,6 @@ class EosDesigns(EosDesignsRootModel):
             "forced 50gfull",
         ]
         MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-        class SpanningTreeSettings(AvdModel):
-            """Subclass of AvdModel."""
-
-            Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-            _fields: ClassVar[dict] = {
-                "mode": {"type": str},
-                "priority": {"type": int, "default": 32768},
-                "root_super": {"type": bool, "default": False},
-                "mst_pvst_boundary": {"type": bool},
-                "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                "loop_guard_default": {"type": bool, "default": False},
-            }
-            mode: Mode | None
-            priority: int
-            """
-            Spanning-tree priority configured for the selected mode.
-            For `rapid-pvst` the priority can also be
-            set per VLAN under network services.
-
-            Default value: `32768`
-            """
-            root_super: bool
-            """Default value: `False`"""
-            mst_pvst_boundary: bool | None
-            """Enable MST PVST border ports."""
-            port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-            """Specify range of port-ids to reserve for port-channels."""
-            loop_guard_default: bool
-            """
-            Enable loopguard by default on all ports.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    mode: Mode | None | UndefinedType = Undefined,
-                    priority: int | UndefinedType = Undefined,
-                    root_super: bool | UndefinedType = Undefined,
-                    mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                    port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
-                    loop_guard_default: bool | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    SpanningTreeSettings.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mode: mode
-                        priority:
-                           Spanning-tree priority configured for the selected mode.
-                           For `rapid-pvst` the priority can also be
-                           set per VLAN under network services.
-                        root_super: root_super
-                        mst_pvst_boundary: Enable MST PVST border ports.
-                        port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                        loop_guard_default: Enable loopguard by default on all ports.
-
-                    """
-
         SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -16088,7 +15951,6 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_peer_ipv6_pool": {"type": str},
             "mlag_port_channel_id": {"type": int},
             "mlag_domain_id": {"type": str},
-            "spanning_tree_settings": {"type": SpanningTreeSettings},
             "spanning_tree_mode": {"type": str},
             "spanning_tree_priority": {"type": int, "default": 32768},
             "spanning_tree_root_super": {"type": bool, "default": False},
@@ -16705,8 +16567,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         mlag_domain_id: str | None
         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-        spanning_tree_settings: SpanningTreeSettings
-        """Subclass of AvdModel."""
         spanning_tree_mode: SpanningTreeMode | None
         spanning_tree_priority: int
         """
@@ -17154,7 +17014,6 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                 spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                 spanning_tree_priority: int | UndefinedType = Undefined,
                 spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -17597,7 +17456,6 @@ class EosDesigns(EosDesignsRootModel):
                        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                        999999 > for EOS >= 4.25.0F.
                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                    spanning_tree_settings: Subclass of AvdModel.
                     spanning_tree_mode: spanning_tree_mode
                     spanning_tree_priority:
                        Spanning-tree priority configured for the selected mode.
@@ -43830,6 +43688,86 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class SpanningTreeSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+        _fields: ClassVar[dict] = {
+            "mode": {"type": str},
+            "priority": {"type": int, "default": 32768},
+            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
+            "loop_guard_default": {"type": bool, "default": False},
+        }
+        mode: Mode | None
+        """
+        Spanning tree operating mode.
+        "spanning_tree_mode" can also be set under node type settings.
+        If both
+        are set, the setting under node type settings takes precedence.
+        """
+        priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For `rapid-pvst` the priority can also be
+        set per VLAN under network services.
+        "spanning_tree_priority" can also be set under node type
+        settings.
+        If both are set, the setting under node type settings takes precedence.
+
+        Default value: `32768`
+        """
+        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """
+        Specify range of port-ids to reserve for port-channels.
+        "spanning_tree_port_id_allocation_port_channel_range" can also be set under node type settings.
+        If
+        both are set, the setting under node type settings takes precedence.
+        """
+        loop_guard_default: bool
+        """
+        Enable loopguard by default on all ports.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                mode: Mode | None | UndefinedType = Undefined,
+                priority: int | UndefinedType = Undefined,
+                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                loop_guard_default: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                SpanningTreeSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mode:
+                       Spanning tree operating mode.
+                       "spanning_tree_mode" can also be set under node type settings.
+                       If both
+                       are set, the setting under node type settings takes precedence.
+                    priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For `rapid-pvst` the priority can also be
+                       set per VLAN under network services.
+                       "spanning_tree_priority" can also be set under node type
+                       settings.
+                       If both are set, the setting under node type settings takes precedence.
+                    port_id_allocation_port_channel_range:
+                       Specify range of port-ids to reserve for port-channels.
+                       "spanning_tree_port_id_allocation_port_channel_range" can also be set under node type settings.
+                       If
+                       both are set, the setting under node type settings takes precedence.
+                    loop_guard_default: Enable loopguard by default on all ports.
+
+                """
+
     class SshSettings(AvdModel):
         """Subclass of AvdModel."""
 
@@ -50328,73 +50266,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -52628,7 +52499,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -53214,8 +53084,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -53658,7 +53526,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -54080,7 +53947,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -55632,73 +55498,6 @@ class EosDesigns(EosDesignsRootModel):
                             "forced 50gfull",
                         ]
                         MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                        class SpanningTreeSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                            _fields: ClassVar[dict] = {
-                                "mode": {"type": str},
-                                "priority": {"type": int, "default": 32768},
-                                "root_super": {"type": bool, "default": False},
-                                "mst_pvst_boundary": {"type": bool},
-                                "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                                "loop_guard_default": {"type": bool, "default": False},
-                            }
-                            mode: Mode | None
-                            priority: int
-                            """
-                            Spanning-tree priority configured for the selected mode.
-                            For `rapid-pvst` the priority can also be
-                            set per VLAN under network services.
-
-                            Default value: `32768`
-                            """
-                            root_super: bool
-                            """Default value: `False`"""
-                            mst_pvst_boundary: bool | None
-                            """Enable MST PVST border ports."""
-                            port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            """Specify range of port-ids to reserve for port-channels."""
-                            loop_guard_default: bool
-                            """
-                            Enable loopguard by default on all ports.
-
-                            Default value: `False`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    priority: int | UndefinedType = Undefined,
-                                    root_super: bool | UndefinedType = Undefined,
-                                    mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                    port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                    | UndefinedType = Undefined,
-                                    loop_guard_default: bool | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SpanningTreeSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: mode
-                                        priority:
-                                           Spanning-tree priority configured for the selected mode.
-                                           For `rapid-pvst` the priority can also be
-                                           set per VLAN under network services.
-                                        root_super: root_super
-                                        mst_pvst_boundary: Enable MST PVST border ports.
-                                        port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                        loop_guard_default: Enable loopguard by default on all ports.
-
-                                    """
-
                         SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -57951,7 +57750,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_peer_ipv6_pool": {"type": str},
                             "mlag_port_channel_id": {"type": int},
                             "mlag_domain_id": {"type": str},
-                            "spanning_tree_settings": {"type": SpanningTreeSettings},
                             "spanning_tree_mode": {"type": str},
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
@@ -58547,8 +58345,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag_domain_id: str | None
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                        spanning_tree_settings: SpanningTreeSettings
-                        """Subclass of AvdModel."""
                         spanning_tree_mode: SpanningTreeMode | None
                         spanning_tree_priority: int
                         """
@@ -58993,7 +58789,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                                spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                                 spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -59422,7 +59217,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                        999999 > for EOS >= 4.25.0F.
                                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                    spanning_tree_settings: Subclass of AvdModel.
                                     spanning_tree_mode: spanning_tree_mode
                                     spanning_tree_priority:
                                        Spanning-tree priority configured for the selected mode.
@@ -60899,73 +60693,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -63201,7 +62928,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -63800,8 +63526,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -64246,7 +63970,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -64677,7 +64400,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -66229,73 +65951,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -68531,7 +68186,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -69127,8 +68781,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -69573,7 +69225,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -70002,7 +69653,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -85656,73 +85306,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -87956,7 +87539,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -88542,8 +88124,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -88986,7 +88566,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -89408,7 +88987,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -90960,73 +90538,6 @@ class EosDesigns(EosDesignsRootModel):
                             "forced 50gfull",
                         ]
                         MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                        class SpanningTreeSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                            _fields: ClassVar[dict] = {
-                                "mode": {"type": str},
-                                "priority": {"type": int, "default": 32768},
-                                "root_super": {"type": bool, "default": False},
-                                "mst_pvst_boundary": {"type": bool},
-                                "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                                "loop_guard_default": {"type": bool, "default": False},
-                            }
-                            mode: Mode | None
-                            priority: int
-                            """
-                            Spanning-tree priority configured for the selected mode.
-                            For `rapid-pvst` the priority can also be
-                            set per VLAN under network services.
-
-                            Default value: `32768`
-                            """
-                            root_super: bool
-                            """Default value: `False`"""
-                            mst_pvst_boundary: bool | None
-                            """Enable MST PVST border ports."""
-                            port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            """Specify range of port-ids to reserve for port-channels."""
-                            loop_guard_default: bool
-                            """
-                            Enable loopguard by default on all ports.
-
-                            Default value: `False`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    priority: int | UndefinedType = Undefined,
-                                    root_super: bool | UndefinedType = Undefined,
-                                    mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                    port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                    | UndefinedType = Undefined,
-                                    loop_guard_default: bool | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SpanningTreeSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: mode
-                                        priority:
-                                           Spanning-tree priority configured for the selected mode.
-                                           For `rapid-pvst` the priority can also be
-                                           set per VLAN under network services.
-                                        root_super: root_super
-                                        mst_pvst_boundary: Enable MST PVST border ports.
-                                        port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                        loop_guard_default: Enable loopguard by default on all ports.
-
-                                    """
-
                         SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -93279,7 +92790,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_peer_ipv6_pool": {"type": str},
                             "mlag_port_channel_id": {"type": int},
                             "mlag_domain_id": {"type": str},
-                            "spanning_tree_settings": {"type": SpanningTreeSettings},
                             "spanning_tree_mode": {"type": str},
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
@@ -93875,8 +93385,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag_domain_id: str | None
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                        spanning_tree_settings: SpanningTreeSettings
-                        """Subclass of AvdModel."""
                         spanning_tree_mode: SpanningTreeMode | None
                         spanning_tree_priority: int
                         """
@@ -94321,7 +93829,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                                spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                                 spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -94750,7 +94257,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                        999999 > for EOS >= 4.25.0F.
                                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                    spanning_tree_settings: Subclass of AvdModel.
                                     spanning_tree_mode: spanning_tree_mode
                                     spanning_tree_priority:
                                        Spanning-tree priority configured for the selected mode.
@@ -96227,73 +95733,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -98529,7 +97968,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -99128,8 +98566,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -99574,7 +99010,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -100005,7 +99440,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -101557,73 +100991,6 @@ class EosDesigns(EosDesignsRootModel):
                         "forced 50gfull",
                     ]
                     MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
-
-                    class SpanningTreeSettings(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "priority": {"type": int, "default": 32768},
-                            "root_super": {"type": bool, "default": False},
-                            "mst_pvst_boundary": {"type": bool},
-                            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
-                            "loop_guard_default": {"type": bool, "default": False},
-                        }
-                        mode: Mode | None
-                        priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        root_super: bool
-                        """Default value: `False`"""
-                        mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
-                        loop_guard_default: bool
-                        """
-                        Enable loopguard by default on all ports.
-
-                        Default value: `False`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                priority: int | UndefinedType = Undefined,
-                                root_super: bool | UndefinedType = Undefined,
-                                mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
-                                loop_guard_default: bool | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                SpanningTreeSettings.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: mode
-                                    priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    root_super: root_super
-                                    mst_pvst_boundary: Enable MST PVST border ports.
-                                    port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
-                                    loop_guard_default: Enable loopguard by default on all ports.
-
-                                """
-
                     SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -103859,7 +103226,6 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_peer_ipv6_pool": {"type": str},
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
-                        "spanning_tree_settings": {"type": SpanningTreeSettings},
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
@@ -104455,8 +103821,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_settings: SpanningTreeSettings
-                    """Subclass of AvdModel."""
                     spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
@@ -104901,7 +104265,6 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
                             spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
@@ -105330,7 +104693,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
-                                spanning_tree_settings: Subclass of AvdModel.
                                 spanning_tree_mode: spanning_tree_mode
                                 spanning_tree_priority:
                                    Spanning-tree priority configured for the selected mode.
@@ -106432,6 +105794,7 @@ class EosDesigns(EosDesignsRootModel):
         "shutdown_interfaces_towards_undeployed_peers": {"type": bool, "default": True},
         "snmp_settings": {"type": SnmpSettings},
         "source_interfaces": {"type": SourceInterfaces},
+        "spanning_tree_settings": {"type": SpanningTreeSettings},
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
@@ -108152,6 +107515,8 @@ class EosDesigns(EosDesignsRootModel):
     Errors will also be raised if an interface is not found for a device.
     Subclass of AvdModel.
     """
+    spanning_tree_settings: SpanningTreeSettings
+    """Subclass of AvdModel."""
     ssh_settings: SshSettings
     """Subclass of AvdModel."""
     svi_profiles: SviProfiles
@@ -108750,6 +108115,7 @@ class EosDesigns(EosDesignsRootModel):
             shutdown_interfaces_towards_undeployed_peers: bool | UndefinedType = Undefined,
             snmp_settings: SnmpSettings | UndefinedType = Undefined,
             source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
@@ -110016,6 +109382,7 @@ class EosDesigns(EosDesignsRootModel):
                    raised in case of conflicts.
                    Errors will also be raised if an interface is not found for a device.
                    Subclass of AvdModel.
+                spanning_tree_settings: Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
                 svi_profiles:
                    Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.

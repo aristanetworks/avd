@@ -6,8 +6,7 @@ default_mgmt_method: inband
 l2leaf:
   defaults:
     platform: vEOS-lab
-    spanning_tree_settings:
-      mode: mstp
+    spanning_tree_mode: mstp
     inband_mgmt_subnet: 172.21.110.0/24
     inband_mgmt_description: L2LEAF_INBAND_MGMT
     inband_mgmt_vlan_name: L2LEAF_INBAND_MGMT

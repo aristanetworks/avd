@@ -69,8 +69,7 @@ l3leaf:
       platform: vEOS-LAB
       uplink_interfaces: ["Ethernet1", "Ethernet2"]
       uplink_switches: ["DC1-POD1-SPINE1", "DC1-POD1-SPINE2"]
-      spanning_tree_settings:
-        mode: none
+      spanning_tree_mode: none
       bgp_as: "65111.100"
       mlag: false
       evpn_role: server
@@ -118,9 +117,8 @@ l3leaf:
       # mlag_interfaces: [Ethernet5, Ethernet6] Test with "use_cv_topology"
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 # Using 4094 for both mlag peer and l3 peerings.
-      spanning_tree_settings:
-        mode: mstp
-        priority: 4096
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 4096
       raw_eos_cli: |
         interface Loopback1002
           description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
@@ -173,9 +171,8 @@ l2leaf:
       platform: vEOS-LAB
       uplink_switches: ["DC1-POD1-LEAF1A"]
       uplink_interfaces: [Ethernet1]
-      spanning_tree_settings:
-        mode: mstp
-        priority: 8192
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
       mlag: false
       nodes:
         - name: DC1-POD1-L2LEAF1A
@@ -189,9 +186,8 @@ l2leaf:
       uplink_switches: ["DC1.POD1.LEAF2A", "DC1-POD1-LEAF2B"]
       uplink_interfaces: [Ethernet1, Ethernet2]
       mlag_interfaces: [Ethernet3, Ethernet4]
-      spanning_tree_settings:
-        mode: mstp
-        priority: 8192
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
       raw_eos_cli: |
         interface Loopback1002
           description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG
