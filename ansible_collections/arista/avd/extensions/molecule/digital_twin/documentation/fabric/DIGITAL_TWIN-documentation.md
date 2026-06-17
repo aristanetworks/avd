@@ -21,6 +21,7 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-2 | 192.168.1.2/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | - | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-4 | 192.168.1.4/32 | custom-platform | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-cloudeos-no-mgmt | - | CloudEOS | Provisioned | - |
 | DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | CUSTOM_PLATFORM | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | CUSTOM_PLATFORM | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-1 | 192.168.0.1/32 | - | Provisioned | - |
