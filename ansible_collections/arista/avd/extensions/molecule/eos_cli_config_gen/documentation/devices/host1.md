@@ -7465,6 +7465,13 @@ interface Tunnel5
 | Vlan341 | IP address as dhcp and Install default-route obtained via DHCP | default | - | - |
 | Vlan361 | TCP MSS ceiling - IPv4 | default | - | - |
 | Vlan362 | TCP MSS ceiling - IPv6 | default | - | - |
+| Vlan363 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
+| Vlan364 | TCP MSS ceiling - IPv4 | default | - | - |
+| Vlan365 | TCP MSS ceiling - IPv6 | default | - | - |
+| Vlan366 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
+| Vlan367 | TCP MSS ceiling - IPv4 | default | - | - |
+| Vlan368 | TCP MSS ceiling - IPv6 | default | - | - |
+| Vlan369 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7480,6 +7487,20 @@ interface Tunnel5
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
 | Vlan110 | 111-112 |
+
+##### TCP MSS Ceiling
+
+| Interface | IPv4 MSS | IPv6 MSS | Direction |
+| --------- | -------- | -------- | --------- |
+| Vlan361 | 1310 | - | - |
+| Vlan362 | - | 1320 | - |
+| Vlan363 | 1330 | - | ingress |
+| Vlan364 | 1310 | - | ingress |
+| Vlan365 | - | 1320 | ingress |
+| Vlan366 | 1330 | 1340 | ingress |
+| Vlan367 | 1310 | - | egress |
+| Vlan368 | - | 1320 | egress |
+| Vlan369 | 1330 | 1340 | egress |
 
 ##### IPv4
 
@@ -7518,6 +7539,13 @@ interface Tunnel5
 | Vlan341 | default | dhcp | - | - | - | - |
 | Vlan361 | default | - | - | - | - | - |
 | Vlan362 | default | - | - | - | - | - |
+| Vlan363 | default | - | - | - | - | - |
+| Vlan364 | default | - | - | - | - | - |
+| Vlan365 | default | - | - | - | - | - |
+| Vlan366 | default | - | - | - | - | - |
+| Vlan367 | default | - | - | - | - | - |
+| Vlan368 | default | - | - | - | - | - |
+| Vlan369 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -7945,11 +7973,39 @@ interface Vlan341
 !
 interface Vlan361
    description TCP MSS ceiling - IPv4
-   tcp mss ceiling ipv4 1350
+   tcp mss ceiling ipv4 1310
 !
 interface Vlan362
    description TCP MSS ceiling - IPv6
-   tcp mss ceiling ipv6 1350
+   tcp mss ceiling ipv6 1320
+!
+interface Vlan363
+   description TCP MSS ceiling - IPv4 and IPv6
+   tcp mss ceiling ipv4 1330 ingress
+!
+interface Vlan364
+   description TCP MSS ceiling - IPv4
+   tcp mss ceiling ipv4 1310 ingress
+!
+interface Vlan365
+   description TCP MSS ceiling - IPv6
+   tcp mss ceiling ipv6 1320 ingress
+!
+interface Vlan366
+   description TCP MSS ceiling - IPv4 and IPv6
+   tcp mss ceiling ipv4 1330 ipv6 1340 ingress
+!
+interface Vlan367
+   description TCP MSS ceiling - IPv4
+   tcp mss ceiling ipv4 1310 egress
+!
+interface Vlan368
+   description TCP MSS ceiling - IPv6
+   tcp mss ceiling ipv6 1320 egress
+!
+interface Vlan369
+   description TCP MSS ceiling - IPv4 and IPv6
+   tcp mss ceiling ipv4 1330 ipv6 1340 egress
 !
 interface Vlan501
    description SVI Description

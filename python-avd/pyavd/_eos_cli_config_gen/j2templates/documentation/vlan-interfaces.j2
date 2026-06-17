@@ -40,6 +40,26 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# TCP MSS Ceiling #}
+{% set tcp_mss_vlan_interfaces = [] %}
+{% for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
+{% if vlan_interface.tcp_mss_ceiling is arista.avd.defined %}
+{% do tcp_mss_vlan_interfaces.append(vlan_interface) %}
+{% endif %}
+{% endfor %}
+{% if tcp_mss_vlan_interfaces | length > 0 %}
+
+##### TCP MSS Ceiling
+
+| Interface | IPv4 MSS | IPv6 MSS | Direction |
+| --------- | -------- | -------- | --------- |
+{% for vlan_interface in tcp_mss_vlan_interfaces | arista.avd.natural_sort('name') %}
+{% set ipv4 = vlan_interface.tcp_mss_ceiling.ipv4 | arista.avd.default('-') %}
+{% set ipv6 = vlan_interface.tcp_mss_ceiling.ipv6 | arista.avd.default('-') %}
+{% set direction = vlan_interface.tcp_mss_ceiling.direction | arista.avd.default('-') %}
+| {{ vlan_interface.name }} | {{ ipv4 }} | {{ ipv6 }} | {{ direction }} |
+{% endfor %}
+{% endif %}
 
 ##### IPv4
 

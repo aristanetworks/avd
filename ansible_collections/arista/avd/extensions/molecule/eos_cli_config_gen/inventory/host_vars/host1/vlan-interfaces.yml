@@ -794,9 +794,53 @@ vlan_interfaces:
   - name: Vlan361
     description: TCP MSS ceiling - IPv4
     tcp_mss_ceiling:
-      ipv4: 1350
+      ipv4: 1310
 
   - name: Vlan362
     description: TCP MSS ceiling - IPv6
     tcp_mss_ceiling:
-      ipv6: 1350
+      ipv6: 1320
+
+  - name: Vlan363
+    description: TCP MSS ceiling - IPv4 and IPv6
+    tcp_mss_ceiling:
+      ipv4: 1330
+      direction: ingress
+
+  - name: Vlan364
+    description: TCP MSS ceiling - IPv4
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: ingress
+
+  - name: Vlan365
+    description: TCP MSS ceiling - IPv6
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: ingress
+
+  - name: Vlan366
+    description: TCP MSS ceiling - IPv4 and IPv6
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: ingress
+
+  - name: Vlan367
+    description: TCP MSS ceiling - IPv4
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: egress
+
+  - name: Vlan368
+    description: TCP MSS ceiling - IPv6
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: egress
+
+  - name: Vlan369
+    description: TCP MSS ceiling - IPv4 and IPv6
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: egress
