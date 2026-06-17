@@ -285,11 +285,15 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.spanning_tree.mode = "none"
             return
 
+        # If both set, settings from node configs get precedence
         node_config = self.shared_utils.node_config
         stp_settings = self.inputs.spanning_tree_settings
 
         spanning_tree_mode = default(node_config.spanning_tree_mode, stp_settings.mode)
-        stp_po_range = default(node_config.spanning_tree_port_id_allocation_port_channel_range, stp_settings.port_id_allocation_port_channel_range)
+        # Added None here as default returns empty PortIdAllocationPortChannelRange object
+        stp_po_range = default(
+            node_config.spanning_tree_port_id_allocation_port_channel_range or None, stp_settings.port_id_allocation_port_channel_range or None
+        )
         priority = node_config._get("spanning_tree_priority", stp_settings.priority)
 
         if node_config.spanning_tree_root_super is True:
