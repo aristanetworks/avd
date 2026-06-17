@@ -305,7 +305,7 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.spanning_tree.loop_guard_default = True
 
         if spanning_tree_mode is not None:
-            self.structured_config.spanning_tree.mode = spanning_tree_mode # pyright: ignore[reportAttributeAccessIssue]
+            self.structured_config.spanning_tree.mode = spanning_tree_mode  # pyright: ignore[reportAttributeAccessIssue]
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
             if spanning_tree_mode == "mstp":
                 self.structured_config.spanning_tree.mst_instances.append_new(id="0", priority=priority)
