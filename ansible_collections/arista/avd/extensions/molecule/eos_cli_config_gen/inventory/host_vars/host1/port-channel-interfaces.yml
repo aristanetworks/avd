@@ -579,11 +579,11 @@ port_channel_interfaces:
         input: MyPolicy
 
   - name: Port-Channel21
-    description: Test1 - loop protection true
+    description: Loop protection enable
     loop_protection: true
 
   - name: Port-Channel22
-    description: Test2 - loop protection false
+    description: Loop protection disable
     loop_protection: false
 
   - name: Port-Channel99
