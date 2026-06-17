@@ -40409,7 +40409,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes"]
                     _fields: ClassVar[dict] = {"units": {"type": str}, "min": {"type": int}, "max": {"type": int}}
                     units: Units
-                    """Units to be used for the threshold values."""
+                    """
+                    Units to be used for the threshold values.
+                    Threshold values depend on the platform
+                    """
                     min: int
                     """Random-detect ECN minimum-threshold."""
                     max: int
@@ -40427,7 +40430,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                units: Units to be used for the threshold values.
+                                units:
+                                   Units to be used for the threshold values.
+                                   Threshold values depend on the platform
                                 min: Random-detect ECN minimum-threshold.
                                 max: Random-detect ECN maximum-threshold.
 

@@ -14279,6 +14279,8 @@ traffic-policies
 
 QOS rewrite DSCP: **enabled**
 
+QOS random-detect ECN global-buffer: **units segments**, min **9984**, max **14976**
+
 QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
 QOS adaptive transmit queue percentage-based allocation: **enabled**
@@ -14320,8 +14322,8 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 ```eos
 !
 qos rewrite dscp
-qos random-detect ecn allow non-ect chip-based
 qos random-detect ecn global-buffer minimum-threshold 9984 segments maximum-threshold 14976 segments
+qos random-detect ecn allow non-ect chip-based
 qos tx-queue shape rate percent adaptive
 qos tx-queue 1 scheduler profile responsive
 qos tx-queue 3 scheduler profile responsive

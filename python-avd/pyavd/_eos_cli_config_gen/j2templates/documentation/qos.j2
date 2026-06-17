@@ -16,6 +16,10 @@ QOS rewrite DSCP: **enabled**
 
 QOS rewrite DSCP: **disabled**
 {%     endif %}
+{%     if qos.random_detect.ecn.global_buffer is arista.avd.defined %}
+
+QOS random-detect ECN global-buffer: **units {{ qos.random_detect.ecn.global_buffer.units }}**, min **{{ qos.random_detect.ecn.global_buffer.min }}**, max **{{ qos.random_detect.ecn.global_buffer.max }}**
+{%     endif %}
 {%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
 {%         set ecn_command = "QOS random-detect ECN is set to allow **non-ect**" %}
 {%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
