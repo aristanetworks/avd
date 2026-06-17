@@ -26269,7 +26269,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:

@@ -17,6 +17,9 @@ name: Build base container
 jobs:
   build_base:
     if: github.repository == 'aristanetworks/avd'
+    permissions:
+      contents: read
+      packages: write
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:
