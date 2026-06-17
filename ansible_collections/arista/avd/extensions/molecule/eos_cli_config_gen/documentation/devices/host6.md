@@ -6,6 +6,8 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
+- [Monitor Layer 1 Logging](#monitor-layer-1-logging)
+  - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -67,6 +69,20 @@ interface Management1
 !
 snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
 snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
+```
+
+## Monitor Layer 1 Logging
+
+| Layer 1 Event | Logging |
+| ------------- | ------- |
+| MAC fault | True |
+
+### Monitor Layer 1 Device Configuration
+
+```eos
+!
+monitor layer1
+   logging mac fault
 ```
 
 ## Routing
