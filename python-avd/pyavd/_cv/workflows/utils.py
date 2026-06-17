@@ -8,6 +8,8 @@ from dataclasses import MISSING, fields, is_dataclass
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from dataclasses import Field
+
     from .models import CVDeviceDeployment, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 
@@ -58,6 +60,22 @@ def _is_frozen_dataclass(obj: object) -> bool:
     return params is not None and params.frozen
 
 
+def _reset_field(obj: object, f: Field[Any]) -> None:
+    """Reset single dataclass field to its default."""
+    value = getattr(obj, f.name)
+    if value is not None and is_dataclass(value):
+        if not _is_frozen_dataclass(value):
+            if hasattr(value, "reset_mutable_fields"):
+                value.reset_mutable_fields()
+            else:
+                reset_mutable_fields(value)
+        # Frozen input-based objects (AvdWorkspace, AvdChangeControl) are kept as-is.
+    elif f.default is not MISSING:
+        setattr(obj, f.name, f.default)
+    elif f.default_factory is not MISSING:
+        setattr(obj, f.name, f.default_factory())
+
+
 def reset_mutable_fields(obj: object) -> None:
     """
     Reset all mutable fields of a cv_deploy model/dataclass instance to their original defaults.
@@ -72,15 +90,4 @@ def reset_mutable_fields(obj: object) -> None:
     if not is_dataclass(obj) or isinstance(obj, type):
         return
     for f in fields(obj):
-        value = getattr(obj, f.name)
-        if value is not None and is_dataclass(value):
-            if not _is_frozen_dataclass(value):
-                if hasattr(value, "reset_mutable_fields"):
-                    value.reset_mutable_fields()
-                else:
-                    reset_mutable_fields(value)
-            # Frozen input-based objects (AvdWorkspace, AvdChangeControl) are kept as-is.
-        elif f.default is not MISSING:
-            setattr(obj, f.name, f.default)
-        elif f.default_factory is not MISSING:
-            setattr(obj, f.name, f.default_factory())
+        _reset_field(obj, f)
