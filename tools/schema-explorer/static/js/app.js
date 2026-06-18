@@ -26,6 +26,10 @@ function rootSegment(keyPath) {
 function leafSegment(keyPath) {
   return stripPlaceholderBrackets(splitKeyPath(keyPath).pop());
 }
+function dynamicKeySource(keyPath) {
+  const match = String(keyPath).match(/^<([^>]+)>/);
+  return match ? match[1] : "";
+}
 // Pyavd's docs convention wraps dynamic_keys placeholders in `<...>`
 // (e.g. <connected_endpoints_keys.key>). Brackets are noise once the user is
 // inside the explorer — strip them for display only. URL hashes and DB
@@ -792,7 +796,17 @@ function renderVarDetail(db, release, module, key_path) {
   const constraints = v.constraints ? JSON.parse(v.constraints) : {};
   const children = getChildren(db, release, module, key_path);
   const siblings = getSiblings(db, release, module, v.parent_path || "", key_path);
-  const info = SCHEMA_MODULES[module];
+  const dynamicSource = dynamicKeySource(v.key_path);
+  const siblingsTitle = v.parent_path
+    ? "Sibling keys"
+    : dynamicSource
+      ? "Other dynamic root keys"
+      : "Other root keys";
+  const siblingsHelp = v.parent_path
+    ? "Keys with the same parent."
+    : dynamicSource
+      ? "Other schema branches generated from configurable key names."
+      : "Other top-level schema keys.";
 
   const validValuesHtml = constraints.valid_values ? `
     <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Valid Values</h5>
@@ -874,21 +888,25 @@ function renderVarDetail(db, release, module, key_path) {
       </div>
 
       <div class="col-lg-4">
+        ${dynamicSource ? `
         <div class="card border-0 shadow-sm mb-3">
-          <div class="card-header bg-light py-2"><span class="fw-semibold brand-color small"><i class="bi ${info.icon} me-1"></i>${info.name}</span></div>
-          <div class="card-body text-center">
-            <div class="fw-bold fs-5 stat-value-brand">${getStats(db, release).find(s => s.module === module)?.var_count || 0}</div>
-            <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: .04em;">total vars</div>
+          <div class="card-header bg-light py-2"><span class="fw-semibold brand-color small"><i class="bi bi-braces me-1"></i>Dynamic key</span></div>
+          <div class="card-body">
+            <div class="text-muted small mb-2">This branch represents input keys named by:</div>
+            <code class="small">${escapeHtml(dynamicSource)}</code>
           </div>
-        </div>
+        </div>` : ""}
         ${siblings.length ? `
         <div class="card border-0 shadow-sm mb-3">
-          <div class="card-header bg-light py-2"><span class="fw-semibold brand-color small"><i class="bi bi-collection me-1"></i>Related keys</span></div>
+          <div class="card-header bg-light py-2">
+            <div class="fw-semibold brand-color small"><i class="bi bi-collection me-1"></i>${siblingsTitle}</div>
+            <div class="text-muted" style="font-size:0.7rem;">${siblingsHelp}</div>
+          </div>
           <ul class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
             ${siblings.map(s => `
               <li class="list-group-item px-3 py-2 border-0 border-bottom">
                 <a href="#/${module}/${encodeURI(s.key_path)}?release=${release}" class="link-brand small text-decoration-none">
-                  <code>${escapeHtml(leafSegment(s.key_path))}</code>
+                  <code>${escapeHtml(displayPath(s.key_path))}</code>
                 </a>
                 <span class="badge bg-light text-dark border ms-1" style="font-size:0.6rem;">${escapeHtml(s.var_type || "-")}</span>
               </li>`).join("")}
