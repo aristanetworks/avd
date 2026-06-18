@@ -262,8 +262,10 @@ cv_workspace_build_timeout: 300
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
 # See the "Static Configuration Studio" section below for more details.
 # cv_static_config_manifest:
-#
-#   Preserve existing manifest-managed root containers in the Static Configuration Studio root list when they are not declared in the current manifest.
+#   Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+#   This enables partial manifests managing separate root-level branches.
+#   Existing manifest-managed container order is preserved, and newly declared containers are appended.
+#   Manually created root containers are always preserved and ordered after the manifest-managed containers.
 #   preserve_existing_containers: <bool, default=false>
 #
 #   # A list of dictionaries defining configlets to be created in the Configlet Library.

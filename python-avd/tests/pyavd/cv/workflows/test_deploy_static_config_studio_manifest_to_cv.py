@@ -1674,16 +1674,22 @@ class TestDeployStaticConfigStudio:
         assert not deployment_result.removed_static_config_containers
 
     async def test_preserve_existing_containers_keeps_existing_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that root-level preservation keeps omitted managed roots and manual root positions."""
+        """Test that root-level preservation keeps omitted managed root subtrees and manual root positions."""
         site1_id = generate_id("SITE1")
         site2_id = generate_id("SITE2")
+        site2_child_id = generate_id("SITE2/CHILD")
+        manual_child_id = "manual-child-001"
         manual_root_id = "manual-root-001"
         stale_cfg_id = generate_id("STALE_CFG")
 
         existing_containers = [
             create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1"),
             create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*", configlet_ids=[stale_cfg_id]),
-            create_grpc_container(container_id=site2_id, name="SITE2", description="", query="site:2", configlet_ids=[stale_cfg_id]),
+            create_grpc_container(
+                container_id=site2_id, name="SITE2", description="", query="site:2", child_ids=[site2_child_id], configlet_ids=[stale_cfg_id]
+            ),
+            create_grpc_container(container_id=site2_child_id, name="CHILD", description="", query="site:2-child", child_ids=[manual_child_id]),
+            create_grpc_container(container_id=manual_child_id, name="MANUAL_CHILD", description="", query="manual-child"),
         ]
         existing_configlets = [
             Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),

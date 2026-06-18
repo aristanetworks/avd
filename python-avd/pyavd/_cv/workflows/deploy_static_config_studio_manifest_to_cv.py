@@ -263,7 +263,7 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
     desired_container_ids = {container.id for container in cv_manifest.containers}
 
     def add_preserved_container_subtree(container_id: str) -> None:
-        """Mark an existing child and its descendants as intentionally outside this manifest's ownership boundary."""
+        """Mark an existing container and its descendants as intentionally outside this manifest's ownership boundary."""
         queue = deque([container_id])
         while queue:
             queued_container_id = queue.popleft()
