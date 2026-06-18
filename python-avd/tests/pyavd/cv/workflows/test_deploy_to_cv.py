@@ -275,7 +275,7 @@ async def test_deploy_to_cv_deploy_future_use_system_certs(
 
 @pytest.mark.asyncio
 async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> None:
-    """_finalize_change_control calls finalize_change_control_on_cv when change_control.id is set."""
+    """Tests that _finalize_change_control calls finalize_change_control_on_cv when change_control.id is set."""
     result = DeployToCvResult(workspace=CVWorkspace(), change_control=CVChangeControl(id="cc-123"))
 
     mock_finalize = AsyncMock()
@@ -287,7 +287,7 @@ async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> Non
 
 @pytest.mark.asyncio
 async def test_deploy_to_cv_workspace_sync_retry() -> None:
-    """deploy_to_cv resets state and replays deployment steps when workspace_was_synchronized_on_cv returns True."""
+    """Tests that deploy_to_cv resets state and replays deployment steps when workspace_was_synchronized_on_cv returns True."""
     mock_cv_client = AsyncMock()
 
     with (

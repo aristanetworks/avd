@@ -548,7 +548,7 @@ class TestCVChangeControl:
         assert result["change_control_template"] == {"name": "template-name", "id": "template-id"}
 
     def test_reset_runtime_fields_cleared(self) -> None:
-        """Id and state (populated from CV) are reset to None."""
+        """Tests that id and state (populated from CV) are reset to None."""
         cc = CVChangeControl(id="cc-id", state="approved")
 
         cc.reset_mutable_fields()
@@ -572,7 +572,7 @@ class TestCVChangeControl:
         expected_name: str | None,
         expected_desc: str | None,
     ) -> None:
-        """Name and description are restored from the frozen avd_change_control after reset."""
+        """Tests that name and description are restored from the frozen avd_change_control after reset."""
         avd_cc = AvdChangeControl(name=avd_name, description=avd_desc)
         cc = CVChangeControl(avd_change_control=avd_cc)
 
@@ -582,7 +582,7 @@ class TestCVChangeControl:
         assert cc.description == expected_desc
 
     def test_reset_avd_change_control_object_is_preserved(self) -> None:
-        """The frozen avd_change_control intent object must be the same instance after reset."""
+        """Tests that the frozen avd_change_control intent object is the same instance after reset."""
         template = AvdChangeControlTemplate(name="template-name", id="template-id")
         avd_cc = AvdChangeControl(name="avd-cc-name", description="avd-cc-desc", requested_state="approved", change_control_template=template)
         cc = CVChangeControl(avd_change_control=avd_cc)
@@ -611,7 +611,7 @@ class TestCVWorkspace:
         assert result["device_build_results"] == []
 
     def test_reset_runtime_fields_cleared(self) -> None:
-        """State, change_control_id, build_id, device_build_results and synchronization_required are reset."""
+        """Tests that state, change_control_id, build_id, device_build_results and synchronization_required are reset."""
         avd_ws = AvdWorkspace(name="workspace-name")
         device = CVDevice(avd_device=AvdDevice(hostname="avd-leaf1"))
         ws = CVWorkspace(
@@ -632,7 +632,7 @@ class TestCVWorkspace:
         assert ws.synchronization_required is False
 
     def test_reset_avd_workspace_object_is_preserved(self) -> None:
-        """The frozen avd_workspace intent object must be the same instance after reset."""
+        """Tests that the frozen avd_workspace intent object is the same instance after reset."""
         avd_ws = AvdWorkspace(name="workspace-name", id="ws-id", description="workspace-description", requested_state="submitted", force=True)
         ws = CVWorkspace(avd_workspace=avd_ws)
 
@@ -673,7 +673,7 @@ class TestCVDevice:
         expected_serial_after_reset: str | None,
         expected_mac_after_reset: str | None,
     ) -> None:
-        """CV-discovered serial/mac/exists_on_cv/streaming are cleared; avd_device intent values are restored."""
+        """Tests that CV-discovered serial/mac/exists_on_cv/streaming are cleared and avd_device intent values are restored."""
         avd_device = AvdDevice(hostname="avd-leaf1", serial_number=intended_serial, system_mac_address=intended_mac)
         device = CVDevice(avd_device=avd_device)
         # Simulate values written by verify_devices_on_cv.
@@ -690,7 +690,7 @@ class TestCVDevice:
         assert device.streaming is None
 
     def test_reset_avd_device_object_is_preserved(self) -> None:
-        """The frozen avd_device intent object must be the same instance after reset."""
+        """Tests that the frozen avd_device intent object is the same instance after reset."""
         avd_device = AvdDevice(hostname="avd-leaf1", serial_number="sn54321", system_mac_address="55:44:33:22:11:00")
         device = CVDevice(avd_device=avd_device)
         device.exists_on_cv = True
@@ -929,7 +929,7 @@ class TestDeployToCvResult:
         )
 
     def test_reset_runtime_fields_cleared(self) -> None:
-        """Failed, errors, warnings, and all deployed/skipped/removed list fields are cleared after reset."""
+        """Tests that failed, errors, warnings, and all deployed/skipped/removed list fields are cleared after reset."""
         result = self._make_populated_result()
 
         result.reset_mutable_fields()
@@ -959,7 +959,7 @@ class TestDeployToCvResult:
             assert not getattr(result, dataclass_field)
 
     def test_reset_workspace_in_place(self) -> None:
-        """The workspace object is reset in-place (its runtime fields are cleared)."""
+        """Tests that the workspace object is reset in-place (its runtime fields are cleared)."""
         result = self._make_populated_result()
         original_ws = result.workspace
 
@@ -973,7 +973,7 @@ class TestDeployToCvResult:
         assert result.workspace.name == "workspace-name"
 
     def test_reset_change_control_in_place(self) -> None:
-        """The change_control object is reset in-place (id/state cleared, name/description restored)."""
+        """Tests that the change_control object is reset in-place (id/state cleared, name/description restored)."""
         result = self._make_populated_result()
         original_cc = result.change_control
 
@@ -987,7 +987,7 @@ class TestDeployToCvResult:
         assert result.change_control.description == "avd-cc-desc"
 
     def test_reset_none_workspace_and_change_control_remain_none(self) -> None:
-        """When workspace and change_control start as None they remain None after reset."""
+        """Tests that when workspace and change_control start as None they remain None after reset."""
         result = DeployToCvResult()
 
         result.reset_mutable_fields()
@@ -1000,7 +1000,7 @@ class TestResetMutableFieldsUtility:
     """Unit tests for the reset_mutable_fields utility."""
 
     def test_frozen_dataclass_field_with_default_factory_is_preserved(self) -> None:
-        """A frozen dataclass stored in a field that has default_factory must not be replaced."""
+        """Tests that a frozen dataclass stored in a field that has default_factory is not replaced."""
         avd_ws = AvdWorkspace(name="workspace-name", id="ws-id")
         ws = CVWorkspace(avd_workspace=avd_ws, state="built")
 
@@ -1012,7 +1012,7 @@ class TestResetMutableFieldsUtility:
         assert ws.id == "ws-id"
 
     def test_none_value_field_with_default_none_remains_none(self) -> None:
-        """Fields whose current value is None and whose default is None are handled without error."""
+        """Tests that fields whose current value is None and whose default is None are handled without error."""
         ws = CVWorkspace()
         assert ws.state is None
 
@@ -1021,20 +1021,20 @@ class TestResetMutableFieldsUtility:
         assert ws.state is None
 
     def test_non_dataclass_object(self) -> None:
-        """Calling reset_mutable_fields on a non-dataclass does not raise."""
+        """Tests that calling reset_mutable_fields on a non-dataclass does not raise."""
         plain_dict: dict = {"key": "value"}
         reset_mutable_fields(plain_dict)
         assert plain_dict == {"key": "value"}
 
     def test_frozen_dataclass_is_left_unchanged(self) -> None:
-        """Calling reset_mutable_fields on a frozen dataclass leaves all fields intact and does not raise FrozenInstanceError."""
+        """Tests that calling reset_mutable_fields on a frozen dataclass leaves all fields intact and does not raise FrozenInstanceError."""
         avd_ws = AvdWorkspace(name="workspace-name", id="ws-id")
         reset_mutable_fields(avd_ws)
         assert avd_ws.name == "workspace-name"
         assert avd_ws.id == "ws-id"
 
     def test_non_frozen_dataclass_field_without_reset_method(self) -> None:
-        """A non-frozen dataclass stored in a field that has no reset_mutable_fields is reset recursively."""
+        """Tests that a non-frozen dataclass stored in a field that has no reset_mutable_fields is reset recursively."""
 
         @dataclass
         class Inner:

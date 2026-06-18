@@ -592,7 +592,7 @@ class TestWorkspaceWasSynchronizedOnCv:
 
     @pytest.mark.asyncio
     async def test_returns_false_when_sync_not_required(self) -> None:
-        """When synchronization_required is False, returns False without calling rebase_workspace."""
+        """Tests that when synchronization_required is False, False is returned without calling rebase_workspace."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(avd_workspace=AvdWorkspace(), synchronization_required=False)
 
@@ -610,7 +610,7 @@ class TestWorkspaceWasSynchronizedOnCv:
         ],
     )
     async def test_sync_required_within_retries_calls_rebase_and_returns_true(self, workspace_sync_attempt: int) -> None:
-        """When synchronization_required is True and attempt < max_sync_retries, rebase is called, flag is cleared, True is returned."""
+        """Tests that when synchronization_required is True and attempt < max_sync_retries, rebase is called, flag is cleared, and True is returned."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(
             avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
@@ -632,7 +632,7 @@ class TestWorkspaceWasSynchronizedOnCv:
         ],
     )
     async def test_sync_required_exhausted_raises(self, workspace_sync_attempt: int) -> None:
-        """When synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSyncAttemptsExhausted is raised."""
+        """Tests that when synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSyncAttemptsExhausted is raised."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(
             avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
@@ -654,7 +654,7 @@ class TestWorkspaceWasSynchronizedOnCv:
 
 @pytest.mark.asyncio
 async def test_finalize_workspace_on_cv_build_needs_rebase_sets_synchronization_required() -> None:
-    """When cv_workspace.needs_rebase is True after build, synchronization_required is set and function returns early without changing state."""
+    """Tests that when cv_workspace.needs_rebase is True after build, synchronization_required is set and the function returns early without changing state."""
     mock_workspace_config = MagicMock()
     mock_workspace_config.request_params.request_id = "req-build-id"
     mock_cv_workspace = MagicMock()
@@ -677,7 +677,7 @@ async def test_finalize_workspace_on_cv_build_needs_rebase_sets_synchronization_
 
 @pytest.mark.asyncio
 async def test_finalize_workspace_on_cv_submit_synchronization_required() -> None:
-    """When WS submit response code is SYNCHRONIZATION_REQUIRED, synchronization_required is set and function returns early."""
+    """Tests that when the workspace submit response code is SYNCHRONIZATION_REQUIRED, synchronization_required is set and the function returns early."""
     mock_workspace_config = MagicMock()
     mock_workspace_config.request_params.request_id = "req-build-id"
     mock_cv_workspace_build = MagicMock()
