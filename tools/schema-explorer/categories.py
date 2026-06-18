@@ -99,6 +99,7 @@ _CATEGORY_RULES: list[tuple[str, list[str], str]] = [
     (
         "eos_designs",
         [
+            "network_services",
             "network_services_keys",
             "network_ports",
             "svi_profiles",
