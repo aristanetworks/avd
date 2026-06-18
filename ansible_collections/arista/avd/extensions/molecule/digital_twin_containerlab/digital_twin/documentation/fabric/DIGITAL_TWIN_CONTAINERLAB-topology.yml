@@ -1,6 +1,6 @@
 ---
 name: DIGITAL_TWIN_CONTAINERLAB, Containerlab Digital Twin
-prefix: avd-dt
+prefix: ''
 topology:
   defaults:
     kind: arista_ceos
