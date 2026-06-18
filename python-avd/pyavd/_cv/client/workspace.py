@@ -297,12 +297,12 @@ class WorkspaceMixin(Protocol):
         client = self.new_stub(WorkspaceServiceStub)
         responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            workspace = get_required_field(response, "value", response.value)
-            workspace_responses = get_required_field(workspace, "responses", workspace.responses)
-            if getattr(response, "value", None) is None:
+            if response.value is None:
                 LOGGER.debug("wait_for_workspace_response: Got workspace update without value: %s", response)
                 continue
 
+            workspace = response.value
+            workspace_responses = get_required_field(workspace, "responses", workspace.responses)
             if request_id in workspace_responses.values:
                 LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, workspace_responses.values[request_id])
                 if workspace_responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
@@ -351,7 +351,11 @@ class WorkspaceMixin(Protocol):
         client = self.new_stub(WorkspaceServiceStub)
         responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            workspace = get_required_field(response, "value", response.value)
+            if response.value is None:
+                LOGGER.debug("wait_for_workspace_state: Got workspace update without value: %s", response)
+                continue
+
+            workspace = response.value
             if workspace.state == WORKSPACE_STATE_MAP[state]:
                 LOGGER.debug("wait_for_workspace_state: Workspace reached desired state (%s): %s", state, response)
                 return workspace
@@ -387,7 +391,7 @@ class WorkspaceMixin(Protocol):
                     key=WorkspaceBuildDetailsKey(workspace_id=workspace_id, build_id=build_id),
                 ),
             ],
-            time=TimeBounds(start=None, end=time),
+            time=TimeBounds(start=None, end=time) if time else None,
         )
         client = self.new_stub(WorkspaceBuildDetailsServiceStub)
         responses = client.get_all(request, timeout=timeout)

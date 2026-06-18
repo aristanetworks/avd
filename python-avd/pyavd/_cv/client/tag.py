@@ -91,7 +91,7 @@ class TagMixin(Protocol):
                     creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=TimeBounds(start=None, end=time),
+            time=TimeBounds(start=None, end=time) if time else None,
         )
         client = self.new_stub(TagServiceStub)
         responses = client.get_all(request, timeout=timeout)
@@ -109,7 +109,7 @@ class TagMixin(Protocol):
                     key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=TimeBounds(start=None, end=time),
+            time=TimeBounds(start=None, end=time) if time else None,
         )
         client = self.new_stub(TagConfigServiceStub)
         responses = client.get_all(request, timeout=timeout)
@@ -194,7 +194,7 @@ class TagMixin(Protocol):
                     tag_creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=TimeBounds(start=None, end=time),
+            time=TimeBounds(start=None, end=time) if time else None,
         )
         client = self.new_stub(TagAssignmentServiceStub)
         responses = client.get_all(request, timeout=timeout)
@@ -212,7 +212,7 @@ class TagMixin(Protocol):
                     key=TagAssignmentKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=TimeBounds(start=None, end=time),
+            time=TimeBounds(start=None, end=time) if time else None,
         )
         client = self.new_stub(TagAssignmentConfigServiceStub)
         responses = client.get_all(request, timeout=timeout)

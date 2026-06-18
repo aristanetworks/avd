@@ -216,7 +216,11 @@ class ChangeControlMixin(Protocol):
         responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
             LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
-            change_control = get_required_field(response, "value", response.value)
+            if response.value is None:
+                LOGGER.debug("wait_for_change_control_complete: Got change control update without value: %s", response)
+                continue
+
+            change_control = response.value
             if change_control.status == CHANGE_CONTROL_STATUS_MAP[state]:
                 LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, change_control.status)
                 return change_control

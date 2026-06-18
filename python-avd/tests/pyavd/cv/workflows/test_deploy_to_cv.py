@@ -63,9 +63,8 @@ async def test_deploy_to_cv(
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
 
     -   description: Fetch device status
-        request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
-            time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/a3473bce063d1d8db187aa99e2286e8853822b39.json'
+        request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(), hostname='avd-ci-leaf2')], time=None)'
+        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/5ec24e76acde8c418c50708edd2feb3188beb7da.json'
 
     -   description: Fetch I&T Studio inputs
         request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
@@ -80,8 +79,8 @@ async def test_deploy_to_cv(
 
     -   description: Fetch Configlet assignments
         request: 'ConfigletAssignmentStreamRequest(partial_eq_filter=[ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=
-            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
+            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=None)'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/39149ce35fa122134cbcdbd9fe51dc7ce6fd8e7d.json'
 
     -   description: Fetch Configlet assignments
         request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
@@ -100,7 +99,7 @@ async def test_deploy_to_cv(
 
     -   description: Fetch configlets assignments
         request: Too long. Please consult JSON file for details.
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/4f362046a608b9c0d365f5b8af3cf2e8dae52d66.json'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/9bdd288494784a36c7083dae9604aeff14ef5f40.json'
 
     -   description: Create configlet assignments
         request: 'ConfigletAssignmentConfigSetSomeRequest(values=[ConfigletAssignmentConfig(key=ConfigletAssignmentKey(workspace_id=

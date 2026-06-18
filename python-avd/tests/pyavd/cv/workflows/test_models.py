@@ -803,10 +803,13 @@ class TestDeployToCvResult:
         assert skipped_result_deployed_interface_tags["device"] is None
         assert skipped_result_deployed_interface_tags["interface"] is None
 
-        # skipped_cv_pathfinder_metadata — device is None
+        # skipped_cv_pathfinder_metadata
         skipped_result_deployed_cv_pathfinder_metadata = result["skipped_cv_pathfinder_metadata"][0]
         assert skipped_result_deployed_cv_pathfinder_metadata["metadata"] == {"role": "edge"}
-        assert skipped_result_deployed_cv_pathfinder_metadata["device"] is None
+        assert "avd_device" not in skipped_result_deployed_cv_pathfinder_metadata["device"]
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["hostname"] == "leaf1"
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["serial_number"] == "snleaf1"
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["system_mac_address"] == "00:11:22:33:44:55"
 
         assert result["removed_configs"] == ["removed/leaf1.cfg"]
         assert result["removed_static_config_containers"] == ["OLD_CONTAINER"]

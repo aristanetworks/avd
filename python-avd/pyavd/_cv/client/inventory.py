@@ -44,7 +44,7 @@ class InventoryMixin(Protocol):
         Returns:
             Device objects.
         """
-        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time) if time else None)
         if devices:
             for serial_number, system_mac_address, hostname in devices:
                 request.partial_eq_filter.append(

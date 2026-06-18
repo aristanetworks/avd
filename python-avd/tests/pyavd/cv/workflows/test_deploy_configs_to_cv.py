@@ -26,8 +26,8 @@ async def test_get_existing_device_container_ids_from_root_container_new_root_co
     Exact test steps:
     -   description: Try to get AVD root container and its child assignments
         request: 'ConfigletAssignmentStreamRequest(partial_eq_filter=[ConfigletAssignment(key=ConfigletAssignmentKe
-            (workspace_id='bfb16595-a8b0-428e-9f08-93e6a5f32973', configlet_assignment_id='new-avd-configlets'))], time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/9da5b4770ee2d4edf05bdfc6f5a377d20dd5fb22.json'
+            (workspace_id='bfb16595-a8b0-428e-9f08-93e6a5f32973', configlet_assignment_id='new-avd-configlets'))], time=None)'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/8d182b0145bf7228602c21e877b5760d2e97fac5.json'
 
     -   description: Create new AVD root container
         request: 'ConfigletAssignmentConfigSetRequest(value=ConfigletAssignmentConfig(key=ConfigletAssignmentKey
@@ -35,7 +35,7 @@ async def test_get_existing_device_container_ids_from_root_container_new_root_co
             description='Configurations created and uploaded by AVD', configlet_ids=RepeatedString(values=None), query='device:*',
             match_policy=MatchPolicy.MATCH_ALL, child_assignment_ids=RepeatedString(values=None)))'
         targeted_file: 'api_recordings/arista.configlet.v1.ConfigletAssignmentConfigService/Set/www.cv-prod-us-central1-c.arista.io/
-            4bf980a75d296ea4574264b9e107aa6fc7da253d.json'
+            6e19eb41059a7089f3bec651134146d846f38850.json'
 
     -   description: Get current configletAssignmentRoots
         request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='bfb16595-a8b0-428e-9f08-93e6a5f32973',

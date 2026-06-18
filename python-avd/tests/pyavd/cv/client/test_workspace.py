@@ -10,7 +10,8 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig
+from pyavd._cv.api.arista.subscriptions import Operation
+from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig, WorkspaceStreamResponse
 from pyavd._cv.client.exceptions import CVTimeoutError, CVWorkspaceFailed
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_B_ID,
@@ -55,7 +56,7 @@ async def test_wait_for_workspace_state_timeout(cv_client: CVClient) -> None:
 
     async def async_iterator_with_timeout(timeout: float = 1.0) -> AsyncIterator[Any]:
         """Async iterator that yields a message and waits for the specified 'timeout' time before raising a TimeoutError."""
-        yield "Single message that you will get before I timeout and raise asyncio.TimeoutError."
+        yield WorkspaceStreamResponse(type=Operation.INITIAL_SYNC_COMPLETE)
         await asyncio.sleep(int(timeout))
         msg = "Deadline exceeded"
         raise AsyncioTimeoutError(msg)

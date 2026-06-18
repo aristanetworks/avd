@@ -115,7 +115,7 @@ async def test_create_new_workspace_on_cv_success(
     cv_client.get_workspace.assert_called_once_with(workspace_id=workspace_id)
     assert any(
         re.search(
-            re.compile(r"wait_for_workspace_state: Got workspace update: WorkspaceStreamResponse\(type=<Operation.INITIAL_SYNC_COMPLETE: 11>\)"),
+            re.compile(r"wait_for_workspace_state: Got workspace update without value: WorkspaceStreamResponse\(type=<Operation.INITIAL_SYNC_COMPLETE: 11>\)"),
             str(record.message),
         )
         for record in caplog.records

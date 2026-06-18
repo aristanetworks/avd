@@ -77,7 +77,7 @@ class ConfigletMixin(Protocol):
         Returns:
             ConfigletAssignment objects.
         """
-        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time) if time else None)
         if container_ids:
             for container_id in container_ids:
                 request.partial_eq_filter.append(
@@ -274,7 +274,7 @@ class ConfigletMixin(Protocol):
         Returns:
             List of matching Configlet objects.
         """
-        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time) if time else None)
         if configlet_ids:
             for configlet_id in configlet_ids:
                 request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id)))
