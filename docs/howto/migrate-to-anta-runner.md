@@ -403,6 +403,14 @@ This behavior is controlled by `feature_support.hardware_validation` in `eos_des
 - **cEOS**: CEOS, cEOS, ceos, cEOSLab
 - **CloudEOS**: CloudEOS
 
+The related platform settings schema can be browsed inline here:
+
+```schema-explorer
+module: eos_designs
+root: platform_settings
+height: 500px
+```
+
 To get the same behavior as `eos_validate_state` (hardware tests generated and skipped by ANTA), you can use `custom_platform_settings`:
 
 ```yaml

@@ -6,37 +6,33 @@ MkDocs hook for the AVD Schema Explorer.
 
 Responsibilities:
 
-1. **Asset publishing.** Copy the pre-built explorer (static assets + SQLite)
-   from ``tools/schema-explorer/build/`` into ``<site_dir>/_assets/schema-explorer/``.
-   The destination sits under ``_assets/`` (not ``docs/``) because the
-   explorer is no longer a single full-page route — it is embedded into
-   arbitrary docs pages via the ``<schema-explorer>`` custom HTML element,
-   and the SPA assets are a shared site-wide resource.
+1. **Markdown authoring interface.** Register a ``schema-explorer`` SuperFences
+   formatter so docs authors can embed scoped explorers with Markdown fenced
+   blocks instead of raw HTML.
 
-2. **Global asset injection.** Append only the SPA's own ``style.css`` and
-   ``app.js`` to ``extra_css`` / ``extra_javascript`` so every docs page
-   gets the embed loader. ``app.js`` early-returns on pages that do not
-   host a ``<schema-explorer>`` element or the standalone ``#app`` mount,
-   so the per-page cost is just the unfired script bytes. Bootstrap CSS/JS,
-   Bootstrap Icons, and sql.js are *not* injected globally — they are
-   lazy-loaded by ``app.js`` only when an embed is actually present,
-   so Material's chrome on plain docs pages is unaffected.
+2. **Asset publishing.** Copy the pre-built explorer (static assets + SQLite)
+   from ``tools/schema-explorer/build/`` into
+   ``<site_dir>/_assets/schema-explorer/``. The destination sits under
+   ``_assets/`` because the explorer is embedded into arbitrary docs pages and
+   the SPA assets are a shared site-wide resource.
 
-3. **Standalone route.** The hook also copies the SPA ``index.html`` so the
-   full-page experience stays reachable at ``/_assets/schema-explorer/index.html``.
+3. **Global asset injection.** Append only the SPA's own ``style.css`` and
+   ``app.js`` to ``extra_css`` / ``extra_javascript`` so every docs page gets
+   the embed loader. Runtime dependencies are lazy-loaded only when an explorer
+   mounts, so Material's chrome on plain docs pages is unaffected.
 
-Build the artifact first with ``make schema-explorer-build`` (or via the
-docs container's entrypoint). If the build directory is missing, the hook
-is a no-op so a bare ``mkdocs build`` still succeeds — the embeds just
-render an empty placeholder.
+4. **Standalone route.** Copy the SPA ``index.html`` so the full-page experience
+   stays reachable at ``/_assets/schema-explorer/index.html``.
 """
 
 from __future__ import annotations
 
+import importlib.util
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 HERE = Path(__file__).resolve().parent
@@ -44,6 +40,8 @@ BUILD_DIR = HERE / "build"
 GENERATE_SCRIPT = HERE / "generate.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
+FORMATTER_SCRIPT = AVD_ROOT / "tools" / "schema_explorer_markdown.py"
+FORMATTER_MODULE = "_avd_schema_explorer_markdown"
 DEFAULT_RELEASE = "devel"
 ASSET_SUBPATH = "_assets/schema-explorer"
 # Only the SPA's own style.css + app.js are registered globally. Bootstrap
@@ -56,16 +54,53 @@ CSS_FILES = (f"{ASSET_SUBPATH}/css/style.css",)
 JS_FILES = (f"{ASSET_SUBPATH}/js/app.js",)
 
 
+def _load_formatter() -> Any:
+    """Load the Markdown formatter from a local file path."""
+    module = sys.modules.get(FORMATTER_MODULE)
+    if not isinstance(module, ModuleType):
+        spec = importlib.util.spec_from_file_location(FORMATTER_MODULE, FORMATTER_SCRIPT)
+        if spec is None or spec.loader is None:
+            msg = f"Unable to load Schema Explorer Markdown formatter from {FORMATTER_SCRIPT}"
+            raise RuntimeError(msg)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[FORMATTER_MODULE] = module
+        spec.loader.exec_module(module)
+    return module.schema_explorer_fence_format
+
+
+def _ensure_markdown_fence(config: dict[str, Any]) -> None:
+    """Register the ``schema-explorer`` SuperFences formatter."""
+    markdown_extensions = list(config.get("markdown_extensions") or [])
+    if "pymdownx.superfences" not in markdown_extensions:
+        markdown_extensions.append("pymdownx.superfences")
+
+    mdx_configs = dict(config.get("mdx_configs") or {})
+    fence_config = dict(mdx_configs.get("pymdownx.superfences") or {})
+    custom_fences = list(fence_config.get("custom_fences") or [])
+
+    if not any(fence.get("name") == "schema-explorer" for fence in custom_fences if isinstance(fence, dict)):
+        custom_fences.append(
+            {
+                "name": "schema-explorer",
+                "class": "schema-explorer",
+                "format": _load_formatter(),
+            },
+        )
+
+    fence_config["custom_fences"] = custom_fences
+    mdx_configs["pymdownx.superfences"] = fence_config
+    config["markdown_extensions"] = markdown_extensions
+    config["mdx_configs"] = mdx_configs
+
+
 def _ensure_build() -> None:
     """
     Build the Schema Explorer if ``build/`` is missing.
 
-    Hosts that don't run ``make schema-explorer-build`` first — e.g. the
-    ReadTheDocs build pipeline, which only invokes ``mkdocs build`` — would
-    otherwise end up with the hook copying nothing into ``site/`` and every
-    ``_assets/schema-explorer/*`` URL returning 404. Running the generator
-    on demand from the hook makes the SPA self-publishing: any host that
-    can run ``mkdocs build`` gets the explorer for free.
+    Hosts that do not run ``make schema-explorer-build`` first, such as the
+    ReadTheDocs build pipeline, would otherwise end up with missing
+    ``_assets/schema-explorer/*`` URLs. Running the generator on demand from the
+    hook makes the SPA self-publishing for any host that can run ``mkdocs build``.
     """
     sqlite_marker = BUILD_DIR / "data" / DEFAULT_RELEASE / "schema.sqlite"
     if sqlite_marker.is_file():
@@ -86,7 +121,8 @@ def _ensure_build() -> None:
 
 
 def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa: ARG001
-    """Build the SPA if needed, then register its CSS/JS globally."""
+    """Register the Markdown fence, build the SPA, then register CSS/JS."""
+    _ensure_markdown_fence(config)
     _ensure_build()
     extra_css = list(config.get("extra_css") or [])
     extra_js = list(config.get("extra_javascript") or [])
@@ -102,6 +138,7 @@ def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa:
 
 
 def on_post_build(config: dict[str, Any], **kwargs: Any) -> None:  # noqa: ARG001
+    """Copy the built Schema Explorer into the generated site."""
     if not BUILD_DIR.is_dir():
         return
     dest = Path(config["site_dir"]) / ASSET_SUBPATH

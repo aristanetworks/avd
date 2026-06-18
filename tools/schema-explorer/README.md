@@ -15,45 +15,52 @@ Tracked in `aristanetworks/avd-internal#503`.
 
 ## Two ways to consume it
 
-| Mode               | URL                                                          | When to use                                                                                                                                                  |
-| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Standalone SPA** | `/_assets/schema-explorer/index.html`                        | Full-screen browser experience: landing → module → variable detail, with the SPA's own chrome. Reached from the Data Models overview card.                   |
-| **Embedded view**  | `<schema-explorer ...></schema-explorer>` in any docs page   | Drop a focused, scoped tree (e.g. just `router_bgp`) inline next to the prose that explains it. Material's header, left nav, and right-rail TOC stay intact. |
+| Mode | Syntax / URL | When to use |
+| ---- | ------------ | ----------- |
+| **Standalone SPA** | `/_assets/schema-explorer/index.html` | Full-screen browser experience: landing -> module -> variable detail, with the SPA's own chrome. Reached from the Data Models overview card. |
+| **Markdown embed** | ```` ```schema-explorer ```` fenced block | Drop a focused, scoped tree such as `router_bgp` or `platform_settings` inline next to the prose that explains it. Material header, left nav, and right-rail TOC stay intact. |
 
 Both modes share one set of static assets and one SQLite per release.
 
-### `<schema-explorer>` embed attributes
+### Markdown embed syntax
 
-| Attribute | Default | Notes |
-| --------- | ------- | ----- |
+Use a `schema-explorer` fenced block in any MkDocs page:
+
+````markdown
+```schema-explorer
+module: eos_designs
+root: platform_settings
+height: 500px
+```
+````
+
+The Markdown formatter renders the block as a `<schema-explorer>` custom element, and the browser-side app mounts the interactive explorer into that element.
+
+| Option | Default | Notes |
+| ------ | ------- | ----- |
 | `release` | `devel` | Schema release tag. |
 | `module` | `eos_designs` | `eos_designs`, `eos_cli_config_gen`, or `all`. |
-| `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp`. |
+| `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp` or `platform_settings`. |
 | `view` | `tree` | `tree` or `flat`. |
 | `height` | `600px` | CSS max-height for the embed scroll container. |
 | `chrome` | `compact` | `compact` shows the per-tree expand/collapse bar; `none` hides it. |
 
-Example:
-
-```html
-<schema-explorer module="eos_cli_config_gen" root="router_bgp" height="500px"></schema-explorer>
-```
-
 ## Components
 
-| Path                                                                    | What it is                                                                                                                                                                                    |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tools/schema-explorer/generate.py`                                     | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it.                                                 |
-| `tools/schema-explorer/categories.py`                                   | Human-readable category mapping used by the SPA's sidebar classifier.                                                                                                                         |
-| `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                     |
-| `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                               |
-| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.                     |
-| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — auto-builds missing assets, registers the SPA CSS/JS loader, and copies the built SPA into `<site_dir>/_assets/schema-explorer/`.                 |
-| `tools/schema-explorer/build/`                                          | **Gitignored.** Output of `make schema-explorer-build`.                                                                                                                                       |
-| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                                        |
-| `development/entrypoint.sh`                                             | Webdoc container entrypoint — runs the build with an mtime guard before `mkdocs serve`.                                                                                                       |
-| `mkdocs.yml` (`hooks:`, `exclude_docs:`)                                | Registers the hook; excludes `tools/*` from the docs build.                                                                                                                                   |
-| `pyproject.toml` (`doc` group)                                          | Build-time deps for the generator.                                                                                                                                                            |
+| Path                                                                    | What it is                                                                                                                                                                    |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tools/schema-explorer/generate.py`                                     | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it.                                 |
+| `tools/schema-explorer/categories.py`                                   | Human-readable category mapping used by the SPA's sidebar classifier.                                                                                                         |
+| `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                     |
+| `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                               |
+| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.     |
+| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — auto-builds missing assets, registers the SPA CSS/JS loader, and copies the built SPA into `<site_dir>/_assets/schema-explorer/`. |
+| `tools/schema_explorer_markdown.py`                                     | Markdown formatter registered through `pymdownx.superfences`; converts `schema-explorer` fenced blocks into `<schema-explorer>` custom elements.                              |
+| `tools/schema-explorer/build/`                                          | **Gitignored.** Output of `make schema-explorer-build`.                                                                                                                       |
+| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                        |
+| `development/entrypoint.sh`                                             | Webdoc container entrypoint — runs the build with an mtime guard before `mkdocs serve`.                                                                                       |
+| `mkdocs.yml` (`markdown_extensions:`, `hooks:`, `exclude_docs:`)        | Registers the Markdown formatter and hook; excludes `tools/*` from the docs build.                                                                                            |
+| `pyproject.toml` (`doc` group)                                          | Build-time deps for the generator.                                                                                                                                            |
 
 ## Build pipeline
 
@@ -102,6 +109,10 @@ Loads each schema through pyavd's `schema_tools` resolver so:
   `eos_designs`) is stripped before resolution and surfaced as a `cross_ref`
   column on the leaf row, so the SQLite stays ~7.5 MB instead of materializing
   the whole `eos_cli_config_gen` tree under every `structured_config`.
+
+### What the Markdown formatter does
+
+`tools/schema_explorer_markdown.py` is registered as a `pymdownx.superfences` custom formatter for `schema-explorer` fenced blocks. It validates the supported options and emits a `<schema-explorer>` custom element. This gives docs authors a reusable Markdown-native interface while keeping the browser runtime in one JavaScript component.
 
 ### What `mkdocs_hook.py` does
 
@@ -159,10 +170,12 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
   `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
   same-schema `$ref` hole, while keeping cross-schema refs as leaf
   annotations to bound the SQLite size.
-- **Embedded views via custom HTML element**, not iframe / template override
-  — picked at the May 15th maintainers call. Each embed is a single DOM node
-  to MkDocs, so Material's TOC, headings nav, and search stay native. Earlier
-  iframe and Jinja-override variants were collapsed into the current
-  Material-hosted entry page, `docs/schema-explorer.md`.
+- **Embedded views via a Markdown fence**, not iframe / template override
+  — picked at the May 15th maintainers call. Docs authors use
+  `schema-explorer` fenced blocks, which the Markdown formatter renders into
+  custom elements. Each embed is a single DOM node to MkDocs, so Material
+  TOC, headings nav, and search stay native. Earlier iframe and
+  Jinja-override variants were collapsed into the current Material-hosted
+  entry page, `docs/schema-explorer.md`.
 - **Source and build output both under `tools/`**, copied into `site/_assets/`
   by `mkdocs_hook.py` — keeps `docs/` to documentation only (`.md`, images).

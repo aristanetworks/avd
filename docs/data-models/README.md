@@ -28,6 +28,10 @@ The **[Schema Explorer](../schema-explorer.md)** offers a browsable, searchable 
 
 ## Embedded preview
 
-The same explorer can also be embedded directly inside any docs page via the `<schema-explorer>` custom element — Material's chrome, navigation, and right-rail TOC stay intact. Example below: a tree view scoped to the `router_bgp` subtree of the EOS Config schema.
+The same explorer can also be embedded directly inside any docs page via the `schema-explorer` Markdown fence — Material's chrome, navigation, and right-rail TOC stay intact. Example below: a tree view scoped to the `router_bgp` subtree of the EOS Config schema.
 
-<schema-explorer module="eos_cli_config_gen" root="router_bgp" height="500px"></schema-explorer>
+```schema-explorer
+module: eos_cli_config_gen
+root: router_bgp
+height: 500px
+```
