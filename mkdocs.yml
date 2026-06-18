@@ -80,7 +80,7 @@ plugins:
         - .tox/*
         # Schema Explorer source (generator + SPA assets) and build output
         # both live under tools/. mkdocs_hook.py copies the built tree into
-        # site/schema-explorer/ on `mkdocs build`.
+        # site/_assets/schema-explorer/ on `mkdocs build`.
         - tools/*
         - README.md
         - contributing.md
@@ -226,6 +226,7 @@ nav:
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
+          - Schema Explorer: docs/schema-explorer.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md

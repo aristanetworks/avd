@@ -24,14 +24,14 @@ Both modes share one set of static assets and one SQLite per release.
 
 ### `<schema-explorer>` embed attributes
 
-| Attribute | Default       | Notes                                                                       |                        |        |
-| --------- | ------------- | --------------------------------------------------------------------------- | ---------------------- | ------ |
-| `release` | `devel`       | Schema release tag.                                                         |                        |        |
-| `module`  | `eos_designs` | `eos_designs` \                                                             | `eos_cli_config_gen` \ | `all`. |
-| `root`    | *(none)*      | Optional key_path prefix; only render that subtree (e.g. `router_bgp`).     |                        |        |
-| `view`    | `tree`        | `tree` \                                                                    | `flat`.                |        |
-| `height`  | `600px`       | CSS max-height for the embed's scroll container.                            |                        |        |
-| `chrome`  | `compact`     | `compact` shows the per-tree expand/collapse bar; `none` hides it.          |                        |        |
+| Attribute | Default | Notes |
+| --------- | ------- | ----- |
+| `release` | `devel` | Schema release tag. |
+| `module` | `eos_designs` | `eos_designs`, `eos_cli_config_gen`, or `all`. |
+| `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp`. |
+| `view` | `tree` | `tree` or `flat`. |
+| `height` | `600px` | CSS max-height for the embed scroll container. |
+| `chrome` | `compact` | `compact` shows the per-tree expand/collapse bar; `none` hides it. |
 
 Example:
 
@@ -162,8 +162,7 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
 - **Embedded views via custom HTML element**, not iframe / template override
   — picked at the May 15th maintainers call. Each embed is a single DOM node
   to MkDocs, so Material's TOC, headings nav, and search stay native. Earlier
-  iframe and Jinja-override variants (`docs/schema-explorer.md`,
-  `docs/schema-explorer-native.md`, `docs/overrides/schema-explorer-page.html`)
-  are removed.
+  iframe and Jinja-override variants were collapsed into the current
+  Material-hosted entry page, `docs/schema-explorer.md`.
 - **Source and build output both under `tools/`**, copied into `site/_assets/`
   by `mkdocs_hook.py` — keeps `docs/` to documentation only (`.md`, images).

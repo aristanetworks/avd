@@ -15,7 +15,7 @@ pip install --group doc --upgrade
 
 # Build the Schema Explorer (static assets + per-release SQLite) into
 # tools/schema-explorer/build/. Source lives at tools/schema-explorer/.
-# mkdocs_hook.py copies the built tree into site/schema-explorer/ on each
+# mkdocs_hook.py copies the built tree into site/_assets/schema-explorer/ on each
 # `mkdocs build`. Skipped when the SQLite is already present and newer
 # than the eos_designs YAML (rough mtime check) — keeps container restarts
 # fast during iteration.
