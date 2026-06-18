@@ -26,9 +26,10 @@ runs:
 
         label="$(printf '%s' "$PR_TITLE" | cut -d ':' -f 1 | tr -d ' ' | tr ',' '|')"
         rn_label="rn: $label"
+        encoded_rn_label="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$rn_label")"
 
         if [[ "$AUTO_CREATE_LABEL" == "true" ]]; then
-          if ! gh api "repos/{owner}/{repo}/labels/$rn_label" --silent 2>/dev/null; then
+          if ! gh api "repos/{owner}/{repo}/labels/$encoded_rn_label" --silent 2>/dev/null; then
             label_create_error="${RUNNER_TEMP:-.}/label_create_error"
             if ! gh label create "$rn_label" 2>"$label_create_error"; then
               if ! grep -Fq "already exists" "$label_create_error"; then
