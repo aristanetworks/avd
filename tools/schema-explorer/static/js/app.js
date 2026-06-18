@@ -834,18 +834,7 @@ function renderVarDetail(db, release, module, key_path) {
 
   const constraints = v.constraints ? JSON.parse(v.constraints) : {};
   const children = getChildren(db, release, module, key_path);
-  const siblings = getSiblings(db, release, module, v.parent_path || "", key_path);
   const dynamicSource = dynamicKeySource(v.key_path);
-  const siblingsTitle = v.parent_path
-    ? "Sibling keys"
-    : dynamicSource
-      ? "Other dynamic root keys"
-      : "Other root keys";
-  const siblingsHelp = v.parent_path
-    ? "Keys with the same parent."
-    : dynamicSource
-      ? "Other schema branches generated from configurable key names."
-      : "Other top-level schema keys.";
 
   const validValuesHtml = constraints.valid_values ? `
     <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Valid Values</h5>
@@ -899,7 +888,7 @@ function renderVarDetail(db, release, module, key_path) {
       </div>
     </div>
     <div class="row g-3">
-      <div class="col-lg-8">
+      <div class="col-12">
         ${v.description ? `
           <h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
           <div class="card border-0 shadow-sm mb-4"><div class="card-body"><p class="mb-0">${escapeHtml(v.description)}</p></div></div>` : ""}
@@ -915,6 +904,7 @@ function renderVarDetail(db, release, module, key_path) {
             ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
             ${v.cross_ref ? renderCrossRefRow(v.cross_ref, release) : ""}
             ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${release}" class="link-brand"><code>${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
+            ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code>${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
         </div></div>
 
@@ -924,33 +914,6 @@ function renderVarDetail(db, release, module, key_path) {
             <table class="table table-sm align-middle mb-0"><tbody>${otherCons}</tbody></table>
           </div></div>` : ""}
         ${childrenHtml}
-      </div>
-
-      <div class="col-lg-4">
-        ${dynamicSource ? `
-        <div class="card border-0 shadow-sm mb-3">
-          <div class="card-header bg-light py-2"><span class="fw-semibold brand-color small"><i class="bi bi-braces me-1"></i>Dynamic key</span></div>
-          <div class="card-body">
-            <div class="text-muted small mb-2">This branch represents input keys named by:</div>
-            <code class="small">${escapeHtml(dynamicSource)}</code>
-          </div>
-        </div>` : ""}
-        ${siblings.length ? `
-        <div class="card border-0 shadow-sm mb-3">
-          <div class="card-header bg-light py-2">
-            <div class="fw-semibold brand-color small"><i class="bi bi-collection me-1"></i>${siblingsTitle}</div>
-            <div class="text-muted" style="font-size:0.7rem;">${siblingsHelp}</div>
-          </div>
-          <ul class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
-            ${siblings.map(s => `
-              <li class="list-group-item px-3 py-2 border-0 border-bottom">
-                <a href="#/${module}/${encodeURI(s.key_path)}?release=${release}" class="link-brand small text-decoration-none">
-                  <code>${escapeHtml(displayPath(s.key_path))}</code>
-                </a>
-                <span class="badge bg-light text-dark border ms-1" style="font-size:0.6rem;">${escapeHtml(s.var_type || "-")}</span>
-              </li>`).join("")}
-          </ul>
-        </div>` : ""}
       </div>
     </div>`;
 }
