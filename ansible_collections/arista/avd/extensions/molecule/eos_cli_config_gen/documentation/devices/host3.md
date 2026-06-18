@@ -81,7 +81,8 @@ no ptp free-running
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | - | - | - |
-| default | True | - | - |
+| PROD | True | - | - |
+| default | False | - | - |
 
 #### Other SSH Settings
 
@@ -95,7 +96,23 @@ no ptp free-running
 !
 management ssh
    !
+   vrf PROD
+      no shutdown
+   !
    vrf mgt
+```
+
+### Management Accounts
+
+#### Password Policy
+
+No specific password policy is set for management accounts.
+
+#### Management Accounts Device Configuration
+
+```eos
+!
+management accounts
 ```
 
 ## CVX
@@ -138,16 +155,22 @@ cvx
 
 | Type | Commands | Record type | Groups | Logging |
 | ---- | -------- | ----------- | ------ | ------- |
+| Exec - Console | - | start-stop | - | True |
 | Commands - Console | all | none | - | - |
 | Commands - Console | 0 | none | - | - |
+| Commands - Console | 1 | start-stop | - | True |
+| System - Default | - | start-stop | - | True |
 | Commands - Default | all | none | - | - |
 | Commands - Default | 0 | none | - | - |
 
 #### AAA Accounting Device Configuration
 
 ```eos
+aaa accounting exec console start-stop logging
 aaa accounting commands all console none
 aaa accounting commands 0 console none
+aaa accounting commands 1 console start-stop logging
+aaa accounting system default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```
@@ -224,6 +247,25 @@ mcs client
    shutdown
    !
    cvx secondary default
+```
+
+### SFlow
+
+#### SFlow Summary
+
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
+| default | - | 192.0.2.10 | 6343 |
+| default | 192.0.2.3 | - | - |
+
+sFlow is disabled.
+
+#### SFlow Device Configuration
+
+```eos
+!
+sflow destination 192.0.2.10
+sflow source 192.0.2.3
 ```
 
 ## Spanning Tree
@@ -331,89 +373,19 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101.0001 | 192.168.255.3 |
+| 65003 | 192.0.2.3 |
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
-| update wait-install |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| maximum-paths 2 ecmp 2 |
-| graceful-restart-helper long-lived |
-| bgp additional-paths send limit 5 |
-
-#### Route Distinguisher
-
-| Address Families | Range |
-| ---------------- | ----- |
-| l3-vrf | - |
-
-#### Router BGP EVPN Address Family
-
-#### Router BGP IPv4 Labeled Unicast
-
-##### General Settings
-
-| Settings | Value |
-| -------- | ----- |
-
-##### BGP LU RIB
-
-| RIB | Enabled | Route-map |
-| --- | ------- | --------- |
-| IP | True | RM-rib2 |
-| Tunnel | True | RM-rib3 |
-
-#### Router BGP Path-Selection Address Family
+| bgp additional-paths send ecmp |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65101.0001
-   bgp labeled-unicast rib ip route-map RM-rib2 tunnel route-map RM-rib3
-   router-id 192.168.255.3
-   graceful-restart-helper long-lived
-   no bgp default ipv4-unicast
-   update wait-install
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   maximum-paths 2 ecmp 2
-   bgp additional-paths send limit 5
-   redistribute ospf include leaked route-map RM-OSPF-TO-BGP
-   redistribute static
-   !
-   route-distinguisher
-      assignment auto address-family l3-vrf
-   !
-   address-family evpn
-      bgp additional-paths send ecmp limit 10
-   !
-   address-family ipv4
-      bgp additional-paths send limit 10
-   !
-   address-family ipv4 labeled-unicast
-      no bgp additional-paths send
-   !
-   address-family ipv4 multicast
-      redistribute attached-host
-      redistribute connected
-      redistribute isis rcf Router_BGP_Isis()
-      redistribute ospf match internal
-      redistribute ospfv3 match internal
-      redistribute ospfv3 match external
-      redistribute ospfv3 match nssa-external 2
-      redistribute ospf match external
-      redistribute ospf match nssa-external 2
-   !
-   address-family ipv6
-      no bgp additional-paths send
-      redistribute ospfv3 include leaked route-map RM-REDISTRIBUTE-OSPFV3
-      redistribute ospfv3 match external include leaked route-map RM-REDISTRIBUTE-OSPFV3-EXTERNAL
-   !
-   address-family path-selection
-      bgp additional-paths send limit 20
+router bgp 65003
+   router-id 192.0.2.3
+   bgp additional-paths send ecmp
 ```
 
 ## MPLS
@@ -458,6 +430,17 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
+
+MSS-G is disabled.
+
+### Router MSS-G Device Configuration
+
+```eos
+!
+router segment-security
 ```
 
 ## IPv6 DHCP Relay
@@ -569,4 +552,36 @@ errdisable recovery interval 300
 ```eos
 !
 traffic-policies
+```
+
+### Priority Flow Control
+
+#### Global Settings
+
+##### Priority Flow Control Watchdog Settings
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| errdisable | - | - | - | True |
+
+```eos
+!
+priority-flow-control pause watchdog override action drop
+```
+
+## STUN
+
+### STUN Server
+
+| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Ethernet2 | - | - | - | 3478 |
+
+### STUN Device Configuration
+
+```eos
+!
+stun
+   server
+      local-interface Ethernet2
 ```

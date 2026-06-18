@@ -389,6 +389,17 @@ keys:
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
         default: false
+      only_configure_route_map_connected_to_bgp_vrfs_when_used:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          Configure the ''RM-CONN-2-BGP-VRFS'' route map only when it is needed.
+
+          The route map is skipped when both ''underlay_rfc5549'' and ''overlay_mlag_rfc5549''
+          are set,
+
+          since ''redistribute connected route-map'' is not required in that case.'
+        default: false
       raise_for_port_channels_without_members:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -1257,6 +1268,91 @@ keys:
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+              port_channel:
+                type: dict
+                keys:
+                  subinterfaces:
+                    type: list
+                    primary_key: number
+                    description: 'Port-Channel L2 Subinterfaces.
+
+                      Subinterfaces are only supported on routed port-channels, which
+                      means they cannot be configured on MLAG port-channels.
+
+                      Setting `short_esi: auto` generates the short_esi automatically
+                      using a hash of configuration elements.
+
+                      Please see the notes under "EVPN A/A ESI dual-attached endpoint
+                      scenario" before setting `short_esi: auto`.
+
+                      '
+                    items:
+                      type: dict
+                      keys:
+                        number:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Subinterface number.
+                          min: 1
+                          max: 1048575
+                        description:
+                          type: str
+                          description: "Description for subinterface.\nThis can be
+                            a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                            available template fields are:\n  - `subinterface` - The
+                            full subinterface name.\n  - `subinterface_number` - The
+                            number for the subinterface.\n  - `vlan_id` - The VLAN
+                            ID bridged to this subinterface.\n  - `dot1q_client_vlan`
+                            - The Client VLAN ID encapsulation.\n  - `endpoint_type`
+                            - The `type` of the connected endpoint either set on the
+                            endpoint or taken from `connected_endpoints_keys.type`
+                            like `server`, `router` etc.\n  - `endpoint` - The name
+                            of the connected endpoint"
+                        short_esi:
+                          type: str
+                          description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                            Required for multihomed port-channels with subinterfaces.
+
+                            '
+                        vlan_id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 4094
+                          description: 'VLAN ID to bridge.
+
+                            Default is the subinterface number.
+
+                            '
+                        encapsulation_vlan:
+                          type: dict
+                          keys:
+                            client_dot1q:
+                              type: int
+                              description: 'Client VLAN ID encapsulation.
+
+                                Default is the subinterface number.
+
+                                '
+                              convert_types:
+                              - str
+                              min: 1
+                              max: 4094
+                        raw_eos_cli:
+                          type: str
+                          description: EOS CLI rendered directly on the port-channel
+                            subinterface in the final EOS configuration.
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                            for the EOS Config schema.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   custom_connected_endpoints_keys:
     $ref: eos_designs#/$defs/connected_endpoints_keys
     type: list
@@ -2517,6 +2613,41 @@ keys:
         default: true
         description: Globally enable the redistribution of static 802.1X-learned MAC
           addresses into EVPN under all configured MAC-VRFs.
+      web_authentication:
+        type: dict
+        description: 'The Web Authentication feature authenticates a supplicant via
+          a web page, generally referred to as a captive portal.
+
+          Requires `dot1x_settings.dynamic_authorization.enabled: true`.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Enable the Web Authentication feature.
+          url:
+            type: str
+            pattern: https?://[^\s/:]+(:\d+)?
+            description: 'Static captive portal URL used when the RADIUS server does
+              not provide one during the authentication workflow.
+
+              If both are configured, the RADIUS-provided URL takes precedence.
+
+              Supported format: http[s]://<hostname>[:<port>]'
+          ssl_profile:
+            type: str
+            description: 'SSL profile name, enabling HTTPS redirection on port 443.
+
+              Without this, only HTTP redirection is supported.
+
+              Can be used alone (when RADIUS provides the URL dynamically) or together
+              with `url`.'
+          start_limit_infinite:
+            type: bool
+            description: 'Disable the loop-protection mechanism that limits captive
+              portal authentication retries.
+
+              By default, EOS limits a supplicant to 16 consecutive attempts before
+              logging it off.'
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -5240,11 +5371,36 @@ keys:
                       description: IPv4 DHCP server IP.
                     source_interface:
                       type: str
-                      description: Interface name.
+                      description: 'Interface name to originate DHCP relay packets
+                        to DHCP server.
+
+                        The value will be interpreted according to these rules:
+
+                        - `use_mgmt_interface` will configure the OOB management interface
+                        as the source interface.
+
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+                        as the source interface.
+
+                        - `use_default_mgmt_method_interface` will configure the source
+                        interface for one of the two options above depending on the
+                        value of `default_mgmt_method`.
+
+                        - Any other string will be used directly as the source interface.'
                     source_vrf:
                       type: str
-                      description: VRF to originate DHCP relay packets to DHCP server.
-                        If not set, uses current VRF.
+                      description: "VRF to originate DHCP relay packets to DHCP server.\nThe
+                        value will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                        will configure the `mgmt_interface_vrf` as the source VRF.\n
+                        \ An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are
+                        not configured for the device.\n- `use_inband_mgmt_vrf` will
+                        configure the `inband_mgmt_vrf` as the source VRF.\n  An error
+                        will be raised if inband management is not configured for
+                        the device.\n- `use_default_mgmt_method_vrf` will configure
+                        the source VRF for one of the two options above depending
+                        on the value of `default_mgmt_method`.\n- Any other string
+                        will be used directly as the source VRF name.\n- If not set,
+                        EOS uses the VRF on the SVI."
                       convert_types:
                       - int
               enable_mlag_ibgp_peering_vrfs:
@@ -7697,6 +7853,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -7738,6 +7895,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -7753,6 +7911,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7760,6 +7919,7 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         hardware_counter_features:
           acl: false
@@ -7802,6 +7962,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -7818,6 +7979,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7832,6 +7994,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7893,6 +8056,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        subinterface_monitor_session: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7915,6 +8079,7 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        subinterface_monitor_session: false
       management_interface: Management1
       reload_delay:
         mlag: 300
@@ -7930,6 +8095,7 @@ keys:
         queue_monitor_length_notify: false
         sflow: false
         hardware_validation: false
+        subinterface_monitor_session: false
       p2p_uplinks_mtu: 9194
       digital_twin:
         act_node_type: cloudeos
@@ -7942,6 +8108,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -7960,6 +8127,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
+        subinterface_monitor_session: false
         per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
@@ -7979,6 +8147,7 @@ keys:
         poe: true
         per_interface_l2_mru: false
         sflow: false
+        subinterface_monitor_session: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -8051,6 +8220,93 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
+        port_channel:
+          type: dict
+          keys:
+            subinterfaces:
+              type: list
+              primary_key: number
+              description: 'Port-Channel L2 Subinterfaces.
+
+                Only applicable for connected-endpoints. `Subinterfaces` key cannot
+                be used with `network_ports`
+
+                Subinterfaces are only supported on routed port-channels, which means
+                they cannot be configured on MLAG port-channels.
+
+                Setting `short_esi: auto` generates the short_esi automatically using
+                a hash of configuration elements.
+
+                Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
+                before setting `short_esi: auto`.
+
+                '
+              items:
+                type: dict
+                keys:
+                  number:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Subinterface number.
+                    min: 1
+                    max: 1048575
+                  description:
+                    type: str
+                    description: "Description for subinterface.\nThis can be a template
+                      using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                      available template fields are:\n  - `subinterface` - The full
+                      subinterface name.\n  - `subinterface_number` - The number for
+                      the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
+                      subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID
+                      encapsulation.\n  - `endpoint_type` - The `type` of the connected
+                      endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
+                      like `server`, `router` etc.\n  - `endpoint` - The name of the
+                      connected endpoint"
+                  short_esi:
+                    type: str
+                    description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                      Required for multihomed port-channels with subinterfaces.
+
+                      '
+                  vlan_id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 4094
+                    description: 'VLAN ID to bridge.
+
+                      Default is the subinterface number.
+
+                      '
+                  encapsulation_vlan:
+                    type: dict
+                    keys:
+                      client_dot1q:
+                        type: int
+                        description: 'Client VLAN ID encapsulation.
+
+                          Default is the subinterface number.
+
+                          '
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                  raw_eos_cli:
+                    type: str
+                    description: EOS CLI rendered directly on the port-channel subinterface
+                      in the final EOS configuration.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -10409,87 +10665,6 @@ $defs:
                 - str
                 description: Number of LACP BPDUs lost before deeming the peer down.
                   EOS default is 3.
-          subinterfaces:
-            type: list
-            primary_key: number
-            description: 'Port-Channel L2 Subinterfaces.
-
-              Subinterfaces are only supported on routed port-channels, which means
-              they cannot be configured on MLAG port-channels.
-
-              Setting short_esi: auto generates the short_esi automatically using
-              a hash of configuration elements.
-
-              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
-              before setting short_esi: auto.
-
-              '
-            items:
-              type: dict
-              keys:
-                number:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Subinterface number.
-                  min: 1
-                  max: 1048575
-                description:
-                  type: str
-                  description: "Description for subinterface.\nThis can be a template
-                    using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-                    available template fields are:\n  - `subinterface` - The full
-                    subinterface name.\n  - `subinterface_number` - The number for
-                    the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
-                    subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.\n
-                    \ - `endpoint_type` - The `type` of the connected endpoint either
-                    set on the endpoint or taken from `connected_endpoints_keys.type`
-                    like `server`, `router` etc.\n  - `endpoint` - The name of the
-                    connected endpoint"
-                short_esi:
-                  type: str
-                  description: 'In format xxxx:xxxx:xxxx or "auto".
-
-                    Required for multihomed port-channels with subinterfaces.
-
-                    '
-                vlan_id:
-                  type: int
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 4094
-                  description: 'VLAN ID to bridge.
-
-                    Default is the subinterface number.
-
-                    '
-                encapsulation_vlan:
-                  type: dict
-                  keys:
-                    client_dot1q:
-                      type: int
-                      description: 'Client VLAN ID encapsulation.
-
-                        Default is the subinterface number.
-
-                        '
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                raw_eos_cli:
-                  type: str
-                  description: EOS CLI rendered directly on the port-channel subinterface
-                    in the final EOS configuration.
-                structured_config:
-                  type: dict
-                  relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
-                    for the EOS Config schema.
-                  documentation_options:
-                    hide_keys: true
-                  $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in
@@ -13553,6 +13728,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -13624,7 +13804,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 interfaces is not yet supported.'
           keys:
             peer_as:
               type: str
@@ -13822,6 +14005,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -13871,7 +14059,10 @@ $defs:
             gateway if `set_default_route` is true and `ip` is an IP address.
         bgp:
           type: dict
-          description: Enforce IPv4 BGP peering for the peer
+          description: 'Configure BGP peering for the interface. Supports IPv4 BGP
+            peering (when `peer_ip` is set).
+
+            IPv6 BGP peering on L3 Port-Channels is not yet supported.'
           keys:
             peer_as:
               type: str
@@ -14412,6 +14603,13 @@ $defs:
                 even if it is set in the inputs.
 
                 '
+            subinterface_monitor_session:
+              type: bool
+              default: true
+              description: 'Support for monitor session configuration on sub-interfaces.
+
+                When this key is set to false, an error will be raised if a monitor
+                session is configured on a sub-interface.'
             per_interface_mtu:
               type: bool
               default: true
@@ -14866,6 +15064,58 @@ $defs:
             description: In seconds <0-4294967295> or infinite.
             convert_types:
             - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in
+              Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers
+              dns_servers_lifetime:
+                type: int
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: 'VRF used to reach the DHCP server.
+
+                    If not set, the VRF of the destination matches the VRF of this
+                    interface.
+
+                    Use the `default` to reach the DHCP server through the default
+                    VRF.'
+                  convert_types:
+                  - int
+                local_interface:
+                  type: str
+                  description: 'Local interface to communicate with DHCP server.
+
+                    Mutually exclusive with `source_address` and takes precedence
+                    over it.'
+                source_address:
+                  type: str
+                  description: 'Source IPv6 address to communicate with DHCP server.
+
+                    Mutually exclusive with `local_interface`, which takes precedence
+                    if both are set.'
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the
+                    relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -14951,12 +15201,34 @@ $defs:
               description: IPv4 DHCP server IP.
             source_interface:
               type: str
-              description: Interface name to originate DHCP relay packets to DHCP
+              description: 'Interface name to originate DHCP relay packets to DHCP
                 server.
+
+                The value will be interpreted according to these rules:
+
+                - `use_mgmt_interface` will configure the OOB management interface
+                as the source interface.
+
+                - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+                as the source interface.
+
+                - `use_default_mgmt_method_interface` will configure the source interface
+                for one of the two options above depending on the value of `default_mgmt_method`.
+
+                - Any other string will be used directly as the source interface.'
             source_vrf:
               type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If
-                not set, EOS uses the VRF on the SVI.
+              description: "VRF to originate DHCP relay packets to DHCP server.\nThe
+                value will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                will configure the `mgmt_interface_vrf` as the source VRF.\n  An error
+                will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
+                the device.\n- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf`
+                as the source VRF.\n  An error will be raised if inband management
+                is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                will configure the source VRF for one of the two options above depending
+                on the value of `default_mgmt_method`.\n- Any other string will be
+                used directly as the source VRF name.\n- If not set, EOS uses the
+                VRF on the SVI."
               convert_types:
               - int
       static_routes:

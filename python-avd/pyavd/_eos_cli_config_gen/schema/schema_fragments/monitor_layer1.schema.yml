@@ -12,8 +12,11 @@ keys:
     keys:
       enabled:
         type: bool
-        required: true
-        description: "Enable monitor layer1."
+        description: Enable monitor layer1.
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
       logging_mac_fault:
         type: bool
         description: "Enable MAC fault logging."

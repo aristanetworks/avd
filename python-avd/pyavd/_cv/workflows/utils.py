@@ -3,7 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from copy import deepcopy
+from dataclasses import fields, is_dataclass
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from .models import CVDeviceDeployment, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
@@ -25,3 +27,26 @@ def extract_from_device_deployments(
         if device_deployment.cv_pathfinder_metadata is not None:
             cv_pathfinder_metadata.append(device_deployment.cv_pathfinder_metadata)
     return configs, device_tags, interface_tags, cv_pathfinder_metadata
+
+
+def get_result(obj: Any) -> Any:
+    """
+    Recursively convert workflow model objects into the JSON-compatible structure returned as part of the Ansible module result.
+
+    For objects that implement `get_result()`, that method is called first so the object
+    controls which fields are exposed (potentially a subset of the dataclass fields).
+    Plain dataclasses without `get_result()` are expanded field-by-field.
+    Collections (list, tuple, dict) are traversed recursively.
+    All other values are returned as a deep copy.
+    """
+    if hasattr(obj, "get_result"):
+        return get_result(obj.get_result())
+    if is_dataclass(obj) and not isinstance(obj, type):
+        return {f.name: get_result(getattr(obj, f.name)) for f in fields(obj)}
+    if isinstance(obj, list):
+        return [get_result(item) for item in obj]
+    if isinstance(obj, tuple):
+        return tuple(get_result(item) for item in obj)
+    if isinstance(obj, dict):
+        return {k: get_result(v) for k, v in obj.items()}
+    return deepcopy(obj)

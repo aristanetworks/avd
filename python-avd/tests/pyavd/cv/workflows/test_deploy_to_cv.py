@@ -12,7 +12,16 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVDeviceDeployment, CVEosConfig, CVGRPCChannelConfiguration, CVGRPCKeepalives, CVWorkspace
+from pyavd._cv.workflows.models import (
+    AvdWorkspace,
+    CloudVision,
+    CVDeployFuture,
+    CVDeviceDeployment,
+    CVEosConfig,
+    CVGRPCChannelConfiguration,
+    CVGRPCKeepalives,
+    CVWorkspace,
+)
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -151,11 +160,13 @@ async def test_deploy_to_cv(
                 proxy_password=None,
             ),
             workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
+                avd_workspace=AvdWorkspace(
+                    name=MOCKED_WORKSPACE_NAME,
+                    description=MOCKED_WORKSPACE_DESCRIPTION,
+                    id=MOCKED_WORKSPACE_ID,
+                    requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                    force=workspace_force_submission,
+                )
             ),
             device_deployments=[
                 CVDeviceDeployment(
@@ -222,3 +233,39 @@ async def test_deploy_to_cv_grpc_channel_configuration(
     mocked_cv_client_cls.assert_called_once()
     _, kwargs = mocked_cv_client_cls.call_args
     assert kwargs.get("grpc_channel_configuration") is grpc_channel_configuration
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("deploy_future", "expected_use_system_certs"),
+    [
+        pytest.param(CVDeployFuture(), False, id="DEPLOY_FUTURE_DEFAULTS"),
+        pytest.param(CVDeployFuture(use_system_certs=False), False, id="USE_SYSTEM_CERTS_FALSE_EXPLICIT"),
+        pytest.param(CVDeployFuture(use_system_certs=True), True, id="USE_SYSTEM_CERTS_TRUE"),
+    ],
+)
+async def test_deploy_to_cv_deploy_future_use_system_certs(
+    deploy_future: CVDeployFuture,
+    expected_use_system_certs: bool,
+) -> None:
+    """Tests that `cloudvision.deploy_future.use_system_certs` is unpacked and passed to `CVClient(use_system_certs=...)`."""
+    mock_cv_client = AsyncMock()
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                deploy_future=deploy_future,
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert kwargs.get("use_system_certs") == expected_use_system_certs

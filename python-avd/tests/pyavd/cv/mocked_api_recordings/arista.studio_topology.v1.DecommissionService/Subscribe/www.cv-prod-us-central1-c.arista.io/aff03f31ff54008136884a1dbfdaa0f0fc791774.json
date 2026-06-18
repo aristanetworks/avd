@@ -1,0 +1,55 @@
+{
+    "payload": [
+        {
+            "type": "INITIAL_SYNC_COMPLETE"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "deviceId": "device_one_id_ok"
+                },
+                "createdAt": "2026-04-10T02:32:04.890442035",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-04-10T02:32:04.890442035",
+                "lastModifiedBy": "agorbunov",
+                "status": "SUCCESS",
+                "error": ""
+            },
+            "time": "2026-04-10T02:32:04.890442035",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "deviceId": "device_two_id_failure"
+                },
+                "createdAt": "2026-04-10T02:32:04.890442035",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-04-10T02:32:04.890442035",
+                "lastModifiedBy": "agorbunov",
+                "status": "FAILURE",
+                "error": "error getting decommissioned device status"
+            },
+            "time": "2026-04-10T02:32:04.890442035",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "deviceId": "device_three_id_unspecified"
+                },
+                "createdAt": "2026-04-10T02:32:04.890442035",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-04-10T02:32:04.890442035",
+                "lastModifiedBy": "agorbunov",
+                "status": "UNSPECIFIED",
+                "error": ""
+            },
+            "time": "2026-04-10T02:32:04.890442035",
+            "type": "UPDATED"
+        }
+    ]
+}
