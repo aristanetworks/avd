@@ -75,7 +75,7 @@ keys:
           Available from AVD 6.1.0.
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
         default: false
-      render_pvst_border_when_mode_is_mstp:
+      only_configure_pvst_border_when_mode_is_mstp:
         type: bool
         description: |-
           Available from AVD 6.3.0.

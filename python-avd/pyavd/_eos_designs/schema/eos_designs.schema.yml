@@ -422,7 +422,7 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
-      render_pvst_border_when_mode_is_mstp:
+      only_configure_pvst_border_when_mode_is_mstp:
         type: bool
         description: 'Available from AVD 6.3.0.
 
@@ -8933,7 +8933,7 @@ keys:
   spanning_tree_settings:
     type: dict
     documentation_options:
-      table: spanning-tree-settings
+      table: node-type-l2-mlag-configuration
     keys:
       mode:
         type: str
@@ -12521,7 +12521,13 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
-            description: Enable MST PVST border ports.
+            description: 'Enable MST PVST border ports.
+
+              By default this is configured regardless of the spanning-tree mode.
+
+              When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp`
+              is set to `true`, this will only take effect when `spanning_tree_mode`
+              is `mstp`.'
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:

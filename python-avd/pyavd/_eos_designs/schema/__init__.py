@@ -990,7 +990,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
-            "render_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
+            "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1075,7 +1075,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        render_pvst_border_when_mode_is_mstp: bool
+        only_configure_pvst_border_when_mode_is_mstp: bool
         """
         Available from AVD 6.3.0.
         PVST border parameters have no effect unless the spanning-tree mode is
@@ -1101,7 +1101,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
-                render_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
+                only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1153,7 +1153,7 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
-                    render_pvst_border_when_mode_is_mstp:
+                    only_configure_pvst_border_when_mode_is_mstp:
                        Available from AVD 6.3.0.
                        PVST border parameters have no effect unless the spanning-tree mode is
                        MSTP.
@@ -11331,7 +11331,12 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_root_super: bool
         """Default value: `False`"""
         spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
+        """
+        Enable MST PVST border ports.
+        By default this is configured regardless of the spanning-tree mode.
+        When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+        only take effect when `spanning_tree_mode` is `mstp`.
+        """
         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
         """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
@@ -12205,7 +12210,11 @@ class EosDesigns(EosDesignsRootModel):
                        For `rapid-pvst` the priority can also be
                        set per VLAN under network services.
                     spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_mst_pvst_boundary:
+                       Enable MST PVST border ports.
+                       By default this is configured regardless of the spanning-tree mode.
+                       When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                       only take effect when `spanning_tree_mode` is `mstp`.
                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
@@ -16597,7 +16606,12 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_root_super: bool
         """Default value: `False`"""
         spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
+        """
+        Enable MST PVST border ports.
+        By default this is configured regardless of the spanning-tree mode.
+        When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+        only take effect when `spanning_tree_mode` is `mstp`.
+        """
         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
         """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
@@ -17480,7 +17494,11 @@ class EosDesigns(EosDesignsRootModel):
                        For `rapid-pvst` the priority can also be
                        set per VLAN under network services.
                     spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_mst_pvst_boundary:
+                       Enable MST PVST border ports.
+                       By default this is configured regardless of the spanning-tree mode.
+                       When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                       only take effect when `spanning_tree_mode` is `mstp`.
                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
@@ -53034,7 +53052,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -53891,7 +53914,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -58295,7 +58322,12 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
+                        """
+                        Enable MST PVST border ports.
+                        By default this is configured regardless of the spanning-tree mode.
+                        When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                        only take effect when `spanning_tree_mode` is `mstp`.
+                        """
                         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                         """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
@@ -59161,7 +59193,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_mst_pvst_boundary:
+                                       Enable MST PVST border ports.
+                                       By default this is configured regardless of the spanning-tree mode.
+                                       When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                       only take effect when `spanning_tree_mode` is `mstp`.
                                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
@@ -63476,7 +63512,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -64344,7 +64385,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -68731,7 +68776,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -69597,7 +69647,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -88074,7 +88128,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -88931,7 +88990,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -93335,7 +93398,12 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
+                        """
+                        Enable MST PVST border ports.
+                        By default this is configured regardless of the spanning-tree mode.
+                        When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                        only take effect when `spanning_tree_mode` is `mstp`.
+                        """
                         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                         """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
@@ -94201,7 +94269,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_mst_pvst_boundary:
+                                       Enable MST PVST border ports.
+                                       By default this is configured regardless of the spanning-tree mode.
+                                       When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                       only take effect when `spanning_tree_mode` is `mstp`.
                                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
@@ -98516,7 +98588,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -99384,7 +99461,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -103771,7 +103852,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                    only take effect when `spanning_tree_mode` is `mstp`.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -104637,7 +104723,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp` is set to `true`, this will
+                                   only take effect when `spanning_tree_mode` is `mstp`.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:

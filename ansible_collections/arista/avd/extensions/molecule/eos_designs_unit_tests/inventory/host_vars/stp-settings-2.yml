@@ -25,4 +25,4 @@ spanning_tree_settings:
 
 # Enable pvst_border when STP mode is mstp
 avd_design_future:
-  render_pvst_border_when_mode_is_mstp: true
+  only_configure_pvst_border_when_mode_is_mstp: true

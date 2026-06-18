@@ -9,7 +9,7 @@ keys:
   spanning_tree_settings:
     type: dict
     documentation_options:
-      table: spanning-tree-settings
+      table: node-type-l2-mlag-configuration
     keys:
       mode:
         type: str
