@@ -984,6 +984,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-l2-vp
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospf.md
 --8<--
 
+### Router OSPFv3
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospfv3.md
+--8<--
+
 ### Router RIP
 
 --8<--

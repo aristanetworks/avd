@@ -1,0 +1,314 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_ospfv3:
+    type: dict
+    display_name: Router OSPFv3 Configuration
+    keys:
+      router_id:
+        type: str
+        description: IPv4 Address.
+      passive_interface_default:
+        type: bool
+        description: Set all interfaces to passive by default.
+      auto_cost_reference_bandwidth:
+        type: int
+        min: 1
+        max: 4294967
+        convert_types:
+          - str
+        description: Reference bandwidth in Mbps.
+      address_family_ipv4:
+        type: dict
+        description: |-
+          Address family IPv4 configuration.
+          Common configurations defined at the router-level and address-family level are mutually exclusive. 
+          If both are provided, the address-family level configuration takes precedence.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: IPv4 Address.
+          passive_interface_default:
+            type: bool
+            description: Set all interfaces to passive by default.
+          auto_cost_reference_bandwidth:
+            type: int
+            min: 1
+            max: 4294967
+            convert_types:
+              - str
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes with OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                      - level-1
+                      - level-2
+                      - level-1-2
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              ospfv3:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Redistribute all OSPFv3 leaked routes.
+                      Mutually exclusive with match_internal.
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  match_internal:
+                    type: dict
+                    description: |-
+                      Redistribute only internal OSPFv3 leaked routes.
+                      Mutually exclusive with `enabled`.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+                  match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+                  match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+      address_family_ipv6:
+        type: dict
+        description: |-
+          Address family IPv6 configuration.
+          Common configurations defined at the router-level and address-family level are mutually exclusive. 
+          If both are provided, the address-family level configuration takes precedence.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Activate the address family.
+          router_id:
+            type: str
+            description: IPv4 Address.
+          passive_interface_default:
+            type: bool
+            description: Set all interfaces to passive by default.
+          auto_cost_reference_bandwidth:
+            type: int
+            min: 1
+            max: 4294967
+            convert_types:
+              - str
+            description: Reference bandwidth in Mbps.
+          redistribute:
+            type: dict
+            description: Redistribute routes with OSPFv3.
+            keys:
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  level:
+                    type: str
+                    valid_values:
+                      - level-1
+                      - level-2
+                      - level-1-2
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  include_leaked:
+                    type: bool
+                    description: Include leaked routes.
+              ospfv3:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Redistribute all OSPFv3 leaked routes.
+                      Mutually exclusive with match_internal.
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+                  match_internal:
+                    type: dict
+                    description: |-
+                      Redistribute only internal OSPFv3 leaked routes.
+                      Mutually exclusive with `enabled`.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+                  match_external:
+                    type: dict
+                    description: Redistribute external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+                  match_nssa_external:
+                    type: dict
+                    description: Redistribute NSSA external OSPFv3 leaked routes.
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                        description: Specify route map to use.
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                    description: Specify route map to use.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            router_id:
+              type: str
+              description: IPv4 Address.
+            passive_interface_default:
+              type: bool
+              description: Set all interfaces to passive by default.
+            auto_cost_reference_bandwidth:
+              type: int
+              min: 1
+              max: 4294967
+              convert_types:
+                - str
+              description: Reference bandwidth in Mbps.
+            address_family_ipv4:
+              type: dict
+              $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
+            address_family_ipv6:
+              type: dict
+              $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6"
