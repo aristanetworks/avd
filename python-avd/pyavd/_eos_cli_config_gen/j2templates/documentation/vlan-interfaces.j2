@@ -43,7 +43,7 @@
 {# TCP MSS Ceiling #}
 {%     set tcp_mss_vlan_interfaces = [] %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
-{%         if vlan_interface.tcp_mss_ceiling is arista.avd.defined %}
+{%         if vlan_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or vlan_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%             do tcp_mss_vlan_interfaces.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
