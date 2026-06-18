@@ -46,9 +46,9 @@ Example:
 | `tools/schema-explorer/generate.py`                                     | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it.                                                 |
 | `tools/schema-explorer/categories.py`                                   | Human-readable category mapping used by the SPA's sidebar classifier.                                                                                                                         |
 | `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                     |
-| `tools/schema-explorer/static/css/style.css`                            | Bootstrap overrides + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                                  |
-| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page.                                                                                       |
-| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — registers Bootstrap + the SPA CSS/JS into `extra_css`/`extra_javascript`, and copies the prebuilt SPA into `<site_dir>/_assets/schema-explorer/`. |
+| `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                               |
+| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.                     |
+| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — auto-builds missing assets, registers the SPA CSS/JS loader, and copies the built SPA into `<site_dir>/_assets/schema-explorer/`.                 |
 | `tools/schema-explorer/build/`                                          | **Gitignored.** Output of `make schema-explorer-build`.                                                                                                                                       |
 | `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                                        |
 | `development/entrypoint.sh`                                             | Webdoc container entrypoint — runs the build with an mtime guard before `mkdocs serve`.                                                                                                       |
@@ -87,8 +87,9 @@ Two key invariants:
   `docs/` tree.
 - **Assets live under `_assets/`, not `docs/`.** The explorer is a shared
   site-wide resource embedded across many doc pages, so it lives at a path
-  that says so. The hook also registers the SPA's CSS/JS globally — every
-  page can host an embed without per-page wiring.
+  that says so. The hook registers only the SPA's own CSS and JS loader globally;
+  Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only when the
+  explorer actually mounts.
 
 ### What `generate.py` does
 
@@ -106,15 +107,16 @@ Loads each schema through pyavd's `schema_tools` resolver so:
 
 Two callbacks:
 
-- **`on_config`** — appends Bootstrap 5, Bootstrap Icons, the SPA's `style.css`,
-  sql.js, and `app.js` to `extra_css` / `extra_javascript`. Every page gets the
-  loader; `app.js` no-ops on pages without a `<schema-explorer>` element or a
-  standalone `#app` mount, so the per-page runtime cost is just the unfired
-  script bytes.
+- **`on_config`** — auto-builds `tools/schema-explorer/build/` when the default
+  SQLite artifact is missing, then appends the SPA's `style.css` and `app.js` to
+  `extra_css` / `extra_javascript`. Every page gets the lightweight loader;
+  `app.js` no-ops on pages without a `<schema-explorer>` element or a standalone
+  `#app` mount. Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only
+  when the explorer mounts, and Bootstrap's full CSS is kept to the standalone
+  `static/index.html` page.
 - **`on_post_build`** — copies `tools/schema-explorer/build/` into
-  `<site_dir>/_assets/schema-explorer/`. If `build/` doesn't exist (someone
-  ran a bare `mkdocs build` without first building the explorer), the hook
-  no-ops so the rest of the site still publishes.
+  `<site_dir>/_assets/schema-explorer/` so the generated site serves the SPA,
+  static assets, and SQLite database from one shared location.
 
 ## Local development
 

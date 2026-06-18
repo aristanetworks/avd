@@ -514,15 +514,16 @@ function renderModule(db, release, module) {
   btnFlat.addEventListener("click", () => { state.view = "flat"; btnFlat.classList.add("active"); btnTree.classList.remove("active"); refresh(); });
 
   function highlightActive() {
-    document.querySelectorAll(`[data-classifier="${state.classifier}"]`).forEach(el => {
+    app.querySelectorAll(`[data-classifier="${state.classifier}"]`).forEach(el => {
       const value = state.classifier === "category" ? state.category : state.docTable;
       el.classList.toggle("active", (el.dataset.value || "") === (value || ""));
     });
   }
 
-  document.addEventListener("click", e => {
+  const classifierContainer = document.getElementById("category-list").parentElement;
+  classifierContainer.addEventListener("click", e => {
     const item = e.target.closest("[data-classifier]");
-    if (!item || item.dataset.classifier !== state.classifier) return;
+    if (!item || item.dataset.classifier !== state.classifier || !classifierContainer.contains(item)) return;
     if (item.tagName === "A") e.preventDefault();
     if (state.classifier === "category") { state.category = item.dataset.value || ""; state.docTable = ""; }
     else { state.docTable = item.dataset.value || ""; state.category = ""; }
@@ -536,7 +537,7 @@ function renderModule(db, release, module) {
     state.classifier = mode;
     btnCatMode.classList.toggle("active", mode === "category");
     btnTabMode.classList.toggle("active", mode === "doc_table");
-    document.querySelectorAll("[data-classifier-pane]").forEach(p => {
+    app.querySelectorAll("[data-classifier-pane]").forEach(p => {
       p.style.display = p.dataset.classifierPane === mode ? "" : "none";
     });
     state.category = "";

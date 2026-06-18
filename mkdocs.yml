@@ -186,10 +186,11 @@ markdown_extensions:
       permalink: true
 hooks:
   # Schema Explorer integration:
-  #   * Copies the prebuilt SPA + SQLite from tools/schema-explorer/build/
-  #     into <site_dir>/_assets/schema-explorer/ on build.
-  #   * Registers Bootstrap + the SPA's CSS/JS into extra_css/extra_javascript
-  #     so any docs page can host a <schema-explorer> embed element.
+  #   * Auto-builds tools/schema-explorer/build/ when the SQLite artifact is
+  #     missing, then copies the built SPA + SQLite into
+  #     <site_dir>/_assets/schema-explorer/ on build.
+  #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
+  #     are lazy-loaded by app.js when a page hosts the explorer.
   - tools/schema-explorer/mkdocs_hook.py
 
 # TOC
