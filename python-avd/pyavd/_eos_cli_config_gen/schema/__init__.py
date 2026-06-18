@@ -40411,7 +40411,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     units: Units
                     """
                     Units to be used for the threshold values.
-                    Threshold values depend on the platform
+                    Threshold values depend on the hardware platform.
                     """
                     min: int
                     """Random-detect ECN minimum-threshold."""
@@ -40432,7 +40432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 units:
                                    Units to be used for the threshold values.
-                                   Threshold values depend on the platform
+                                   Threshold values depend on the hardware platform.
                                 min: Random-detect ECN minimum-threshold.
                                 max: Random-detect ECN maximum-threshold.
 

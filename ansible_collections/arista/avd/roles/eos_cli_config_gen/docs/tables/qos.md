@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "qos.random_detect.ecn.allow_non_ect.enabled") | Boolean |  |  |  | Allow non-ect and set drop-precedence 1 in a policy map simultaneously.<br>Check which command is required for your platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chip_based</samp>](## "qos.random_detect.ecn.allow_non_ect.chip_based") | Boolean |  |  |  | Allow non-ect chip-based. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_buffer</samp>](## "qos.random_detect.ecn.global_buffer") | Dictionary |  |  |  | Set global shared memory thresholds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos.random_detect.ecn.global_buffer.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code> | Units to be used for the threshold values.<br>Threshold values depend on the platform<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos.random_detect.ecn.global_buffer.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code> | Units to be used for the threshold values.<br>Threshold values depend on the hardware platform.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos.random_detect.ecn.global_buffer.min") | Integer | Required |  | Min: 1 | Random-detect ECN minimum-threshold. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos.random_detect.ecn.global_buffer.max") | Integer | Required |  | Min: 1 | Random-detect ECN maximum-threshold. |
     | [<samp>&nbsp;&nbsp;tx_queue</samp>](## "qos.tx_queue") | Dictionary |  |  |  | Global transmit queue settings. |
@@ -74,7 +74,7 @@
           global_buffer:
 
             # Units to be used for the threshold values.
-            # Threshold values depend on the platform
+            # Threshold values depend on the hardware platform.
             units: <str; "segments" | "bytes" | "kbytes" | "mbytes"; required>
 
             # Random-detect ECN minimum-threshold.
