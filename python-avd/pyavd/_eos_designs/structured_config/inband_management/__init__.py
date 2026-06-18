@@ -86,6 +86,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         )
         if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
             vlan_interface.ipv6_addresses.append(ipv6_address)
+        if self.shared_utils.inband_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+            vlan_interface.dhcp_client_accept_default_route = True
         self.structured_config.vlan_interfaces.append(vlan_interface)
 
     def _set_ipv4_default_route(self) -> None:

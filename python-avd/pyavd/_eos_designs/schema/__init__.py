@@ -981,6 +981,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
@@ -996,6 +997,14 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.2.0.
         Configure management interface to accept DHCP default route when the
         management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
+        accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool
+        """
+        Available from AVD 6.3.0.
+        Configure inband management interface to accept DHCP default route when
+        the inband management IP is set to 'dhcp'.
 
         Default value: `False`
         """
@@ -1081,6 +1090,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
@@ -1102,6 +1112,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
                        management IP is set to 'dhcp'.
+                    accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+                       Available from AVD 6.3.0.
+                       Configure inband management interface to accept DHCP default route when
+                       the inband management IP is set to 'dhcp'.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
@@ -11385,6 +11399,11 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable
         to L2 switches (switches using L2 trunks as uplinks).
+
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+        and the default route.
         """
         inband_mgmt_gateway: str | None
         """
@@ -11393,6 +11412,10 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
+
+        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+        will provide the gateway.
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -12244,12 +12267,21 @@ class EosDesigns(EosDesignsRootModel):
 
                        This setting is applicable
                        to L2 switches (switches using L2 trunks as uplinks).
+
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                       and the default route.
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
+
+                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                       will provide the gateway.
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -16651,6 +16683,11 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable
         to L2 switches (switches using L2 trunks as uplinks).
+
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+        and the default route.
         """
         inband_mgmt_gateway: str | None
         """
@@ -16659,6 +16696,10 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
+
+        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+        will provide the gateway.
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -17519,12 +17560,21 @@ class EosDesigns(EosDesignsRootModel):
 
                        This setting is applicable
                        to L2 switches (switches using L2 trunks as uplinks).
+
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                       and the default route.
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
+
+                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                       will provide the gateway.
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -53008,6 +53058,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -53016,6 +53071,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -53850,12 +53909,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -58269,6 +58337,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable
                         to L2 switches (switches using L2 trunks as uplinks).
+
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                        and the default route.
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -58277,6 +58350,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
+
+                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                        will provide the gateway.
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -59120,12 +59197,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable
                                        to L2 switches (switches using L2 trunks as uplinks).
+
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                       and the default route.
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
+
+                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                       will provide the gateway.
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -63450,6 +63536,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -63458,6 +63549,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -64303,12 +64398,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -68705,6 +68809,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -68713,6 +68822,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -69556,12 +69669,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -88048,6 +88170,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -88056,6 +88183,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -88890,12 +89021,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -93309,6 +93449,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable
                         to L2 switches (switches using L2 trunks as uplinks).
+
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                        and the default route.
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -93317,6 +93462,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
+
+                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                        will provide the gateway.
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -94160,12 +94309,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable
                                        to L2 switches (switches using L2 trunks as uplinks).
+
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                       and the default route.
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
+
+                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                       will provide the gateway.
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -98490,6 +98648,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -98498,6 +98661,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -99343,12 +99510,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -103745,6 +103921,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -103753,6 +103934,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -104596,12 +104781,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
