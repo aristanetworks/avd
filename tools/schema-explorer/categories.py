@@ -83,14 +83,21 @@ _CATEGORY_RULES: list[tuple[str, list[str], str]] = [
     (
         "eos_designs",
         [
+            "connected_endpoints",
+            "connected_endpoints_keys",
+            "custom_connected_endpoints_keys",
+            "default_connected_",
+        ],
+        "Endpoints",
+    ),
+    (
+        "eos_designs",
+        [
             "network_services_keys",
             "network_ports",
             "svi_profiles",
             "l2vlan_profiles",
-            "connected_endpoints",
-            "custom_connected_endpoints_keys",
             "port_profiles",
-            "default_connected_",
             "default_network_",
             "l3_edge",
             "l3_interface_profiles",
@@ -473,7 +480,8 @@ CATEGORY_INFO: dict[str, dict[str, str]] = {
     "OSPF": {"icon": "bi-signpost", "description": "OSPF area, authentication, BFD, graceful restart, max-LSA."},
     "MLAG": {"icon": "bi-link-45deg", "description": "MLAG peer links, iBGP peering VLANs, orphan port-channels."},
     "WAN": {"icon": "bi-globe", "description": "AutoVPN, CV Pathfinder, IPsec, STUN, path groups, virtual topologies, Zscaler."},
-    "Network Services": {"icon": "bi-ethernet", "description": "VLANs, VRFs, SVIs, connected endpoints, port profiles, L3 edges, core interfaces."},
+    "Endpoints": {"icon": "bi-pc-display-horizontal", "description": "Connected endpoint keys, endpoint definitions, and connected endpoint defaults."},
+    "Network Services": {"icon": "bi-ethernet", "description": "VLANs, VRFs, SVIs, network ports, port profiles, L3 edges, core interfaces."},
     "Management": {"icon": "bi-gear", "description": "Management interface, VRF, gateway, DNS, NTP, logging, SSH."},
     "Monitoring": {"icon": "bi-activity", "description": "SNMP, sFlow, flow tracking, event handlers, queue monitoring, hardware counters."},
     "Security": {"icon": "bi-shield-lock", "description": "AAA, 802.1X, address locking, IPv4 ACLs, local users."},
@@ -501,7 +509,7 @@ CATEGORY_INFO: dict[str, dict[str, str]] = {
 
 def get_category(module: str, key_path: str) -> str:
     """Return the category for a schema variable based on its root key."""
-    root_key = key_path.split(".", maxsplit=1)[0].replace("[]", "")
+    root_key = key_path.split(".", maxsplit=1)[0].replace("[]", "").strip("<>")
     for rule_module, prefixes, category in _CATEGORY_RULES:
         if rule_module != module:
             continue
