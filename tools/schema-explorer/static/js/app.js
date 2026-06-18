@@ -462,7 +462,7 @@ function renderModule(db, release, module) {
       </div>
     </form>
 
-    <div class="row g-3">
+    <div class="row g-3 schema-module-layout">
       <div class="col-lg-3 col-xl-2">
         <div class="card border-0 shadow-sm" style="position: sticky; top: 1rem;">
           <div class="card-header bg-light py-2 d-flex justify-content-between align-items-center">
