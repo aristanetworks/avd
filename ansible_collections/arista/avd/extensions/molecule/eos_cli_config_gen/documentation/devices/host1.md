@@ -6731,6 +6731,14 @@ interface Port-Channel20
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
    isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-2
 !
+interface Port-Channel21
+   description Loop protection enable
+   loop-protection
+!
+interface Port-Channel22
+   description Loop protection disable
+   no loop-protection
+!
 interface Port-Channel50
    description SRV-POD03_PortChanne1
    switchport trunk allowed vlan 1-4000
@@ -11164,7 +11172,7 @@ router bfd
 
 | Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
 | ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
-| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89 |
+| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89<br/>Port-Channel22 |
 
 ### Monitor Loop Protection Configuration
 
