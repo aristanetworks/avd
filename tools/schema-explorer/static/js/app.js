@@ -94,11 +94,12 @@ const app = document.getElementById("app");
 // Both modes can coexist — embeds work even when `#app` is also present.
 
 // CDN dependencies are lazy-loaded so docs pages that never host an embed
-// don't pay for Bootstrap's body-level rules leaking into Material's chrome
-// (link underlines, heading sizes, line-height resets, …).
+// do not pay for the extra script/font requests. Do not inject Bootstrap CSS
+// here: it contains global element rules for headings, links, body line-height,
+// etc. that leak into Material chrome. The standalone SPA owns the whole page
+// and loads Bootstrap CSS directly from static/index.html.
 const CDN_DEPS = {
   css: [
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
     "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
   ],
   js: [
