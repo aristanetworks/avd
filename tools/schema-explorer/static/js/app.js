@@ -40,6 +40,45 @@ function stripPlaceholderBrackets(s) {
 function displayPath(keyPath) {
   return splitKeyPath(keyPath).map(stripPlaceholderBrackets).join(".");
 }
+function formatDefaultSummary(parsed, raw) {
+  if (Array.isArray(parsed)) return `list, ${parsed.length} item${parsed.length === 1 ? "" : "s"}`;
+  if (parsed && typeof parsed === "object") {
+    const count = Object.keys(parsed).length;
+    return `dict, ${count} key${count === 1 ? "" : "s"}`;
+  }
+  return raw.length > 120 ? "large default" : raw;
+}
+function defaultValueParts(value, noneLabel = "-") {
+  if (!value) return { hasValue: false, summary: noneLabel, full: noneLabel, large: false };
+  const raw = String(value);
+  let parsed = null;
+  let parseOk = false;
+  try {
+    parsed = JSON.parse(raw);
+    parseOk = true;
+  } catch {
+    // Keep non-JSON defaults as plain text.
+  }
+  const structured = parseOk && (Array.isArray(parsed) || (parsed && typeof parsed === "object"));
+  const full = parseOk ? JSON.stringify(parsed, null, 2) : raw;
+  const large = structured || raw.length > 120 || full.includes("\n");
+  return {
+    hasValue: true,
+    summary: formatDefaultSummary(parseOk ? parsed : null, raw),
+    full,
+    large,
+  };
+}
+function renderDefaultValue(value, options = {}) {
+  const parts = defaultValueParts(value, options.noneLabel || "-");
+  if (!parts.hasValue || !parts.large) return `<code>${escapeHtml(parts.summary)}</code>`;
+  const summaryClass = options.compact ? "schema-default-summary schema-default-summary-compact" : "schema-default-summary";
+  return `
+    <details class="schema-default-details">
+      <summary class="${summaryClass}"><code>${escapeHtml(parts.summary)}</code></summary>
+      <pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>
+    </details>`;
+}
 function rowModule(row, currentModule) {
   return currentModule === "all" ? row.module : currentModule;
 }
@@ -578,7 +617,7 @@ function renderResults(db, release, module, state) {
         ${modBadge}
         <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
         <td>${lifecycleBadge(v)}</td>
-        <td class="text-muted small"><code>${escapeHtml(v.default_value || "-")}</code></td>
+        <td class="text-muted small">${renderDefaultValue(v.default_value, { compact: true })}</td>
         <td class="text-center">${v.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
         <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
       </tr>`;
@@ -710,7 +749,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
             <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
           </td>
           <td>${lifecycleBadge(v)}</td>
-          <td class="text-muted small"><code>${escapeHtml(v.default_value || "-")}</code></td>
+          <td class="text-muted small">${renderDefaultValue(v.default_value, { compact: true })}</td>
           <td class="text-center">${v.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
           <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
         </tr>`;
@@ -870,7 +909,7 @@ function renderVarDetail(db, release, module, key_path) {
           <table class="table table-sm align-middle mb-0"><tbody>
             <tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">Type</td><td><span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "-")}</span></td></tr>
             ${(v.removed || v.deprecated) ? `<tr><td class="px-3 fw-semibold small text-muted">Status</td><td>${v.removed ? `<span class="badge bg-danger">removed</span>` : `<span class="badge bg-warning text-dark">deprecated</span>`}</td></tr>` : ""}
-            <tr><td class="px-3 fw-semibold small text-muted">Default</td><td><code>${escapeHtml(v.default_value || "none")}</code></td></tr>
+            <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none" })}</td></tr>
             <tr><td class="px-3 fw-semibold small text-muted">Required</td><td>${v.required ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>` : `<span class="text-muted">No</span>`}</td></tr>
             ${v.category ? `<tr><td class="px-3 fw-semibold small text-muted">Category</td><td><span class="badge schema-category-badge">${escapeHtml(v.category)}</span></td></tr>` : ""}
             ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
