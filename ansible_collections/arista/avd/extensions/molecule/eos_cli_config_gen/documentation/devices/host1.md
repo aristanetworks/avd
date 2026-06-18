@@ -14289,7 +14289,7 @@ traffic-policies
 
 QOS rewrite DSCP: **enabled**
 
-QOS random-detect ECN global-buffer: **units segments**, min **9984**, max **14976**
+QOS random-detect ECN global-buffer: min **9984 segments** and max **14976 segments**
 
 QOS random-detect ECN is set to allow **non-ect** **chip-based**
 

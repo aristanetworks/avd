@@ -18,7 +18,7 @@ QOS rewrite DSCP: **disabled**
 {%     endif %}
 {%     if qos.random_detect.ecn.global_buffer is arista.avd.defined %}
 
-QOS random-detect ECN global-buffer: **units {{ qos.random_detect.ecn.global_buffer.units }}**, min **{{ qos.random_detect.ecn.global_buffer.min }}**, max **{{ qos.random_detect.ecn.global_buffer.max }}**
+QOS random-detect ECN global-buffer: min **{{ qos.random_detect.ecn.global_buffer.min }} {{ qos.random_detect.ecn.global_buffer.units }}** and max **{{ qos.random_detect.ecn.global_buffer.max }} {{ qos.random_detect.ecn.global_buffer.units }}**
 {%     endif %}
 {%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
 {%         set ecn_command = "QOS random-detect ECN is set to allow **non-ect**" %}
