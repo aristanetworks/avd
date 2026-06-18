@@ -22,7 +22,7 @@ async def test_finalize_pending_approval(mock_cv_client: MagicMock) -> None:
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
@@ -42,7 +42,7 @@ async def test_finalize_approved(mock_cv_client: MagicMock) -> None:
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
@@ -65,7 +65,7 @@ async def test_finalize_running(mock_cv_client: MagicMock) -> None:
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
@@ -91,7 +91,7 @@ async def test_finalize_completed_success(mock_cv_client: MagicMock) -> None:
     mock_cv_client.wait_for_change_control_state.return_value = cv_cc_completed
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
@@ -116,7 +116,7 @@ async def test_finalize_completed_failure(mock_cv_client: MagicMock) -> None:
 
     # Act
     with pytest.raises(CVChangeControlFailed) as exc_info:
-        await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+        await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     assert "Change control failed during execution cc_id_1: Something went wrong" in str(exc_info.value)
@@ -133,7 +133,7 @@ async def test_finalize_updates_local_cc_from_cv(mock_cv_client: MagicMock) -> N
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
@@ -155,7 +155,7 @@ async def test_finalize_updates_cv_from_local_cc(mock_cv_client: MagicMock) -> N
     mock_cv_client.get_change_control.side_effect = [cv_cc_initial, cv_cc_updated]
 
     # Act
-    await finalize_change_control_on_cv(change_control_id=local_cc.id, change_control=local_cc, cv_client=mock_cv_client)
+    await finalize_change_control_on_cv(change_control_id="cc_id_1", change_control=local_cc, cv_client=mock_cv_client)
 
     # Assert
     mock_cv_client.set_change_control.assert_called_once_with(

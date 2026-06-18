@@ -719,7 +719,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         """
         # Redefine list of CVDevices making sure avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6) is missing in it
-        cv_devices_short: tuple[CVDevice, ...] = (
+        cv_devices_short = [
             CVDevice(
                 avd_device=AvdDevice(hostname="avd-ci-spine1"),
                 serial_number="DCC816CEAC4BBD6319385043AD318362",
@@ -734,7 +734,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 exists_on_cv=True,
                 streaming=True,
             ),
-        )
+        ]
 
         # Fetch mocked/recorded API response which includes config validation warnings for avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6)
         workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=self.workspace_id, build_id=self.workspace_build_id)
