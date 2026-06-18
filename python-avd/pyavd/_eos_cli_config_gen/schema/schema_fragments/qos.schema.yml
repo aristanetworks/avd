@@ -67,7 +67,7 @@ keys:
                     valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                     description: |
                       Units to be used for the threshold values.
-                      Threshold values depend on the platform
+                      Threshold values depend on the hardware platform.
                   min:
                     type: int
                     required: true
