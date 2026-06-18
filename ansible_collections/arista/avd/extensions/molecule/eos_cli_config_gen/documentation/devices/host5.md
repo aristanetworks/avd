@@ -107,7 +107,6 @@ ASN Notation: asplain
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
-
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
 
 #### Router BGP Device Configuration

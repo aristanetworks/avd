@@ -9726,10 +9726,8 @@ ASN Notation: asdot
 #### Router BGP EVPN Address Family
 
 - VPN import pruning is **enabled**
-
 - Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
-
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib colored system-colored-tunnel-rib
 - Next-hop MPLS resolution Secondary-RIB : tunnel-rib test-rib
 - Next-hop MPLS resolution Tertiary-RIB : system-connected
@@ -9884,7 +9882,6 @@ ASN Notation: asdot
 #### Router BGP VPN-IPv4 Address Family
 
 - Next-hop resolution is **disabled**
-
 - VPN import pruning is **enabled**
 
 ##### VPN-IPv4 Neighbors

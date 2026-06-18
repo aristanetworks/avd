@@ -878,13 +878,18 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
 
 #### Router BGP VPN-IPv4 Address Family
+{%         set vpn_ipv4_af_list_items = [] %}
 {%         if router_bgp.address_family_vpn_ipv4.next_hop.resolution_disabled is arista.avd.defined(true) %}
-
-- Next-hop resolution is **disabled**
+{%             do vpn_ipv4_af_list_items.append("Next-hop resolution is **disabled**") %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
+{%             do vpn_ipv4_af_list_items.append("VPN import pruning is **enabled**") %}
+{%         endif %}
+{%         if vpn_ipv4_af_list_items %}
 
-- VPN import pruning is **enabled**
+{%             for vpn_ipv4_af_list_item in vpn_ipv4_af_list_items %}
+- {{ vpn_ipv4_af_list_item }}
+{%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbors is arista.avd.defined %}
 
@@ -922,9 +927,15 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
 
 #### Router BGP VPN-IPv6 Address Family
+{%         set vpn_ipv6_af_list_items = [] %}
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
+{%             do vpn_ipv6_af_list_items.append("VPN import pruning is **enabled**") %}
+{%         endif %}
+{%         if vpn_ipv6_af_list_items %}
 
-- VPN import pruning is **enabled**
+{%             for vpn_ipv6_af_list_item in vpn_ipv6_af_list_items %}
+- {{ vpn_ipv6_af_list_item }}
+{%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
 
