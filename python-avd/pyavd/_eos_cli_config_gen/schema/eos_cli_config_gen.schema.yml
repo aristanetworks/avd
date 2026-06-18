@@ -24725,6 +24725,11 @@ keys:
               type: str
       ipv4_acls:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: ipv4_acl
         items:
           type: dict
           keys:
@@ -24735,8 +24740,16 @@ keys:
               type: str
               convert_types:
               - int
+      ipv4_acl:
+        type: str
+        description: IPv4 access list for VRF default.
       ipv6_acls:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: ipv6_acl
         items:
           type: dict
           keys:
@@ -24747,8 +24760,16 @@ keys:
               type: str
               convert_types:
               - int
+      ipv6_acl:
+        type: str
+        description: IPv6 access list for VRF default.
       local_interfaces:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: local_interface
         primary_key: name
         items:
           type: dict
@@ -24760,6 +24781,9 @@ keys:
               type: str
               convert_types:
               - int
+      local_interface:
+        type: str
+        description: Local interface for VRF default.
       views:
         type: list
         items:
@@ -24942,6 +24966,15 @@ keys:
               - int
             enable:
               type: bool
+            ipv4_acl:
+              type: str
+              description: IPv4 access list name.
+            ipv6_acl:
+              type: str
+              description: IPv6 access list name.
+            local_interface:
+              type: str
+              description: Local interface name.
       ifmib_ifspeed_shape_rate:
         type: bool
         description: SNMP ifspeed reflecting shaping rate.

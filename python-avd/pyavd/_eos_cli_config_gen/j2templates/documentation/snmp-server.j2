@@ -46,30 +46,61 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if snmp_server.ipv4_acls is arista.avd.defined %}
+{%     set has_ipv4_acls = snmp_server.ipv4_acls_per_vrf is arista.avd.defined or snmp_server.ipv4_acls is arista.avd.defined %}
+{%     set has_ipv6_acls = snmp_server.ipv6_acls_per_vrf is arista.avd.defined or snmp_server.ipv6_acls is arista.avd.defined %}
+{%     if has_ipv4_acls or has_ipv6_acls %}
 
 #### SNMP ACLs
 
 | IP | ACL | VRF |
 | -- | --- | --- |
-{%         for acl in snmp_server.ipv4_acls %}
+{%         if snmp_server.ipv4_acls_per_vrf is arista.avd.defined %}
+{%             if snmp_server.ipv4_acls_per_vrf.access_list is arista.avd.defined %}
+| IPv4 | {{ snmp_server.ipv4_acls_per_vrf.access_list }} | default |
+{%             endif %}
+{%             for vrf in snmp_server.ipv4_acls_per_vrf.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%                 if vrf.access_list is arista.avd.defined %}
+| IPv4 | {{ vrf.access_list }} | {{ vrf.name }} |
+{%                 endif %}
+{%             endfor %}
+{%         elif snmp_server.ipv4_acls is arista.avd.defined %}
+{%             for acl in snmp_server.ipv4_acls %}
 | IPv4 | {{ acl.name | arista.avd.default('-') }} | {{ acl.vrf | arista.avd.default('default') }} |
-{%         endfor %}
-{%     endif %}
-{%     if snmp_server.ipv6_acls is arista.avd.defined %}
-{%         for acl in snmp_server.ipv6_acls %}
+{%             endfor %}
+{%         endif %}
+{%         if snmp_server.ipv6_acls_per_vrf is arista.avd.defined %}
+{%             if snmp_server.ipv6_acls_per_vrf.access_list is arista.avd.defined %}
+| IPv6 | {{ snmp_server.ipv6_acls_per_vrf.access_list }} | default |
+{%             endif %}
+{%             for vrf in snmp_server.ipv6_acls_per_vrf.vrfs | arista.avd.natural_sort('name') %}
+{%                 if vrf.access_list is arista.avd.defined %}
+| IPv6 | {{ vrf.access_list }} | {{ vrf.name }} |
+{%                 endif %}
+{%             endfor %}
+{%         elif snmp_server.ipv6_acls is arista.avd.defined %}
+{%             for acl in snmp_server.ipv6_acls %}
 | IPv6 | {{ acl.name | arista.avd.default('-') }} | {{ acl.vrf | arista.avd.default('default') }} |
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
 {%     endif %}
-{%     if snmp_server.local_interfaces is arista.avd.defined %}
+{%     if snmp_server.local_interfaces_per_vrf is arista.avd.defined or snmp_server.local_interfaces is arista.avd.defined %}
 
 #### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
-{%         for interface in snmp_server.local_interfaces %}
+{%         if snmp_server.local_interfaces_per_vrf is arista.avd.defined %}
+{%             if snmp_server.local_interfaces_per_vrf.local_interface is arista.avd.defined %}
+| {{ snmp_server.local_interfaces_per_vrf.local_interface }} | default |
+{%             endif %}
+{%             for vrf in snmp_server.local_interfaces_per_vrf.vrfs | arista.avd.natural_sort('name') %}
+| {{ vrf.local_interface }} | {{ vrf.name }} |
+{%             endfor %}
+{%         else %}
+{%             for interface in snmp_server.local_interfaces %}
 | {{ interface.name }} | {{ interface.vrf | arista.avd.default('default') }} |
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 

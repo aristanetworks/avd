@@ -11,12 +11,9 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
-  ipv4_acls:
-  - name: acl-for-vrf-default
-  ipv6_acls:
-  - name: acl-for-vrf-default
-  local_interfaces:
-  - name: Vlan123
+  ipv4_acl: acl-for-vrf-default
+  ipv6_acl: acl-for-vrf-default
+  local_interface: Vlan123
   hosts:
   - host: 10.6.75.125
     vrf: SNMPVRF

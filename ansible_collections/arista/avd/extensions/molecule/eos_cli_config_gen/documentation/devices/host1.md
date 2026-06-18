@@ -2693,25 +2693,6 @@ mcs client
 | remote | 424242424242DEAD | 42.42.42.42 | - |
 | remote | 424242424242DEAD6666 | 42.42.42.42 | 666 |
 
-#### SNMP ACLs
-
-| IP | ACL | VRF |
-| -- | --- | --- |
-| IPv4 | SNMP-MGMT | MGMT |
-| IPv4 | onur | default |
-| IPv6 | SNMP-MGMT | MGMT |
-| IPv6 | onur_v6 | default |
-
-#### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-| Management1 | MGMT |
-| Loopback0 | default |
-| Loopback12 | Tenant_A_APP_Zone |
-| Ethernet1 | AAA |
-| Ethernet2 | abc |
-
 #### SNMP VRF Status
 
 | VRF | Status |
@@ -2719,6 +2700,10 @@ mcs client
 | default | Disabled |
 | MGMT | Enabled |
 | lower_case | Enabled |
+| Tenant_A_APP_Zone | Enabled |
+| AAA | Enabled |
+| aaa | Enabled |
+| abc | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2772,18 +2757,22 @@ mcs client
 
 ```eos
 !
+snmp-server ipv4 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv4 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv4 access-list onur
+snmp-server ipv6 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv6 access-list onur_v6
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
-snmp-server local-interface Loopback0
 snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server vrf abc local-interface Ethernet2
+snmp-server local-interface Loopback0
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
 snmp-server community <removed> ro onur
@@ -2823,7 +2812,11 @@ snmp-server enable traps msdp established
 snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
 no snmp-server vrf default
+snmp-server vrf AAA
 snmp-server vrf MGMT
+snmp-server vrf Tenant_A_APP_Zone
+snmp-server vrf aaa
+snmp-server vrf abc
 snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```

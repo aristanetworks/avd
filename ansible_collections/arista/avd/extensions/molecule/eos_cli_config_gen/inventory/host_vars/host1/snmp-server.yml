@@ -32,24 +32,9 @@ snmp_server:
         name: SNMP-MGMT
       view: VW-READ
     - name: SNMP-COMMUNITY-3
-  local_interfaces:
-    - name: Management1
-      vrf: MGMT
-    - name: Loopback0
-    - name: Loopback12
-      vrf: Tenant_A_APP_Zone
-    - name: Ethernet1
-      vrf: AAA
-    - name: Ethernet2
-      vrf: abc
-  ipv4_acls:
-    - name: SNMP-MGMT
-      vrf: MGMT
-    - name: onur
-  ipv6_acls:
-    - name: SNMP-MGMT
-      vrf: MGMT
-    - name: onur_v6
+  ipv4_acl: onur
+  ipv6_acl: onur_v6
+  local_interface: Loopback0
   views:
     - name: VW-WRITE
       mib_family_name: iso
@@ -171,6 +156,24 @@ snmp_server:
       enable: false
     - name: MGMT
       enable: true
+      ipv4_acl: SNMP-MGMT
+      ipv6_acl: SNMP-MGMT
+      local_interface: Management1
     - name: lower_case
       enable: true
+    - name: Tenant_A_APP_Zone
+      enable: true
+      local_interface: Loopback12
+    - name: AAA
+      enable: true
+      ipv4_acl: SNMP-MGMT2
+      ipv6_acl: SNMP-MGMT2
+      local_interface: Ethernet1
+    - name: aaa
+      enable: true
+      ipv4_acl: SNMP-MGMT1
+      ipv6_acl: SNMP-MGMT1
+    - name: abc
+      enable: true
+      local_interface: Ethernet2
   ifmib_ifspeed_shape_rate: true

@@ -33,17 +33,8 @@ snmp_server:
       name: SNMP-MGMT
     view: VW-READ
   - name: SNMP-COMMUNITY-3
-  ipv4_acls:
-  - name: acl-for-vrf-default
-  - name: acl-for-vrf-MGMT
-    vrf: MGMT
-  ipv6_acls:
-  - name: acl-for-vrf-default
-  - name: acl-for-vrf-MGMT
-    vrf: MGMT
-  local_interfaces:
-  - name: Management1
-    vrf: MGMT
+  ipv4_acl: acl-for-vrf-default
+  ipv6_acl: acl-for-vrf-default
   views:
   - name: VW-WRITE
     mib_family_name: iso
@@ -101,6 +92,9 @@ snmp_server:
     enable: false
   - name: MGMT
     enable: true
+    ipv4_acl: acl-for-vrf-MGMT
+    ipv6_acl: acl-for-vrf-MGMT
+    local_interface: Management1
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
