@@ -314,6 +314,11 @@ class AvdWorkspace:
         and Workspace.responses.values[<request_id>].code == ResponseCode.SYNCHRONIZATION_REQUIRED
     """
 
+    def __post_init__(self) -> None:
+        if self.max_sync_retries < 0:
+            msg = f"max_sync_retries must be a non-negative integer, got {self.max_sync_retries}."
+            raise ValueError(msg)
+
 
 @dataclass
 class CVWorkspace:

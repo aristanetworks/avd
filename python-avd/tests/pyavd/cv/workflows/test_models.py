@@ -416,6 +416,23 @@ class TestAvdWorkspaceBuildWarningsConfigFromDict:
             AvdWorkspaceBuildWarningsConfig.from_dict(invalid_data)
 
 
+class TestAvdWorkspace:
+    @pytest.mark.parametrize(
+        ("max_sync_retries", "expected_exception"),
+        [
+            pytest.param(0, does_not_raise(), id="ZERO_ALLOWED"),
+            pytest.param(1, does_not_raise(), id="ONE_ALLOWED"),
+            pytest.param(5, does_not_raise(), id="DEFAULT_ALLOWED"),
+            pytest.param(-1, pytest.raises(ValueError, match="max_sync_retries must be a non-negative integer, got -1"), id="NEGATIVE_ONE_REJECTED"),
+            pytest.param(-100, pytest.raises(ValueError, match="max_sync_retries must be a non-negative integer, got -100"), id="LARGE_NEGATIVE_REJECTED"),
+        ],
+    )
+    def test_max_sync_retries_validation(self, max_sync_retries: int, expected_exception: AbstractContextManager) -> None:
+        """Tests that max_sync_retries >= 0 is enforced at construction time."""
+        with expected_exception:
+            AvdWorkspace(max_sync_retries=max_sync_retries)
+
+
 # === CVGRPCKeepalives Tests ===
 
 
@@ -1008,6 +1025,13 @@ class TestResetMutableFieldsUtility:
         plain_dict: dict = {"key": "value"}
         reset_mutable_fields(plain_dict)
         assert plain_dict == {"key": "value"}
+
+    def test_frozen_dataclass_is_left_unchanged(self) -> None:
+        """Calling reset_mutable_fields on a frozen dataclass leaves all fields intact and does not raise FrozenInstanceError."""
+        avd_ws = AvdWorkspace(name="workspace-name", id="ws-id")
+        reset_mutable_fields(avd_ws)
+        assert avd_ws.name == "workspace-name"
+        assert avd_ws.id == "ws-id"
 
     def test_non_frozen_dataclass_field_without_reset_method(self) -> None:
         """A non-frozen dataclass stored in a field that has no reset_mutable_fields is reset recursively."""

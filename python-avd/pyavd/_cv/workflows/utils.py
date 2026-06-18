@@ -87,7 +87,7 @@ def reset_mutable_fields(obj: object) -> None:
     - Field with a default_factory: call the factory.
     - Any other field: skip.
     """
-    if not is_dataclass(obj) or isinstance(obj, type):
+    if not is_dataclass(obj) or isinstance(obj, type) or _is_frozen_dataclass(obj):
         return
     for f in fields(obj):
         _reset_field(obj, f)

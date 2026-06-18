@@ -60,6 +60,14 @@ async def _execute_deployment_steps(
 ) -> None:
     """Execute all deployment sub-workflows."""
     try:
+        # Warn if devices are opted into the manifest but no manifest is provided.
+        if static_config_manifest is None and any(device_deployment.use_static_config_manifest for device_deployment in device_deployments):
+            manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
+            result.warnings.append(
+                f"{manifest_device_count} device(s) have 'cv_use_static_config_manifest' set to 'true' but no static config manifest was provided. "
+                "These devices will not have their configuration deployed to CloudVision."
+            )
+
         # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
         verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
@@ -252,14 +260,6 @@ async def deploy_to_cv(
     # TODO: Refactor sub-workflows to accept list[CVDeviceDeployment] directly and extract what they need internally.
     devices = [device_deployment.device for device_deployment in device_deployments]
     configs, device_tags, interface_tags, cv_pathfinder_metadata = extract_from_device_deployments(device_deployments)
-
-    # Warn if devices are opted into the manifest but no manifest is provided.
-    if static_config_manifest is None and any(device_deployment.use_static_config_manifest for device_deployment in device_deployments):
-        manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
-        result.warnings.append(
-            f"{manifest_device_count} device(s) have 'cv_use_static_config_manifest' set to 'true' but no static config manifest was provided. "
-            "These devices will not have their configuration deployed to CloudVision."
-        )
 
     try:
         async with CVClient(
