@@ -138,6 +138,7 @@ plugins:
       type: date
   - search:
       lang: en
+  - autorefs
   - mkdocstrings:
       handlers:
         python:

@@ -11,9 +11,11 @@
    page typography on docs pages that host an <schema-explorer> embed is
    not affected. The standalone index.html sets class="schema-spa-host"
    on <body>; mountEmbed() adds .schema-embed to each embed element. */
-.schema-spa-host,
-.schema-embed {
+.schema-spa-host {
   font-size: 0.92rem;
+}
+.schema-embed {
+  font-size: inherit;
 }
 
 
@@ -720,6 +722,15 @@ a.card:hover {
 .schema-tree-row td.px-3 code {
   white-space: nowrap;
 }
+.schema-spa-host code.schema-key-code,
+.schema-embed code.schema-key-code,
+.schema-key-code {
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  color: inherit !important;
+}
 
 /* Large default values are summarized in tables and formatted on detail pages. */
 .schema-default-compact {
@@ -849,13 +860,15 @@ a.card:hover {
 /* Rendered description */
 .schema-description p { font-size: 0.88rem; }
 .schema-description ul { font-size: 0.88rem; }
-.schema-description code {
+.schema-description code,
+.schema-description-text code {
   font-size: 0.82rem;
   padding: 0.1em 0.35em;
   background-color: #f0f4fa;
   border-radius: 3px;
 }
-[data-bs-theme="dark"] .schema-description code {
+[data-bs-theme="dark"] .schema-description code,
+[data-bs-theme="dark"] .schema-description-text code {
   background-color: #1e3a5f;
   color: #b8d4fe;
 }
@@ -1047,13 +1060,32 @@ html.in-iframe body { padding-top: 0; }
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Apply Roboto throughout the SPA / embeds — scoped so Material's body font
-   on the surrounding docs page stays Material's choice. */
-.schema-spa-host,
-.schema-embed { font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }
-.schema-spa-host code, .schema-spa-host pre, .schema-spa-host .font-monospace,
-.schema-embed code, .schema-embed pre, .schema-embed .font-monospace {
+/* Apply Roboto to the standalone SPA. Embeds inherit MkDocs Material's page
+   typography so they match surrounding docs content. */
+.schema-spa-host { font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }
+.schema-embed { font-family: inherit; }
+.schema-spa-host code, .schema-spa-host pre, .schema-spa-host .font-monospace {
   font-family: "Roboto Mono", "Fira Mono", monospace;
+}
+.schema-embed code, .schema-embed pre, .schema-embed .font-monospace {
+  font-family: var(--md-code-font-family, "Roboto Mono", "Fira Mono", monospace);
+}
+
+/* Match embedded explorer type to MkDocs Material instead of Bootstrap's
+   larger rem scale. These override fixed rem values and inline styles in the
+   generated explorer markup without changing the standalone SPA. */
+.schema-embed .fs-3 { font-size: 1.25rem !important; }
+.schema-embed .fs-4 { font-size: 1.05rem !important; }
+.schema-embed .btn-sm,
+.schema-embed .btn-group-sm > .btn { font-size: 0.875em; }
+.schema-embed .schema-description p,
+.schema-embed .schema-description ul {
+  font-size: 1em;
+}
+.schema-embed .schema-description code,
+.schema-embed .schema-description-text code,
+.schema-embed code.schema-key-code {
+  font-size: 0.9em !important;
 }
 
 /* Option 2 — banner-less SPA. Same hide rule as iframe mode but without the

@@ -12,7 +12,7 @@
 
     AVD Design provides opinionated yet flexible network-wide data models expressing the intent of your network design and configuration.
 
-    [Data Models](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) · <a href="../schema-explorer.md#/eos_designs">Schema Explorer</a>
+    [Data Models](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) · <a href="../schema-explorer.html#/eos_designs">Schema Explorer</a>
 
 - :material-file-document:{ .lg .middle } **EOS Config**
 
@@ -20,7 +20,7 @@
 
     EOS Config provides device-centric data models for expressing the Arista EOS device configuration syntax.
 
-    [Data Models](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) · <a href="../schema-explorer.md#/eos_cli_config_gen">Schema Explorer</a>
+    [Data Models](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) · <a href="../schema-explorer.html#/eos_cli_config_gen">Schema Explorer</a>
 
 </div>
 

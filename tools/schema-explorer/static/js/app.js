@@ -215,8 +215,8 @@ const CDN_DEPS = {
     "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
   ],
   js: [
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
-    "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js",
+    { src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js", global: "bootstrap" },
+    { src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js", global: "initSqlJs" },
   ],
 };
 
@@ -239,14 +239,46 @@ function _loadCss(href) {
   });
 }
 
-function _loadScript(src) {
-  if (_hasTagWithUrl("script", "src", src)) return Promise.resolve();
+function _globalExists(name) {
+  return !name || typeof window[name] !== "undefined";
+}
+
+function _scriptWithUrl(src) {
+  for (const el of document.querySelectorAll("script")) {
+    if (el.src === src || el.getAttribute("src") === src) return el;
+  }
+  return null;
+}
+
+function _loadScript(src, globalName) {
+  if (_globalExists(globalName)) return Promise.resolve();
+
+  const existing = _scriptWithUrl(src);
+  if (existing?.dataset.schemaExplorerLoaded === "1" && !_globalExists(globalName)) {
+    existing.remove();
+  }
+
   return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = () => reject(new Error(`Failed to load ${src}`));
-    document.head.appendChild(s);
+    const script = _scriptWithUrl(src) || document.createElement("script");
+    const finish = () => {
+      script.dataset.schemaExplorerLoaded = "1";
+      delete script.dataset.schemaExplorerLoading;
+      if (_globalExists(globalName)) {
+        resolve();
+      } else {
+        reject(new Error("Loaded " + src + ", but " + globalName + " is not defined. Check browser access to the CDN asset."));
+      }
+    };
+
+    script.addEventListener("load", finish, { once: true });
+    script.addEventListener("error", () => reject(new Error("Failed to load " + src)), { once: true });
+
+    if (!script.dataset.schemaExplorerLoading) {
+      script.dataset.schemaExplorerLoading = "1";
+      script.src = src;
+      script.async = false;
+      if (!script.parentNode) document.head.appendChild(script);
+    }
   });
 }
 
@@ -254,34 +286,17 @@ async function ensureDeps() {
   await Promise.all(CDN_DEPS.css.map(_loadCss));
   // Scripts must load in order — Bootstrap before sql.js doesn't strictly
   // matter, but doing them sequentially makes ordering predictable.
-  for (const src of CDN_DEPS.js) await _loadScript(src);
+  for (const dep of CDN_DEPS.js) await _loadScript(dep.src, dep.global);
 }
 
 async function ensureSqlJs() {
   if (SQL) return SQL;
   await ensureDeps();
-  SQL = await initSqlJs({
+  SQL = await window.initSqlJs({
     locateFile: f => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${f}`,
   });
   return SQL;
 }
-
-// Delegated handler for tree-row chevron clicks. Lives at document level so
-// it survives every renderResults innerHTML refresh and works across multiple
-// embed roots on the same page.
-document.addEventListener("click", e => {
-  const icon = e.target.closest(".tree-toggle-icon");
-  if (!icon) return;
-  e.preventDefault();
-  e.stopPropagation();
-  const row = icon.closest("tr.schema-tree-row");
-  if (!row) return;
-  const wasExpanded = row.dataset.expanded === "1";
-  row.dataset.expanded = wasExpanded ? "0" : "1";
-  icon.classList.toggle("bi-chevron-right", wasExpanded);
-  icon.classList.toggle("bi-chevron-down", !wasExpanded);
-  applyTreeVisibility(row.closest(".schema-group"));
-});
 
 (async function boot() {
   const embeds = document.querySelectorAll("schema-explorer");
@@ -314,6 +329,24 @@ document.addEventListener("click", e => {
 // Per-group tree visibility — a row is shown iff every ancestor along its
 // parent_path chain has data-expanded="1". Used by the chevron handler and
 // by the group-level Expand/Collapse all buttons.
+function setTreeRowExpanded(row, expanded) {
+  row.dataset.expanded = expanded ? "1" : "0";
+  const icon = row.querySelector(".tree-toggle-icon");
+  if (icon) {
+    icon.classList.toggle("bi-chevron-right", !expanded);
+    icon.classList.toggle("bi-chevron-down", expanded);
+  }
+}
+
+function expandImmediateChildBranches(row, groupEl) {
+  if (!groupEl) return;
+  for (const child of groupEl.querySelectorAll("tr.schema-tree-row")) {
+    if (child.dataset.parentId === row.dataset.rowId && child.dataset.isBranch === "1") {
+      setTreeRowExpanded(child, true);
+    }
+  }
+}
+
 function applyTreeVisibility(groupEl) {
   if (!groupEl) return;
   const rows = groupEl.querySelectorAll("tr.schema-tree-row");
@@ -332,6 +365,23 @@ function applyTreeVisibility(groupEl) {
     r.style.display = visible ? "" : "none";
   }
 }
+
+// Delegated handler for tree-row chevron clicks. Lives at document level so
+// it survives every renderResults innerHTML refresh and works across multiple
+// embed roots on the same page.
+document.addEventListener("click", e => {
+  const icon = e.target.closest(".tree-toggle-icon");
+  if (!icon) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const row = icon.closest("tr.schema-tree-row");
+  if (!row) return;
+  const groupEl = row.closest(".schema-group");
+  const shouldExpand = row.dataset.expanded !== "1";
+  setTreeRowExpanded(row, shouldExpand);
+  if (shouldExpand) expandImmediateChildBranches(row, groupEl);
+  applyTreeVisibility(groupEl);
+});
 
 // ── hash router ──────────────────────────────────────────────────────────────
 
@@ -417,10 +467,6 @@ function searchVars(db, release, module, opts = {}) {
   const ps = [release];
   if (module !== "all") { conds.push("module = ?"); ps.push(module); }
   if (opts.q) { conds.push("(key_path LIKE ? OR description LIKE ?)"); ps.push(`%${opts.q}%`, `%${opts.q}%`); }
-  if (opts.requiredOnly) conds.push("required = 1");
-  if (opts.showDeprecated && opts.showRemoved) conds.push("(deprecated = 1 OR removed = 1)");
-  else if (opts.showDeprecated) conds.push("deprecated = 1");
-  else if (opts.showRemoved) conds.push("removed = 1");
   if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
   const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY key_path LIMIT ${opts.limit || 500}`;
@@ -435,7 +481,7 @@ function getDocTableCounts(db, release, module) {
 }
 
 function isFilterActive(state) {
-  return !!(state.q || state.requiredOnly || state.showDeprecated || state.showRemoved || state.category || state.docTable);
+  return !!(state.q || state.category || state.docTable);
 }
 
 function lifecycleBadge(v) {
@@ -542,18 +588,6 @@ function renderModule(db, release, module) {
             <input type="search" class="form-control" id="q" placeholder="Search key paths or descriptions…">
           </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="req">
-          <label class="form-check-label small" for="req">Required only</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="dep">
-          <label class="form-check-label small" for="dep">Deprecated</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="rem">
-          <label class="form-check-label small" for="rem">Removed</label>
-        </div>
         <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
           <button type="button" class="btn btn-outline-secondary active" id="btn-view-tree" title="Tree view"><i class="bi bi-diagram-3"></i></button>
           <button type="button" class="btn btn-outline-secondary" id="btn-view-flat" title="Flat view"><i class="bi bi-list-ul"></i></button>
@@ -597,16 +631,11 @@ function renderModule(db, release, module) {
     </div>`;
 
   const state = {
-    q: "", requiredOnly: false, showDeprecated: false, showRemoved: false,
-    category: "", docTable: "", view: "tree", classifier: "category",
+    q: "", category: "", docTable: "", view: "tree", classifier: "category",
   };
   const refresh = debounce(() => renderResults(db, release, module, state), 250);
 
   document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; refresh(); });
-  document.getElementById("req").addEventListener("change", e => { state.requiredOnly = e.target.checked; refresh(); });
-  document.getElementById("dep").addEventListener("change", e => { state.showDeprecated = e.target.checked; refresh(); });
-  document.getElementById("rem").addEventListener("change", e => { state.showRemoved = e.target.checked; refresh(); });
-
   const btnTree = document.getElementById("btn-view-tree");
   const btnFlat = document.getElementById("btn-view-flat");
   btnTree.addEventListener("click", () => { state.view = "tree"; btnTree.classList.add("active"); btnFlat.classList.remove("active"); refresh(); });
@@ -664,6 +693,7 @@ function renderResults(db, release, module, state) {
   }
   if (state.view === "tree") return renderTreeResults(target, db, release, module, state, results);
   const isAll = module === "all";
+  const flatColumns = isAll ? "<col style=\"width: 9rem;\"><col style=\"width: 30%;\"><col>" : "<col style=\"width: 34%;\"><col>";
   const rowsHtml = results.map(v => {
     const mod = isAll ? v.module : module;
     const link = `#/${mod}/${encodeURI(v.key_path)}?release=${release}`;
@@ -671,14 +701,15 @@ function renderResults(db, release, module, state) {
     return `
       <tr>
         ${modBadge}
-        <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
-        <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
+        <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
+        <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
       </tr>`;
   }).join("");
   target.innerHTML = `
     <div class="px-3 py-2 text-muted small border-bottom">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
     <div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0">
+      <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+        <colgroup>${flatColumns}</colgroup>
         <thead class="table-light"><tr>
           ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
           <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
@@ -796,9 +827,9 @@ function renderTreeResults(target, db, release, module, state, matches) {
             data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
           ${modBadge}
           <td class="px-3">
-            <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
+            <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
           </td>
-          <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
+          <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
         </tr>`;
     }).join("");
     const groupCount = matchCounts.get(groupId) ?? vars.length;
@@ -807,7 +838,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
       <div class="schema-group" data-group-id="${id}">
         <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
           <i class="bi bi-chevron-right collapse-icon"></i>
-          <code class="fw-bold" style="font-size: 0.88rem;">${highlight(root, state.q)}</code>
+          <code class="schema-key-code fw-bold" style="font-size: 0.88rem;">${highlight(root, state.q)}</code>
           ${groupModuleBadge}
           <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCount}</span>
           ${cat ? `<span class="badge schema-category-badge ms-1">${escapeHtml(cat)}</span>` : ""}
@@ -817,8 +848,8 @@ function renderTreeResults(target, db, release, module, state, matches) {
             <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
               <colgroup>
                 ${isAll ? `<col style="width: 9rem;">` : ""}
+                <col style="width: 32%;">
                 <col>
-                <col style="width: 38%;">
               </colgroup>
               <thead class="table-light"><tr>
                 ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
@@ -896,7 +927,13 @@ function renderVarDetail(db, release, module, key_path) {
       <span class="badge bg-secondary ms-1" style="font-size: 0.65rem; vertical-align: middle;">${children.length}</span>
     </h5>
     <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0">
+      <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+        <colgroup>
+          <col style="width: 28%;">
+          <col style="width: 8rem;">
+          <col style="width: 4rem;">
+          <col>
+        </colgroup>
         <thead class="table-light"><tr>
           <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
           <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
@@ -905,10 +942,10 @@ function renderVarDetail(db, release, module, key_path) {
         </tr></thead>
         <tbody>${children.map(c => `
           <tr>
-            <td class="px-3"><a href="#/${module}/${encodeURI(c.key_path)}?release=${release}" class="link-brand text-decoration-none"><code class="fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(c.key_path))}</code></a></td>
+            <td class="px-3"><a href="#/${module}/${encodeURI(c.key_path)}?release=${release}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(c.key_path))}</code></a></td>
             <td>${lifecycleBadge(c)}</td>
             <td class="text-center">${c.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
-            <td class="text-muted small">${escapeHtml(c.description || "-")}</td>
+            <td class="schema-description-text text-muted small">${formatMarkdownInline(c.description || "-")}</td>
           </tr>`).join("")}</tbody>
       </table>
     </div></div>` : "";
@@ -922,7 +959,7 @@ function renderVarDetail(db, release, module, key_path) {
     <div class="d-flex align-items-center mb-4">
       <a href="#/${module}?release=${release}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
       <div>
-        <h4 class="mb-1 fw-bold brand-color"><code>${escapeHtml(displayPath(v.key_path))}</code></h4>
+        <h4 class="mb-1 fw-bold brand-color"><code class="schema-key-code">${escapeHtml(displayPath(v.key_path))}</code></h4>
         <span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "unknown")}</span>
         ${lifecycleHeader}
         <span class="text-muted small ms-2">${escapeHtml(SCHEMA_MODULES[module]?.name || module)}</span>
@@ -932,7 +969,7 @@ function renderVarDetail(db, release, module, key_path) {
       <div class="col-12">
         ${v.description ? `
           <h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
-          <div class="card border-0 shadow-sm mb-4"><div class="card-body"><p class="mb-0">${escapeHtml(v.description)}</p></div></div>` : ""}
+          <div class="card border-0 shadow-sm mb-4"><div class="card-body schema-description">${formatDescriptionMarkdown(v.description)}</div></div>` : ""}
 
         <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Properties</h5>
         <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
@@ -944,8 +981,8 @@ function renderVarDetail(db, release, module, key_path) {
             ${v.category ? `<tr><td class="px-3 fw-semibold small text-muted">Category</td><td><span class="badge schema-category-badge">${escapeHtml(v.category)}</span></td></tr>` : ""}
             ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
             ${v.cross_ref ? renderCrossRefRow(v.cross_ref, release) : ""}
-            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${release}" class="link-brand"><code>${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
-            ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code>${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
+            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${release}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
+            ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
         </div></div>
 
@@ -1006,6 +1043,33 @@ function highlight(text, q) {
     i = idx + q.length;
   }
   return out;
+}
+
+function formatMarkdownInline(text, q = "") {
+  if (!text) return escapeHtml("-");
+  const raw = String(text);
+  let out = "";
+  let last = 0;
+  for (const match of raw.matchAll(/`([^`\n]+)`/g)) {
+    out += highlight(raw.slice(last, match.index), q);
+    out += "<code>" + escapeHtml(match[1]) + "</code>";
+    last = match.index + match[0].length;
+  }
+  out += highlight(raw.slice(last), q);
+  return out || escapeHtml("-");
+}
+
+function formatDescriptionMarkdown(text, q = "") {
+  if (!text) return escapeHtml("-");
+  const blocks = String(text).trim().split(/\n{2,}/);
+  return blocks.map(block => {
+    const lines = block.split(/\n/).map(line => line.trim()).filter(Boolean);
+    if (!lines.length) return "";
+    if (lines.every(line => /^[-*]\s+/.test(line))) {
+      return '<ul class="mb-0">' + lines.map(line => "<li>" + formatMarkdownInline(line.replace(/^[-*]\s+/, ""), q) + "</li>").join("") + "</ul>";
+    }
+    return '<p class="mb-0">' + formatMarkdownInline(lines.join(" "), q) + "</p>";
+  }).join("");
 }
 
 function debounce(fn, ms) {
@@ -1081,8 +1145,7 @@ async function mountEmbed(el) {
   }
 
   const state = {
-    q: "", requiredOnly: false, showDeprecated: false, showRemoved: false,
-    category: "", docTable: "", view,
+    q: "", category: "", docTable: "", view,
   };
   if (view === "tree") {
     renderTreeResults(el, db, release, module, state, results);

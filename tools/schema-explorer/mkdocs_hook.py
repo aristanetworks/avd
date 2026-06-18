@@ -37,7 +37,9 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 BUILD_DIR = HERE / "build"
+STATIC_DIR = HERE / "static"
 GENERATE_SCRIPT = HERE / "generate.py"
+CATEGORIES_SCRIPT = HERE / "categories.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
 FORMATTER_SCRIPT = AVD_ROOT / "tools" / "schema_explorer_markdown.py"
@@ -93,6 +95,30 @@ def _ensure_markdown_fence(config: dict[str, Any]) -> None:
     config["mdx_configs"] = mdx_configs
 
 
+def _copy_static_assets() -> None:
+    """Copy the latest static SPA assets into the build directory."""
+    if not STATIC_DIR.is_dir():
+        msg = f"Static asset dir not found: {STATIC_DIR}"
+        raise FileNotFoundError(msg)
+    BUILD_DIR.mkdir(parents=True, exist_ok=True)
+    for entry in STATIC_DIR.iterdir():
+        target = BUILD_DIR / entry.name
+        if entry.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(entry, target)
+        else:
+            shutil.copy2(entry, target)
+
+
+def _database_is_current(sqlite_marker: Path) -> bool:
+    """Return True when the generated SQLite is newer than generator inputs."""
+    if not sqlite_marker.is_file():
+        return False
+    sqlite_mtime = sqlite_marker.stat().st_mtime
+    return all(path.stat().st_mtime <= sqlite_mtime for path in (GENERATE_SCRIPT, CATEGORIES_SCRIPT))
+
+
 def _ensure_build() -> None:
     """
     Build the Schema Explorer if ``build/`` is missing.
@@ -103,9 +129,11 @@ def _ensure_build() -> None:
     hook makes the SPA self-publishing for any host that can run ``mkdocs build``.
     """
     sqlite_marker = BUILD_DIR / "data" / DEFAULT_RELEASE / "schema.sqlite"
-    if sqlite_marker.is_file():
+    if _database_is_current(sqlite_marker):
+        _copy_static_assets()
         return
-    print(f"[schema-explorer] build/ missing — running generate.py for release={DEFAULT_RELEASE}")
+    reason = "missing" if not sqlite_marker.is_file() else "stale"
+    print(f"[schema-explorer] build/ {reason} — running generate.py for release={DEFAULT_RELEASE}")
     subprocess.check_call(  # noqa: S603
         [
             sys.executable,
