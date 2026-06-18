@@ -1078,7 +1078,10 @@ class EosDesigns(EosDesignsRootModel):
         render_pvst_border_when_mode_is_mstp: bool
         """
         Available from AVD 6.3.0.
-        Pvst border parameters would not have any effect unless it's MST.
+        PVST border parameters have no effect unless the spanning-tree mode is
+        MSTP.
+        When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+        'mstp'.
 
         Default value: `False`
         """
@@ -1152,7 +1155,10 @@ class EosDesigns(EosDesignsRootModel):
                        IPv4 is activated by default instead of always deactivating it.
                     render_pvst_border_when_mode_is_mstp:
                        Available from AVD 6.3.0.
-                       Pvst border parameters would not have any effect unless it's MST.
+                       PVST border parameters have no effect unless the spanning-tree mode is
+                       MSTP.
+                       When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+                       'mstp'.
 
                 """
 

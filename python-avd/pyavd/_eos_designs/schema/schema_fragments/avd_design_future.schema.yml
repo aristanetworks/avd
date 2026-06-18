@@ -79,5 +79,6 @@ keys:
         type: bool
         description: |-
           Available from AVD 6.3.0.
-          Pvst border parameters would not have any effect unless it's MST.
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+          When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to 'mstp'.
         default: false
