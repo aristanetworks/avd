@@ -679,7 +679,7 @@ Opt-in to future `cv_deploy` behaviors which will become default behaviors in a 
 ```yaml
 # Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
 cv_deploy_future:
-  # Use system certificates instead of Python's bundled certificate store.
+  # Use system certificates instead of the default certificate store used by the underlying Python libraries.
   # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
   use_system_certs: <bool; default=false>
 ```

@@ -15,7 +15,7 @@ from pyavd._cv.client import CVClient
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.deploy_tags_to_cv import deploy_tags_to_cv
-from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVDeviceTag, CVInterfaceTag, CVWorkspace
+from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CloudVision, CVDevice, CVDeviceTag, CVInterfaceTag, CVTLSConfiguration, CVWorkspace
 
 from .helpers import get_device_tag_assignments_cv_state, get_device_tags_cv_state, get_interface_tag_assignments_cv_state, get_interface_tags_cv_state
 
@@ -952,9 +952,13 @@ async def test_deploy_tags_to_cv_message_splitting(
     """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 Bytes vs. 1048576 Bytes max)."""
     with does_not_raise(), caplog.at_level(INFO):
         async with CVClient(
-            servers=targeted_cv["cv_server"],
-            token=targeted_cv["cv_access_token"],
-            verify_certs=verify_certs,
+            cloudvision=CloudVision(
+                servers=(targeted_cv["cv_server"],),
+                token=targeted_cv["cv_access_token"],
+                username=None,
+                password=None,
+                tls_configuration=CVTLSConfiguration(verify_certs=verify_certs),
+            ),
         ) as cv_client:
             cv_tags = cv_tags_fixture
             cv_tag_assignments = cv_tag_assignments_fixture

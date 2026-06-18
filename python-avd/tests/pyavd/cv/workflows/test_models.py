@@ -4,7 +4,7 @@
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from pathlib import Path
+from dataclasses import FrozenInstanceError
 from typing import Any
 
 import pytest
@@ -20,18 +20,20 @@ from pyavd._cv.workflows.models import (
     AvdManifest,
     AvdWorkspace,
     AvdWorkspaceBuildWarningsConfig,
+    CloudVision,
     CVChangeControl,
     CVDeployFuture,
     CVDevice,
     CVDeviceTag,
     CVEosConfig,
-    CVGRPCChannelConfiguration,
+    CVGRPCConfiguration,
     CVGRPCKeepalives,
-    CVGRPCProxyConfiguration,
     CVInterfaceTag,
     CVManifest,
     CVPathfinderMetadata,
+    CVProxyConfiguration,
     CVStudioInputs,
+    CVTLSConfiguration,
     CVWorkspace,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationResult,
@@ -49,9 +51,9 @@ from .helpers import generate_id
 def complex_avd_manifest() -> AvdManifest:
     """Provides a complex, valid AVD manifest with nested containers and configlets."""
     # Configlets definition.
-    configlet1 = AvdConfiglet(name="configlet_global", file=Path("path/to/global.cfg"))
-    configlet2 = AvdConfiglet(name="configlet_leaf", file=Path("path/to/leaf.cfg"))
-    configlet3 = AvdConfiglet(name="configlet_extra", file=Path("path/to/extra.cfg"))
+    configlet1 = AvdConfiglet(name="configlet_global", file="path/to/global.cfg")
+    configlet2 = AvdConfiglet(name="configlet_leaf", file="path/to/leaf.cfg")
+    configlet3 = AvdConfiglet(name="configlet_extra", file="path/to/extra.cfg")
 
     # Container hierarchy definition.
     container_leaf_1a = AvdContainer(
@@ -141,8 +143,8 @@ class TestCVManifestGeneration:
 
     def test_duplicate_configlet_name_error(self) -> None:
         """Tests that a CVManifestError is raised for duplicate configlet names."""
-        configlet1 = AvdConfiglet(name="duplicate_name", file=Path("file1.conf"))
-        configlet2 = AvdConfiglet(name="duplicate_name", file=Path("file2.conf"))
+        configlet1 = AvdConfiglet(name="duplicate_name", file="file1.conf")
+        configlet2 = AvdConfiglet(name="duplicate_name", file="file2.conf")
         avd_manifest = AvdManifest(configlets=(configlet1, configlet2), containers=())
 
         with pytest.raises(CVManifestError, match="Duplicate configlet name found: 'duplicate_name'"):
@@ -177,7 +179,7 @@ class TestCVManifestGeneration:
 
     def test_manifest_with_configlets_only(self) -> None:
         """Tests a manifest that has configlets but no container definitions."""
-        configlet = AvdConfiglet(name="cfg1", file=Path("file1.cfg"))
+        configlet = AvdConfiglet(name="cfg1", file="file1.cfg")
         avd_manifest = AvdManifest(configlets=(configlet,), containers=())
 
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
@@ -447,21 +449,21 @@ class TestCVGRPCKeepalives:
             CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
 
 
-# === CVGRPCChannelConfiguration Tests ===
+# === CVGRPCConfiguration Tests ===
 
 
-class TestCVGRPCChannelConfiguration:
+class TestCVGRPCConfiguration:
     def test_as_grpcio_channel_options_disabled_returns_user_agent_only(self) -> None:
         """Tests that as_grpcio_channel_options only returns user-agent when keepalives are disabled."""
-        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
-        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test"),)
+        channel_config = CVGRPCConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
+        assert channel_config.as_grpcio_channel_options(user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test"),)
 
     def test_as_grpcio_channel_options_enabled_returns_keepalive_options(self) -> None:
         """Tests that as_grpcio_channel_options builds grpcio channel args from the keepalive fields."""
-        channel_config = CVGRPCChannelConfiguration(
+        channel_config = CVGRPCConfiguration(
             grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
         )
-        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
+        assert channel_config.as_grpcio_channel_options(user_agent="pyavd/test") == (
             ("grpc.primary_user_agent", "pyavd/test"),
             ("grpc.keepalive_time_ms", 45000),
             ("grpc.keepalive_timeout_ms", 15000),
@@ -469,31 +471,14 @@ class TestCVGRPCChannelConfiguration:
             ("grpc.http2.max_pings_without_data", 0),
         )
 
-    def test_as_grpcio_channel_options_appends_custom_user_agent(self) -> None:
-        """Tests that custom_user_agent is appended to the generated default user-agent."""
-        channel_config = CVGRPCChannelConfiguration(custom_user_agent="custom/1.0")
-        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test custom/1.0"),)
 
-    def test_as_grpcio_channel_options_returns_ssl_target_name_override(self) -> None:
-        """Tests that as_grpcio_channel_options includes the internally computed TLS target override."""
-        channel_config = CVGRPCChannelConfiguration()
-        channel_config._ssl_target_name_override = "cv.example.com"
-        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
-            ("grpc.primary_user_agent", "pyavd/test"),
-            ("grpc.ssl_target_name_override", "cv.example.com"),
-        )
+# === CVProxyConfiguration Tests ===
 
-    def test_as_grpcio_channel_options_returns_proxy_options(self) -> None:
-        """Tests that as_grpcio_channel_options builds grpcio proxy channel args."""
-        channel_config = CVGRPCChannelConfiguration(proxy=CVGRPCProxyConfiguration(host="proxy.example.com", port=3128))
-        assert channel_config.as_grpcio_channel_options(default_user_agent="pyavd/test") == (
-            ("grpc.primary_user_agent", "pyavd/test"),
-            ("grpc.http_proxy", "http://proxy.example.com:3128"),
-        )
 
+class TestCVProxyConfiguration:
     def test_proxy_credentials_are_url_encoded(self) -> None:
         """Tests that proxy username and password are URL-encoded for grpcio's proxy URI."""
-        proxy_config = CVGRPCProxyConfiguration(
+        proxy_config = CVProxyConfiguration(
             host="proxy.example.com",
             port=3128,
             username="user@example.com",
@@ -503,7 +488,7 @@ class TestCVGRPCChannelConfiguration:
 
     def test_proxy_get_requests_proxies(self) -> None:
         """Tests that proxy configuration builds requests proxies."""
-        proxy_config = CVGRPCProxyConfiguration(
+        proxy_config = CVProxyConfiguration(
             host="proxy.example.com",
             port=3128,
             username="user@example.com",
@@ -515,7 +500,59 @@ class TestCVGRPCChannelConfiguration:
         }
 
 
-# === CVDeployFuture Tests ===
+class TestCloudVision:
+    def test_get_result_excludes_configuration(self) -> None:
+        cloudvision = CloudVision(
+            servers=("cv.example.com",),
+            token="token",  # noqa: S106
+            username="cv-user",
+            password="cv-password",  # noqa: S106
+            tls_configuration=CVTLSConfiguration(verify_certs=False, use_system_certs=True),
+            grpc_configuration=CVGRPCConfiguration(
+                grpc_keepalives=CVGRPCKeepalives(enabled=True),
+            ),
+            proxy_configuration=CVProxyConfiguration(host="proxy.example.com", password="proxy-password"),  # noqa: S106
+        )
+
+        result = cloudvision.get_result()
+
+        assert result == {
+            "servers": ("cv.example.com",),
+            "token": "<removed>",
+            "username": "cv-user",
+            "password": "<removed>",
+        }
+        assert "grpc_configuration" not in result
+        assert "tls_configuration" not in result
+        assert "proxy_configuration" not in result
+
+    def test_port_defaults_to_https(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None)
+
+        assert cloudvision.port == 443
+
+    def test_accepts_custom_port(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None, port=8443)
+
+        assert cloudvision.port == 8443
+
+    def test_is_frozen(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None)
+
+        with pytest.raises(FrozenInstanceError):
+            cloudvision.username = "cv-user"  # pyright: ignore[reportAttributeAccessIssue]
+
+
+class TestCVTLSConfiguration:
+    def test_defaults(self) -> None:
+        tls_configuration = CVTLSConfiguration()
+        assert tls_configuration.verify_certs is True
+        assert tls_configuration.use_system_certs is False
+
+    def test_custom_values(self) -> None:
+        tls_configuration = CVTLSConfiguration(verify_certs=False, use_system_certs=True)
+        assert tls_configuration.verify_certs is False
+        assert tls_configuration.use_system_certs is True
 
 
 class TestCVDeployFuture:

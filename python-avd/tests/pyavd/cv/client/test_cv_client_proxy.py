@@ -12,9 +12,26 @@ import pytest
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
-from pyavd._cv.workflows.models import CVGRPCChannelConfiguration, CVGRPCProxyConfiguration
+from pyavd._cv.workflows.models import CloudVision, CVProxyConfiguration, CVTLSConfiguration
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
+
+def _cloudvision(
+    *,
+    servers: tuple[str, ...] = ("www.arista.io",),
+    token: str = "secret_access_token",  # noqa: S107
+    tls_configuration: CVTLSConfiguration | None = None,
+    proxy_configuration: CVProxyConfiguration | None = None,
+) -> CloudVision:
+    return CloudVision(
+        servers=servers,
+        token=token,
+        username=None,
+        password=None,
+        tls_configuration=tls_configuration or CVTLSConfiguration(),
+        proxy_configuration=proxy_configuration,
+    )
 
 
 @pytest.mark.asyncio
@@ -31,13 +48,17 @@ async def test_cv_client_authenticated_proxy_is_mapped_to_grpc_channel_options()
     ):
         mock_secure_channel.return_value.close = AsyncMock()
         async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_host=proxy_host,
-            proxy_username=proxy_username,
-            proxy_password=proxy_password,
+            cloudvision=_cloudvision(
+                servers=(servers,),
+                token=token,
+                proxy_configuration=CVProxyConfiguration(
+                    host=proxy_host,
+                    username=proxy_username,
+                    password=proxy_password,
+                ),
+            ),
         ) as cvclient:
-            assert cvclient.grpc.configuration.proxy == CVGRPCProxyConfiguration(
+            assert cvclient.grpc.proxy == CVProxyConfiguration(
                 host=proxy_host,
                 port=8080,
                 username=proxy_username,
@@ -64,7 +85,7 @@ async def test_cv_client_no_verify_certs() -> None:
         patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
     ):
         mock_secure_channel.return_value.close = AsyncMock()
-        async with CVClient(servers=servers, token=token, verify_certs=False):
+        async with CVClient(cloudvision=_cloudvision(servers=(servers,), token=token, tls_configuration=CVTLSConfiguration(verify_certs=False))):
             pass
 
     mock_get_server_certificate.assert_called_once_with((servers, 443))
@@ -78,7 +99,7 @@ async def test_cv_client_no_verify_certs() -> None:
 
 
 def test_cv_client_no_verify_certs_uses_first_dns_subject_alt_name() -> None:
-    client = CVClient(servers="www.arista.io", token="secret_access_token")  # noqa: S106
+    client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
         client.grpc,
@@ -92,7 +113,7 @@ def test_cv_client_no_verify_certs_uses_first_dns_subject_alt_name() -> None:
 
 
 def test_cv_client_no_verify_certs_uses_ip_subject_alt_name_without_dns_name() -> None:
-    client = CVClient(servers="www.arista.io", token="secret_access_token")  # noqa: S106
+    client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
         client.grpc,
@@ -106,7 +127,7 @@ def test_cv_client_no_verify_certs_uses_ip_subject_alt_name_without_dns_name() -
 
 
 def test_cv_client_no_verify_certs_falls_back_to_common_name() -> None:
-    client = CVClient(servers="www.arista.io", token="secret_access_token")  # noqa: S106
+    client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
         client.grpc,
@@ -119,7 +140,7 @@ def test_cv_client_no_verify_certs_falls_back_to_common_name() -> None:
 
 
 def test_cv_client_no_verify_certs_raises_for_certificate_without_identity() -> None:
-    client = CVClient(servers="www.arista.io", token="secret_access_token")  # noqa: S106
+    client = CVClient(cloudvision=_cloudvision())
 
     with (
         patch.object(client.grpc, "_decode_certificate", return_value={"subject": ((("countryName", "US"),),)}),
@@ -136,21 +157,9 @@ async def test_cv_client_unauthenticated_proxy() -> None:
 
     with patch("pyavd._cv.client.CVClient._init_version", return_value="CVaaS"):
         async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_host=proxy_host,
+            cloudvision=_cloudvision(servers=(servers,), token=token, proxy_configuration=CVProxyConfiguration(host=proxy_host)),
         ) as cvclient:
-            assert cvclient.grpc.configuration.proxy == CVGRPCProxyConfiguration(host=proxy_host, port=8080)
-
-
-def test_cv_client_legacy_proxy_and_channel_proxy_are_mutually_exclusive() -> None:
-    with pytest.raises(ValueError, match=r"Cannot set both legacy proxy_\* arguments and grpc_channel_configuration\.proxy"):
-        CVClient(
-            servers="www.arista.io",
-            token="secret_access_token",  # noqa: S106
-            proxy_host="legacy-proxy.example.com",
-            grpc_channel_configuration=CVGRPCChannelConfiguration(proxy=CVGRPCProxyConfiguration(host="config-proxy.example.com")),
-        )
+            assert cvclient.grpc.proxy == CVProxyConfiguration(host=proxy_host, port=8080)
 
 
 @pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
@@ -213,13 +222,17 @@ async def test_cvclient_with_cvaas_via_proxy(
     """Test ability to fetch data from CVaaS through HTTP CONNECT proxy server using REST and gRPC."""
     with does_not_raise():
         async with CVClient(
-            servers=targeted_cv["cv_server"],
-            token=targeted_cv["cv_access_token"],
-            verify_certs=verify_certs,
-            proxy_host=proxy_auth["proxy_host"],
-            proxy_port=int(proxy_auth["proxy_port"]),
-            proxy_username=proxy_auth["proxy_username"],
-            proxy_password=proxy_auth["proxy_password"],
+            cloudvision=_cloudvision(
+                servers=(targeted_cv["cv_server"],),
+                token=targeted_cv["cv_access_token"],
+                tls_configuration=CVTLSConfiguration(verify_certs=verify_certs),
+                proxy_configuration=CVProxyConfiguration(
+                    host=proxy_auth["proxy_host"],
+                    port=int(proxy_auth["proxy_port"]),
+                    username=proxy_auth["proxy_username"],
+                    password=proxy_auth["proxy_password"],
+                ),
+            ),
         ) as cvclient_via_proxy:
             result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []
@@ -276,13 +289,17 @@ async def test_cvclient_with_onprem_via_proxy(
     """Test ability to fetch data from on-prem CloudVision through HTTP CONNECT proxy server using REST and gRPC."""
     with expected_exception:
         async with CVClient(
-            servers=targeted_cv["cv_server"],
-            token=targeted_cv["cv_access_token"],
-            verify_certs=verify_certs,
-            proxy_host=proxy_auth["proxy_host"],
-            proxy_port=int(proxy_auth["proxy_port"]),
-            proxy_username=proxy_auth["proxy_username"],
-            proxy_password=proxy_auth["proxy_password"],
+            cloudvision=_cloudvision(
+                servers=(targeted_cv["cv_server"],),
+                token=targeted_cv["cv_access_token"],
+                tls_configuration=CVTLSConfiguration(verify_certs=verify_certs),
+                proxy_configuration=CVProxyConfiguration(
+                    host=proxy_auth["proxy_host"],
+                    port=int(proxy_auth["proxy_port"]),
+                    username=proxy_auth["proxy_username"],
+                    password=proxy_auth["proxy_password"],
+                ),
+            ),
         ) as cvclient_via_proxy:
             result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []

@@ -8,17 +8,15 @@ from importlib.metadata import PackageNotFoundError
 from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
-import pytest
-
 from pyavd._cv.client import CVClient
+from pyavd._cv.workflows.models import CloudVision
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
 
-@pytest.fixture
-def cv_client() -> CVClient:
-    return CVClient(servers="127.0.0.1", token="token")  # noqa: S106
+def _cloudvision() -> CloudVision:
+    return CloudVision(servers=("127.0.0.1",), token="token", username=None, password=None)  # noqa: S106
 
 
 def _mock_version(versions: dict[str, str]) -> Callable:
@@ -43,7 +41,7 @@ ALL_VERSIONS = {
 OPTIONAL_DEPS = ["grpcio", "requests", "ansible-core"]
 
 
-def test_cv_client_get_user_agent_python_version_unavailable(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_python_version_unavailable() -> None:
     """Test that user-agent string is built when Python version is unavailable."""
     expected_user_agent = "pyavd/6.1.0 aristaproto/0.1.4 grpcio/1.81.1 requests/2.32.5"
 
@@ -60,7 +58,8 @@ def test_cv_client_get_user_agent_python_version_unavailable(cv_client: CVClient
         patch("pyavd._cv.client.platform.python_version", return_value=""),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent
@@ -70,7 +69,7 @@ def test_cv_client_get_user_agent_python_version_unavailable(cv_client: CVClient
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_all_packages_available(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_all_packages_available() -> None:
     """Test that user-agent string includes all packages when all are available."""
     expected_user_agent = "python/3.12.2 pyavd/6.1.0 aristaproto/0.1.4 grpcio/1.81.1 requests/2.32.5"
 
@@ -87,7 +86,8 @@ def test_cv_client_get_user_agent_all_packages_available(cv_client: CVClient) ->
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent
@@ -97,7 +97,7 @@ def test_cv_client_get_user_agent_all_packages_available(cv_client: CVClient) ->
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_attr(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_attr() -> None:
     """Test falling back to pyavd.__version__ when importlib.metadata.version can not fetch pyavd version."""
     expected_user_agent = "python/3.12.2 pyavd/6.100.0 aristaproto/0.1.4 grpcio/1.81.1 requests/2.32.5"
 
@@ -117,7 +117,8 @@ def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_a
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent
@@ -127,7 +128,7 @@ def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_a
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_pyavd_unavailable() -> None:
     """Test that user-agent string excludes pyavd when its version can not be found."""
     expected_user_agent = "python/3.12.2 aristaproto/0.1.4 grpcio/1.81.1 requests/2.32.5"
 
@@ -148,7 +149,8 @@ def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None
         # Simulate failed import. This must be done after all pyavd-related patched above.
         patch.dict(sys.modules, {"pyavd": None}),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent
@@ -158,7 +160,7 @@ def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_optional_dependency_missing(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_optional_dependency_missing() -> None:
     """Test that user-agent string omits a missing optional dependency."""
     expected_user_agent = "python/3.12.2 pyavd/6.1.0 grpcio/1.81.1 requests/2.32.5"
 
@@ -177,7 +179,8 @@ def test_cv_client_get_user_agent_optional_dependency_missing(cv_client: CVClien
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent
@@ -187,7 +190,7 @@ def test_cv_client_get_user_agent_optional_dependency_missing(cv_client: CVClien
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_no_optional_dependencies(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_no_optional_dependencies() -> None:
     """Test that user-agent string contains only pyavd when no optional dependencies are available."""
     expected_user_agent = "python/3.12.2 pyavd/6.1.0"
 
@@ -206,7 +209,8 @@ def test_cv_client_get_user_agent_no_optional_dependencies(cv_client: CVClient) 
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
-        cv_client_user_agent = cv_client._get_user_agent()
+        cv_client = CVClient(cloudvision=_cloudvision())
+        cv_client_user_agent = cv_client._user_agent
         cv_client._init_version()
 
     assert cv_client_user_agent == expected_user_agent

@@ -11,9 +11,30 @@ from requests.exceptions import HTTPError, RequestException
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
-from pyavd._cv.workflows.models import CVGRPCChannelConfiguration, CVGRPCKeepalives
+from pyavd._cv.workflows.models import CloudVision, CVGRPCConfiguration, CVGRPCKeepalives, CVTLSConfiguration
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
+
+def _cloudvision(
+    *,
+    servers: tuple[str, ...] = ("127.0.0.1",),
+    token: str | None = "test-token",  # noqa: S107
+    username: str | None = None,
+    password: str | None = None,
+    port: int = 443,
+    tls_configuration: CVTLSConfiguration | None = None,
+    grpc_configuration: CVGRPCConfiguration | None = None,
+) -> CloudVision:
+    return CloudVision(
+        servers=servers,
+        token=token,
+        username=username,
+        password=password,
+        port=port,
+        tls_configuration=tls_configuration or CVTLSConfiguration(),
+        grpc_configuration=grpc_configuration or CVGRPCConfiguration(),
+    )
 
 
 @pytest.mark.asyncio
@@ -60,27 +81,28 @@ async def test_cv_client_get_token_init_version_requests_error(
         expected_cv_exception,
     ):
         async with CVClient(
-            servers="127.0.0.1",
-            token=cv_token,
-            username="avd_user",
-            password="avd_password",  # noqa: S106
+            cloudvision=_cloudvision(
+                token=cv_token,
+                username="avd_user",
+                password="avd_password",  # noqa: S106
+            ),
         ) as cvclient:
             await cvclient.get_inventory_devices([("", "", "spine1")])
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    ("grpc_channel_configuration", "expected_keepalives_applied"),
+    ("grpc_configuration", "expected_keepalives_applied"),
     [
         pytest.param(None, False, id="NO_CHANNEL_CONFIG"),
-        pytest.param(CVGRPCChannelConfiguration(), False, id="DEFAULT_CHANNEL_CONFIG_KEEPALIVES_DISABLED"),
+        pytest.param(CVGRPCConfiguration(), False, id="DEFAULT_CHANNEL_CONFIG_KEEPALIVES_DISABLED"),
         pytest.param(
-            CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True)),
+            CVGRPCConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True)),
             True,
             id="KEEPALIVES_ENABLED_DEFAULTS",
         ),
         pytest.param(
-            CVGRPCChannelConfiguration(
+            CVGRPCConfiguration(
                 grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
             ),
             True,
@@ -88,11 +110,11 @@ async def test_cv_client_get_token_init_version_requests_error(
         ),
     ],
 )
-async def test_cv_client_grpc_channel_configuration(
-    grpc_channel_configuration: CVGRPCChannelConfiguration | None,
+async def test_cv_client_grpc_configuration(
+    grpc_configuration: CVGRPCConfiguration | None,
     expected_keepalives_applied: bool,
 ) -> None:
-    """Tests that grpcio options computed from grpc_channel_configuration are passed to the gRPC Channel."""
+    """Tests that grpcio options computed from grpc_configuration are passed to the gRPC Channel."""
     mocked_response = Mock()
     mocked_response.raise_for_status.return_value = None
     mocked_response.json.return_value = {"version": "CVaaS"}
@@ -106,9 +128,7 @@ async def test_cv_client_grpc_channel_configuration(
     ):
         mock_secure_channel.return_value.close = AsyncMock()
         async with CVClient(
-            servers="127.0.0.1",
-            token="test-token",  # noqa: S106
-            grpc_channel_configuration=grpc_channel_configuration,
+            cloudvision=_cloudvision(grpc_configuration=grpc_configuration or CVGRPCConfiguration()),
         ):
             pass
 
@@ -123,8 +143,8 @@ async def test_cv_client_grpc_channel_configuration(
     assert grpc_options["grpc.primary_user_agent"]
 
     if expected_keepalives_applied:
-        assert grpc_channel_configuration is not None
-        keepalives = grpc_channel_configuration.grpc_keepalives
+        assert grpc_configuration is not None
+        keepalives = grpc_configuration.grpc_keepalives
         assert grpc_options["grpc.keepalive_time_ms"] == keepalives.keepalive_time * 1000
         assert grpc_options["grpc.keepalive_timeout_ms"] == keepalives.keepalive_timeout * 1000
         assert grpc_options["grpc.keepalive_permit_without_calls"] == int(keepalives.permit_without_calls)
@@ -135,13 +155,32 @@ async def test_cv_client_grpc_channel_configuration(
 
 
 @pytest.mark.asyncio
+async def test_cv_client_uses_cloudvision_port_for_grpc_target() -> None:
+    """Tests that CVClient reads the connection port from the CloudVision model."""
+    mocked_response = Mock()
+    mocked_response.raise_for_status.return_value = None
+    mocked_response.json.return_value = {"version": "CVaaS"}
+
+    with (
+        patch("pyavd._cv.client.get", return_value=mocked_response),
+        patch("pyavd._cv.client.grpc.ssl_channel_credentials", return_value="tls-credentials"),
+        patch("pyavd._cv.client.grpc.access_token_call_credentials", return_value="call-credentials"),
+        patch("pyavd._cv.client.grpc.composite_channel_credentials", return_value="channel-credentials"),
+        patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
+    ):
+        mock_secure_channel.return_value.close = AsyncMock()
+        async with CVClient(cloudvision=_cloudvision(port=8443)):
+            pass
+
+    assert mock_secure_channel.call_args.kwargs["target"] == "127.0.0.1:8443"
+
+
+@pytest.mark.asyncio
 async def test_cv_client_verify_certs_clears_stale_ssl_target_name_override() -> None:
     """Tests that an internally computed TLS target override does not leak into verified channels."""
     mocked_response = Mock()
     mocked_response.raise_for_status.return_value = None
     mocked_response.json.return_value = {"version": "CVaaS"}
-    grpc_channel_configuration = CVGRPCChannelConfiguration()
-    grpc_channel_configuration._ssl_target_name_override = "stale.example.com"
 
     with (
         patch("pyavd._cv.client.get", return_value=mocked_response),
@@ -151,15 +190,41 @@ async def test_cv_client_verify_certs_clears_stale_ssl_target_name_override() ->
         patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
     ):
         mock_secure_channel.return_value.close = AsyncMock()
-        async with CVClient(
-            servers="127.0.0.1",
-            token="test-token",  # noqa: S106
-            grpc_channel_configuration=grpc_channel_configuration,
-        ):
+        client = CVClient(
+            cloudvision=_cloudvision(),
+        )
+        client._tls.grpc_ssl_target_name_override = "stale.example.com"
+        async with client:
             pass
 
     grpc_options = dict(mock_secure_channel.call_args.kwargs["options"])
     assert "grpc.ssl_target_name_override" not in grpc_options
     mock_ssl_channel_credentials.assert_called_once_with()
+    mock_access_token_call_credentials.assert_called_once_with("test-token")
+    mock_composite_channel_credentials.assert_called_once_with("tls-credentials", "call-credentials")
+
+
+@pytest.mark.asyncio
+async def test_cv_client_use_system_certs_passes_resolved_roots_to_grpc_credentials() -> None:
+    """Tests that roots resolved from the system trust store are passed to grpcio channel credentials."""
+    mocked_response = Mock()
+    mocked_response.raise_for_status.return_value = None
+    mocked_response.json.return_value = {"version": "CVaaS"}
+
+    with (
+        patch("pyavd._cv.client.get", return_value=mocked_response),
+        patch("pyavd._cv.client._read_root_certificates", return_value=b"root-certificates"),
+        patch("pyavd._cv.client.grpc.ssl_channel_credentials", return_value="tls-credentials") as mock_ssl_channel_credentials,
+        patch("pyavd._cv.client.grpc.access_token_call_credentials", return_value="call-credentials") as mock_access_token_call_credentials,
+        patch("pyavd._cv.client.grpc.composite_channel_credentials", return_value="channel-credentials") as mock_composite_channel_credentials,
+        patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
+    ):
+        mock_secure_channel.return_value.close = AsyncMock()
+        async with CVClient(
+            cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(use_system_certs=True)),
+        ):
+            pass
+
+    mock_ssl_channel_credentials.assert_called_once_with(root_certificates=b"root-certificates")
     mock_access_token_call_credentials.assert_called_once_with("test-token")
     mock_composite_channel_credentials.assert_called_once_with("tls-credentials", "call-credentials")

@@ -11,6 +11,7 @@ import sys
 from base64 import b64encode
 from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
+from os import environ
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING, Any, Protocol, TypeVar
@@ -20,8 +21,6 @@ from aristaproto.grpcio import ServiceStub
 from grpc.aio import Channel, secure_channel
 from requests import JSONDecodeError, get, post
 from requests.exceptions import HTTPError, RequestException
-
-from pyavd._cv.workflows.models import CVGRPCChannelConfiguration, CVGRPCProxyConfiguration
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
@@ -36,10 +35,11 @@ from .versioning import CvVersion
 from .workspace import WorkspaceMixin
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
     from types import TracebackType
 
     from typing_extensions import Self
+
+    from pyavd._cv.workflows.models import CloudVision, CVGRPCConfiguration, CVProxyConfiguration, CVTLSConfiguration
 
 
 StubT = TypeVar("StubT", bound=ServiceStub)
@@ -51,17 +51,19 @@ class CVGRPCTransport:
     def __init__(
         self,
         *,
-        servers: list[str],
+        servers: tuple[str, ...],
         port: int,
-        verify_certs: bool,
-        configuration: CVGRPCChannelConfiguration,
-        get_user_agent: Callable[[], str],
+        configuration: CVGRPCConfiguration,
+        proxy: CVProxyConfiguration | None,
+        tls: CVTLS,
+        user_agent: str,
     ) -> None:
         self.servers = servers
         self.port = port
-        self.verify_certs = verify_certs
         self.configuration = configuration
-        self._get_user_agent = get_user_agent
+        self.proxy = proxy
+        self.tls = tls
+        self.user_agent = user_agent
         self._channel: Channel | None = None
 
     @property
@@ -76,15 +78,12 @@ class CVGRPCTransport:
     @property
     def channel_options(self) -> tuple[tuple[str, str | int], ...]:
         """Build grpcio Channel options from the typed gRPC channel configuration."""
-        return self.configuration.as_grpcio_channel_options(default_user_agent=self._get_user_agent())
-
-    @property
-    def requests_proxies(self) -> dict[str, str] | None:
-        """Build requests proxy configuration from the typed gRPC channel configuration."""
-        if self.configuration.proxy is None:
-            return None
-
-        return self.configuration.proxy.get_requests_proxies()
+        options = self.configuration.as_grpcio_channel_options(user_agent=self.user_agent)
+        if self.tls.grpc_ssl_target_name_override is not None:
+            options += (("grpc.ssl_target_name_override", self.tls.grpc_ssl_target_name_override),)
+        if self.proxy is not None:
+            options += self.proxy.as_grpcio_channel_options()
+        return options
 
     async def close(self) -> None:
         """Close the gRPC channel if connected."""
@@ -112,18 +111,21 @@ class CVGRPCTransport:
 
     def _transport_credentials(self) -> grpc.ChannelCredentials:
         """Build grpcio transport credentials from the configured certificate verification behavior."""
-        self.configuration._ssl_target_name_override = None
+        self.tls.grpc_ssl_target_name_override = None
 
-        if self.verify_certs:
+        if self.tls.verify_certs:
+            root_certificates = self.tls.grpc_root_certificates
+            if root_certificates is not None:
+                return grpc.ssl_channel_credentials(root_certificates=root_certificates)
             return grpc.ssl_channel_credentials()
 
         peer_certificate = self._get_server_certificate()
-        self.configuration._ssl_target_name_override = self._get_server_certificate_target_name(peer_certificate)
+        self.tls.grpc_ssl_target_name_override = self._get_server_certificate_target_name(peer_certificate)
         return grpc.ssl_channel_credentials(root_certificates=peer_certificate.encode())
 
     def _get_server_certificate(self) -> str:
         """Fetch the peer certificate directly or through the configured HTTP CONNECT proxy."""
-        proxy = self.configuration.proxy
+        proxy = self.proxy
         if proxy is None:
             return ssl.get_server_certificate((self.servers[0], self.port))
 
@@ -209,13 +211,14 @@ class CVClientProtocol(
 ):
     """Protocol for the CVClient class."""
 
-    _servers: list[str]
-    _verify_certs: bool
-    _use_system_certs: bool
+    _servers: tuple[str, ...]
     _token: str | None
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
+    _tls: CVTLS
+    _proxy: CVProxyConfiguration | None
+    _user_agent: str
     grpc: CVGRPCTransport
 
     def new_stub(self, stub_type: type[StubT]) -> StubT:
@@ -224,8 +227,11 @@ class CVClientProtocol(
 
     @property
     def _requests_proxies(self) -> dict[str, str] | None:
-        """Build requests proxy configuration from the gRPC transport configuration."""
-        return self.grpc.requests_proxies
+        """Build requests proxy configuration."""
+        if self._proxy is None:
+            return None
+
+        return self._proxy.get_requests_proxies()
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpcio aio channels must be initialized inside an asyncio loop."""
@@ -264,7 +270,7 @@ class CVClientProtocol(
             response = post(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
-                verify=self._verify_certs,
+                verify=self._tls.requests_verify,
                 proxies=self._requests_proxies,
                 json={},
             )
@@ -301,8 +307,8 @@ class CVClientProtocol(
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
-                verify=self._verify_certs,
+                headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._user_agent},
+                verify=self._tls.requests_verify,
                 proxies=self._requests_proxies,
                 json={},
             )
@@ -349,73 +355,138 @@ class CVClientProtocol(
         return " ".join(user_agent_parts)
 
 
+def _read_root_certificates(cafile: str | None, capath: str | None) -> bytes | None:
+    """Read PEM root certificates from a cafile and/or an OpenSSL-style capath."""
+    certificates: list[bytes] = []
+
+    if cafile is not None:
+        cafile_path = Path(cafile)
+        if cafile_path.is_file():
+            certificates.append(cafile_path.read_bytes())
+
+    if capath is not None:
+        capath_path = Path(capath)
+        if capath_path.is_dir():
+            for certificate_path in sorted(capath_path.iterdir()):
+                if not certificate_path.is_file():
+                    continue
+                try:
+                    certificate = certificate_path.read_bytes()
+                except OSError:
+                    continue
+                if b"-----BEGIN CERTIFICATE-----" in certificate:
+                    certificates.append(certificate)
+
+    if not certificates:
+        return None
+
+    return b"\n".join(certificates)
+
+
+class CVTLS:
+    """
+    Resolve and cache TLS settings used by both grpcio and requests.
+
+    `use_system_certs=False` leaves grpcio on its own default root bundle and lets requests use
+    its default verification behavior. `use_system_certs=True` explicitly loads roots from
+    Python/OpenSSL default paths, including SSL_CERT_FILE and SSL_CERT_DIR.
+    """
+
+    def __init__(
+        self,
+        *,
+        configuration: CVTLSConfiguration,
+    ) -> None:
+        self.configuration = configuration
+        self._resolved = False
+        self._requests_verify: bool | str = True
+        self._grpc_root_certificates: bytes | None = None
+        self.grpc_ssl_target_name_override: str | None = None
+
+    @property
+    def verify_certs(self) -> bool:
+        """Return whether TLS certificate verification is enabled."""
+        return self.configuration.verify_certs
+
+    @property
+    def requests_verify(self) -> bool | str:
+        """Return the value to pass to requests as `verify=...`."""
+        self.resolve()
+        return self._requests_verify
+
+    @property
+    def grpc_root_certificates(self) -> bytes | None:
+        """Return explicit root certificates for grpcio, or None to use grpcio defaults."""
+        self.resolve()
+        return self._grpc_root_certificates
+
+    def resolve(self) -> None:
+        """Resolve TLS settings once and cache them for requests and grpcio."""
+        if self._resolved:
+            return
+
+        self._resolved = True
+        if not self.verify_certs:
+            self._requests_verify = False
+            self._grpc_root_certificates = None
+            return
+
+        if not self.configuration.use_system_certs:
+            self._requests_verify = True
+            self._grpc_root_certificates = None
+            return
+
+        verify_paths = ssl.get_default_verify_paths()
+        root_certificates = _read_root_certificates(verify_paths.cafile, verify_paths.capath)
+        user_set_capath_only = "SSL_CERT_DIR" in environ and "SSL_CERT_FILE" not in environ
+        if user_set_capath_only and verify_paths.capath:
+            self._requests_verify = verify_paths.capath
+        else:
+            self._requests_verify = verify_paths.cafile or verify_paths.capath or True
+
+        if root_certificates is not None:
+            self._grpc_root_certificates = root_certificates
+            return
+
+        self._requests_verify = True
+        LOGGER.warning(
+            "CVClient: 'use_system_certs' is enabled but no system trust store was found "
+            "(neither SSL_CERT_FILE/SSL_CERT_DIR nor OpenSSL's compiled-in default paths "
+            "resolve to a readable file or directory). Falling back to the grpcio default root "
+            "bundle for gRPC and the requests default root bundle for REST."
+        )
+
+
 class CVClient(CVClientProtocol):
     def __init__(
         self,
-        servers: str | list[str],
-        token: str | None = None,
-        username: str | None = None,
-        password: str | None = None,
-        port: int = 443,
-        verify_certs: bool = True,
-        use_system_certs: bool = False,
-        proxy_host: str | None = None,
-        proxy_port: int = 8080,
-        proxy_username: str | None = None,
-        proxy_password: str | None = None,
-        grpc_channel_configuration: CVGRPCChannelConfiguration | None = None,
+        cloudvision: CloudVision,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
 
         Use CVClient as an async context manager like:
-            `async with CVClient(servers="myserver", token="mytoken") as cv_client:`
+            `async with CVClient(cloudvision=cloudvision) as cv_client:`
 
         Parameters:
-            servers: A single FQDN for CVaaS or a list of FQDNs for one CVP cluster.
-            token: Token defined in CloudVision under service-accounts.
-            username: Username to use for authentication if token is not set.
-            password: Password to use for authentication if token is not set.
-            port: TCP port to use for the connection.
-            verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
-            use_system_certs: Use system certificates and honor overrides with `SSL_CERT_FILE` and
-                `SSL_CERT_DIR`. Prefer the OS trust store over the bundled `certifi` Python package
-                (certifi is only used as a fallback when the OS provides no usable trust store).
-                Applied to both the gRPC channel and the REST calls. Ignored when `verify_certs=False`.
-            proxy_host: HTTP proxy hostname.
-            proxy_port: HTTP proxy port.
-            proxy_username: Proxy authentication username.
-            proxy_password: Proxy authentication password.
-            grpc_channel_configuration: Optional gRPC channel configuration settings.
+            cloudvision: CloudVision connection settings.
         """
-        if isinstance(servers, list):
-            self._servers = servers
-        else:
-            self._servers = [servers]
+        self._servers = cloudvision.servers
+        self._token = cloudvision.token
+        self._username = cloudvision.username
+        self._password = cloudvision.password
+        self._tls = CVTLS(
+            configuration=cloudvision.tls_configuration,
+        )
 
-        self._token = token
-        self._username = username
-        self._password = password
-        self._verify_certs = verify_certs
-        grpc_channel_configuration = grpc_channel_configuration or CVGRPCChannelConfiguration()
-
-        # Normalize legacy proxy arguments into the typed gRPC channel configuration.
-        if proxy_host is not None:
-            if grpc_channel_configuration.proxy is not None:
-                msg = "Cannot set both legacy proxy_* arguments and grpc_channel_configuration.proxy."
-                raise ValueError(msg)
-
-            grpc_channel_configuration.proxy = CVGRPCProxyConfiguration(
-                host=proxy_host,
-                port=proxy_port,
-                username=proxy_username,
-                password=proxy_password,
-            )
+        self._proxy = cloudvision.proxy_configuration
+        self._user_agent = self._get_user_agent()
 
         self.grpc = CVGRPCTransport(
             servers=self._servers,
-            port=port,
-            verify_certs=verify_certs,
-            configuration=grpc_channel_configuration,
-            get_user_agent=self._get_user_agent,
+            port=cloudvision.port,
+            configuration=cloudvision.grpc_configuration,
+            proxy=cloudvision.proxy_configuration,
+            tls=self._tls,
+            user_agent=self._user_agent,
         )

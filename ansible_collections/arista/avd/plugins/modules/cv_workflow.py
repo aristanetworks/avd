@@ -48,7 +48,7 @@ options:
     suboptions:
       use_system_certs:
         description: |-
-          Use system certificates instead of Python's bundled certificate store.
+          Use system certificates instead of the default certificate store used by the underlying Python libraries.
           Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
         type: bool
         default: false

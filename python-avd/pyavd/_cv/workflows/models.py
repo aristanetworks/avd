@@ -22,7 +22,7 @@ AVD_ENTITY_PREFIX = "avd_"
 LOGGER = getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class CVGRPCKeepalives:
     enabled: bool = False
     keepalive_time: int = 60
@@ -35,9 +35,9 @@ class CVGRPCKeepalives:
             raise ValueError(msg)
 
 
-@dataclass
-class CVGRPCProxyConfiguration:
-    """HTTP CONNECT proxy settings for the gRPC channel."""
+@dataclass(frozen=True)
+class CVProxyConfiguration:
+    """HTTP CONNECT proxy settings for CloudVision connections."""
 
     host: str
     port: int = 8080
@@ -66,28 +66,16 @@ class CVGRPCProxyConfiguration:
         return (("grpc.http_proxy", self.proxy_url),)
 
 
-@dataclass
-class CVGRPCChannelConfiguration:
+@dataclass(frozen=True)
+class CVGRPCConfiguration:
     """Advanced configuration settings of the gRPC channel."""
 
     grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
     """Keepalive settings of the gRPC channel."""
 
-    proxy: CVGRPCProxyConfiguration | None = None
-    """HTTP CONNECT proxy settings of the gRPC channel."""
-
-    custom_user_agent: str | None = None
-    """Custom user agent suffix to append to the generated user agent."""
-
-    _ssl_target_name_override: str | None = field(default=None, init=False, repr=False, compare=False)
-
-    def as_grpcio_channel_options(self, default_user_agent: str) -> tuple[tuple[str, str | int], ...]:
+    def as_grpcio_channel_options(self, user_agent: str) -> tuple[tuple[str, str | int], ...]:
         """Build grpcio channel options from the typed gRPC channel configuration."""
-        final_user_agent = f"{default_user_agent} {self.custom_user_agent}" if self.custom_user_agent else default_user_agent
-        options: tuple[tuple[str, str | int], ...] = (("grpc.primary_user_agent", final_user_agent),)
-
-        if self._ssl_target_name_override is not None:
-            options += (("grpc.ssl_target_name_override", self._ssl_target_name_override),)
+        options: tuple[tuple[str, str | int], ...] = (("grpc.primary_user_agent", user_agent),)
 
         if self.grpc_keepalives.enabled:
             options += (
@@ -99,13 +87,10 @@ class CVGRPCChannelConfiguration:
                 ("grpc.http2.max_pings_without_data", 0),
             )
 
-        if self.proxy is not None:
-            options += self.proxy.as_grpcio_channel_options()
-
         return options
 
 
-@dataclass
+@dataclass(frozen=True)
 class CVDeployFuture:
     """Opt-in to future cv_deploy behaviors which will become defaults in a future major version."""
 
@@ -113,19 +98,36 @@ class CVDeployFuture:
     """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR. Will become the default in AVD 7.0."""
 
 
-@dataclass
+@dataclass(frozen=True)
+class CVTLSConfiguration:
+    """TLS configuration settings for CloudVision connections."""
+
+    verify_certs: bool = True
+    """Disables TLS certificate verification if set to False. Not recommended for production."""
+
+    use_system_certs: bool = False
+    """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR."""
+
+
+@dataclass(frozen=True)
 class CloudVision:
-    servers: str | list[str]
+    servers: tuple[str, ...]
     token: str | None
     username: str | None
     password: str | None
-    verify_certs: bool
-    proxy_host: str | None
-    proxy_port: int | None
-    proxy_username: str | None
-    proxy_password: str | None
-    grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
-    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
+    port: int = 443
+    tls_configuration: CVTLSConfiguration = field(default_factory=CVTLSConfiguration)
+    grpc_configuration: CVGRPCConfiguration = field(default_factory=CVGRPCConfiguration)
+    proxy_configuration: CVProxyConfiguration | None = None
+
+    def get_result(self) -> dict[str, Any]:
+        """Return CloudVision connection details without internal configuration objects."""
+        return {
+            "servers": self.servers,
+            "token": "<removed>" if self.token is not None else None,
+            "username": self.username,
+            "password": "<removed>" if self.password is not None else None,
+        }
 
 
 @dataclass(frozen=True)
@@ -396,7 +398,7 @@ class DeployToCvResult:
     failed: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
-    workspace: CVWorkspace | None = None
+    workspace: CVWorkspace = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_static_config_containers: list[AvdContainer] = field(default_factory=list)
