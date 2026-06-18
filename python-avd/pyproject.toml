@@ -85,9 +85,6 @@ self = [
   "pyavd==6.3.0.dev0"
 ]
 
-[tool.uv.sources]
-aristaproto = { path = "../../python-aristaproto/aristaproto", editable = true }
-
 [tool.black]
 # Black has been replaced with Ruff.
 # This section should be removed later, but kept here to avoid IDE extensions from messing up the code.

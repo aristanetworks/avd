@@ -59,10 +59,6 @@ pytest = [
     "referencing>=0.37.0",
 ]
 
-[tool.uv.sources]
-aristaproto = { path = "../python-aristaproto/aristaproto", editable = true }
-aristaproto_compiler = { path = "../python-aristaproto/aristaproto_compiler", editable = true }
-
 [tool.ruff]
 line-length = 160
 extend-exclude = [
