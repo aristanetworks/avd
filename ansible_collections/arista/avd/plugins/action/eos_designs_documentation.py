@@ -141,6 +141,10 @@ class ActionModule(ActionBase):
 
         if output.digital_twin:
             content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
+            # for cLab we want empty `prefix` at all times in the topology to avoid modifiying hostnames
+            if get(task_vars, "digital_twin.environment") == "containerlab" and hasattr(output.digital_twin, "prefix"):
+                # add keys in a very specific order - name, prefix, everything else
+                content = {"name": content["name"], "prefix": output.digital_twin.prefix, **{key: value for key, value in content.items() if key != "name"}}
             changed = write_file(
                 content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130, explicit_start=True),
                 filename=validated_args["digital_twin_file"],

@@ -234,7 +234,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
 
     return ContainerlabDigitalTwin(
         name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
-        prefix="avd-dt",
+        prefix="",
         topology=ContainerlabTopology(
             defaults=ContainerlabDefaults(kind=default_kind),
             kinds={
