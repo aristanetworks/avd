@@ -479,7 +479,7 @@ class ApproveConfigBatchedStreamResponse(aristaproto.Message):
     responses: "list[ApproveConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and 
+    The length of this structure is guaranteed to be between (inclusive) 1 and
     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
@@ -983,7 +983,7 @@ class ChangeControlBatchedStreamResponse(aristaproto.Message):
     responses: "list[ChangeControlStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and 
+    The length of this structure is guaranteed to be between (inclusive) 1 and
     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
@@ -1072,7 +1072,7 @@ class ChangeControlConfigBatchedStreamResponse(aristaproto.Message):
     responses: "list[ChangeControlConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and 
+    The length of this structure is guaranteed to be between (inclusive) 1 and
     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 

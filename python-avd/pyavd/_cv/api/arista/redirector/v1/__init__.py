@@ -110,7 +110,7 @@ class AssignmentBatchedStreamResponse(aristaproto.Message):
     responses: "list[AssignmentStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and 
+    The length of this structure is guaranteed to be between (inclusive) 1 and
     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 

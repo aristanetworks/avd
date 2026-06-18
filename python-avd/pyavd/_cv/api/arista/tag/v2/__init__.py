@@ -1173,15 +1173,15 @@ class TagAssignmentKey(aristaproto.Message):
 
     primary_entity_id: "str | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    primary_entity_id holds unique identifiers of an application/device. 
-    The primary entity is the entity which can exist by itself or can be 
+    primary_entity_id holds unique identifiers of an application/device.
+    The primary entity is the entity which can exist by itself or can be
     associated with a secondary entity.
     """
 
     secondary_entity_id: "str | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    secondary_entity_id holds unique identifier of a service/interface. The secondary 
-    entity is the entity which cannot exist by itself and always has to be associated 
+    secondary_entity_id holds unique identifier of a service/interface. The secondary
+    entity is the entity which cannot exist by itself and always has to be associated
     with a primary entity.
     """
 
