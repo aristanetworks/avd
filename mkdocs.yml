@@ -231,6 +231,7 @@ nav:
       - Porting Guide: docs/porting-guides/6.x.x.md
   - Contribute:
       - Overview: docs/contribution/overview.md
+      - Issue Drafts: docs/contribution/avd-issue-drafts.md
       - Development Tooling: docs/contribution/development-tooling.md
       - Code Style: docs/contribution/style-guide.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md

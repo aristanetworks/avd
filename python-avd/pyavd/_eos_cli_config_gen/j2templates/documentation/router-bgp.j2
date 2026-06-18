@@ -927,15 +927,9 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
 
 #### Router BGP VPN-IPv6 Address Family
-{%         set vpn_ipv6_af_list_items = [] %}
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
-{%             do vpn_ipv6_af_list_items.append("VPN import pruning is **enabled**") %}
-{%         endif %}
-{%         if vpn_ipv6_af_list_items %}
 
-{%             for vpn_ipv6_af_list_item in vpn_ipv6_af_list_items %}
-- {{ vpn_ipv6_af_list_item }}
-{%             endfor %}
+- VPN import pruning is **enabled**
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
 
