@@ -13,6 +13,7 @@
 - `renderModule()` attached a delegated classifier click handler to `document` every time the module view rendered. The listener is now scoped to the classifier container created by the current render, so navigation discards old handlers with the old DOM.
 - README and MkDocs comments described older hook behavior, including global Bootstrap/sql.js injection and missing-build no-op behavior. They now describe the current auto-build, global SPA loader, and runtime lazy-loading behavior.
 - The Material-hosted Schema Explorer lost Bootstrap grid/list/card styling after global Bootstrap CSS was removed. The stylesheet now includes a scoped compatibility layer under `.schema-spa-host` / `.schema-embed` for the Bootstrap utilities used by the explorer.
+- Filtered tree views rendered matching child rows before their fetched ancestor context rows, so expanding groups such as `cv_settings` showed subkeys above their parents. Group rows are now sorted parent-first after context rows are merged.
 
 ## Open
 

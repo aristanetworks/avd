@@ -663,6 +663,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
 
   const groupsHtml = sorted.map(([groupId, group], idx) => {
     const { root, vars } = group;
+    vars.sort((a, b) => `${rowModule(a, module)}:${a.key_path}`.localeCompare(`${rowModule(b, module)}:${b.key_path}`));
     const id = `${idPrefix}-group-${idx}`;
     const cat = vars[0].category;
     // Pre-compute which paths have children inside this group, so we know
@@ -672,8 +673,8 @@ function renderTreeResults(target, db, release, module, state, matches) {
       const parentId = treeParentId(v, module);
       if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
     }
-    // Sort vars in DFS order (alphabetical key_path is close enough — sql.js
-    // already returned them sorted) so descendants always follow their parent.
+    // Render rows in parent-first order, including ancestor context rows
+    // fetched after filter matches.
     const rowsHtml = vars.map(v => {
       const mod = isAll ? v.module : module;
       const link = `#/${mod}/${encodeURI(v.key_path)}?release=${release}`;
