@@ -672,9 +672,6 @@ function renderResults(db, release, module, state) {
       <tr>
         ${modBadge}
         <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
-        <td>${lifecycleBadge(v)}</td>
-        <td class="text-muted small">${renderDefaultValue(v.default_value, { compact: true })}</td>
-        <td class="text-center">${v.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
         <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
       </tr>`;
   }).join("");
@@ -685,9 +682,6 @@ function renderResults(db, release, module, state) {
         <thead class="table-light"><tr>
           ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
           <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Default</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem; width: 30px;">Req</th>
           <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
         </tr></thead>
         <tbody>${rowsHtml}</tbody>
@@ -804,9 +798,6 @@ function renderTreeResults(target, db, release, module, state, matches) {
           <td class="px-3">
             <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
           </td>
-          <td>${lifecycleBadge(v)}</td>
-          <td class="text-muted small">${renderDefaultValue(v.default_value, { compact: true })}</td>
-          <td class="text-center">${v.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
           <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
         </tr>`;
     }).join("");
@@ -827,17 +818,11 @@ function renderTreeResults(target, db, release, module, state, matches) {
               <colgroup>
                 ${isAll ? `<col style="width: 9rem;">` : ""}
                 <col>
-                <col style="width: 7rem;">
-                <col style="width: 8rem;">
-                <col style="width: 3rem;">
                 <col style="width: 38%;">
               </colgroup>
               <thead class="table-light"><tr>
                 ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
                 <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-                <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-                <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Default</th>
-                <th class="text-muted small text-uppercase text-center" style="font-size: 0.72rem;">Req</th>
                 <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
               </tr></thead>
               <tbody>${rowsHtml}</tbody>
