@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
+from pyavd._cv.client.models import get_required_field, get_required_fields
 
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
@@ -95,13 +96,18 @@ class _PlannedContainer:
 
     def matches_configlet_assignment(self, configlet_assignment: ConfigletAssignment) -> bool:
         reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
+        key, configlet_ids, child_assignment_ids = get_required_fields(
+            configlet_assignment,
+            ("key", "configlet_ids", "child_assignment_ids"),
+            (configlet_assignment.key, configlet_assignment.configlet_ids, configlet_assignment.child_assignment_ids),
+        )
         return self.api_tuple == (
-            configlet_assignment.key.configlet_assignment_id,
+            key.configlet_assignment_id,
             configlet_assignment.display_name,
             configlet_assignment.description,
-            configlet_assignment.configlet_ids.values,
+            configlet_ids.values,
             configlet_assignment.query,
-            configlet_assignment.child_assignment_ids.values,
+            child_assignment_ids.values,
             reversed_match_policy_map.get(configlet_assignment.match_policy.value),
         )
 
@@ -224,14 +230,15 @@ def _build_existing_container_state(existing_containers: list[ConfigletAssignmen
     manual_container_ids: set[str] = set()
 
     for container in existing_containers:
-        container_id = cast("str", container.key.configlet_assignment_id)
+        container_key, child_assignment_ids = get_required_fields(container, ("key", "child_assignment_ids"), (container.key, container.child_assignment_ids))
+        container_id = cast("str", container_key.configlet_assignment_id)
         containers_by_id[container_id] = container
-        child_ids_by_parent_id[container_id] = list(container.child_assignment_ids.values)
+        child_ids_by_parent_id[container_id] = list(child_assignment_ids.values)
         if _is_manifest_managed_id(container_id):
             manifest_managed_container_ids.add(container_id)
         else:
             manual_container_ids.add(container_id)
-        for child_id in container.child_assignment_ids.values:
+        for child_id in child_assignment_ids.values:
             parent_ids_by_child_id[child_id].append(container_id)
 
     for root_id in existing_root_ids:
@@ -312,7 +319,7 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
         containers_to_push.append(planned_container)
 
         # Existing manual children unassigned by the manifest become orphans caused by this deploy.
-        existing_children = set(existing_container.child_assignment_ids.values)
+        existing_children = set(get_required_field(existing_container, "child_assignment_ids", existing_container.child_assignment_ids).values)
         desired_children = set(resolved_child_ids.effective_child_ids)
         manual_delete_roots.update(child_id for child_id in existing_children - desired_children if existing_state.is_manual_container(child_id))
 
@@ -365,7 +372,8 @@ def _resolve_child_ids_for_plan(
     if not existing_container or not desired_container.avd_container.preserve_existing_sub_containers:
         return _ResolvedChildIds(effective_child_ids=desired_child_ids)
 
-    existing_child_ids = tuple(existing_container.child_assignment_ids.values)
+    child_assignment_ids = get_required_field(existing_container, "child_assignment_ids", existing_container.child_assignment_ids)
+    existing_child_ids = tuple(child_assignment_ids.values)
     existing_child_ids_set = set(existing_child_ids)
     desired_child_ids_set = set(desired_child_ids)
     preserved_child_root_ids = tuple(
@@ -511,13 +519,15 @@ async def _sync_configlets(
     preserved_configlet_ids = {
         configlet_id
         for container in existing_containers
-        if container.key.configlet_assignment_id in preserved_container_ids
-        for configlet_id in container.configlet_ids.values
+        if get_required_field(container, "key", container.key).configlet_assignment_id in preserved_container_ids
+        for configlet_id in get_required_field(container, "configlet_ids", container.configlet_ids).values
     }
     configlets_to_delete = {
         configlet_id: configlet.display_name or configlet_id
         for configlet in existing_configlets
-        if _is_manifest_managed_id(configlet_id := cast("str", configlet.key.configlet_id))
+        if _is_manifest_managed_id(
+            configlet_id := get_required_field(key := get_required_field(configlet, "key", configlet.key), "configlet_id", key.configlet_id)
+        )
         and configlet_id not in desired_configlet_ids
         and configlet_id not in preserved_configlet_ids
     }
@@ -526,14 +536,16 @@ async def _sync_configlets(
         # A configlet can be assigned to multiple containers (holders).
         existing_holders_by_configlet_id: defaultdict[str, list[ConfigletAssignment]] = defaultdict(list)
         for container in existing_containers:
-            for configlet_id in container.configlet_ids.values:
+            for configlet_id in get_required_field(container, "configlet_ids", container.configlet_ids).values:
                 existing_holders_by_configlet_id[configlet_id].append(container)
 
         # Validate that no managed configlet scheduled for deletion was assigned to containers this deploy will not touch.
         violations: list[tuple[str, str, str, str]] = []
         for configlet_id, configlet_name in configlets_to_delete.items():
             for holder in existing_holders_by_configlet_id.get(configlet_id, []):
-                holder_id = cast("str", holder.key.configlet_assignment_id)
+                holder_id = get_required_field(
+                    holder_key := get_required_field(holder, "key", holder.key), "configlet_assignment_id", holder_key.configlet_assignment_id
+                )
                 if holder_id in touched_container_ids:
                     # Holder is rewritten or deleted by this deploy.
                     continue

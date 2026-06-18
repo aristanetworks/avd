@@ -673,7 +673,7 @@ class TestDeployToCvResult:
             skipped_static_config_containers=[child_container],
             skipped_device_tags=[CVDeviceTag(label="dc", value="DC2")],
             skipped_interface_tags=[CVInterfaceTag(label="speed", value="10G")],
-            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "edge"})],
+            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "edge"}, device=cv_device_1)],
             removed_configs=["removed/leaf1.cfg"],
             removed_static_config_containers=["OLD_CONTAINER"],
             removed_static_config_configlets=["OLD_CONFIGLET"],

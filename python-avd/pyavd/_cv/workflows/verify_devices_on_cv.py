@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.inventory.v1 import StreamingStatus
 from pyavd._cv.client.exceptions import CVResourceNotFound
+from pyavd._cv.client.models import get_required_field
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
@@ -65,7 +66,14 @@ async def verify_devices_in_cloudvision_inventory(
 
     found_devices = await cv_client.get_inventory_devices(devices=device_tuples)
     LOGGER.info("verify_devices_in_cloudvision_inventory: got %s matching devices on CV.", len(found_devices))
-    found_device_dict_by_serial = {found_device.key.device_id: found_device for found_device in found_devices}
+    found_device_dict_by_serial = {
+        get_required_field(
+            found_device_key := get_required_field(found_device, "key", found_device.key),
+            "device_id",
+            found_device_key.device_id,
+        ): found_device
+        for found_device in found_devices
+    }
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
 
@@ -89,7 +97,9 @@ async def verify_devices_in_cloudvision_inventory(
                 device.exists_on_cv = False
                 continue
             device.exists_on_cv = True
-            device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
+            found_device = found_device_dict_by_system_mac[device.system_mac_address]
+            found_device_key = get_required_field(found_device, "key", found_device.key)
+            device.serial_number = get_required_field(found_device_key, "device_id", found_device_key.device_id)
             # Update streaming status
             device.streaming = found_device_dict_by_system_mac[device.system_mac_address].streaming_status == StreamingStatus.ACTIVE
             existing_devices.append(device)
@@ -100,10 +110,12 @@ async def verify_devices_in_cloudvision_inventory(
             device.exists_on_cv = False
             continue
         device.exists_on_cv = True
-        device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
-        device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
+        found_device = found_device_dict_by_hostname[device.hostname]
+        found_device_key = get_required_field(found_device, "key", found_device.key)
+        device.serial_number = get_required_field(found_device_key, "device_id", found_device_key.device_id)
+        device.system_mac_address = found_device.system_mac_address
         # Update streaming status
-        device.streaming = found_device_dict_by_hostname[device.hostname].streaming_status == StreamingStatus.ACTIVE
+        device.streaming = found_device.streaming_status == StreamingStatus.ACTIVE
         existing_devices.append(device)
 
     # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio

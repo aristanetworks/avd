@@ -321,7 +321,7 @@ class ActionModule(ActionBase):
                 # Add warnings caught by the logger.
                 result_object.warnings.extend(result.get("warnings", []))
             else:
-                result_object = DeployToCvResult(workspace=None)
+                result_object = DeployToCvResult()
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
 
             # Add either all return data or only warnings, errors, failed.

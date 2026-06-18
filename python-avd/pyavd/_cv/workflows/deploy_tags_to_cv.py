@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 
@@ -13,16 +13,20 @@ from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
+    TTag = TypeVar("TTag", CVDeviceTag, CVInterfaceTag)
+
+CVInterfaceTags = list[CVInterfaceTag]
+CVDeviceTags = list[CVDeviceTag]
 LOGGER = getLogger(__name__)
 
 
 async def deploy_tags_to_cv(
-    tags: list[CVDeviceTag] | list[CVInterfaceTag],
+    tags: list[TTag],
     workspace: CVWorkspace,
     strict: bool,
-    skipped_tags: list[CVDeviceTag] | list[CVInterfaceTag],
-    deployed_tags: list[CVDeviceTag] | list[CVInterfaceTag],
-    removed_tags: list[CVDeviceTag] | list[CVInterfaceTag],
+    skipped_tags: list[TTag],
+    deployed_tags: list[TTag],
+    removed_tags: list[TTag],
     cv_client: CVClient,
 ) -> None:
     """
@@ -49,7 +53,8 @@ async def deploy_tags_to_cv(
     if not tags:
         return
 
-    tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
+    tag_type = type(tags[0])
+    element_type = "interface" if tag_type is CVInterfaceTag else "device"
 
     # Build todo tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
     skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device.exists_on_cv)
@@ -61,7 +66,7 @@ async def deploy_tags_to_cv(
 
     # Get existing tags. Use this to only add the missing. We will *not* remove any tags. Assignments are removed later.
     LOGGER.info("deploy_tags_to_cv: Getting existing tags")
-    existing_tags = {CVTag.from_api(tag) for tag in await cv_client.get_tags(workspace_id=workspace.id, element_type=tag_type, creator_type="user")}
+    existing_tags = {CVTag.from_api(tag) for tag in await cv_client.get_tags(workspace_id=workspace.id, element_type=element_type, creator_type="user")}
     LOGGER.info("deploy_tags_to_cv: Got %s tags", len(existing_tags))
     desired_tags = {tag.as_cv_tag() for tag in todo_tags}
     tags_to_add = desired_tags.difference(existing_tags)
@@ -77,7 +82,7 @@ async def deploy_tags_to_cv(
     LOGGER.info("deploy_tags_to_cv: Getting existing tag assignments")
     existing_assignments = {
         CVTagAssignment.from_api(tag_assignment)
-        for tag_assignment in await cv_client.get_tag_assignments(workspace_id=workspace.id, element_type=tag_type, creator_type="user")
+        for tag_assignment in await cv_client.get_tag_assignments(workspace_id=workspace.id, element_type=element_type, creator_type="user")
     }
     LOGGER.info("deploy_tags_to_cv: Got %s tag assignments", len(existing_assignments))
     desired_assignments = {cv_tag_assignment for assignment in todo_assignments if (cv_tag_assignment := assignment.as_cv_tag_assignment()) is not None}
@@ -121,15 +126,8 @@ async def deploy_tags_to_cv(
             key=lambda assignment: (assignment.label, assignment.value, assignment.device_id, assignment.interface_id or "", assignment.element_type),
         )
 
-        if tag_type == "interface":
-            removed_tags.extend(
-                CVInterfaceTag(
-                    label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id
-                )
-                for assignment in sorted_assignments_to_unassign
-            )
-        else:
-            removed_tags.extend(
-                CVDeviceTag(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])
-                for assignment in sorted_assignments_to_unassign
-            )
+        for assignment in sorted_assignments_to_unassign:
+            removed_tag = tag_type(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])
+            if isinstance(removed_tag, CVInterfaceTag):
+                removed_tag.interface = assignment.interface_id
+            removed_tags.append(removed_tag)

@@ -30,10 +30,12 @@ from pyavd._cv.api.arista.studio.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
-from pyavd._cv.client.exceptions import CVResourceNotFound
 
 from .async_decorators import GRPCRequestHandler, grpc_error_has_status
 from .constants import DEFAULT_API_TIMEOUT
+from .exceptions import CVResourceNotFound
+from .models import get_required_field
+from .utils import set_value_from_path
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -92,7 +94,7 @@ class StudioMixin(Protocol):
                 raise
         else:
             # We get here if no exception was raised, meaining the studio was changed in the workspace.
-            return response.value
+            return get_required_field(response, "value", response.value)
 
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
@@ -121,7 +123,7 @@ class StudioMixin(Protocol):
         client = self.new_stub(StudioServiceStub)
         response = await client.get_one(request, timeout=timeout)
 
-        return response.value
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_studio_inputs(
@@ -167,13 +169,16 @@ class StudioMixin(Protocol):
         # After all responses have been handled the data built from the paths/values contain the full inputs.
         responses = client.get_all(request, timeout=timeout)
         async for response in responses:
-            if response.value.inputs is None:
+            inputs = get_required_field(response, "value", response.value)
+            if inputs.inputs is None:
                 continue
 
-            self._set_value_from_path(
-                path=response.value.key.path.values,
+            inputs_key = get_required_field(inputs, "key", inputs.key)
+            inputs_path = get_required_field(inputs_key, "path", inputs_key.path)
+            set_value_from_path(
+                path=inputs_path.values,
                 data=studio_inputs,
-                value=json.loads(response.value.inputs),
+                value=json.loads(inputs.inputs),
             )
 
         # We only get a response if the inputs are set/changed in the workspace.
@@ -210,13 +215,16 @@ class StudioMixin(Protocol):
         client = self.new_stub(InputsServiceStub)
         responses = client.get_all(request, timeout=timeout)
         async for response in responses:
-            if response.value.inputs is None:
+            inputs = get_required_field(response, "value", response.value)
+            if inputs.inputs is None:
                 continue
 
-            self._set_value_from_path(
-                path=response.value.key.path.values,
+            inputs_key = get_required_field(inputs, "key", inputs.key)
+            inputs_path = get_required_field(inputs_key, "path", inputs_key.path)
+            set_value_from_path(
+                path=inputs_path.values,
                 data=studio_inputs,
-                value=json.loads(response.value.inputs),
+                value=json.loads(inputs.inputs),
             )
 
         return studio_inputs or default_value
@@ -270,8 +278,9 @@ class StudioMixin(Protocol):
         else:
             # We get here if no exception was raised.
             # We only get a response if the inputs are set/changed in the workspace.
-            if response.value.inputs is not None:
-                return json.loads(response.value.inputs)
+            inputs = get_required_field(response, "value", response.value)
+            if inputs.inputs is not None:
+                return json.loads(inputs.inputs)
             return default_value
 
         # If we get here, it means no inputs were returned by the workspace call.
@@ -314,8 +323,9 @@ class StudioMixin(Protocol):
                 return default_value
             raise
 
-        if response.value is not None and response.value.inputs is not None:
-            return json.loads(response.value.inputs)
+        inputs = get_required_field(response, "value", response.value)
+        if inputs.inputs is not None:
+            return json.loads(inputs.inputs)
         return default_value
 
     @GRPCRequestHandler()
@@ -484,4 +494,4 @@ class StudioMixin(Protocol):
         client = self.new_stub(InputsConfigServiceStub)
         responses = client.set_some(request, timeout=timeout + len(request.values) * 0.1)
 
-        return [response.key async for response in responses if response.key is not None]
+        return [get_required_field(response, "key", response.key) async for response in responses]

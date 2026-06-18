@@ -2,20 +2,19 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from dataclasses import dataclass
-from typing import Any, Generic, Literal, TypeVar, overload
+from typing import Literal, TypeVar, cast, overload
 
 from typing_extensions import Self
 
-from pyavd._cv.api.arista.tag.v2 import ElementType, Tag, TagAssignment, TagAssignmentKey, TagKey
-from pyavd._cv.client.exceptions import CVIncompleteObjectError
+from pyavd._cv.api.arista.tag.v2 import ElementType, Tag, TagAssignment
+
+from .exceptions import CVIncompleteObjectError
 
 T = TypeVar("T")
 T1 = TypeVar("T1")
 T2 = TypeVar("T2")
 T3 = TypeVar("T3")
 T4 = TypeVar("T4")
-TFields = TypeVar("TFields", bound=tuple[Any, ...])
-
 
 STRING_TO_ELEMENT_TYPE_MAP = {
     "device": ElementType.DEVICE,
@@ -48,8 +47,8 @@ class CVTag:
     @classmethod
     def from_api(cls, tag: Tag) -> Self:
         """Create a CVTag from a raw API Tag object."""
-        key = RequiredField[TagKey].get(tag, "key")
-        label, value = RequiredFields[tuple[str, str]].get(key, ("label", "value"))  # pylint: disable=unbalanced-tuple-unpacking
+        key = get_required_field(tag, "key", tag.key)
+        label, value = get_required_fields(key, ("label", "value"), (key.label, key.value))
         element_type = ELEMENT_TYPE_TO_STRING_MAP.get(key.element_type, "unspecified")
 
         return cls(
@@ -82,8 +81,8 @@ class CVTagAssignment:
     def from_api(cls, tag_assignment: TagAssignment) -> Self:
         """Create a CVTagAssignment from a raw API TagAssignment object."""
         # The API may return a complex interface ID like 'Ethernet1@<serial>', so we parse it to get just the interface name.
-        key = RequiredField[TagAssignmentKey].get(tag_assignment, "key")
-        label, value, device_id = RequiredFields[tuple[str, str, str]].get(key, ("label", "value", "device_id"))  # pylint: disable=unbalanced-tuple-unpacking
+        key = get_required_field(tag_assignment, "key", tag_assignment.key)
+        label, value, device_id = get_required_fields(key, ("label", "value", "device_id"), (key.label, key.value, key.device_id))
         element_type = ELEMENT_TYPE_TO_STRING_MAP[key.element_type]
         interface_id = key.interface_id.rsplit("@", maxsplit=1)[0] if key.interface_id is not None else None
 
@@ -96,58 +95,61 @@ class CVTagAssignment:
         )
 
 
-class RequiredField(Generic[T]):
-    @staticmethod
-    def get(cv_object: object, required_field: str) -> T:
-        """
-        Returns a presence-guaranteed property of a CV API Object.
+def get_required_field(cv_object: object, required_field: str, value: T | None) -> T:
+    """
+    Return a presence-guaranteed property from a CV API object.
 
-        This only narrows fields from optional to present. It does not validate
-        runtime types, since those are guaranteed by gRPC decoding.
+    This only narrows fields from optional to present. It does not validate
+    runtime types, since those are guaranteed by gRPC decoding.
 
-        Raises:
-            CVIncompleteObjectError: If the required field is missing.
-
-        TODO: Rebuild to generic function when our minimum python version is 3.12.
-        """
-        if (value := getattr(cv_object, required_field)) is None:
-            raise CVIncompleteObjectError(cv_object_type=cv_object.__class__.__name__, missing_fields=(required_field,))
-        return value
+    Raises:
+        CVIncompleteObjectError: If the required field is missing.
+    """
+    if value is None:
+        raise CVIncompleteObjectError(cv_object_type=cv_object.__class__.__name__, missing_fields=(required_field,))
+    return value
 
 
-class RequiredFields(Generic[TFields]):
-    @classmethod
-    @overload
-    def get(cls: type["RequiredFields[tuple[T1]]"], cv_object: object, required_fields: tuple[str]) -> tuple[T1]: ...
+@overload
+def get_required_fields(cv_object: object, required_fields: tuple[str], values: tuple[T1 | None]) -> tuple[T1]: ...
 
-    @classmethod
-    @overload
-    def get(cls: type["RequiredFields[tuple[T1, T2]]"], cv_object: object, required_fields: tuple[str, str]) -> tuple[T1, T2]: ...
 
-    @classmethod
-    @overload
-    def get(cls: type["RequiredFields[tuple[T1, T2, T3]]"], cv_object: object, required_fields: tuple[str, str, str]) -> tuple[T1, T2, T3]: ...
+@overload
+def get_required_fields(cv_object: object, required_fields: tuple[str, str], values: tuple[T1 | None, T2 | None]) -> tuple[T1, T2]: ...
 
-    @classmethod
-    @overload
-    def get(cls: type["RequiredFields[tuple[T1, T2, T3, T4]]"], cv_object: object, required_fields: tuple[str, str, str, str]) -> tuple[T1, T2, T3, T4]: ...
 
-    @classmethod
-    def get(cls, cv_object: object, required_fields: tuple[str, ...]) -> tuple[Any, ...]:
-        values = []
-        missing_fields = []
+@overload
+def get_required_fields(
+    cv_object: object,
+    required_fields: tuple[str, str, str],
+    values: tuple[T1 | None, T2 | None, T3 | None],
+) -> tuple[T1, T2, T3]: ...
 
-        for required_field in required_fields:
-            value = getattr(cv_object, required_field)
-            if value is None:
-                missing_fields.append(required_field)
-            else:
-                values.append(value)
 
-        if missing_fields:
-            raise CVIncompleteObjectError(
-                cv_object_type=cv_object.__class__.__name__,
-                missing_fields=tuple(missing_fields),
-            )
+@overload
+def get_required_fields(
+    cv_object: object,
+    required_fields: tuple[str, str, str, str],
+    values: tuple[T1 | None, T2 | None, T3 | None, T4 | None],
+) -> tuple[T1, T2, T3, T4]: ...
 
-        return tuple(values)
+
+def get_required_fields(cv_object: object, required_fields: tuple[str, ...], values: tuple[object | None, ...]) -> tuple[object, ...]:
+    """
+    Return presence-guaranteed properties from a CV API object.
+
+    This only narrows fields from optional to present. It does not validate
+    runtime types, since those are guaranteed by gRPC decoding.
+
+    Raises:
+        CVIncompleteObjectError: If any required fields are missing.
+    """
+    missing_fields = tuple(required_field for required_field, value in zip(required_fields, values, strict=True) if value is None)
+
+    if missing_fields:
+        raise CVIncompleteObjectError(
+            cv_object_type=cv_object.__class__.__name__,
+            missing_fields=missing_fields,
+        )
+
+    return cast("tuple[object, ...]", values)

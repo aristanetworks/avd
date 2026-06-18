@@ -10,9 +10,10 @@ from pyavd._cv.api.arista.time import TimeBounds
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
+from .models import get_required_field
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Collection
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -26,7 +27,7 @@ class InventoryMixin(Protocol):
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_inventory_devices(
         self: CVClientProtocol,
-        devices: Sequence[tuple[str | None, str | None, str | None]] | None = None,
+        devices: Collection[tuple[str | None, str | None, str | None]] | None = None,
         time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Device]:
@@ -56,4 +57,4 @@ class InventoryMixin(Protocol):
         client = self.new_stub(DeviceServiceStub)
         responses = client.get_all(request, timeout=timeout)
 
-        return [response.value async for response in responses if response.value is not None]
+        return [get_required_field(response, "value", response.value) async for response in responses]

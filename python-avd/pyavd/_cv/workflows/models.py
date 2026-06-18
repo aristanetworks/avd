@@ -151,7 +151,7 @@ class AvdChangeControl:
 class CVChangeControl:
     avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
-    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"] | None = None
     name: str | None = None
     description: str | None = None
 
@@ -262,7 +262,7 @@ class CVStudioInputs:
 @dataclass
 class CVPathfinderMetadata:
     metadata: dict
-    device: CVDevice | None = None
+    device: CVDevice
 
 
 @dataclass

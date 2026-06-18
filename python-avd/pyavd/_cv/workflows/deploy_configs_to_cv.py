@@ -5,9 +5,14 @@ from __future__ import annotations
 
 from asyncio import gather
 from logging import getLogger
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, Literal, cast
+
+from pyavd._cv.client.models import get_required_field
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable
+
+    from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
     from pyavd._cv.client import CVClient
 
     from .models import CVDeviceDeployment, CVEosConfig, DeployToCvResult
@@ -84,7 +89,8 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
 
     child_assignment_ids: list[str] = []
     if root_cv_containers:
-        child_assignment_ids = root_cv_containers[0].child_assignment_ids.values
+        first_root_container = root_cv_containers[0]
+        child_assignment_ids = get_required_field(first_root_container, "child_assignment_ids", first_root_container.child_assignment_ids).values
     else:
         # Create the root level container
         LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
@@ -125,6 +131,8 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
 
     TODO: Refactor to set_some on supported CV versions
     """
+    existing_device_containers: list[ConfigletAssignment] = []
+    existing_device_containers_by_id: dict[str, tuple[str | None, str | None, str | None, list[str]]] = {}
     if existing_device_container_ids := await get_existing_device_container_ids_from_root_container(workspace_id, cv_client):
         existing_device_containers = await cv_client.get_configlet_containers(
             workspace_id=workspace_id,
@@ -133,20 +141,21 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
         LOGGER.info("deploy_configs_to_cv: %s existing device containers under AVD root container.", len(existing_device_containers))
         # Create dict keyed by container id with value of tuple containing key container parameters. Used later to detect changes.
         existing_device_containers_by_id = {
-            cv_container.key.configlet_assignment_id: (
+            get_required_field(
+                container_key := get_required_field(cv_container, "key", cv_container.key), "configlet_assignment_id", container_key.configlet_assignment_id
+            ): (
                 cv_container.display_name,
                 cv_container.description,
                 cv_container.query,
-                cv_container.configlet_ids.values,
+                get_required_field(cv_container, "configlet_ids", cv_container.configlet_ids).values,
             )
             for cv_container in existing_device_containers
         }
-    else:
-        existing_device_containers = []
-        existing_device_containers_by_id = {}
 
-    update_device_containers = []
-    update_device_container_ids = set()
+    update_device_containers: list[
+        tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, Literal["match_first", "match_all"] | None]
+    ] = []
+    update_device_container_ids: set[str] = set()
     for config in configs:
         # For now we reuse configlet_id as container_id.
         container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
@@ -200,12 +209,22 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
         cv_client.get_configlet_containers(workspace_id=workspace_id, container_ids=[*target_ids, CONFIGLET_CONTAINER_ID]),
     )
 
-    configlets_by_id = {cast("str", configlet.key.configlet_id): configlet for configlet in existing_configlets}
-    containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
+    configlets_by_id = {
+        get_required_field(configlet_key := get_required_field(configlet, "key", configlet.key), "configlet_id", configlet_key.configlet_id): configlet
+        for configlet in existing_configlets
+    }
+    containers_by_id = {
+        get_required_field(
+            container_key := get_required_field(container, "key", container.key), "configlet_assignment_id", container_key.configlet_assignment_id
+        ): container
+        for container in existing_containers
+    }
     root_cv_container = containers_by_id.pop(CONFIGLET_CONTAINER_ID, None)
 
     # Delete leftover per-device containers and configlets in parallel.
-    delete_coroutines = [cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_by_id]
+    delete_coroutines: list[Awaitable[Any]] = [
+        cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_by_id
+    ]
     if configlets_by_id:
         delete_coroutines.append(cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_by_id)))
 
@@ -223,7 +242,7 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
     if root_cv_container is None:
         return
 
-    existing_child_ids = root_cv_container.child_assignment_ids.values
+    existing_child_ids = get_required_field(root_cv_container, "child_assignment_ids", root_cv_container.child_assignment_ids).values
     remaining_child_ids = [child_id for child_id in existing_child_ids if child_id not in target_ids_set]
 
     if remaining_child_ids:

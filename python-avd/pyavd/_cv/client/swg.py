@@ -21,6 +21,7 @@ from pyavd._cv.api.arista.swg.v1 import (
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound
+from .models import get_required_fields
 
 if TYPE_CHECKING:
     from . import CVClientProtocol
@@ -70,7 +71,7 @@ class SwgMixin(Protocol):
         LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
         response = await client.set(request, timeout=timeout)
 
-        return response.time, response.value
+        return get_required_fields(response, ("time", "value"), (response.time, response.value))
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_swg_endpoint_status(
@@ -105,12 +106,13 @@ class SwgMixin(Protocol):
 
         responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            if response.time < start_time:
+            response_time, response_value = get_required_fields(response, ("time", "value"), (response.time, response.value))
+            if response_time < start_time:
                 LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")
                 continue
 
-            LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response.value)
-            return response.value
+            LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response_value)
+            return response_value
 
         # Use case where stream completed without getting an Endpoint
         msg = f"Failed to get SWG endpoint '{device_id}' for service '{service}' with start time of '{start_time}'."

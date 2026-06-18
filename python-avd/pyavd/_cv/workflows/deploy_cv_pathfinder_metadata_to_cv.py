@@ -8,6 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
+from pyavd._cv.client.models import get_required_field
 from pyavd._utils import get, get_v2
 from pyavd._utils.password_utils.password import simple_7_decrypt
 
@@ -77,7 +78,7 @@ async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClie
         result.warnings.append(warning)
         return None
 
-    studio_schema: InputSchema = studio.input_schema
+    studio_schema = get_required_field(studio, "input_schema", studio.input_schema)
     studio_version = get_v2(studio_schema, "fields.values.studioVersion.string_props.default_value")
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found metadata studio version: %s", studio_version)
     return studio_schema

@@ -30,7 +30,6 @@ from .studio import StudioMixin
 from .studio_topology import StudioTopologyMixin
 from .swg import SwgMixin
 from .tag import TagMixin
-from .utils import UtilsMixin
 from .versioning import CvVersion
 from .workspace import WorkspaceMixin
 
@@ -206,7 +205,6 @@ class CVClientProtocol(
     SwgMixin,
     TagMixin,
     WorkspaceMixin,
-    UtilsMixin,
     Protocol,
 ):
     """Protocol for the CVClient class."""

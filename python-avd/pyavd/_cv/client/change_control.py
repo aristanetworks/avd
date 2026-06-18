@@ -15,7 +15,6 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
     ChangeControlConfig,
     ChangeControlConfigServiceStub,
     ChangeControlConfigSetRequest,
-    ChangeControlConfigSetResponse,
     ChangeControlKey,
     ChangeControlRequest,
     ChangeControlServiceStub,
@@ -27,11 +26,12 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVChangeControlFailed, CVClientException
+from .models import get_required_field
 
 if TYPE_CHECKING:
     from datetime import datetime
 
-    from aristaproto import _DateTime
+    from aristaproto.nano_datetime import NanoDatetime
 
     from . import CVClientProtocol
 
@@ -89,7 +89,7 @@ class ChangeControlMixin(Protocol):
         name: str | None = None,
         description: str | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> ChangeControlConfigSetResponse:
+    ) -> ChangeControlConfig:
         """
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API.
 
@@ -112,17 +112,13 @@ class ChangeControlMixin(Protocol):
         client = self.new_stub(ChangeControlConfigServiceStub)
 
         response = await client.set(request, timeout=timeout)
-        if response.value is None:
-            msg = f"CloudVision returned an empty Change Control config response for '{change_control_id}'."
-            raise CVClientException(msg)
-
-        return response.value
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler()
     async def approve_change_control(
         self: CVClientProtocol,
         change_control_id: str,
-        timestamp: _DateTime,
+        timestamp: NanoDatetime | datetime,
         description: str | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ApproveConfig:
@@ -220,9 +216,10 @@ class ChangeControlMixin(Protocol):
         responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
             LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
-            if response.value is not None and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
-                LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
-                return response.value
+            change_control = get_required_field(response, "value", response.value)
+            if change_control.status == CHANGE_CONTROL_STATUS_MAP[state]:
+                LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, change_control.status)
+                return change_control
 
         # Use case where stream completed without getting ChangeControl update in the desired state
         msg = f"Change control '{cc_id}' has not reached desired state '{state}'."

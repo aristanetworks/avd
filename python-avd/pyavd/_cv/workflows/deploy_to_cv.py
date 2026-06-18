@@ -243,7 +243,7 @@ async def deploy_to_cv(
             # TODO: Remove once we are done with testing (?)
             # Run, Delete or run and wait for Change Control if the workspace created one.
             if result.change_control is not None and result.change_control.id is not None:
-                await finalize_change_control_on_cv(change_control=result.change_control, cv_client=cv_client)
+                await finalize_change_control_on_cv(change_control_id=result.change_control.id, change_control=result.change_control, cv_client=cv_client)
 
     except CVClientException as e:
         result.errors.append(e)
