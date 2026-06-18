@@ -25,15 +25,20 @@ runs:
         fi
 
         label="$(printf '%s' "$PR_TITLE" | cut -d ':' -f 1 | tr -d ' ' | tr ',' '|')"
+        rn_label="rn: $label"
+        encoded_rn_label="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$rn_label")"
+
         if [[ "$AUTO_CREATE_LABEL" == "true" ]]; then
-          existing_label="$(
-            gh label list -L 100 --search "rn:" --json name -q '.[] | select(.name | startswith("rn: ")) | .name' |
-              grep -Fx "rn: $label" || true
-          )"
-          if [[ -z "$existing_label" ]]; then
-            gh label create "rn: $label"
+          if ! gh api "repos/{owner}/{repo}/labels/$encoded_rn_label" --silent 2>/dev/null; then
+            label_create_error="${RUNNER_TEMP:-.}/label_create_error"
+            if ! gh label create "$rn_label" 2>"$label_create_error"; then
+              if ! grep -Fq "already exists" "$label_create_error"; then
+                cat "$label_create_error" >&2
+                exit 1
+              fi
+            fi
           fi
         fi
 
-        gh pr edit "$PR_NUMBER" --add-label "rn: $label"
+        gh pr edit "$PR_NUMBER" --add-label "$rn_label"
       shell: bash
