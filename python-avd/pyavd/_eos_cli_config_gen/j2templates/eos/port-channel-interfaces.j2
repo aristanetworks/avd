@@ -431,6 +431,11 @@ interface {{ port_channel_interface.name }}
    address locking
       address-family ipv4 disabled
 {%     endif %}
+{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
+{%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
 {%     endif %}
