@@ -15,7 +15,7 @@
 - The Material-hosted Schema Explorer lost Bootstrap grid/list/card styling after global Bootstrap CSS was removed. The stylesheet now includes a scoped compatibility layer under `.schema-spa-host` / `.schema-embed` for the Bootstrap utilities used by the explorer.
 - Filtered tree views rendered matching child rows before their fetched ancestor context rows, so expanding groups such as `cv_settings` showed subkeys above their parents. Group rows are now sorted parent-first after context rows are merged.
 - Key detail sidebars showed broad module totals and generic peer/root-key lists, which consumed space and made details harder to read. Detail pages now use the full width, and dynamic-key context is shown as a compact property row.
-- Large defaults such as `platform_settings` rendered inline in Default columns and made browse/detail pages unreadable. Tables now show compact summaries only for genuinely large defaults, while detail pages show the formatted default expanded by default.
+- Large defaults such as `platform_settings` rendered inline in Default columns and made browse/detail pages unreadable. Tables now show compact summaries only for genuinely large defaults, while detail pages extract structured defaults into readable sections with raw JSON still available.
 
 ## Open
 

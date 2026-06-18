@@ -49,7 +49,7 @@ function formatDefaultSummary(parsed, raw) {
   return raw.length > 160 ? "large default" : raw;
 }
 function defaultValueParts(value, noneLabel = "-") {
-  if (!value) return { hasValue: false, summary: noneLabel, full: noneLabel, large: false };
+  if (!value) return { hasValue: false, summary: noneLabel, full: noneLabel, large: false, parsed: null, parseOk: false };
   const raw = String(value);
   let parsed = null;
   let parseOk = false;
@@ -66,17 +66,73 @@ function defaultValueParts(value, noneLabel = "-") {
     summary: large ? formatDefaultSummary(parseOk ? parsed : null, raw) : raw,
     full,
     large,
+    parsed,
+    parseOk,
   };
+}
+function renderDefaultScalar(value) {
+  if (value === null) return `<code>null</code>`;
+  if (value === undefined) return `<code>-</code>`;
+  if (typeof value === "boolean" || typeof value === "number") return `<code>${escapeHtml(String(value))}</code>`;
+  return `<code>${escapeHtml(String(value))}</code>`;
+}
+function renderDefaultFieldValue(value) {
+  if (Array.isArray(value)) {
+    if (!value.length) return `<code>[]</code>`;
+    if (value.every(item => item === null || ["string", "number", "boolean"].includes(typeof item))) {
+      return `<div class="schema-default-pill-list">${value.map(item => `<code>${escapeHtml(String(item))}</code>`).join("")}</div>`;
+    }
+    return `<pre class="schema-default-inline-json"><code>${escapeHtml(JSON.stringify(value, null, 2))}</code></pre>`;
+  }
+  if (value && typeof value === "object") {
+    return renderDefaultObjectTable(value, "schema-default-nested-table");
+  }
+  return renderDefaultScalar(value);
+}
+function renderDefaultObjectTable(obj, className = "schema-default-field-table") {
+  const rowsHtml = Object.entries(obj).map(([key, value]) => `
+    <tr>
+      <td class="schema-default-field-key"><code>${escapeHtml(key)}</code></td>
+      <td>${renderDefaultFieldValue(value)}</td>
+    </tr>`).join("");
+  return `<table class="table table-sm align-middle mb-0 ${className}"><tbody>${rowsHtml}</tbody></table>`;
+}
+function renderStructuredDefault(parts) {
+  if (!parts.parseOk) return "";
+  if (Array.isArray(parts.parsed) && parts.parsed.every(item => item && typeof item === "object" && !Array.isArray(item))) {
+    const itemsHtml = parts.parsed.map((item, idx) => {
+      const fields = Object.fromEntries(Object.entries(item).filter(([key]) => key !== "platforms"));
+      const platforms = Array.isArray(item.platforms) && item.platforms.length
+        ? item.platforms.join(", ")
+        : `Item ${idx + 1}`;
+      const settingsCount = Object.keys(fields).length;
+      return `
+        <details class="schema-default-item">
+          <summary>
+            <code>${escapeHtml(platforms)}</code>
+            <span class="text-muted small ms-2">${settingsCount} setting${settingsCount === 1 ? "" : "s"}</span>
+          </summary>
+          ${renderDefaultObjectTable(fields)}
+        </details>`;
+    }).join("");
+    return `<div class="schema-default-structured">${itemsHtml}</div>`;
+  }
+  if (parts.parsed && typeof parts.parsed === "object" && !Array.isArray(parts.parsed)) {
+    return `<div class="schema-default-structured">${renderDefaultObjectTable(parts.parsed)}</div>`;
+  }
+  return "";
 }
 function renderDefaultValue(value, options = {}) {
   const parts = defaultValueParts(value, options.noneLabel || "-");
   if (!parts.hasValue || !parts.large) return `<code>${escapeHtml(parts.summary)}</code>`;
   if (options.compact) return `<code class="schema-default-compact" title="${escapeAttr(parts.summary)}">${escapeHtml(parts.summary)}</code>`;
   const openAttr = options.open ? " open" : "";
+  const structuredHtml = renderStructuredDefault(parts);
   return `
     <details class="schema-default-details"${openAttr}>
       <summary class="schema-default-summary"><code>${escapeHtml(parts.summary)}</code></summary>
-      <pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>
+      ${structuredHtml || `<pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>`}
+      ${structuredHtml ? `<details class="schema-default-raw"><summary class="schema-default-summary"><span class="small">Raw JSON</span></summary><pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre></details>` : ""}
     </details>`;
 }
 function rowModule(row, currentModule) {
