@@ -721,7 +721,10 @@ a.card:hover {
   white-space: nowrap;
 }
 
-/* Large default values are summarized in tables and expandable on demand. */
+/* Large default values are summarized in tables and formatted on detail pages. */
+.schema-default-compact {
+  white-space: nowrap;
+}
 .schema-default-details {
   max-width: 100%;
 }
@@ -735,11 +738,8 @@ a.card:hover {
   white-space: normal;
   word-break: break-word;
 }
-.schema-default-summary-compact code {
-  white-space: nowrap;
-}
 .schema-default-full {
-  max-height: 22rem;
+  max-height: 26rem;
   overflow: auto;
   margin: 0.5rem 0 0;
   padding: 0.75rem;

@@ -46,7 +46,7 @@ function formatDefaultSummary(parsed, raw) {
     const count = Object.keys(parsed).length;
     return `dict, ${count} key${count === 1 ? "" : "s"}`;
   }
-  return raw.length > 120 ? "large default" : raw;
+  return raw.length > 160 ? "large default" : raw;
 }
 function defaultValueParts(value, noneLabel = "-") {
   if (!value) return { hasValue: false, summary: noneLabel, full: noneLabel, large: false };
@@ -59,12 +59,11 @@ function defaultValueParts(value, noneLabel = "-") {
   } catch {
     // Keep non-JSON defaults as plain text.
   }
-  const structured = parseOk && (Array.isArray(parsed) || (parsed && typeof parsed === "object"));
   const full = parseOk ? JSON.stringify(parsed, null, 2) : raw;
-  const large = structured || raw.length > 120 || full.includes("\n");
+  const large = raw.length > 160 || full.length > 240 || full.includes("\n");
   return {
     hasValue: true,
-    summary: formatDefaultSummary(parseOk ? parsed : null, raw),
+    summary: large ? formatDefaultSummary(parseOk ? parsed : null, raw) : raw,
     full,
     large,
   };
@@ -72,10 +71,11 @@ function defaultValueParts(value, noneLabel = "-") {
 function renderDefaultValue(value, options = {}) {
   const parts = defaultValueParts(value, options.noneLabel || "-");
   if (!parts.hasValue || !parts.large) return `<code>${escapeHtml(parts.summary)}</code>`;
-  const summaryClass = options.compact ? "schema-default-summary schema-default-summary-compact" : "schema-default-summary";
+  if (options.compact) return `<code class="schema-default-compact" title="${escapeAttr(parts.summary)}">${escapeHtml(parts.summary)}</code>`;
+  const openAttr = options.open ? " open" : "";
   return `
-    <details class="schema-default-details">
-      <summary class="${summaryClass}"><code>${escapeHtml(parts.summary)}</code></summary>
+    <details class="schema-default-details"${openAttr}>
+      <summary class="schema-default-summary"><code>${escapeHtml(parts.summary)}</code></summary>
       <pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>
     </details>`;
 }
@@ -909,7 +909,7 @@ function renderVarDetail(db, release, module, key_path) {
           <table class="table table-sm align-middle mb-0"><tbody>
             <tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">Type</td><td><span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "-")}</span></td></tr>
             ${(v.removed || v.deprecated) ? `<tr><td class="px-3 fw-semibold small text-muted">Status</td><td>${v.removed ? `<span class="badge bg-danger">removed</span>` : `<span class="badge bg-warning text-dark">deprecated</span>`}</td></tr>` : ""}
-            <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none" })}</td></tr>
+            <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none", open: true })}</td></tr>
             <tr><td class="px-3 fw-semibold small text-muted">Required</td><td>${v.required ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>` : `<span class="text-muted">No</span>`}</td></tr>
             ${v.category ? `<tr><td class="px-3 fw-semibold small text-muted">Category</td><td><span class="badge schema-category-badge">${escapeHtml(v.category)}</span></td></tr>` : ""}
             ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
