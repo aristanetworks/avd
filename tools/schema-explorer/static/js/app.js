@@ -36,6 +36,19 @@ function stripPlaceholderBrackets(s) {
 function displayPath(keyPath) {
   return splitKeyPath(keyPath).map(stripPlaceholderBrackets).join(".");
 }
+function rowModule(row, currentModule) {
+  return currentModule === "all" ? row.module : currentModule;
+}
+function treeRowId(row, currentModule) {
+  return `${rowModule(row, currentModule)}:${row.key_path}`;
+}
+function treeParentId(row, currentModule) {
+  return row.parent_path ? `${rowModule(row, currentModule)}:${row.parent_path}` : "";
+}
+function treeGroupId(row, currentModule) {
+  const root = rootSegment(row.key_path);
+  return currentModule === "all" ? `${rowModule(row, currentModule)}:${root}` : root;
+}
 
 // Where the SPA fetches `schema.sqlite` from. Resolution order:
 //   1. `window.SCHEMA_BASE_OVERRIDE` — explicit opt-out for hosts that already
@@ -206,16 +219,16 @@ function applyTreeVisibility(groupEl) {
   if (!groupEl) return;
   const rows = groupEl.querySelectorAll("tr.schema-tree-row");
   const byPath = new Map();
-  for (const r of rows) byPath.set(r.dataset.rowPath, r);
+  for (const r of rows) byPath.set(r.dataset.rowId, r);
   for (const r of rows) {
     const depth = parseInt(r.dataset.depth, 10);
     if (depth === 1) { r.style.display = ""; continue; }
-    let p = r.dataset.parentPath;
+    let p = r.dataset.parentId;
     let visible = true;
     while (p) {
       const parentRow = byPath.get(p);
       if (!parentRow || parentRow.dataset.expanded !== "1") { visible = false; break; }
-      p = parentRow.dataset.parentPath;
+      p = parentRow.dataset.parentId;
     }
     r.style.display = visible ? "" : "none";
   }
@@ -599,28 +612,33 @@ function renderTreeResults(target, db, release, module, state, matches) {
   // eos_cli_config_gen).
   let rowsForGroups;
   if (filtered && matches.length) {
-    const matchedPaths = new Set(matches.map(v => v.key_path));
-    const knownByPath = new Map(matches.map(v => [v.key_path, v]));
+    const knownByPath = new Map(matches.map(v => [treeRowId(v, module), v]));
     const ancestorRows = [];
     let toFetch = [];
     for (const v of matches) {
-      if (v.parent_path && !knownByPath.has(v.parent_path)) toFetch.push(v.parent_path);
+      const parentId = treeParentId(v, module);
+      if (v.parent_path && !knownByPath.has(parentId)) toFetch.push({ module: rowModule(v, module), keyPath: v.parent_path });
     }
-    toFetch = [...new Set(toFetch)];
+    toFetch = [...new Map(toFetch.map(v => [`${v.module}:${v.keyPath}`, v])).values()];
     while (toFetch.length) {
-      const placeholders = toFetch.map(() => "?").join(",");
-      const sql = module !== "all"
-        ? `SELECT * FROM schema_vars WHERE release = ? AND module = ? AND key_path IN (${placeholders})`
-        : `SELECT * FROM schema_vars WHERE release = ? AND key_path IN (${placeholders})`;
-      const params = module !== "all" ? [release, module, ...toFetch] : [release, ...toFetch];
-      const fetched = rows(db, sql, params);
+      const fetched = [];
+      const fetchByModule = new Map();
+      for (const item of toFetch) {
+        if (!fetchByModule.has(item.module)) fetchByModule.set(item.module, []);
+        fetchByModule.get(item.module).push(item.keyPath);
+      }
+      for (const [fetchModule, keyPaths] of fetchByModule.entries()) {
+        const placeholders = keyPaths.map(() => "?").join(",");
+        fetched.push(...rows(db, `SELECT * FROM schema_vars WHERE release = ? AND module = ? AND key_path IN (${placeholders})`, [release, fetchModule, ...keyPaths]));
+      }
       ancestorRows.push(...fetched);
       const next = [];
       for (const a of fetched) {
-        knownByPath.set(a.key_path, a);
-        if (a.parent_path && !knownByPath.has(a.parent_path)) next.push(a.parent_path);
+        knownByPath.set(treeRowId(a, module), a);
+        const parentId = treeParentId(a, module);
+        if (a.parent_path && !knownByPath.has(parentId)) next.push({ module: rowModule(a, module), keyPath: a.parent_path });
       }
-      toFetch = [...new Set(next)];
+      toFetch = [...new Map(next.map(v => [`${v.module}:${v.keyPath}`, v])).values()];
     }
     rowsForGroups = [
       ...matches.map(v => ({ ...v, is_context: false })),
@@ -633,22 +651,25 @@ function renderTreeResults(target, db, release, module, state, matches) {
   const groups = new Map();
   const matchCounts = new Map();
   for (const v of rowsForGroups) {
+    const groupId = treeGroupId(v, module);
     const root = rootSegment(v.key_path);
-    if (!groups.has(root)) groups.set(root, []);
-    groups.get(root).push(v);
-    if (!v.is_context) matchCounts.set(root, (matchCounts.get(root) || 0) + 1);
+    if (!groups.has(groupId)) groups.set(groupId, { root, module: rowModule(v, module), vars: [] });
+    groups.get(groupId).vars.push(v);
+    if (!v.is_context) matchCounts.set(groupId, (matchCounts.get(groupId) || 0) + 1);
   }
-  const sorted = [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
+  const sorted = [...groups.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
   const total = matches.length;
 
-  const groupsHtml = sorted.map(([root, vars], idx) => {
+  const groupsHtml = sorted.map(([groupId, group], idx) => {
+    const { root, vars } = group;
     const id = `${idPrefix}-group-${idx}`;
     const cat = vars[0].category;
     // Pre-compute which paths have children inside this group, so we know
     // which rows should render a chevron and which are leaves.
     const childCount = new Map();
     for (const v of vars) {
-      if (v.parent_path) childCount.set(v.parent_path, (childCount.get(v.parent_path) || 0) + 1);
+      const parentId = treeParentId(v, module);
+      if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
     }
     // Sort vars in DFS order (alphabetical key_path is close enough — sql.js
     // already returned them sorted) so descendants always follow their parent.
@@ -659,10 +680,9 @@ function renderTreeResults(target, db, release, module, state, matches) {
       const depth = v.depth || 1;
       const indent = (depth - 1) * 1.25;
       const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
-      const ctxAttrs = v.is_context
-        ? ` style="opacity: 0.55;" title="Shown as ancestor context — does not match the current filter"`
-        : "";
-      const isBranch = (childCount.get(v.key_path) || 0) > 0;
+      const rowId = treeRowId(v, module);
+      const parentId = treeParentId(v, module);
+      const isBranch = (childCount.get(rowId) || 0) > 0;
       // Context rows (ancestors of matches when a filter is active) start
       // expanded so the matched descendants are visible by default.
       const initiallyExpanded = v.is_context;
@@ -674,8 +694,8 @@ function renderTreeResults(target, db, release, module, state, matches) {
         : (depth > 1 ? ` style="display: none;"` : "");
       return `
         <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
-            data-row-path="${escapeAttr(v.key_path)}"
-            data-parent-path="${escapeAttr(v.parent_path || "")}"
+            data-row-id="${escapeAttr(rowId)}"
+            data-parent-id="${escapeAttr(parentId)}"
             data-is-branch="${isBranch ? "1" : "0"}"
             data-depth="${depth}"
             data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
@@ -689,12 +709,14 @@ function renderTreeResults(target, db, release, module, state, matches) {
           <td class="text-muted small">${highlight(v.description || "-", state.q)}</td>
         </tr>`;
     }).join("");
-    const groupCount = matchCounts.get(root) ?? vars.length;
+    const groupCount = matchCounts.get(groupId) ?? vars.length;
+    const groupModuleBadge = isAll ? `<span class="badge ${group.module === "eos_designs" ? "bg-primary" : "bg-success"} ms-1" style="font-size: 0.6rem;">${escapeHtml(SCHEMA_MODULES[group.module]?.name || group.module)}</span>` : "";
     return `
       <div class="schema-group" data-group-id="${id}">
         <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
           <i class="bi bi-chevron-right collapse-icon"></i>
           <code class="fw-bold" style="font-size: 0.88rem;">${highlight(root, state.q)}</code>
+          ${groupModuleBadge}
           <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCount}</span>
           ${cat ? `<span class="badge schema-category-badge ms-1">${escapeHtml(cat)}</span>` : ""}
         </div>
