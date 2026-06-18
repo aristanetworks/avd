@@ -15,8 +15,10 @@ _CATEGORY_RULES: list[tuple[str, list[str], str]] = [
     (
         "eos_designs",
         [
+            "type",
             "node_type_keys",
             "custom_node_type_keys",
+            "default_node_types",
         ],
         "Node Type",
     ),
@@ -27,8 +29,6 @@ _CATEGORY_RULES: list[tuple[str, list[str], str]] = [
             "dc_name",
             "pod_name",
             "design",
-            "type",
-            "default_node_types",
             "default_interfaces",
             "fabric_numbering",
         ],
@@ -478,7 +478,7 @@ _CATEGORY_RULES: list[tuple[str, list[str], str]] = [
 CATEGORY_INFO: dict[str, dict[str, str]] = {
     # eos_designs
     "Fabric Topology": {"icon": "bi-diagram-3", "description": "Fabric name, DC/POD naming, default interfaces, and topology hierarchy."},
-    "Node Type": {"icon": "bi-hdd-stack", "description": "Node type keys and custom node type definitions."},
+    "Node Type": {"icon": "bi-hdd-stack", "description": "Design type, node type keys, default node types, and custom node type definitions."},
     "Fabric Settings": {"icon": "bi-sliders", "description": "Global fabric defaults — MTU, VLAN ordering, trunk groups, descriptions, redundancy."},
     "BGP": {"icon": "bi-arrow-left-right", "description": "BGP AS, ECMP, peer groups, graceful restart, and update behavior."},
     "EVPN & Overlay": {"icon": "bi-layers", "description": "EVPN control plane, overlay routing, VXLAN VTEP, RT/RD, and multicast."},
