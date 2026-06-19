@@ -120,3 +120,6 @@ tunnel_interfaces:
           no_autoconfig_flag: true
     source: 20.20.20.20
     destination: 2.2.2.2
+  # TODO: Open an issue. documentation/tunnel-interfaces.j2 has an IPv6 address fallback
+  # branch that appears unreachable because the IPv6 table only includes interfaces with
+  # ipv6_addresses, ipv6_address, or ipv6_address_auto_config: true.

@@ -18,6 +18,9 @@ router_segment_security:
           application: APP-TEST-3
           action: redirect
           next_hop: 198.51.100.1
+        - sequence: 30
+          application: APP-TEST-4
+          action: redirect
   vrfs:
     - name: default
       segments:

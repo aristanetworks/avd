@@ -182,6 +182,15 @@ repos:
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
 
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: 9257c6050c0261b8c57e712f632dc4a8010109a9  # frozen: v1.25.2
+    hooks:
+      - id: zizmor
+        name: Check GitHub Actions with zizmor
+        files: ^\.github/
+        pass_filenames: false
+        args: [".github"]
+
   - repo: https://github.com/pdm-project/pdm
     rev: "0d939146d20336fda803dee0637253d8d3ea9bac"  # frozen: 2.27.0
     hooks:

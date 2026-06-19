@@ -47,8 +47,7 @@ class DigitalTwinMixin(Protocol):
                     )
                     raise AristaAvdError(msg)
                 ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
-                # TODO: Adjust once dynamic pool-based IP allocation is implemented.
-                if not (isinstance(ip_addr, str) and ip_addr):
+                if not ip_addr and digital_twin_node_type not in ["cloudeos", "veos"]:
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
@@ -70,7 +69,6 @@ class DigitalTwinMixin(Protocol):
                 self.structured_config.metadata.digital_twin._update(
                     environment=environment,
                     node_type=digital_twin_node_type,
-                    # TODO: How-to guide explaining ip_addr requirements and limitations for each Digital Twin environment.
                     ip_addr=ip_addr,
                     version=version,
                     username=username,
