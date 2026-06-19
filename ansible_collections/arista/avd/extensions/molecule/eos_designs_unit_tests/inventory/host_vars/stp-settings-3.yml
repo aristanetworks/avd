@@ -5,8 +5,8 @@ type: l2leaf
 l2leaf:
   nodes:
     - name: stp-settings-3
-      id: 43
-      mgmt_ip: 10.10.10.43/26
+      id: 45
+      mgmt_ip: 10.10.10.45/26
       spanning_tree_mode: rstp
       spanning_tree_priority: 4096
       spanning_tree_port_id_allocation_port_channel_range:
@@ -23,6 +23,6 @@ spanning_tree_settings:
     maximum: 2001
   loop_guard_default: false
 
-# Enable pvst_border when STP mode is mstp
+# Does not render pvst_border as STP mode is not mstp
 avd_design_future:
   only_configure_pvst_border_when_mode_is_mstp: true

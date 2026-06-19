@@ -11,7 +11,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 10.10.10.43/26
+  ip_address: 10.10.10.44/26
   type: oob
 metadata:
   is_deployed: true

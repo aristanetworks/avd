@@ -15,7 +15,7 @@ keys:
         type: str
         description: |-
           Spanning tree operating mode.
-          "spanning_tree_mode" can also be set under node type settings.
+          'spanning_tree_mode' can also be set under node type settings.
           If both are set, the setting under node type settings takes precedence.
         valid_values:
           - mstp
@@ -29,15 +29,15 @@ keys:
         default: 32768
         description: |-
           Spanning-tree priority configured for the selected mode.
-          For `rapid-pvst` the priority can also be set per VLAN under network services.
-          "spanning_tree_priority" can also be set under node type settings.
+          For 'rapid-pvst' the priority can also be set per VLAN under network services.
+          'spanning_tree_priority' can also be set under node type settings.
           If both are set, the setting under node type settings takes precedence.
       port_id_allocation_port_channel_range:
         type: dict
         $ref: "eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range"
         description: |-
           Specify range of port-ids to reserve for port-channels.
-          "spanning_tree_port_id_allocation_port_channel_range" can also be set under node type settings.
+          'spanning_tree_port_id_allocation_port_channel_range' can also be set under node type settings.
           If both are set, the setting under node type settings takes precedence.
       loop_guard_default:
         type: bool

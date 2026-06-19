@@ -8939,7 +8939,7 @@ keys:
         type: str
         description: 'Spanning tree operating mode.
 
-          "spanning_tree_mode" can also be set under node type settings.
+          ''spanning_tree_mode'' can also be set under node type settings.
 
           If both are set, the setting under node type settings takes precedence.'
         valid_values:
@@ -8954,9 +8954,9 @@ keys:
         default: 32768
         description: 'Spanning-tree priority configured for the selected mode.
 
-          For `rapid-pvst` the priority can also be set per VLAN under network services.
+          For ''rapid-pvst'' the priority can also be set per VLAN under network services.
 
-          "spanning_tree_priority" can also be set under node type settings.
+          ''spanning_tree_priority'' can also be set under node type settings.
 
           If both are set, the setting under node type settings takes precedence.'
       port_id_allocation_port_channel_range:
@@ -8964,8 +8964,8 @@ keys:
         $ref: eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range
         description: 'Specify range of port-ids to reserve for port-channels.
 
-          "spanning_tree_port_id_allocation_port_channel_range" can also be set under
-          node type settings.
+          ''spanning_tree_port_id_allocation_port_channel_range'' can also be set
+          under node type settings.
 
           If both are set, the setting under node type settings takes precedence.'
       loop_guard_default:
@@ -12525,9 +12525,9 @@ $defs:
 
               By default this is configured regardless of the spanning-tree mode.
 
-              When `avd_design_future.only_configure_pvst_border_when_mode_is_mstp`
-              is set to `true`, this will only take effect when `spanning_tree_mode`
-              is `mstp`.'
+              When ''avd_design_future.only_configure_pvst_border_when_mode_is_mstp''
+              is set to ''true'', this will only take effect when ''spanning_tree_mode''
+              is ''mstp''.'
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
