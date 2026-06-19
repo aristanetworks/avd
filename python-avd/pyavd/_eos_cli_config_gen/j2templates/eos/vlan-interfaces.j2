@@ -52,6 +52,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
    arp gratuitous accept
 {%     endif %}
+{%     if vlan_interface.ip_address is arista.avd.defined("dhcp") and vlan_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
@@ -103,6 +106,7 @@ interface {{ vlan_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{#     TODO: AVD 7.0.0 Check for CLI order and Inherited Interface VRF #}
 {%     if vlan_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
 {%         set with_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 {%         set without_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') %}

@@ -675,6 +675,9 @@ class EntityType(aristaproto.Enum):
     NODE = 13
     """ENTITY_TYPE_NODE indicates the Node entity type."""
 
+    DEPENDENCIES = 14
+    """ENTITY_TYPE_DEPENDENCIES indicates the dependencies entity type."""
+
 
 class DiffType(aristaproto.Enum):
     """DiffType enumerates types of diff."""
@@ -853,6 +856,15 @@ class Workspace(aristaproto.Message):
     """
     exclude_network_provisioning indicates whether the workspace is
     configured to exclude Network Provisioning.
+    """
+
+    decommission_request_ids: "___fmp__.MapStringString" = aristaproto.message_field(16)
+    """
+    decommission_request_ids provides, for each device staged for
+    decommission in this workspace, the corresponding request UUID passed
+    to inventory.v1.DeviceDecommissioningConfig. These request UUIDs can
+    be used to track the status using the inventory.v1.DeviceDecommissioning
+    resource.
     """
 
 
@@ -1083,6 +1095,9 @@ class ImageValidationResult(aristaproto.Message):
 
     infos: "__imagestatus_v1__.ImageInfos" = aristaproto.message_field(5)
     """infos are any info messages about the generated image."""
+
+    image_source: "__imagestatus_v1__.ImageSource" = aristaproto.enum_field(6)
+    """image_source identifies the source of the image."""
 
 
 @dataclass(eq=False, repr=False)
@@ -1391,9 +1406,12 @@ class DiffEntry(aristaproto.Message):
     - value: the element’s identifier
 
     Example:
-      users = [\{\"id\":\"u1\",\"name\":\"Alice\"\}]
-      key_path = [\"users\", \"[id=u1]\", \"name\"]
-      path     = [\"users\", \"0\", \"name\"]
+
+    ```
+    users = [{\"id\":\"u1\",\"name\":\"Alice\"}]
+    key_path = [\"users\", \"[id=u1]\", \"name\"]
+    path     = [\"users\", \"0\", \"name\"]
+    ```
     """
 
 
@@ -1418,28 +1436,28 @@ class DiffKey(aristaproto.Message):
     by [key1, value1, key2, value2, ...]
     studio_id are well known e.g studio-date-time
     e.g entity_ids for entity types
-    studio, inputs, assigned tags: [“studio_id”, <id>]
-    buildhook: [“studio_id”, <id>, “hook_id”, <id>]
-    autofill: [“studio_id”, <id>, “input_field_id”, <id>]
-    configlet: [“configlet_id”, <id>]
-    configletassignment : [“configlet_assignment_id”, <id>]
-    tags:
-    element_type is one of \"1\" (device), \"2\" (interface)
-    [\"creator_type\", \"2\", \"element_type\", <element_type>,
-    \"element_sub_type\", \"1\", \"label\", <label>, \"value\", <value>]
-    tag assignments:
-    For element_type = \"1\" (device)
-    [\"creator_type\", \"2\", \"element_type\", \"1\", \"element_sub_type\", \"1\",
-    \"label\", <label>, \"value\", <value>, \"device_id\", <id>]
-    For element_type = \"2\" (interface)
-    [\"creator_type\", \"2\", \"element_type\", \"2\", \"element_sub_type\", \"1\",
-    \"label\", <label>, \"value\", <value>, \"device_id\", <id>,
-    \"interface_id\", <id>]
-    hierarchy related entities:
-    node: [\"node_id\", <id>]
-    fixture_class: [\"fixture_class_id\", <id>]
-    fixture_instance: [\"fixture_instance_id\", <id>]
-    processor: [\"processor_id\", <id>]
+      studio, inputs, assigned tags, dependencies: [“studio_id”, <id>]
+      buildhook: [“studio_id”, <id>, “hook_id”, <id>]
+      autofill: [“studio_id”, <id>, “input_field_id”, <id>]
+      configlet: [“configlet_id”, <id>]
+      configletassignment: [“configlet_assignment_id”, <id>]
+      tags:
+        element_type is one of “1” (device), “2” (interface)
+        [“creator_type”, “2”, “element_type”, <element_type>,
+         “element_sub_type”, “1”, “label”, <label>, “value”, <value>]
+      tag assignments:
+        For element_type = “1” (device)
+          [“creator_type”, “2”, “element_type”, “1”, “element_sub_type”, “1”,
+           “label”, <label>, “value”, <value>, “device_id”, <id>]
+        For element_type = “2” (interface)
+          [“creator_type”, “2”, “element_type”, “2”, “element_sub_type”, “1”,
+           “label”, <label>, “value”, <value>, “device_id”, <id>,
+           “interface_id”, <id>]
+      hierarchy related entities:
+        node: [“node_id”, <id>]
+        fixture_class: [“fixture_class_id”, <id>]
+        fixture_instance: [“fixture_instance_id”, <id>]
+        processor: [“processor_id”, <id>]
     """
 
 

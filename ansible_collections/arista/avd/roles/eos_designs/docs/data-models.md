@@ -885,16 +885,16 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md
 --8<--
 
-## MAC ACLs Catalog
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/mac-acls.md
---8<--
-
 ### IPv4 Prefix-List Catalog
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-prefix-list-catalog.md
+--8<--
+
+### MAC ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/mac-acls.md
 --8<--
 
 ## OSPF settings

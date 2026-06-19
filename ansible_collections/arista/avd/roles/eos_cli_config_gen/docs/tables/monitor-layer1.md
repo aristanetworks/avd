@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>monitor_layer1</samp>](## "monitor_layer1") | Dictionary |  |  |  | Enable SYSLOG messages on transceiver SMBus communication failures. |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "monitor_layer1.enabled") | Boolean | Required |  |  | Enable monitor layer1. |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "monitor_layer1.enabled") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable monitor layer1.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
     | [<samp>&nbsp;&nbsp;logging_mac_fault</samp>](## "monitor_layer1.logging_mac_fault") | Boolean |  |  |  | Enable MAC fault logging. |
     | [<samp>&nbsp;&nbsp;logging_transceiver</samp>](## "monitor_layer1.logging_transceiver") | Dictionary |  |  |  | Configure transceiver monitoring logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dom</samp>](## "monitor_layer1.logging_transceiver.dom") | Boolean |  |  |  | Enable transceiver Digital Optical Monitoring (DOM) logging. |
@@ -22,7 +22,9 @@
     monitor_layer1:
 
       # Enable monitor layer1.
-      enabled: <bool; required>
+      # This key is deprecated.
+      # Support will be removed in AVD version 7.0.0.
+      enabled: <bool>
 
       # Enable MAC fault logging.
       logging_mac_fault: <bool>

@@ -52,6 +52,9 @@ keys:
             - str
           description: |
             "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
