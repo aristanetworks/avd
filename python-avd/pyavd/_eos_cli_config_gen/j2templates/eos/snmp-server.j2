@@ -199,6 +199,9 @@ no snmp-server enable traps {{ snmp_trap.name }}
 snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
+{%     for extension in snmp_server.extensions | arista.avd.natural_sort('oid') %}
+snmp-server extension {{ extension.oid }} {{ extension.path }}
+{%     endfor %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 {%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | list %}
 {%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) %}

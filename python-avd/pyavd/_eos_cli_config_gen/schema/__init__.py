@@ -67579,6 +67579,37 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class ExtensionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"oid": {"type": str}, "path": {"type": str}}
+            oid: str
+            """Object Identifier (OID) for the SNMP extension."""
+            path: str
+            """Path to the script or MIB file on the device (e.g., flash:/script.py)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined) -> None:
+                    """
+                    ExtensionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        oid: Object Identifier (OID) for the SNMP extension.
+                        path: Path to the script or MIB file on the device (e.g., flash:/script.py).
+
+                    """
+
+        class Extensions(AvdIndexedList[str, ExtensionsItem]):
+            """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
+
+            _primary_key: ClassVar[str] = "oid"
+
+        Extensions._item_type = ExtensionsItem
+
         class CommunitiesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -68120,6 +68151,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "engine_ids": {"type": EngineIds},
+            "extensions": {"type": Extensions},
             "contact": {"type": str},
             "location": {"type": str},
             "communities": {"type": Communities},
@@ -68136,6 +68168,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         engine_ids: EngineIds
         """Subclass of AvdModel."""
+        extensions: Extensions
+        """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
         contact: str | None
         """SNMP contact."""
         location: str | None
@@ -68169,6 +68203,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 engine_ids: EngineIds | UndefinedType = Undefined,
+                extensions: Extensions | UndefinedType = Undefined,
                 contact: str | None | UndefinedType = Undefined,
                 location: str | None | UndefinedType = Undefined,
                 communities: Communities | UndefinedType = Undefined,
@@ -68191,6 +68226,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     engine_ids: Subclass of AvdModel.
+                    extensions: Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`).
                     contact: SNMP contact.
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).

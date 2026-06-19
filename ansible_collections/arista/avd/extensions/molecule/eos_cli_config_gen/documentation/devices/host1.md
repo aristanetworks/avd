@@ -2767,6 +2767,13 @@ mcs client
 | REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+#### SNMP Extensions
+
+| OID | Script/File Path |
+| --- | ---------------- |
+| .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py |
+| .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py |
+
 
 #### SNMP Device Configuration
 
@@ -2822,6 +2829,8 @@ snmp-server enable traps msdp backward-transition
 snmp-server enable traps msdp established
 snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.1.1 flash:/monitorConnectivity.py
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.2.33 flash:/test.py
 no snmp-server vrf default
 snmp-server vrf MGMT
 snmp-server vrf lower_case

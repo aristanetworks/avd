@@ -40,6 +40,20 @@ keys:
                   type: int
                   convert_types:
                     - str
+      extensions:
+        type: list
+        primary_key: oid
+        items:
+          type: dict
+          keys:
+            oid:
+              type: str
+              required: true
+              description: "Object Identifier (OID) for the SNMP extension."
+            path:
+              type: str
+              required: true
+              description: "Path to the script or MIB file on the device (e.g., flash:/script.py)."
       contact:
         type: str
         description: SNMP contact.
