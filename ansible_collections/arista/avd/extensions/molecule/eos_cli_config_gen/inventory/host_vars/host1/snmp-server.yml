@@ -51,6 +51,9 @@ snmp_server:
       vrf: MGMT
     - name: onur_v6
   views:
+    - name: VW-EXCLUDED
+      mib_family_name: iso
+      included: false
     - name: VW-WRITE
       mib_family_name: iso
       included: true
@@ -124,6 +127,8 @@ snmp_server:
       localized: DEADBEEFCAFE123456
       auth: sha
       auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
+      priv: aes
+      priv_passphrase: DEADBEEFCAFE123456ABC1234321AB12334567
   hosts:
     - host: 10.6.75.121
       vrf: MGMT

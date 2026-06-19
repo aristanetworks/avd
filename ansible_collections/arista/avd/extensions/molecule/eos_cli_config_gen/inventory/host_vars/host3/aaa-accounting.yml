@@ -1,12 +1,28 @@
 ---
-## AAA Accounting without exec, system and dot1x
+## AAA Accounting with logging-only methods and without command groups
 aaa_accounting:
+  exec:
+    console:
+      type: start-stop
+      methods:
+        - method: logging
+  system:
+    default:
+      type: start-stop
+      methods:
+        - method: logging
+  # TODO: Open an issue. documentation/aaa-accounting.j2 has a dot1x default
+  # type "none" branch, but schema validation only allows "start-stop" and "stop-only".
   commands:
     console:
       - commands: all
         type: none
       - commands: 0
         type: none
+      - commands: 1
+        type: start-stop
+        methods:
+          - method: logging
     default:
       - commands: all
         type: none

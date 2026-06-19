@@ -56,7 +56,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: |-
+            Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:
@@ -299,6 +303,10 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: |-
+                  VRF used to reach the DHCP server.
+                  If not set, the VRF of the destination matches the VRF of this interface.
+                  Use the `default` to reach the DHCP server through the default VRF.
                 convert_types:
                   - int
               local_interface:
