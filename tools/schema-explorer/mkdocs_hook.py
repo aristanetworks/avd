@@ -42,6 +42,10 @@ GENERATE_SCRIPT = HERE / "generate.py"
 CATEGORIES_SCRIPT = HERE / "categories.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
+SCHEMA_INPUTS = (
+    AVD_ROOT / "python-avd" / "pyavd" / "_eos_designs" / "schema" / "eos_designs.schema.yml",
+    AVD_ROOT / "python-avd" / "pyavd" / "_eos_cli_config_gen" / "schema" / "eos_cli_config_gen.schema.yml",
+)
 FORMATTER_SCRIPT = AVD_ROOT / "tools" / "schema_explorer_markdown.py"
 FORMATTER_MODULE = "_avd_schema_explorer_markdown"
 DEFAULT_RELEASE = "devel"
@@ -116,7 +120,8 @@ def _database_is_current(sqlite_marker: Path) -> bool:
     if not sqlite_marker.is_file():
         return False
     sqlite_mtime = sqlite_marker.stat().st_mtime
-    return all(path.stat().st_mtime <= sqlite_mtime for path in (GENERATE_SCRIPT, CATEGORIES_SCRIPT))
+    input_paths = (GENERATE_SCRIPT, CATEGORIES_SCRIPT, *SCHEMA_INPUTS)
+    return all(path.is_file() and path.stat().st_mtime <= sqlite_mtime for path in input_paths)
 
 
 def _ensure_build() -> None:

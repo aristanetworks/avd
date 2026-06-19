@@ -515,9 +515,22 @@ CATEGORY_INFO: dict[str, dict[str, str]] = {
 }
 
 
+def _root_key(key_path: str) -> str:
+    """Return the first key_path segment, keeping dynamic placeholders whole."""
+    depth = 0
+    for index, char in enumerate(key_path):
+        if char == "<":
+            depth += 1
+        elif char == ">":
+            depth = max(0, depth - 1)
+        elif char == "." and depth == 0:
+            return key_path[:index].replace("[]", "").strip("<>")
+    return key_path.replace("[]", "").strip("<>")
+
+
 def get_category(module: str, key_path: str) -> str:
     """Return the category for a schema variable based on its root key."""
-    root_key = key_path.split(".", maxsplit=1)[0].replace("[]", "").strip("<>")
+    root_key = _root_key(key_path)
     for rule_module, prefixes, category in _CATEGORY_RULES:
         if rule_module != module:
             continue

@@ -170,6 +170,17 @@ function inferSchemaBase() {
 }
 const SCHEMA_BASE = inferSchemaBase();
 const DEFAULT_RELEASE = "devel";
+const RELEASE_PATTERN = /^[A-Za-z0-9._-]+$/;
+
+function normalizeRelease(value) {
+  const release = String(value || DEFAULT_RELEASE);
+  if (RELEASE_PATTERN.test(release)) return release;
+  throw new Error("Invalid schema release: " + escapeHtml(release));
+}
+
+function releaseParam(release) {
+  return encodeURIComponent(release);
+}
 
 // SCHEMA_MODULES keys are the canonical module IDs stored in SQLite and used
 // in URL hashes; `name` is the user-visible label rendered in the UI.
@@ -212,11 +223,22 @@ const app = document.getElementById("app");
 // and loads Bootstrap CSS directly from static/index.html.
 const CDN_DEPS = {
   css: [
-    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+    {
+      href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+      integrity: "sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+",
+    },
   ],
   js: [
-    { src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js", global: "bootstrap" },
-    { src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js", global: "initSqlJs" },
+    {
+      src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+      global: "bootstrap",
+      integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js",
+      global: "initSqlJs",
+      integrity: "sha384-8D3Rsfo535FqoC1pHCCQMrNf75UgzyoG/HQm9zOzITRrz3QKzecc2E7JXKGCXoWu",
+    },
   ],
 };
 
@@ -227,14 +249,19 @@ function _hasTagWithUrl(selector, attr, url) {
   return false;
 }
 
-function _loadCss(href) {
+function _loadCss(dep) {
+  const href = typeof dep === "string" ? dep : dep.href;
   if (_hasTagWithUrl("link[rel='stylesheet']", "href", href)) return Promise.resolve();
   return new Promise((resolve, reject) => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = href;
+    if (dep.integrity) {
+      link.integrity = dep.integrity;
+      link.crossOrigin = "anonymous";
+    }
     link.onload = resolve;
-    link.onerror = () => reject(new Error(`Failed to load ${href}`));
+    link.onerror = () => reject(new Error("Failed to load " + href));
     document.head.appendChild(link);
   });
 }
@@ -250,7 +277,8 @@ function _scriptWithUrl(src) {
   return null;
 }
 
-function _loadScript(src, globalName) {
+function _loadScript(dep) {
+  const { src, global: globalName, integrity } = dep;
   if (_globalExists(globalName)) return Promise.resolve();
 
   const existing = _scriptWithUrl(src);
@@ -277,6 +305,10 @@ function _loadScript(src, globalName) {
       script.dataset.schemaExplorerLoading = "1";
       script.src = src;
       script.async = false;
+      if (integrity) {
+        script.integrity = integrity;
+        script.crossOrigin = "anonymous";
+      }
       if (!script.parentNode) document.head.appendChild(script);
     }
   });
@@ -286,7 +318,7 @@ async function ensureDeps() {
   await Promise.all(CDN_DEPS.css.map(_loadCss));
   // Scripts must load in order — Bootstrap before sql.js doesn't strictly
   // matter, but doing them sequentially makes ordering predictable.
-  for (const dep of CDN_DEPS.js) await _loadScript(dep.src, dep.global);
+  for (const dep of CDN_DEPS.js) await _loadScript(dep);
 }
 
 async function ensureSqlJs() {
@@ -359,7 +391,8 @@ function applyTreeVisibility(groupEl) {
     let visible = true;
     while (p) {
       const parentRow = byPath.get(p);
-      if (!parentRow || parentRow.dataset.expanded !== "1") { visible = false; break; }
+      if (!parentRow) break;
+      if (parentRow.dataset.expanded !== "1") { visible = false; break; }
       p = parentRow.dataset.parentId;
     }
     r.style.display = visible ? "" : "none";
@@ -400,8 +433,9 @@ function parseHash() {
 
 async function route() {
   const { segments, params } = parseHash();
-  const release = params.get("release") || DEFAULT_RELEASE;
-  document.getElementById("release-select").value = release;
+  const release = normalizeRelease(params.get("release") || DEFAULT_RELEASE);
+  const releaseSelect = document.getElementById("release-select");
+  if (releaseSelect) releaseSelect.value = release;
   try {
     const db = await getDb(release);
     if (segments.length === 0)             return renderLanding(db, release);
@@ -423,10 +457,10 @@ async function getDb(release) {
   if (app) {
     app.innerHTML = `<div class="text-center py-5 text-muted">
       <span class="spinner-border spinner-border-sm"></span>
-      <span class="ms-2 small">Loading ${release} schema…</span>
+      <span class="ms-2 small">Loading ${escapeHtml(release)} schema…</span>
     </div>`;
   }
-  const url = `${SCHEMA_BASE}/${release}/schema.sqlite`;
+  const url = `${SCHEMA_BASE}/${releaseParam(release)}/schema.sqlite`;
   // cache: "no-cache" forces a conditional GET so the browser revalidates
   // against the server's Last-Modified / ETag every page load. Keeps the
   // bytes cached locally when nothing changed (304), but picks up a freshly
@@ -512,7 +546,7 @@ function renderLanding(db, release) {
     const count = s.var_count || 0;
     return `
       <div class="col">
-        <a href="#/${id}?release=${release}" class="text-decoration-none d-block h-100">
+        <a href="#/${id}?release=${releaseParam(release)}" class="text-decoration-none d-block h-100">
           <div class="card h-100 border-0 shadow-sm module-card">
             <div class="card-body d-flex flex-column">
               <div class="d-flex align-items-start mb-2">
@@ -540,7 +574,7 @@ function renderLanding(db, release) {
     </p>
     <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">${cards}</div>
     <div class="row mb-4"><div class="col">
-      <a href="#/all?release=${release}" class="text-decoration-none d-block">
+      <a href="#/all?release=${releaseParam(release)}" class="text-decoration-none d-block">
         <div class="card border-0 shadow-sm module-card">
           <div class="card-body d-flex align-items-center">
             <span class="fs-3 me-3 brand-color"><i class="bi bi-search"></i></span>
@@ -572,7 +606,7 @@ function renderModule(db, release, module) {
 
   app.innerHTML = `
     <div class="d-flex align-items-center mb-3">
-      <a href="#/?release=${release}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
+      <a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
       <div>
         <h4 class="mb-1 fw-bold brand-color"><i class="bi ${info.icon} me-2"></i>${escapeHtml(info.name)}${isAll ? "" : ` <small class="text-muted fw-normal" style="font-size:0.6em;"><code>${escapeHtml(module)}</code></small>`}</h4>
         ${total ? `<span class="badge" style="background-color:#198754; font-size:0.65rem;">${total} variables</span>` : ""}
@@ -696,7 +730,7 @@ function renderResults(db, release, module, state) {
   const flatColumns = isAll ? "<col style=\"width: 9rem;\"><col style=\"width: 30%;\"><col>" : "<col style=\"width: 34%;\"><col>";
   const rowsHtml = results.map(v => {
     const mod = isAll ? v.module : module;
-    const link = `#/${mod}/${encodeURI(v.key_path)}?release=${release}`;
+    const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
     const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
     return `
       <tr>
@@ -793,6 +827,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
     // Pre-compute which paths have children inside this group, so we know
     // which rows should render a chevron and which are leaves.
     const childCount = new Map();
+    const rowIds = new Set(vars.map(v => treeRowId(v, module)));
     for (const v of vars) {
       const parentId = treeParentId(v, module);
       if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
@@ -801,7 +836,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
     // fetched after filter matches.
     const rowsHtml = vars.map(v => {
       const mod = isAll ? v.module : module;
-      const link = `#/${mod}/${encodeURI(v.key_path)}?release=${release}`;
+      const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
       const leaf = leafSegment(v.key_path);
       const depth = v.depth || 1;
       const indent = (depth - 1) * 1.25;
@@ -815,9 +850,10 @@ function renderTreeResults(target, db, release, module, state, matches) {
       const chevron = isBranch
         ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
         : `<span style="display: inline-block; width: 1.15rem;"></span>`;
+      const isNestedRoot = !!parentId && !rowIds.has(parentId);
       const styleAttr = v.is_context
         ? ` style="opacity: 0.55;"`
-        : (depth > 1 ? ` style="display: none;"` : "");
+        : (depth > 1 && !isNestedRoot ? ` style="display: none;"` : "");
       return `
         <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
             data-row-id="${escapeAttr(rowId)}"
@@ -942,7 +978,7 @@ function renderVarDetail(db, release, module, key_path) {
         </tr></thead>
         <tbody>${children.map(c => `
           <tr>
-            <td class="px-3"><a href="#/${module}/${encodeURI(c.key_path)}?release=${release}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(c.key_path))}</code></a></td>
+            <td class="px-3"><a href="#/${module}/${encodeURI(c.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(c.key_path))}</code></a></td>
             <td>${lifecycleBadge(c)}</td>
             <td class="text-center">${c.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
             <td class="schema-description-text text-muted small">${formatMarkdownInline(c.description || "-")}</td>
@@ -957,7 +993,7 @@ function renderVarDetail(db, release, module, key_path) {
       : "";
   app.innerHTML = `
     <div class="d-flex align-items-center mb-4">
-      <a href="#/${module}?release=${release}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
+      <a href="#/${module}?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
       <div>
         <h4 class="mb-1 fw-bold brand-color"><code class="schema-key-code">${escapeHtml(displayPath(v.key_path))}</code></h4>
         <span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "unknown")}</span>
@@ -981,7 +1017,7 @@ function renderVarDetail(db, release, module, key_path) {
             ${v.category ? `<tr><td class="px-3 fw-semibold small text-muted">Category</td><td><span class="badge schema-category-badge">${escapeHtml(v.category)}</span></td></tr>` : ""}
             ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
             ${v.cross_ref ? renderCrossRefRow(v.cross_ref, release) : ""}
-            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${release}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
+            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${releaseParam(release)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
         </div></div>
@@ -1017,8 +1053,8 @@ function renderCrossRefRow(ref, release) {
   }
   const keyPath = parts.join(".");
   const link = keyPath
-    ? `#/${target}/${encodeURI(keyPath)}?release=${release}`
-    : `#/${target}?release=${release}`;
+    ? `#/${target}/${encodeURI(keyPath)}?release=${releaseParam(release)}`
+    : `#/${target}?release=${releaseParam(release)}`;
   return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${link}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
 }
 
@@ -1101,7 +1137,7 @@ function failEmbed(el, msg) {
 }
 
 async function mountEmbed(el) {
-  const release = _embedAttr(el, "release", DEFAULT_RELEASE);
+  const release = normalizeRelease(_embedAttr(el, "release", DEFAULT_RELEASE));
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
   const view    = _embedAttr(el, "view", "tree");
