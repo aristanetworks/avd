@@ -2775,7 +2775,6 @@ mcs client
 | .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py |
 | .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py |
 
-
 #### SNMP Device Configuration
 
 ```eos
