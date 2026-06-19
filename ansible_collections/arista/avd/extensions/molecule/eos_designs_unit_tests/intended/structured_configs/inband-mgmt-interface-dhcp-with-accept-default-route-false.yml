@@ -34,6 +34,10 @@ ntp:
   - name: pool.ntp.org
   vrf: INBAND_MGMT
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: INBAND_MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1/24
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092
