@@ -103,22 +103,27 @@ function renderDefaultObjectTable(obj, className = "schema-default-field-table")
 function renderStructuredDefault(parts) {
   if (!parts.parseOk) return "";
   if (Array.isArray(parts.parsed) && parts.parsed.every(item => item && typeof item === "object" && !Array.isArray(item))) {
+    const idPrefix = `d${++_treeRenderSeq}`;
     const itemsHtml = parts.parsed.map((item, idx) => {
       const fields = Object.fromEntries(Object.entries(item).filter(([key]) => key !== "platforms"));
       const platforms = Array.isArray(item.platforms) && item.platforms.length
         ? item.platforms.join(", ")
         : `Item ${idx + 1}`;
       const settingsCount = Object.keys(fields).length;
+      const id = `${idPrefix}-item-${idx}`;
       return `
-        <details class="schema-default-item">
-          <summary>
-            <code>${escapeHtml(platforms)}</code>
-            <span class="text-muted small ms-2">${settingsCount} setting${settingsCount === 1 ? "" : "s"}</span>
-          </summary>
-          ${renderDefaultObjectTable(fields)}
-        </details>`;
+        <div class="schema-group schema-default-group">
+          <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
+            <i class="bi bi-chevron-right collapse-icon"></i>
+            <code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${escapeHtml(platforms)}</code>
+            <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${settingsCount} setting${settingsCount === 1 ? "" : "s"}</span>
+          </div>
+          <div class="collapse" id="${id}">
+            ${renderDefaultObjectTable(fields)}
+          </div>
+        </div>`;
     }).join("");
-    return `<div class="schema-default-structured">${itemsHtml}</div>`;
+    return `<div class="schema-default-structured schema-default-groups">${itemsHtml}</div>`;
   }
   if (parts.parsed && typeof parts.parsed === "object" && !Array.isArray(parts.parsed)) {
     return `<div class="schema-default-structured">${renderDefaultObjectTable(parts.parsed)}</div>`;
@@ -129,13 +134,19 @@ function renderDefaultValue(value, options = {}) {
   const parts = defaultValueParts(value, options.noneLabel || "-");
   if (!parts.hasValue || !parts.large) return `<code>${escapeHtml(parts.summary)}</code>`;
   if (options.compact) return `<code class="schema-default-compact" title="${escapeAttr(parts.summary)}">${escapeHtml(parts.summary)}</code>`;
-  const openAttr = options.open ? " open" : "";
   const structuredHtml = renderStructuredDefault(parts);
+  if (structuredHtml) {
+    return `
+      <div class="schema-default-details">
+        ${structuredHtml}
+        <details class="schema-default-raw"><summary class="schema-default-summary"><span class="small">Raw JSON</span></summary><pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre></details>
+      </div>`;
+  }
+  const openAttr = options.open ? " open" : "";
   return `
     <details class="schema-default-details"${openAttr}>
       <summary class="schema-default-summary"><code>${escapeHtml(parts.summary)}</code></summary>
-      ${structuredHtml || `<pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>`}
-      ${structuredHtml ? `<details class="schema-default-raw"><summary class="schema-default-summary"><span class="small">Raw JSON</span></summary><pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre></details>` : ""}
+      <pre class="schema-default-full"><code>${escapeHtml(parts.full)}</code></pre>
     </details>`;
 }
 function rowModule(row, currentModule) {
@@ -551,6 +562,14 @@ function getSiblings(db, release, module, parent_path, exclude_key) {
   return rows(db, "SELECT key_path, var_type FROM schema_vars WHERE release = ? AND module = ? AND parent_path = ? AND key_path != ? ORDER BY key_path", [release, module, parent_path, exclude_key]);
 }
 
+function getDescendants(db, release, module, key_path) {
+  return rows(
+    db,
+    "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND (key_path LIKE ? OR key_path LIKE ?) ORDER BY id LIMIT 2000",
+    [release, module, `${key_path}.%`, `${key_path}[]%`],
+  );
+}
+
 // ── views ────────────────────────────────────────────────────────────────────
 
 function renderLanding(db, release) {
@@ -963,6 +982,68 @@ function renderTreeResults(target, db, release, module, state, matches) {
   });
 }
 
+function renderDetailChildrenTree(release, module, rootPath, children, descendants) {
+  const childRows = [...children, ...descendants].filter((row, index, arr) => arr.findIndex(item => item.key_path === row.key_path) === index);
+  const childCount = new Map();
+  const rowIds = new Set(childRows.map(row => treeRowId(row, module)));
+  for (const row of childRows) {
+    const parentId = treeParentId(row, module);
+    if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
+  }
+
+  const rowsHtml = childRows.map(row => {
+    const rowId = treeRowId(row, module);
+    const parentId = treeParentId(row, module);
+    const depth = Math.max(1, (row.depth || 1) - splitKeyPath(rootPath).length);
+    const indent = (depth - 1) * 1.25;
+    const isBranch = (childCount.get(rowId) || 0) > 0;
+    const isNestedRoot = !parentId || !rowIds.has(parentId);
+    const initiallyExpanded = isNestedRoot;
+    const chevron = isBranch
+      ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
+      : `<span style="display: inline-block; width: 1.15rem;"></span>`;
+    const styleAttr = depth > 1 && !isNestedRoot ? ` style="display: none;"` : "";
+    return `
+      <tr class="schema-tree-row"
+          data-row-id="${escapeAttr(rowId)}"
+          data-parent-id="${escapeAttr(parentId)}"
+          data-is-branch="${isBranch ? "1" : "0"}"
+          data-depth="${depth}"
+          data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
+        <td class="px-3">
+          <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(row.key_path))}</code></a></span>
+        </td>
+        <td>${lifecycleBadge(row)}</td>
+        <td class="text-center">${row.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
+        <td class="schema-description-text text-muted small">${formatMarkdownInline(row.description || "-")}</td>
+      </tr>`;
+  }).join("");
+
+  return `
+    <h5 class="fw-bold brand-color mb-2"><i class="bi bi-diagram-2 me-2"></i>Child Variables
+      <span class="badge bg-secondary ms-1" style="font-size: 0.65rem; vertical-align: middle;">${childRows.length}</span>
+    </h5>
+    <div class="card border-0 shadow-sm mb-4 schema-detail-children">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+          <colgroup>
+            <col style="width: 32%;">
+            <col style="width: 8rem;">
+            <col style="width: 4rem;">
+            <col>
+          </colgroup>
+          <thead class="table-light"><tr>
+            <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
+            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
+            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Req</th>
+            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
+          </tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
 function renderVarDetail(db, release, module, key_path) {
   if (!SCHEMA_MODULES[module]) return fail(`Module not found: ${module}`);
   const v = getVar(db, release, module, key_path);
@@ -986,33 +1067,8 @@ function renderVarDetail(db, release, module, key_path) {
     .map(k => `<tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">${k}</td><td><code>${escapeHtml(String(constraints[k]))}</code></td></tr>`)
     .join("");
 
-  const childrenHtml = children.length ? `
-    <h5 class="fw-bold brand-color mb-2"><i class="bi bi-diagram-2 me-2"></i>Child Variables
-      <span class="badge bg-secondary ms-1" style="font-size: 0.65rem; vertical-align: middle;">${children.length}</span>
-    </h5>
-    <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
-        <colgroup>
-          <col style="width: 28%;">
-          <col style="width: 8rem;">
-          <col style="width: 4rem;">
-          <col>
-        </colgroup>
-        <thead class="table-light"><tr>
-          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Req</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
-        </tr></thead>
-        <tbody>${children.map(c => `
-          <tr>
-            <td class="px-3"><a href="#/${module}/${encodeURI(c.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(c.key_path))}</code></a></td>
-            <td>${lifecycleBadge(c)}</td>
-            <td class="text-center">${c.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
-            <td class="schema-description-text text-muted small">${formatMarkdownInline(c.description || "-")}</td>
-          </tr>`).join("")}</tbody>
-      </table>
-    </div></div>` : "";
+  const descendants = children.length ? getDescendants(db, release, module, key_path) : [];
+  const childrenHtml = children.length ? renderDetailChildrenTree(release, module, key_path, children, descendants) : "";
 
   const lifecycleHeader = v.removed
     ? `<span class="badge bg-danger ms-1">removed</span>`

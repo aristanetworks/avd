@@ -960,6 +960,16 @@
   gap: 0.75rem;
   margin-top: 0.5rem;
 }
+:where(.schema-spa-host, .schema-embed) .schema-default-groups {
+  gap: 0;
+  margin-top: 0;
+}
+:where(.schema-spa-host, .schema-embed) .schema-default-group .schema-group-header {
+  background-color: var(--se-light-bg);
+}
+:where(.schema-spa-host, .schema-embed) .schema-default-group .schema-default-field-table {
+  margin: 0;
+}
 :where(.schema-spa-host, .schema-embed) .schema-default-item {
   border: 1px solid #d8dee9;
   border-radius: 0.375rem;
@@ -977,12 +987,20 @@
 }
 :where(.schema-spa-host, .schema-embed) .schema-default-field-table,
 :where(.schema-spa-host, .schema-embed) .schema-default-nested-table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 :where(.schema-spa-host, .schema-embed) .schema-default-field-key {
-  width: 13rem;
+  width: 1%;
   color: #6c757d;
+  white-space: nowrap;
   vertical-align: top;
+}
+:where(.schema-spa-host, .schema-embed) .schema-default-field-key code {
+  white-space: nowrap;
+}
+:where(.schema-spa-host, .schema-embed) .schema-default-field-table td:last-child,
+:where(.schema-spa-host, .schema-embed) .schema-default-nested-table td:last-child {
+  overflow-wrap: anywhere;
 }
 :where(.schema-spa-host, .schema-embed) .schema-default-nested-table {
   border: 1px solid #e5e7eb;
