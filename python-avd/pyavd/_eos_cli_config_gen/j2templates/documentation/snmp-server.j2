@@ -176,16 +176,16 @@
 | {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
 {%         endfor %}
 {%     endif %}
-{% if snmp_server.extensions is defined and snmp_server.extensions is not none %}
+{%     if snmp_server.extensions is arista.avd.defined %}
+
 #### SNMP Extensions
 
 | OID | Script/File Path |
 | --- | ---------------- |
-{%     for extension in snmp_server.extensions | arista.avd.natural_sort('oid') %}
+{%         for extension in snmp_server.extensions | arista.avd.natural_sort('oid') %}
 | {{ extension.oid }} | {{ extension.path }} |
-{%     endfor %}
-
-{% endif %}
+{%         endfor %}
+{%     endif %}
 
 #### SNMP Device Configuration
 
