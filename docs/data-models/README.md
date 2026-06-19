@@ -25,13 +25,3 @@
 </div>
 
 The **[Schema Explorer](../schema-explorer.md)** offers a browsable, searchable view of every variable across both data models — grouped by category or by documentation table, with full type, default, deprecation, and cross-schema reference detail. It renders inside Material's chrome (same header, same nav) — no switch to a separate SPA page.
-
-## Embedded preview
-
-The same explorer can also be embedded directly inside any docs page via the `schema-explorer` Markdown fence — Material's chrome, navigation, and right-rail TOC stay intact. Example below: a tree view scoped to the `router_bgp` subtree of the EOS Config schema.
-
-```schema-explorer
-module: eos_cli_config_gen
-root: router_bgp
-height: 500px
-```
