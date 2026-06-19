@@ -27151,6 +27151,9 @@ keys:
           - int
         description:
           type: str
+        rd:
+          type: str
+          description: Route Distinguisher.
         ip_routing:
           type: bool
         ipv6_routing:

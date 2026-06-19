@@ -10,6 +10,7 @@
     | [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | These keys are ignored if the name of the vrf is 'default'.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "vrfs.[].rd") | String |  |  |  | Route Distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing_ipv6_interfaces</samp>](## "vrfs.[].ip_routing_ipv6_interfaces") | Boolean |  |  |  |  |
@@ -26,6 +27,9 @@
         # VRF Name.
       - name: <str; required; unique>
         description: <str>
+
+        # Route Distinguisher.
+        rd: <str>
         ip_routing: <bool>
         ipv6_routing: <bool>
         ip_routing_ipv6_interfaces: <bool>

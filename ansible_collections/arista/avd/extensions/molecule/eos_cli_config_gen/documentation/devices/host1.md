@@ -8377,6 +8377,8 @@ ip virtual-router mac-address mlag-peer
 | TENANT_A_PROJECT02 | True |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
+| TEST3 | True |
+| TEST4 | - |
 
 #### IP Routing Device Configuration
 
@@ -8391,6 +8393,7 @@ ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ip routing vrf TEST1
 ip routing ipv6 interfaces vrf TEST2
+ip routing vrf TEST3
 ```
 
 ### IPv6 Routing
@@ -8409,6 +8412,8 @@ ip routing ipv6 interfaces vrf TEST2
 | TENANT_A_PROJECT02 | false |
 | TEST1 | true |
 | TEST2 | false |
+| TEST3 | false |
+| TEST4 | false |
 
 #### IPv6 Routing Device Configuration
 
@@ -12785,16 +12790,18 @@ mac access-list TEST5
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| BLAH | disabled |
-| defauls | disabled |
-| defaulu | disabled |
-| MGMT | disabled |
-| TENANT_A_PROJECT01 | enabled |
-| TENANT_A_PROJECT02 | enabled |
-| TEST1 | enabled |
-| TEST2 | enabled (ipv6 interface) |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| BLAH | - | disabled |
+| defauls | - | disabled |
+| defaulu | - | disabled |
+| MGMT | - | disabled |
+| TENANT_A_PROJECT01 | - | enabled |
+| TENANT_A_PROJECT02 | - | enabled |
+| TEST1 | - | enabled |
+| TEST2 | - | enabled (ipv6 interface) |
+| TEST3 | 100:100 | enabled |
+| TEST4 | 10.20.30.40:102 | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -12811,6 +12818,12 @@ vrf instance TENANT_A_PROJECT02
 vrf instance TEST1
 !
 vrf instance TEST2
+!
+vrf instance TEST3
+   rd 100:100
+!
+vrf instance TEST4
+   rd 10.20.30.40:102
 !
 vrf instance defauls
 !

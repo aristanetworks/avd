@@ -439,9 +439,9 @@ router multicast
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| FUTURE_IPV4 | enabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| FUTURE_IPV4 | - | enabled |
 
 ### VRF Instances Device Configuration
 

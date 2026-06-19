@@ -144,9 +144,9 @@ router multicast
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| FUTURE_IPV6_INTERFACES | - | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

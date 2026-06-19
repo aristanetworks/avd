@@ -74899,6 +74899,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
+            "rd": {"type": str},
             "ip_routing": {"type": bool},
             "ipv6_routing": {"type": bool},
             "ip_routing_ipv6_interfaces": {"type": bool},
@@ -74907,6 +74908,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """VRF Name."""
         description: str | None
+        rd: str | None
+        """Route Distinguisher."""
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
@@ -74926,6 +74929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
+                rd: str | None | UndefinedType = Undefined,
                 ip_routing: bool | None | UndefinedType = Undefined,
                 ipv6_routing: bool | None | UndefinedType = Undefined,
                 ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -74940,6 +74944,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: VRF Name.
                     description: description
+                    rd: Route Distinguisher.
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
