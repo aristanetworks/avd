@@ -508,6 +508,86 @@
   background-color: #343a40 !important;
 }
 
+/* Material MkDocs dark mode uses data-md-color-scheme="slate" instead of Bootstrap data-bs-theme. */
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) {
+  --se-body-bg: var(--md-code-bg-color, #1f2937);
+  --se-border-color: var(--md-default-fg-color--lightest, #495057);
+  --se-muted: var(--md-default-fg-color--light, #adb5bd);
+  --se-light-bg: rgba(68, 115, 169, 0.12);
+  --se-brand: var(--md-typeset-a-color, #6ea8fe);
+  --hover-bg: rgba(68, 115, 169, 0.18);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+
+[data-md-color-scheme="slate"] .schema-spa-host {
+  background-color: transparent;
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.card, .list-group-item, .form-control, .input-group-text) {
+  background-color: var(--se-body-bg);
+  border-color: var(--se-border-color);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.card-header.bg-light, .bg-light, .table-light, .schema-group-header, .schema-results-toolbar) {
+  background-color: var(--se-light-bg) !important;
+  border-color: var(--se-border-color);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-group-header:hover,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-category-list .list-group-item:hover:not(.active) {
+  background-color: rgba(68, 115, 169, 0.24) !important;
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.table, .table td, .table thead th) {
+  border-color: var(--se-border-color);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .table thead th {
+  background-color: var(--se-light-bg);
+  color: var(--md-default-fg-color--light, #adb5bd);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(pre, .schema-default-full, .schema-default-item, .schema-default-item > summary, .schema-default-nested-table) {
+  background-color: var(--md-code-bg-color, #111827);
+  border-color: var(--se-border-color);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(pre code, .schema-default-full code) {
+  background: transparent;
+  color: var(--md-code-fg-color, var(--md-default-fg-color, #dee2e6));
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-description code, .schema-description-text code, .schema-valid-value) {
+  background-color: rgba(68, 115, 169, 0.22);
+  border-color: rgba(68, 115, 169, 0.42);
+  color: var(--md-typeset-a-color, #8bb9fe);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-search-match {
+  background-color: rgba(212, 113, 34, 0.38);
+  color: var(--md-default-fg-color, #f5f5f5);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-valid-value-default {
+  background-color: rgba(40, 167, 69, 0.18);
+  border-color: rgba(40, 167, 69, 0.45);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-row-selected {
+  background-color: rgba(68, 115, 169, 0.22) !important;
+  outline-color: var(--md-typeset-a-color, #6ea8fe);
+}
+
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-cat-pill, .schema-category-badge, .badge.bg-light) {
+  background-color: rgba(68, 115, 169, 0.24) !important;
+  color: var(--md-default-fg-color, #dee2e6) !important;
+  border-color: var(--se-border-color) !important;
+}
+
 /* ── Feature detail page ─────────────────────────────────────────────────── */
 
 /* Code blocks — scoped to the SPA / embed roots so they don't override
@@ -651,7 +731,7 @@
 }
 
 /* ── Schema Explorer: group headers ─────────────────────────────────── */
-.schema-group-header {
+:where(.schema-spa-host, .schema-embed) .schema-group-header {
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   background-color: var(--hover-bg);
@@ -661,14 +741,14 @@
   gap: 0.5rem;
   transition: background-color 0.15s;
 }
-.schema-group-header:hover {
+:where(.schema-spa-host, .schema-embed) .schema-group-header:hover {
   background-color: #e8eef6;
 }
-.schema-group-header .collapse-icon {
+:where(.schema-spa-host, .schema-embed) .schema-group-header .collapse-icon {
   transition: transform 0.2s;
   font-size: 0.75rem;
 }
-.schema-group-header[aria-expanded="true"] .collapse-icon {
+:where(.schema-spa-host, .schema-embed) .schema-group-header[aria-expanded="true"] .collapse-icon {
   transform: rotate(90deg);
 }
 
@@ -683,7 +763,7 @@
 }
 
 /* Keyboard-selected row */
-.schema-row-selected {
+:where(.schema-spa-host, .schema-embed) .schema-row-selected {
   background-color: var(--hover-bg) !important;
   outline: 2px solid var(--arista-light-blue);
   outline-offset: -2px;
@@ -696,9 +776,9 @@
 }
 
 /* Key path segments */
-.schema-key-segment:nth-child(odd) { opacity: 0.6; }
-.schema-key-segment:nth-child(even) { opacity: 1; font-weight: 600; }
-.schema-key-sep { opacity: 0.3; }
+:where(.schema-spa-host, .schema-embed) .schema-key-segment:nth-child(odd) { opacity: 0.6; }
+:where(.schema-spa-host, .schema-embed) .schema-key-segment:nth-child(even) { opacity: 1; font-weight: 600; }
+:where(.schema-spa-host, .schema-embed) .schema-key-sep { opacity: 0.3; }
 
 [data-bs-theme="dark"] .schema-spa-host .schema-key-segment:nth-child(odd),
 [data-bs-theme="dark"] .schema-embed .schema-key-segment:nth-child(odd) { opacity: 0.5; }
@@ -706,7 +786,7 @@
 [data-bs-theme="dark"] .schema-embed .schema-key-segment:nth-child(even) { opacity: 1; }
 
 /* Search match highlight */
-.schema-search-match {
+:where(.schema-spa-host, .schema-embed) .schema-search-match {
   background-color: rgba(212,113,34,0.2);
   border-radius: 2px;
   padding: 0 2px;
@@ -718,12 +798,12 @@
 }
 
 /* Sort header */
-.schema-sort-header {
+:where(.schema-spa-host, .schema-embed) .schema-sort-header {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
 }
-.schema-sort-header:hover {
+:where(.schema-spa-host, .schema-embed) .schema-sort-header:hover {
   color: var(--se-brand) !important;
 }
 
@@ -733,17 +813,28 @@
 }
 
 /* Responsive filter toggle */
-.schema-filter-toggle {
+:where(.schema-spa-host, .schema-embed) .schema-filter-toggle {
   display: none;
 }
 @media (max-width: 991.98px) {
-  .schema-filter-toggle { display: block; }
-  .schema-filters-collapsible { display: none; }
-  .schema-filters-collapsible.show { display: flex; flex-wrap: wrap; }
+  :where(.schema-spa-host, .schema-embed) .schema-filter-toggle { display: block; }
+  :where(.schema-spa-host, .schema-embed) .schema-filters-collapsible { display: none; }
+  :where(.schema-spa-host, .schema-embed) .schema-filters-collapsible.show { display: flex; flex-wrap: wrap; }
+}
+
+.schema-spa-host .card.schema-results-card,
+.schema-embed .card.schema-results-card {
+  position: sticky;
+  top: 1rem;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-results-scroll {
+  max-height: 70vh;
+  overflow: auto;
 }
 
 /* Module badge in all-modules mode */
-.schema-module-badge {
+:where(.schema-spa-host, .schema-embed) .schema-module-badge {
   font-size: 0.6rem;
   padding: 0.15em 0.4em;
 }
@@ -752,23 +843,23 @@
    the same line even when the cell is narrow — without this, a tight Key
    column can wrap the chevron above the key (looks broken). The leaf code
    itself still allows long names to wrap inside the cell when needed. */
-.schema-tree-indent {
+:where(.schema-spa-host, .schema-embed) .schema-tree-indent {
   display: inline-flex;
   align-items: baseline;
   gap: 0.15rem;
   max-width: 100%;
 }
-.schema-tree-row td.px-3 {
+:where(.schema-spa-host, .schema-embed) .schema-tree-row td.px-3 {
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
 }
-.schema-tree-row td.px-3 code {
+:where(.schema-spa-host, .schema-embed) .schema-tree-row td.px-3 code {
   white-space: nowrap;
 }
 .schema-spa-host code.schema-key-code,
 .schema-embed code.schema-key-code,
-.schema-key-code {
+:where(.schema-spa-host, .schema-embed) .schema-key-code {
   background: transparent !important;
   border: 0;
   border-radius: 0;
@@ -777,24 +868,24 @@
 }
 
 /* Large default values are summarized in tables and formatted on detail pages. */
-.schema-default-compact {
+:where(.schema-spa-host, .schema-embed) .schema-default-compact {
   white-space: nowrap;
 }
-.schema-default-details {
+:where(.schema-spa-host, .schema-embed) .schema-default-details {
   max-width: 100%;
 }
-.schema-default-summary {
+:where(.schema-spa-host, .schema-embed) .schema-default-summary {
   cursor: pointer;
   display: inline-flex;
   max-width: 100%;
   align-items: center;
 }
-.schema-default-summary code {
+:where(.schema-spa-host, .schema-embed) .schema-default-summary code {
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
 }
-.schema-default-full {
+:where(.schema-spa-host, .schema-embed) .schema-default-full {
   max-height: 26rem;
   overflow: auto;
   margin: 0.5rem 0 0;
@@ -806,7 +897,7 @@
   line-height: 1.35;
   white-space: pre;
 }
-.schema-default-full code {
+:where(.schema-spa-host, .schema-embed) .schema-default-full code {
   white-space: pre;
 }
 [data-bs-theme="dark"] .schema-spa-host .schema-default-full,
@@ -814,53 +905,53 @@
   border-color: #31445f;
   background: #111827;
 }
-.schema-default-structured {
+:where(.schema-spa-host, .schema-embed) .schema-default-structured {
   display: grid;
   gap: 0.75rem;
   margin-top: 0.5rem;
 }
-.schema-default-item {
+:where(.schema-spa-host, .schema-embed) .schema-default-item {
   border: 1px solid #d8dee9;
   border-radius: 0.375rem;
   background: #fff;
   overflow: hidden;
 }
-.schema-default-item > summary {
+:where(.schema-spa-host, .schema-embed) .schema-default-item > summary {
   cursor: pointer;
   padding: 0.55rem 0.75rem;
   background: #f8fafc;
   border-bottom: 1px solid #d8dee9;
 }
-.schema-default-item:not([open]) > summary {
+:where(.schema-spa-host, .schema-embed) .schema-default-item:not([open]) > summary {
   border-bottom: 0;
 }
-.schema-default-field-table,
-.schema-default-nested-table {
+:where(.schema-spa-host, .schema-embed) .schema-default-field-table,
+:where(.schema-spa-host, .schema-embed) .schema-default-nested-table {
   table-layout: fixed;
 }
-.schema-default-field-key {
+:where(.schema-spa-host, .schema-embed) .schema-default-field-key {
   width: 13rem;
   color: #6c757d;
   vertical-align: top;
 }
-.schema-default-nested-table {
+:where(.schema-spa-host, .schema-embed) .schema-default-nested-table {
   border: 1px solid #e5e7eb;
   border-radius: 0.25rem;
   overflow: hidden;
 }
-.schema-default-pill-list {
+:where(.schema-spa-host, .schema-embed) .schema-default-pill-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
 }
-.schema-default-inline-json {
+:where(.schema-spa-host, .schema-embed) .schema-default-inline-json {
   max-height: 12rem;
   overflow: auto;
   margin: 0;
   font-size: 0.75rem;
   white-space: pre;
 }
-.schema-default-raw {
+:where(.schema-spa-host, .schema-embed) .schema-default-raw {
   margin-top: 0.75rem;
 }
 [data-bs-theme="dark"] .schema-spa-host .schema-default-item,
@@ -879,7 +970,7 @@
 }
 
 /* ── Schema Explorer: valid value pills ─────────────────────────────── */
-.schema-valid-value {
+:where(.schema-spa-host, .schema-embed) .schema-valid-value {
   display: inline-block;
   padding: 0.15em 0.5em;
   margin: 0.1em 0.25em 0.1em 0;
@@ -890,7 +981,7 @@
   color: #16325B;
 }
 
-.schema-valid-value-default {
+:where(.schema-spa-host, .schema-embed) .schema-valid-value-default {
   background-color: #d4edda;
   border-color: #28a745;
 }
@@ -909,10 +1000,10 @@
 }
 
 /* Rendered description */
-.schema-description p { font-size: 0.88rem; }
-.schema-description ul { font-size: 0.88rem; }
-.schema-description code,
-.schema-description-text code {
+:where(.schema-spa-host, .schema-embed) .schema-description p { font-size: 0.88rem; }
+:where(.schema-spa-host, .schema-embed) .schema-description ul { font-size: 0.88rem; }
+:where(.schema-spa-host, .schema-embed) .schema-description code,
+:where(.schema-spa-host, .schema-embed) .schema-description-text code {
   font-size: 0.82rem;
   padding: 0.1em 0.35em;
   background-color: #f0f4fa;
@@ -926,19 +1017,25 @@
   color: #b8d4fe;
 }
 
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description code,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description-text code {
+  background-color: rgba(68, 115, 169, 0.24);
+  color: var(--md-default-fg-color, #f5f5f5);
+}
+
 /* ── Schema Explorer: category sidebar ──────────────────────────────── */
-.schema-category-list .list-group-item {
+:where(.schema-spa-host, .schema-embed) .schema-category-list .list-group-item {
   padding: 0.35rem 0.75rem;
   font-size: 0.82rem;
   border: 0;
   border-bottom: 1px solid #f0f0f0;
 }
-.schema-category-list .list-group-item.active {
+:where(.schema-spa-host, .schema-embed) .schema-category-list .list-group-item.active {
   background-color: var(--se-brand);
   border-color: var(--se-brand);
   color: white;
 }
-.schema-category-list .list-group-item:hover:not(.active) {
+:where(.schema-spa-host, .schema-embed) .schema-category-list .list-group-item:hover:not(.active) {
   background-color: var(--hover-bg);
 }
 
@@ -959,7 +1056,7 @@
 }
 
 /* Category badge */
-.schema-category-badge {
+:where(.schema-spa-host, .schema-embed) .schema-category-badge {
   font-size: 0.58rem;
   padding: 0.15em 0.45em;
   background-color: var(--arista-light-blue);
@@ -974,10 +1071,10 @@
 }
 
 /* Mobile category pills */
-.schema-category-pills {
+:where(.schema-spa-host, .schema-embed) .schema-category-pills {
   display: none;
 }
-.schema-cat-pill {
+:where(.schema-spa-host, .schema-embed) .schema-cat-pill {
   cursor: pointer;
   background-color: #e9ecef;
   color: #495057;
@@ -985,11 +1082,11 @@
   padding: 0.3em 0.65em;
   transition: background-color 0.15s;
 }
-.schema-cat-pill:hover {
+:where(.schema-spa-host, .schema-embed) .schema-cat-pill:hover {
   background-color: var(--arista-light-blue);
   color: white;
 }
-.schema-cat-pill.active {
+:where(.schema-spa-host, .schema-embed) .schema-cat-pill.active {
   background-color: var(--se-brand);
   color: white;
 }
@@ -1005,47 +1102,51 @@
 }
 
 @media (max-width: 991.98px) {
-  .schema-category-sidebar { display: none !important; }
-  .schema-category-pills {
+  :where(.schema-spa-host, .schema-embed) .schema-category-sidebar { display: none !important; }
+  :where(.schema-spa-host, .schema-embed) .schema-category-pills {
     display: flex;
     overflow-x: auto;
     gap: 0.35rem;
     padding-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
   }
-  .schema-category-pills .badge { white-space: nowrap; }
+  :where(.schema-spa-host, .schema-embed) .schema-category-pills .badge { white-space: nowrap; }
 }
 
 /* CI run report — rendered markdown */
-.ci-markdown h1, .ci-markdown h2, .ci-markdown h3, .ci-markdown h4 {
+:where(.schema-spa-host, .schema-embed) .ci-markdown h1,
+:where(.schema-spa-host, .schema-embed) .ci-markdown h2,
+:where(.schema-spa-host, .schema-embed) .ci-markdown h3,
+:where(.schema-spa-host, .schema-embed) .ci-markdown h4 {
   color: var(--se-brand);
   font-weight: 600;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
-.ci-markdown h2 { font-size: 1.15rem; }
-.ci-markdown h3 { font-size: 1rem; }
-.ci-markdown h4 { font-size: 0.92rem; }
-.ci-markdown table { font-size: 0.85rem; margin-bottom: 0.75rem; }
-.ci-markdown table thead th {
+:where(.schema-spa-host, .schema-embed) .ci-markdown h2 { font-size: 1.15rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown h3 { font-size: 1rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown h4 { font-size: 0.92rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown table { font-size: 0.85rem; margin-bottom: 0.75rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown table thead th {
   background-color: var(--bs-tertiary-bg);
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--bs-secondary-color);
 }
-.ci-markdown code {
+:where(.schema-spa-host, .schema-embed) .ci-markdown code {
   background-color: var(--bs-tertiary-bg);
   padding: 0.05em 0.35em;
   border-radius: 3px;
   font-size: 0.82rem;
 }
-.ci-markdown pre code { background: transparent; padding: 0; }
-.ci-markdown ul, .ci-markdown ol { padding-left: 1.4rem; }
-.ci-markdown li { margin-bottom: 0.15rem; font-size: 0.88rem; }
-.ci-markdown a { color: var(--arista-orange); }
-.ci-markdown > *:first-child { margin-top: 0; }
-.ci-markdown > *:last-child { margin-bottom: 0; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown pre code { background: transparent; padding: 0; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown ul,
+:where(.schema-spa-host, .schema-embed) .ci-markdown ol { padding-left: 1.4rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown li { margin-bottom: 0.15rem; font-size: 0.88rem; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown a { color: var(--arista-orange); }
+:where(.schema-spa-host, .schema-embed) .ci-markdown > *:first-child { margin-top: 0; }
+:where(.schema-spa-host, .schema-embed) .ci-markdown > *:last-child { margin-bottom: 0; }
 
 /* Embedded mode — hide the SPA's own navbar when it's loaded in an iframe
    inside the MkDocs Schema Explorer wrapper page. The wrapper provides the
@@ -1130,6 +1231,41 @@ html.in-iframe body { padding-top: 0; }
   font-family: var(--md-code-font-family, "Roboto Mono", "Fira Mono", monospace);
 }
 
+/* Match the Material-hosted full-page explorer to MkDocs Material typography.
+   The standalone SPA remains on its own Roboto scale outside .md-typeset. */
+.md-typeset .schema-spa-host {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.md-typeset .schema-spa-host code,
+.md-typeset .schema-spa-host pre,
+.md-typeset .schema-spa-host .font-monospace {
+  font-family: var(--md-code-font-family, "Roboto Mono", "Fira Mono", monospace);
+}
+.md-typeset .schema-spa-host .fs-3 { font-size: 1.25rem !important; }
+.md-typeset .schema-spa-host .fs-4 { font-size: 1.05rem !important; }
+.md-typeset .schema-spa-host .btn-sm,
+.md-typeset .schema-spa-host .btn-group-sm > .btn { font-size: 0.875em; }
+.md-typeset .schema-spa-host .schema-description p,
+.md-typeset .schema-spa-host .schema-description ul {
+  font-size: 1em;
+}
+.md-typeset .schema-spa-host .schema-description code,
+.md-typeset .schema-spa-host .schema-description-text code,
+.md-typeset .schema-spa-host code.schema-key-code {
+  font-size: 0.9em !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .schema-spa-host .schema-description code,
+[data-md-color-scheme="slate"] .md-typeset .schema-spa-host .schema-description-text code,
+[data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-description code,
+[data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-description-text code {
+  background-color: rgba(68, 115, 169, 0.38) !important;
+  color: var(--md-default-fg-color, #f5f5f5) !important;
+  box-shadow: none !important;
+}
+
 /* Match embedded explorer type to MkDocs Material instead of Bootstrap's
    larger rem scale. These override fixed rem values and inline styles in the
    generated explorer markup without changing the standalone SPA. */
@@ -1150,19 +1286,3 @@ html.in-iframe body { padding-top: 0; }
 /* Option 2 — banner-less SPA. Same hide rule as iframe mode but without the
    sub-page padding tweaks; the parent page (whatever it is) provides chrome. */
 html.style-none #schema-navbar { display: none !important; }
-
-/* Keep the search/filter bar visible while the user scrolls through long
-   result tables. Sticks just under the AVD docs banner inside the iframe
-   and just under the SPA's own header in the standalone view. */
-.schema-filter-sticky {
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-  background-color: var(--bs-body-bg, #fff);
-  padding: 0.75rem 0;
-  margin-bottom: 0.75rem !important;
-  border-bottom: 1px solid var(--bs-border-color, #dee2e6);
-}
-/* When the SPA is loaded inside the iframe wrapper or standalone, our own
-   navbar sits above the filter — push the filter below it. */
-html:not(.in-iframe):not(.style-none) .schema-filter-sticky { top: 3.4rem; }

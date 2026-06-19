@@ -60,6 +60,13 @@ CSS_FILES = (f"{ASSET_SUBPATH}/css/style.css",)
 JS_FILES = (f"{ASSET_SUBPATH}/js/app.js",)
 
 
+def _iter_static_files() -> tuple[Path, ...]:
+    """Return all static SPA files that affect the generated build tree."""
+    if not STATIC_DIR.is_dir():
+        return ()
+    return tuple(path for path in STATIC_DIR.rglob("*") if path.is_file())
+
+
 def _load_formatter() -> Any:
     """Load the Markdown formatter from a local file path."""
     module = sys.modules.get(FORMATTER_MODULE)
@@ -116,11 +123,11 @@ def _copy_static_assets() -> None:
 
 
 def _database_is_current(sqlite_marker: Path) -> bool:
-    """Return True when the generated SQLite is newer than generator inputs."""
+    """Return True when the generated SQLite is newer than build inputs."""
     if not sqlite_marker.is_file():
         return False
     sqlite_mtime = sqlite_marker.stat().st_mtime
-    input_paths = (GENERATE_SCRIPT, CATEGORIES_SCRIPT, *SCHEMA_INPUTS)
+    input_paths = (GENERATE_SCRIPT, CATEGORIES_SCRIPT, *SCHEMA_INPUTS, *_iter_static_files())
     return all(path.is_file() and path.stat().st_mtime <= sqlite_mtime for path in input_paths)
 
 

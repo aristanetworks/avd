@@ -370,12 +370,15 @@ function setTreeRowExpanded(row, expanded) {
   }
 }
 
-function expandImmediateChildBranches(row, groupEl) {
+function expandGroupRootRows(groupEl) {
   if (!groupEl) return;
-  for (const child of groupEl.querySelectorAll("tr.schema-tree-row")) {
-    if (child.dataset.parentId === row.dataset.rowId && child.dataset.isBranch === "1") {
-      setTreeRowExpanded(child, true);
-    }
+  const rows = groupEl.querySelectorAll("tr.schema-tree-row");
+  const byPath = new Map();
+  for (const r of rows) byPath.set(r.dataset.rowId, r);
+  for (const r of rows) {
+    if (r.dataset.isBranch !== "1") continue;
+    const parentId = r.dataset.parentId;
+    if (!parentId || !byPath.has(parentId)) setTreeRowExpanded(r, true);
   }
 }
 
@@ -403,6 +406,14 @@ function applyTreeVisibility(groupEl) {
 // it survives every renderResults innerHTML refresh and works across multiple
 // embed roots on the same page.
 document.addEventListener("click", e => {
+  const header = e.target.closest(".schema-group-header");
+  if (header) {
+    const groupEl = header.closest(".schema-group");
+    expandGroupRootRows(groupEl);
+    applyTreeVisibility(groupEl);
+    return;
+  }
+
   const icon = e.target.closest(".tree-toggle-icon");
   if (!icon) return;
   e.preventDefault();
@@ -412,7 +423,6 @@ document.addEventListener("click", e => {
   const groupEl = row.closest(".schema-group");
   const shouldExpand = row.dataset.expanded !== "1";
   setTreeRowExpanded(row, shouldExpand);
-  if (shouldExpand) expandImmediateChildBranches(row, groupEl);
   applyTreeVisibility(groupEl);
 });
 
@@ -639,28 +649,28 @@ function renderModule(db, release, module) {
               <button type="button" class="btn btn-outline-secondary" id="btn-classifier-doc-table" title="documentation_options.table from schema">Tables</button>
             </div>
           </div>
-          <div class="list-group list-group-flush" id="category-list" data-classifier-pane="category" style="max-height: 70vh; overflow-y: auto;">
+          <div class="list-group list-group-flush schema-category-list" id="category-list" data-classifier-pane="category" style="max-height: 70vh; overflow-y: auto;">
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between active" data-classifier="category" data-value="">
-              <span>All</span><span class="badge bg-secondary rounded-pill">${total}</span>
+              <span>All</span>
             </a>
             ${categories.map(c => `
               <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between" data-classifier="category" data-value="${escapeAttr(c.category || "")}">
-                <span>${escapeHtml(c.category || "(none)")}</span><span class="badge bg-secondary rounded-pill">${c.count}</span>
+                <span>${escapeHtml(c.category || "(none)")}</span>
               </a>`).join("")}
           </div>
-          <div class="list-group list-group-flush" id="doc-table-list" data-classifier-pane="doc_table" style="max-height: 70vh; overflow-y: auto; display: none;">
+          <div class="list-group list-group-flush schema-category-list" id="doc-table-list" data-classifier-pane="doc_table" style="max-height: 70vh; overflow-y: auto; display: none;">
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between active" data-classifier="doc_table" data-value="">
-              <span>All</span><span class="badge bg-secondary rounded-pill">${total}</span>
+              <span>All</span>
             </a>
             ${docTables.map(t => `
               <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between" data-classifier="doc_table" data-value="${escapeAttr(t.doc_table || "")}">
-                <span>${escapeHtml(t.doc_table || "(none)")}</span><span class="badge bg-secondary rounded-pill">${t.count}</span>
+                <span>${escapeHtml(t.doc_table || "(none)")}</span>
               </a>`).join("")}
           </div>
         </div>
       </div>
       <div class="col-lg-9 col-xl-10">
-        <div class="card border-0 shadow-sm"><div id="results"></div></div>
+        <div class="card border-0 shadow-sm schema-results-card"><div id="results"></div></div>
       </div>
     </div>`;
 
@@ -740,8 +750,9 @@ function renderResults(db, release, module, state) {
       </tr>`;
   }).join("");
   target.innerHTML = `
-    <div class="px-3 py-2 text-muted small border-bottom">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
-    <div class="table-responsive">
+    <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
+    <div class="schema-results-scroll">
+      <div class="table-responsive">
       <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
         <colgroup>${flatColumns}</colgroup>
         <thead class="table-light"><tr>
@@ -751,6 +762,7 @@ function renderResults(db, release, module, state) {
         </tr></thead>
         <tbody>${rowsHtml}</tbody>
       </table>
+      </div>
     </div>`;
 }
 
@@ -823,7 +835,6 @@ function renderTreeResults(target, db, release, module, state, matches) {
     const { root, vars } = group;
     vars.sort((a, b) => `${rowModule(a, module)}:${a.key_path}`.localeCompare(`${rowModule(b, module)}:${b.key_path}`));
     const id = `${idPrefix}-group-${idx}`;
-    const cat = vars[0].category;
     // Pre-compute which paths have children inside this group, so we know
     // which rows should render a chevron and which are leaves.
     const childCount = new Map();
@@ -877,7 +888,6 @@ function renderTreeResults(target, db, release, module, state, matches) {
           <code class="schema-key-code fw-bold" style="font-size: 0.88rem;">${highlight(root, state.q)}</code>
           ${groupModuleBadge}
           <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCount}</span>
-          ${cat ? `<span class="badge schema-category-badge ms-1">${escapeHtml(cat)}</span>` : ""}
         </div>
         <div class="collapse" id="${id}">
           <div class="table-responsive">
@@ -900,14 +910,16 @@ function renderTreeResults(target, db, release, module, state, matches) {
   }).join("");
 
   target.innerHTML = `
-    <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+    <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
       <span class="text-muted small">${total} variable${total === 1 ? "" : "s"} in ${sorted.length} group${sorted.length === 1 ? "" : "s"}</span>
       <div>
         <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" data-tree-action="expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
         <button type="button" class="btn btn-sm btn-link text-muted p-0" data-tree-action="collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
       </div>
     </div>
-    ${groupsHtml}`;
+    <div class="schema-results-scroll">
+      ${groupsHtml}
+    </div>`;
 
   function setAllTreeRows(expanded) {
     target.querySelectorAll("tr.schema-tree-row").forEach(r => {
