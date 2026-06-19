@@ -4,10 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ipv6 unicast routing vrfs #}
+{% set v6_vrf = namespace(tracker_exclamation=false) %}
 {% for vrf in vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%     if vrf.ipv6_routing is arista.avd.defined(true) and vrf.name != 'default' %}
-{%         if loop.first %}
+{%         if not v6_vrf.tracker_exclamation %}
 !
+{%             set v6_vrf.tracker_exclamation = true %}
 {%         endif %}
 ipv6 unicast-routing vrf {{ vrf.name }}
 {%     endif %}
