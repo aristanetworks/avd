@@ -2767,6 +2767,7 @@ mcs client
 | REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+
 #### SNMP Extensions
 
 | OID | Script/File Path |
