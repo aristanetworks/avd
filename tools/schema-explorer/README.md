@@ -41,7 +41,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 | `release` | `devel` | Schema release tag. |
 | `module` | `eos_designs` | `eos_designs`, `eos_cli_config_gen`, or `all`. |
 | `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp` or `platform_settings`. |
-| `view` | `tree` | `tree` or `flat`. |
+| `view` | `tree` | `tree`, `flat`, or `yaml`. |
 | `height` | `600px` | CSS max-height for the embed scroll container. |
 | `chrome` | `compact` | `compact` shows the per-tree expand/collapse bar; `none` hides it. |
 

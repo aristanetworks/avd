@@ -138,7 +138,16 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     return raw_store
 
 
-def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: str = "", inherited_doc_table: str = "") -> list[dict]:
+def _flatten(
+    keys: dict,
+    module: str,
+    release: str,
+    prefix: str = "",
+    parent: str = "",
+    inherited_doc_table: str = "",
+    list_primary_key: str = "",
+    list_primary_key_unique: bool = False,
+) -> list[dict]:
     rows: list[dict] = []
     for key_name, props in keys.items():
         if not isinstance(props, dict):
@@ -146,7 +155,9 @@ def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: st
         key_path = f"{prefix}{key_name}" if prefix else key_name
         var_type = props.get("type", "")
         description = (props.get("description") or "").strip()
-        required = 1 if props.get("required") else 0
+        is_primary_key = bool(list_primary_key and key_name == list_primary_key)
+        required = 1 if props.get("required") or is_primary_key else 0
+        unique = 1 if is_primary_key and list_primary_key_unique else 0
         default = props.get("default")
         default_value = json.dumps(default) if default is not None else None
         depth_value = _path_depth(key_path)
@@ -181,6 +192,7 @@ def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: st
                 "description": description,
                 "default_value": default_value,
                 "required": required,
+                "unique": unique,
                 "parent_path": parent,
                 "depth": depth_value,
                 "category": get_category(module, key_path),
@@ -207,7 +219,18 @@ def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: st
         items = props.get("items")
         if isinstance(items, dict):
             if isinstance(items.get("keys"), dict):
-                rows.extend(_flatten(items["keys"], module, release, prefix=key_path + "[].", parent=key_path, inherited_doc_table=doc_table))
+                rows.extend(
+                    _flatten(
+                        items["keys"],
+                        module,
+                        release,
+                        prefix=key_path + "[].",
+                        parent=key_path,
+                        inherited_doc_table=doc_table,
+                        list_primary_key=props.get("primary_key") or "",
+                        list_primary_key_unique=props.get("allow_duplicate_primary_key") is not True,
+                    ),
+                )
             if isinstance(items.get("dynamic_keys"), dict):
                 for dyn_name, dyn_schema in items["dynamic_keys"].items():
                     if not isinstance(dyn_schema, dict):
@@ -242,6 +265,7 @@ def _create_schema(conn: sqlite3.Connection) -> None:
             description TEXT,
             default_value TEXT,
             required INTEGER DEFAULT 0,
+            unique_key INTEGER DEFAULT 0,
             parent_path TEXT,
             depth INTEGER DEFAULT 0,
             category TEXT DEFAULT '',
@@ -289,10 +313,10 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
             conn.executemany(
                 """INSERT INTO schema_vars
                    (release, module, key_path, var_type, description, default_value,
-                    required, parent_path, depth, category, doc_table, deprecated,
+                    required, unique_key, parent_path, depth, category, doc_table, deprecated,
                     removed, cross_ref, constraints)
                    VALUES (:release, :module, :key_path, :var_type, :description,
-                           :default_value, :required, :parent_path, :depth,
+                           :default_value, :required, :unique, :parent_path, :depth,
                            :category, :doc_table, :deprecated, :removed,
                            :cross_ref, :constraints)""",
                 rows,

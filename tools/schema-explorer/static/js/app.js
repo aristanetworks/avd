@@ -26,6 +26,9 @@ function rootSegment(keyPath) {
 function leafSegment(keyPath) {
   return stripPlaceholderBrackets(splitKeyPath(keyPath).pop());
 }
+function yamlKeySegment(keyPath) {
+  return splitKeyPath(keyPath).pop().replace("[]", "");
+}
 function dynamicKeySource(keyPath) {
   const match = String(keyPath).match(/^<([^>]+)>/);
   return match ? match[1] : "";
@@ -513,7 +516,8 @@ function searchVars(db, release, module, opts = {}) {
   if (opts.q) { conds.push("(key_path LIKE ? OR description LIKE ?)"); ps.push(`%${opts.q}%`, `%${opts.q}%`); }
   if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
-  const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY key_path LIMIT ${opts.limit || 500}`;
+  const orderBy = opts.order === "id" ? "id" : "key_path";
+  const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY ${orderBy} LIMIT ${opts.limit || 500}`;
   return rows(db, sql, ps);
 }
 
@@ -635,6 +639,7 @@ function renderModule(db, release, module) {
         <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
           <button type="button" class="btn btn-outline-secondary active" id="btn-view-tree" title="Tree view"><i class="bi bi-diagram-3"></i></button>
           <button type="button" class="btn btn-outline-secondary" id="btn-view-flat" title="Flat view"><i class="bi bi-list-ul"></i></button>
+          <button type="button" class="btn btn-outline-secondary" id="btn-view-yaml" title="YAML view"><i class="bi bi-filetype-yml"></i></button>
         </div>
       </div>
     </form>
@@ -680,10 +685,19 @@ function renderModule(db, release, module) {
   const refresh = debounce(() => renderResults(db, release, module, state), 250);
 
   document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; refresh(); });
-  const btnTree = document.getElementById("btn-view-tree");
-  const btnFlat = document.getElementById("btn-view-flat");
-  btnTree.addEventListener("click", () => { state.view = "tree"; btnTree.classList.add("active"); btnFlat.classList.remove("active"); refresh(); });
-  btnFlat.addEventListener("click", () => { state.view = "flat"; btnFlat.classList.add("active"); btnTree.classList.remove("active"); refresh(); });
+  const viewButtons = {
+    tree: document.getElementById("btn-view-tree"),
+    flat: document.getElementById("btn-view-flat"),
+    yaml: document.getElementById("btn-view-yaml"),
+  };
+  function setViewMode(view) {
+    state.view = view;
+    for (const [mode, button] of Object.entries(viewButtons)) button.classList.toggle("active", mode === view);
+    refresh();
+  }
+  viewButtons.tree.addEventListener("click", () => setViewMode("tree"));
+  viewButtons.flat.addEventListener("click", () => setViewMode("flat"));
+  viewButtons.yaml.addEventListener("click", () => setViewMode("yaml"));
 
   function highlightActive() {
     app.querySelectorAll(`[data-classifier="${state.classifier}"]`).forEach(el => {
@@ -724,18 +738,20 @@ function renderModule(db, release, module) {
 }
 
 function renderResults(db, release, module, state) {
-  const target = document.getElementById("results");
-  // Tree view needs every row in the active scope so the hierarchy is
-  // complete — anything dropped at the SQL boundary disappears from the tree
+  const target = state.target || document.getElementById("results");
+  // Tree and YAML views need every row in the active scope so the hierarchy is
+  // complete — anything dropped at the SQL boundary disappears from the output
   // entirely (eos_cli_config_gen has 6.4k rows; "all modules" hits ~12.6k).
   // Flat list view caps at 500 since users only consume the head visibly.
-  const limit = state.view === "tree" ? 20000 : 500;
-  const results = searchVars(db, release, module, { ...state, limit });
+  const hierarchical = state.view === "tree" || state.view === "yaml";
+  const limit = hierarchical ? 20000 : 500;
+  const results = state.rows || searchVars(db, release, module, { ...state, limit, order: state.view === "yaml" ? "id" : "key_path" });
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
   }
   if (state.view === "tree") return renderTreeResults(target, db, release, module, state, results);
+  if (state.view === "yaml") return renderYamlResults(target, module, results);
   const isAll = module === "all";
   const flatColumns = isAll ? "<col style=\"width: 9rem;\"><col style=\"width: 30%;\"><col>" : "<col style=\"width: 34%;\"><col>";
   const rowsHtml = results.map(v => {
@@ -1125,6 +1141,195 @@ function debounce(fn, ms) {
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
+// ── YAML view ────────────────────────────────────────────────────────────────
+
+function yamlBaseType(row) {
+  return String(row.var_type || "").replace(/\(deprecated\)$/, "");
+}
+
+function yamlConstraints(row) {
+  if (!row.constraints) return {};
+  try { return JSON.parse(row.constraints); }
+  catch { return {}; }
+}
+
+function yamlRestrictionParts(row, constraints) {
+  const type = yamlBaseType(row);
+  const parts = [];
+  if (Array.isArray(constraints.valid_values) && constraints.valid_values.length) {
+    const values = constraints.valid_values.map(value => type === "str" ? `"${value}"` : String(value));
+    parts.push(values.join(" | "));
+  }
+  if (constraints.min !== undefined || constraints.max !== undefined) {
+    if (constraints.min !== undefined && constraints.max !== undefined) parts.push(`${constraints.min}-${constraints.max}`);
+    else if (constraints.min !== undefined) parts.push(`>=${constraints.min}`);
+    else parts.push(`<=${constraints.max}`);
+  }
+  if (constraints.min_length !== undefined || constraints.max_length !== undefined) {
+    if (type === "list") {
+      if (constraints.min_length !== undefined && constraints.max_length !== undefined) parts.push(`${constraints.min_length}-${constraints.max_length} items`);
+      else if (constraints.min_length !== undefined) parts.push(`>=${constraints.min_length} items`);
+      else parts.push(`<=${constraints.max_length} items`);
+    } else {
+      if (constraints.min_length !== undefined && constraints.max_length !== undefined) parts.push(`length ${constraints.min_length}-${constraints.max_length}`);
+      else if (constraints.min_length !== undefined) parts.push(`length >=${constraints.min_length}`);
+      else parts.push(`length <=${constraints.max_length}`);
+    }
+  }
+  return parts;
+}
+
+function yamlDefaultPart(row) {
+  if (!row.default_value) return "";
+  try {
+    const value = JSON.parse(row.default_value);
+    if (Array.isArray(value) || (value && typeof value === "object")) return "";
+    if (yamlBaseType(row) === "str") return `default="${value}"`;
+    return `default=${value}`;
+  } catch {
+    return "";
+  }
+}
+
+function yamlValueParts(row, includeType) {
+  const constraints = yamlConstraints(row);
+  const parts = includeType ? [yamlBaseType(row) || "any"] : [];
+  parts.push(...yamlRestrictionParts(row, constraints));
+  const defaultPart = yamlDefaultPart(row);
+  if (defaultPart) parts.push(defaultPart);
+  if (row.required) parts.push(row.unique_key ? "required; unique" : "required");
+  return parts.filter(Boolean);
+}
+
+function yamlDescriptionLines(row, indentCount, listItem) {
+  if (!row.description) return [];
+  const commentIndent = " ".repeat(listItem ? indentCount + 2 : indentCount);
+  const lines = String(row.description).trim().split(/\n/).map(line => `${commentIndent}# ${line.trimEnd()}`);
+  return ["", ...lines];
+}
+
+function yamlHighlightValue(rawValue) {
+  const commentIndex = rawValue.indexOf(" #");
+  const valuePart = commentIndex === -1 ? rawValue : rawValue.slice(0, commentIndex);
+  const commentPart = commentIndex === -1 ? "" : rawValue.slice(commentIndex);
+  const html = escapeHtml(valuePart).replace(/(&lt;.*?&gt;)/g, '<span class="se-yaml-placeholder">$1</span>')
+    .replace(/(&quot;[^&]*?&quot;)/g, '<span class="se-yaml-string">$1</span>')
+    .replace(/\b(true|false|null)\b/g, '<span class="se-yaml-literal">$1</span>')
+    .replace(/(?<![-\w])(-?\d+(?:\.\d+)?)(?![-\w])/g, '<span class="se-yaml-number">$1</span>');
+  return html + (commentPart ? `<span class="se-yaml-comment">${escapeHtml(commentPart)}</span>` : "");
+}
+
+function yamlHighlightLine(line) {
+  if (!line) return "";
+  const commentMatch = line.match(/^(\s*#.*)$/);
+  if (commentMatch) return `<span class="se-yaml-comment">${escapeHtml(line)}</span>`;
+
+  const fieldMatch = line.match(/^(\s*)(-\s*)?([^:#]+:)(.*)$/);
+  if (!fieldMatch) return escapeHtml(line);
+  const [, indent, listMarker = "", key, value] = fieldMatch;
+  return `${escapeHtml(indent)}${listMarker ? `<span class="se-yaml-marker">${escapeHtml(listMarker)}</span>` : ""}<span class="se-yaml-key">${escapeHtml(key)}</span>${yamlHighlightValue(value)}`;
+}
+
+function yamlHighlightBlock(text) {
+  return String(text).split("\n").map(yamlHighlightLine).join("\n");
+}
+
+function renderYamlResults(target, module, inputRows) {
+  const sourceRows = inputRows.filter(row => !row.removed);
+  const rowsByPath = new Map(sourceRows.map(row => [`${row.module}:${row.key_path}`, row]));
+  const childrenByParent = new Map();
+  for (const row of sourceRows) {
+    if (!row.parent_path) continue;
+    const parentKey = `${row.module}:${row.parent_path}`;
+    if (!childrenByParent.has(parentKey)) childrenByParent.set(parentKey, []);
+    childrenByParent.get(parentKey).push(row);
+  }
+
+  function rowKey(row) { return `${row.module}:${row.key_path}`; }
+  function childrenOf(row) { return childrenByParent.get(rowKey(row)) || []; }
+  function yamlLinePrefix(indentCount, listItem) { return " ".repeat(indentCount) + (listItem ? "- " : ""); }
+  function yamlFieldName(row) { return yamlKeySegment(row.key_path); }
+  function yamlPropertiesComment(row) {
+    const parts = yamlValueParts(row, false);
+    return parts.length ? ` # ${parts.join("; ")}` : "";
+  }
+
+  function renderListChildren(lines, childRows, listIndent) {
+    childRows.forEach((child, idx) => {
+      if (idx === 0) renderYamlRow(lines, child, listIndent + 2, true);
+      else renderYamlRow(lines, child, listIndent + 4, false);
+    });
+  }
+
+  function renderYamlRow(lines, row, indentCount, listItem = false) {
+    const type = yamlBaseType(row);
+    const childRows = childrenOf(row);
+    lines.push(...yamlDescriptionLines(row, indentCount, listItem));
+    const prefix = yamlLinePrefix(indentCount, listItem);
+    const fieldName = yamlFieldName(row);
+
+    if (type === "list") {
+      const fallback = childRows.length ? "" : " <list>";
+      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row)}`);
+      renderListChildren(lines, childRows, indentCount);
+      return;
+    }
+
+    if (type === "dict") {
+      const fallback = childRows.length ? "" : " <dict>";
+      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row)}`);
+      childRows.forEach(child => renderYamlRow(lines, child, indentCount + (listItem ? 4 : 2)));
+      return;
+    }
+
+    lines.push(`${prefix}${fieldName}: <${yamlValueParts(row, true).join("; ")}>`);
+  }
+
+  const topRows = sourceRows.filter(row => !row.parent_path || !rowsByPath.has(`${row.module}:${row.parent_path}`));
+  const groupedRows = new Map();
+  const groupCounts = new Map();
+  for (const row of sourceRows) {
+    const groupId = treeGroupId(row, module);
+    groupCounts.set(groupId, (groupCounts.get(groupId) || 0) + 1);
+  }
+  for (const row of topRows) {
+    const groupId = treeGroupId(row, module);
+    if (!groupedRows.has(groupId)) {
+      groupedRows.set(groupId, { root: rootSegment(row.key_path), module: rowModule(row, module), rows: [] });
+    }
+    groupedRows.get(groupId).rows.push(row);
+  }
+
+  const idPrefix = `y${++_treeRenderSeq}`;
+  const groupsHtml = [...groupedRows.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`)).map(([groupId, group], idx) => {
+    const lines = [];
+    group.rows.forEach(row => renderYamlRow(lines, row, 0));
+    const yamlText = lines.join("\n").trim() || "# No YAML fields match.";
+    const id = `${idPrefix}-group-${idx}`;
+    const groupModuleBadge = module === "all" ? `<span class="badge ${group.module === "eos_designs" ? "bg-primary" : "bg-success"} ms-1" style="font-size: 0.6rem;">${escapeHtml(SCHEMA_MODULES[group.module]?.name || group.module)}</span>` : "";
+    return `
+      <div class="schema-group" data-group-id="${id}">
+        <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
+          <i class="bi bi-chevron-right collapse-icon"></i>
+          <code class="schema-key-code fw-bold" style="font-size: 0.88rem;">${escapeHtml(group.root)}</code>
+          ${groupModuleBadge}
+          <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCounts.get(groupId) || group.rows.length}</span>
+        </div>
+        <div class="collapse" id="${id}">
+          <pre class="schema-yaml-block"><code>${yamlHighlightBlock(yamlText)}</code></pre>
+        </div>
+      </div>`;
+  }).join("");
+
+  target.innerHTML = `
+    <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
+      <span class="text-muted small">YAML preview for ${sourceRows.length} variable${sourceRows.length === 1 ? "" : "s"} in ${groupedRows.size} group${groupedRows.size === 1 ? "" : "s"}</span>
+    </div>
+    <div class="schema-results-scroll">
+      ${groupsHtml}
+    </div>`;
+}
+
 // ── embed mounting ──────────────────────────────────────────────────────────
 //
 // Renders a scoped tree view inside any <schema-explorer> element on the page.
@@ -1135,7 +1340,7 @@ function debounce(fn, ms) {
 //   release  — schema release tag (default: "devel")
 //   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
 //   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
-//   view     — "tree" | "flat" (default: "tree")
+//   view     — "tree" | "flat" | "yaml" (default: "tree")
 //   height   — CSS max-height for the scroll container (default: "600px")
 //   chrome   — "compact" | "none" (default: "compact"). "none" hides the
 //              "N variables in M groups" / expand-all bar.
@@ -1153,6 +1358,7 @@ async function mountEmbed(el) {
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
   const view    = _embedAttr(el, "view", "tree");
+  if (!["tree", "flat", "yaml"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
   const height  = _embedAttr(el, "height", "600px");
   const chrome  = _embedAttr(el, "chrome", "compact");
 
@@ -1193,26 +1399,12 @@ async function mountEmbed(el) {
   }
 
   const state = {
-    q: "", category: "", docTable: "", view,
+    q: "", category: "", docTable: "", view, rows: results, target: el,
   };
-  if (view === "tree") {
-    renderTreeResults(el, db, release, module, state, results);
-  } else {
-    // Flat view — reuse renderResults by injecting a sub-container.
-    const inner = document.createElement("div");
-    el.innerHTML = "";
-    el.appendChild(inner);
-    // renderResults reads `#results` via getElementById, so wrap in a stub
-    // that satisfies that contract just for this embed.
-    inner.id = `embed-results-${++_treeRenderSeq}`;
-    const origGet = document.getElementById.bind(document);
-    document.getElementById = (id) => id === "results" ? inner : origGet(id);
-    try { renderResults(el, db, release, module, state); }
-    finally { document.getElementById = origGet; }
-  }
+  renderResults(db, release, module, state);
 
   if (chrome === "none") {
-    const header = el.querySelector(".border-bottom.d-flex, .border-bottom .text-muted")?.closest(".border-bottom");
+    const header = el.querySelector(".schema-results-toolbar");
     if (header) header.style.display = "none";
   }
 

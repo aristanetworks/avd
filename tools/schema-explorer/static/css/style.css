@@ -867,6 +867,56 @@
   color: inherit !important;
 }
 
+
+/* YAML view */
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block {
+  margin: 0;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--md-code-bg-color, #f8fafc);
+  color: inherit;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre;
+  overflow: auto;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block code {
+  background: transparent;
+  color: inherit;
+  white-space: pre;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-comment { color: #6a737d; }
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-key { color: #0550ae; }
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-marker { color: #57606a; }
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-placeholder { color: #953800; }
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-string { color: #0a7f37; }
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number { color: #8250df; }
+[data-bs-theme="dark"] .schema-spa-host .schema-yaml-block,
+[data-bs-theme="dark"] .schema-embed .schema-yaml-block {
+  background: #111827;
+  color: #dee2e6;
+}
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block {
+  background: var(--md-code-bg-color, #111827);
+  color: var(--md-code-fg-color, var(--md-default-fg-color, #dee2e6));
+}
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-comment,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-comment { color: #8b949e; }
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-key,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-key { color: #79c0ff; }
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-marker,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-marker { color: #c9d1d9; }
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-placeholder,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-placeholder { color: #ffa657; }
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-string,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-string { color: #a5d6ff; }
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number { color: #d2a8ff; }
+
 /* Large default values are summarized in tables and formatted on detail pages. */
 :where(.schema-spa-host, .schema-embed) .schema-default-compact {
   white-space: nowrap;
