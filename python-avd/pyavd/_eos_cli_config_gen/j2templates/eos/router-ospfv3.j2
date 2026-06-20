@@ -7,7 +7,7 @@
 {% for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 !
 router ospfv3 vrf {{ vrf.name }}
-{% set use_delimeter = false %}
+{%     set use_delimeter = false %}
 {%     if vrf.router_id is arista.avd.defined
            and vrf.address_family_ipv4.router_id is not arista.avd.defined
            and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
