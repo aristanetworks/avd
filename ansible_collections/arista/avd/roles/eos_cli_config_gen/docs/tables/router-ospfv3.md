@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
-    | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive. <br>If both are provided, the address-family level configuration takes precedence. |
+    | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv4.passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
@@ -46,7 +46,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute NSSA external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  | Specify route map to use. |
-    | [<samp>&nbsp;&nbsp;address_family_ipv6</samp>](## "router_ospfv3.address_family_ipv6") | Dictionary |  |  |  | Address family IPv6 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive. <br>If both are provided, the address-family level configuration takes precedence. |
+    | [<samp>&nbsp;&nbsp;address_family_ipv6</samp>](## "router_ospfv3.address_family_ipv6") | Dictionary |  |  |  | Address family IPv6 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv6.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv6.router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv6.passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
@@ -90,7 +90,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive. <br>If both are provided, the address-family level configuration takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
@@ -125,7 +125,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute NSSA external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  | Specify route map to use. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6") | Dictionary |  |  |  | Address family IPv6 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive. <br>If both are provided, the address-family level configuration takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6") | Dictionary |  |  |  | Address family IPv6 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.router_id") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.passive_interface_default") | Boolean |  |  |  | Set all interfaces to passive by default. |
@@ -179,7 +179,7 @@
       auto_cost_reference_bandwidth: <int; 1-4294967>
 
       # Address family IPv4 configuration.
-      # Common configurations defined at the router-level and address-family level are mutually exclusive. 
+      # Common configurations defined at the router-level and address-family level are mutually exclusive.
       # If both are provided, the address-family level configuration takes precedence.
       address_family_ipv4:
 
@@ -262,7 +262,7 @@
               route_map: <str>
 
       # Address family IPv6 configuration.
-      # Common configurations defined at the router-level and address-family level are mutually exclusive. 
+      # Common configurations defined at the router-level and address-family level are mutually exclusive.
       # If both are provided, the address-family level configuration takes precedence.
       address_family_ipv6:
 
@@ -364,7 +364,7 @@
           auto_cost_reference_bandwidth: <int; 1-4294967>
 
           # Address family IPv4 configuration.
-          # Common configurations defined at the router-level and address-family level are mutually exclusive. 
+          # Common configurations defined at the router-level and address-family level are mutually exclusive.
           # If both are provided, the address-family level configuration takes precedence.
           address_family_ipv4:
 
@@ -447,7 +447,7 @@
                   route_map: <str>
 
           # Address family IPv6 configuration.
-          # Common configurations defined at the router-level and address-family level are mutually exclusive. 
+          # Common configurations defined at the router-level and address-family level are mutually exclusive.
           # If both are provided, the address-family level configuration takes precedence.
           address_family_ipv6:
 

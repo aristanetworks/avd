@@ -66512,7 +66512,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Address family IPv4 configuration.
             Common configurations defined at the router-level and address-
-            family level are mutually exclusive. 
+            family level are mutually exclusive.
             If both are provided, the address-family level configuration
             takes precedence.
 
@@ -66522,7 +66522,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Address family IPv6 configuration.
             Common configurations defined at the router-level and address-
-            family level are mutually exclusive. 
+            family level are mutually exclusive.
             If both are provided, the address-family level configuration
             takes precedence.
 
@@ -66597,7 +66597,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Address family IPv4 configuration.
         Common configurations defined at the router-level and address-
-        family level are mutually exclusive. 
+        family level are mutually exclusive.
         If both are provided, the address-family level configuration
         takes precedence.
 
@@ -66607,7 +66607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Address family IPv6 configuration.
         Common configurations defined at the router-level and address-
-        family level are mutually exclusive. 
+        family level are mutually exclusive.
         If both are provided, the address-family level configuration
         takes precedence.
 

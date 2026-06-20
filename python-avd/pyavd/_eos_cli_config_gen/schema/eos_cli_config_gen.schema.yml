@@ -23682,9 +23682,12 @@ keys:
         description: Reference bandwidth in Mbps.
       address_family_ipv4:
         type: dict
-        description: "Address family IPv4 configuration.\nCommon configurations defined
-          at the router-level and address-family level are mutually exclusive. \nIf
-          both are provided, the address-family level configuration takes precedence."
+        description: 'Address family IPv4 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
         keys:
           enabled:
             type: bool
@@ -23806,9 +23809,12 @@ keys:
                         description: Specify route map to use.
       address_family_ipv6:
         type: dict
-        description: "Address family IPv6 configuration.\nCommon configurations defined
-          at the router-level and address-family level are mutually exclusive. \nIf
-          both are provided, the address-family level configuration takes precedence."
+        description: 'Address family IPv6 configuration.
+
+          Common configurations defined at the router-level and address-family level
+          are mutually exclusive.
+
+          If both are provided, the address-family level configuration takes precedence.'
         keys:
           enabled:
             type: bool
