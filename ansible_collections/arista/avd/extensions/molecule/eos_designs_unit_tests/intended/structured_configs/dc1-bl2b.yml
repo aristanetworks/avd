@@ -445,6 +445,9 @@ router_bgp:
     - prefix: 192.168.142.0/24
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       peer_filter: peerfilter1
+    - prefix: 192.168.145.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      peer_filter: peerfilter1
     neighbors:
     - ip_address: 1.1.1.1
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
