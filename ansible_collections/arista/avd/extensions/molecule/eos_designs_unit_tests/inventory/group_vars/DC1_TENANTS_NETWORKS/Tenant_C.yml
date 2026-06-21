@@ -83,6 +83,10 @@ tenant_c:
             listen_ranges:
               - prefix: 192.168.141.0/24
                 remote_as: 111
+              - prefix: 192.168.142.0/24
+                peer_filter: peerfilter1
+              - prefix: 192.168.145.0/24
+                peer_filter: peerfilter1
             default_originate:
               enabled: true
               always: true

@@ -271,6 +271,11 @@ monitor_sessions:
   - name: Ethernet7.7
     direction: rx
 ntp: null
+peer_filters:
+- name: peerfilter1
+  sequence_numbers:
+  - sequence: 20
+    match: as-range 1-2 result reject
 platform:
   sand:
     lag:
@@ -668,6 +673,12 @@ router_bgp:
     - prefix: 192.168.141.0/24
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       remote_as: '111'
+    - prefix: 192.168.142.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      peer_filter: peerfilter1
+    - prefix: 192.168.145.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      peer_filter: peerfilter1
     redistribute:
       connected:
         enabled: true

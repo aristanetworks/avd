@@ -842,7 +842,7 @@ class RouterBgpMixin(Protocol):
                 prefix=listen_range.prefix,
                 peer_group=bgp_peer_group.name,
                 remote_as=listen_range.remote_as or Undefined,
-                peer_filter=listen_range.peer_filter,
+                peer_filter=listen_range.peer_filter or Undefined,
                 peer_id_include_router_id=listen_range.peer_id_include_router_id,
             )
             if listen_range.peer_filter:
