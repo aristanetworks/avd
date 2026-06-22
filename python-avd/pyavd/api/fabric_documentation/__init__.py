@@ -41,7 +41,6 @@ class ContainerlabMgmt:
 class ContainerlabTopology:
     defaults: ContainerlabDefaults
     kinds: dict[str, ContainerlabKind]
-    mgmt: ContainerlabMgmt
     nodes: dict[str, ContainerlabNode]
     links: tuple[ContainerlabLinkSettings, ...]
 
@@ -82,6 +81,7 @@ class ContainerlabDigitalTwin:
 
     name: str
     prefix: str
+    mgmt: ContainerlabMgmt
     topology: ContainerlabTopology
 
 
