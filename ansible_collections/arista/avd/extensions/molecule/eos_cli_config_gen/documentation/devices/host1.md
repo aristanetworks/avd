@@ -9232,8 +9232,8 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 !
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
-   passive-interface default
    auto-cost reference-bandwidth 100
+   passive-interface default
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -9248,13 +9248,13 @@ router ospfv3 vrf MGMT
 router ospfv3 vrf data
    address-family ipv4
       router-id 1.1.1.1
-      passive-interface default
       auto-cost reference-bandwidth 1000
+      passive-interface default
 !
 router ospfv3
    router-id 1.1.1.1
-   passive-interface default
    auto-cost reference-bandwidth 1000
+   passive-interface default
    !
    address-family ipv4
       redistribute bgp include leaked route-map map1

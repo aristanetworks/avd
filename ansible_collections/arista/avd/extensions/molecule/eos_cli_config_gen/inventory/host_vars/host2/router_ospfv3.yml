@@ -1,0 +1,110 @@
+router_ospfv3:
+  router_id: 1.1.1.1
+  passive_interface_default: true
+  auto_cost_reference_bandwidth: 1000
+  eos_cli: |-
+    address-family ipv4
+      redistribute bgp
+      redistribute connected
+  vrfs:
+    - name: data
+      # These settings will not get rendered as address family level settings gets precedence.
+      router_id: 2.2.2.2
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 100
+      address_family_ipv4:
+        enabled: true
+        redistribute:
+          bgp:
+            enabled: true
+            route_map: map1
+          connected:
+            enabled: true
+            route_map: map1
+          isis:
+            enabled: true
+            route_map: map1
+          ospfv3:
+            enabled: true
+            route_map: map1
+          static:
+            enabled: true
+            route_map: map1
+      address_family_ipv6:
+        enabled: true
+        redistribute:
+          bgp:
+            enabled: true
+            route_map: map1
+          connected:
+            enabled: true
+            route_map: map1
+          isis:
+            enabled: true
+            route_map: map1
+          ospfv3:
+            enabled: true
+            route_map: map1
+          static:
+            enabled: true
+            route_map: map1
+          dhcp:
+            enabled: true
+            route_map: map1
+    - name: MGMT
+      router_id: 2.2.2.2
+      auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      address_family_ipv4:
+        enabled: true
+        redistribute:
+          bgp:
+            enabled: true
+          connected:
+            enabled: true
+          isis:
+            enabled: true
+          ospfv3:
+            enabled: true
+          static:
+            enabled: true
+      address_family_ipv6:
+        enabled: true
+        redistribute:
+          bgp:
+            enabled: true
+          connected:
+            enabled: true
+          isis:
+            enabled: true
+          ospfv3:
+            enabled: true
+          static:
+            enabled: true
+          dhcp:
+            enabled: true
+    - name: Test
+      address_family_ipv4:
+        enabled: true
+        redistribute:
+          ospfv3:
+            match_internal:
+              enabled: true
+            match_external:
+              enabled: true
+            match_nssa_external:
+              enabled: true
+      address_family_ipv6:
+        enabled: true
+        redistribute:
+          ospfv3:
+            match_internal:
+              enabled: true
+            match_external:
+              enabled: true
+            match_nssa_external:
+              enabled: true
+    - name: Test_VRF
+      router_id: 1.1.1.1
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 1000

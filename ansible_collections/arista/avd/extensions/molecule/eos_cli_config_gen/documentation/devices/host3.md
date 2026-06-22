@@ -338,6 +338,24 @@ router ospf 702
       adjacency-segment allocation none
 ```
 
+### Router OSPFv3
+
+#### Router OSPFv3 Summary
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 1.1.1.1 | enabled | 1000 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+```
+
 ### Router ISIS
 
 #### Router ISIS Summary

@@ -81,6 +81,7 @@
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
   - [Router OSPF](#router-ospf)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -1127,6 +1128,85 @@ router ospf 701
       shutdown
       prefix-segment 192.0.2.0/24 index 300
       adjacency-segment allocation sr-peers
+```
+
+### Router OSPFv3
+
+#### Router OSPFv3 Summary
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 1.1.1.1 | enabled | 1000 |
+| data | 2.2.2.2 | enabled | 100 |
+| MGMT | 2.2.2.2 | enabled | 100 |
+| Test_VRF | 1.1.1.1 | enabled | 1000 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3 vrf MGMT
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp
+      redistribute connected
+      redistribute isis
+      redistribute ospfv3 leaked
+      redistribute static
+   !
+   address-family ipv6
+      redistribute bgp
+      redistribute dhcp
+      redistribute connected
+      redistribute isis
+      redistribute ospfv3 leaked
+      redistribute static
+!
+router ospfv3 vrf Test
+   address-family ipv4
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
+   address-family ipv6
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
+!
+router ospfv3 vrf Test_VRF
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+!
+router ospfv3 vrf data
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp route-map map1
+      redistribute connected route-map map1
+      redistribute isis route-map map1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
+   !
+   address-family ipv6
+      redistribute bgp route-map map1
+      redistribute dhcp route-map map1
+      redistribute connected route-map map1
+      redistribute isis route-map map1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
+!
+router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+   address-family ipv4
+     redistribute bgp
+     redistribute connected
 ```
 
 ### Router ISIS
