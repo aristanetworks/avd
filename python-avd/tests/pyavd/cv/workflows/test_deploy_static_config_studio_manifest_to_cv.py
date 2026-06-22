@@ -853,6 +853,52 @@ class TestDeployStaticConfigStudio:
         # No containers were pushed (manifest declared none).
         mock_cv_client.set_configlet_containers.assert_not_called()
 
+    async def test_configlets_only_manifest_with_preserve_existing_containers_keeps_existing_roots(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """Test that root-level preservation keeps all existing root subtrees when no containers are declared."""
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root1_child_id = generate_id("AVD_ROOT1/AVD_CHILD")
+        avd_root1_grandchild_id = generate_id("AVD_ROOT1/AVD_CHILD/AVD_GRANDCHILD")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        manual_root_id = "manual-root-foo"
+        stale_cfg_id = generate_id("STALE_CFG")
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*", child_ids=[avd_root1_child_id]),
+            create_grpc_container(
+                container_id=avd_root1_child_id,
+                name="AVD_CHILD",
+                description="",
+                query="device:LEAF",
+                configlet_ids=[stale_cfg_id],
+                child_ids=[avd_root1_grandchild_id],
+            ),
+            create_grpc_container(container_id=avd_root1_grandchild_id, name="AVD_GRANDCHILD", description="", query="device:GRANDCHILD"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:SPINE"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root1_id, manual_root_id, avd_root2_id]
+
+        configlet = AvdConfiglet(name="STANDALONE", file=Path("standalone.cfg"))
+        manifest = AvdManifest(configlets=(configlet,), containers=(), preserve_existing_containers=True)
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        mock_cv_client.set_configlets_from_files.assert_called_once()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.set_studio_inputs.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        assert deployment_result.deployed_static_config_configlets == [configlet]
+        assert not deployment_result.removed_static_config_containers
+        assert not deployment_result.removed_static_config_configlets
+
     async def test_container_moved_between_parents(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that moving a sub-container under a different parent treats it as new (path change generates a new ID)."""
         # Initial state: PARENT_A holds CHILD as a sub-container, PARENT_B does not exist.
