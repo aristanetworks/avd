@@ -495,7 +495,7 @@ class UtilsMixin(Protocol):
         interface_name: str,
         interface_ip: str | None,
     ) -> None:
-        """Render the IPv4-only configuration on an interface that has an IPv4 address."""
+        """Update the IPv4-only configuration on an interface that has an IPv4 address."""
         if ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=ipv4_acl_in, interface_name=interface_name, interface_ip=interface_ip)
             interface.access_group_in = acl.name
