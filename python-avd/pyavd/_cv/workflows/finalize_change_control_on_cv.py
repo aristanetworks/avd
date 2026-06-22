@@ -74,6 +74,7 @@ async def finalize_change_control_on_cv(change_control_id: str, change_control: 
 
     # For all other requested states we first need to approve.
     if change_control.state != "approved":
+        cv_change = get_required_field(cv_change_control, "change", cv_change_control.change)
         cv_change_time = get_required_field(cv_change, "time", cv_change.time)
         await cv_client.approve_change_control(
             change_control_id=change_control_id,

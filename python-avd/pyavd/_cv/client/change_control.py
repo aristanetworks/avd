@@ -128,7 +128,7 @@ class ChangeControlMixin(Protocol):
         Parameters:
             change_control_id: Unique identifier of the Change Control.
             timestamp: Timestamp for the change control information to be approved. \
-                This must be using the aristaproto._DateTime subclass which contains nanosecond information.
+                This must be using the aristaproto.NanoDatetime subclass which contains nanosecond information.
             description: Description to set on the approval.
             timeout: Timeout in seconds.
 

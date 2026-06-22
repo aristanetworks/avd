@@ -10,11 +10,13 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from pyavd._cv.client import CVClient
+from pyavd._cv.client import CVClient, PreparedCVConnection, ResolvedGRPCTLS
 from pyavd._cv.client.exceptions import CVClientException
+from pyavd._cv.client.versioning import CvVersion
 from pyavd._cv.workflows.models import CloudVision, CVProxyConfiguration, CVTLSConfiguration
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+PREPARED_CONNECTION = PreparedCVConnection(version=CvVersion("CVaaS"), grpc_tls=ResolvedGRPCTLS())
 
 
 def _cloudvision(
@@ -43,7 +45,7 @@ async def test_cv_client_authenticated_proxy_is_mapped_to_grpc_channel_options()
     proxy_password = "avd_password"  # noqa: S105
 
     with (
-        patch("pyavd._cv.client.CVClient._init_version", return_value="CVaaS"),
+        patch("pyavd._cv.client.CVClient._prepare_cv_connection", return_value=PREPARED_CONNECTION),
         patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
     ):
         mock_secure_channel.return_value.close = AsyncMock()
@@ -74,11 +76,13 @@ async def test_cv_client_no_verify_certs() -> None:
     servers = "www.arista.io"
     token = "secret_access_token"  # noqa: S105
     peer_certificate = "-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----\n"
+    prepared_connection = PreparedCVConnection(
+        version=CvVersion("CVaaS"),
+        grpc_tls=ResolvedGRPCTLS(root_certificates=peer_certificate.encode(), target_name_override="cv.example.com"),
+    )
 
     with (
-        patch("pyavd._cv.client.CVClient._init_version", return_value="CVaaS"),
-        patch("pyavd._cv.client.ssl.get_server_certificate", return_value=peer_certificate) as mock_get_server_certificate,
-        patch("pyavd._cv.client.CVGRPCTransport._get_server_certificate_target_name", return_value="cv.example.com") as mock_get_server_certificate_target_name,
+        patch("pyavd._cv.client.CVClient._prepare_cv_connection", return_value=prepared_connection),
         patch("pyavd._cv.client.grpc.ssl_channel_credentials", return_value="tls-credentials") as mock_ssl_channel_credentials,
         patch("pyavd._cv.client.grpc.access_token_call_credentials", return_value="call-credentials") as mock_access_token_call_credentials,
         patch("pyavd._cv.client.grpc.composite_channel_credentials", return_value="channel-credentials") as mock_composite_channel_credentials,
@@ -88,8 +92,6 @@ async def test_cv_client_no_verify_certs() -> None:
         async with CVClient(cloudvision=_cloudvision(servers=(servers,), token=token, tls_configuration=CVTLSConfiguration(verify_certs=False))):
             pass
 
-    mock_get_server_certificate.assert_called_once_with((servers, 443))
-    mock_get_server_certificate_target_name.assert_called_once_with(peer_certificate)
     mock_ssl_channel_credentials.assert_called_once_with(root_certificates=peer_certificate.encode())
     mock_access_token_call_credentials.assert_called_once_with(token)
     mock_composite_channel_credentials.assert_called_once_with("tls-credentials", "call-credentials")
@@ -102,51 +104,51 @@ def test_cv_client_no_verify_certs_uses_first_dns_subject_alt_name() -> None:
     client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
-        client.grpc,
+        client._tls,
         "_decode_certificate",
         return_value={
             "subject": ((("commonName", "cn.example.com"),),),
             "subjectAltName": (("IP Address", "192.0.2.1"), ("DNS", "san.example.com"), ("DNS", "san2.example.com")),
         },
     ):
-        assert client.grpc._get_server_certificate_target_name("certificate") == "san.example.com"
+        assert client._tls.grpc_tls_from_unverified_peer_certificate("certificate").target_name_override == "san.example.com"
 
 
 def test_cv_client_no_verify_certs_uses_ip_subject_alt_name_without_dns_name() -> None:
     client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
-        client.grpc,
+        client._tls,
         "_decode_certificate",
         return_value={
             "subject": ((("commonName", "cn.example.com"),),),
             "subjectAltName": (("IP Address", "192.0.2.1"),),
         },
     ):
-        assert client.grpc._get_server_certificate_target_name("certificate") == "192.0.2.1"
+        assert client._tls.grpc_tls_from_unverified_peer_certificate("certificate").target_name_override == "192.0.2.1"
 
 
 def test_cv_client_no_verify_certs_falls_back_to_common_name() -> None:
     client = CVClient(cloudvision=_cloudvision())
 
     with patch.object(
-        client.grpc,
+        client._tls,
         "_decode_certificate",
         return_value={
             "subject": ((("countryName", "US"),), (("commonName", "cn.example.com"),)),
         },
     ):
-        assert client.grpc._get_server_certificate_target_name("certificate") == "cn.example.com"
+        assert client._tls.grpc_tls_from_unverified_peer_certificate("certificate").target_name_override == "cn.example.com"
 
 
 def test_cv_client_no_verify_certs_raises_for_certificate_without_identity() -> None:
     client = CVClient(cloudvision=_cloudvision())
 
     with (
-        patch.object(client.grpc, "_decode_certificate", return_value={"subject": ((("countryName", "US"),),)}),
+        patch.object(client._tls, "_decode_certificate", return_value={"subject": ((("countryName", "US"),),)}),
         pytest.raises(CVClientException, match="Unable to determine certificate identity"),
     ):
-        client.grpc._get_server_certificate_target_name("certificate")
+        client._tls.grpc_tls_from_unverified_peer_certificate("certificate")
 
 
 @pytest.mark.asyncio
@@ -155,7 +157,7 @@ async def test_cv_client_unauthenticated_proxy() -> None:
     token = "secret_access_token"  # noqa: S105
     proxy_host = "127.0.0.1"
 
-    with patch("pyavd._cv.client.CVClient._init_version", return_value="CVaaS"):
+    with patch("pyavd._cv.client.CVClient._prepare_cv_connection", return_value=PREPARED_CONNECTION):
         async with CVClient(
             cloudvision=_cloudvision(servers=(servers,), token=token, proxy_configuration=CVProxyConfiguration(host=proxy_host)),
         ) as cvclient:

@@ -60,7 +60,7 @@ def test_cv_client_get_user_agent_python_version_unavailable() -> None:
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 
@@ -88,7 +88,7 @@ def test_cv_client_get_user_agent_all_packages_available() -> None:
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 
@@ -119,7 +119,7 @@ def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_a
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 
@@ -151,7 +151,7 @@ def test_cv_client_get_user_agent_pyavd_unavailable() -> None:
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 
@@ -181,7 +181,7 @@ def test_cv_client_get_user_agent_optional_dependency_missing() -> None:
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 
@@ -211,7 +211,7 @@ def test_cv_client_get_user_agent_no_optional_dependencies() -> None:
     ):
         cv_client = CVClient(cloudvision=_cloudvision())
         cv_client_user_agent = cv_client._user_agent
-        cv_client._init_version()
+        cv_client._prepare_cv_connection()
 
     assert cv_client_user_agent == expected_user_agent
 

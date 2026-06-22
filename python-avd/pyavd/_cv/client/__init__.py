@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import _ssl
 import platform
-import socket
 import ssl
 import sys
-from base64 import b64encode
+from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from os import environ
@@ -19,7 +18,7 @@ from typing import TYPE_CHECKING, Any, Protocol, TypeVar
 import grpc
 from aristaproto.grpcio import ServiceStub
 from grpc.aio import Channel, secure_channel
-from requests import JSONDecodeError, get, post
+from requests import JSONDecodeError, Response, get, post
 from requests.exceptions import HTTPError, RequestException
 
 from .change_control import ChangeControlMixin
@@ -44,6 +43,29 @@ if TYPE_CHECKING:
 StubT = TypeVar("StubT", bound=ServiceStub)
 
 
+@dataclass(frozen=True)
+class ResolvedGRPCTLS:
+    """Resolved TLS settings needed to create grpcio channel credentials."""
+
+    root_certificates: bytes | None = None
+    target_name_override: str | None = None
+
+    def as_grpcio_channel_options(self) -> tuple[tuple[str, str], ...]:
+        """Build grpcio channel options from the resolved TLS settings."""
+        if self.target_name_override is None:
+            return ()
+
+        return (("grpc.ssl_target_name_override", self.target_name_override),)
+
+
+@dataclass(frozen=True)
+class PreparedCVConnection:
+    """CloudVision connection details prepared by the REST bootstrap request."""
+
+    version: CvVersion
+    grpc_tls: ResolvedGRPCTLS
+
+
 class CVGRPCTransport:
     """Manage CloudVision gRPC channel lifecycle, credentials, and stub creation."""
 
@@ -54,14 +76,14 @@ class CVGRPCTransport:
         port: int,
         configuration: CVGRPCConfiguration,
         proxy: CVProxyConfiguration | None,
-        tls: CVTLS,
+        grpc_tls: ResolvedGRPCTLS,
         user_agent: str,
     ) -> None:
         self.servers = servers
         self.port = port
         self.configuration = configuration
         self.proxy = proxy
-        self.tls = tls
+        self.grpc_tls = grpc_tls
         self.user_agent = user_agent
         self._channel: Channel | None = None
 
@@ -78,8 +100,7 @@ class CVGRPCTransport:
     def channel_options(self) -> tuple[tuple[str, str | int], ...]:
         """Build grpcio Channel options from the typed gRPC channel configuration."""
         options = self.configuration.as_grpcio_channel_options(user_agent=self.user_agent)
-        if self.tls.grpc_ssl_target_name_override is not None:
-            options += (("grpc.ssl_target_name_override", self.tls.grpc_ssl_target_name_override),)
+        options += self.grpc_tls.as_grpcio_channel_options()
         if self.proxy is not None:
             options += self.proxy.as_grpcio_channel_options()
         return options
@@ -110,87 +131,9 @@ class CVGRPCTransport:
 
     def _transport_credentials(self) -> grpc.ChannelCredentials:
         """Build grpcio transport credentials from the configured certificate verification behavior."""
-        self.tls.grpc_ssl_target_name_override = None
-
-        if self.tls.verify_certs:
-            root_certificates = self.tls.grpc_root_certificates
-            if root_certificates is not None:
-                return grpc.ssl_channel_credentials(root_certificates=root_certificates)
-            return grpc.ssl_channel_credentials()
-
-        peer_certificate = self._get_server_certificate()
-        self.tls.grpc_ssl_target_name_override = self._get_server_certificate_target_name(peer_certificate)
-        return grpc.ssl_channel_credentials(root_certificates=peer_certificate.encode())
-
-    def _get_server_certificate(self) -> str:
-        """Fetch the peer certificate directly or through the configured HTTP CONNECT proxy."""
-        proxy = self.proxy
-        if proxy is None:
-            return ssl.get_server_certificate((self.servers[0], self.port))
-
-        proxy_headers = [
-            f"CONNECT {self.servers[0]}:{self.port} HTTP/1.1",
-            f"Host: {self.servers[0]}:{self.port}",
-        ]
-        if proxy.username and proxy.password:
-            credentials = f"{proxy.username}:{proxy.password}".encode()
-            proxy_headers.append(f"Proxy-Authorization: Basic {b64encode(credentials).decode()}")
-
-        proxy_request = "\r\n".join([*proxy_headers, "", ""]).encode()
-        ssl_context = ssl.create_default_context()
-        ssl_context.check_hostname = False
-        ssl_context.verify_mode = ssl.CERT_NONE
-        with (
-            socket.create_connection((proxy.host, proxy.port)) as proxy_socket,
-            proxy_socket.makefile("rwb", buffering=0) as proxy_file,
-        ):
-            proxy_file.write(proxy_request)
-            status_line = proxy_file.readline().decode(errors="replace")
-            while proxy_file.readline() not in (b"\r\n", b""):
-                pass
-            if " 200 " not in status_line:
-                msg = f"Failed to fetch CloudVision certificate through proxy: {status_line.strip()}"
-                raise CVClientException(msg)
-
-            with ssl_context.wrap_socket(proxy_socket, server_hostname=self.servers[0]) as tls_socket:
-                certificate = tls_socket.getpeercert(binary_form=True)
-
-        if certificate is None:
-            msg = "Failed to fetch CloudVision certificate through proxy: no peer certificate returned."
-            raise CVClientException(msg)
-
-        return ssl.DER_cert_to_PEM_cert(certificate)
-
-    def _get_server_certificate_target_name(self, certificate: str) -> str:
-        """Return a certificate identity suitable for grpc.ssl_target_name_override."""
-        decoded_certificate = self._decode_certificate(certificate)
-
-        subject_alt_names = decoded_certificate.get("subjectAltName", ())
-        for target_name_type in ("DNS", "IP Address"):
-            for subject_alt_name_type, subject_alt_name_value in subject_alt_names:
-                if subject_alt_name_type == target_name_type:
-                    return subject_alt_name_value
-
-        for relative_distinguished_name in decoded_certificate.get("subject", ()):
-            for attribute_name, attribute_value in relative_distinguished_name:
-                if attribute_name == "commonName":
-                    return attribute_value
-
-        msg = "Unable to determine certificate identity for grpc.ssl_target_name_override."
-        raise CVClientException(msg)
-
-    @staticmethod
-    def _decode_certificate(certificate: str) -> dict[str, Any]:
-        """Decode a PEM certificate using the same parser as Python's ssl certificate helpers."""
-        test_decode_cert = getattr(_ssl, "_test_decode_cert", None)
-        if test_decode_cert is None:
-            msg = "Unable to decode CloudVision certificate: Python ssl certificate decoder is unavailable."
-            raise CVClientException(msg)
-
-        with TemporaryDirectory() as temporary_directory:
-            certificate_path = Path(temporary_directory, "certificate.pem")
-            certificate_path.write_text(certificate, encoding="utf-8")
-            return test_decode_cert(str(certificate_path))
+        if self.grpc_tls.root_certificates is not None:
+            return grpc.ssl_channel_credentials(root_certificates=self.grpc_tls.root_certificates)
+        return grpc.ssl_channel_credentials()
 
 
 LOGGER = getLogger(__name__)
@@ -216,8 +159,19 @@ class CVClientProtocol(
     _cv_version: CvVersion | None = None
     _tls: CVTLS
     _proxy: CVProxyConfiguration | None
+    _port: int
+    _grpc_configuration: CVGRPCConfiguration
     _user_agent: str
-    grpc: CVGRPCTransport
+    _grpc: CVGRPCTransport | None
+
+    @property
+    def grpc(self) -> CVGRPCTransport:
+        """Return the connected gRPC transport."""
+        if self._grpc is None:
+            msg = "CloudVision gRPC transport is not connected."
+            raise CVClientException(msg)
+
+        return self._grpc
 
     def new_stub(self, stub_type: type[StubT]) -> StubT:
         """Create a generated API service stub using the connected channel."""
@@ -237,7 +191,8 @@ class CVClientProtocol(
         return self
 
     async def __aexit__(self, _exc_type: type[BaseException] | None, _exc_val: BaseException | None, _exc_tb: TracebackType | None) -> None:
-        await self.grpc.close()
+        if self._grpc is not None:
+            await self._grpc.close()
 
     async def _connect(self) -> None:
         # TODO: Verify connection
@@ -245,9 +200,18 @@ class CVClientProtocol(
 
         token = self._get_token()
 
-        self._init_version()
+        prepared_connection = self._prepare_cv_connection()
+        self._cv_version = prepared_connection.version
 
-        self.grpc.connect(token)
+        self._grpc = CVGRPCTransport(
+            servers=self._servers,
+            port=self._port,
+            configuration=self._grpc_configuration,
+            proxy=self._proxy,
+            grpc_tls=prepared_connection.grpc_tls,
+            user_agent=self._user_agent,
+        )
+        self._grpc.connect(token)
 
     def _get_token(self) -> str:
         """
@@ -290,9 +254,9 @@ class CVClientProtocol(
         self._token = token
         return token
 
-    def _init_version(self) -> None:
+    def _prepare_cv_connection(self) -> PreparedCVConnection:
         """
-        Fetch the CloudVision version via REST and set self._cv_version.
+        Fetch the CloudVision version via REST and prepare TLS settings for the gRPC channel.
 
         This version is used to decide which APIs to use later.
 
@@ -302,6 +266,7 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
+        response: Response | None = None
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
@@ -309,17 +274,39 @@ class CVClientProtocol(
                 verify=self._tls.requests_verify,
                 proxies=self._requests_proxies,
                 json={},
+                stream=True,
             )
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+                grpc_tls = self._tls.grpc_tls if self._tls.verify_certs else self._grpc_tls_from_unverified_response(response)
+                version = CvVersion(response.json()["version"])
+                return PreparedCVConnection(version=version, grpc_tls=grpc_tls)
+            finally:
+                response.close()
         except (HTTPError, RequestException) as e:
             msg = f"Unable to get version from CloudVision server due to the following error: {e.args}."
             raise CVClientException(msg) from e
-
-        try:
-            self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
+
+    def _grpc_tls_from_unverified_response(self, response: Response) -> ResolvedGRPCTLS:
+        """Build gRPC TLS settings from the peer certificate on the streamed REST response."""
+        peer_certificate = self._get_peer_certificate_from_response(response)
+        return self._tls.grpc_tls_from_unverified_peer_certificate(peer_certificate)
+
+    @staticmethod
+    def _get_peer_certificate_from_response(response: Response) -> str:
+        """Return the peer certificate from the active requests/urllib3 response socket."""
+        connection = getattr(response.raw, "connection", None)
+        sock = getattr(connection, "sock", None)
+        getpeercert = getattr(sock, "getpeercert", None)
+        certificate = getpeercert(binary_form=True) if getpeercert is not None else None
+        if not isinstance(certificate, bytes):
+            msg = "Unable to capture CloudVision peer certificate from requests/urllib3 response before creating grpcio channel."
+            raise CVClientException(msg)
+
+        return ssl.DER_cert_to_PEM_cert(certificate)
 
     def _get_user_agent(self) -> str:
         """
@@ -398,8 +385,7 @@ class CVTLS:
         self.configuration = configuration
         self._resolved = False
         self._requests_verify: bool | str = True
-        self._grpc_root_certificates: bytes | None = None
-        self.grpc_ssl_target_name_override: str | None = None
+        self._grpc_tls = ResolvedGRPCTLS()
 
     @property
     def verify_certs(self) -> bool:
@@ -413,10 +399,10 @@ class CVTLS:
         return self._requests_verify
 
     @property
-    def grpc_root_certificates(self) -> bytes | None:
-        """Return explicit root certificates for grpcio, or None to use grpcio defaults."""
+    def grpc_tls(self) -> ResolvedGRPCTLS:
+        """Return resolved gRPC TLS settings."""
         self.resolve()
-        return self._grpc_root_certificates
+        return self._grpc_tls
 
     def resolve(self) -> None:
         """Resolve TLS settings once and cache them for requests and grpcio."""
@@ -426,12 +412,12 @@ class CVTLS:
         self._resolved = True
         if not self.verify_certs:
             self._requests_verify = False
-            self._grpc_root_certificates = None
+            self._grpc_tls = ResolvedGRPCTLS()
             return
 
         if not self.configuration.use_system_certs:
             self._requests_verify = True
-            self._grpc_root_certificates = None
+            self._grpc_tls = ResolvedGRPCTLS()
             return
 
         verify_paths = ssl.get_default_verify_paths()
@@ -443,7 +429,7 @@ class CVTLS:
             self._requests_verify = verify_paths.cafile or verify_paths.capath or True
 
         if root_certificates is not None:
-            self._grpc_root_certificates = root_certificates
+            self._grpc_tls = ResolvedGRPCTLS(root_certificates=root_certificates)
             return
 
         self._requests_verify = True
@@ -453,6 +439,41 @@ class CVTLS:
             "resolve to a readable file or directory). Falling back to the grpcio default root "
             "bundle for gRPC and the requests default root bundle for REST."
         )
+
+    def grpc_tls_from_unverified_peer_certificate(self, certificate: str) -> ResolvedGRPCTLS:
+        """Return gRPC TLS settings for a peer certificate captured from an unverified REST connection."""
+        return ResolvedGRPCTLS(root_certificates=certificate.encode(), target_name_override=self._get_certificate_target_name(certificate))
+
+    def _get_certificate_target_name(self, certificate: str) -> str:
+        """Return a certificate identity suitable for grpc.ssl_target_name_override."""
+        decoded_certificate = self._decode_certificate(certificate)
+
+        subject_alt_names = decoded_certificate.get("subjectAltName", ())
+        for target_name_type in ("DNS", "IP Address"):
+            for subject_alt_name_type, subject_alt_name_value in subject_alt_names:
+                if subject_alt_name_type == target_name_type:
+                    return subject_alt_name_value
+
+        for relative_distinguished_name in decoded_certificate.get("subject", ()):
+            for attribute_name, attribute_value in relative_distinguished_name:
+                if attribute_name == "commonName":
+                    return attribute_value
+
+        msg = "Unable to determine certificate identity for grpc.ssl_target_name_override."
+        raise CVClientException(msg)
+
+    @staticmethod
+    def _decode_certificate(certificate: str) -> dict[str, Any]:
+        """Decode a PEM certificate using the same parser as Python's ssl certificate helpers."""
+        test_decode_cert = getattr(_ssl, "_test_decode_cert", None)
+        if test_decode_cert is None:
+            msg = "Unable to decode CloudVision certificate: Python ssl certificate decoder is unavailable."
+            raise CVClientException(msg)
+
+        with TemporaryDirectory() as temporary_directory:
+            certificate_path = Path(temporary_directory, "certificate.pem")
+            certificate_path.write_text(certificate, encoding="utf-8")
+            return test_decode_cert(str(certificate_path))
 
 
 class CVClient(CVClientProtocol):
@@ -478,13 +499,7 @@ class CVClient(CVClientProtocol):
         )
 
         self._proxy = cloudvision.proxy_configuration
+        self._port = cloudvision.port
+        self._grpc_configuration = cloudvision.grpc_configuration
         self._user_agent = self._get_user_agent()
-
-        self.grpc = CVGRPCTransport(
-            servers=self._servers,
-            port=cloudvision.port,
-            configuration=cloudvision.grpc_configuration,
-            proxy=cloudvision.proxy_configuration,
-            tls=self._tls,
-            user_agent=self._user_agent,
-        )
+        self._grpc: CVGRPCTransport | None = None

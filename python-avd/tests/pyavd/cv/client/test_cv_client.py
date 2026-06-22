@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ssl
 from contextlib import AbstractContextManager
 from unittest.mock import AsyncMock, Mock, patch
 
@@ -190,11 +191,9 @@ async def test_cv_client_verify_certs_clears_stale_ssl_target_name_override() ->
         patch("pyavd._cv.client.secure_channel") as mock_secure_channel,
     ):
         mock_secure_channel.return_value.close = AsyncMock()
-        client = CVClient(
+        async with CVClient(
             cloudvision=_cloudvision(),
-        )
-        client._tls.grpc_ssl_target_name_override = "stale.example.com"
-        async with client:
+        ):
             pass
 
     grpc_options = dict(mock_secure_channel.call_args.kwargs["options"])
@@ -202,6 +201,45 @@ async def test_cv_client_verify_certs_clears_stale_ssl_target_name_override() ->
     mock_ssl_channel_credentials.assert_called_once_with()
     mock_access_token_call_credentials.assert_called_once_with("test-token")
     mock_composite_channel_credentials.assert_called_once_with("tls-credentials", "call-credentials")
+
+
+def test_cv_client_prepare_cv_connection_no_verify_uses_response_peer_certificate() -> None:
+    """Tests that no-verify gRPC TLS is built from the peer certificate on the streamed REST response."""
+    der_certificate = b"peer-certificate"
+    pem_certificate = ssl.DER_cert_to_PEM_cert(der_certificate)
+    mocked_response = Mock()
+    mocked_response.raise_for_status.return_value = None
+    mocked_response.json.return_value = {"version": "CVaaS"}
+    mocked_response.raw.connection.sock.getpeercert.return_value = der_certificate
+
+    with (
+        patch("pyavd._cv.client.get", return_value=mocked_response) as mock_get,
+        patch("pyavd._cv.client.CVTLS._get_certificate_target_name", return_value="cv.example.com") as mock_get_certificate_target_name,
+    ):
+        prepared_connection = CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(verify_certs=False)))._prepare_cv_connection()
+
+    assert prepared_connection.grpc_tls.root_certificates == pem_certificate.encode()
+    assert prepared_connection.grpc_tls.target_name_override == "cv.example.com"
+    mock_get_certificate_target_name.assert_called_once_with(pem_certificate)
+    assert mock_get.call_args.kwargs["verify"] is False
+    assert mock_get.call_args.kwargs["stream"] is True
+    mocked_response.raw.connection.sock.getpeercert.assert_called_once_with(binary_form=True)
+    mocked_response.close.assert_called_once_with()
+
+
+def test_cv_client_prepare_cv_connection_no_verify_raises_when_response_socket_has_no_peer_certificate() -> None:
+    """Tests that no-verify gRPC setup fails clearly if the REST response does not expose a peer certificate."""
+    mocked_response = Mock()
+    mocked_response.raise_for_status.return_value = None
+    mocked_response.raw.connection.sock.getpeercert.return_value = None
+
+    with (
+        patch("pyavd._cv.client.get", return_value=mocked_response),
+        pytest.raises(CVClientException, match="Unable to capture CloudVision peer certificate"),
+    ):
+        CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(verify_certs=False)))._prepare_cv_connection()
+
+    mocked_response.close.assert_called_once_with()
 
 
 @pytest.mark.asyncio

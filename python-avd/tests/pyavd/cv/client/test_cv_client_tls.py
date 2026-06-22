@@ -111,7 +111,7 @@ def test_cv_client_configure_tls_settings_verify_disabled(use_system_certs: bool
         )
 
     assert client._tls.requests_verify is False
-    assert client._tls.grpc_root_certificates is None
+    assert client._tls.grpc_tls.root_certificates is None
     assert "no system trust store was found" not in caplog.text
 
 
@@ -120,7 +120,7 @@ def test_cv_client_configure_tls_settings_use_system_certs_false(caplog: pytest.
     with caplog.at_level(WARNING):
         client = CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(use_system_certs=False)))
 
-    assert client._tls.grpc_root_certificates is None
+    assert client._tls.grpc_tls.root_certificates is None
     assert client._tls.requests_verify is True
     assert "no system trust store was found" not in caplog.text
 
@@ -146,7 +146,7 @@ def test_cv_client_configure_tls_settings_use_system_certs_true_with_os_trust_st
         patch("pyavd._cv.client._read_root_certificates", return_value=b"root-certificates") as mock_read_root_certificates,
     ):
         client = CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(use_system_certs=True)))
-        grpc_root_certificates = client._tls.grpc_root_certificates
+        grpc_root_certificates = client._tls.grpc_tls.root_certificates
         requests_verify = client._tls.requests_verify
 
     assert grpc_root_certificates == b"root-certificates"
@@ -164,7 +164,7 @@ def test_cv_client_configure_tls_settings_use_system_certs_true_with_empty_os_tr
         patch("pyavd._cv.client._read_root_certificates", return_value=None),
     ):
         client = CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(use_system_certs=True)))
-        grpc_root_certificates = client._tls.grpc_root_certificates
+        grpc_root_certificates = client._tls.grpc_tls.root_certificates
         requests_verify = client._tls.requests_verify
 
     assert grpc_root_certificates is None
@@ -185,7 +185,7 @@ def test_cv_client_configure_tls_settings_user_ssl_cert_dir_env_wins_over_os_def
     ):
         client = CVClient(cloudvision=_cloudvision(tls_configuration=CVTLSConfiguration(use_system_certs=True)))
         requests_verify = client._tls.requests_verify
-        grpc_root_certificates = client._tls.grpc_root_certificates
+        grpc_root_certificates = client._tls.grpc_tls.root_certificates
 
     assert requests_verify == "/user/cert-dir"
     assert grpc_root_certificates == b"root-certificates"
@@ -218,7 +218,7 @@ def test_cv_client_configure_tls_settings_unaffected_by_requests_bundle_env_vars
 
     # Resolver returns True. requests will substitute the env var later, in Session.merge_environment_settings.
     assert client._tls.requests_verify is True
-    assert client._tls.grpc_root_certificates is None
+    assert client._tls.grpc_tls.root_certificates is None
 
 
 # === Live TLS Tests against CVaaS ===
