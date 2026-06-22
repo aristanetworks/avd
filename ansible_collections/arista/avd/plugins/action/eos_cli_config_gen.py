@@ -52,6 +52,7 @@ ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
+    "containerlab_startup_config_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -112,6 +113,9 @@ class ActionModule(ActionBase):
                     LOGGER.debug("Rendering config custom templates [done].")
 
                 result["changed"] = self.write_file(device_config, validated_args["config_filename"])
+                if startup_config_filename := validated_args.get("containerlab_startup_config_filename"):
+                    startup_changed = self.write_file(device_config, startup_config_filename)
+                    result["changed"] = result["changed"] or startup_changed
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:

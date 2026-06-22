@@ -143,6 +143,13 @@ class ActionModule(ActionBase):
             content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
             # for cLab we want empty `prefix` at all times in the topology to avoid modifiying hostnames
             if get(task_vars, "digital_twin.environment") == "containerlab" and hasattr(output.digital_twin, "prefix"):
+                content["topology"]["nodes"] = {
+                    node_name: {
+                        "mgmt-ipv4": node_settings["mgmt-ipv4"],
+                        "startup-config": f"init-configs/{node_name}.cfg",
+                    }
+                    for node_name, node_settings in content["topology"]["nodes"].items()
+                }
                 # add keys in a very specific order - name, prefix, everything else
                 content = {"name": content["name"], "prefix": output.digital_twin.prefix, **{key: value for key, value in content.items() if key != "name"}}
             changed = write_file(
