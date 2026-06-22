@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "snmp_server.engine_ids.remotes.[].address") | String |  |  |  | Hostname or IP of remote engine.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.engine_ids.remotes.[].udp_port") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;extensions</samp>](## "snmp_server.extensions") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;oid</samp>](## "snmp_server.extensions.[].oid") | String | Required, Unique |  |  | Object Identifier (OID) for the SNMP extension. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;oid</samp>](## "snmp_server.extensions.[].oid") | String | Required, Unique |  | Pattern: `^\.[0-9]+(\.[0-9]+)*$` | Object Identifier (OID) for the SNMP extension. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path</samp>](## "snmp_server.extensions.[].path") | String | Required |  |  | Path to the script or MIB file on the device (e.g., flash:/script.py). |
     | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_server.contact") | String |  |  |  | SNMP contact. |
     | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_server.location") | String |  |  |  | SNMP location. |

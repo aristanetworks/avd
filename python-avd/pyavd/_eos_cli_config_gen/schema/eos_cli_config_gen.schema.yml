@@ -24730,6 +24730,7 @@ keys:
               type: str
               required: true
               description: Object Identifier (OID) for the SNMP extension.
+              pattern: ^\.[0-9]+(\.[0-9]+)*$
             path:
               type: str
               required: true

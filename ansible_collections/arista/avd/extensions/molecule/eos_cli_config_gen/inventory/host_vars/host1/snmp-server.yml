@@ -172,6 +172,10 @@ snmp_server:
       - name: snmp link-down
       - name: snmpConfigManEvent
   extensions:
+    - oid: ".111.3.6.1.4.1.99999.2.1.0"
+      path: "flash:/test1.py"
+    - oid: ".2.3.6.1.4.1.99999.2.1.0"
+      path: "flash:/test2.py"
     - oid: ".1.3.6.1.4.1.30065.4.101.100.1.1"
       path: "flash:/monitorConnectivity.py"
     - oid: ".1.3.6.1.4.1.30065.4.101.100.2.33"
