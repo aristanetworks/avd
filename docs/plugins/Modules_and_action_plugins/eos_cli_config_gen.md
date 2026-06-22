@@ -31,6 +31,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 | <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>config_filename</samp> | str | optional | None | - | The path to save the generated config to. Required if generate_device_config is true. |
 | <samp>documentation_filename</samp> | str | optional | None | - | The path to save the generated documentation. Required if generate_device_doc is true. |
+| <samp>containerlab_startup_config_filename</samp> | str | optional | None | - | Optional path to copy intended config for Containerlab startup-config usage. |
 | <samp>generate_device_config</samp> | bool | optional | True | - | Flag to generate the device configuration. |
 | <samp>generate_device_doc</samp> | bool | optional | True | - | Flag to generate the device documentation. |
 | <samp>device_doc_toc</samp> | bool | optional | True | - | Flag to generate the table of content for the device documentation. |
@@ -44,6 +45,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
   arista.avd.eos_cli_config_gen:
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    containerlab_startup_config_filename: "{{ documentation_dir }}/fabric/init-configs/{{ inventory_hostname }}.cfg"
   delegate_to: localhost
 
 - name: Generate device documentation only
