@@ -152,6 +152,12 @@ management_security:
     - name: auto-certificate-profile
       certificate:
         auto_certificate: auto-est
+    - name: auto-certificate-precedence-profile
+      # auto_certificate takes precedence; file/key are ignored when both are set.
+      certificate:
+        auto_certificate: auto-est
+        file: SSL_CERT
+        key: SSL_KEY
     - name: tls-single-version-profile-as-string
       tls_versions: "1.1"
     - name: tls-single-version-profile-as-float

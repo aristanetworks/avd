@@ -2028,6 +2028,7 @@ address locking
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
 | ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| auto-certificate-precedence-profile | - | - | - | auto-est | - | - | - |
 | auto-certificate-profile | - | - | - | auto-est | - | - | - |
 | certificate-profile | - | eAPI.crt | eAPI.key | - | - | ca.crl<br>intermediate.crl | False |
 | cipher-list-profile | - | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
@@ -2185,6 +2186,9 @@ management security
       tls versions 1.1 1.2
       fips restrictions
       certificate SSL_CERT key SSL_KEY
+   !
+   ssl profile auto-certificate-precedence-profile
+      certificate auto-certificate auto-est
    !
    ssl profile auto-certificate-profile
       certificate auto-certificate auto-est

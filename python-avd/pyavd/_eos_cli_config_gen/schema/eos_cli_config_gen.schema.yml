@@ -10239,8 +10239,7 @@ keys:
                 auto_certificate:
                   description: 'Automatically managed certificate profile.
 
-                    This is mutually exclusive with ''file'' and ''key'', if ''auto_certificate''
-                    is specified, ''file'' and ''key'' are ignored.'
+                    Mutually exclusive with ''file'' and ''key''.'
                   type: str
                   convert_types:
                   - int
