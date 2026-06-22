@@ -173,10 +173,8 @@ class EthernetInterfacesMixin(Protocol):
     ) -> None:
         """Set the IPv4-only configuration on an EthernetInterface from the matching l3_interface entry for this node."""
         ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
-        if not ip_address:
-            return
         interface.ip_address = ip_address
-        interface_ip = get_ip_from_ip_prefix(ip_address) if "/" in ip_address else ip_address
+        interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
         if l3_interface.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_in, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_in = acl.name

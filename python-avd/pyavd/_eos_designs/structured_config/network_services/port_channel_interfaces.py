@@ -133,11 +133,11 @@ class PortChannelInterfacesMixin(Protocol):
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """Set the IPv4-only configuration on a PortChannelInterface from its l3_port_channel."""
-        if not l3_port_channel.ip_address:
-            return
         port_channel_interface.ip_address = l3_port_channel.ip_address
         port_channel_interface.ip_address_secondaries = EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries(l3_port_channel.ip_address_secondaries)
-        interface_ip = get_ip_from_ip_prefix(l3_port_channel.ip_address) if "/" in l3_port_channel.ip_address else l3_port_channel.ip_address
+        interface_ip = l3_port_channel.ip_address
+        if interface_ip and "/" in interface_ip:
+            interface_ip = get_ip_from_ip_prefix(interface_ip)
         if l3_port_channel.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_in = acl.name
