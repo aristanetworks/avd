@@ -7622,12 +7622,12 @@ interface Tunnel5
 | Vlan361 | TCP MSS ceiling - IPv4 | default | - | - |
 | Vlan362 | TCP MSS ceiling - IPv6 | default | - | - |
 | Vlan363 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
-| Vlan364 | TCP MSS ceiling - IPv4 | default | - | - |
-| Vlan365 | TCP MSS ceiling - IPv6 | default | - | - |
-| Vlan366 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
-| Vlan367 | TCP MSS ceiling - IPv4 | default | - | - |
-| Vlan368 | TCP MSS ceiling - IPv6 | default | - | - |
-| Vlan369 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
+| Vlan364 | TCP MSS ceiling - IPv4 ingress | default | - | - |
+| Vlan365 | TCP MSS ceiling - IPv6 ingress | default | - | - |
+| Vlan366 | TCP MSS ceiling - IPv4 and IPv6 ingress | default | - | - |
+| Vlan367 | TCP MSS ceiling - IPv4 egress | default | - | - |
+| Vlan368 | TCP MSS ceiling - IPv6 egress | default | - | - |
+| Vlan369 | TCP MSS ceiling - IPv4 and IPv6 egress | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7650,7 +7650,7 @@ interface Tunnel5
 | --------- | -------- | -------- | --------- |
 | Vlan361 | 1310 | - | - |
 | Vlan362 | - | 1320 | - |
-| Vlan363 | 1330 | - | ingress |
+| Vlan363 | 1330 | 1340 | - |
 | Vlan364 | 1310 | - | ingress |
 | Vlan365 | - | 1320 | ingress |
 | Vlan366 | 1330 | 1340 | ingress |
@@ -8153,30 +8153,30 @@ interface Vlan362
 !
 interface Vlan363
    description TCP MSS ceiling - IPv4 and IPv6
-   tcp mss ceiling ipv4 1330 ingress
+   tcp mss ceiling ipv4 1330 ipv6 1340
 !
 interface Vlan364
-   description TCP MSS ceiling - IPv4
+   description TCP MSS ceiling - IPv4 ingress
    tcp mss ceiling ipv4 1310 ingress
 !
 interface Vlan365
-   description TCP MSS ceiling - IPv6
+   description TCP MSS ceiling - IPv6 ingress
    tcp mss ceiling ipv6 1320 ingress
 !
 interface Vlan366
-   description TCP MSS ceiling - IPv4 and IPv6
+   description TCP MSS ceiling - IPv4 and IPv6 ingress
    tcp mss ceiling ipv4 1330 ipv6 1340 ingress
 !
 interface Vlan367
-   description TCP MSS ceiling - IPv4
+   description TCP MSS ceiling - IPv4 egress
    tcp mss ceiling ipv4 1310 egress
 !
 interface Vlan368
-   description TCP MSS ceiling - IPv6
+   description TCP MSS ceiling - IPv6 egress
    tcp mss ceiling ipv6 1320 egress
 !
 interface Vlan369
-   description TCP MSS ceiling - IPv4 and IPv6
+   description TCP MSS ceiling - IPv4 and IPv6 egress
    tcp mss ceiling ipv4 1330 ipv6 1340 egress
 !
 interface Vlan501
