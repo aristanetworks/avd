@@ -39236,6 +39236,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
+            "loop_protection": {"type": bool},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
             "address_locking": {"type": AddressLocking},
@@ -39332,6 +39333,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+        loop_protection: bool | None
+        """Enable/disable loop protection."""
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
@@ -39515,6 +39518,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
+                loop_protection: bool | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
@@ -39613,6 +39617,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                    loop_protection: Enable/disable loop protection.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
                     address_locking: Subclass of AvdModel.
@@ -40403,13 +40408,56 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"allow_non_ect": {"type": AllowNonEct}}
+                class GlobalBuffer(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes"]
+                    _fields: ClassVar[dict] = {"units": {"type": str}, "min": {"type": int}, "max": {"type": int}}
+                    units: Units
+                    """
+                    Units to be used for the threshold values.
+                    Threshold values depend on the hardware platform.
+                    """
+                    min: int
+                    """Random-detect ECN minimum-threshold."""
+                    max: int
+                    """Random-detect ECN maximum-threshold."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, units: Units | UndefinedType = Undefined, min: int | UndefinedType = Undefined, max: int | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            GlobalBuffer.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                units:
+                                   Units to be used for the threshold values.
+                                   Threshold values depend on the hardware platform.
+                                min: Random-detect ECN minimum-threshold.
+                                max: Random-detect ECN maximum-threshold.
+
+                            """
+
+                _fields: ClassVar[dict] = {"allow_non_ect": {"type": AllowNonEct}, "global_buffer": {"type": GlobalBuffer}}
                 allow_non_ect: AllowNonEct
                 """Subclass of AvdModel."""
+                global_buffer: GlobalBuffer
+                """
+                Set global shared memory thresholds.
+
+                Subclass of AvdModel.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, allow_non_ect: AllowNonEct | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self, *, allow_non_ect: AllowNonEct | UndefinedType = Undefined, global_buffer: GlobalBuffer | UndefinedType = Undefined
+                    ) -> None:
                         """
                         Ecn.
 
@@ -40418,6 +40466,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             allow_non_ect: Subclass of AvdModel.
+                            global_buffer:
+                               Set global shared memory thresholds.
+
+                               Subclass of AvdModel.
 
                         """
 

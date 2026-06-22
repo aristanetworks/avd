@@ -13417,6 +13417,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -15262,6 +15265,37 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+              global_buffer:
+                type: dict
+                description: Set global shared memory thresholds.
+                keys:
+                  units:
+                    required: true
+                    type: str
+                    valid_values:
+                    - segments
+                    - bytes
+                    - kbytes
+                    - mbytes
+                    description: 'Units to be used for the threshold values.
+
+                      Threshold values depend on the hardware platform.
+
+                      '
+                  min:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN minimum-threshold.
+                  max:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN maximum-threshold.
       tx_queue:
         type: dict
         description: Global transmit queue settings.
