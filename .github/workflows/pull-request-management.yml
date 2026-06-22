@@ -719,10 +719,13 @@ jobs:
         with:
           persist-credentials: false
       - name: Install markdownlint-cli2
-        run: npm install markdownlint-cli2 --global
+        # Install from package.json + package-lock.json at the repo root to pin markdownlint-cli2 and all dependencies
+        # To update the version, change package.json and run: npm install --package-lock-only
+        run: npm ci
       - name: Run markdownlint-cli2
         # Exclusions are configured in .markdownlint-cli2.yaml
-        run: markdownlint-cli2 "**/*.md"
+        # npm ci installs to local node_modules/, so npx is needed to resolve the binary
+        run: npx markdownlint-cli2 "**/*.md"
       - name: Check GIT status
         run: sh .github/check-git-status.sh
 

@@ -27,6 +27,9 @@ coverage.xml
 # ansible-lint cache and .ansible/.lock file
 .ansible/
 
+# Node.js (markdownlint-cli2)
+node_modules/
+
 # Development
 build/
 dist/
