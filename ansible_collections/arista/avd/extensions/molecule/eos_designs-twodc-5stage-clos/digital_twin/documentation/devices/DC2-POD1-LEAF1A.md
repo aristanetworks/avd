@@ -701,13 +701,13 @@ route-map RM-CONN-2-BGP permit 20
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| Common_VRF | enabled |
-| MGMT | disabled |
-| vrf_with_loopbacks_dc1_pod1_only | enabled |
-| vrf_with_loopbacks_from_overlapping_pool | enabled |
-| vrf_with_loopbacks_from_pod_pools | enabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| Common_VRF | - | enabled |
+| MGMT | - | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | - | enabled |
+| vrf_with_loopbacks_from_overlapping_pool | - | enabled |
+| vrf_with_loopbacks_from_pod_pools | - | enabled |
 
 ### VRF Instances Device Configuration
 

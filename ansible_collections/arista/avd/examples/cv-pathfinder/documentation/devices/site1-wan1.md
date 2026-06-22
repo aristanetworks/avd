@@ -1264,11 +1264,11 @@ ip access-list ACL-INTERNET-IN_Ethernet4
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| BLUE | enabled |
-| MGMT | disabled |
-| RED | enabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| BLUE | - | enabled |
+| MGMT | - | disabled |
+| RED | - | enabled |
 
 ### VRF Instances Device Configuration
 

@@ -613,11 +613,11 @@ mpls ldp
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| C1_VRF1 | enabled |
-| C2_VRF1 | enabled |
-| MGMT | disabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| C1_VRF1 | - | enabled |
+| C2_VRF1 | - | enabled |
+| MGMT | - | disabled |
 
 ### VRF Instances Device Configuration
 

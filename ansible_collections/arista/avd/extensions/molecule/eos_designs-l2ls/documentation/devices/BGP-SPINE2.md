@@ -752,10 +752,10 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| New_VRF | enabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| MGMT | - | disabled |
+| New_VRF | - | enabled |
 
 ### VRF Instances Device Configuration
 

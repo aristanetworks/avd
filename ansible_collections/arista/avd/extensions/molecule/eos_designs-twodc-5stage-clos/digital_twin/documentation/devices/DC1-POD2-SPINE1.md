@@ -448,9 +448,9 @@ route-map RM-CONN-2-BGP permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| MGMT | - | disabled |
 
 ### VRF Instances Device Configuration
 

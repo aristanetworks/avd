@@ -173,10 +173,10 @@ no ip routing vrf MGMT
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| INBAND_MGMT | disabled |
-| MGMT | disabled |
+| VRF Name | RD | IP Routing |
+| -------- | --- | ---------- |
+| INBAND_MGMT | - | disabled |
+| MGMT | - | disabled |
 
 ### VRF Instances Device Configuration
 
