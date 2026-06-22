@@ -235,6 +235,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     return ContainerlabDigitalTwin(
         name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
         prefix="",
+        mgmt=ContainerlabMgmt(network="custom_mgmt", ipv4_subnet=str(next(iter(unique_mgmt_networks)))),
         topology=ContainerlabTopology(
             defaults=ContainerlabDefaults(kind=default_kind),
             kinds={
@@ -243,7 +244,6 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
                     image="arista/ceos:latest",
                 )
             },
-            mgmt=ContainerlabMgmt(network="custom_mgmt", ipv4_subnet=str(next(iter(unique_mgmt_networks)))),
             nodes=nodes,
             links=tuple(links),
         ),

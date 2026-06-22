@@ -1,6 +1,9 @@
 ---
 name: DIGITAL_TWIN_CONTAINERLAB, Containerlab Digital Twin
 prefix: ''
+mgmt:
+  network: custom_mgmt
+  ipv4-subnet: 172.16.1.0/24
 topology:
   defaults:
     kind: arista_ceos
@@ -8,9 +11,6 @@ topology:
     arista_ceos:
       enforce-startup-config: true
       image: arista/ceos:latest
-  mgmt:
-    network: custom_mgmt
-    ipv4-subnet: 172.16.1.0/24
   nodes:
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
