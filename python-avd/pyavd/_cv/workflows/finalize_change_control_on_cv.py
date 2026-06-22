@@ -30,8 +30,7 @@ CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP: dict[bool, Literal["approved"] | Non
 def get_change_control_state(
     cv_change_control: ChangeControl,
 ) -> Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"]:
-    approve_flag = get_required_field(cv_change_control, "approve", cv_change_control.approve)
-    approve = get_required_field(approve_flag, "value", approve_flag.value)
+    approve = cv_change_control.approve is not None and cv_change_control.approve.value is True
     return (
         CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status] or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[approve] or "failed"
         if cv_change_control.error is not None
