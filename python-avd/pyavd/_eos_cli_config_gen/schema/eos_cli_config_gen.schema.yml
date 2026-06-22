@@ -26971,6 +26971,32 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: 'Optional direction (''ingress'', ''egress'')  for tcp
+                mss ceiling.
+
+                '
         traffic_policy:
           type: dict
           keys:
