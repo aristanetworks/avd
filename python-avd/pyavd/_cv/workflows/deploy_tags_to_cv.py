@@ -11,22 +11,18 @@ from pyavd._cv.client.models import CVTag, CVTagAssignment
 from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
 
 if TYPE_CHECKING:
-    from typing import TypeVar
-
     from pyavd._cv.client import CVClient
-
-    T_TAG = TypeVar("T_TAG", CVDeviceTag, CVInterfaceTag)
 
 LOGGER = getLogger(__name__)
 
 
 async def deploy_tags_to_cv(
-    tags: list[T_TAG],
+    tags: list[CVDeviceTag | CVInterfaceTag],
     workspace: CVWorkspace,
     strict: bool,
-    skipped_tags: list[T_TAG],
-    deployed_tags: list[T_TAG],
-    removed_tags: list[T_TAG],
+    skipped_tags: list[CVDeviceTag | CVInterfaceTag],
+    deployed_tags: list[CVDeviceTag | CVInterfaceTag],
+    removed_tags: list[CVDeviceTag | CVInterfaceTag],
     cv_client: CVClient,
 ) -> None:
     """
@@ -129,11 +125,11 @@ async def deploy_tags_to_cv(
             removed_tags.extend(
                 CVInterfaceTag(
                     label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id
-                )  # type: ignore[arg-type]
+                )
                 for assignment in sorted_assignments_to_unassign
             )
         else:
             removed_tags.extend(
-                CVDeviceTag(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])  # type: ignore[arg-type]
+                CVDeviceTag(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])
                 for assignment in sorted_assignments_to_unassign
             )

@@ -78,7 +78,7 @@ class CloudVision:
     password: str | None
     verify_certs: bool
     proxy_host: str | None
-    proxy_port: int
+    proxy_port: int | None
     proxy_username: str | None
     proxy_password: str | None
     grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
