@@ -209,8 +209,8 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     links = [
         ContainerlabLinkSettings(
             endpoints=(
-                f"{topology_link['node']}:{topology_link['node_interface']}",
-                f"{topology_link['peer']}:{topology_link['peer_interface']}",
+                f"{topology_link['node']}:{topology_link['node_interface'].replace('/', '_')}",
+                f"{topology_link['peer']}:{topology_link['peer_interface'].replace('/', '_')}",
             )
         )
         for topology_link in fabric_documentation_facts.topology_links

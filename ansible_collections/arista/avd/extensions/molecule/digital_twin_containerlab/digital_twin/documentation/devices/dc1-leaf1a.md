@@ -119,7 +119,7 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_dc1-spine1_Ethernet1 | - | 10.255.255.1/31 | default | 9214 | False | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet1 | - | 10.255.255.3/31 | default | 9214 | False | - | - |
+| Ethernet1/2 | P2P_dc1-spine2_Ethernet1/2 | - | 10.255.255.3/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -132,8 +132,8 @@ interface Ethernet1
    no switchport
    ip address 10.255.255.1/31
 !
-interface Ethernet2
-   description P2P_dc1-spine2_Ethernet1
+interface Ethernet1/2
+   description P2P_dc1-spine2_Ethernet1/2
    no shutdown
    mtu 9214
    no switchport
@@ -266,7 +266,7 @@ router bgp 65101
    neighbor 10.255.255.0 description dc1-spine1_Ethernet1
    neighbor 10.255.255.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.2 remote-as 65100
-   neighbor 10.255.255.2 description dc1-spine2_Ethernet1
+   neighbor 10.255.255.2 description dc1-spine2_Ethernet1/2
    redistribute connected
    !
    address-family ipv4

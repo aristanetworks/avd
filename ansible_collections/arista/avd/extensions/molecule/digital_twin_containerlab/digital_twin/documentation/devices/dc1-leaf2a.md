@@ -118,15 +118,15 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_dc1-spine1_Ethernet2 | - | 10.255.255.5/31 | default | 9214 | False | - | - |
+| Ethernet1/1 | P2P_dc1-spine1_Ethernet1/3 | - | 10.255.255.5/31 | default | 9214 | False | - | - |
 | Ethernet2 | P2P_dc1-spine2_Ethernet2 | - | 10.255.255.7/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet1
-   description P2P_dc1-spine1_Ethernet2
+interface Ethernet1/1
+   description P2P_dc1-spine1_Ethernet1/3
    no shutdown
    mtu 9214
    no switchport
@@ -263,7 +263,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 10.255.255.4 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.4 remote-as 65100
-   neighbor 10.255.255.4 description dc1-spine1_Ethernet2
+   neighbor 10.255.255.4 description dc1-spine1_Ethernet1/3
    neighbor 10.255.255.6 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.6 remote-as 65100
    neighbor 10.255.255.6 description dc1-spine2_Ethernet2
