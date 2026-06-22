@@ -463,8 +463,10 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 !!! note "Partial Manifest Deployments"
     By default, the manifest owns the root-level `containers` list, so existing manifest-managed root containers not declared in the manifest are removed.
     Set `preserve_existing_containers: true` on the manifest to preserve existing root containers that are not declared in the current manifest. This enables workflows where separate manifests manage root-level branches.
+    Existing manifest-managed container order is preserved, and newly declared containers are appended.
+    Manually created root containers are always preserved and ordered after the manifest-managed containers.
 
-    By default, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
+    Additionally, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
     Set `preserve_existing_sub_containers: true` on a container to preserve existing manifest-managed child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
     Existing manifest-managed child container order is preserved, and any newly declared child containers are appended.
 
