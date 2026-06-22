@@ -11,4 +11,5 @@ eos_designs_documentation:
 
 digital_twin:
   environment: containerlab
+  # TODO: remove `fabric` once #5649 is ready
   fabric: {}
