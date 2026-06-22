@@ -132,15 +132,15 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 10.255.255.2/31 | default | 9214 | False | - | - |
+| Ethernet1/2 | P2P_dc1-leaf1a_Ethernet1/2 | - | 10.255.255.2/31 | default | 9214 | False | - | - |
 | Ethernet2 | P2P_dc1-leaf2a_Ethernet2 | - | 10.255.255.6/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet1
-   description P2P_dc1-leaf1a_Ethernet2
+interface Ethernet1/2
+   description P2P_dc1-leaf1a_Ethernet1/2
    no shutdown
    mtu 9214
    no switchport
@@ -277,7 +277,7 @@ router bgp 65100
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 10.255.255.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.3 remote-as 65101
-   neighbor 10.255.255.3 description dc1-leaf1a_Ethernet2
+   neighbor 10.255.255.3 description dc1-leaf1a_Ethernet1/2
    neighbor 10.255.255.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.7 remote-as 65102
    neighbor 10.255.255.7 description dc1-leaf2a_Ethernet2

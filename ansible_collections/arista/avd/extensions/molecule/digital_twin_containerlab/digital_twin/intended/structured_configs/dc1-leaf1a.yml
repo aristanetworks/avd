@@ -15,14 +15,14 @@ ethernet_interfaces:
     peer_type: spine
   switchport:
     enabled: false
-- name: Ethernet2
-  description: P2P_dc1-spine2_Ethernet1
+- name: Ethernet1/2
+  description: P2P_dc1-spine2_Ethernet1/2
   shutdown: false
   mtu: 9214
   ip_address: 10.255.255.3/31
   metadata:
     peer: dc1-spine2
-    peer_interface: Ethernet1
+    peer_interface: Ethernet1/2
     peer_type: spine
   switchport:
     enabled: false
@@ -81,7 +81,7 @@ router_bgp:
     remote_as: '65100'
     metadata:
       peer: dc1-spine2
-    description: dc1-spine2_Ethernet1
+    description: dc1-spine2_Ethernet1/2
   redistribute:
     connected:
       enabled: true

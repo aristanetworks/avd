@@ -29,11 +29,11 @@ topology:
     - dc1-leaf1a:Ethernet1
     - dc1-spine1:Ethernet1
   - endpoints:
-    - dc1-leaf1a:Ethernet2
-    - dc1-spine2:Ethernet1
+    - dc1-leaf1a:Ethernet1_2
+    - dc1-spine2:Ethernet1_2
   - endpoints:
-    - dc1-leaf2a:Ethernet1
-    - dc1-spine1:Ethernet2
+    - dc1-leaf2a:Ethernet1_1
+    - dc1-spine1:Ethernet1_3
   - endpoints:
     - dc1-leaf2a:Ethernet2
     - dc1-spine2:Ethernet2

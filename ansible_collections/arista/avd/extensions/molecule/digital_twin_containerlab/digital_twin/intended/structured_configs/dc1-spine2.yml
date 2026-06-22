@@ -4,14 +4,14 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1
-  description: P2P_dc1-leaf1a_Ethernet2
+- name: Ethernet1/2
+  description: P2P_dc1-leaf1a_Ethernet1/2
   shutdown: false
   mtu: 9214
   ip_address: 10.255.255.2/31
   metadata:
     peer: dc1-leaf1a
-    peer_interface: Ethernet2
+    peer_interface: Ethernet1/2
     peer_type: l3leaf
   switchport:
     enabled: false
@@ -73,7 +73,7 @@ router_bgp:
     remote_as: '65101'
     metadata:
       peer: dc1-leaf1a
-    description: dc1-leaf1a_Ethernet2
+    description: dc1-leaf1a_Ethernet1/2
   - ip_address: 10.255.255.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'

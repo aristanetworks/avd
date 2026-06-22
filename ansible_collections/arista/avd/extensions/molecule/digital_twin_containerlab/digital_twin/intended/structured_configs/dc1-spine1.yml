@@ -15,14 +15,14 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet2
-  description: P2P_dc1-leaf2a_Ethernet1
+- name: Ethernet1/3
+  description: P2P_dc1-leaf2a_Ethernet1/1
   shutdown: false
   mtu: 9214
   ip_address: 10.255.255.4/31
   metadata:
     peer: dc1-leaf2a
-    peer_interface: Ethernet1
+    peer_interface: Ethernet1/1
     peer_type: l3leaf
   switchport:
     enabled: false
@@ -79,7 +79,7 @@ router_bgp:
     remote_as: '65102'
     metadata:
       peer: dc1-leaf2a
-    description: dc1-leaf2a_Ethernet1
+    description: dc1-leaf2a_Ethernet1/1
   redistribute:
     connected:
       enabled: true
