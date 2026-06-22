@@ -111,13 +111,10 @@ class EthernetInterfacesMixin(Protocol):
                     continue
 
                 interface_name = l3_interface.interfaces[node_index]
-                ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
-                interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
                 # if 'descriptions' is set, it is preferred
                 interface_description = l3_interface.descriptions[node_index] if l3_interface.descriptions else l3_interface.description
                 interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=interface_name,
-                    ip_address=ip_address,
                     mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
                     arp_gratuitous_accept=l3_interface.arp_gratuitous_accept,
@@ -130,12 +127,8 @@ class EthernetInterfacesMixin(Protocol):
                     ),
                 )
 
-                ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
-                ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if ipv6_address and "/" in ipv6_address else ipv6_address
-                if ipv6_address:
-                    interface.ipv6_addresses.append(ipv6_address)
-                    if vrf.name == "default":
-                        self.structured_config.ipv6_unicast_routing = True
+                self._update_ethernet_interface_ipv4(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant, node_index=node_index)
+                self._update_ethernet_interface_ipv6(interface, l3_interface=l3_interface, vrf=vrf, node_index=node_index)
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
@@ -145,24 +138,6 @@ class EthernetInterfacesMixin(Protocol):
                 interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
                     interface.name, default(l3_interface.sflow, self.inputs.fabric_sflow.l3_interfaces)
                 )
-
-                if ip_address:
-                    self._set_interface_ipv4(
-                        interface,
-                        ipv4_acl_in=l3_interface.ipv4_acl_in,
-                        ipv4_acl_out=l3_interface.ipv4_acl_out,
-                        interface_name=interface_name,
-                        interface_ip=interface_ip,
-                    )
-
-                if ipv6_address:
-                    self._set_interface_ipv6(
-                        interface,
-                        ipv6_acl_in=l3_interface.ipv6_acl_in,
-                        ipv6_acl_out=l3_interface.ipv6_acl_out,
-                        interface_name=interface_name,
-                        ipv6_interface_ip=ipv6_interface_ip,
-                    )
 
                 if "." in interface_name:
                     # This is a subinterface
@@ -182,43 +157,86 @@ class EthernetInterfacesMixin(Protocol):
                 if vrf.name != "default":
                     interface.vrf = vrf.name
 
-                if l3_interface.ospf.enabled and vrf.ospf.enabled:
-                    interface._update(
-                        ospf_area=l3_interface.ospf.area,
-                        ospf_network_point_to_point=l3_interface.ospf.point_to_point,
-                        ospf_cost=l3_interface.ospf.cost,
-                    )
-
-                    self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
-
-                if l3_interface.pim.enabled:
-                    if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
-                        # Possibly the key was not set because `evpn_multicast` is not set to `true`.
-                        if not self.shared_utils.evpn_multicast:
-                            msg = (
-                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
-                                "'evpn_multicast: true' at the fabric level"
-                            )
-                        else:
-                            msg = (
-                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
-                                f"'evpn_l3_multicast.enabled: true' under VRF '{vrf.name}' or Tenant '{tenant.name}'"
-                            )
-                        raise AristaAvdError(msg)
-
-                    if not getattr(vrf._internal_data, "pim_rp_addresses", None):
-                        msg = (
-                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires at least one RP"
-                            f" defined in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
-                        )
-                        raise AristaAvdError(msg)
-
-                    interface.pim.ipv4.sparse_mode = True
-
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
                     interface._internal_data.campus_link_type = list(l3_interface.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(interface)
+
+    def _update_ethernet_interface_ipv4(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem,
+        *,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        node_index: int,
+    ) -> None:
+        """Set the IPv4-only configuration on an EthernetInterface from the matching l3_interface entry for this node."""
+        ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
+        if not ip_address:
+            return
+        interface.ip_address = ip_address
+        interface_ip = get_ip_from_ip_prefix(ip_address) if "/" in ip_address else ip_address
+        if l3_interface.ipv4_acl_in:
+            acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_in, interface_name=interface.name, interface_ip=interface_ip)
+            interface.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+        if l3_interface.ipv4_acl_out:
+            acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_out, interface_name=interface.name, interface_ip=interface_ip)
+            interface.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
+        if l3_interface.ospf.enabled and vrf.ospf.enabled:
+            interface._update(
+                ospf_area=l3_interface.ospf.area,
+                ospf_network_point_to_point=l3_interface.ospf.point_to_point,
+                ospf_cost=l3_interface.ospf.cost,
+            )
+            self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
+        if l3_interface.pim.enabled:
+            if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
+                if not self.shared_utils.evpn_multicast:
+                    msg = (
+                        f"'pim: enabled' set on l3_interface '{interface.name}' on '{self.shared_utils.hostname}' requires "
+                        "'evpn_multicast: true' at the fabric level"
+                    )
+                else:
+                    msg = (
+                        f"'pim: enabled' set on l3_interface '{interface.name}' on '{self.shared_utils.hostname}' requires "
+                        f"'evpn_l3_multicast.enabled: true' under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                    )
+                raise AristaAvdError(msg)
+            if not getattr(vrf._internal_data, "pim_rp_addresses", None):
+                msg = (
+                    f"'pim: enabled' set on l3_interface '{interface.name}' on '{self.shared_utils.hostname}' requires at least one RP"
+                    f" defined in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                )
+                raise AristaAvdError(msg)
+            interface.pim.ipv4.sparse_mode = True
+
+    def _update_ethernet_interface_ipv6(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem,
+        *,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        node_index: int,
+    ) -> None:
+        """Set the IPv6-only configuration on an EthernetInterface from the matching l3_interface entry for this node."""
+        ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
+        if not ipv6_address:
+            return
+        interface.ipv6_addresses.append(ipv6_address)
+        if vrf.name == "default":
+            self.structured_config.ipv6_unicast_routing = True
+        ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if "/" in ipv6_address else ipv6_address
+        if l3_interface.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in, interface_name=interface.name, interface_ip=ipv6_interface_ip)
+            interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+        if l3_interface.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out, interface_name=interface.name, interface_ip=ipv6_interface_ip)
+            interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)
 
     def _validate_l3_interface_per_node_list_lengths(
         self: AvdStructuredConfigNetworkServicesProtocol,
