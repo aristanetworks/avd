@@ -7,9 +7,11 @@
 {% set v6_vrf = namespace(tracker_exclamation=false) %}
 {% for vrf in vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%     if vrf.ipv6_routing is arista.avd.defined(true) and vrf.name != 'default' %}
-{%         if not v6_vrf.tracker_exclamation %}
+{%         if not v6_vrf.tracker_exclamation and eos_config_future.always_render_ipv6_unicast_routing_vrfs_separator is arista.avd.defined(true) %}
 !
 {%             set v6_vrf.tracker_exclamation = true %}
+{%         elif loop.first and eos_config_future.always_render_ipv6_unicast_routing_vrfs_separator is arista.avd.defined(false) %}
+!
 {%         endif %}
 ipv6 unicast-routing vrf {{ vrf.name }}
 {%     endif %}

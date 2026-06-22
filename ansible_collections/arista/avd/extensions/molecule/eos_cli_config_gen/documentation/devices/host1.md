@@ -8483,7 +8483,6 @@ ip routing ipv6 interfaces vrf TEST2
 ```eos
 !
 ipv6 unicast-routing
-!
 ipv6 unicast-routing vrf TEST1
 ipv6 hardware fib optimize prefixes profile internet
 ```

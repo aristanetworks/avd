@@ -78,6 +78,7 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV4 | True |
+| TESTV6_VRF | - |
 
 #### IP Routing Device Configuration
 
@@ -94,6 +95,7 @@ ip routing vrf FUTURE_IPV4
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV4 | false |
+| TESTV6_VRF | true |
 
 ### Router OSPF
 
@@ -442,10 +444,13 @@ router multicast
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | FUTURE_IPV4 | enabled |
+| TESTV6_VRF | disabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance FUTURE_IPV4
+!
+vrf instance TESTV6_VRF
 ```
