@@ -1,6 +1,7 @@
 ---
+eos_config_future:
+  render_monitor_layer1_without_enabled: true
 monitor_layer1:
-  enabled: true
   logging_mac_fault: true
   logging_transceiver:
     dom: true

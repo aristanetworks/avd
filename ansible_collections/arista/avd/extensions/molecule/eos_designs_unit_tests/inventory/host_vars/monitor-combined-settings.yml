@@ -17,7 +17,6 @@ logging_settings:
   hosts:
     - name: syslog.example.com
   monitor_layer1:
-    enabled: true
     logging_transceiver:
       enabled: true
 

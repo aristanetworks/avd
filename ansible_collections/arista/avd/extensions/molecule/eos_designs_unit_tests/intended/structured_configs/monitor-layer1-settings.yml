@@ -3,6 +3,8 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+eos_config_future:
+  render_monitor_layer1_without_enabled: true
 hostname: monitor-layer1-settings
 ip_igmp_snooping:
   globally_enabled: true
@@ -35,7 +37,6 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 monitor_layer1:
-  enabled: true
   logging_mac_fault: true
   logging_transceiver:
     dom: true
