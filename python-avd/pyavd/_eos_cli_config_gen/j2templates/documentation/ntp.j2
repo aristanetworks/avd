@@ -25,8 +25,8 @@
 NTP servers VRF: {{ ntp.vrf }}
 {%         endif %}
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
 {%         for server in ntp.servers | arista.avd.natural_sort('name') %}
 {%             set r = namespace() %}
 {%             set r.s = server.name %}
@@ -37,8 +37,9 @@ NTP servers VRF: {{ ntp.vrf }}
 {%             set r.mi = server.minpoll | arista.avd.default('-') %}
 {%             set r.ma = server.maxpoll | arista.avd.default('-') %}
 {%             set r.l = server.local_interface | arista.avd.default('-') %}
+{%             set r.sa = server.source_address | arista.avd.default('-') %}
 {%             set r.k = server.key | arista.avd.default('-') %}
-| {{ r.s }} | {{ r.p }} | {{ r.b }} | {{ r.i }} | {{ r.vv }} | {{ r.mi }} | {{ r.ma }} | {{ r.l }} | {{ r.k }} |
+| {{ r.s }} | {{ r.p }} | {{ r.b }} | {{ r.i }} | {{ r.vv }} | {{ r.mi }} | {{ r.ma }} | {{ r.l }} | {{ r.sa }} | {{ r.k }} |
 {%         endfor %}
 {%     endif %}
 {%     if ntp.authenticate is arista.avd.defined

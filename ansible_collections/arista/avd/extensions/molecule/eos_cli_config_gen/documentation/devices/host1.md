@@ -727,14 +727,14 @@ clock timezone GMT
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | 10.10.10.10 | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 20.20.20.20 | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -764,7 +764,7 @@ ntp server vrf MGMT 1.2.3.4 local-interface lo0
 ntp server vrf MGMT 2.2.2.55
 ntp server vrf MGMT 10.1.1.1
 ntp server vrf MGMT 10.1.1.2 prefer
-ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT 20.20.20.1 source-address 20.20.20.20 key <removed>
 ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```

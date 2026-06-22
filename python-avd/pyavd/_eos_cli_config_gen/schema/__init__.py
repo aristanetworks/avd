@@ -32329,6 +32329,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "iburst": {"type": bool},
                 "key": {"type": int},
                 "local_interface": {"type": str},
+                "source_address": {"type": str},
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "preferred": {"type": bool},
@@ -32340,7 +32341,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             iburst: bool | None
             key: int | None
             local_interface: str | None
-            """Source interface."""
+            """
+            Source interface for NTP traffic.
+            Mutually exclusive with 'source_address'. Takes precedence if both
+            are set.
+            """
+            source_address: str | None
+            """
+            Source IPv4 address for NTP traffic.
+            Mutually exclusive with 'local_interface'. 'local_interface'
+            takes precedence if both are set.
+            """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
             minpoll: int | None
@@ -32358,6 +32369,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     iburst: bool | None | UndefinedType = Undefined,
                     key: int | None | UndefinedType = Undefined,
                     local_interface: str | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     preferred: bool | None | UndefinedType = Undefined,
@@ -32374,7 +32386,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         burst: burst
                         iburst: iburst
                         key: key
-                        local_interface: Source interface.
+                        local_interface:
+                           Source interface for NTP traffic.
+                           Mutually exclusive with 'source_address'. Takes precedence if both
+                           are set.
+                        source_address:
+                           Source IPv4 address for NTP traffic.
+                           Mutually exclusive with 'local_interface'. 'local_interface'
+                           takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
