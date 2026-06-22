@@ -17,3 +17,8 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
+
+    - name: Generate intended EOS configs in Containerlab Digital Twin mode
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
