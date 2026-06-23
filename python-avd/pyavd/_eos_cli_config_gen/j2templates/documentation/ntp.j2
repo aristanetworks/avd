@@ -36,8 +36,13 @@ NTP servers VRF: {{ ntp.vrf }}
 {%             set r.vv = server.version | arista.avd.default('-') %}
 {%             set r.mi = server.minpoll | arista.avd.default('-') %}
 {%             set r.ma = server.maxpoll | arista.avd.default('-') %}
-{%             set r.l = server.local_interface | arista.avd.default('-') %}
-{%             set r.sa = server.source_address | arista.avd.default('-') %}
+{%             set r.l = "-" %}
+{%             set r.sa = "-" %}
+{%             if server.local_interface is arista.avd.defined %}
+{%                 set r.l = server.local_interface %}
+{%             elif server.source_address is arista.avd.defined %}
+{%                 set r.sa = server.source_address %}
+{%             endif %}
 {%             set r.k = server.key | arista.avd.default('-') %}
 | {{ r.s }} | {{ r.p }} | {{ r.b }} | {{ r.i }} | {{ r.vv }} | {{ r.mi }} | {{ r.ma }} | {{ r.l }} | {{ r.sa }} | {{ r.k }} |
 {%         endfor %}
