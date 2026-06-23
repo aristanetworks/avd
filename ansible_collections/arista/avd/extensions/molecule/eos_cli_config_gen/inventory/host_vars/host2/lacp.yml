@@ -2,3 +2,5 @@
 # LACP system-priority configuration is not allowed if Mlag State is Active( primary/secondary )
 lacp:
   system_priority: 0
+  rate_limit:
+    default: true

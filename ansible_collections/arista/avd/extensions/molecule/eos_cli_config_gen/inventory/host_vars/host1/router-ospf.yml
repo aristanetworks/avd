@@ -17,6 +17,7 @@ router_ospf:
       bfd_adjacency_state_any: true
       max_lsa: 12000
       default_information_originate:
+        always: false
       redistribute:
         static:
           enabled: true

@@ -2637,6 +2637,17 @@ keys:
 
           When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
           even if no sub-settings are set.'
+      render_monitor_layer1_without_enabled:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*`
+          / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the
+          value of `monitor_layer1.enabled` is `true` or `false`.
+
+          When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled`
+          is `true`.'
   errdisable:
     type: dict
     keys:
@@ -3872,6 +3883,11 @@ keys:
                 required: true
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -11359,8 +11375,11 @@ keys:
     keys:
       enabled:
         type: bool
-        required: true
         description: Enable monitor layer1.
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
       logging_mac_fault:
         type: bool
         description: Enable MAC fault logging.
@@ -13405,6 +13424,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -15250,6 +15272,37 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+              global_buffer:
+                type: dict
+                description: Set global shared memory thresholds.
+                keys:
+                  units:
+                    required: true
+                    type: str
+                    valid_values:
+                    - segments
+                    - bytes
+                    - kbytes
+                    - mbytes
+                    description: 'Units to be used for the threshold values.
+
+                      Threshold values depend on the hardware platform.
+
+                      '
+                  min:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN minimum-threshold.
+                  max:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN maximum-threshold.
       tx_queue:
         type: dict
         description: Global transmit queue settings.
@@ -26226,7 +26279,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:
@@ -26473,6 +26530,11 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -26916,6 +26978,32 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: 'Optional direction (''ingress'', ''egress'')  for tcp
+                mss ceiling.
+
+                '
         traffic_policy:
           type: dict
           keys:
