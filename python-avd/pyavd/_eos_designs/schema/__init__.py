@@ -987,10 +987,10 @@ class EosDesigns(EosDesignsRootModel):
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
+            "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
-            "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1050,6 +1050,16 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_pvst_border_when_mode_is_mstp: bool
+        """
+        Available from AVD 6.3.0.
+        PVST border parameters have no effect unless the spanning-tree mode is
+        MSTP.
+        When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+        'mstp'.
+
+        Default value: `False`
+        """
         raise_for_port_channels_without_members: bool
         """
         Available from AVD 6.2.0.
@@ -1075,16 +1085,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        only_configure_pvst_border_when_mode_is_mstp: bool
-        """
-        Available from AVD 6.3.0.
-        PVST border parameters have no effect unless the spanning-tree mode is
-        MSTP.
-        When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
-        'mstp'.
-
-        Default value: `False`
-        """
 
         if TYPE_CHECKING:
 
@@ -1098,10 +1098,10 @@ class EosDesigns(EosDesignsRootModel):
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
+                only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
-                only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1140,6 +1140,12 @@ class EosDesigns(EosDesignsRootModel):
                        route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
                        since
                        'redistribute connected route-map' is not required in that case.
+                    only_configure_pvst_border_when_mode_is_mstp:
+                       Available from AVD 6.3.0.
+                       PVST border parameters have no effect unless the spanning-tree mode is
+                       MSTP.
+                       When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+                       'mstp'.
                     raise_for_port_channels_without_members:
                        Available from AVD 6.2.0.
                        Raise an error if an L3 Port-Channel is configured without any member
@@ -1153,12 +1159,6 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
-                    only_configure_pvst_border_when_mode_is_mstp:
-                       Available from AVD 6.3.0.
-                       PVST border parameters have no effect unless the spanning-tree mode is
-                       MSTP.
-                       When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
-                       'mstp'.
 
                 """
 

@@ -400,6 +400,15 @@ keys:
 
           since ''redistribute connected route-map'' is not required in that case.'
         default: false
+      only_configure_pvst_border_when_mode_is_mstp:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+
+          When enabled, AVD renders PVST border configuration only when the spanning-tree
+          mode is set to ''mstp''.'
+        default: false
       raise_for_port_channels_without_members:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -421,15 +430,6 @@ keys:
 
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
-        default: false
-      only_configure_pvst_border_when_mode_is_mstp:
-        type: bool
-        description: 'Available from AVD 6.3.0.
-
-          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
-
-          When enabled, AVD renders PVST border configuration only when the spanning-tree
-          mode is set to ''mstp''.'
         default: false
   avd_digital_twin_mode:
     documentation_options:
