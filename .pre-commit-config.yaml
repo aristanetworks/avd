@@ -144,7 +144,7 @@ repos:
           - 'ruff==0.11.11'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "88e1ab7545a4af4aea15c305a154c164a95ab842"  # frozen: v4.0.5
+    rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -181,6 +181,15 @@ repos:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: 9257c6050c0261b8c57e712f632dc4a8010109a9  # frozen: v1.25.2
+    hooks:
+      - id: zizmor
+        name: Check GitHub Actions with zizmor
+        files: ^\.github/
+        pass_filenames: false
+        args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
     rev: "0d939146d20336fda803dee0637253d8d3ea9bac"  # frozen: 2.27.0

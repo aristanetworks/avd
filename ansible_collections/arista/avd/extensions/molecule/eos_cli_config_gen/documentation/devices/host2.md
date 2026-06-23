@@ -123,6 +123,8 @@
 - [IP DHCP Snooping](#ip-dhcp-snooping)
   - [IP DHCP Snooping Device Configuration](#ip-dhcp-snooping-device-configuration)
 - [IP NAT](#ip-nat)
+  - [NAT Pools](#nat-pools)
+  - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
@@ -302,7 +304,7 @@ management cvx
 
 | HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
 | ---- | ----- | ----------- | ---------------- | --------------- |
-| True | False | - | False | 1440 minutes |
+| True | False | False | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
@@ -311,6 +313,7 @@ management cvx
 management api http-commands
    no protocol https
    protocol http
+   no protocol unix-socket
    no default-services
    no shutdown
 ```
@@ -879,13 +882,14 @@ no lldp run
 
 | Port-id range | Rate-limit default | System-priority |
 | ------------- | ------------------ | --------------- |
-| - | - | 0 |
+| - | True | 0 |
 
 ### LACP Device Configuration
 
 ```eos
 !
 lacp system-priority 0
+lacp rate-limit default
 ```
 
 ## Spanning Tree
@@ -988,9 +992,11 @@ interface Dps1
 | ------- | ----- |
 | Shutdown | True |
 | UDP port | 4789 |
+| VXLAN flood-lists learning from data-plane | Disabled |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
 | Qos map dscp to traffic-class decapsulation | Disabled |
+| Multicast headend-replication | Disabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -1496,7 +1502,7 @@ mpls rsvp
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
+| True | - | 100 | - | disabled | disabled | 200000 | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1511,6 +1517,7 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+queue-monitor length cpu threshold 200000
 !
 queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !
@@ -1795,11 +1802,25 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 
 ## IP NAT
 
+### NAT Pools
+
+| Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
+| --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
+| host2-pool | ip-port | 32 | - | - | - |
+
+### NAT Synchronization
+
+| Setting | Value |
+| -------- | ----- |
+| State | Enabled |
+| Port Range Split | Enabled |
+
 ### IP NAT Device Configuration
 
 ```eos
 !
 !
+ip nat pool host2-pool prefix-length 32
 ip nat synchronization
 ```
 

@@ -37,6 +37,11 @@ dot1x_settings:
         auth_only: true
       system_description:
         enabled: true
+  web_authentication:
+    enabled: true
+    ssl_profile: captive-portal-ssl-profile
+    url: https://captive.arista.com
+    start_limit_infinite: true
 
 aaa_settings:
   radius:
