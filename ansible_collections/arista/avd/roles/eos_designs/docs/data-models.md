@@ -1886,9 +1886,28 @@ Produced artifacts (ACT Digital Twin):
 │           └── ...
 ```
 
+
+If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
+
+| Attribute | Description | Default value | Source of information |
+| --------- | ----------- | ------------- | --------------------- |
+| act_os_version | OS version of the replica device | `cloudeos`: `4.33.2F`<br>`cvp`: `2024.3.2`<br>`generic`: `ubuntu-2204-lts`<br>`third-party`: `byod`<br>`tools-server`: `ubuntu-2204-lts`<br>`veos`: `4.33.1.1F` | `node_config.digital_twin.act_os_version` or `digital_twin.fabric.act_os_version` |
+| act_username | username of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_username` |
+| act_password | password of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_password` |
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
+--8<--
+
+### Node type Digital Twin configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
+--8<--
+
 ### Containerlab Digital Twin
 
-Produced artifacts:
+Produced artifacts (Containerlab Digital Twin):
 
 ```text
 .
@@ -1914,9 +1933,9 @@ Produced artifacts:
 │           └── ...
 ```
 
-Containerlab Digital Twin is available in `PREVIEW`. It is NOT ready for production use, but open for user testing.
+Containerlab Digital Twin is available as a `PREVIEW` feature. It is not ready for production use and is intended for user testing only.
 
-To enable it, set `digital_twin.environment: containerlab` and run the same Digital Twin playbook shown above after changing the digital twin environment:
+To enable it, set `digital_twin.environment: containerlab` and run the same Digital Twin playbook shown above with the environment set to `containerlab`:
 
 ```yaml
 ---
@@ -1940,7 +1959,7 @@ To enable it, set `digital_twin.environment: containerlab` and run the same Digi
         name: arista.avd.eos_cli_config_gen
 ```
 
-For Containerlab, `digital_twin.fabric` is required due to limitations in ACT digital twin schema. This limitation will be removed as soon as ACT-specific schema will be updated accordingly.
+For Containerlab, `digital_twin.fabric` is still required for schema validation, even if it is left empty as `fabric: {}`. This is a temporary limitation and it will be removed once the shared Digital Twin schema is updated.
 
 Important caveats for the current Containerlab implementation:
 
@@ -1948,15 +1967,15 @@ Important caveats for the current Containerlab implementation:
 - Only out-of-band management is supported.
 - Only a single IPv4 management subnet is supported across the lab.
 - Management IP addresses in the lab and production must currently match.
-- Each node must have a static `mgmt_ip`. Empty management IPs and `mgmt_ip: dhcp` are not supported.
-- `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Containerlab topology generation uses the node `mgmt_ip` values from the AVD fabric facts.
+- Each node must have a static `mgmt_ip`. Unset management IPs and `mgmt_ip: dhcp` are not supported.
+- `digital_twin.mgmt_ip` is not currently used by the Containerlab topology generator. Instead, topology generation uses each node `mgmt_ip` value from the AVD fabric facts.
 - The generated topology includes fabric nodes and point-to-point fabric links. Connected endpoints and non-point-to-point links are not modeled.
 - The generated topology sets `prefix: ""` intentionally to preserve the original AVD hostnames.
-- The generated topology currently defaults to `arista_ceos` with `image: arista/ceos:latest`. Please setup your lab environment accordingly or update the generated topology file when required.
+- The generated topology currently defaults to `arista_ceos` with `image: arista/ceos:latest`. Please set up your lab environment accordingly, or update the generated topology file if needed.
 
-> WARNING: Make sure that your lab environment is isolated from production! The management addresses will be re-used and it's important to take necessarily precausions to avoid pushing configs to a wrong place.
+> WARNING: Make sure your lab environment is isolated from production. The management addresses are reused, so take the necessary precautions to avoid pushing configurations to the wrong environment.
 
-Containerlab startup configs are intentionally duplicated under `documentation/fabric/init-configs/`. These files are copies of the generated intended configs and make the topology self-contained and stable to launch without depending on repository-relative paths. Since lab and production management IPs must currently match, AVD does not rewrite the management addressing in those configs for Containerlab.
+Containerlab startup configs are intentionally duplicated under `documentation/fabric/init-configs/`. These files are copies of the generated intended configs and make the topology self-contained and stable to launch without depending on repository-relative paths. Since the lab and production management IPs must currently match, AVD does not rewrite the management addressing in those configs for Containerlab.
 
 The generated topology file is written to `{{ documentation_dir }}/fabric/{{ fabric_name }}-topology.clab.yml`. The generated intended configs remain under `{{ output_dir }}/configs/<hostname>.cfg`, and the Containerlab startup-config copies are written to `{{ documentation_dir }}/fabric/init-configs/<hostname>.cfg`.
 
@@ -2057,24 +2076,6 @@ To launch the generated topology use following command:
 ```bash
 containerlab deploy -t digital_twin/documentation/fabric/<FABRIC_NAME>-topology.clab.yml
 ```
-
-If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
-
-| Attribute | Description | Default value | Source of information |
-| --------- | ----------- | ------------- | --------------------- |
-| act_os_version | OS version of the replica device | `cloudeos`: `4.33.2F`<br>`cvp`: `2024.3.2`<br>`generic`: `ubuntu-2204-lts`<br>`third-party`: `byod`<br>`tools-server`: `ubuntu-2204-lts`<br>`veos`: `4.33.1.1F` | `node_config.digital_twin.act_os_version` or `digital_twin.fabric.act_os_version` |
-| act_username | username of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_username` |
-| act_password | password of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_password` |
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
---8<--
-
-### Node type Digital Twin configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
---8<--
 
 ## PREVIEW - New devices models
 
