@@ -22,7 +22,7 @@ keys:
         type: bool
         default: false
         description: |-
-          Available from AVD 6.2.0.
+          Available from AVD 6.3.0.
           Always render a '!' before the '(no) ipv6 unicast-routing vrf' command section.
           Without this the '!' is missing when first VRF is not configured for ipv6_routing.
       new_ip_radius_cli_order:
