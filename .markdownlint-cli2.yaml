@@ -3,8 +3,6 @@ fix: true
 
 # Define glob expressions to ignore
 ignores:
-  # npm dependencies installed by CI for markdownlint-cli2
-  - node_modules/**
   - python-avd/tests/pyavd/j2filters/toc_files/*
   # TODO: Excluding anta-reports till we clear the errors in anta repo
   - ansible_collections/arista/avd/extensions/molecule/anta_runner/anta/reports/**

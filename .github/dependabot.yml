@@ -22,16 +22,6 @@ updates:
       prefix-development: "CI(requirements):"
     cooldown:
       default-days: 7
-  # Maintain dependencies for npm (markdownlint-cli2)
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    commit-message:
-      prefix: "CI: "
-    cooldown:
-      default-days: 7
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
