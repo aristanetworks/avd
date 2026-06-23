@@ -10,7 +10,7 @@
 {%         if not v6_vrf.tracker_exclamation and eos_config_future.always_render_ipv6_unicast_routing_vrfs_separator is arista.avd.defined(true) %}
 !
 {%             set v6_vrf.tracker_exclamation = true %}
-{%         elif loop.first and eos_config_future.always_render_ipv6_unicast_routing_vrfs_separator is arista.avd.defined(false) %}
+{%         elif loop.first %}
 !
 {%         endif %}
 ipv6 unicast-routing vrf {{ vrf.name }}
