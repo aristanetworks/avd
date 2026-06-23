@@ -17,21 +17,24 @@ coverage:
         threshold: 0%
 
 comment:
-  layout: "reach,diff,flags,files"
+  layout: "reach,diff,components,files"
   behavior: default
   require_changes: true
 
-flags:
-  pyavd:
-    paths:
-      - python-avd/pyavd/
-      - python-avd/schema_tools/
-  ansible-test-units:
-    paths:
-      - ansible_collections/arista/avd/plugins/
-  ansible-test-integration:
-    paths:
-      - ansible_collections/arista/avd/plugins/
+component_management:
+  individual_components:
+    - component_id: pyavd
+      name: pyavd
+      paths:
+        - "python-avd/pyavd/"
+    - component_id: schema_tools
+      name: schema_tools
+      paths:
+        - "python-avd/schema_tools/"
+    - component_id: ansible_plugins
+      name: Ansible plugins
+      paths:
+        - "ansible_collections/arista/avd/plugins/"
 
 ignore:
   # Test directories
