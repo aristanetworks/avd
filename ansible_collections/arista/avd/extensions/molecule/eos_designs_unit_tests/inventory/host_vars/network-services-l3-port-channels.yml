@@ -269,7 +269,9 @@ tenants:
             ospf:
               enabled: true
               authentication: "message-digest"
-          # IPv6-only in non-default VRF: tests that VRF-level ipv6_routing is set but NOT global ipv6_unicast_routing.
+          # IPv6-only in non-default VRF: exercises VRF-level ipv6_routing.
+          # This entry alone does NOT trigger global ipv6_unicast_routing (only default-VRF IPv6 interfaces do);
+          # the global flag is already enabled in this test by Port-Channel33/44 above.
           # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the port-channel name).
           - name: Port-Channel2000
             mode: active
