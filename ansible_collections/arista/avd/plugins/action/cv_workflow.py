@@ -138,6 +138,7 @@ ARGUMENT_SPEC = {
     "static_config_manifest": {
         "type": "dict",
         "options": {
+            "preserve_existing_containers": {"type": "bool", "default": False},
             "containers": {"type": "list", "elements": "dict", "required": False},
             "configlets": {"type": "list", "elements": "dict", "required": False},
         },
