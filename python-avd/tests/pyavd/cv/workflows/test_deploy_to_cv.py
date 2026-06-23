@@ -288,7 +288,7 @@ async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> Non
 
 @pytest.mark.asyncio
 async def test_deploy_to_cv_workspace_sync_retry() -> None:
-    """Tests that deploy_to_cv resets state and replays deployment steps when workspace_was_synchronized_on_cv returns True."""
+    """Tests that deploy_to_cv resets state and replays deployment steps when synchronize_workspace_if_needed returns True."""
     mock_cv_client = AsyncMock()
 
     with (
@@ -297,7 +297,7 @@ async def test_deploy_to_cv_workspace_sync_retry() -> None:
         patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
         patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock()),
         patch(
-            "pyavd._cv.workflows.deploy_to_cv.workspace_was_synchronized_on_cv",
+            "pyavd._cv.workflows.deploy_to_cv.synchronize_workspace_if_needed",
             AsyncMock(side_effect=[True, False]),
         ) as mock_synced,
         patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),

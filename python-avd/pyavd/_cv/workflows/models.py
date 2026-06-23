@@ -323,7 +323,7 @@ class AvdWorkspace:
 @dataclass
 class CVWorkspace:
     avd_workspace: AvdWorkspace = field(default_factory=AvdWorkspace)
-    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
+    state: Literal["pending", "built", "submitted", "build failed", "submit failed", "synchronization failed", "abandoned", "deleted"] | None = None
     """The current state of the Workspace."""
     change_control_id: str | None = None
     build_id: str | None = None

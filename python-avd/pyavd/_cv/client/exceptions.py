@@ -95,7 +95,11 @@ class CVClientInvalidServerName(CVClientException):
     """CloudVision server FQDN is invalid."""
 
 
-class CVWorkspaceSyncAttemptsExhausted(CVClientException):
+class CVWorkspaceSynchronizationFailed(CVClientException):
+    """Synchronization/rebase of CloudVision Workspace failed."""
+
+
+class CVWorkspaceSynchronizationAttemptsExhausted(CVClientException):
     """Maximum number of Workspace synchronization attempts have been made but Workspace synchronization is still required."""
 
     max_sync_retries: int

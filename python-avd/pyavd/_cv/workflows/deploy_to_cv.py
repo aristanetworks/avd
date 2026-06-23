@@ -16,7 +16,7 @@ from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_stu
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
-from .finalize_workspace_on_cv import finalize_workspace_on_cv, workspace_was_synchronized_on_cv
+from .finalize_workspace_on_cv import finalize_workspace_on_cv, synchronize_workspace_if_needed
 from .models import (
     CloudVision,
     CVChangeControl,
@@ -219,7 +219,7 @@ async def deploy_to_cv(
     If CloudVision requires the Workspace to be synchronized/rebased (due to concurrent mainline changes), all mutable states computed against the previous
     CloudVision mainline are reset and all deployment steps are repeated from the scratch.
     The number of retry attempts is controlled by the `workspace.max_sync_retries`.
-    `CVWorkspaceSyncAttemptsExhausted` exception is raised if limit is reached but Workspace still requires synchronization.
+    `CVWorkspaceSynchronizationAttemptsExhausted` exception is raised if limit is reached but Workspace still requires synchronization.
 
     Returns:
         Object containing the results of the deployment including all associated objects.
@@ -311,7 +311,7 @@ async def deploy_to_cv(
 
                 await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
 
-                if await workspace_was_synchronized_on_cv(
+                if await synchronize_workspace_if_needed(
                     workspace=result.workspace,
                     cv_client=cv_client,
                     workspace_sync_attempt=workspace_sync_attempt,

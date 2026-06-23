@@ -17,9 +17,10 @@ from pyavd._cv.client.exceptions import (
     CVWorkspaceBuildFailed,
     CVWorkspaceSubmitFailed,
     CVWorkspaceSubmitFailedInactiveDevices,
-    CVWorkspaceSyncAttemptsExhausted,
+    CVWorkspaceSynchronizationAttemptsExhausted,
+    CVWorkspaceSynchronizationFailed,
 )
-from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv, workspace_was_synchronized_on_cv
+from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv, synchronize_workspace_if_needed
 from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVWorkspace, DeployToCvResult
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
@@ -587,8 +588,8 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
 
 
-class TestWorkspaceWasSynchronizedOnCv:
-    """Tests for the workspace_was_synchronized_on_cv function."""
+class TestSynchronizeWorkspaceIfNeeded:
+    """Tests for the synchronize_workspace_if_needed function."""
 
     @pytest.mark.asyncio
     async def test_returns_false_when_sync_not_required(self) -> None:
@@ -596,7 +597,7 @@ class TestWorkspaceWasSynchronizedOnCv:
         mock_client = AsyncMock()
         workspace = CVWorkspace(avd_workspace=AvdWorkspace(), synchronization_required=False)
 
-        result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=0)
+        result = await synchronize_workspace_if_needed(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=0)
 
         assert result is False
         mock_client.rebase_workspace.assert_not_called()
@@ -610,30 +611,67 @@ class TestWorkspaceWasSynchronizedOnCv:
         ],
     )
     async def test_sync_required_within_retries_calls_rebase_and_returns_true(self, caplog: pytest.LogCaptureFixture, workspace_sync_attempt: int) -> None:
-        """Tests that when synchronization_required is True and attempt < max_sync_retries, rebase is called, flag is cleared, and True is returned."""
+        """Tests that when synchronization_required is True and within retries, rebase is called, response awaited, flag cleared, and True returned."""
+        mock_rebase_config = MagicMock()
+        mock_rebase_config.request_params.request_id = "req-rebase-id"
+        mock_sync_result = MagicMock()
+        mock_sync_result.status = ResponseStatus.SUCCESS
         mock_client = AsyncMock()
+        mock_client.rebase_workspace.return_value = mock_rebase_config
+        mock_client.wait_for_workspace_response.return_value = (mock_sync_result, MagicMock())
         workspace = CVWorkspace(
             avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
             synchronization_required=True,
         )
 
         with caplog.at_level(INFO):
-            result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
+            result = await synchronize_workspace_if_needed(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
 
         assert result is True
         assert workspace.synchronization_required is False
         mock_client.rebase_workspace.assert_called_once_with(workspace_id="ws-test-id")
+        mock_client.wait_for_workspace_response.assert_called_once_with(workspace_id="ws-test-id", request_id="req-rebase-id")
         assert any(
-            re.search("workspace_was_synchronized_on_cv.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
+            re.search("synchronize_workspace_if_needed.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
             for record in caplog.records
         )
         assert any(
             re.search(
-                f"workspace_was_synchronized_on_cv.*Performing synchronization/rebase attempt {workspace_sync_attempt + 1}/5.*test-workspace.*ws-test-id",
+                f"synchronize_workspace_if_needed.*Performing synchronization/rebase attempt {workspace_sync_attempt + 1}/5.*test-workspace.*ws-test-id",
                 str(record.message),
             )
             for record in caplog.records
         )
+
+    @pytest.mark.asyncio
+    async def test_sync_required_rebase_response_failure_raises(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that when rebase response is not SUCCESS, CVWorkspaceSynchronizationFailed is raised with state set, workspace logged, and URI in message."""
+        mock_rebase_config = MagicMock()
+        mock_rebase_config.request_params.request_id = "req-rebase-id"
+        mock_sync_result = MagicMock()
+        mock_sync_result.status = ResponseStatus.FAIL
+        mock_client = AsyncMock()
+        mock_client._servers = ["www.arista.io"]
+        mock_client.rebase_workspace.return_value = mock_rebase_config
+        mock_client.wait_for_workspace_response.return_value = (mock_sync_result, MagicMock())
+        workspace = CVWorkspace(
+            avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
+            synchronization_required=True,
+        )
+
+        with (
+            caplog.at_level(INFO),
+            pytest.raises(CVWorkspaceSynchronizationFailed) as exc_info,
+        ):
+            await synchronize_workspace_if_needed(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=0)
+
+        assert workspace.synchronization_required is True
+        assert workspace.state == "synchronization failed"
+        assert re.search("Failed to synchronize/rebase workspace test-workspace.*ws-test-id", str(exc_info.value))
+        assert re.search(r"https://www\.arista\.io/cv/provisioning/workspaces\?ws=ws-test-id", str(exc_info.value))
+        assert any(re.search("synchronize_workspace_if_needed.*test-workspace.*ws-test-id", str(record.message)) for record in caplog.records)
+        mock_client.rebase_workspace.assert_called_once_with(workspace_id="ws-test-id")
+        mock_client.wait_for_workspace_response.assert_called_once_with(workspace_id="ws-test-id", request_id="req-rebase-id")
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
@@ -644,7 +682,7 @@ class TestWorkspaceWasSynchronizedOnCv:
         ],
     )
     async def test_sync_required_exhausted_raises(self, caplog: pytest.LogCaptureFixture, workspace_sync_attempt: int) -> None:
-        """Tests that when synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSyncAttemptsExhausted is raised."""
+        """Tests that when synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSynchronizationAttemptsExhausted is raised."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(
             avd_workspace=AvdWorkspace(id="ws-test-id", name="test-workspace"),
@@ -653,9 +691,9 @@ class TestWorkspaceWasSynchronizedOnCv:
 
         with (
             caplog.at_level(INFO),
-            pytest.raises(CVWorkspaceSyncAttemptsExhausted) as exc_info,
+            pytest.raises(CVWorkspaceSynchronizationAttemptsExhausted) as exc_info,
         ):
-            await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
+            await synchronize_workspace_if_needed(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
 
         exc = exc_info.value
         assert exc.max_sync_retries == 5
@@ -663,7 +701,7 @@ class TestWorkspaceWasSynchronizedOnCv:
         assert exc.workspace_id == "ws-test-id"
         mock_client.rebase_workspace.assert_not_called()
         assert any(
-            re.search("workspace_was_synchronized_on_cv.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
+            re.search("synchronize_workspace_if_needed.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
             for record in caplog.records
         )
 
