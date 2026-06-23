@@ -182,7 +182,7 @@
 
 | OID | Script/File Path |
 | --- | ---------------- |
-{%         for extension in snmp_server.extensions | arista.avd.natural_sort('oid') %}
+{%         for extension in snmp_server.extensions | sort(attribute='oid') %}
 | {{ extension.oid }} | {{ extension.path }} |
 {%         endfor %}
 {%     endif %}
