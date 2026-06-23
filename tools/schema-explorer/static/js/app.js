@@ -158,6 +158,53 @@ function treeRowId(row, currentModule) {
 function treeParentId(row, currentModule) {
   return row.parent_path ? `${rowModule(row, currentModule)}:${row.parent_path}` : "";
 }
+function resolvedTreeParentId(row, currentModule, rowIds) {
+  const directParentId = treeParentId(row, currentModule);
+  if (!directParentId || !rowIds || rowIds.has(directParentId)) return directParentId;
+
+  const parentPath = String(row.parent_path || "");
+  const rowModuleId = rowModule(row, currentModule);
+  const candidates = [];
+  if (parentPath.endsWith("[]")) candidates.push(`${rowModuleId}:${parentPath.slice(0, -2)}`);
+  const collapsedListPath = parentPath.replace(/\[\](?=\.|$)/g, "");
+  if (collapsedListPath !== parentPath) candidates.push(`${rowModuleId}:${collapsedListPath}`);
+  return candidates.find(candidate => rowIds.has(candidate)) || directParentId;
+}
+function orderedTreeRows(vars, currentModule) {
+  const sortedVars = [...vars].sort((a, b) => `${rowModule(a, currentModule)}:${a.key_path}`.localeCompare(`${rowModule(b, currentModule)}:${b.key_path}`));
+  const rowIds = new Set(sortedVars.map(row => treeRowId(row, currentModule)));
+  const childCount = new Map();
+  const childrenByParent = new Map();
+  const parentIds = new Map();
+  const rootRows = [];
+
+  for (const row of sortedVars) {
+    const rowId = treeRowId(row, currentModule);
+    const resolvedParentId = resolvedTreeParentId(row, currentModule, rowIds);
+    const visibleParentId = resolvedParentId && rowIds.has(resolvedParentId) ? resolvedParentId : "";
+    parentIds.set(rowId, visibleParentId);
+    if (!visibleParentId) {
+      rootRows.push(row);
+      continue;
+    }
+    if (!childrenByParent.has(visibleParentId)) childrenByParent.set(visibleParentId, []);
+    childrenByParent.get(visibleParentId).push(row);
+    childCount.set(visibleParentId, (childCount.get(visibleParentId) || 0) + 1);
+  }
+
+  const orderedRows = [];
+  const visited = new Set();
+  function visit(row) {
+    const rowId = treeRowId(row, currentModule);
+    if (visited.has(rowId)) return;
+    visited.add(rowId);
+    orderedRows.push(row);
+    (childrenByParent.get(rowId) || []).forEach(visit);
+  }
+  rootRows.forEach(visit);
+  sortedVars.forEach(visit);
+  return { rows: orderedRows, childCount, parentIds, rowIds };
+}
 function treeGroupId(row, currentModule) {
   const root = rootSegment(row.key_path);
   return currentModule === "all" ? `${rowModule(row, currentModule)}:${root}` : root;
@@ -400,19 +447,26 @@ function applyTreeVisibility(groupEl) {
   if (!groupEl) return;
   const rows = groupEl.querySelectorAll("tr.schema-tree-row");
   const byPath = new Map();
+  const metadataByPath = new Map();
+  for (const detailRow of groupEl.querySelectorAll("tr.schema-row-metadata")) {
+    metadataByPath.set(detailRow.dataset.detailFor, detailRow);
+  }
   for (const r of rows) byPath.set(r.dataset.rowId, r);
   for (const r of rows) {
     const depth = parseInt(r.dataset.depth, 10);
-    if (depth === 1) { r.style.display = ""; continue; }
-    let p = r.dataset.parentId;
     let visible = true;
-    while (p) {
-      const parentRow = byPath.get(p);
-      if (!parentRow) break;
-      if (parentRow.dataset.expanded !== "1") { visible = false; break; }
-      p = parentRow.dataset.parentId;
+    if (depth !== 1) {
+      let p = r.dataset.parentId;
+      while (p) {
+        const parentRow = byPath.get(p);
+        if (!parentRow) break;
+        if (parentRow.dataset.expanded !== "1") { visible = false; break; }
+        p = parentRow.dataset.parentId;
+      }
     }
     r.style.display = visible ? "" : "none";
+    const detailRow = metadataByPath.get(r.dataset.rowId);
+    if (detailRow) detailRow.style.display = visible && detailRow.dataset.open === "1" ? "" : "none";
   }
 }
 
@@ -420,6 +474,20 @@ function applyTreeVisibility(groupEl) {
 // it survives every renderResults innerHTML refresh and works across multiple
 // embed roots on the same page.
 document.addEventListener("click", e => {
+  const metadataToggle = e.target.closest(".schema-row-info-toggle");
+  if (metadataToggle) {
+    e.preventDefault();
+    e.stopPropagation();
+    const detailRow = document.getElementById(metadataToggle.dataset.detailTarget || "");
+    if (!detailRow) return;
+    const parentRow = metadataToggle.closest("tr");
+    const open = detailRow.dataset.open !== "1";
+    detailRow.dataset.open = open ? "1" : "0";
+    detailRow.style.display = open && parentRow?.style.display !== "none" ? "" : "none";
+    metadataToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    return;
+  }
+
   const header = e.target.closest(".schema-group-header");
   if (header) {
     const groupEl = header.closest(".schema-group");
@@ -428,11 +496,11 @@ document.addEventListener("click", e => {
     return;
   }
 
-  const icon = e.target.closest(".tree-toggle-icon");
-  if (!icon) return;
+  const toggle = e.target.closest("[data-tree-action='toggle-row'], .tree-toggle-icon");
+  if (!toggle) return;
   e.preventDefault();
   e.stopPropagation();
-  const row = icon.closest("tr.schema-tree-row");
+  const row = toggle.closest("tr.schema-tree-row");
   if (!row) return;
   const groupEl = row.closest(".schema-group");
   const shouldExpand = row.dataset.expanded !== "1";
@@ -463,7 +531,7 @@ async function route() {
   try {
     const db = await getDb(release);
     if (segments.length === 0)             return renderLanding(db, release);
-    if (segments.length === 1)             return renderModule(db, release, segments[0]);
+    if (segments.length === 1)             return renderModule(db, release, segments[0], { view: params.get("view") || "" });
     return renderVarDetail(db, release, segments[0], segments.slice(1).join("/"));
   } catch (err) {
     fail(err.message);
@@ -524,6 +592,11 @@ function searchVars(db, release, module, opts = {}) {
   const conds = ["release = ?"];
   const ps = [release];
   if (module !== "all") { conds.push("module = ?"); ps.push(module); }
+  if (opts.rootModule && module === "all") { conds.push("module = ?"); ps.push(opts.rootModule); }
+  if (opts.root) {
+    conds.push("(key_path = ? OR key_path LIKE ? OR key_path LIKE ?)");
+    ps.push(opts.root, `${opts.root}.%`, `${opts.root}[]%`);
+  }
   if (opts.q) { conds.push("(key_path LIKE ? OR description LIKE ?)"); ps.push(`%${opts.q}%`, `%${opts.q}%`); }
   if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
@@ -539,14 +612,109 @@ function getDocTableCounts(db, release, module) {
   return rows(db, "SELECT doc_table, COUNT(*) AS count FROM schema_vars WHERE release = ? AND module = ? GROUP BY doc_table ORDER BY doc_table", [release, module]);
 }
 
+function getRootOptions(db, release, module) {
+  const conds = ["release = ?", "depth = 1"];
+  const ps = [release];
+  if (module !== "all") { conds.push("module = ?"); ps.push(module); }
+  return rows(db, `SELECT module, key_path FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY module, key_path`, ps);
+}
+
+function rootOptionValue(row, module) {
+  return module === "all" ? `${row.module}:${row.key_path}` : row.key_path;
+}
+
+function parseRootSelection(value, module) {
+  if (!value) return { root: "", rootModule: "" };
+  if (module !== "all") return { root: value, rootModule: module };
+  const idx = value.indexOf(":");
+  if (idx < 0) return { root: value, rootModule: "" };
+  return { rootModule: value.slice(0, idx), root: value.slice(idx + 1) };
+}
+
+function defaultRootState(rootOptions, defaultRoot, module) {
+  if (!defaultRoot) return { root: "", rootModule: "", selection: "" };
+  if (module !== "all") return { root: defaultRoot, rootModule: module, selection: defaultRoot };
+  const parsed = parseRootSelection(defaultRoot, module);
+  if (parsed.rootModule) return { ...parsed, selection: defaultRoot };
+  const match = rootOptions.find(row => row.key_path === defaultRoot);
+  if (!match) return { root: defaultRoot, rootModule: "", selection: defaultRoot };
+  return { root: match.key_path, rootModule: match.module, selection: rootOptionValue(match, module) };
+}
+
 function isFilterActive(state) {
-  return !!(state.q || state.category || state.docTable);
+  return !!(state.root || state.q || state.category || state.docTable);
 }
 
 function lifecycleBadge(v) {
   if (v.removed) return `<span class="badge bg-danger">removed</span>`;
   if (v.deprecated) return `<span class="badge bg-warning text-dark">deprecated</span>`;
   return `<span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "-")}</span>`;
+}
+
+function requiredMarker(row) {
+  return row.required ? `<span class="text-success" title="Required"><i class="bi bi-check-circle-fill"></i></span>` : `<span class="text-muted">-</span>`;
+}
+
+function constraintsSummary(row) {
+  const constraints = yamlConstraints(row);
+  const parts = yamlRestrictionParts(row, constraints);
+  if (!parts.length) return `<span class="text-muted">-</span>`;
+  return `<span class="schema-constraints-summary" title="${escapeAttr(parts.join("; "))}">${escapeHtml(parts.slice(0, 2).join("; "))}${parts.length > 2 ? "..." : ""}</span>`;
+}
+
+function rowHasMetadata(row) {
+  const constraints = yamlRestrictionParts(row, yamlConstraints(row));
+  return !!(row.default_value || constraints.length || row.category || row.doc_table || row.deprecated || row.removed || row.cross_ref);
+}
+
+function rowMetadataButton(row, detailId) {
+  if (!rowHasMetadata(row)) return "";
+  return `<button type="button" class="schema-row-info-toggle" data-detail-target="${escapeAttr(detailId)}" title="Show key metadata"><i class="bi bi-info-circle"></i></button>`;
+}
+
+function renderRowMetadata(row, release, visibleColumns, detailId) {
+  if (!rowHasMetadata(row)) return "";
+  const constraints = yamlRestrictionParts(row, yamlConstraints(row));
+  const lifecycle = row.removed
+    ? `<span class="badge bg-danger">removed</span>`
+    : row.deprecated
+      ? `<span class="badge bg-warning text-dark">deprecated</span>`
+      : `<span class="text-muted">active</span>`;
+  return `
+    <tr class="schema-row-metadata" id="${escapeAttr(detailId)}" data-detail-for="${escapeAttr(treeRowId(row, row.module))}" data-open="0" style="display: none;">
+      <td colspan="${visibleColumns}">
+        <div class="schema-row-metadata-panel">
+          <div><span class="schema-meta-label">Default</span>${renderDefaultValue(row.default_value, { compact: true })}</div>
+          <div><span class="schema-meta-label">Valid / constraints</span>${constraints.length ? escapeHtml(constraints.join("; ")) : `<span class="text-muted">-</span>`}</div>
+          <div><span class="schema-meta-label">Category</span>${row.category ? `<span class="badge schema-category-badge">${escapeHtml(row.category)}</span>` : `<span class="text-muted">-</span>`}</div>
+          <div><span class="schema-meta-label">Doc table</span>${row.doc_table ? `<span class="badge schema-category-badge">${escapeHtml(row.doc_table)}</span>` : `<span class="text-muted">-</span>`}</div>
+          <div><span class="schema-meta-label">Lifecycle</span>${lifecycle}</div>
+          ${row.cross_ref ? `<div><span class="schema-meta-label">Cross-schema</span>${renderCrossRefRow(row.cross_ref, release).replace(/^<tr><td[^>]*>Cross-schema<\/td><td>|<\/td><\/tr>$/g, "")}</div>` : ""}
+        </div>
+      </td>
+    </tr>`;
+}
+
+function treeKeyControl(row, release, module, state, isBranch, leaf, indent, initiallyExpanded) {
+  const link = `#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}`;
+  const chevron = isBranch
+    ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon"></i>`
+    : `<span class="tree-toggle-spacer"></span>`;
+  const keyHtml = `<code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code>`;
+  const detailsLink = `<a href="${link}" class="schema-row-detail-link link-brand text-decoration-none" title="Open details for ${escapeAttr(row.key_path)}"><i class="bi bi-box-arrow-up-right"></i></a>`;
+  if (isBranch) {
+    return `
+      <span class="schema-tree-indent" style="padding-left: ${indent}rem;">
+        ${chevron}
+        <button type="button" class="schema-key-toggle link-brand" data-tree-action="toggle-row" title="${escapeAttr(row.key_path)}">${keyHtml}</button>
+        ${detailsLink}
+      </span>`;
+  }
+  return `
+    <span class="schema-tree-indent" style="padding-left: ${indent}rem;">
+      ${chevron}
+      <a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}">${keyHtml}</a>
+    </span>`;
 }
 
 function getVar(db, release, module, key_path) {
@@ -621,14 +789,22 @@ function renderLanding(db, release) {
     </div></div>`;
 }
 
-function renderModule(db, release, module) {
+function renderModule(db, release, module, options = {}) {
+  const host = options.target || app;
+  const embedded = !!options.embed;
+  const defaultRoot = options.root || "";
+  const initialView = ["tree", "flat", "yaml", "docs"].includes(options.view) ? options.view : "tree";
+  const chrome = options.chrome || "compact";
   const isAll = module === "all";
-  if (!isAll && !SCHEMA_MODULES[module]) return fail(`Module not found: ${module}`);
+  if (!isAll && !SCHEMA_MODULES[module]) {
+    host.innerHTML = `<div class="alert alert-danger m-3"><i class="bi bi-exclamation-triangle me-2"></i>Module not found: ${escapeHtml(module)}</div>`;
+    return;
+  }
 
   const stats = getStats(db, release);
   const moduleStats = isAll
-    ? { var_count: stats.reduce((s, x) => s + x.var_count, 0) }
-    : stats.find(s => s.module === module) || {};
+    ? { var_count: stats.reduce((sum, item) => sum + item.var_count, 0) }
+    : stats.find(item => item.module === module) || {};
   const info = isAll
     ? { name: "All Modules", icon: "bi-search", description: "Search across both AVD Design and EOS Config schemas." }
     : SCHEMA_MODULES[module];
@@ -636,124 +812,112 @@ function renderModule(db, release, module) {
   const categories = getCategoryCounts(db, release, module);
   const docTables = getDocTableCounts(db, release, module);
   const total = moduleStats.var_count || 0;
-
-  app.innerHTML = `
-    <div class="d-flex align-items-center mb-3">
-      <a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
+  const categoryOptionsHtml = categories.map((item, index) => `<option value="category:${index}">${escapeHtml(item.category || "(none)")}</option>`).join("");
+  const docTableOptionsHtml = docTables.map((item, index) => `<option value="doc_table:${index}">${escapeHtml(item.doc_table || "(none)")}</option>`).join("");
+  const headerHtml = chrome === "none" ? "" : `
+    <div class="d-flex align-items-center mb-3 schema-browser-heading">
+      ${embedded ? "" : `<a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>`}
       <div>
         <h4 class="mb-1 fw-bold brand-color"><i class="bi ${info.icon} me-2"></i>${escapeHtml(info.name)}${isAll ? "" : ` <small class="text-muted fw-normal" style="font-size:0.6em;"><code>${escapeHtml(module)}</code></small>`}</h4>
         ${total ? `<span class="badge" style="background-color:#198754; font-size:0.65rem;">${total} variables</span>` : ""}
       </div>
     </div>
-    <p class="text-muted small mb-3">${info.description}</p>
+    <p class="text-muted small mb-3">${escapeHtml(info.description)}</p>`;
 
+  host.innerHTML = `
+    ${headerHtml}
     <form id="filter-form" class="mb-3 schema-filter-sticky" onsubmit="return false">
-      <div class="d-flex flex-wrap align-items-center gap-3">
-        <div class="flex-grow-1" style="min-width: 200px;">
+      <div class="d-flex flex-wrap align-items-start gap-3">
+        <div class="flex-grow-1 schema-filter-field">
+          <label class="schema-filter-label" for="q">Search</label>
           <div class="input-group input-group-sm">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control" id="q" placeholder="Search key paths or descriptions…">
+            <input type="search" class="form-control" id="q" placeholder="Search key paths or descriptions...">
           </div>
-        </div>
-        <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
-          <button type="button" class="btn btn-outline-secondary active" id="btn-view-tree" title="Tree view"><i class="bi bi-diagram-3"></i></button>
-          <button type="button" class="btn btn-outline-secondary" id="btn-view-flat" title="Flat view"><i class="bi bi-list-ul"></i></button>
-          <button type="button" class="btn btn-outline-secondary" id="btn-view-yaml" title="YAML view"><i class="bi bi-filetype-yml"></i></button>
-        </div>
-      </div>
-    </form>
-
-    <div class="row g-3 schema-module-layout">
-      <div class="col-lg-3 col-xl-2">
-        <div class="card border-0 shadow-sm" style="position: sticky; top: 1rem;">
-          <div class="card-header bg-light py-2 d-flex justify-content-between align-items-center">
-            <span class="fw-semibold small brand-color"><i class="bi bi-tag me-1"></i>Browse by</span>
-            <div class="btn-group btn-group-sm" role="group" aria-label="Classifier mode">
-              <button type="button" class="btn btn-outline-secondary active" id="btn-classifier-category" title="Rule-based categories">Categories</button>
-              <button type="button" class="btn btn-outline-secondary" id="btn-classifier-doc-table" title="documentation_options.table from schema">Tables</button>
+          <div class="schema-view-mode-row">
+            <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-tree">Tree</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-flat">Table</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-yaml">YAML</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-docs">Docs</button>
             </div>
           </div>
-          <div class="list-group list-group-flush schema-category-list" id="category-list" data-classifier-pane="category" style="max-height: 70vh; overflow-y: auto;">
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between active" data-classifier="category" data-value="">
-              <span>All</span>
-            </a>
-            ${categories.map(c => `
-              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between" data-classifier="category" data-value="${escapeAttr(c.category || "")}">
-                <span>${escapeHtml(c.category || "(none)")}</span>
-              </a>`).join("")}
-          </div>
-          <div class="list-group list-group-flush schema-category-list" id="doc-table-list" data-classifier-pane="doc_table" style="max-height: 70vh; overflow-y: auto; display: none;">
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between active" data-classifier="doc_table" data-value="">
-              <span>All</span>
-            </a>
-            ${docTables.map(t => `
-              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between" data-classifier="doc_table" data-value="${escapeAttr(t.doc_table || "")}">
-                <span>${escapeHtml(t.doc_table || "(none)")}</span>
-              </a>`).join("")}
+        </div>
+        <div class="schema-browse-filter-field">
+          <label class="schema-filter-label" for="browse-filter">Browse by</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text"><i class="bi bi-tag"></i></span>
+            <select class="form-control schema-browse-select" id="browse-filter">
+              <option value="">All categories and tables</option>
+              <optgroup label="Categories">
+                ${categoryOptionsHtml}
+              </optgroup>
+              <optgroup label="Tables">
+                ${docTableOptionsHtml}
+              </optgroup>
+            </select>
           </div>
         </div>
       </div>
-      <div class="col-lg-9 col-xl-10">
-        <div class="card border-0 shadow-sm schema-results-card"><div id="results"></div></div>
-      </div>
+      <div class="schema-active-filters mt-2 small text-muted" id="active-filters"></div>
+    </form>
+
+    <div class="schema-module-layout">
+      <div class="card border-0 shadow-sm schema-results-card"><div id="results"></div></div>
     </div>`;
 
   const state = {
-    q: "", category: "", docTable: "", view: "tree", classifier: "category",
+    q: "",
+    root: "",
+    defaultRoot: "",
+    defaultRootSelection: "",
+    rootModule: "",
+    category: "",
+    docTable: "",
+    view: initialView,
+    target: host.querySelector("#results"),
   };
   const refresh = debounce(() => renderResults(db, release, module, state), 250);
 
-  document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; refresh(); });
+  const qInput = host.querySelector("#q");
+  const browseInput = host.querySelector("#browse-filter");
+  const activeFilters = host.querySelector("#active-filters");
+  function updateActiveFilters() {
+    const filters = [];
+    if (state.q) filters.push(`Search: <code>${escapeHtml(state.q)}</code>`);
+    if (state.category) filters.push(`Category: <code>${escapeHtml(state.category)}</code>`);
+    if (state.docTable) filters.push(`Table: <code>${escapeHtml(state.docTable)}</code>`);
+    activeFilters.innerHTML = filters.length ? filters.join(" <span class=\"mx-1\">|</span> ") : "No filters applied";
+  }
+
+  qInput.addEventListener("input", e => { state.q = e.target.value.trim(); updateActiveFilters(); refresh(); });
+  browseInput.addEventListener("change", e => {
+    const [kind, indexValue] = e.target.value.split(":", 2);
+    state.category = "";
+    state.docTable = "";
+    if (kind === "category") state.category = categories[Number(indexValue)]?.category || "";
+    if (kind === "doc_table") state.docTable = docTables[Number(indexValue)]?.doc_table || "";
+    updateActiveFilters();
+    renderResults(db, release, module, state);
+  });
   const viewButtons = {
-    tree: document.getElementById("btn-view-tree"),
-    flat: document.getElementById("btn-view-flat"),
-    yaml: document.getElementById("btn-view-yaml"),
+    tree: host.querySelector("#btn-view-tree"),
+    flat: host.querySelector("#btn-view-flat"),
+    yaml: host.querySelector("#btn-view-yaml"),
+    docs: host.querySelector("#btn-view-docs"),
   };
   function setViewMode(view) {
     state.view = view;
     for (const [mode, button] of Object.entries(viewButtons)) button.classList.toggle("active", mode === view);
-    refresh();
+    renderResults(db, release, module, state);
   }
   viewButtons.tree.addEventListener("click", () => setViewMode("tree"));
   viewButtons.flat.addEventListener("click", () => setViewMode("flat"));
   viewButtons.yaml.addEventListener("click", () => setViewMode("yaml"));
+  viewButtons.docs.addEventListener("click", () => setViewMode("docs"));
 
-  function highlightActive() {
-    app.querySelectorAll(`[data-classifier="${state.classifier}"]`).forEach(el => {
-      const value = state.classifier === "category" ? state.category : state.docTable;
-      el.classList.toggle("active", (el.dataset.value || "") === (value || ""));
-    });
-  }
-
-  const classifierContainer = document.getElementById("category-list").parentElement;
-  classifierContainer.addEventListener("click", e => {
-    const item = e.target.closest("[data-classifier]");
-    if (!item || item.dataset.classifier !== state.classifier || !classifierContainer.contains(item)) return;
-    if (item.tagName === "A") e.preventDefault();
-    if (state.classifier === "category") { state.category = item.dataset.value || ""; state.docTable = ""; }
-    else { state.docTable = item.dataset.value || ""; state.category = ""; }
-    highlightActive();
-    refresh();
-  });
-
-  const btnCatMode = document.getElementById("btn-classifier-category");
-  const btnTabMode = document.getElementById("btn-classifier-doc-table");
-  function setClassifierMode(mode) {
-    state.classifier = mode;
-    btnCatMode.classList.toggle("active", mode === "category");
-    btnTabMode.classList.toggle("active", mode === "doc_table");
-    app.querySelectorAll("[data-classifier-pane]").forEach(p => {
-      p.style.display = p.dataset.classifierPane === mode ? "" : "none";
-    });
-    state.category = "";
-    state.docTable = "";
-    highlightActive();
-    refresh();
-  }
-  btnCatMode.addEventListener("click", () => setClassifierMode("category"));
-  btnTabMode.addEventListener("click", () => setClassifierMode("doc_table"));
-
-  renderResults(db, release, module, state);
+  updateActiveFilters();
+  setViewMode(initialView);
 }
 
 function renderResults(db, release, module, state) {
@@ -762,7 +926,7 @@ function renderResults(db, release, module, state) {
   // complete — anything dropped at the SQL boundary disappears from the output
   // entirely (eos_cli_config_gen has 6.4k rows; "all modules" hits ~12.6k).
   // Flat list view caps at 500 since users only consume the head visibly.
-  const hierarchical = state.view === "tree" || state.view === "yaml";
+  const hierarchical = state.view === "tree" || state.view === "yaml" || state.view === "docs";
   const limit = hierarchical ? 20000 : 500;
   const results = state.rows || searchVars(db, release, module, { ...state, limit, order: state.view === "yaml" ? "id" : "key_path" });
   if (!results.length) {
@@ -771,28 +935,67 @@ function renderResults(db, release, module, state) {
   }
   if (state.view === "tree") return renderTreeResults(target, db, release, module, state, results);
   if (state.view === "yaml") return renderYamlResults(target, module, results);
+  if (state.view === "docs") return renderDocsResults(target, release, module, state, results);
   const isAll = module === "all";
-  const flatColumns = isAll ? "<col style=\"width: 9rem;\"><col style=\"width: 30%;\"><col>" : "<col style=\"width: 34%;\"><col>";
+  if (state.embedCompact) {
+    const flatColumns = isAll ? `<col style="width: 9rem;"><col style="width: 30%;"><col>` : `<col style="width: 34%;"><col>`;
+    const rowsHtml = results.map(v => {
+      const mod = isAll ? v.module : module;
+      const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
+      const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
+      return `
+        <tr>
+          ${modBadge}
+          <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
+          <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
+        </tr>`;
+    }).join("");
+    target.innerHTML = `
+      <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
+      <div class="schema-results-scroll">
+        <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+          <colgroup>${flatColumns}</colgroup>
+          <thead class="table-light"><tr>
+            ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
+            <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
+            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
+          </tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+        </div>
+      </div>`;
+    return;
+  }
+  const visibleColumns = isAll ? 5 : 4;
   const rowsHtml = results.map(v => {
     const mod = isAll ? v.module : module;
     const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
-    const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
+    const detailId = `m${++_treeRenderSeq}`;
+    const modBadge = isAll ? `<td data-label="Module"><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
     return `
       <tr>
         ${modBadge}
-        <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
-        <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
-      </tr>`;
+        <td class="schema-key-cell px-3" data-label="Key"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
+        <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
+        <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
+        <td class="schema-description-text text-muted small" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
+      </tr>${renderRowMetadata(v, release, visibleColumns, detailId)}`;
   }).join("");
   target.innerHTML = `
     <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
     <div class="schema-results-scroll">
       <div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
-        <colgroup>${flatColumns}</colgroup>
+      <table class="table table-sm table-hover align-middle mb-0 schema-var-table schema-flat-table">
+        <colgroup>
+          ${isAll ? `<col class="schema-col-module">` : ""}
+          <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-description">
+        </colgroup>
         <thead class="table-light"><tr>
           ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
-          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
+          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
+          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
+          <th class="text-muted small text-uppercase text-center" style="font-size: 0.72rem;">Req</th>
           <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
         </tr></thead>
         <tbody>${rowsHtml}</tbody>
@@ -806,8 +1009,6 @@ let _treeRenderSeq = 0;
 function renderTreeResults(target, db, release, module, state, matches) {
   const isAll = module === "all";
   const filtered = isFilterActive(state);
-  // Per-render id prefix so multiple trees (e.g. several embeds on one page)
-  // don't collide on Bootstrap collapse `data-bs-target` lookups.
   const idPrefix = `t${++_treeRenderSeq}`;
 
   // When a filter is active, walk parent chains via the parent_path column
@@ -865,84 +1066,86 @@ function renderTreeResults(target, db, release, module, state, matches) {
   }
   const sorted = [...groups.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
   const total = matches.length;
+  const visibleColumns = isAll ? 5 : 4;
 
-  const groupsHtml = sorted.map(([groupId, group], idx) => {
-    const { root, vars } = group;
-    vars.sort((a, b) => `${rowModule(a, module)}:${a.key_path}`.localeCompare(`${rowModule(b, module)}:${b.key_path}`));
-    const id = `${idPrefix}-group-${idx}`;
-    // Pre-compute which paths have children inside this group, so we know
-    // which rows should render a chevron and which are leaves.
-    const childCount = new Map();
-    const rowIds = new Set(vars.map(v => treeRowId(v, module)));
-    for (const v of vars) {
-      const parentId = treeParentId(v, module);
-      if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
-    }
-    // Render rows in parent-first order, including ancestor context rows
-    // fetched after filter matches.
-    const rowsHtml = vars.map(v => {
+  const groupRowsHtml = sorted.map(([groupId, group], idx) => {
+    const tree = orderedTreeRows(group.vars, module);
+    const { childCount, parentIds } = tree;
+
+    const rootDepth = state.root ? splitKeyPath(state.root).length : 1;
+    return tree.rows.map(v => {
       const mod = isAll ? v.module : module;
-      const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
-      const leaf = leafSegment(v.key_path);
-      const depth = v.depth || 1;
+      const leaf = state.root && v.key_path === state.root ? displayPath(v.key_path) : leafSegment(v.key_path);
+      const depth = Math.max(1, (v.depth || 1) - (state.root ? rootDepth - 1 : 0));
       const indent = (depth - 1) * 1.25;
-      const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
+      const modBadge = isAll ? `<td data-label="Module"><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
       const rowId = treeRowId(v, module);
-      const parentId = treeParentId(v, module);
+      const parentId = parentIds.get(rowId) || "";
       const isBranch = (childCount.get(rowId) || 0) > 0;
-      // Context rows (ancestors of matches when a filter is active) start
-      // expanded so the matched descendants are visible by default.
-      const initiallyExpanded = v.is_context;
-      const chevron = isBranch
-        ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
-        : `<span style="display: inline-block; width: 1.15rem;"></span>`;
-      const isNestedRoot = !!parentId && !rowIds.has(parentId);
+      const isNestedRoot = !parentId;
+      const initiallyExpanded = v.is_context || (state.root && (v.key_path === state.root || isNestedRoot));
       const styleAttr = v.is_context
         ? ` style="opacity: 0.55;"`
         : (depth > 1 && !isNestedRoot ? ` style="display: none;"` : "");
+      const groupStartAttr = isNestedRoot ? ` data-group-start="1"` : "";
+
+      if (state.embedCompact) {
+        const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
+        const chevron = isBranch
+          ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon"></i>`
+          : `<span class="tree-toggle-spacer"></span>`;
+        return `
+          <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
+              data-row-id="${escapeAttr(rowId)}"
+              data-parent-id="${escapeAttr(parentId)}"
+              data-is-branch="${isBranch ? "1" : "0"}"
+              data-depth="${depth}"
+              data-expanded="${initiallyExpanded ? "1" : "0"}"${groupStartAttr}${styleAttr}>
+            ${modBadge}
+            <td class="schema-key-cell px-3" data-label="Key">
+              <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
+            </td>
+            <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
+            <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
+            <td class="schema-description-text text-muted small" data-label="Description">${formatMarkdownInline(v.description || "-", state.q)}</td>
+          </tr>`;
+      }
+
+      const detailId = `m${++_treeRenderSeq}`;
       return `
         <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
             data-row-id="${escapeAttr(rowId)}"
             data-parent-id="${escapeAttr(parentId)}"
             data-is-branch="${isBranch ? "1" : "0"}"
             data-depth="${depth}"
-            data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
+            data-expanded="${initiallyExpanded ? "1" : "0"}"${groupStartAttr}${styleAttr}>
           ${modBadge}
-          <td class="px-3">
-            <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
-          </td>
-          <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
-        </tr>`;
+          <td class="schema-key-cell px-3" data-label="Key">${treeKeyControl(v, release, mod, state, isBranch, leaf, indent, initiallyExpanded)}</td>
+          <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
+          <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
+          <td class="schema-description-text text-muted small" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
+        </tr>${renderRowMetadata(v, release, visibleColumns, detailId)}`;
     }).join("");
-    const groupCount = matchCounts.get(groupId) ?? vars.length;
-    const groupModuleBadge = isAll ? `<span class="badge ${group.module === "eos_designs" ? "bg-primary" : "bg-success"} ms-1" style="font-size: 0.6rem;">${escapeHtml(SCHEMA_MODULES[group.module]?.name || group.module)}</span>` : "";
-    return `
-      <div class="schema-group" data-group-id="${id}">
-        <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
-          <i class="bi bi-chevron-right collapse-icon"></i>
-          <code class="schema-key-code fw-bold" style="font-size: 0.88rem;">${highlight(root, state.q)}</code>
-          ${groupModuleBadge}
-          <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCount}</span>
-        </div>
-        <div class="collapse" id="${id}">
-          <div class="table-responsive">
-            <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
-              <colgroup>
-                ${isAll ? `<col style="width: 9rem;">` : ""}
-                <col style="width: 32%;">
-                <col>
-              </colgroup>
-              <thead class="table-light"><tr>
-                ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
-                <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-                <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
-              </tr></thead>
-              <tbody>${rowsHtml}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>`;
   }).join("");
+
+  const tableClass = state.embedCompact ? "schema-embed-table" : "schema-tree-table";
+  const tableHtml = `
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0 schema-var-table ${tableClass}">
+        <colgroup>
+          ${isAll ? `<col class="schema-col-module">` : ""}
+          <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-description">
+        </colgroup>
+        <thead class="table-light"><tr>
+          ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
+          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
+          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
+          <th class="text-muted small text-uppercase text-center" style="font-size: 0.72rem;">Req</th>
+          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
+        </tr></thead>
+        <tbody>${groupRowsHtml}</tbody>
+      </table>
+    </div>`;
 
   target.innerHTML = `
     <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
@@ -953,8 +1156,13 @@ function renderTreeResults(target, db, release, module, state, matches) {
       </div>
     </div>
     <div class="schema-results-scroll">
-      ${groupsHtml}
+      <div class="schema-group schema-root-table" data-group-id="${idPrefix}-all">${tableHtml}</div>
     </div>`;
+
+  target.querySelectorAll(".schema-group").forEach(group => {
+    if (state.root) expandGroupRootRows(group);
+    applyTreeVisibility(group);
+  });
 
   function setAllTreeRows(expanded) {
     target.querySelectorAll("tr.schema-tree-row").forEach(r => {
@@ -970,34 +1178,22 @@ function renderTreeResults(target, db, release, module, state, matches) {
     target.querySelectorAll(".schema-group").forEach(applyTreeVisibility);
   }
 
-  target.querySelector("[data-tree-action='expand-all']")?.addEventListener("click", () => {
-    target.querySelectorAll(".collapse").forEach(el => bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).show());
-    target.querySelectorAll(".schema-group-header").forEach(el => el.setAttribute("aria-expanded", "true"));
-    setAllTreeRows(true);
-  });
-  target.querySelector("[data-tree-action='collapse-all']")?.addEventListener("click", () => {
-    target.querySelectorAll(".collapse").forEach(el => bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).hide());
-    target.querySelectorAll(".schema-group-header").forEach(el => el.setAttribute("aria-expanded", "false"));
-    setAllTreeRows(false);
-  });
+  target.querySelector("[data-tree-action='expand-all']")?.addEventListener("click", () => setAllTreeRows(true));
+  target.querySelector("[data-tree-action='collapse-all']")?.addEventListener("click", () => setAllTreeRows(false));
 }
 
 function renderDetailChildrenTree(release, module, rootPath, children, descendants) {
   const childRows = [...children, ...descendants].filter((row, index, arr) => arr.findIndex(item => item.key_path === row.key_path) === index);
-  const childCount = new Map();
-  const rowIds = new Set(childRows.map(row => treeRowId(row, module)));
-  for (const row of childRows) {
-    const parentId = treeParentId(row, module);
-    if (parentId) childCount.set(parentId, (childCount.get(parentId) || 0) + 1);
-  }
+  const tree = orderedTreeRows(childRows, module);
+  const { childCount, parentIds } = tree;
 
-  const rowsHtml = childRows.map(row => {
+  const rowsHtml = tree.rows.map(row => {
     const rowId = treeRowId(row, module);
-    const parentId = treeParentId(row, module);
+    const parentId = parentIds.get(rowId) || "";
     const depth = Math.max(1, (row.depth || 1) - splitKeyPath(rootPath).length);
     const indent = (depth - 1) * 1.25;
     const isBranch = (childCount.get(rowId) || 0) > 0;
-    const isNestedRoot = !parentId || !rowIds.has(parentId);
+    const isNestedRoot = !parentId;
     const initiallyExpanded = isNestedRoot;
     const chevron = isBranch
       ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
@@ -1195,6 +1391,152 @@ function formatDescriptionMarkdown(text, q = "") {
 function debounce(fn, ms) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ── Documentation view ───────────────────────────────────────────────────────
+
+function docsPath(row) {
+  return `.${displayPath(row.key_path)}`;
+}
+
+function renderDocsDetail(row, release, module, isAll) {
+  const mod = isAll ? row.module : module;
+  const constraints = yamlConstraints(row);
+  const constraintsText = yamlRestrictionParts(row, constraints).join("; ");
+  const lifecycle = row.removed
+    ? `<span class="badge bg-danger ms-1">removed</span>`
+    : row.deprecated
+      ? `<span class="badge bg-warning text-dark ms-1">deprecated</span>`
+      : "";
+  const validValues = Array.isArray(constraints.valid_values) && constraints.valid_values.length
+    ? `<h3>Valid Values</h3><div class="schema-docs-prose"><ul>${constraints.valid_values.map(value => `<li><code>${escapeHtml(String(value))}</code></li>`).join("")}</ul></div>`
+    : "";
+  const defaultHtml = row.default_value ? `<tr><th>Default</th><td>${renderDefaultValue(row.default_value, { compact: true })}</td></tr>` : "";
+  const constraintsHtml = constraintsText ? `<tr><th>Constraints</th><td>${escapeHtml(constraintsText)}</td></tr>` : "";
+  const moduleHtml = isAll ? `<tr><th>Module</th><td><code>${escapeHtml(mod)}</code></td></tr>` : "";
+  return `
+    <div class="schema-docs-detail-inner">
+      <div class="schema-docs-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
+      <h2>Key ${lifecycle}</h2>
+      <div class="schema-docs-key-table-wrap">
+        <table class="schema-docs-key-table">
+          <thead><tr><th>Key Name</th><th>Type</th><th>Required</th></tr></thead>
+          <tbody><tr>
+            <td><code>${escapeHtml(leafSegment(row.key_path))}</code></td>
+            <td>${escapeHtml(row.var_type || "-")}</td>
+            <td>${row.required ? "Yes" : "None"}</td>
+          </tr></tbody>
+        </table>
+      </div>
+      <h2>Description</h2>
+      <div class="schema-docs-prose">${formatDescriptionMarkdown(row.description || "-")}</div>
+      <h2>Path</h2>
+      <blockquote class="schema-docs-note">NOTE: The path is shown in jq-style notation.</blockquote>
+      <p><code>${escapeHtml(docsPath(row))}</code></p>
+      ${(row.default_value || constraintsText || isAll) ? `
+        <h2>Properties</h2>
+        <div class="schema-docs-key-table-wrap"><table class="schema-docs-key-table"><tbody>
+          ${moduleHtml}
+          ${defaultHtml}
+          ${constraintsHtml}
+          ${row.category ? `<tr><th>Category</th><td>${escapeHtml(row.category)}</td></tr>` : ""}
+          ${row.doc_table ? `<tr><th>Table</th><td>${escapeHtml(row.doc_table)}</td></tr>` : ""}
+        </tbody></table></div>` : ""}
+      ${validValues}
+    </div>`;
+}
+
+function renderDocsResults(target, release, module, state, inputRows) {
+  const isAll = module === "all";
+  const rowsById = new Map(inputRows.map(row => [treeRowId(row, module), row]));
+
+  const groups = new Map();
+  for (const row of inputRows) {
+    const groupId = treeGroupId(row, module);
+    if (!groups.has(groupId)) groups.set(groupId, { module: rowModule(row, module), root: rootSegment(row.key_path), rows: [] });
+    groups.get(groupId).rows.push(row);
+  }
+  const orderedGroups = [...groups.values()].sort((a, b) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
+  const orderedNavRows = orderedGroups.flatMap(group => orderedTreeRows(group.rows, module).rows);
+  if (!state.docsSelectedId || !rowsById.has(state.docsSelectedId)) {
+    state.docsSelectedId = treeRowId(orderedNavRows[0] || inputRows[0], module);
+  }
+  const selected = rowsById.get(state.docsSelectedId) || orderedNavRows[0] || inputRows[0];
+
+  const navRows = orderedGroups.map(group => {
+    const tree = orderedTreeRows(group.rows, module);
+    return tree.rows.map(row => {
+      const rowId = treeRowId(row, module);
+      const parentId = tree.parentIds.get(rowId) || "";
+      const depth = row.depth || 1;
+      const isBranch = (tree.childCount.get(rowId) || 0) > 0;
+      const expanded = false;
+      const hidden = depth > 1 ? ` style="display: none;"` : "";
+      const selectedClass = rowId === state.docsSelectedId ? " active" : "";
+      const moduleBadge = isAll && depth === 1 ? `<span class="schema-docs-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
+      return `
+        <div class="schema-docs-nav-row${selectedClass}"
+             data-row-id="${escapeAttr(rowId)}"
+             data-parent-id="${escapeAttr(parentId)}"
+             data-is-branch="${isBranch ? "1" : "0"}"
+             data-expanded="${expanded ? "1" : "0"}"
+             data-depth="${depth}"${hidden}>
+          <button type="button" class="schema-docs-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
+          <button type="button" class="schema-docs-nav-key" data-docs-select="${escapeAttr(rowId)}" style="padding-left: ${Math.max(0, depth - 1) * 1.05}rem;">
+            <span class="schema-docs-file-icon"><i class="bi bi-file-earmark-text"></i></span>
+            <span>${highlight(leafSegment(row.key_path), state.q)}</span>
+            ${moduleBadge}
+          </button>
+        </div>`;
+    }).join("");
+  }).join("");
+
+  target.innerHTML = `
+    <div class="schema-results-toolbar card-header bg-light text-muted small">${inputRows.length} variable${inputRows.length === 1 ? "" : "s"} in documentation view</div>
+    <div class="schema-docs-view">
+      <aside class="schema-docs-nav" aria-label="Schema documentation navigation">
+        <div class="schema-docs-nav-title">Documentation</div>
+        ${navRows}
+      </aside>
+      <section class="schema-docs-detail" aria-live="polite">${renderDocsDetail(selected, release, module, isAll)}</section>
+    </div>`;
+
+  function applyDocsVisibility() {
+    const nav = target.querySelector(".schema-docs-nav");
+    const rows = [...nav.querySelectorAll(".schema-docs-nav-row")];
+    const byId = new Map(rows.map(row => [row.dataset.rowId, row]));
+    for (const row of rows) {
+      let visible = true;
+      let parentId = row.dataset.parentId;
+      while (parentId) {
+        const parent = byId.get(parentId);
+        if (!parent) break;
+        if (parent.dataset.expanded !== "1") { visible = false; break; }
+        parentId = parent.dataset.parentId;
+      }
+      row.style.display = visible ? "" : "none";
+    }
+  }
+
+  target.querySelector(".schema-docs-nav")?.addEventListener("click", event => {
+    const toggle = event.target.closest(".schema-docs-toggle");
+    if (toggle && !toggle.disabled) {
+      const row = toggle.closest(".schema-docs-nav-row");
+      const open = row.dataset.expanded !== "1";
+      row.dataset.expanded = open ? "1" : "0";
+      toggle.innerHTML = `<i class="bi ${open ? "bi-chevron-down" : "bi-chevron-right"}"></i>`;
+      applyDocsVisibility();
+      return;
+    }
+    const select = event.target.closest("[data-docs-select]");
+    if (!select) return;
+    state.docsSelectedId = select.dataset.docsSelect;
+    target.querySelectorAll(".schema-docs-nav-row.active").forEach(row => row.classList.remove("active"));
+    select.closest(".schema-docs-nav-row")?.classList.add("active");
+    const selectedRow = rowsById.get(state.docsSelectedId);
+    if (selectedRow) target.querySelector(".schema-docs-detail").innerHTML = renderDocsDetail(selectedRow, release, module, isAll);
+  });
+  applyDocsVisibility();
 }
 
 // ── YAML view ────────────────────────────────────────────────────────────────
@@ -1396,7 +1738,7 @@ function renderYamlResults(target, module, inputRows) {
 //   release  — schema release tag (default: "devel")
 //   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
 //   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
-//   view     — "tree" | "flat" | "yaml" (default: "tree")
+//   view     — "tree" | "flat" | "yaml" | "docs" (default: "tree")
 //   height   — CSS max-height for the scroll container (default: "600px")
 //   chrome   — "compact" | "none" (default: "compact"). "none" hides the
 //              "N variables in M groups" / expand-all bar.
@@ -1414,11 +1756,11 @@ async function mountEmbed(el) {
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
   const view    = _embedAttr(el, "view", "tree");
-  if (!["tree", "flat", "yaml"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
+  if (!["tree", "flat", "yaml", "docs"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
   const height  = _embedAttr(el, "height", "600px");
   const chrome  = _embedAttr(el, "chrome", "compact");
 
-  // <schema-explorer> is an unknown HTML element → defaults to inline. Force
+  // <schema-explorer> is an unknown HTML element -> defaults to inline. Force
   // block + scroll container so the embed actually takes up space.
   Object.assign(el.style, {
     display: "block",
@@ -1431,44 +1773,100 @@ async function mountEmbed(el) {
   el.classList.add("schema-embed");
   el.innerHTML = `<div class="text-muted small p-3">
     <span class="spinner-border spinner-border-sm" role="status"></span>
-    <span class="ms-2">Loading <code>${escapeHtml(module)}</code> schema…</span>
+    <span class="ms-2">Loading <code>${escapeHtml(module)}</code> schema...</span>
   </div>`;
 
   const db = await getDb(release);
+  const rootOptions = getRootOptions(db, release, module);
+  const defaultRootStateValue = defaultRootState(rootOptions, root, module);
+  const defaultRootSelection = defaultRootStateValue.selection;
+  const rootOptionsHtml = rootOptions.map(row => {
+    const value = rootOptionValue(row, module);
+    const label = module === "all" ? `${SCHEMA_MODULES[row.module]?.name || row.module}: ${displayPath(row.key_path)}` : displayPath(row.key_path);
+    return `<option value="${escapeAttr(value)}"${value === defaultRootSelection ? " selected" : ""}>${escapeHtml(label)}</option>`;
+  }).join("");
+  const hasDefaultRootOption = !defaultRootSelection || rootOptions.some(row => rootOptionValue(row, module) === defaultRootSelection);
+  const rootFallbackOption = hasDefaultRootOption ? "" : `<option value="${escapeAttr(defaultRootSelection)}" selected>${escapeHtml(displayPath(defaultRootStateValue.root))}</option>`;
+  const idPrefix = `embed-${++_treeRenderSeq}`;
 
-  // Build the row set: scope to (module, root subtree). renderTreeResults
-  // expects a list of matched vars; with no filter, that's just every row in
-  // scope. With a `root` set, include the root itself plus its descendants so
-  // the tree has a single rooted group.
-  const conds = ["release = ?"];
-  const ps = [release];
-  if (module !== "all") { conds.push("module = ?"); ps.push(module); }
-  if (root) {
-    conds.push("(key_path = ? OR key_path LIKE ? OR key_path LIKE ?)");
-    ps.push(root, `${root}.%`, `${root}[]%`);
-  }
-  const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY key_path LIMIT 20000`;
-  const results = rows(db, sql, ps);
-  if (!results.length) {
-    failEmbed(el, `No variables match: module=${module}${root ? `, root=${root}` : ""}`);
-    return;
-  }
+  el.innerHTML = `
+    <form class="schema-embed-filters p-3 border-bottom" onsubmit="return false">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <div class="flex-grow-1 schema-filter-field">
+          <label class="schema-filter-label" for="${idPrefix}-q">Search</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control" id="${idPrefix}-q" placeholder="Search key paths or descriptions...">
+          </div>
+        </div>
+        <div class="schema-root-filter-field">
+          <label class="schema-filter-label" for="${idPrefix}-root">Root filter</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text"><i class="bi bi-funnel"></i></span>
+            <select class="form-control schema-root-select" id="${idPrefix}-root">
+              <option value="">All root keys</option>
+              ${rootFallbackOption}
+              ${rootOptionsHtml}
+            </select>
+            ${root ? `<button type="button" class="btn btn-outline-secondary" id="${idPrefix}-root-reset" title="Reset root filter"><i class="bi bi-arrow-counterclockwise"></i></button>` : ""}
+            <button type="button" class="btn btn-outline-secondary" id="${idPrefix}-root-clear" title="Clear root filter"><i class="bi bi-x-lg"></i></button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="schema-embed-results"></div>`;
 
   const state = {
-    q: "", category: "", docTable: "", view, rows: results, target: el,
+    q: "",
+    root: defaultRootStateValue.root,
+    defaultRoot: root,
+    defaultRootSelection,
+    rootModule: defaultRootStateValue.rootModule,
+    category: "",
+    docTable: "",
+    view,
+    target: el.querySelector(".schema-embed-results"),
+    embedCompact: true,
   };
-  renderResults(db, release, module, state);
 
-  if (chrome === "none") {
-    const header = el.querySelector(".schema-results-toolbar");
-    if (header) header.style.display = "none";
+  function renderEmbedResults() {
+    renderResults(db, release, module, state);
+    if (chrome === "none") {
+      const header = state.target.querySelector(".schema-results-toolbar");
+      if (header) header.style.display = "none";
+    }
+    const firstCollapse = state.target.querySelector(".collapse");
+    if (firstCollapse && typeof bootstrap !== "undefined") {
+      bootstrap.Collapse.getOrCreateInstance(firstCollapse, { toggle: false }).show();
+      state.target.querySelector(".schema-group-header")?.setAttribute("aria-expanded", "true");
+    }
   }
 
-  // Auto-expand the first (and usually only) group so the embed shows data
-  // immediately instead of requiring a click.
-  const firstCollapse = el.querySelector(".collapse");
-  if (firstCollapse && typeof bootstrap !== "undefined") {
-    bootstrap.Collapse.getOrCreateInstance(firstCollapse, { toggle: false }).show();
-    el.querySelector(".schema-group-header")?.setAttribute("aria-expanded", "true");
-  }
+  const refresh = debounce(renderEmbedResults, 250);
+  el.querySelector(`#${CSS.escape(idPrefix)}-q`).addEventListener("input", e => {
+    state.q = e.target.value.trim();
+    refresh();
+  });
+  const rootInput = el.querySelector(`#${CSS.escape(idPrefix)}-root`);
+  rootInput.addEventListener("change", e => {
+    const selection = parseRootSelection(e.target.value, module);
+    state.root = selection.root;
+    state.rootModule = selection.rootModule;
+    renderEmbedResults();
+  });
+  el.querySelector(`#${CSS.escape(idPrefix)}-root-clear`).addEventListener("click", () => {
+    state.root = "";
+    state.rootModule = "";
+    rootInput.value = "";
+    renderEmbedResults();
+  });
+  el.querySelector(`#${CSS.escape(idPrefix)}-root-reset`)?.addEventListener("click", () => {
+    const selection = parseRootSelection(state.defaultRootSelection, module);
+    state.root = selection.root;
+    state.rootModule = selection.rootModule;
+    rootInput.value = state.defaultRootSelection;
+    renderEmbedResults();
+  });
+
+  renderEmbedResults();
 }

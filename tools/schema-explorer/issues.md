@@ -19,4 +19,53 @@
 
 ## Open
 
-No known review issues remain in this note.
+1. Improve search as the primary UX fix
+   - Search should be interactive while the user types, not only after a full refresh or manual navigation step.
+   - Show useful in-flight matches or previews so users can tell whether the query is working.
+   - Matching keys should be reachable without forcing users to expand every ancestor manually.
+   - Pressing Enter should expand or reveal matching keys in tree mode.
+   - Flat view is somewhat better today, but the overall search UI still needs improvement.
+
+2. Remove scroll-in-scroll friction
+   - Avoid nested scroll containers inside MkDocs pages.
+   - For embedded explorers, let the explorer content participate in the page scroll wherever possible.
+   - Keep only lightweight internal scrolling where unavoidable, such as short filter dropdowns/popups.
+
+3. Align styles with Material for MkDocs
+   - The Schema Explorer styling still reads as foreign to the generated docs page.
+   - Spacing, typography, controls, table treatment, colors, and interaction states should feel native to the surrounding Material theme.
+   - Embedded and full-page views should share the same visual language as the docs site instead of looking like an imported app.
+
+4. Revisit categories versus tables selector
+   - It is not clear why both selector concepts are necessary.
+   - Remove or hide selectors that do not map directly to reader workflows.
+   - Keep navigation focused on the schema lookup task.
+
+5. Hide low-value summary counts
+   - The number-of-variables summary should likely be hidden.
+   - It adds visual noise without helping readers complete schema lookup tasks.
+
+6. Treat Data Models versus Schema Explorer as temporary
+   - The goal is for Schema Explorer to replace the existing manual.
+   - The Data Models / Schema Explorer selector should not become permanent navigation.
+   - Migration UI should disappear once the Schema Explorer can cover the manual use cases.
+
+## Implementation order
+
+1. Make search interactive and show live results or previews while typing.
+2. Expand or reveal matching tree keys on Enter and make filtered tree results navigable without manual ancestor expansion.
+3. Fix the scroll model so embedded explorers use the MkDocs page scroll.
+4. Bring Schema Explorer styles in line with Material for MkDocs.
+5. Remove or simplify the categories/tables selector path.
+6. Hide the variables count and remove temporary migration selectors when no longer needed.
+
+## Validation
+
+- Typing in search updates visible results without extra navigation.
+- Pressing Enter on a search reveals matching keys in tree mode.
+- Users do not have to expand every parent manually to inspect search matches.
+- Embedded explorers do not create nested-scroll friction on desktop or mobile.
+- Schema Explorer controls and tables visually match the surrounding MkDocs page.
+- Category/table selector behavior is either clearly useful or removed.
+- Variable counts are hidden unless there is a concrete reader need for them.
+- The Data Models / Schema Explorer selector is tracked as temporary migration UI.
