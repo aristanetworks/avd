@@ -34,16 +34,10 @@ MODULE_PATH = "ansible_collections.arista.avd.plugins.action.anta_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
 
 
-def _make_action_plugin_vars(device_map: dict) -> MagicMock:
-    """Return a mock ActionPluginVars that serves device vars by key lookup."""
-    mock = MagicMock()
-    mock.__getitem__.side_effect = lambda device: device_map[device]
-    return mock
-
-
 def test_get_ansible_vars_logs_info_when_device_not_deployed(caplog: pytest.LogCaptureFixture) -> None:
     """An INFO log is emitted for each device skipped because is_deployed=False."""
-    apv = _make_action_plugin_vars({"leaf1": {"inventory_hostname": "leaf1", "is_deployed": False}})
+    apv = MagicMock()
+    apv.__getitem__.side_effect = lambda device: {"leaf1": {"inventory_hostname": "leaf1", "is_deployed": False}}[device]
     with caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME):
         get_ansible_vars(["leaf1"], apv)
     assert "<leaf1> Device marked as not deployed - Skipping all tests" in caplog.messages
