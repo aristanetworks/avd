@@ -480,6 +480,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dns-domain.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Environment
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/env.md
+--8<--
+
 ### Hostname
 
 --8<--
