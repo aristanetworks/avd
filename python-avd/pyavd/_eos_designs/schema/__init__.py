@@ -11413,7 +11413,7 @@ class EosDesigns(EosDesignsRootModel):
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
 
-        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
         'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
         will provide the gateway.
         """
@@ -12279,7 +12279,7 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
 
-                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                        will provide the gateway.
                     inband_mgmt_ipv6_address:
@@ -16697,7 +16697,7 @@ class EosDesigns(EosDesignsRootModel):
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
 
-        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
         'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
         will provide the gateway.
         """
@@ -17572,7 +17572,7 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
 
-                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                        will provide the gateway.
                     inband_mgmt_ipv6_address:
@@ -53072,7 +53072,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -53921,7 +53921,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:
@@ -58351,7 +58351,7 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
 
-                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                         'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                         will provide the gateway.
                         """
@@ -59209,7 +59209,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
 
-                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                        will provide the gateway.
                                     inband_mgmt_ipv6_address:
@@ -63550,7 +63550,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -64410,7 +64410,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:
@@ -68823,7 +68823,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -69681,7 +69681,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:
@@ -88184,7 +88184,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -89033,7 +89033,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:
@@ -93463,7 +93463,7 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
 
-                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                         'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                         will provide the gateway.
                         """
@@ -94321,7 +94321,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
 
-                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                        will provide the gateway.
                                     inband_mgmt_ipv6_address:
@@ -98662,7 +98662,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -99522,7 +99522,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:
@@ -103935,7 +103935,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
 
-                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                     will provide the gateway.
                     """
@@ -104793,7 +104793,7 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
 
-                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
                                    will provide the gateway.
                                 inband_mgmt_ipv6_address:

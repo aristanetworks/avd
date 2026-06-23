@@ -6,7 +6,7 @@ l2leaf:
       id: 111
       inband_mgmt_ip: dhcp
       inband_mgmt_vrf: INBAND_MGMT
-      inband_mgmt_gateway: 10.10.10.1/24
+      inband_mgmt_gateway: 10.10.10.1
 default_mgmt_method: inband
 avd_design_future:
   accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: false
