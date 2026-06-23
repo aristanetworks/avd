@@ -1475,11 +1475,9 @@ tacacs-server host 10.10.10.160
 
 ```eos
 !
-ip tacacs vrf default source-interface Loopback1
-!
+ip tacacs source-interface Loopback10
 ip tacacs vrf TEST1 source-interface Loopback3
-!
-ip tacacs vrf default source-interface Loopback10
+ip tacacs vrf default source-interface Loopback1
 ```
 
 ### Radius Proxy
@@ -1690,13 +1688,10 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 
 ```eos
 !
-ip radius vrf default source-interface Loopback1
-!
-ip radius vrf abc source-interface Loopback10
-!
+ip radius source-interface Loopback1
 ip radius vrf BLAH source-interface Loopback10
-!
 ip radius vrf MGMT source-interface Management1
+ip radius vrf abc source-interface Loopback10
 ```
 
 ### AAA Server Groups
