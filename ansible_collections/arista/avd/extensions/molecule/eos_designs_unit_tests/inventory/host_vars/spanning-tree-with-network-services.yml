@@ -4,7 +4,7 @@ type: l2leaf
 l2leaf:
   nodes:
     - name: spanning-tree-with-network-services
-  
+
 spanning_tree_settings:
   mode: rapid-pvst
   priority: 8192
