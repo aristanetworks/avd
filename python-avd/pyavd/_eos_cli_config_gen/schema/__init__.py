@@ -32329,6 +32329,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "iburst": {"type": bool},
                 "key": {"type": int},
                 "local_interface": {"type": str},
+                "source_address": {"type": str},
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "preferred": {"type": bool},
@@ -32340,7 +32341,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             iburst: bool | None
             key: int | None
             local_interface: str | None
-            """Source interface."""
+            """
+            Source interface.
+            Mutually exclusive with 'source_address'. Takes precedence if both are set.
+            """
+            source_address: str | None
+            """
+            Source IPv4 address.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
+            if both are set.
+            """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
             minpoll: int | None
@@ -32358,6 +32368,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     iburst: bool | None | UndefinedType = Undefined,
                     key: int | None | UndefinedType = Undefined,
                     local_interface: str | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     preferred: bool | None | UndefinedType = Undefined,
@@ -32374,7 +32385,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         burst: burst
                         iburst: iburst
                         key: key
-                        local_interface: Source interface.
+                        local_interface:
+                           Source interface.
+                           Mutually exclusive with 'source_address'. Takes precedence if both are set.
+                        source_address:
+                           Source IPv4 address.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
+                           if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
@@ -75748,6 +75765,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class TcpMssCeiling(AvdModel):
+            """Subclass of AvdModel."""
+
+            Direction: TypeAlias = Literal["ingress", "egress"]
+            _fields: ClassVar[dict] = {"ipv4": {"type": int}, "ipv6": {"type": int}, "direction": {"type": str}}
+            ipv4: int | None
+            """Segment Size for IPv4."""
+            ipv6: int | None
+            """Segment Size for IPv6."""
+            direction: Direction | None
+            """Optional direction ('ingress', 'egress')  for tcp mss ceiling."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    TcpMssCeiling.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Segment Size for IPv4.
+                        ipv6: Segment Size for IPv6.
+                        direction: Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+
+                    """
+
         class TrafficPolicy(AvdModel):
             """Subclass of AvdModel."""
 
@@ -75897,6 +75948,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_attached_host_route_export": {"type": Ipv6AttachedHostRouteExport},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "traffic_policy": {"type": TrafficPolicy},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
@@ -76069,6 +76121,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        tcp_mss_ceiling: TcpMssCeiling
+        """Subclass of AvdModel."""
         traffic_policy: TrafficPolicy
         """Subclass of AvdModel."""
         ntp_serve: bool | None
@@ -76154,6 +76208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
@@ -76272,6 +76327,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_attached_host_route_export: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    tcp_mss_ceiling: Subclass of AvdModel.
                     traffic_policy: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.

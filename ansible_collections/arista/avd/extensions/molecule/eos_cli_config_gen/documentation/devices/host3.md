@@ -34,9 +34,9 @@ interface Management1
 
 ##### NTP Servers
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
