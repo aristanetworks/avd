@@ -33,6 +33,7 @@ jobs:
         uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         continue-on-error: true
         with:
+          # Only run markdownlint for now, until all pre-commit.ci hooks are migrated to autofix.ci.
           extra_args: markdownlint-cli2 --all-files
 
       - name: Commit back any git diff
