@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 # pylint: disable=too-many-lines
 
+import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from dataclasses import dataclass, field
-from logging import DEBUG
+from logging import DEBUG, INFO
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
@@ -43,7 +43,6 @@ from pyavd._cv.workflows.models import (
     CVWorkspaceDeviceBuildResult,
     DeployToCvResult,
 )
-from pyavd._cv.workflows.utils import reset_mutable_fields
 
 from .helpers import generate_id
 
@@ -560,50 +559,6 @@ class TestCVChangeControl:
         assert result["requested_state"] == "approved"
         assert result["change_control_template"] == {"name": "template-name", "id": "template-id"}
 
-    def test_reset_runtime_fields_cleared(self) -> None:
-        """Tests that id and state (populated from CV) are reset to None."""
-        cc = CVChangeControl(id="cc-id", state="approved")
-
-        cc.reset_mutable_fields()
-
-        assert cc.id is None
-        assert cc.state is None
-
-    @pytest.mark.parametrize(
-        ("avd_name", "avd_desc", "expected_name", "expected_desc"),
-        [
-            pytest.param("avd-cc-name", "avd-cc-desc", "avd-cc-name", "avd-cc-desc", id="both_provided_in_avd_change_control"),
-            pytest.param("avd-cc-name", None, "avd-cc-name", None, id="name_only_in_avd_change_control"),
-            pytest.param(None, "avd-cc-desc", None, "avd-cc-desc", id="desc_only_in_avd_change_control"),
-            pytest.param(None, None, None, None, id="neither_in_avd_change_control"),
-        ],
-    )
-    def test_reset_name_and_description_restored_from_avd_change_control(
-        self,
-        avd_name: str | None,
-        avd_desc: str | None,
-        expected_name: str | None,
-        expected_desc: str | None,
-    ) -> None:
-        """Tests that name and description are restored from the frozen avd_change_control after reset."""
-        avd_cc = AvdChangeControl(name=avd_name, description=avd_desc)
-        cc = CVChangeControl(avd_change_control=avd_cc)
-
-        cc.reset_mutable_fields()
-
-        assert cc.name == expected_name
-        assert cc.description == expected_desc
-
-    def test_reset_avd_change_control_object_is_preserved(self) -> None:
-        """Tests that the frozen avd_change_control intent object is the same instance after reset."""
-        template = AvdChangeControlTemplate(name="template-name", id="template-id")
-        avd_cc = AvdChangeControl(name="avd-cc-name", description="avd-cc-desc", requested_state="approved", change_control_template=template)
-        cc = CVChangeControl(avd_change_control=avd_cc)
-
-        cc.reset_mutable_fields()
-
-        assert cc.avd_change_control is avd_cc
-
 
 class TestCVWorkspace:
     def test_get_result(self) -> None:
@@ -623,36 +578,6 @@ class TestCVWorkspace:
         assert result["build_id"] == "build-id"
         assert result["device_build_results"] == []
 
-    def test_reset_runtime_fields_cleared(self) -> None:
-        """Tests that state, change_control_id, build_id, device_build_results and synchronization_required are reset."""
-        avd_ws = AvdWorkspace(name="workspace-name")
-        device = CVDevice(avd_device=AvdDevice(hostname="avd-leaf1"))
-        ws = CVWorkspace(
-            avd_workspace=avd_ws,
-            state="built",
-            change_control_id="cc-id",
-            build_id="build-id",
-            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
-            synchronization_required=True,
-        )
-
-        ws.reset_mutable_fields()
-
-        assert ws.state is None
-        assert ws.change_control_id is None
-        assert ws.build_id is None
-        assert not ws.device_build_results
-        assert ws.synchronization_required is False
-
-    def test_reset_avd_workspace_object_is_preserved(self) -> None:
-        """Tests that the frozen avd_workspace intent object is the same instance after reset."""
-        avd_ws = AvdWorkspace(name="workspace-name", id="ws-id", description="workspace-description", requested_state="submitted", force=True)
-        ws = CVWorkspace(avd_workspace=avd_ws)
-
-        ws.reset_mutable_fields()
-
-        assert ws.avd_workspace is avd_ws
-
 
 class TestCVDevice:
     def test_get_result(self) -> None:
@@ -669,48 +594,6 @@ class TestCVDevice:
         assert result["system_mac_address"] == "00:11:22:33:44:55"
         assert result["exists_on_cv"] is True
         assert result["streaming"] is True
-
-    @pytest.mark.parametrize(
-        ("intended_serial", "intended_mac", "expected_serial_after_reset", "expected_mac_after_reset"),
-        [
-            pytest.param(None, None, None, None, id="no_intent_values_reset_to_none"),
-            pytest.param("sn-intended", None, "sn-intended", None, id="intended_serial_restored"),
-            pytest.param(None, "aa:bb:cc:dd:ee:ff", None, "aa:bb:cc:dd:ee:ff", id="intended_mac_restored"),
-            pytest.param("sn-intended", "aa:bb:cc:dd:ee:ff", "sn-intended", "aa:bb:cc:dd:ee:ff", id="both_intent_values_restored"),
-        ],
-    )
-    def test_reset_cv_state_cleared_and_intent_values_restored(
-        self,
-        intended_serial: str | None,
-        intended_mac: str | None,
-        expected_serial_after_reset: str | None,
-        expected_mac_after_reset: str | None,
-    ) -> None:
-        """Tests that CV-discovered serial/mac/exists_on_cv/streaming are cleared and avd_device intent values are restored."""
-        avd_device = AvdDevice(hostname="avd-leaf1", serial_number=intended_serial, system_mac_address=intended_mac)
-        device = CVDevice(avd_device=avd_device)
-        # Simulate values written by verify_devices_on_cv.
-        device.serial_number = "cv-discovered-serial"
-        device.system_mac_address = "cv-discovered-mac"
-        device.exists_on_cv = True
-        device.streaming = True
-
-        device.reset_mutable_fields()
-
-        assert device.serial_number == expected_serial_after_reset
-        assert device.system_mac_address == expected_mac_after_reset
-        assert device.exists_on_cv is None
-        assert device.streaming is None
-
-    def test_reset_avd_device_object_is_preserved(self) -> None:
-        """Tests that the frozen avd_device intent object is the same instance after reset."""
-        avd_device = AvdDevice(hostname="avd-leaf1", serial_number="sn54321", system_mac_address="55:44:33:22:11:00")
-        device = CVDevice(avd_device=avd_device)
-        device.exists_on_cv = True
-
-        device.reset_mutable_fields()
-
-        assert device.avd_device is avd_device
 
 
 class TestDeployToCvResult:
@@ -909,157 +792,60 @@ class TestDeployToCvResult:
         assert result["removed_interface_tags"][0]["value"] == "old_val"
         assert result["removed_interface_tags"][0]["device"] is None
 
-    def _make_populated_result(self) -> DeployToCvResult:
-        """Return a DeployToCvResult with every field populated to verify complete resetting."""
-        avd_ws = AvdWorkspace(name="workspace-name")
+    def test_rebuild_for_workspace_synchronization_preserves_fields(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that rebuild returns a new result preserving warnings, workspace, and change_control, with errors and all deployment lists empty."""
+        avd_ws = AvdWorkspace(name="ws-name", id="ws-id")
         avd_cc = AvdChangeControl(name="avd-cc-name", description="avd-cc-desc")
-        device = CVDevice(avd_device=AvdDevice(hostname="leaf1", serial_number="snleaf1"))
-        device.exists_on_cv = True
-        device.streaming = False
-        return DeployToCvResult(
-            failed=True,
-            errors=["err"],
-            warnings=["warn"],
-            workspace=CVWorkspace(avd_workspace=avd_ws, state="built", build_id="build-id", change_control_id="cc-id"),
-            change_control=CVChangeControl(avd_change_control=avd_cc, id="cc-id", state="approved"),
+        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
+        ws = CVWorkspace(
+            avd_workspace=avd_ws,
+            state="submit failed",
+            build_id="b1",
+            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+        )
+        cc = CVChangeControl(avd_change_control=avd_cc)
+        original = DeployToCvResult(
+            workspace=ws,
+            change_control=cc,
+            errors=["some-error"],
+            warnings=["warn1"],
             deployed_configs=[CVEosConfig(file="f.cfg", device=device)],
-            deployed_static_config_containers=[AvdContainer(name="C", tag_query="all")],
-            deployed_static_config_configlets=[AvdConfiglet(name="cfg1", file="f.cfg")],
-            deployed_device_tags=[CVDeviceTag(label="dc", value="DC1", device=device)],
-            deployed_interface_tags=[CVInterfaceTag(label="speed", value="100G", device=device, interface="Eth1")],
-            deployed_studio_inputs=[CVStudioInputs(studio_id="s1", inputs={})],
-            deployed_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={})],
-            skipped_configs=[CVEosConfig(file="g.cfg", device=device)],
-            skipped_static_config_containers=[AvdContainer(name="D", tag_query="role:leaf")],
             skipped_device_tags=[CVDeviceTag(label="rack", value="R1")],
-            skipped_interface_tags=[CVInterfaceTag(label="mtu", value="9214")],
-            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={})],
             removed_configs=["old.cfg"],
-            removed_static_config_containers=["OLD"],
-            removed_static_config_configlets=["OLD_CFG"],
-            removed_device_tags=[CVDeviceTag(label="old", value="v")],
-            removed_interface_tags=[CVInterfaceTag(label="old", value="v")],
         )
 
-    def test_reset_runtime_fields_cleared(self) -> None:
-        """Tests that failed, errors, warnings, and all deployed/skipped/removed list fields are cleared after reset."""
-        result = self._make_populated_result()
+        with caplog.at_level(INFO):
+            new_result = original.rebuild_for_workspace_synchronization()
 
-        result.reset_mutable_fields()
+        assert new_result is not original
+        assert new_result.workspace is ws
+        assert new_result.change_control is cc
+        assert new_result.warnings is original.warnings
+        assert new_result.failed is False
+        assert not new_result.errors
+        assert not new_result.deployed_configs
+        assert not new_result.skipped_device_tags
+        assert not new_result.removed_configs
+        assert any(re.search(r"rebuild_for_workspace_synchronization.*ws-name.*ws-id", str(r.message)) for r in caplog.records)
 
-        assert result.failed is False
-        for dataclass_field in (
-            "errors",
-            "warnings",
-            "deployed_configs",
-            "deployed_static_config_containers",
-            "deployed_static_config_configlets",
-            "deployed_device_tags",
-            "deployed_interface_tags",
-            "deployed_studio_inputs",
-            "deployed_cv_pathfinder_metadata",
-            "skipped_configs",
-            "skipped_static_config_containers",
-            "skipped_device_tags",
-            "skipped_interface_tags",
-            "skipped_cv_pathfinder_metadata",
-            "removed_configs",
-            "removed_static_config_containers",
-            "removed_static_config_configlets",
-            "removed_device_tags",
-            "removed_interface_tags",
-        ):
-            assert not getattr(result, dataclass_field)
+    def test_rebuild_for_workspace_synchronization_clears_device_build_results(self) -> None:
+        """Tests that workspace.device_build_results is cleared in-place so the next build starts fresh."""
+        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
+        ws = CVWorkspace(
+            avd_workspace=AvdWorkspace(name="ws", id="ws-id"),
+            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+        )
+        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
 
-    def test_reset_workspace_in_place(self) -> None:
-        """Tests that the workspace object is reset in-place (its runtime fields are cleared)."""
-        result = self._make_populated_result()
-        original_ws = result.workspace
+        result.rebuild_for_workspace_synchronization()
 
-        result.reset_mutable_fields()
+        assert not ws.device_build_results
 
-        assert result.workspace is original_ws
-        assert result.workspace is not None
-        assert result.workspace.state is None
-        assert result.workspace.build_id is None
-        assert result.workspace.change_control_id is None
-        assert result.workspace.name == "workspace-name"
+    def test_rebuild_for_workspace_synchronization_none_change_control(self) -> None:
+        """Tests that rebuild works when change_control is None and the new result also has change_control=None."""
+        ws = CVWorkspace(avd_workspace=AvdWorkspace(name="ws", id="ws-id"))
+        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
 
-    def test_reset_change_control_in_place(self) -> None:
-        """Tests that the change_control object is reset in-place (id/state cleared, name/description restored)."""
-        result = self._make_populated_result()
-        original_cc = result.change_control
+        new_result = result.rebuild_for_workspace_synchronization()
 
-        result.reset_mutable_fields()
-
-        assert result.change_control is original_cc
-        assert result.change_control is not None
-        assert result.change_control.id is None
-        assert result.change_control.state is None
-        assert result.change_control.name == "avd-cc-name"
-        assert result.change_control.description == "avd-cc-desc"
-
-    def test_reset_none_workspace_and_change_control_remain_none(self) -> None:
-        """Tests that when workspace and change_control start as None they remain None after reset."""
-        result = DeployToCvResult()
-
-        result.reset_mutable_fields()
-
-        assert result.workspace is None
-        assert result.change_control is None
-
-
-class TestResetMutableFieldsUtility:
-    """Unit tests for the reset_mutable_fields utility."""
-
-    def test_frozen_dataclass_field_with_default_factory_is_preserved(self) -> None:
-        """Tests that a frozen dataclass stored in a field that has default_factory is not replaced."""
-        avd_ws = AvdWorkspace(name="workspace-name", id="ws-id")
-        ws = CVWorkspace(avd_workspace=avd_ws, state="built")
-
-        reset_mutable_fields(ws)
-
-        # Must be the exact same object, not a fresh AvdWorkspace() from calling default_factory.
-        assert ws.avd_workspace is avd_ws
-        assert ws.name == "workspace-name"
-        assert ws.id == "ws-id"
-
-    def test_none_value_field_with_default_none_remains_none(self) -> None:
-        """Tests that fields whose current value is None and whose default is None are handled without error."""
-        ws = CVWorkspace()
-        assert ws.state is None
-
-        reset_mutable_fields(ws)
-
-        assert ws.state is None
-
-    def test_non_dataclass_object(self) -> None:
-        """Tests that calling reset_mutable_fields on a non-dataclass does not raise."""
-        plain_dict: dict = {"key": "value"}
-        reset_mutable_fields(plain_dict)
-        assert plain_dict == {"key": "value"}
-
-    def test_frozen_dataclass_is_left_unchanged(self) -> None:
-        """Tests that calling reset_mutable_fields on a frozen dataclass leaves all fields intact and does not raise FrozenInstanceError."""
-        avd_ws = AvdWorkspace(name="workspace-name", id="ws-id")
-        reset_mutable_fields(avd_ws)
-        assert avd_ws.name == "workspace-name"
-        assert avd_ws.id == "ws-id"
-
-    def test_non_frozen_dataclass_field_without_reset_method(self) -> None:
-        """Tests that a non-frozen dataclass stored in a field that has no reset_mutable_fields is reset recursively."""
-
-        @dataclass
-        class Inner:
-            state: str = "original"
-
-        @dataclass
-        class Outer:
-            inner: Inner = field(default_factory=Inner)
-            state: str | None = None
-
-        outer = Outer(inner=Inner(state="modified"), state="original")
-        reset_mutable_fields(outer)
-
-        assert outer.state is None
-        assert outer.inner.state == "original"
+        assert new_result.change_control is None

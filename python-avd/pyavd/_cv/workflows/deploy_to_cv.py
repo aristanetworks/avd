@@ -31,26 +31,13 @@ from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .models import AvdManifest, CVDevice, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
+    from .models import AvdManifest, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 LOGGER = getLogger(__name__)
 
 
-def _reset_deployment_for_workspace_sync(result: DeployToCvResult, devices: list[CVDevice]) -> None:
-    """Reset all mutable states computed against the previous CloudVision mainline."""
-    LOGGER.info(
-        "_reset_deployment_for_workspace_sync: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
-        result.workspace.name,
-        result.workspace.id,
-    )
-    result.reset_mutable_fields()
-    for device in devices:
-        device.reset_mutable_fields()
-
-
 async def _execute_deployment_steps(
     result: DeployToCvResult,
-    devices: list[CVDevice],
     configs: list[CVEosConfig],
     device_tags: list[CVDeviceTag],
     interface_tags: list[CVInterfaceTag],
@@ -58,34 +45,11 @@ async def _execute_deployment_steps(
     static_config_manifest: AvdManifest | None,
     studio_inputs: list[CVStudioInputs],
     device_deployments: list[CVDeviceDeployment],
-    skip_missing_devices: bool,
     strict_tags: bool,
-    strict_system_mac_address: bool,
     cv_client: CVClient,
 ) -> None:
-    """Execute all deployment sub-workflows."""
+    """Execute all deployment sub-workflows which rely on the state of the CloudVision mainline."""
     try:
-        # Warn if devices are opted into the manifest but no manifest is provided.
-        if static_config_manifest is None and any(device_deployment.use_static_config_manifest for device_deployment in device_deployments):
-            manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
-            result.warnings.append(
-                f"{manifest_device_count} device(s) have 'cv_use_static_config_manifest' set to 'true' but no static config manifest was provided. "
-                "These devices will not have their configuration deployed to CloudVision."
-            )
-
-        # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-        verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
-
-        # Verify devices exist and update CVDevice objects with exists_on_cv.
-        # Depending on skip_missing_devices we will raise or skip missing devices.
-        await verify_devices_on_cv(
-            devices=devices,
-            workspace_id=result.workspace.id,
-            skip_missing_devices=skip_missing_devices,
-            warnings=result.warnings,
-            cv_client=cv_client,
-        )
-
         # Deploy device tags
         await deploy_tags_to_cv(
             tags=device_tags,
@@ -235,6 +199,7 @@ async def deploy_to_cv(
             + In-place update device objects.
         + On CV Create or update existing Workspace with name and description.
             + In-place update workspace object.
+        The following steps are executed inside the sync retry loop and repeated if CloudVision requires Workspace synchronization:
         + On CV in "Inventory & Topology Studio" set/verify hostnames.
         + On CV in "Static Configlet Studio" upload configlets and assign to devices.
             - TODO: Consider if we should create a hierarchy of configuration containers.
@@ -266,6 +231,14 @@ async def deploy_to_cv(
     devices = [device_deployment.device for device_deployment in device_deployments]
     configs, device_tags, interface_tags, cv_pathfinder_metadata = extract_from_device_deployments(device_deployments)
 
+    # Warn if devices are opted into the manifest but no manifest is provided.
+    if static_config_manifest is None and any(device_deployment.use_static_config_manifest for device_deployment in device_deployments):
+        manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
+        result.warnings.append(
+            f"{manifest_device_count} device(s) have 'cv_use_static_config_manifest' set to 'true' but no static config manifest was provided. "
+            "These devices will not have their configuration deployed to CloudVision."
+        )
+
     try:
         async with CVClient(
             servers=cloudvision.servers,
@@ -283,13 +256,29 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
+            # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
+            verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+
+            # Verify devices exist and update CVDevice objects with exists_on_cv.
+            # Depending on skip_missing_devices we will raise or skip missing devices.
+            await verify_devices_on_cv(
+                devices=devices,
+                workspace_id=result.workspace.id,
+                skip_missing_devices=skip_missing_devices,
+                warnings=result.warnings,
+                cv_client=cv_client,
+            )
+
             for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
                 if workspace_sync_attempt > 0:
-                    _reset_deployment_for_workspace_sync(result, devices)
+                    result = result.rebuild_for_workspace_synchronization()
+
+                # Collect warnings generated inside the retry loop separately so they are not duplicated
+                # in result.warnings if the Workspace requires synchronization and steps are replayed.
+                loop_warnings: list = []
 
                 await _execute_deployment_steps(
                     result=result,
-                    devices=devices,
                     configs=configs,
                     device_tags=device_tags,
                     interface_tags=interface_tags,
@@ -297,19 +286,18 @@ async def deploy_to_cv(
                     static_config_manifest=static_config_manifest,
                     studio_inputs=studio_inputs,
                     device_deployments=device_deployments,
-                    skip_missing_devices=skip_missing_devices,
                     strict_tags=strict_tags,
-                    strict_system_mac_address=strict_system_mac_address,
                     cv_client=cv_client,
                 )
 
                 # Build, submit or abandon Workspace. If failed, we always abandon.
                 if result.failed:
+                    result.warnings.extend(loop_warnings)
                     await cv_client.abandon_workspace(workspace_id=result.workspace.id)
                     result.workspace.state = "abandoned"
                     return result
 
-                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
+                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
 
                 if await synchronize_workspace_if_needed(
                     workspace=result.workspace,
@@ -319,6 +307,7 @@ async def deploy_to_cv(
                     # Workspace has been synchronized on CloudVision. We need to replay all changes.
                     continue
                 # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.
+                result.warnings.extend(loop_warnings)
                 break
 
             await _finalize_change_control(result, cv_client)

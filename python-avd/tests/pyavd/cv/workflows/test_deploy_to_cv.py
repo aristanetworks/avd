@@ -3,16 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG, INFO
+from logging import DEBUG
 from typing import TYPE_CHECKING
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, _reset_deployment_for_workspace_sync, deploy_to_cv
+from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdWorkspace,
     CloudVision,
@@ -288,20 +287,22 @@ async def test_finalize_change_control_with_id(mock_cv_client: MagicMock) -> Non
 
 @pytest.mark.asyncio
 async def test_deploy_to_cv_workspace_sync_retry() -> None:
-    """Tests that deploy_to_cv resets state and replays deployment steps when synchronize_workspace_if_needed returns True."""
+    """Tests that deploy_to_cv rebuilds the result and replays deployment steps when synchronize_workspace_if_needed returns True."""
     mock_cv_client = AsyncMock()
+    mock_execute = AsyncMock()
 
     with (
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
         patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
-        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", mock_execute),
         patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock()),
         patch(
             "pyavd._cv.workflows.deploy_to_cv.synchronize_workspace_if_needed",
             AsyncMock(side_effect=[True, False]),
         ) as mock_synced,
         patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
-        patch("pyavd._cv.workflows.deploy_to_cv._reset_deployment_for_workspace_sync") as mock_reset,
     ):
         result = await deploy_to_cv(
             cloudvision=CloudVision(
@@ -320,21 +321,41 @@ async def test_deploy_to_cv_workspace_sync_retry() -> None:
 
     assert not result.failed
     assert mock_synced.call_count == 2
-    mock_reset.assert_called_once()
+    assert mock_execute.call_count == 2
 
 
-def test_reset_deployment_for_workspace_sync(caplog: pytest.LogCaptureFixture) -> None:
-    """Tests that _reset_deployment_for_workspace_sync logs the reset and calls reset_mutable_fields on result and all devices."""
-    result = MagicMock()
-    result.workspace.name = "test-workspace"
-    result.workspace.id = "ws-test-id"
-    device1 = MagicMock()
-    device2 = MagicMock()
+@pytest.mark.asyncio
+async def test_deploy_to_cv_loop_warnings_merged_on_success() -> None:
+    """Tests that warnings appended to loop_warnings by finalize_workspace_on_cv are merged into result.warnings on success and are not duplicated on retry."""
+    mock_cv_client = AsyncMock()
 
-    with caplog.at_level(INFO):
-        _reset_deployment_for_workspace_sync(result, [device1, device2])
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=lambda **kwargs: kwargs["warnings"].append("build-warning"))),
+        patch(
+            "pyavd._cv.workflows.deploy_to_cv.synchronize_workspace_if_needed",
+            AsyncMock(side_effect=[True, False]),
+        ),
+        patch("pyavd._cv.workflows.deploy_to_cv._finalize_change_control", AsyncMock()),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(max_sync_retries=1)),
+        )
 
-    assert any(re.search("_reset_deployment_for_workspace_sync.*test-workspace.*ws-test-id", str(record.message)) for record in caplog.records)
-    result.reset_mutable_fields.assert_called_once()
-    device1.reset_mutable_fields.assert_called_once()
-    device2.reset_mutable_fields.assert_called_once()
+    # finalize_workspace_on_cv runs twice (once per attempt) but the first attempt's warning is discarded on sync.
+    assert result.warnings == ["build-warning"]
