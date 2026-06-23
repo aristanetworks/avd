@@ -609,7 +609,7 @@ class TestWorkspaceWasSynchronizedOnCv:
             pytest.param(4, id="LAST_VALID_ATTEMPT"),
         ],
     )
-    async def test_sync_required_within_retries_calls_rebase_and_returns_true(self, workspace_sync_attempt: int) -> None:
+    async def test_sync_required_within_retries_calls_rebase_and_returns_true(self, caplog: pytest.LogCaptureFixture, workspace_sync_attempt: int) -> None:
         """Tests that when synchronization_required is True and attempt < max_sync_retries, rebase is called, flag is cleared, and True is returned."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(
@@ -617,11 +617,23 @@ class TestWorkspaceWasSynchronizedOnCv:
             synchronization_required=True,
         )
 
-        result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
+        with caplog.at_level(INFO):
+            result = await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
 
         assert result is True
         assert workspace.synchronization_required is False
         mock_client.rebase_workspace.assert_called_once_with(workspace_id="ws-test-id")
+        assert any(
+            re.search("workspace_was_synchronized_on_cv.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
+            for record in caplog.records
+        )
+        assert any(
+            re.search(
+                f"workspace_was_synchronized_on_cv.*Performing synchronization/rebase attempt {workspace_sync_attempt + 1}/5.*test-workspace.*ws-test-id",
+                str(record.message),
+            )
+            for record in caplog.records
+        )
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
@@ -631,7 +643,7 @@ class TestWorkspaceWasSynchronizedOnCv:
             pytest.param(10, id="ABOVE_MAX_RETRIES"),
         ],
     )
-    async def test_sync_required_exhausted_raises(self, workspace_sync_attempt: int) -> None:
+    async def test_sync_required_exhausted_raises(self, caplog: pytest.LogCaptureFixture, workspace_sync_attempt: int) -> None:
         """Tests that when synchronization_required is True and attempt >= max_sync_retries, CVWorkspaceSyncAttemptsExhausted is raised."""
         mock_client = AsyncMock()
         workspace = CVWorkspace(
@@ -639,7 +651,10 @@ class TestWorkspaceWasSynchronizedOnCv:
             synchronization_required=True,
         )
 
-        with pytest.raises(CVWorkspaceSyncAttemptsExhausted) as exc_info:
+        with (
+            caplog.at_level(INFO),
+            pytest.raises(CVWorkspaceSyncAttemptsExhausted) as exc_info,
+        ):
             await workspace_was_synchronized_on_cv(workspace=workspace, cv_client=mock_client, workspace_sync_attempt=workspace_sync_attempt)
 
         exc = exc_info.value
@@ -647,6 +662,10 @@ class TestWorkspaceWasSynchronizedOnCv:
         assert exc.workspace_name == "test-workspace"
         assert exc.workspace_id == "ws-test-id"
         mock_client.rebase_workspace.assert_not_called()
+        assert any(
+            re.search("workspace_was_synchronized_on_cv.*test-workspace.*ws-test-id.*requires synchronization/rebase", str(record.message))
+            for record in caplog.records
+        )
 
 
 # === finalize_workspace_on_cv synchronization tests ===

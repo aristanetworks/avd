@@ -402,7 +402,15 @@ async def workspace_was_synchronized_on_cv(workspace: CVWorkspace, cv_client: CV
         False: If Workspace has not been synchronized/rebased and all populated states are up-to-date.
     """
     if workspace.synchronization_required:
+        LOGGER.info("workspace_was_synchronized_on_cv: Workspace %s (%s) requires synchronization/rebase.", workspace.name, workspace.id)
         if workspace_sync_attempt < workspace.max_sync_retries:
+            LOGGER.info(
+                "workspace_was_synchronized_on_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
+                workspace_sync_attempt + 1,
+                workspace.max_sync_retries,
+                workspace.name,
+                workspace.id,
+            )
             _ = await cv_client.rebase_workspace(workspace_id=workspace.id)
             # Reset synchronization requirement flag
             workspace.synchronization_required = False

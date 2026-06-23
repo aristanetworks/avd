@@ -3,15 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG
+from logging import DEBUG, INFO
 from typing import TYPE_CHECKING
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
+from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, _reset_deployment_for_workspace_sync, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdWorkspace,
     CloudVision,
@@ -320,3 +321,20 @@ async def test_deploy_to_cv_workspace_sync_retry() -> None:
     assert not result.failed
     assert mock_synced.call_count == 2
     mock_reset.assert_called_once()
+
+
+def test_reset_deployment_for_workspace_sync(caplog: pytest.LogCaptureFixture) -> None:
+    """Tests that _reset_deployment_for_workspace_sync logs the reset and calls reset_mutable_fields on result and all devices."""
+    result = MagicMock()
+    result.workspace.name = "test-workspace"
+    result.workspace.id = "ws-test-id"
+    device1 = MagicMock()
+    device2 = MagicMock()
+
+    with caplog.at_level(INFO):
+        _reset_deployment_for_workspace_sync(result, [device1, device2])
+
+    assert any(re.search("_reset_deployment_for_workspace_sync.*test-workspace.*ws-test-id", str(record.message)) for record in caplog.records)
+    result.reset_mutable_fields.assert_called_once()
+    device1.reset_mutable_fields.assert_called_once()
+    device2.reset_mutable_fields.assert_called_once()

@@ -38,6 +38,11 @@ LOGGER = getLogger(__name__)
 
 def _reset_deployment_for_workspace_sync(result: DeployToCvResult, devices: list[CVDevice]) -> None:
     """Reset all mutable states computed against the previous CloudVision mainline."""
+    LOGGER.info(
+        "_reset_deployment_for_workspace_sync: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
+        result.workspace.name,
+        result.workspace.id,
+    )
     result.reset_mutable_fields()
     for device in devices:
         device.reset_mutable_fields()
@@ -280,7 +285,6 @@ async def deploy_to_cv(
 
             for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
                 if workspace_sync_attempt > 0:
-                    # All state computed against the previous CloudVision mainline must be reset/discarded and re-evaluated after sync.
                     _reset_deployment_for_workspace_sync(result, devices)
 
                 await _execute_deployment_steps(
