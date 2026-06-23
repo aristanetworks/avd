@@ -2607,6 +2607,15 @@ keys:
           Always render a ''!'' before the ''(no) ip routing'' command section.
 
           Without this the ''!'' is missing when only configuring routing for VRFs.'
+      always_render_ipv6_unicast_routing_vrfs_separator:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          Always render a ''!'' before the ''(no) ipv6 unicast-routing vrf'' command
+          section.
+
+          Without this the ''!'' is missing when first VRF is not configured for ipv6_routing.'
       new_ip_radius_cli_order:
         type: bool
         default: false

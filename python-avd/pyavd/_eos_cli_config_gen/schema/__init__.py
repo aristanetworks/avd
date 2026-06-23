@@ -6552,6 +6552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "always_render_ip_routing_separator": {"type": bool, "default": False},
+            "always_render_ipv6_unicast_routing_vrfs_separator": {"type": bool, "default": False},
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
@@ -6563,6 +6564,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Always render a '!' before the '(no) ip routing' command section.
         Without
         this the '!' is missing when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
+        always_render_ipv6_unicast_routing_vrfs_separator: bool
+        """
+        Available from AVD 6.3.0.
+        Always render a '!' before the '(no) ipv6 unicast-routing vrf' command
+        section.
+        Without this the '!' is missing when first VRF is not configured for ipv6_routing.
 
         Default value: `False`
         """
@@ -6614,6 +6624,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+                always_render_ipv6_unicast_routing_vrfs_separator: bool | UndefinedType = Undefined,
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
@@ -6631,6 +6642,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without
                        this the '!' is missing when only configuring routing for VRFs.
+                    always_render_ipv6_unicast_routing_vrfs_separator:
+                       Available from AVD 6.3.0.
+                       Always render a '!' before the '(no) ipv6 unicast-routing vrf' command
+                       section.
+                       Without this the '!' is missing when first VRF is not configured for ipv6_routing.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
