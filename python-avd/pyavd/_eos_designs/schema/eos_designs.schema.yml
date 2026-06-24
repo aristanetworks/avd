@@ -2789,46 +2789,46 @@ keys:
         keys:
           acl:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           arp_inspection:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           bpduguard:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           dot1x:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           dot1x_coa:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           dot1x_phone_classification:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           dot1x_session_replace:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           error_correction_encoding:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           fabric_capacity_low:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           hardware_speed_group:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           hitless_reload_down:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           interface_speed:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           internal_error:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           lacp_rate_limit:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           link_change:
             type: dict
             keys:
@@ -2836,58 +2836,58 @@ keys:
                 type: bool
           link_flap:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           no_internal_vlan:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           port_breakout:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           portchannelguard:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           portsec:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           speed_misconfigured:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           storm_control:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           stuck_queue:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           switchcard_unreachable:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           tap_port_init:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           tapagg:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           tpid:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           transceiver_adapter:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           uplink_failure_detection:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
           xcvr_misconfigured:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           xcvr_overheat:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           xcvr_power_unsupported:
             type: dict
-            $ref: eos_designs#/$defs/detect_and_recovery
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
           xcvr_unsupported:
             type: dict
-            $ref: eos_designs#/$defs/recovery_only
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     type: list
@@ -11998,30 +11998,33 @@ $defs:
         description:
           type: str
           description: Description used for documentation.
-  detect_and_recovery:
+  errdisable_settings:
     type: dict
     keys:
-      detection:
-        type: bool
-      recovery:
-        type: bool
-        default: false
-      recovery_interval:
-        type: int
-        description: Interval for each recovery cause in seconds.
-        min: 30
-        max: 86400
-        convert_types:
-        - str
-  recovery_only:
-    type: dict
-    keys:
-      recovery:
-        type: bool
-        default: false
-      recovery_interval:
-        type: int
-        $ref: eos_designs#/$defs/detect_and_recovery/keys/recovery_interval
+      detect_and_recovery:
+        type: dict
+        keys:
+          detection:
+            type: bool
+          recovery:
+            type: bool
+            default: false
+          recovery_interval:
+            type: int
+            description: Interval for each recovery cause in seconds.
+            min: 30
+            max: 86400
+            convert_types:
+            - str
+      recovery_only:
+        type: dict
+        keys:
+          recovery:
+            type: bool
+            default: false
+          recovery_interval:
+            type: int
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery/keys/recovery_interval
   flow_tracking_link:
     type: dict
     keys:
