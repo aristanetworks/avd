@@ -483,7 +483,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/domain-list.
 ### Environment
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/env.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/environment-fan-speed.md
 --8<--
 
 ### Hostname

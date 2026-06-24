@@ -6464,45 +6464,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class Env(AvdModel):
+    class EnvironmentFanSpeed(AvdModel):
         """Subclass of AvdModel."""
 
-        class FanSpeed(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"minimum": {"type": int}}
-            minimum: int | None
-            """Set the minimum fan speed in percent."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, minimum: int | None | UndefinedType = Undefined) -> None:
-                    """
-                    FanSpeed.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        minimum: Set the minimum fan speed in percent.
-
-                    """
-
-        _fields: ClassVar[dict] = {"fan_speed": {"type": FanSpeed}}
-        fan_speed: FanSpeed
-        """Subclass of AvdModel."""
+        _fields: ClassVar[dict] = {"minimum": {"type": int}}
+        minimum: int | None
+        """Set the minimum fan speed in percent."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, fan_speed: FanSpeed | UndefinedType = Undefined) -> None:
+            def __init__(self, *, minimum: int | None | UndefinedType = Undefined) -> None:
                 """
-                Env.
+                EnvironmentFanSpeed.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    fan_speed: Subclass of AvdModel.
+                    minimum: Set the minimum fan speed in percent.
 
                 """
 
@@ -75658,7 +75637,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "dps_interfaces": {"type": DpsInterfaces},
         "dynamic_prefix_lists": {"type": DynamicPrefixLists},
         "enable_password": {"type": EnablePassword},
-        "env": {"type": Env},
+        "environment_fan_speed": {"type": EnvironmentFanSpeed},
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
@@ -75996,9 +75975,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`)."""
     enable_password: EnablePassword
     """Subclass of AvdModel."""
-    env: Env
+    environment_fan_speed: EnvironmentFanSpeed
     """
-    System environment settings.
+    Environment fan-speed settings.
 
     Subclass of AvdModel.
     """
@@ -76510,7 +76489,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dps_interfaces: DpsInterfaces | UndefinedType = Undefined,
             dynamic_prefix_lists: DynamicPrefixLists | UndefinedType = Undefined,
             enable_password: EnablePassword | UndefinedType = Undefined,
-            env: Env | UndefinedType = Undefined,
+            environment_fan_speed: EnvironmentFanSpeed | UndefinedType = Undefined,
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
@@ -76801,8 +76780,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dps_interfaces: Subclass of AvdIndexedList with `DpsInterfacesItem` items. Primary key is `name` (`str`).
                 dynamic_prefix_lists: Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`).
                 enable_password: Subclass of AvdModel.
-                env:
-                   System environment settings.
+                environment_fan_speed:
+                   Environment fan-speed settings.
 
                    Subclass of AvdModel.
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
