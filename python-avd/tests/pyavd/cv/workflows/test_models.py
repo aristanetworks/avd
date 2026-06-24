@@ -617,6 +617,7 @@ class TestDeployToCvResult:
             removed_static_config_configlets=["OLD_CONFIGLET"],
             removed_device_tags=[CVDeviceTag(label="old_dc", value="old_val")],
             removed_interface_tags=[CVInterfaceTag(label="old_speed", value="old_val")],
+            removed_devices=[CVDevice(avd_device=AvdDevice(hostname="decom-leaf1"), serial_number="sndecom1", action="decommission")],
         )
 
         result = result_obj.get_result()
@@ -759,3 +760,7 @@ class TestDeployToCvResult:
         assert result["removed_interface_tags"][0]["label"] == "old_speed"
         assert result["removed_interface_tags"][0]["value"] == "old_val"
         assert result["removed_interface_tags"][0]["device"] is None
+
+        # removed_devices
+        assert result["removed_devices"][0]["hostname"] == "decom-leaf1"
+        assert result["removed_devices"][0]["serial_number"] == "sndecom1"

@@ -176,11 +176,14 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
     """
     Delete leftovers device configurations from a previous `deploy_configs_to_cv` run.
 
-    For devices with `use_static_config_manifest=True`, the device configuration is expected to be deployed
+    For devices targeted for deployment with `use_static_config_manifest=True`, the device configuration is expected to be deployed
     via the static config manifest instead of the flat "AVD Configurations" layout. This function removes
     the corresponding container (avd-<serial>) and configlet for these devices if they exist.
 
-    If all children are removed, the root container itself is deleted and unregistered from the Studio
+    For decommission devices (device.action="decommission") not using the manifest layout, the flat-layout container and configlet are also removed.
+    Manifest-layout decommission devices are excluded (their cleanup is handled by deploy_static_config_studio_manifest_to_cv).
+
+    If all children are removed, the root container itself is deleted and unregistered from the Studio.
     """
     workspace_id = result.workspace.id
 
@@ -188,8 +191,18 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
     target_ids = [
         f"{CONFIGLET_ID_PREFIX}{device_deployment.device.serial_number}"
         for device_deployment in device_deployments
-        if device_deployment.use_static_config_manifest and device_deployment.device.serial_number
+        if device_deployment.device.action != "decommission" and device_deployment.use_static_config_manifest and device_deployment.device.serial_number
     ]
+
+    # Flat-layout configlets for decommission devices.
+    target_ids.extend(
+        f"{CONFIGLET_ID_PREFIX}{device_deployment.device.serial_number}"
+        for device_deployment in device_deployments
+        if device_deployment.device.action == "decommission"
+        and not device_deployment.use_static_config_manifest
+        and device_deployment.device.serial_number
+        and device_deployment.device.exists_on_cv
+    )
     if not target_ids:
         return
     target_ids_set = set(target_ids)

@@ -8,7 +8,7 @@ import logging
 from asyncio import gather, run
 from pathlib import Path
 from string import Template
-from typing import Any
+from typing import Any, Literal
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -85,6 +85,7 @@ ARGUMENT_SPEC = {
     "strict_tags": {"type": "bool", "required": False, "default": False},
     "skip_missing_devices": {"type": "bool", "required": False, "default": False},
     "strict_system_mac_address": {"type": "bool", "required": False, "default": False},
+    "inventory_mode": {"type": "str", "required": False, "default": "loose", "choices": ["loose", "controlled"]},
     "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
     "cv_servers": {"type": "list", "elements": "str", "required": True},
     "cv_token": {"type": "str", "secret": True, "required": False},
@@ -217,6 +218,8 @@ class ActionModule(ActionBase):
                 structured_config_dir = validated_args.get("structured_config_dir")
                 structured_config_suffix = validated_args.get("structured_config_suffix")
 
+            inventory_mode = get(validated_args, "inventory_mode", default="loose")
+
             # Build list of CVDeviceDeployment objects (one per deployed device).
             device_deployments = await self.build_device_deployments(
                 device_list=get(validated_args, "device_list", default=[]),
@@ -224,6 +227,7 @@ class ActionModule(ActionBase):
                 structured_config_suffix=structured_config_suffix,
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
+                inventory_mode=inventory_mode,
             )
 
             # Extract to individual list objects to maintain the same Ansible result.
@@ -248,7 +252,7 @@ class ActionModule(ActionBase):
                     static_config_manifest=get_result(static_config_manifest) if static_config_manifest else None,
                 )
 
-            # Check if there is anything to deploy.
+            # Check if there is anything to deploy or decommission.
             work_to_do = any(
                 [
                     eos_config_objects,
@@ -256,6 +260,8 @@ class ActionModule(ActionBase):
                     interface_tag_objects,
                     cv_pathfinder_metadata_objects,
                     static_config_manifest,
+                    # Decommission devices (contribute no configs or tags).
+                    any(device_deployment.device.action == "decommission" for device_deployment in device_deployments),
                 ]
             )
 
@@ -313,6 +319,7 @@ class ActionModule(ActionBase):
                 result_object.removed_static_config_configlets,
                 result_object.removed_device_tags,
                 result_object.removed_interface_tags,
+                result_object.removed_devices,
             ]
             result["changed"] = any(change_indicators)
 
@@ -330,6 +337,7 @@ class ActionModule(ActionBase):
         structured_config_suffix: str,
         configuration_dir: str,
         configlet_name_template: str,
+        inventory_mode: Literal["loose", "controlled"] = "loose",
     ) -> list[CVDeviceDeployment]:
         """
         Build CVDeviceDeployment objects for all devices.
@@ -340,13 +348,17 @@ class ActionModule(ActionBase):
             structured_config_suffix: Suffix for structured config files.
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
+            inventory_mode: Controls handling of devices with `is_deployed: false`. In loose mode they are silently skipped.
+                In controlled mode they are included with `device.action="decommission"`.
+
         Return:
-            List of CVDeviceDeployment objects (one per deployed device, skipping devices where is_deployed is false).
+            List of CVDeviceDeployment objects (one per deployed device, skipping devices where is_deployed is false when inventory_mode is "loose").
 
         Workflow:
             Per device:
               - Read and load structured config.
-              - If is_deployed is false, skip the device.
+              - If is_deployed is false and inventory_mode is loose then skip the device entirely.
+              - If is_deployed is false and inventory_mode is controlled then build a CVDeviceDeployment with device.action="decommission".
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object.
               - Read cv_use_static_config_manifest from structured config.
@@ -355,11 +367,10 @@ class ActionModule(ActionBase):
               - Return CVDeviceDeployment object bundling all per-device objects.
         """
         coroutines = [
-            self.build_device_deployment(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
+            self.build_device_deployment(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template, inventory_mode)
             for hostname in device_list
         ]
         results = await gather(*coroutines)
-
         return [deployment for deployment in results if deployment is not None]
 
     async def build_device_deployment(
@@ -369,6 +380,7 @@ class ActionModule(ActionBase):
         structured_config_suffix: str,
         configuration_dir: str,
         configlet_name_template: str,
+        inventory_mode: Literal["loose", "controlled"] = "loose",
     ) -> CVDeviceDeployment | None:
         """
         Build a CVDeviceDeployment object for one device.
@@ -379,8 +391,13 @@ class ActionModule(ActionBase):
             structured_config_suffix: Suffix for structured config files.
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
-        Return:
-            CVDeviceDeployment object, or None if the device is not deployed.
+            inventory_mode: Controls handling of devices with `is_deployed: false`. In loose mode such devices are silently skipped and `None`
+                is returned. In controlled mode a CVDeviceDeployment with device.action="decommission" is returned.
+
+        Returns:
+            `None` when the device has `is_deployed: false` and inventory_mode is loose.
+            A CVDeviceDeployment with device.action="decommission" for devices with `is_deployed: false`
+            in controlled mode. A CVDeviceDeployment with device.action="deploy" otherwise.
 
         TODO: Refactor into smaller functions.
         """
@@ -390,14 +407,20 @@ class ActionModule(ActionBase):
 
         # TODO: Use CVDeploy schema class.
         # metadata.* keys take precedence over global cv_deploy schema keys.
-        if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
+        is_deployed = default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True))
+
+        if not is_deployed and inventory_mode == "loose":
             del structured_config
             return None
 
         # Build device object to be used in other objects.
         serial_number = default(get(structured_config, "metadata.serial_number"), get(structured_config, "serial_number"))
         system_mac_address = default(get(structured_config, "metadata.system_mac_address"), get(structured_config, "system_mac_address"))
-        device_object = CVDevice(avd_device=AvdDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address))
+        action = "deploy" if is_deployed else "decommission"
+        device_object = CVDevice(
+            avd_device=AvdDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address),
+            action=action,
+        )
 
         # Check if the device should use the static config manifest instead of the flat layout.
         use_static_config_manifest = default(
@@ -405,51 +428,59 @@ class ActionModule(ActionBase):
             get(structured_config, "cv_use_static_config_manifest", default=False),
         )
 
-        # Build device config objects (only if NOT opted into manifest layout).
+        # Build device config objects (only for devices being deployed and only if NOT opted into manifest layout).
         eos_config = None
-        if not use_static_config_manifest:
+        if is_deployed and not use_static_config_manifest:
             configlet_name = Template(configlet_name_template).substitute(hostname=hostname)
             config_file_path = str(Path(configuration_dir, f"{hostname}.cfg"))
             eos_config = CVEosConfig(file=config_file_path, device=device_object, configlet_name=configlet_name)
 
-        # Build device tag objects for this device.
+        # Build device tag objects for this device (deploy only — CloudVision unassociates tags automatically on decommission).
         # ! metadata:
         # !   cv_tags:
         # !     device_tags:
         # !     - name: topology_hint_datacenter
         # !       value: DC1
-        device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
-        device_tag_objects = [
-            CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
-            for device_tag in device_tags
-            if "name" in device_tag and "value" in device_tag
-        ]
+        device_tag_objects: list[CVDeviceTag] = []
+        interface_tag_objects: list[CVInterfaceTag] = []
+        if is_deployed:
+            device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
+            device_tag_objects = [
+                CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
+                for device_tag in device_tags
+                if "name" in device_tag and "value" in device_tag
+            ]
 
-        # Build interface tag objects for this device.
-        # ! metadata:
-        # !  cv_tags:
-        # !    interface_tags:
-        # !    - interface: Ethernet3
-        # !      tags:
-        # !      - name: peer_device_interface
-        # !        value: Ethernet3
-        all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
-        interface_tag_objects = [
-            CVInterfaceTag(
-                label=interface_tag["name"],
-                value=interface_tag["value"],
-                device=device_object,
-                interface=one_interface_tags["interface"],
-            )
-            for one_interface_tags in all_interface_tags
-            if "interface" in one_interface_tags and "tags" in one_interface_tags
-            for interface_tag in one_interface_tags["tags"]
-            if "name" in interface_tag and "value" in interface_tag
-        ]
+            # Build interface tag objects for this device.
+            # ! metadata:
+            # !  cv_tags:
+            # !    interface_tags:
+            # !    - interface: Ethernet3
+            # !      tags:
+            # !      - name: peer_device_interface
+            # !        value: Ethernet3
+            all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
+            interface_tag_objects = [
+                CVInterfaceTag(
+                    label=interface_tag["name"],
+                    value=interface_tag["value"],
+                    device=device_object,
+                    interface=one_interface_tags["interface"],
+                )
+                for one_interface_tags in all_interface_tags
+                if "interface" in one_interface_tags and "tags" in one_interface_tags
+                for interface_tag in one_interface_tags["tags"]
+                if "name" in interface_tag and "value" in interface_tag
+            ]
 
-        # Build WAN metadata object for this device.
+        # Build WAN metadata object for this device (only if device is being deployed).
+        # TODO: Implement pathfinder metadata cleanup for decommission devices.
         cv_pathfinder_metadata_object = None
-        if (cv_pathfinder_metadata := default(get(structured_config, "metadata.cv_pathfinder"), get(structured_config, "cv_pathfinder_metadata"))) is not None:
+        if (
+            is_deployed
+            and (cv_pathfinder_metadata := default(get(structured_config, "metadata.cv_pathfinder"), get(structured_config, "cv_pathfinder_metadata")))
+            is not None
+        ):
             cv_pathfinder_metadata_object = CVPathfinderMetadata(metadata=cv_pathfinder_metadata, device=device_object)
 
         del structured_config

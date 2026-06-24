@@ -261,3 +261,133 @@ class TestDeleteConfigsFromCv:
 
         # Studio inputs should NOT be updated (root wasn't there).
         mock_cv_client.set_studio_inputs.assert_not_called()
+
+
+def _decommission_flat(hostname: str, serial_number: str | None = None, exists_on_cv: bool = True) -> CVDeviceDeployment:
+    """Helper to create a flat-layout decommission CVDeviceDeployment (no manifest)."""
+    return CVDeviceDeployment(
+        device=CVDevice(avd_device=AvdDevice(hostname=hostname), serial_number=serial_number, exists_on_cv=exists_on_cv, action="decommission"),
+        use_static_config_manifest=False,
+    )
+
+
+def _decommission_manifest(hostname: str, serial_number: str | None = None, exists_on_cv: bool = True) -> CVDeviceDeployment:
+    """Helper to create a manifest-layout decommission CVDeviceDeployment."""
+    return CVDeviceDeployment(
+        device=CVDevice(avd_device=AvdDevice(hostname=hostname), serial_number=serial_number, exists_on_cv=exists_on_cv, action="decommission"),
+        use_static_config_manifest=True,
+    )
+
+
+@pytest.mark.asyncio
+class TestDeleteConfigsFromCvWithDecommission:
+    """Test suite for delete_configs_from_cv when decommission deployments are included."""
+
+    async def test_no_decommission_deployments_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an empty device_deployments list produces no API calls."""
+        await delete_configs_from_cv([], deployment_result, mock_cv_client)
+
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.get_configlet_containers.assert_not_called()
+        assert not deployment_result.removed_configs
+
+    async def test_only_deploy_devices_with_no_manifest_transition_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a list containing only deploy devices with no manifest-transition produces no API calls."""
+        await delete_configs_from_cv([_config_deployment("device-1", "SERIAL1")], deployment_result, mock_cv_client)
+
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.get_configlet_containers.assert_not_called()
+        assert not deployment_result.removed_configs
+
+    async def test_manifest_decommission_device_not_targeted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that manifest-layout decommission devices are excluded from the target IDs (the manifest handles their cleanup)."""
+        await delete_configs_from_cv([_decommission_manifest("device-1", "SERIAL1")], deployment_result, mock_cv_client)
+
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.get_configlet_containers.assert_not_called()
+        assert not deployment_result.removed_configs
+
+    async def test_flat_decommission_device_without_serial_not_targeted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that flat-layout decommission devices with no serial_number are excluded from the target IDs."""
+        await delete_configs_from_cv([_decommission_flat("device-1", serial_number=None)], deployment_result, mock_cv_client)
+
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.get_configlet_containers.assert_not_called()
+        assert not deployment_result.removed_configs
+
+    async def test_flat_decommission_device_not_on_cv_not_targeted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that flat-layout decommission devices with exists_on_cv=False are excluded from the target IDs."""
+        await delete_configs_from_cv([_decommission_flat("device-1", "SERIAL1", exists_on_cv=False)], deployment_result, mock_cv_client)
+
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.get_configlet_containers.assert_not_called()
+        assert not deployment_result.removed_configs
+
+    async def test_flat_decommission_device_configlet_deleted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that the configlet and container for a flat-layout decommission device are deleted when they exist on CV."""
+        mock_cv_client.get_configlets.return_value = [_make_configlet("avd-SERIAL1")]
+        mock_cv_client.get_configlet_containers.return_value = [_make_target_container("avd-SERIAL1")]
+
+        await delete_configs_from_cv([_decommission_flat("device-1", "SERIAL1")], deployment_result, mock_cv_client)
+
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id="pytest_workspace", configlet_ids=["avd-SERIAL1"])
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id="pytest_workspace", assignment_id="avd-SERIAL1")
+        assert deployment_result.removed_configs == ["AVD-avd-SERIAL1"]
+
+    async def test_flat_decommission_and_manifest_transition_combined(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that flat-layout decommission devices and manifest-transition deploy devices are cleaned up in the same call."""
+        manifest_device = _manifest_deployment("manifest-dev", "MANIFEST_SN")
+        decom = _decommission_flat("decommission-dev", "DECOM_SN")
+        mock_cv_client.get_configlets.return_value = [_make_configlet("avd-MANIFEST_SN"), _make_configlet("avd-DECOM_SN")]
+        root_container = create_grpc_container(
+            container_id=CONFIGLET_CONTAINER_ID,
+            name="AVD Configurations",
+            description="",
+            query="device:*",
+            child_ids=["avd-MANIFEST_SN", "avd-DECOM_SN"],
+        )
+        mock_cv_client.get_configlet_containers.return_value = [
+            _make_target_container("avd-MANIFEST_SN"),
+            _make_target_container("avd-DECOM_SN"),
+            root_container,
+        ]
+        mock_cv_client.get_studio_inputs_with_path.return_value = [CONFIGLET_CONTAINER_ID]
+
+        await delete_configs_from_cv([manifest_device, decom], deployment_result, mock_cv_client)
+
+        # Both configlets deleted.
+        mock_cv_client.delete_configlets.assert_called_once()
+        deleted_ids: list[str] = mock_cv_client.delete_configlets.call_args[1]["configlet_ids"]
+        assert set(deleted_ids) == {"avd-MANIFEST_SN", "avd-DECOM_SN"}
+
+        # Both device containers deleted plus root = 3 total.
+        assert mock_cv_client.delete_configlet_container.call_count == 3
+        assert set(deployment_result.removed_configs) == {"AVD-avd-MANIFEST_SN", "AVD-avd-DECOM_SN"}
+
+    async def test_multiple_flat_decommission_devices(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that multiple flat-layout decommission devices are all cleaned up in one batch."""
+        decom1 = _decommission_flat("leaf1", "SN1")
+        decom2 = _decommission_flat("leaf2", "SN2")
+        mock_cv_client.get_configlets.return_value = [_make_configlet("avd-SN1"), _make_configlet("avd-SN2")]
+        root_container = create_grpc_container(
+            container_id=CONFIGLET_CONTAINER_ID,
+            name="AVD Configurations",
+            description="",
+            query="device:*",
+            child_ids=["avd-SN1", "avd-SN2"],
+        )
+        mock_cv_client.get_configlet_containers.return_value = [
+            _make_target_container("avd-SN1"),
+            _make_target_container("avd-SN2"),
+            root_container,
+        ]
+        mock_cv_client.get_studio_inputs_with_path.return_value = [CONFIGLET_CONTAINER_ID]
+
+        await delete_configs_from_cv([decom1, decom2], deployment_result, mock_cv_client)
+
+        mock_cv_client.delete_configlets.assert_called_once()
+        deleted_ids: list[str] = mock_cv_client.delete_configlets.call_args[1]["configlet_ids"]
+        assert set(deleted_ids) == {"avd-SN1", "avd-SN2"}
+        # Both device containers + root deleted.
+        assert mock_cv_client.delete_configlet_container.call_count == 3
+        assert set(deployment_result.removed_configs) == {"AVD-avd-SN1", "AVD-avd-SN2"}
