@@ -67293,7 +67293,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdModel.
             """
             timeout: int | None
-            """Job timeout in seconds."""
+            """Job timeout. Must be less than the job interval."""
             max_log_files: int | None
             """Maximum number of log files to retain."""
             logging_verbose: bool | None
@@ -67344,7 +67344,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            and `at`.
 
                            Subclass of AvdModel.
-                        timeout: Job timeout in seconds.
+                        timeout: Job timeout. Must be less than the job interval.
                         max_log_files: Maximum number of log files to retain.
                         logging_verbose: Enable verbose logging.
                         loglocation: Log file location path.

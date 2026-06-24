@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2026 Arista Networks, Inc.
+ Copyright (c) 2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -36,14 +36,14 @@ schedule config prepend-hostname-logfile
 {%         if job.max_log_files is arista.avd.defined %}
 {%             set schedule_cli = schedule_cli ~ " max-log-files " ~ job.max_log_files %}
 {%         endif %}
+{%         if job.max_total_size is arista.avd.defined %}
+{%             set schedule_cli = schedule_cli ~ " max-total-size " ~ job.max_total_size %}
+{%         endif %}
 {%         if job.logging_verbose is arista.avd.defined(true) %}
 {%             set schedule_cli = schedule_cli ~ " logging verbose" %}
 {%         endif %}
 {%         if job.loglocation is arista.avd.defined %}
 {%             set schedule_cli = schedule_cli ~ " loglocation " ~ job.loglocation %}
-{%         endif %}
-{%         if job.max_total_size is arista.avd.defined %}
-{%             set schedule_cli = schedule_cli ~ " max-total-size " ~ job.max_total_size %}
 {%         endif %}
 {%         set schedule_cli = schedule_cli ~ " command " ~ job.command %}
 {{ schedule_cli }}

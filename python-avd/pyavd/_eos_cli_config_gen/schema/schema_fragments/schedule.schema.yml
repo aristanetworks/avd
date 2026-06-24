@@ -92,7 +92,7 @@ keys:
               convert_types:
                 - str
               description: |-
-                Job timeout in seconds.
+                Job timeout. Must be less than the job interval.
             max_log_files:
               type: int
               min: 0

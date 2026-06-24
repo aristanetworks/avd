@@ -34,9 +34,9 @@ schedule:
       interval: 44
       timeout: 30
       max_log_files: 3
+      max_total_size: "1024m"
       logging_verbose: true
       loglocation: "flash:/schedule"
-      max_total_size: "1024m"
       command: show running-config
     # standalone interval — minimal options
     - name: interval_minimal
@@ -50,10 +50,10 @@ schedule:
       timeout: 30
       max_log_files: 4
       command: show interfaces
-    # now interval <N> — start immediately and repeat every N minutes
+    # now interval <N> — start immediately and repeat every N minutes (interval must be > timeout)
     - name: now_interval_full
       now:
-        interval: 3
+        interval: 5
       timeout: 4
       max_log_files: 3
       logging_verbose: true

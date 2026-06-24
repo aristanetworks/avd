@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "schedule.jobs.[].at.interval") | Integer |  |  | Min: 2<br>Max: 1440 | Set interval for CLI command execution.<br>Mutually exclusive with `at.once`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;now</samp>](## "schedule.jobs.[].now") | Dictionary |  |  |  | Start the schedule immediately and repeat at the given interval.<br>Mutually exclusive with `interval` and `at`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "schedule.jobs.[].now.interval") | Integer | Required |  | Min: 2<br>Max: 1440 | Set interval for CLI command execution. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "schedule.jobs.[].timeout") | Integer |  |  | Min: 1<br>Max: 480 | Job timeout in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "schedule.jobs.[].timeout") | Integer |  |  | Min: 1<br>Max: 480 | Job timeout. Must be less than the job interval. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_log_files</samp>](## "schedule.jobs.[].max_log_files") | Integer |  |  | Min: 0<br>Max: 10000 | Maximum number of log files to retain. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging_verbose</samp>](## "schedule.jobs.[].logging_verbose") | Boolean |  |  |  | Enable verbose logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loglocation</samp>](## "schedule.jobs.[].loglocation") | String |  |  |  | Log file location path. |
@@ -78,7 +78,7 @@
             # Set interval for CLI command execution.
             interval: <int; 2-1440; required>
 
-          # Job timeout in seconds.
+          # Job timeout. Must be less than the job interval.
           timeout: <int; 1-480>
 
           # Maximum number of log files to retain.

@@ -24611,7 +24611,7 @@ keys:
               max: 480
               convert_types:
               - str
-              description: Job timeout in seconds.
+              description: Job timeout. Must be less than the job interval.
             max_log_files:
               type: int
               min: 0
