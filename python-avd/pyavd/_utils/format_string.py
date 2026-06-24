@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from string import Formatter
 from typing import TYPE_CHECKING
 
@@ -145,8 +146,16 @@ class AvdStringFormatter(Formatter):
         # do any conversion on the resulting object
         if conversion is None:
             return value
+        if conversion == "l":
+            return str(value).lower()
         if conversion == "u":
             return str(value).upper()
+        if conversion == "t":
+            # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2
+            interface = re.search(r"\d+(\.\d+)?", str(value))
+            interface_type = str(value).title()[:2]
+            if interface and interface_type:
+                return interface_type + interface.group()
         msg = f"Unknown conversion specifier {conversion!s}"
         raise ValueError(msg)
 
