@@ -8,8 +8,6 @@
 - [Authentication](#authentication)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
-- [Monitor Layer 1 Logging](#monitor-layer-1-logging)
-  - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -116,18 +114,6 @@ ip radius vrf default source-interface Loopback1
 ip radius source-interface Loopback10
 !
 ip radius vrf MGMT source-interface Management1
-```
-
-## Monitor Layer 1 Logging
-
-| Layer 1 Event | Logging |
-| ------------- | ------- |
-
-### Monitor Layer 1 Device Configuration
-
-```eos
-!
-monitor layer1
 ```
 
 ## Interfaces

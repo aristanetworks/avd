@@ -13,10 +13,9 @@ keys:
       enabled:
         type: bool
         description: Enable monitor layer1.
-        deprecation:
-          warning: true
-          removed: false
-          remove_in_version: 7.0.0
+        # TODO: Remove this key in AVD 7.0 version.
+        # The `enabled` key is not required to render the `monitor layer1` CLI block.
+        # The `monitor layer1` CLI block will be rendered if any of the following sub-settings are set to `true`: `logging_mac_fault`, `logging_transceiver.dom`, `logging_transceiver.communication` or `logging_transceiver.enabled`.
       logging_mac_fault:
         type: bool
         description: "Enable MAC fault logging."

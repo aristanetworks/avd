@@ -3,8 +3,6 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-eos_config_future:
-  render_monitor_layer1_without_enabled: true
 hostname: monitor-combined-settings
 ip_igmp_snooping:
   globally_enabled: true
@@ -63,6 +61,7 @@ monitor_connectivity:
     local_interfaces: SET_LOOPBACK2
     address_only: false
 monitor_layer1:
+  enabled: true
   logging_transceiver:
     enabled: true
 prefix_lists:

@@ -17,6 +17,7 @@ logging_settings:
   hosts:
     - name: syslog-server.example.com
   monitor_layer1:
+    enabled: true
     logging_mac_fault: true
     logging_transceiver:
       dom: true

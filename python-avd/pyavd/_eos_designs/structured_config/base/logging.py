@@ -49,13 +49,7 @@ class LoggingMixin(Protocol):
         )
 
         # Apply monitor_layer1 settings
-        if (
-            settings.monitor_layer1.logging_transceiver.enabled
-            or settings.monitor_layer1.logging_transceiver.dom
-            or settings.monitor_layer1.logging_transceiver.communication
-            or settings.monitor_layer1.logging_mac_fault
-        ):
-            self.structured_config.eos_config_future.render_monitor_layer1_without_enabled = True
+        if settings.monitor_layer1.enabled:
             self.structured_config.monitor_layer1 = settings.monitor_layer1._cast_as(EosCliConfigGen.MonitorLayer1)
 
         # Temporary structure to detect source interface conflicts
