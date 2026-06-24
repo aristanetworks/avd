@@ -15,8 +15,11 @@ ntp:
       preferred: true
     - name: 20.20.20.1
       key: 2
+      source_address: 20.20.20.20
     - name: 1.2.3.4
+      # local_interface takes precedence over source_address
       local_interface: lo0
+      source_address: 10.10.10.10
   vrf: MGMT
   authenticate_servers_only: true
   trusted_keys: "1-2"
