@@ -25,6 +25,7 @@ class AvdStringFormatter(Formatter):
         suffix ::= string including spaces which will be inserted after the field value.
                    Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
         conversion ::= "!u" for "upper()" (The regular Python conversions "!r", "!s", "!a" have been removed).
+                       "!l" for "lower()". "!t" for short name of the interface. e.g Portchannel2.2 > Po2.2, Ethernet1 > Et1.
 
     Note the order of syntax field matters!
     """
@@ -142,7 +143,6 @@ class AvdStringFormatter(Formatter):
 
         Mostly a copy from the base class, but only supporting !u for upper().
         """
-        # TODO: !l for lowercase, !t for TitleCase and shorten interface names i.e Ethernet -> Et
         # do any conversion on the resulting object
         if conversion is None:
             return value
@@ -151,8 +151,8 @@ class AvdStringFormatter(Formatter):
         if conversion == "u":
             return str(value).upper()
         if conversion == "t":
-            # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2
-            interface = re.search(r"\d+(\.\d+)?", str(value))
+            # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2, Ethernet1/1/1 > Et1/1/1
+            interface = re.search(r"(\d.*)", str(value))
             interface_type = str(value).title()[:2]
             if interface and interface_type:
                 return interface_type + interface.group()
