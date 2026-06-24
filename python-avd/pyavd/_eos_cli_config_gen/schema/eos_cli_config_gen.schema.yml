@@ -24524,6 +24524,114 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
+  schedule:
+    type: dict
+    description: Configuration of EOS scheduled jobs.
+    keys:
+      config:
+        type: dict
+        description: Global schedule configuration.
+        keys:
+          max_concurrent_jobs:
+            type: int
+            min: 1
+            max: 4
+            convert_types:
+            - str
+            description: Maximum number of concurrent scheduled jobs.
+          prepend_hostname_logfile:
+            type: bool
+            description: Prepend hostname to the log file name.
+      jobs:
+        type: list
+        primary_key: name
+        description: List of schedule jobs.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Schedule job name.
+            interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+              - str
+              description: 'Run the command every N minutes (standalone, no start
+                time).
+
+                Mutually exclusive with `at` and `now`.'
+            at:
+              type: dict
+              description: 'Schedule job at a specific time, optionally on a specific
+                date.
+
+                Mutually exclusive with `interval` (standalone) and `now`.'
+              keys:
+                time:
+                  required: true
+                  type: str
+                  description: Start time in HH:MM:SS format.
+                date:
+                  type: str
+                  description: 'Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.'
+                once:
+                  type: bool
+                  description: 'Run the command a single time at the given time/date.
+
+                    Mutually exclusive with `at.interval`.'
+                interval:
+                  type: int
+                  min: 2
+                  max: 1440
+                  convert_types:
+                  - str
+                  description: 'Set interval for CLI command execution.
+
+                    Mutually exclusive with `at.once`.'
+            now:
+              type: dict
+              description: 'Start the schedule immediately and repeat at the given
+                interval.
+
+                Mutually exclusive with `interval` and `at`.'
+              keys:
+                interval:
+                  type: int
+                  required: true
+                  min: 2
+                  max: 1440
+                  convert_types:
+                  - str
+                  description: Set interval for CLI command execution.
+            timeout:
+              type: int
+              min: 1
+              max: 480
+              convert_types:
+              - str
+              description: Job timeout in seconds.
+            max_log_files:
+              type: int
+              min: 0
+              max: 10000
+              convert_types:
+              - str
+              description: Maximum number of log files to retain.
+            logging_verbose:
+              type: bool
+              description: Enable verbose logging.
+            loglocation:
+              type: str
+              description: Log file location path.
+            max_total_size:
+              type: str
+              description: Maximum total size of log files.
+            command:
+              type: str
+              required: true
+              description: EOS CLI command to execute.
   service_routing_configuration_bgp:
     type: dict
     keys:

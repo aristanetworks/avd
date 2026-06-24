@@ -1,0 +1,67 @@
+---
+schedule:
+  config:
+    max_concurrent_jobs: 2
+    prepend_hostname_logfile: true
+  jobs:
+    # at <time> <date> interval <N>  (repeat from start datetime, yyyy-mm-dd format)
+    - name: at_date_interval
+      at:
+        time: "06:00:00"
+        date: "2027-12-22"
+        interval: 60
+      timeout: 30
+      max_log_files: 10
+      command: show logging
+    # at <time> <date> once  (date in mm/dd/yyyy format)
+    - name: at_date_once
+      at:
+        time: "11:11:11"
+        date: "02/12/2029"
+        once: true
+      timeout: 3
+      max_log_files: 3
+      command: show tech-support
+    # at <time> once  (no date — runs at next occurrence of that time)
+    - name: at_time_once
+      at:
+        time: "08:00:00"
+        once: true
+      max_log_files: 5
+      command: show ip route
+    # standalone interval with all optional fields
+    - name: interval_full_options
+      interval: 44
+      timeout: 30
+      max_log_files: 3
+      logging_verbose: true
+      loglocation: "flash:/schedule"
+      max_total_size: "1024m"
+      command: show running-config
+    # standalone interval — minimal options
+    - name: interval_minimal
+      interval: 5
+      timeout: 4
+      max_log_files: 44
+      command: show version
+    # standalone interval
+    - name: interval_standard
+      interval: 33
+      timeout: 30
+      max_log_files: 4
+      command: show interfaces
+    # now interval <N> — start immediately and repeat every N minutes
+    - name: now_interval_full
+      now:
+        interval: 3
+      timeout: 4
+      max_log_files: 3
+      logging_verbose: true
+      loglocation: "flash:/logs"
+      command: show bgp summary
+    # standalone interval — simple
+    - name: interval_simple
+      interval: 31
+      timeout: 30
+      max_log_files: 2
+      command: show lldp neighbors

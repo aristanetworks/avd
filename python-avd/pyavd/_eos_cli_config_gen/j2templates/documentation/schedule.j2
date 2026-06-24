@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - schedule #}
+{% if schedule is arista.avd.defined %}
+
+## Schedule
+
+{% if schedule.config is arista.avd.defined %}
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| {{ schedule.config.max_concurrent_jobs | arista.avd.default("-") }} | {{ schedule.config.prepend_hostname_logfile | arista.avd.default("-") }} |
+
+{% endif %}
+{% if schedule.jobs is arista.avd.defined %}
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
+{%     for job in schedule.jobs | arista.avd.natural_sort('name') %}
+{%         if job.interval is arista.avd.defined %}
+{%             set period = "interval " ~ job.interval %}
+{%         elif job.at is arista.avd.defined %}
+{%             set period = "at " ~ job.at.time %}
+{%             if job.at.date is arista.avd.defined %}
+{%                 set period = period ~ " " ~ job.at.date %}
+{%             endif %}
+{%             if job.at.once is arista.avd.defined(true) %}
+{%                 set period = period ~ " once" %}
+{%             elif job.at.interval is arista.avd.defined %}
+{%                 set period = period ~ " interval " ~ job.at.interval %}
+{%             endif %}
+{%         elif job.now is arista.avd.defined %}
+{%             set period = "now interval " ~ job.now.interval %}
+{%         else %}
+{%             set period = "-" %}
+{%         endif %}
+| {{ job.name }} | {{ period }} | {{ job.command }} | {{ job.max_log_files | arista.avd.default("-") }} | {{ job.timeout | arista.avd.default("-") }} | {{ job.logging_verbose | arista.avd.default("-") }} | {{ job.loglocation | arista.avd.default("-") }} | {{ job.max_total_size | arista.avd.default("-") }} |
+{%     endfor %}
+
+{% endif %}
+### Schedule Device Configuration
+
+```eos
+{%     include 'eos/schedule.j2' %}
+```
+{% endif %}

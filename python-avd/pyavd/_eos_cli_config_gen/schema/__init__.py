@@ -67157,6 +67157,246 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class Schedule(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Config(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"max_concurrent_jobs": {"type": int}, "prepend_hostname_logfile": {"type": bool}}
+            max_concurrent_jobs: int | None
+            """Maximum number of concurrent scheduled jobs."""
+            prepend_hostname_logfile: bool | None
+            """Prepend hostname to the log file name."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, max_concurrent_jobs: int | None | UndefinedType = Undefined, prepend_hostname_logfile: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Config.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        max_concurrent_jobs: Maximum number of concurrent scheduled jobs.
+                        prepend_hostname_logfile: Prepend hostname to the log file name.
+
+                    """
+
+        class JobsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class At(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"time": {"type": str}, "date": {"type": str}, "once": {"type": bool}, "interval": {"type": int}}
+                time: str
+                """Start time in HH:MM:SS format."""
+                date: str | None
+                """Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd."""
+                once: bool | None
+                """
+                Run the command a single time at the given time/date.
+                Mutually exclusive with `at.interval`.
+                """
+                interval: int | None
+                """
+                Set interval for CLI command execution.
+                Mutually exclusive with `at.once`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        time: str | UndefinedType = Undefined,
+                        date: str | None | UndefinedType = Undefined,
+                        once: bool | None | UndefinedType = Undefined,
+                        interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        At.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            time: Start time in HH:MM:SS format.
+                            date: Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
+                            once:
+                               Run the command a single time at the given time/date.
+                               Mutually exclusive with `at.interval`.
+                            interval:
+                               Set interval for CLI command execution.
+                               Mutually exclusive with `at.once`.
+
+                        """
+
+            class Now(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interval": {"type": int}}
+                interval: int
+                """Set interval for CLI command execution."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interval: int | UndefinedType = Undefined) -> None:
+                        """
+                        Now.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interval: Set interval for CLI command execution.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "interval": {"type": int},
+                "at": {"type": At},
+                "now": {"type": Now},
+                "timeout": {"type": int},
+                "max_log_files": {"type": int},
+                "logging_verbose": {"type": bool},
+                "loglocation": {"type": str},
+                "max_total_size": {"type": str},
+                "command": {"type": str},
+            }
+            name: str
+            """Schedule job name."""
+            interval: int | None
+            """
+            Run the command every N minutes (standalone, no start time).
+            Mutually exclusive with `at` and `now`.
+            """
+            at: At
+            """
+            Schedule job at a specific time, optionally on a specific date.
+            Mutually exclusive with `interval`
+            (standalone) and `now`.
+
+            Subclass of AvdModel.
+            """
+            now: Now
+            """
+            Start the schedule immediately and repeat at the given interval.
+            Mutually exclusive with `interval`
+            and `at`.
+
+            Subclass of AvdModel.
+            """
+            timeout: int | None
+            """Job timeout in seconds."""
+            max_log_files: int | None
+            """Maximum number of log files to retain."""
+            logging_verbose: bool | None
+            """Enable verbose logging."""
+            loglocation: str | None
+            """Log file location path."""
+            max_total_size: str | None
+            """Maximum total size of log files."""
+            command: str
+            """EOS CLI command to execute."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    at: At | UndefinedType = Undefined,
+                    now: Now | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    max_log_files: int | None | UndefinedType = Undefined,
+                    logging_verbose: bool | None | UndefinedType = Undefined,
+                    loglocation: str | None | UndefinedType = Undefined,
+                    max_total_size: str | None | UndefinedType = Undefined,
+                    command: str | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    JobsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Schedule job name.
+                        interval:
+                           Run the command every N minutes (standalone, no start time).
+                           Mutually exclusive with `at` and `now`.
+                        at:
+                           Schedule job at a specific time, optionally on a specific date.
+                           Mutually exclusive with `interval`
+                           (standalone) and `now`.
+
+                           Subclass of AvdModel.
+                        now:
+                           Start the schedule immediately and repeat at the given interval.
+                           Mutually exclusive with `interval`
+                           and `at`.
+
+                           Subclass of AvdModel.
+                        timeout: Job timeout in seconds.
+                        max_log_files: Maximum number of log files to retain.
+                        logging_verbose: Enable verbose logging.
+                        loglocation: Log file location path.
+                        max_total_size: Maximum total size of log files.
+                        command: EOS CLI command to execute.
+
+                    """
+
+        class Jobs(AvdIndexedList[str, JobsItem]):
+            """Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Jobs._item_type = JobsItem
+
+        _fields: ClassVar[dict] = {"config": {"type": Config}, "jobs": {"type": Jobs}}
+        config: Config
+        """
+        Global schedule configuration.
+
+        Subclass of AvdModel.
+        """
+        jobs: Jobs
+        """
+        List of schedule jobs.
+
+        Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name`
+        (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, config: Config | UndefinedType = Undefined, jobs: Jobs | UndefinedType = Undefined) -> None:
+                """
+                Schedule.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    config:
+                       Global schedule configuration.
+
+                       Subclass of AvdModel.
+                    jobs:
+                       List of schedule jobs.
+
+                       Subclass of AvdIndexedList with `JobsItem` items. Primary key is `name`
+                       (`str`).
+
+                """
+
     class ServiceRoutingConfigurationBgp(AvdModel):
         """Subclass of AvdModel."""
 
@@ -75699,6 +75939,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
+        "schedule": {"type": Schedule},
         "service_routing_configuration_bgp": {"type": ServiceRoutingConfigurationBgp},
         "service_routing_protocols_model": {"type": str},
         "service_unsupported_transceiver": {"type": ServiceUnsupportedTransceiver},
@@ -76288,6 +76529,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_traffic_engineering: RouterTrafficEngineering
     """Subclass of AvdModel."""
+    schedule: Schedule
+    """
+    Configuration of EOS scheduled jobs.
+
+    Subclass of AvdModel.
+    """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
     service_routing_protocols_model: ServiceRoutingProtocolsModel | None
@@ -76544,6 +76791,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
+            schedule: Schedule | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
             service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
@@ -76926,6 +77174,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_traffic_engineering: Subclass of AvdModel.
+                schedule:
+                   Configuration of EOS scheduled jobs.
+
+                   Subclass of AvdModel.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.

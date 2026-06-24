@@ -303,6 +303,10 @@ Serial Number: DEADBEEFC0FFEW
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
   - [Maintenance](#maintenance)
+- [Schedule](#schedule)
+  - [Schedule Config](#schedule-config)
+  - [Schedule Jobs Summary](#schedule-jobs-summary)
+  - [Schedule Device Configuration](#schedule-device-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
@@ -15415,6 +15419,42 @@ maintenance
    !
    unit UNIT2
       quiesce
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| 2 | True |
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
+| at_date_interval | at 06:00:00 2027-12-22 interval 60 | show logging | 10 | 30 | - | - | - |
+| at_date_once | at 11:11:11 02/12/2029 once | show tech-support | 3 | 3 | - | - | - |
+| at_time_once | at 08:00:00 once | show ip route | 5 | - | - | - | - |
+| interval_full_options | interval 44 | show running-config | 3 | 30 | True | flash:/schedule | 1024m |
+| interval_minimal | interval 5 | show version | 44 | 4 | - | - | - |
+| interval_simple | interval 31 | show lldp neighbors | 2 | 30 | - | - | - |
+| interval_standard | interval 33 | show interfaces | 4 | 30 | - | - | - |
+| now_interval_full | now interval 3 | show bgp summary | 3 | 4 | True | flash:/logs | - |
+
+### Schedule Device Configuration
+
+```eos
+schedule config max-concurrent-jobs 2
+schedule config prepend-hostname-logfile
+schedule at_date_interval at 06:00:00 2027-12-22 interval 60 timeout 30 max-log-files 10 command show logging
+schedule at_date_once at 11:11:11 02/12/2029 once timeout 3 max-log-files 3 command show tech-support
+schedule at_time_once at 08:00:00 once max-log-files 5 command show ip route
+schedule interval_full_options interval 44 timeout 30 max-log-files 3 logging verbose loglocation flash:/schedule max-total-size 1024m command show running-config
+schedule interval_minimal interval 5 timeout 4 max-log-files 44 command show version
+schedule interval_simple interval 31 timeout 30 max-log-files 2 command show lldp neighbors
+schedule interval_standard interval 33 timeout 30 max-log-files 4 command show interfaces
+schedule now_interval_full now interval 3 timeout 4 max-log-files 3 logging verbose loglocation flash:/logs command show bgp summary
 ```
 
 ## EOS CLI Device Configuration
