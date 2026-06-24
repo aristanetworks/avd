@@ -16,6 +16,7 @@ router_ospfv3:
       isis:
         enabled: true
         level: level-1
+        include_leaked: true
         route_map: map1
       ospfv3:
         enabled: true
@@ -43,6 +44,7 @@ router_ospfv3:
       isis:
         enabled: true
         level: level-1
+        include_leaked: true
         route_map: map1
       ospfv3:
         enabled: true
@@ -88,6 +90,7 @@ router_ospfv3:
           isis:
             enabled: true
             level: level-1
+            include_leaked: true
             route_map: map1
           ospfv3:
             enabled: true

@@ -344,7 +344,7 @@ router ospf 702
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | enabled | 1000 |
+| default | 1.1.1.1 | True | 1000 |
 
 #### Router OSPFv3 Device Configuration
 

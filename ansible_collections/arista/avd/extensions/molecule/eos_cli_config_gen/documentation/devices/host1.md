@@ -9243,24 +9243,24 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | enabled | 1000 |
-| data | 2.2.2.2 | enabled | 100 |
-| MGMT | 2.2.2.2 | enabled | 100 |
+| default | 1.1.1.1 | True | 1000 |
+| data | 2.2.2.2 | True | 100 |
+| MGMT | 2.2.2.2 | True | 100 |
 
 #### Router OSPFv3 Address Family IPv4
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | - | - | - |
-| data | 1.1.1.1 | enabled | 1000 |
+| data | 1.1.1.1 | True | 1000 |
 
 #### Router OSPFv3 IPv4 Address Family Redistribution
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | bgp | enabled | map1 |
-| default | connected | enabled | map1 |
-| default | isis level-1 | - | map1 |
+| default | bgp | True | map1 |
+| default | connected | True | map1 |
+| default | isis level-1 | True | map1 |
 | default | ospfv3 leaked | - | map1 |
 | default | ospfv3 leaked match external | - | map1 |
 | default | ospfv3 leaked match nssa-external | - | map1 |
@@ -9277,18 +9277,18 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | bgp | enabled | map1 |
-| default | connected | enabled | map1 |
+| default | bgp | True | map1 |
+| default | connected | True | map1 |
 | default | dhcp | - | map1 |
-| default | isis level-1 | - | map1 |
+| default | isis level-1 | True | map1 |
 | default | ospfv3 leaked | - | map1 |
 | default | ospfv3 leaked match external | - | map1 |
 | default | ospfv3 leaked match nssa-external | - | map1 |
 | default | static | - | map1 |
-| MGMT | bgp | enabled | map1 |
-| MGMT | connected | enabled | map1 |
+| MGMT | bgp | True | map1 |
+| MGMT | connected | True | map1 |
 | MGMT | dhcp | - | map1 |
-| MGMT | isis level-1 | - | map1 |
+| MGMT | isis level-1 | True | map1 |
 | MGMT | ospfv3 leaked | - | map1 |
 | MGMT | ospfv3 leaked match external | - | map1 |
 | MGMT | ospfv3 leaked match nssa-external | - | map1 |
@@ -9307,7 +9307,7 @@ router ospfv3 vrf MGMT
       redistribute bgp include leaked route-map map1
       redistribute dhcp route-map map1
       redistribute connected include leaked route-map map1
-      redistribute isis level-1 route-map map1
+      redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
@@ -9327,7 +9327,7 @@ router ospfv3
    address-family ipv4
       redistribute bgp include leaked route-map map1
       redistribute connected include leaked route-map map1
-      redistribute isis level-1 route-map map1
+      redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
@@ -9337,7 +9337,7 @@ router ospfv3
       redistribute bgp include leaked route-map map1
       redistribute dhcp route-map map1
       redistribute connected include leaked route-map map1
-      redistribute isis level-1 route-map map1
+      redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1

@@ -65357,6 +65357,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Redistribute(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Dhcp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool
+                    route_map: str | None
+                    """Specify route map to use."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Dhcp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: Specify route map to use.
+
+                            """
+
                 class Bgp(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65635,37 +65658,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class Dhcp(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    route_map: str | None
-                    """Specify route map to use."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                            """
-                            Dhcp.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                enabled: enabled
-                                route_map: Specify route map to use.
-
-                            """
-
                 _fields: ClassVar[dict] = {
+                    "dhcp": {"type": Dhcp},
                     "bgp": {"type": Bgp},
                     "connected": {"type": Connected},
                     "static": {"type": Static},
                     "isis": {"type": Isis},
                     "ospfv3": {"type": Ospfv3},
-                    "dhcp": {"type": Dhcp},
                 }
+                dhcp: Dhcp
+                """Subclass of AvdModel."""
                 bgp: Bgp
                 """Subclass of AvdModel."""
                 connected: Connected
@@ -65676,20 +65678,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 ospfv3: Ospfv3
                 """Subclass of AvdModel."""
-                dhcp: Dhcp
-                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
+                        dhcp: Dhcp | UndefinedType = Undefined,
                         bgp: Bgp | UndefinedType = Undefined,
                         connected: Connected | UndefinedType = Undefined,
                         static: Static | UndefinedType = Undefined,
                         isis: Isis | UndefinedType = Undefined,
                         ospfv3: Ospfv3 | UndefinedType = Undefined,
-                        dhcp: Dhcp | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Redistribute.
@@ -65698,22 +65698,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            dhcp: Subclass of AvdModel.
                             bgp: Subclass of AvdModel.
                             connected: Subclass of AvdModel.
                             static: Subclass of AvdModel.
                             isis: Subclass of AvdModel.
                             ospfv3: Subclass of AvdModel.
-                            dhcp: Subclass of AvdModel.
 
                         """
 
             _fields: ClassVar[dict] = {
+                "redistribute": {"type": Redistribute},
                 "enabled": {"type": bool},
                 "router_id": {"type": str},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
-                "redistribute": {"type": Redistribute},
             }
+            redistribute: Redistribute
+            """
+            Redistribute routes with OSPFv3.
+
+            Subclass of AvdModel.
+            """
             enabled: bool
             """Activate the address family."""
             router_id: str | None
@@ -65722,23 +65728,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Set all interfaces to passive by default."""
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
-            redistribute: Redistribute
-            """
-            Redistribute routes with OSPFv3.
-
-            Subclass of AvdModel.
-            """
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    redistribute: Redistribute | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     router_id: str | None | UndefinedType = Undefined,
                     passive_interface_default: bool | None | UndefinedType = Undefined,
                     auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
-                    redistribute: Redistribute | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -65747,14 +65747,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Activate the address family.
-                        router_id: IPv4 Address.
-                        passive_interface_default: Set all interfaces to passive by default.
-                        auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         redistribute:
                            Redistribute routes with OSPFv3.
 
                            Subclass of AvdModel.
+                        enabled: Activate the address family.
+                        router_id: IPv4 Address.
+                        passive_interface_default: Set all interfaces to passive by default.
+                        auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
                     """
 
@@ -66151,6 +66151,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Redistribute(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class Dhcp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+                        """Specify route map to use."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Dhcp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Specify route map to use.
+
+                                """
+
                     class Bgp(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -66434,37 +66457,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Dhcp(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                        enabled: bool
-                        route_map: str | None
-                        """Specify route map to use."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                Dhcp.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    route_map: Specify route map to use.
-
-                                """
-
                     _fields: ClassVar[dict] = {
+                        "dhcp": {"type": Dhcp},
                         "bgp": {"type": Bgp},
                         "connected": {"type": Connected},
                         "static": {"type": Static},
                         "isis": {"type": Isis},
                         "ospfv3": {"type": Ospfv3},
-                        "dhcp": {"type": Dhcp},
                     }
+                    dhcp: Dhcp
+                    """Subclass of AvdModel."""
                     bgp: Bgp
                     """Subclass of AvdModel."""
                     connected: Connected
@@ -66475,20 +66477,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Subclass of AvdModel."""
                     ospfv3: Ospfv3
                     """Subclass of AvdModel."""
-                    dhcp: Dhcp
-                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
+                            dhcp: Dhcp | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             connected: Connected | UndefinedType = Undefined,
                             static: Static | UndefinedType = Undefined,
                             isis: Isis | UndefinedType = Undefined,
                             ospfv3: Ospfv3 | UndefinedType = Undefined,
-                            dhcp: Dhcp | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Redistribute.
@@ -66497,22 +66497,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
+                                dhcp: Subclass of AvdModel.
                                 bgp: Subclass of AvdModel.
                                 connected: Subclass of AvdModel.
                                 static: Subclass of AvdModel.
                                 isis: Subclass of AvdModel.
                                 ospfv3: Subclass of AvdModel.
-                                dhcp: Subclass of AvdModel.
 
                             """
 
                 _fields: ClassVar[dict] = {
+                    "redistribute": {"type": Redistribute},
                     "enabled": {"type": bool},
                     "router_id": {"type": str},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
-                    "redistribute": {"type": Redistribute},
                 }
+                redistribute: Redistribute
+                """
+                Redistribute routes with OSPFv3.
+
+                Subclass of AvdModel.
+                """
                 enabled: bool
                 """Activate the address family."""
                 router_id: str | None
@@ -66521,23 +66527,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Set all interfaces to passive by default."""
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
-                redistribute: Redistribute
-                """
-                Redistribute routes with OSPFv3.
-
-                Subclass of AvdModel.
-                """
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
+                        redistribute: Redistribute | UndefinedType = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         router_id: str | None | UndefinedType = Undefined,
                         passive_interface_default: bool | None | UndefinedType = Undefined,
                         auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
-                        redistribute: Redistribute | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -66546,14 +66546,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Activate the address family.
-                            router_id: IPv4 Address.
-                            passive_interface_default: Set all interfaces to passive by default.
-                            auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             redistribute:
                                Redistribute routes with OSPFv3.
 
                                Subclass of AvdModel.
+                            enabled: Activate the address family.
+                            router_id: IPv4 Address.
+                            passive_interface_default: Set all interfaces to passive by default.
+                            auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
                         """
 
@@ -66648,8 +66648,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "auto_cost_reference_bandwidth": {"type": int},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
             "address_family_ipv6": {"type": AddressFamilyIpv6},
-            "eos_cli": {"type": str},
             "vrfs": {"type": Vrfs},
+            "eos_cli": {"type": str},
         }
         router_id: str | None
         """IPv4 Address."""
@@ -66677,10 +66677,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
-        eos_cli: str | None
-        """Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        eos_cli: str | None
+        """Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance."""
 
         if TYPE_CHECKING:
 
@@ -66692,8 +66692,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                eos_cli: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
+                eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 RouterOspfv3.
@@ -66721,8 +66721,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        takes precedence.
 
                        Subclass of AvdModel.
-                    eos_cli: Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    eos_cli: Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance.
 
                 """
 

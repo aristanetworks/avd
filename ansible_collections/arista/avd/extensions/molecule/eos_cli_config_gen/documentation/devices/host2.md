@@ -1136,10 +1136,10 @@ router ospf 701
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | enabled | 1000 |
-| data | 2.2.2.2 | enabled | 100 |
-| MGMT | 2.2.2.2 | enabled | 100 |
-| Test_VRF | 1.1.1.1 | enabled | 1000 |
+| default | 1.1.1.1 | True | 1000 |
+| data | 2.2.2.2 | True | 100 |
+| MGMT | 2.2.2.2 | True | 100 |
+| Test_VRF | 1.1.1.1 | True | 1000 |
 
 #### Router OSPFv3 Device Configuration
 
