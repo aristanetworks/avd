@@ -346,14 +346,53 @@ router ospf 702
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | 1.1.1.1 | True | 1000 |
 
+#### Router OSPFv3 Address Family IPv4
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 2.2.2.2 | True | 2000 |
+
+#### Router OSPFv3 IPv4 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | ospfv3 leaked match internal | - | map1 |
+| default | ospfv3 leaked match external | - | map1 |
+| default | ospfv3 leaked match nssa-external | - | map1 |
+
+#### Router OSPFv3 Address Family IPv6
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 3.3.3.3 | True | 2000 |
+
+#### Router OSPFv3 IPv6 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | ospfv3 leaked match internal | - | map1 |
+| default | ospfv3 leaked match external | - | map1 |
+| default | ospfv3 leaked match nssa-external | - | map1 |
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
 !
 router ospfv3
-   router-id 1.1.1.1
-   auto-cost reference-bandwidth 1000
-   passive-interface default
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
 ```
 
 ### Router ISIS

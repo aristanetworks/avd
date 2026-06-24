@@ -1141,9 +1141,120 @@ router ospf 701
 | MGMT | 2.2.2.2 | True | 100 |
 | Test_VRF | 1.1.1.1 | True | 1000 |
 
+#### Router OSPFv3 Address Family IPv4
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | - | - | - |
+| data | - | - | - |
+| FULL | 3.3.3.3 | True | 500 |
+| MGMT | - | - | - |
+| Test | - | - | - |
+
+#### Router OSPFv3 IPv4 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | bgp | True | map3 |
+| default | connected | True | map3 |
+| default | isis level-1 | True | map3 |
+| default | ospfv3 leaked | - | map3 |
+| default | ospfv3 leaked match external | - | map3 |
+| default | ospfv3 leaked match nssa-external | - | map3 |
+| default | static | True | map3 |
+| data | bgp | - | map1 |
+| data | connected | - | map1 |
+| data | isis | - | map1 |
+| data | ospfv3 leaked | - | map1 |
+| data | static | - | map1 |
+| FULL | bgp | True | - |
+| FULL | connected | True | - |
+| FULL | isis level-2 | True | - |
+| FULL | ospfv3 leaked match internal | - | map2 |
+| FULL | ospfv3 leaked match external | - | map2 |
+| FULL | ospfv3 leaked match nssa-external | - | map2 |
+| FULL | static | True | - |
+| MGMT | bgp | - | - |
+| MGMT | connected | - | - |
+| MGMT | isis | - | - |
+| MGMT | ospfv3 leaked | - | - |
+| MGMT | static | - | - |
+| Test | ospfv3 leaked match internal | - | - |
+| Test | ospfv3 leaked match external | - | - |
+| Test | ospfv3 leaked match nssa-external | - | - |
+
+#### Router OSPFv3 Address Family IPv6
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | - | - | - |
+| data | - | - | - |
+| FULL | 4.4.4.4 | True | 500 |
+| MGMT | - | - | - |
+| Test | - | - | - |
+
+#### Router OSPFv3 IPv6 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | bgp | True | map3 |
+| default | connected | True | map3 |
+| default | dhcp | - | map3 |
+| default | isis level-1 | True | map3 |
+| default | ospfv3 leaked | - | map3 |
+| default | ospfv3 leaked match external | - | map3 |
+| default | ospfv3 leaked match nssa-external | - | map3 |
+| default | static | True | map3 |
+| data | bgp | - | map1 |
+| data | connected | - | map1 |
+| data | dhcp | - | map1 |
+| data | isis | - | map1 |
+| data | ospfv3 leaked | - | map1 |
+| data | static | - | map1 |
+| FULL | bgp | True | - |
+| FULL | connected | True | - |
+| FULL | isis level-2 | True | - |
+| FULL | ospfv3 leaked match internal | - | map2 |
+| FULL | ospfv3 leaked match external | - | map2 |
+| FULL | ospfv3 leaked match nssa-external | - | map2 |
+| FULL | static | True | - |
+| MGMT | bgp | - | - |
+| MGMT | connected | - | - |
+| MGMT | dhcp | - | - |
+| MGMT | isis | - | - |
+| MGMT | ospfv3 leaked | - | - |
+| MGMT | static | - | - |
+| Test | ospfv3 leaked match internal | - | - |
+| Test | ospfv3 leaked match external | - | - |
+| Test | ospfv3 leaked match nssa-external | - | - |
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
+!
+router ospfv3 vrf FULL
+   address-family ipv4
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 500
+      passive-interface default
+      redistribute bgp include leaked
+      redistribute connected include leaked
+      redistribute isis include leaked level-2
+      redistribute ospfv3 leaked match internal route-map map2
+      redistribute ospfv3 leaked match external route-map map2
+      redistribute ospfv3 leaked match nssa-external route-map map2
+      redistribute static include leaked
+   address-family ipv6
+      router-id 4.4.4.4
+      auto-cost reference-bandwidth 500
+      passive-interface default
+      redistribute bgp include leaked
+      redistribute connected include leaked
+      redistribute isis include leaked level-2
+      redistribute ospfv3 leaked match internal route-map map2
+      redistribute ospfv3 leaked match external route-map map2
+      redistribute ospfv3 leaked match nssa-external route-map map2
+      redistribute static include leaked
 !
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
@@ -1204,6 +1315,25 @@ router ospfv3
    router-id 1.1.1.1
    auto-cost reference-bandwidth 1000
    passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp include leaked route-map map3
+      redistribute connected include leaked route-map map3
+      redistribute isis include leaked level-1 route-map map3
+      redistribute ospfv3 leaked route-map map3
+      redistribute ospfv3 leaked match external route-map map3
+      redistribute ospfv3 leaked match nssa-external route-map map3
+      redistribute static include leaked route-map map3
+   !
+   address-family ipv6
+      redistribute bgp include leaked route-map map3
+      redistribute dhcp route-map map3
+      redistribute connected include leaked route-map map3
+      redistribute isis include leaked level-1 route-map map3
+      redistribute ospfv3 leaked route-map map3
+      redistribute ospfv3 leaked match external route-map map3
+      redistribute ospfv3 leaked match nssa-external route-map map3
+      redistribute static include leaked route-map map3
    address-family ipv4
      redistribute bgp
      redistribute connected

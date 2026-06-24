@@ -6,7 +6,127 @@ router_ospfv3:
     address-family ipv4
       redistribute bgp
       redistribute connected
+  address_family_ipv4:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+        include_leaked: true
+        route_map: map3
+      connected:
+        enabled: true
+        include_leaked: true
+        route_map: map3
+      isis:
+        enabled: true
+        include_leaked: true
+        level: level-1
+        route_map: map3
+      ospfv3:
+        enabled: true
+        route_map: map3
+        match_external:
+          enabled: true
+          route_map: map3
+        match_nssa_external:
+          enabled: true
+          route_map: map3
+      static:
+        enabled: true
+        include_leaked: true
+        route_map: map3
+  address_family_ipv6:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+        include_leaked: true
+        route_map: map3
+      dhcp:
+        enabled: true
+        route_map: map3
+      connected:
+        enabled: true
+        include_leaked: true
+        route_map: map3
+      isis:
+        enabled: true
+        include_leaked: true
+        level: level-1
+        route_map: map3
+      ospfv3:
+        enabled: true
+        route_map: map3
+        match_external:
+          enabled: true
+          route_map: map3
+        match_nssa_external:
+          enabled: true
+          route_map: map3
+      static:
+        enabled: true
+        include_leaked: true
+        route_map: map3
   vrfs:
+    - name: FULL
+      address_family_ipv4:
+        enabled: true
+        router_id: 3.3.3.3
+        auto_cost_reference_bandwidth: 500
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+            include_leaked: true
+          connected:
+            enabled: true
+            include_leaked: true
+          isis:
+            enabled: true
+            include_leaked: true
+            level: level-2
+          ospfv3:
+            match_internal:
+              enabled: true
+              route_map: map2
+            match_external:
+              enabled: true
+              route_map: map2
+            match_nssa_external:
+              enabled: true
+              route_map: map2
+          static:
+            enabled: true
+            include_leaked: true
+      address_family_ipv6:
+        enabled: true
+        router_id: 4.4.4.4
+        auto_cost_reference_bandwidth: 500
+        passive_interface_default: true
+        redistribute:
+          bgp:
+            enabled: true
+            include_leaked: true
+          connected:
+            enabled: true
+            include_leaked: true
+          isis:
+            enabled: true
+            include_leaked: true
+            level: level-2
+          ospfv3:
+            match_internal:
+              enabled: true
+              route_map: map2
+            match_external:
+              enabled: true
+              route_map: map2
+            match_nssa_external:
+              enabled: true
+              route_map: map2
+          static:
+            enabled: true
+            include_leaked: true
     - name: data
       # These settings will not get rendered as address family level settings gets precedence.
       router_id: 2.2.2.2
