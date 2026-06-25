@@ -54,6 +54,13 @@ keys:
           Available from AVD 6.2.0.
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
         default: false
+      only_configure_pvst_border_when_mode_is_mstp:
+        type: bool
+        description: |-
+          Available from AVD 6.3.0.
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+          When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to 'mstp'.
+        default: false
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool
         description: |-
