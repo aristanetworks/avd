@@ -23,6 +23,8 @@ errdisable:
     dot1x:
       enabled: true
       interval: 60
+    lacp_rate_limit:
+      enabled: false
     link_flap:
       enabled: true
       interval: 60

@@ -12008,7 +12008,6 @@ $defs:
             type: bool
           recovery:
             type: bool
-            default: false
           recovery_interval:
             type: int
             description: Interval for each recovery cause in seconds.
@@ -12021,7 +12020,6 @@ $defs:
         keys:
           recovery:
             type: bool
-            default: false
           recovery_interval:
             type: int
             $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery/keys/recovery_interval

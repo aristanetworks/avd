@@ -27,8 +27,9 @@ errdisable_settings:
       recovery_interval: 60
     link_change:
       detection: true
-    # recovery is false or not set with recovery_interval set — interval must not appear in config
+    # recovery explicitly set to false with recovery_interval set — interval must not appear in config
     lacp_rate_limit:
+      recovery: false
       recovery_interval: 90
     link_flap:
       recovery: true

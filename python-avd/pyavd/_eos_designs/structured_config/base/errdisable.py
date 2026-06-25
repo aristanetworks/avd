@@ -42,15 +42,13 @@ class ErrDisableMixin(Protocol):
 
         for cause_field, errdisable_cause in errdisable_causes.items():
             platform_cause = getattr(platform_errdisable_causes, cause_field)
-            user_detection = errdisable_cause._get("detection")
-            user_recovery = errdisable_cause._get("recovery")
-            recovery_interval = errdisable_cause._get("recovery_interval")
+            detection_supported = "detection" in errdisable_cause._fields
+            if detection_supported and (detect := errdisable_cause.detection if platform_cause.detection else None) is not None:
+                setattr(self.structured_config.errdisable.detect_cause, cause_field, detect)
 
-            if user_detection is not None and getattr(platform_cause, "detection", None):
-                setattr(self.structured_config.errdisable.detect_cause, cause_field, user_detection)
-
-            if user_recovery is not None and getattr(platform_cause, "recovery", None):
-                recovery_cause = getattr(self.structured_config.errdisable.recovery_cause, cause_field)
-                recovery_cause.enabled = user_recovery
-                if recovery_interval is not None and user_recovery:
-                    recovery_cause.interval = recovery_interval
+            recovery_supported = "recovery" in errdisable_cause._fields
+            if recovery_supported and (recovery := errdisable_cause.recovery if platform_cause.recovery else None) is not None:
+                structured_config_recovery_cause = getattr(self.structured_config.errdisable.recovery_cause, cause_field)
+                structured_config_recovery_cause.enabled = recovery
+                if recovery and (recovery_interval := errdisable_cause.recovery_interval) is not None:
+                    structured_config_recovery_cause.interval = recovery_interval
