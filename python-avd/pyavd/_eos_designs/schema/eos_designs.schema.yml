@@ -1812,6 +1812,14 @@ keys:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
             default: false
+          cvtargetconfigs:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/cvtargetconfigs
+            items:
+              type: str
+          flowdns:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
       set_source_interfaces:
         type: bool
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,

@@ -48,6 +48,8 @@ class DaemonTerminattrMixin(Protocol):
             ingestexclude=cv_settings.terminattr.ingestexclude,
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
+            cvtargetconfigs=cv_settings.terminattr.cvtargetconfigs or None,
+            flowdns=cv_settings.terminattr.flowdns,
         )
 
         if first_tracker_exported_to_cloudvision is not None:
