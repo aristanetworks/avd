@@ -32724,13 +32724,17 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls`.
+                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls`.
+                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
                 """
                 ospf: Ospf
                 """
@@ -32861,11 +32865,15 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls`.
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls`.
+                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
                             ospf:
                                OSPF interface configuration.
 
@@ -33484,13 +33492,17 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls`.
+                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls`.
+                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
                 """
                 static_routes: StaticRoutes
                 """
@@ -33599,11 +33611,15 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls`.
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls`.
+                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
                             static_routes:
                                Static routes to be configured on the device where this Port-channel interface is configured.
                                Subclass of AvdList with `StaticRoutesItem` items.
@@ -79529,13 +79545,17 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls`.
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls`.
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
                         """
                         ospf: Ospf
                         """
@@ -79666,11 +79686,15 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls`.
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls`.
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -80289,13 +80313,17 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls`.
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls`.
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
                         """
                         static_routes: StaticRoutes
                         """
@@ -80404,11 +80432,15 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls`.
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls`.
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
                                     static_routes:
                                        Static routes to be configured on the device where this Port-channel interface is configured.
                                        Subclass of AvdList with `StaticRoutesItem` items.

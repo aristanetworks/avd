@@ -986,14 +986,16 @@ keys:
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
-                        The access-list must be defined under `ipv6_acls`.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
                       type: str
                       convert_types:
                         - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
-                        The access-list must be defined under `ipv6_acls`.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
                       type: str
                       convert_types:
                         - int
@@ -1241,14 +1243,16 @@ keys:
                     ipv6_acl_in:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the ingress direction.
-                        The access-list must be defined under `ipv6_acls`.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
                       type: str
                       convert_types:
                         - int
                     ipv6_acl_out:
                       description: |-
                         Name of the IPv6 access-list to be assigned in the egress direction.
-                        The access-list must be defined under `ipv6_acls`.
+                        The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip" substitution field is resolved from the first IPv6 address set on the interface.
                       type: str
                       convert_types:
                         - int

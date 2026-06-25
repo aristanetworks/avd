@@ -242,6 +242,7 @@ class EthernetInterfacesMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
+        """Validate that all per-node lists on an l3_interface (`interfaces`, `ip_addresses`, `ipv6_addresses`, `descriptions`) match the length of `nodes`."""
         nodes_length = len(l3_interface.nodes)
         context = f"l3_interfaces under VRF '{vrf.name}' in tenant '{tenant.name}'"
         per_node_lists = (
