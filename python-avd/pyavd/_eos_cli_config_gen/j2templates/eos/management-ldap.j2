@@ -1,0 +1,93 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - management ldap #}
+{% if management_ldap.server_defaults is arista.avd.defined or
+      management_ldap.server_hosts is arista.avd.defined or
+      management_ldap.group_policies is arista.avd.defined %}
+!
+management ldap
+{%     set ns = namespace(needs_separator=false) %}
+{%     if management_ldap.server_defaults.base_dn is arista.avd.defined or
+          management_ldap.server_defaults.rdn_attribute_user is arista.avd.defined or
+          management_ldap.server_defaults.ssl_profile is arista.avd.defined or
+          management_ldap.server_defaults.authorization_group_policy is arista.avd.defined or
+          management_ldap.server_defaults.search is arista.avd.defined %}
+   server defaults
+{%         if management_ldap.server_defaults.base_dn is arista.avd.defined %}
+      base-dn {{ management_ldap.server_defaults.base_dn }}
+{%         endif %}
+{%         if management_ldap.server_defaults.rdn_attribute_user is arista.avd.defined %}
+      rdn attribute user {{ management_ldap.server_defaults.rdn_attribute_user }}
+{%         endif %}
+{%         if management_ldap.server_defaults.ssl_profile is arista.avd.defined %}
+      ssl-profile {{ management_ldap.server_defaults.ssl_profile }}
+{%         endif %}
+{%         if management_ldap.server_defaults.authorization_group_policy is arista.avd.defined %}
+      authorization group policy {{ management_ldap.server_defaults.authorization_group_policy }}
+{%         endif %}
+{%         if management_ldap.server_defaults.search is arista.avd.defined %}
+{%             set search = management_ldap.server_defaults.search %}
+{%             set search_cli = "search username " ~ search.username ~ " password " %}
+{%             if search.password_type is arista.avd.defined %}
+{%                 set search_cli = search_cli ~ search.password_type ~ " " %}
+{%             endif %}
+{%             set search_cli = search_cli ~ (search.password | arista.avd.hide_passwords(hide_passwords)) %}
+      {{ search_cli }}
+{%         endif %}
+{%         set ns.needs_separator = true %}
+{%     endif %}
+{%     for server_host in management_ldap.server_hosts | arista.avd.natural_sort(sort_key="host") %}
+{%         if not loop.first or ns.needs_separator %}
+   !
+{%         endif %}
+   server host {{ server_host.host }}
+{%         if server_host.base_dn is arista.avd.defined %}
+      base-dn {{ server_host.base_dn }}
+{%         endif %}
+{%         if server_host.rdn_attribute_user is arista.avd.defined %}
+      rdn attribute user {{ server_host.rdn_attribute_user }}
+{%         endif %}
+{%         if server_host.ssl_profile is arista.avd.defined %}
+      ssl-profile {{ server_host.ssl_profile }}
+{%         endif %}
+{%         if server_host.timeout is arista.avd.defined %}
+      timeout {{ server_host.timeout }}
+{%         endif %}
+{%         if server_host.authorization_group_policy is arista.avd.defined %}
+      authorization group policy {{ server_host.authorization_group_policy }}
+{%         endif %}
+{%         if server_host.search is arista.avd.defined %}
+{%             set search = server_host.search %}
+{%             set search_cli = "search username " ~ search.username ~ " password " %}
+{%             if search.password_type is arista.avd.defined %}
+{%                 set search_cli = search_cli ~ search.password_type ~ " " %}
+{%             endif %}
+{%             set search_cli = search_cli ~ (search.password | arista.avd.hide_passwords(hide_passwords)) %}
+      {{ search_cli }}
+{%         endif %}
+{%     endfor %}
+{%     if management_ldap.server_hosts is arista.avd.defined %}
+{%         set ns.needs_separator = true %}
+{%     endif %}
+{%     for group_policy in management_ldap.group_policies | arista.avd.natural_sort(sort_key="policy") %}
+{%         if group_policy.search_filter is arista.avd.defined or group_policy.groups is arista.avd.defined %}
+{%             if ns.needs_separator %}
+   !
+{%             endif %}
+   group policy {{ group_policy.policy }}
+{%             if group_policy.search_filter is arista.avd.defined %}
+      search filter objectclass {{ group_policy.search_filter.objectclass }} attribute {{ group_policy.search_filter.attribute }}
+{%             endif %}
+{%             for group in group_policy.groups | arista.avd.default([]) %}
+{%                 set group_cli = 'group "' ~ group.name ~ '" role ' ~ group.role %}
+{%                 if group.privilege is arista.avd.defined %}
+{%                     set group_cli = group_cli ~ " privilege " ~ group.privilege %}
+{%                 endif %}
+      {{ group_cli }}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

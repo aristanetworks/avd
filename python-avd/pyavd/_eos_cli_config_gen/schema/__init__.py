@@ -570,6 +570,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - "group tacacs+ local"
             - "group MYGROUP none"
             - "group radius group MYGROUP local"
+            - "group ldap"
             """
             command_api: str | None
             """
@@ -612,6 +613,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            - "group tacacs+ local"
                            - "group MYGROUP none"
                            - "group radius group MYGROUP local"
+                           - "group ldap"
                         command_api:
                            Command-API authentication method(s) as a string.
                            This feature is not yet visible in EOS.
@@ -854,6 +856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - "group MYGROUP none"
             -
             "group radius group MYGROUP local"
+            - "group ldap"
             """
 
             if TYPE_CHECKING:
@@ -873,6 +876,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            - "group MYGROUP none"
                            -
                            "group radius group MYGROUP local"
+                           - "group ldap"
 
                     """
 
@@ -25486,6 +25490,401 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _primary_key: ClassVar[str] = "name"
 
     ManagementInterfaces._item_type = ManagementInterfacesItem
+
+    class ManagementLdap(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServerDefaults(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Search(AvdModel):
+                """Subclass of AvdModel."""
+
+                PasswordType: TypeAlias = Literal["0", "7", "8a"]
+                _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
+                username: str
+                """LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                password: str
+                """Password for the search bind user."""
+                password_type: PasswordType | None
+                """
+                Password encryption type.
+                - 0 = clear text
+                - 7 = obfuscated
+                - 8a = AES-256-GCM encrypted.
+                Omit to
+                provide an unobfuscated string (EOS will store it obfuscated).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Search.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            username: LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            password: Password for the search bind user.
+                            password_type:
+                               Password encryption type.
+                               - 0 = clear text
+                               - 7 = obfuscated
+                               - 8a = AES-256-GCM encrypted.
+                               Omit to
+                               provide an unobfuscated string (EOS will store it obfuscated).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "base_dn": {"type": str},
+                "rdn_attribute_user": {"type": str},
+                "ssl_profile": {"type": str},
+                "authorization_group_policy": {"type": str},
+                "search": {"type": Search},
+            }
+            base_dn: str | None
+            """Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com)."""
+            rdn_attribute_user: str | None
+            """Relative Distinguished Name attribute(s) for user lookup (e.g., cn)."""
+            ssl_profile: str | None
+            """SSL profile name to secure LDAP connections."""
+            authorization_group_policy: str | None
+            """LDAP group policy name to use for user authorization."""
+            search: Search
+            """
+            Credentials used by the switch to perform LDAP search bind operations.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    search: Search | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServerDefaults.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+                        rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
+                        ssl_profile: SSL profile name to secure LDAP connections.
+                        authorization_group_policy: LDAP group policy name to use for user authorization.
+                        search:
+                           Credentials used by the switch to perform LDAP search bind operations.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class ServerHostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Search(AvdModel):
+                """Subclass of AvdModel."""
+
+                PasswordType: TypeAlias = Literal["0", "7", "8a"]
+                _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
+                username: str
+                """LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                password: str
+                """Password for the search bind user."""
+                password_type: PasswordType | None
+                """
+                Password encryption type.
+                - 0 = clear text
+                - 7 = obfuscated
+                - 8a = AES-256-GCM encrypted.
+                Omit to
+                provide an unobfuscated string (EOS will store it obfuscated).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Search.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            username: LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            password: Password for the search bind user.
+                            password_type:
+                               Password encryption type.
+                               - 0 = clear text
+                               - 7 = obfuscated
+                               - 8a = AES-256-GCM encrypted.
+                               Omit to
+                               provide an unobfuscated string (EOS will store it obfuscated).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "host": {"type": str},
+                "timeout": {"type": int},
+                "base_dn": {"type": str},
+                "rdn_attribute_user": {"type": str},
+                "ssl_profile": {"type": str},
+                "authorization_group_policy": {"type": str},
+                "search": {"type": Search},
+            }
+            host: str
+            """Hostname or IP address of the LDAP server."""
+            timeout: int | None
+            """Time in seconds to wait for a response from this LDAP server."""
+            base_dn: str | None
+            """Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com)."""
+            rdn_attribute_user: str | None
+            """Relative Distinguished Name attribute(s) for user lookup (e.g., cn)."""
+            ssl_profile: str | None
+            """SSL profile name to secure LDAP connections."""
+            authorization_group_policy: str | None
+            """LDAP group policy name to use for user authorization."""
+            search: Search
+            """
+            Credentials used by the switch to perform LDAP search bind operations.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    host: str | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    search: Search | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServerHostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        host: Hostname or IP address of the LDAP server.
+                        timeout: Time in seconds to wait for a response from this LDAP server.
+                        base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+                        rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
+                        ssl_profile: SSL profile name to secure LDAP connections.
+                        authorization_group_policy: LDAP group policy name to use for user authorization.
+                        search:
+                           Credentials used by the switch to perform LDAP search bind operations.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class ServerHosts(AvdIndexedList[str, ServerHostsItem]):
+            """Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is `host` (`str`)."""
+
+            _primary_key: ClassVar[str] = "host"
+
+        ServerHosts._item_type = ServerHostsItem
+
+        class GroupPoliciesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class SearchFilter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"objectclass": {"type": str}, "attribute": {"type": str}}
+                objectclass: str
+                """LDAP objectclass value to match (e.g., group)."""
+                attribute: str
+                """LDAP attribute that holds group member DNs (e.g., member)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, objectclass: str | UndefinedType = Undefined, attribute: str | UndefinedType = Undefined) -> None:
+                        """
+                        SearchFilter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            objectclass: LDAP objectclass value to match (e.g., group).
+                            attribute: LDAP attribute that holds group member DNs (e.g., member).
+
+                        """
+
+            class GroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "role": {"type": str}, "privilege": {"type": int}}
+                name: str
+                """LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin")."""
+                role: str
+                """EOS role assigned to members of this LDAP group."""
+                privilege: int | None
+                """Optional privilege level (0-15) assigned alongside the role."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, name: str | UndefinedType = Undefined, role: str | UndefinedType = Undefined, privilege: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        GroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin").
+                            role: EOS role assigned to members of this LDAP group.
+                            privilege: Optional privilege level (0-15) assigned alongside the role.
+
+                        """
+
+            class Groups(AvdList[GroupsItem]):
+                """Subclass of AvdList with `GroupsItem` items."""
+
+            Groups._item_type = GroupsItem
+
+            _fields: ClassVar[dict] = {"policy": {"type": str}, "search_filter": {"type": SearchFilter}, "groups": {"type": Groups}}
+            policy: str
+            """Group policy name. Referenced by server authorization_group_policy."""
+            search_filter: SearchFilter
+            """
+            LDAP search filter used to enumerate group membership.
+
+            Subclass of AvdModel.
+            """
+            groups: Groups
+            """
+            List of LDAP group-to-role mappings within this policy.
+
+            Subclass of AvdList with `GroupsItem`
+            items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: str | UndefinedType = Undefined,
+                    search_filter: SearchFilter | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    GroupPoliciesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: Group policy name. Referenced by server authorization_group_policy.
+                        search_filter:
+                           LDAP search filter used to enumerate group membership.
+
+                           Subclass of AvdModel.
+                        groups:
+                           List of LDAP group-to-role mappings within this policy.
+
+                           Subclass of AvdList with `GroupsItem`
+                           items.
+
+                    """
+
+        class GroupPolicies(AvdIndexedList[str, GroupPoliciesItem]):
+            """Subclass of AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`)."""
+
+            _primary_key: ClassVar[str] = "policy"
+
+        GroupPolicies._item_type = GroupPoliciesItem
+
+        _fields: ClassVar[dict] = {
+            "server_defaults": {"type": ServerDefaults},
+            "server_hosts": {"type": ServerHosts},
+            "group_policies": {"type": GroupPolicies},
+        }
+        server_defaults: ServerDefaults
+        """
+        Default LDAP options applied to all servers unless overridden per host.
+
+        Subclass of AvdModel.
+        """
+        server_hosts: ServerHosts
+        """
+        List of LDAP server hosts.
+
+        Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
+        `host` (`str`).
+        """
+        group_policies: GroupPolicies
+        """
+        Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
+
+        Subclass of
+        AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                server_defaults: ServerDefaults | UndefinedType = Undefined,
+                server_hosts: ServerHosts | UndefinedType = Undefined,
+                group_policies: GroupPolicies | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ManagementLdap.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    server_defaults:
+                       Default LDAP options applied to all servers unless overridden per host.
+
+                       Subclass of AvdModel.
+                    server_hosts:
+                       List of LDAP server hosts.
+
+                       Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
+                       `host` (`str`).
+                    group_policies:
+                       Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
+
+                       Subclass of
+                       AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`).
+
+                """
 
     class ManagementSecurity(AvdModel):
         """Subclass of AvdModel."""
@@ -75698,6 +76097,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "management_cvx": {"type": ManagementCvx},
         "management_defaults": {"type": ManagementDefaults},
         "management_interfaces": {"type": ManagementInterfaces},
+        "management_ldap": {"type": ManagementLdap},
         "management_security": {"type": ManagementSecurity},
         "management_ssh": {"type": ManagementSsh},
         "management_tech_support": {"type": ManagementTechSupport},
@@ -76180,6 +76580,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     management_interfaces: ManagementInterfaces
     """Subclass of AvdIndexedList with `ManagementInterfacesItem` items. Primary key is `name` (`str`)."""
+    management_ldap: ManagementLdap
+    """Subclass of AvdModel."""
     management_security: ManagementSecurity
     """Subclass of AvdModel."""
     management_ssh: ManagementSsh
@@ -76543,6 +76945,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             management_cvx: ManagementCvx | UndefinedType = Undefined,
             management_defaults: ManagementDefaults | UndefinedType = Undefined,
             management_interfaces: ManagementInterfaces | UndefinedType = Undefined,
+            management_ldap: ManagementLdap | UndefinedType = Undefined,
             management_security: ManagementSecurity | UndefinedType = Undefined,
             management_ssh: ManagementSsh | UndefinedType = Undefined,
             management_tech_support: ManagementTechSupport | UndefinedType = Undefined,
@@ -76887,6 +77290,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 management_cvx: Subclass of AvdModel.
                 management_defaults: Subclass of AvdModel.
                 management_interfaces: Subclass of AvdIndexedList with `ManagementInterfacesItem` items. Primary key is `name` (`str`).
+                management_ldap: Subclass of AvdModel.
                 management_security: Subclass of AvdModel.
                 management_ssh: Subclass of AvdModel.
                 management_tech_support: Subclass of AvdModel.
