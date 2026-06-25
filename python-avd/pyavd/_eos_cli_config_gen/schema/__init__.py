@@ -25647,6 +25647,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "host": {"type": str},
+                "port": {"type": int},
+                "vrf": {"type": str},
                 "timeout": {"type": int},
                 "base_dn": {"type": str},
                 "rdn_attribute_user": {"type": str},
@@ -25656,6 +25658,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             host: str
             """Hostname or IP address of the LDAP server."""
+            port: int | None
+            """port of LDAP server (EOS default 389)."""
+            vrf: str | None
             timeout: int | None
             """Time in seconds to wait for a response from this LDAP server."""
             base_dn: str | None
@@ -25679,6 +25684,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     host: str | UndefinedType = Undefined,
+                    port: int | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
                     base_dn: str | None | UndefinedType = Undefined,
                     rdn_attribute_user: str | None | UndefinedType = Undefined,
@@ -25694,6 +25701,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         host: Hostname or IP address of the LDAP server.
+                        port: port of LDAP server (EOS default 389).
+                        vrf: vrf
                         timeout: Time in seconds to wait for a response from this LDAP server.
                         base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
                         rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).

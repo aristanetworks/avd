@@ -39,11 +39,18 @@ management ldap
 {%         endif %}
 {%         set ns.needs_separator = true %}
 {%     endif %}
-{%     for server_host in management_ldap.server_hosts | arista.avd.natural_sort(sort_key="host") %}
+{%     for server_host in management_ldap.server_hosts %}
 {%         if not loop.first or ns.needs_separator %}
    !
 {%         endif %}
-   server host {{ server_host.host }}
+{%         set server_host_cli = "server host " ~ server_host.host %}
+{%         if server_host.port is arista.avd.defined %}
+{%             set server_host_cli = server_host_cli ~ " port " ~ server_host.port %}
+{%         endif %}
+{%         if server_host.vrf is arista.avd.defined and server_host.vrf is not arista.avd.defined("default") %}
+{%             set server_host_cli = server_host_cli ~ " vrf " ~ server_host.vrf %}
+{%         endif %}
+   {{ server_host_cli }}
 {%         if server_host.base_dn is arista.avd.defined %}
       base-dn {{ server_host.base_dn }}
 {%         endif %}

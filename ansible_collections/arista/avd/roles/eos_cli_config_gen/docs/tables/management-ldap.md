@@ -19,6 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "management_ldap.server_defaults.search.password_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Password encryption type.<br>- 0 = clear text<br>- 7 = obfuscated<br>- 8a = AES-256-GCM encrypted.<br>Omit to provide an unobfuscated string (EOS will store it obfuscated). |
     | [<samp>&nbsp;&nbsp;server_hosts</samp>](## "management_ldap.server_hosts") | List, items: Dictionary |  |  |  | List of LDAP server hosts. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "management_ldap.server_hosts.[].host") | String | Required, Unique |  |  | Hostname or IP address of the LDAP server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_ldap.server_hosts.[].port") | Integer |  |  |  | port of LDAP server (EOS default 389). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ldap.server_hosts.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "management_ldap.server_hosts.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 | Time in seconds to wait for a response from this LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base_dn</samp>](## "management_ldap.server_hosts.[].base_dn") | String |  |  |  | Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rdn_attribute_user</samp>](## "management_ldap.server_hosts.[].rdn_attribute_user") | String |  |  |  | Relative Distinguished Name attribute(s) for user lookup (e.g., cn). |
@@ -79,6 +81,10 @@
 
           # Hostname or IP address of the LDAP server.
         - host: <str; required; unique>
+
+          # port of LDAP server (EOS default 389).
+          port: <int>
+          vrf: <str>
 
           # Time in seconds to wait for a response from this LDAP server.
           timeout: <int; 1-1000>

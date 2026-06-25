@@ -28,6 +28,11 @@ Serial Number: DEADBEEFC0FFEW
   - [Management Console](#management-console)
   - [Management API HTTP](#management-api-http)
   - [Management API Models](#management-api-models)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [LDAP Server Hosts](#ldap-server-hosts)
+  - [LDAP Group Policies](#ldap-group-policies)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Services](#cvx-services)
   - [CVX Device Configuration](#cvx-device-configuration)
@@ -1298,6 +1303,85 @@ management api models
    provider sysdb
       path cell/1/agent disabled
       path sys/logging/config/vrfLoggingHost/mgmt disabled
+```
+
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Base DN | dc=example,dc=com |
+| RDN Attribute (User) | cn |
+| SSL Profile | LDAP_SSL_PROFILE |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+| Search Password | <removed> |
+| Search Password Type | 7 |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
+| ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY |
+| ldap2.example.com | - | default | - | - | - | - | - |
+
+#### Server Host Search Credentials
+
+| Host | Search Username | Search Password | Password Type |
+| ---- | --------------- | --------------- | ------------- |
+| ldap1.example.com | cn=host-admin,dc=example,dc=com | <removed> | 0 |
+| ldap2.example.com | cn=admin2,dc=example,dc=com | <removed> | - |
+
+### LDAP Group Policies
+
+#### Group Policy: HOST_GROUP_POLICY
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Operator | network-operator | - |
+
+#### Group Policy: LDAP_GROUP_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Admin | network-admin | 15 |
+| Read Only | read-only | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      base-dn dc=example,dc=com
+      rdn attribute user cn
+      ssl-profile LDAP_SSL_PROFILE
+      authorization group policy LDAP_GROUP_POLICY
+      search username cn=ldap-admin,dc=example,dc=com password 7 <removed>
+   !
+   server host ldap1.example.com port 636 vrf MGMT
+      base-dn dc=host1,dc=example,dc=com
+      rdn attribute user uid
+      ssl-profile LDAP_HOST_SSL_PROFILE
+      timeout 10
+      authorization group policy HOST_GROUP_POLICY
+      search username cn=host-admin,dc=example,dc=com password 0 <removed>
+   !
+   server host ldap2.example.com
+      search username cn=admin2,dc=example,dc=com password <removed>
+   !
+   group policy HOST_GROUP_POLICY
+      group "Network Operator" role network-operator
+   !
+   group policy LDAP_GROUP_POLICY
+      search filter objectclass group attribute member
+      group "Network Admin" role network-admin privilege 15
+      group "Read Only" role read-only
 ```
 
 ## CVX

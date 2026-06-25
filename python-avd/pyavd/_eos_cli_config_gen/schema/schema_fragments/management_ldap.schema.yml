@@ -37,6 +37,8 @@ keys:
                 type: str
                 required: true
                 description: Password for the search bind user.
+                convert_types:
+                  - int
               password_type:
                 type: str
                 valid_values:
@@ -49,6 +51,8 @@ keys:
                   - 7 = obfuscated
                   - 8a = AES-256-GCM encrypted.
                   Omit to provide an unobfuscated string (EOS will store it obfuscated).
+                convert_types:
+                  - int
       server_hosts:
         type: list
         primary_key: host
@@ -60,6 +64,13 @@ keys:
             host:
               type: str
               description: Hostname or IP address of the LDAP server.
+            port:
+              type: int
+              description: port of LDAP server (EOS default 389).
+            vrf:
+              type: str
+              convert_types:
+                - int
             timeout:
               type: int
               min: 1
