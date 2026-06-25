@@ -354,6 +354,13 @@ keys:
 
           Configure management interface to accept DHCP default route when the management
           IP is set to ''dhcp''.'
+      accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          Configure inband management interface to accept DHCP default route when
+          the inband management IP is set to ''dhcp''.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -12583,9 +12590,13 @@ $defs:
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
 
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', the `inband_mgmt_gateway` setting is ignored since the DHCP
+              server is expected to provide the gateway and the default route.
+
               '
             type: str
-            format: ipv4_cidr
           inband_mgmt_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -12596,6 +12607,11 @@ $defs:
 
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
+
+
+              This setting is ignored when ''inband_mgmt_ip'' is set to ''dhcp'' and
+              ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.
 
               '
             type: str

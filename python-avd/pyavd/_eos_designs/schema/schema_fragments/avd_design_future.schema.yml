@@ -17,6 +17,12 @@ keys:
         description: |-
           Available from AVD 6.2.0.
           Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+      accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.3.0.
+          Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'.
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: |-
