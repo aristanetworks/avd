@@ -127,6 +127,7 @@ class RouterBgpMixin(Protocol):
         Covers these areas:
         - vrfs for all VRFs.
         - neighbors and address_family_ipv4/6 for VRF default.
+        - bgp listen-ranges for router bgp, default VRF and non-default VRFs.
         """
         if not self.shared_utils.network_services_l3:
             return
@@ -135,10 +136,10 @@ class RouterBgpMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
                 context = f"tenants[name={tenant.name}].bgp_peer_groups[name={bgp_peer_group.name}]"
-                bgp_vrf = self.structured_config.router_bgp
+                listen_range_bgp_vrf = self.structured_config.router_bgp
                 # Listen ranges are configured when a node from bgp_peer_group.nodes[] matches the hostname
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                    self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf, context)
+                    self._set_bgp_listen_ranges(bgp_peer_group, listen_range_bgp_vrf, context)
 
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
