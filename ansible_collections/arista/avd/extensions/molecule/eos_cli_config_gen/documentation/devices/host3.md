@@ -386,6 +386,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+   !
    address-family ipv6
       router-id 3.3.3.3
       auto-cost reference-bandwidth 2000

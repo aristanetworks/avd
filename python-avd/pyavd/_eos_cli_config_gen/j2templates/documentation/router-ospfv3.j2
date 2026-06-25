@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2026 Arista Networks, Inc.
+ Copyright (c) 2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,8 +14,7 @@
 | --- | --------- | ------------------------- | ----------------------------- |
 {%     if router_ospfv3.router_id is arista.avd.defined
             or router_ospfv3.passive_interface_default is arista.avd.defined
-            or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
-            or router_ospfv3.eos_cli is arista.avd.defined %}
+            or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined %}
 {%         set router_id = router_ospfv3.router_id | arista.avd.default('-') %}
 {%         set passive_interface_default = router_ospfv3.passive_interface_default | arista.avd.default('-') %}
 {%         set auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth | arista.avd.default('-') %}

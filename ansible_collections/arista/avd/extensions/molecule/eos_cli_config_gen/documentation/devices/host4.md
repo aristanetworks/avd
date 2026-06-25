@@ -10,6 +10,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router OSPF](#router-ospf)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
@@ -109,6 +110,25 @@ ip routing vrf FUTURE_IPV4
 !
 router ospf 703
    router-id 10.255.0.4
+```
+
+### Router OSPFv3
+
+#### Router OSPFv3 Summary
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 1.1.1.1 | True | 1000 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+   bfd default
 ```
 
 ### Router ISIS

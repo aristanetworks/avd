@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2026 Arista Networks, Inc.
+ Copyright (c) 2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -111,7 +111,7 @@ router ospfv3 vrf {{ vrf.name }}
       {{ redistribute_static_cli }}
 {%         endif %}
 {%     endif %}
-{%     if use_delimiter is arista.avd.defined(true) and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%     if (use_delimiter is arista.avd.defined(true) or vrf.address_family_ipv4.enabled is arista.avd.defined(true)) and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
    !
 {%     endif %}
 {%     if vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -208,8 +208,7 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
       or router_ospfv3.address_family_ipv4 is arista.avd.defined
-      or router_ospfv3.address_family_ipv6 is arista.avd.defined
-      or router_ospfv3.eos_cli is arista.avd.defined %}
+      or router_ospfv3.address_family_ipv6 is arista.avd.defined %}
 !
 router ospfv3
 {%     set use_delimiter = false %}
@@ -316,7 +315,7 @@ router ospfv3
       {{ redistribute_static_cli }}
 {%         endif %}
 {%     endif %}
-{%     if use_delimiter is arista.avd.defined(true) and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%     if (use_delimiter is arista.avd.defined(true) or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)) and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
    !
 {%     endif %}
 {%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}

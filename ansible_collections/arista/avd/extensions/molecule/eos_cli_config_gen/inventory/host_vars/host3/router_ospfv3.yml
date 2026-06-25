@@ -1,3 +1,4 @@
+---
 router_ospfv3:
   router_id: 1.1.1.1
   passive_interface_default: true

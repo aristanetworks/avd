@@ -1244,6 +1244,7 @@ router ospfv3 vrf FULL
       redistribute ospfv3 leaked match external route-map map2
       redistribute ospfv3 leaked match nssa-external route-map map2
       redistribute static include leaked
+   !
    address-family ipv6
       router-id 4.4.4.4
       auto-cost reference-bandwidth 500
@@ -1281,6 +1282,7 @@ router ospfv3 vrf Test
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+   !
    address-family ipv6
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
@@ -1334,9 +1336,6 @@ router ospfv3
       redistribute ospfv3 leaked match external route-map map3
       redistribute ospfv3 leaked match nssa-external route-map map3
       redistribute static include leaked route-map map3
-   address-family ipv4
-     redistribute bgp
-     redistribute connected
 ```
 
 ### Router ISIS
