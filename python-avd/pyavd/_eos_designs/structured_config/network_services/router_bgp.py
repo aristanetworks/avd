@@ -134,7 +134,7 @@ class RouterBgpMixin(Protocol):
         # For VRF default the bgp_vrf variable will be set to the global router_bgp for some settings.
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
-                context = f"{tenant.name}.bgp_peer_groups[name={bgp_peer_group.name}]"
+                context = f"tenants[name={tenant.name}].bgp_peer_groups[name={bgp_peer_group.name}]"
                 bgp_vrf = self.structured_config.router_bgp
                 # Listen ranges are configured when a node from bgp_peer_group.nodes[] matches the hostname
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
