@@ -832,7 +832,7 @@ class RouterBgpMixin(Protocol):
     ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
         for index, listen_range in enumerate(bgp_peer_group.listen_ranges):
             if not (listen_range.peer_filter or listen_range.remote_as):
-                msg = f"{context}.listen_ranges[{index}].peer_filter or {context}.remote_as"
+                msg = f"{context}.listen_ranges[{index}].peer_filter or {context}.listen_ranges[{index}].remote_as"
                 raise AristaAvdMissingVariableError(msg)
             if listen_range.peer_filter and listen_range.remote_as:
                 msg = f"'{context}.listen_ranges[{index}].peer_filter' or '{context}.listen_ranges[{index}].remote_as' cannot be set together."
