@@ -835,7 +835,7 @@ class RouterBgpMixin(Protocol):
                 msg = f"{context}.listen_ranges[{index}].peer_filter or {context}.listen_ranges[{index}].remote_as"
                 raise AristaAvdMissingVariableError(msg)
             if listen_range.peer_filter and listen_range.remote_as:
-                msg = f"'{context}.listen_ranges[{index}].peer_filter' or '{context}.listen_ranges[{index}].remote_as' cannot be set together."
+                msg = f"'{context}.listen_ranges[{index}].peer_filter' and '{context}.listen_ranges[{index}].remote_as' cannot be set together."
                 raise AristaAvdInvalidInputsError(msg)
 
             bgp_vrf.listen_ranges.append_new(
