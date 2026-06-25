@@ -3,16 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from copy import deepcopy
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
+
+from .type_vars import T_AvdDataClass, T_LoadDumpType
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
-
     from typing_extensions import Self
-
-    from .type_vars import T_AvdBase
 
 
 class InternalData:
@@ -41,10 +38,8 @@ class InternalData:
     type: str | None
 
 
-class AvdBase(ABC):
-    """Base class used for schema-based data classes holding data loaded from AVD inputs."""
-
-    __slots__ = ("_block_inheritance", "_created_from_null", "_internal_data_instance")
+class AvdBaseProtocol(Protocol[T_LoadDumpType, T_AvdDataClass]):
+    """Base protocol used for schema-based data classes holding data loaded from AVD inputs."""
 
     _created_from_null: bool
     """
@@ -65,50 +60,36 @@ class AvdBase(ABC):
     _internal_data_instance: InternalData
     """Placeholder for Internal data used for storing internal context on data objects, without affecting other logic."""
 
-    def __init__(self) -> None:
-        """Setting default values since these are slots."""
-        self._created_from_null = False
-        self._block_inheritance = False
-
-    def _deepcopy(self) -> Self:
-        """Return a copy including all nested models."""
-        return deepcopy(self)
+    _is_avd_data_class: ClassVar[bool]
+    """Flag to enable easy detection of fields with AVD data classes."""
 
     @property
     def _internal_data(self) -> InternalData:
         """Internal data used for storing internal context on data objects, without affecting other logic."""
-        # Creating the instance on first access to avoid creating unused instances of this class.
-        try:
-            return self._internal_data_instance
-        except AttributeError:
-            self._internal_data_instance = InternalData()
-            return self._internal_data_instance
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @classmethod
-    @abstractmethod
-    def _load(cls, data: Sequence | Mapping) -> Self:
+    def _load(cls, data: T_LoadDumpType) -> Self:
         """Returns a new instance loaded with the given data."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @classmethod
     def _from_null(cls) -> Self:
         """Returns a new instance with all attributes set to None. This represents the YAML input '<key>: null'."""
-        new_instance = cls()
-        new_instance._created_from_null = True
-        return new_instance
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
-    def _dump(self, include_default_values: bool = False) -> dict | list:
+    def _dump(self, include_default_values: bool = False) -> T_LoadDumpType:
         """Dump data into native Python types with or without default values."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
-    def _cast_as(self, new_type: type[T_AvdBase], ignore_extra_keys: bool = False) -> T_AvdBase:
+    def _cast_as(self, new_type: type[T_AvdDataClass], ignore_extra_keys: bool = False) -> T_AvdDataClass:
         """Recast a class instance as another similar subclass if they are compatible."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
     def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
         """
         Update instance by deepmerging the other instance in.
@@ -127,10 +108,11 @@ class AvdBase(ABC):
         - "prepend" will first try to deep merge on the primary key, and if not found it will prepend all other items (including duplicates).\
             (For AvdIndexedList this works the same as prepend_unique)
         """
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
     def _compare(self, other: Self) -> bool:
         """Compare two instances. Optionally ignoring fields for the outermost AvdModel."""
+        ...  # pylint: disable=unnecessary-ellipsis
 
     def _deepmerged(
         self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique"
@@ -152,11 +134,8 @@ class AvdBase(ABC):
         - "prepend" will first try to deep merge on the primary key, and if not found it will prepend all other items (including duplicates).\
             (For AvdIndexedList this works the same as prepend_unique)
         """
-        new_instance = deepcopy(self)
-        new_instance._deepmerge(other=other, list_merge=list_merge)
-        return new_instance
+        ...  # pylint: disable=unnecessary-ellipsis
 
-    @abstractmethod
     def _combine(self, other: Self) -> None:
         """
         Update instance by combining the other instance in.
@@ -170,3 +149,41 @@ class AvdBase(ABC):
         Raises:
             AristaAvdDuplicateDataError: When conflicting information is found when combining.
         """
+        ...  # pylint: disable=unnecessary-ellipsis
+
+
+class AvdBase(AvdBaseProtocol):
+    """Base class used for schema-based data classes holding data loaded from AVD inputs."""
+
+    __slots__ = ("_block_inheritance", "_created_from_null", "_internal_data_instance")
+
+    _is_avd_data_class: ClassVar[bool] = True
+
+    def __init__(self) -> None:
+        self._created_from_null = False
+        self._block_inheritance = False
+
+    @property
+    def _internal_data(self) -> InternalData:
+        # Creating the instance on first access to avoid creating unused instances of this class.
+        try:
+            return self._internal_data_instance
+        except AttributeError:
+            self._internal_data_instance = InternalData()
+            return self._internal_data_instance
+
+    def _deepcopy(self) -> Self:
+        return deepcopy(self)
+
+    @classmethod
+    def _from_null(cls) -> Self:
+        new_instance = cls()
+        new_instance._created_from_null = True
+        return new_instance
+
+    def _deepmerged(
+        self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique"
+    ) -> Self:
+        new_instance = deepcopy(self)
+        new_instance._deepmerge(other=other, list_merge=list_merge)
+        return new_instance

@@ -6,13 +6,14 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Protocol, cast
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType, merge
 
-from .avd_base import AvdBase
+from . import is_avd_data_class, is_avd_data_class_type
+from .avd_base import AvdBase, AvdBaseProtocol
 from .avd_indexed_list import AvdIndexedList
 
 if TYPE_CHECKING:
@@ -25,21 +26,21 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
-    """Base class used for schema-based data classes holding dictionaries loaded from AVD inputs."""
+class AvdModelProtocol(AvdBaseProtocol[Mapping, "T_AvdModel"], Protocol):
+    """Base protocol used for schema-based data classes holding dictionaries loaded from AVD inputs."""
 
-    __slots__ = ("_custom_data", "_skipped_keys")
+    __dict__: dict[str, Any]
 
-    _allow_other_keys: ClassVar[bool] = False
+    _allow_other_keys: ClassVar[bool]
     """Attribute telling if this class should fail or ignore unknown keys found during loading in _from_dict()."""
     _fields: ClassVar[dict[str, dict]]  # pylint: disable=declare-non-slot # pylint bug #9950
     """
     Metadata serving as a shortcut for knowing the expected type of each field and default value.
     This is used instead of inspecting the type-hints to improve performance significantly.
     """
-    _field_to_key_map: ClassVar[dict[str, str]] = {}
+    _field_to_key_map: ClassVar[dict[str, str]]
     """Map of field name to original dict key. Used when fields have the field_ prefix to get the original key."""
-    _key_to_field_map: ClassVar[dict[str, str]] = {}
+    _key_to_field_map: ClassVar[dict[str, str]]
     """Map of dict key to field name. Used when the key is names with a reserved keyword or mixed case. E.g. `Vxlan1` or `as`."""
 
     _custom_data: dict[str, Any]
@@ -56,10 +57,40 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     @classmethod
     def _load(cls, data: Mapping) -> Self:
         """Returns a new instance loaded with the data from the given dict."""
+        ...  # pylint: disable=unnecessary-ellipsis
+
+    @classmethod
+    def _from_dict(cls, data: Mapping) -> Self:
+        """Returns a new instance loaded with the data from the given dict."""
+        ...  # pylint: disable=unnecessary-ellipsis
+
+    def __init__(self, **kwargs: Any) -> None:
+        """
+        Runtime init without specific kwargs and type hints.
+
+        Only walking the given kwargs improves performance compared to having named kwargs.
+
+        This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
+        """
+        ...  # pylint: disable=unnecessary-ellipsis
+
+
+class AvdModel(AvdBase, AvdModelProtocol):  # noqa: PLW1641 - __hash__ will be set to None.
+    """Base class used for schema-based data classes holding dictionaries loaded from AVD inputs."""
+
+    __slots__ = ("_custom_data", "_skipped_keys")
+
+    _allow_other_keys: ClassVar[bool] = False
+    _field_to_key_map: ClassVar[dict[str, str]] = {}
+    _key_to_field_map: ClassVar[dict[str, str]] = {}
+
+    @classmethod
+    def _load(cls, data: Mapping) -> Self:
+        """Returns a new instance loaded with the data from the given dict."""
         return cls._from_dict(data)
 
     @classmethod
-    def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
+    def _from_dict(cls, data: Mapping) -> Self:
         """Returns a new instance loaded with the data from the given dict."""
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
@@ -121,19 +152,12 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         field_type: type = field_info["type"]
 
-        if issubclass(field_type, AvdBase) or field_type is dict:
+        if is_avd_data_class_type(field_type) or field_type is dict:
             return default_function(field_type) if (default_function := field_info.get("default")) else field_type()
 
         return field_info.get("default")
 
     def __init__(self, **kwargs: Any) -> None:
-        """
-        Runtime init without specific kwargs and type hints.
-
-        Only walking the given kwargs improves performance compared to having named kwargs.
-
-        This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
-        """
         self._custom_data = {}
         self._skipped_keys = set()
         [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
@@ -188,7 +212,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         for field, value in self.items():
             field_info = self._fields[field]
 
-            if issubclass(field_info["type"], AvdBase):
+            if is_avd_data_class_type(field_info["type"]):
                 value = cast("AvdBase", value)
                 value._strip_empties()
                 if not value:
@@ -215,7 +239,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
             # Removing field_ prefix if needed.
             key = self._field_to_key_map.get(field, field)
 
-            if issubclass(self._fields[field]["type"], AvdBase):
+            if getattr(self._fields[field]["type"], "_is_avd_data_class", False):
                 value = cast("AvdBase", value)
                 value = None if value._created_from_null else value._dump(include_default_values=include_default_values)
 
@@ -231,8 +255,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
                 default_value = self._get_field_default_value(field)
 
-                if issubclass(self._fields[field]["type"], AvdBase):
-                    default_value = cast("AvdBase", default_value)
+                if is_avd_data_class_type(self._fields[field]["type"]):
+                    default_value = cast("AvdBaseProtocol", default_value)
                     default_value = default_value._dump(include_default_values=include_default_values)
 
                 # Removing field_ prefix if needed.
@@ -305,16 +329,13 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
                 setattr(self, field, new_value)
                 continue
 
-            # Merge new value
-            field_type = self._fields[field]["type"]
-            if issubclass(field_type, AvdBase):
+            # Merge new value (we already know they are of the same type)
+            if is_avd_data_class(old_value):
                 # Merge in to the existing object
-                old_value = cast("AvdBase", old_value)
-                new_value = cast("AvdBase", new_value)
                 old_value._deepmerge(new_value, list_merge=list_merge)
                 continue
 
-            if field_type is dict:
+            if self._fields[field]["type"] is dict:
                 # In-place deepmerge in to the existing dict without schema.
                 # Deepcopying since merge() does not copy.
                 legacy_list_merge = list_merge.replace("_unique", "_rp")

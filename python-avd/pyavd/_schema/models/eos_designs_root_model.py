@@ -16,8 +16,6 @@ from .avd_list import AvdList
 from .avd_model import AvdModel
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     from pyavd._eos_designs.schema import EosDesigns
 
     T = TypeVar("T", bound="EosDesignsRootModel")
@@ -28,7 +26,7 @@ SKIP_KEYS = ["custom_structured_configuration_list_merge", "custom_structured_co
 
 class EosDesignsRootModel(AvdModel):
     @classmethod
-    def _from_dict(cls, data: Mapping, load_custom_structured_config: bool = True) -> Self:
+    def _from_dict(cls: type[EosDesigns], data: Mapping, load_custom_structured_config: bool = True) -> EosDesigns:  # pyright: ignore[reportGeneralTypeIssues]
         """
         Returns a new instance loaded with the data from the given dict.
 
@@ -50,14 +48,14 @@ class EosDesignsRootModel(AvdModel):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
 
-        root_data = {"_dynamic_keys": cls._get_dynamic_keys(data)}
+        root_data: dict[str, EosDesigns._DynamicKeys | EosDesigns._CustomStructuredConfigurations] = {"_dynamic_keys": cls._get_dynamic_keys(data)}
         if load_custom_structured_config:
             root_data["_custom_structured_configurations"] = cls._CustomStructuredConfigurations(cls._get_csc_items(data))
 
         return super()._from_dict(ChainMap(root_data, data))
 
     @classmethod
-    def _get_csc_items(cls, data: Mapping) -> Iterator[EosDesigns._CustomStructuredConfigurationsItem]:
+    def _get_csc_items(cls: type[EosDesigns], data: Mapping) -> Iterator[EosDesigns._CustomStructuredConfigurationsItem]:  # pyright: ignore[reportGeneralTypeIssues]
         """
         Returns a list of _CustomStructuredConfigurationsItem objects containing each custom structured configuration extracted from the inputs.
 
@@ -81,7 +79,7 @@ class EosDesignsRootModel(AvdModel):
                 yield cls._CustomStructuredConfigurationsItem(key=key, value=EosCliConfigGen._from_dict({key[prefix_length:]: data[key]}))
 
     @classmethod
-    def _get_dynamic_keys(cls, data: Mapping) -> EosDesigns._DynamicKeys:
+    def _get_dynamic_keys(cls: type[EosDesigns], data: Mapping) -> EosDesigns._DynamicKeys:  # pyright: ignore[reportGeneralTypeIssues]
         """
         Returns the DynamicKeys object which holds a list for each dynamic key.
 

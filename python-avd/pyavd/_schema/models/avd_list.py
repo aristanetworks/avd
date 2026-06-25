@@ -5,12 +5,12 @@ from __future__ import annotations
 
 import re
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
+from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, Protocol, cast, overload
 
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType
 
-from .avd_base import AvdBase
+from .avd_base import AvdBase, AvdBaseProtocol
 from .avd_model import AvdModel
 from .type_vars import T, T_AvdList, T_ItemType
 
@@ -20,14 +20,12 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1641 - __hash__ will be set to None.
+class AvdListProtocol(AvdBaseProtocol[Sequence, "AvdList"], Protocol[T_ItemType]):
     """
     Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 
     Other lists are *not* using this model.
     """
-
-    __slots__ = ("_items",)
 
     _item_type: ClassVar[type]  # pylint: disable=declare-non-slot # pylint bug #9950
     """Type of items. This is used instead of inspecting the type-hints to improve performance significantly."""
@@ -36,6 +34,12 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
     Internal attribute holding the actual data. Using a dict keyed by the primary key value of each item to improve performance
     significantly when searching for a specific item.
     """
+
+
+class AvdList(Sequence[T_ItemType], AvdBase, AvdListProtocol[T_ItemType], Generic[T_ItemType]):  # noqa: PLW1641 - __hash__ will be set to None.
+    __slots__ = ("_items",)
+
+    _item_type: ClassVar[type] = cast("type[T_ItemType]", object)
 
     @classmethod
     def _load(cls, data: Sequence) -> Self:
@@ -49,7 +53,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
             msg = f"Expecting 'data' as a 'Sequence' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
 
-        item_type = cls._item_type
+        item_type: type[T_ItemType] = cls._item_type
         if item_type is Any:
             return cls(data)
 
@@ -76,7 +80,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
     def __len__(self) -> int:
         return len(self._items)
 
-    def __contains__(self, item: T_ItemType) -> bool:
+    def __contains__(self, item: object) -> bool:
         return item in self._items
 
     def __iter__(self) -> Iterator[T_ItemType]:
@@ -155,7 +159,10 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
                 if isinstance(value, AvdModel):
                     sort_value = str(value._get(sort_key, default=value))
                 elif isinstance(value, Mapping):
-                    sort_value = str(value.get(sort_key, value))
+                    sort_mapping = cast("Mapping[str, object]", value)
+                    sort_value = str(sort_mapping.get(sort_key, value))
+                else:
+                    sort_value = str(value)
             else:
                 sort_value = str(value)
             return [convert(c) for c in re.split(NATURAL_SORT_PATTERN, sort_value)]

@@ -5,13 +5,13 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Iterator, Sequence
-from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
+from typing import TYPE_CHECKING, ClassVar, Generic, Literal, Protocol, cast, overload
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType
 
-from .avd_base import AvdBase
+from .avd_base import AvdBase, AvdBaseProtocol
 from .type_vars import T_AvdModel, T_PrimaryKey
 
 if TYPE_CHECKING:
@@ -25,14 +25,12 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdModel]):  # noqa: PLW1641 - __hash__ will be set to None.
+class AvdIndexedListProtocol(AvdBaseProtocol[Sequence, "AvdIndexedList"], Protocol[T_PrimaryKey, T_AvdModel]):
     """
-    Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
+    Base protocol used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 
     Other lists are *not* using this model.
     """
-
-    __slots__ = ("_items",)
 
     _item_type: ClassVar[type[AvdModel]]  # pylint: disable=declare-non-slot # pylint bug #9950
     """Type of items. This is used instead of inspecting the type-hints to improve performance significantly."""
@@ -70,6 +68,44 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
 
         super().__init__()
 
+
+class AvdIndexedList(Sequence[T_AvdModel], AvdBase, AvdIndexedListProtocol[T_PrimaryKey, T_AvdModel], Generic[T_PrimaryKey, T_AvdModel]):  # noqa: PLW1641 - __hash__ will be set to None.
+    """
+    Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
+
+    Other lists are *not* using this model.
+    """
+
+    __slots__ = ("_items",)
+
+    _item_type: ClassVar[type[AvdModel]] = cast("type[T_AvdModel]", object)
+
+    @classmethod
+    def _load(cls, data: Sequence) -> Self:
+        """Returns a new instance loaded with the data from the given list."""
+        return cls._from_list(data)
+
+    @classmethod
+    def _from_list(cls, data: Sequence) -> Self:
+        """Returns a new instance loaded with the data from the given list."""
+        if not isinstance(data, Sequence):
+            msg = f"Expecting 'data' as a 'Sequence' when loading data into '{cls.__name__}'. Got '{type(data)}"
+            raise TypeError(msg)
+
+        cls_items = cast("Iterable[T_AvdModel]", (coerce_type(item, cls._item_type) for item in data))
+        return cls(cls_items)
+
+    def __init__(self, items: Iterable[T_AvdModel] = ()) -> None:
+        """
+        AvdIndexedList subclass.
+
+        Args:
+            items: Iterable holding items of the correct type to be loaded into the indexed list.
+        """
+        self._items = {getattr(item, self._primary_key): item for item in items}
+
+        super().__init__()
+
     def __repr__(self) -> str:
         """Returns a repr with all the items including any nested models."""
         cls_name = self.__class__.__name__
@@ -79,13 +115,13 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
     def __len__(self) -> int:
         return len(self._items)
 
-    def __contains__(self, key: T_PrimaryKey) -> bool:
+    def __contains__(self, key: object) -> bool:
         return key in self._items
 
     def __iter__(self) -> Iterator[T_AvdModel]:
         return iter(self._items.values())
 
-    def __getitem__(self, key: T_PrimaryKey) -> T_AvdModel:
+    def __getitem__(self, key: T_PrimaryKey) -> T_AvdModel:  # pyright: ignore[reportIncompatibleMethodOverride]
         return self._items[key]
 
     def __setitem__(self, key: T_PrimaryKey, value: T_AvdModel) -> None:
