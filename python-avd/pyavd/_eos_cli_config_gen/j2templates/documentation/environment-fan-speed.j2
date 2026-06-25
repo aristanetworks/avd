@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - environment #}
-{% if environment_fan_speed is arista.avd.defined %}
+{% if environment_fan_speed.minimum is arista.avd.defined %}
 
 ## Environment
 
@@ -12,9 +12,7 @@
 
 | Minimum Fan Speed |
 | ----------------- |
-{%     if environment_fan_speed.minimum is arista.avd.defined %}
 | {{ environment_fan_speed.minimum }}% |
-{%     endif %}
 
 ### Environment Device Configuration
 
