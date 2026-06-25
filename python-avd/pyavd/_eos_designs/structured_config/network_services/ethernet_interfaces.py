@@ -172,6 +172,7 @@ class EthernetInterfacesMixin(Protocol):
         node_index: int,
     ) -> None:
         """Set the IPv4-only configuration on an EthernetInterface from the matching l3_interface entry for this node."""
+        # TODO: AVD 7.0.0 - early-return when `ip_address is None`, mirroring the IPv6 path. OSPFv2 and PIM require a valid IPv4.
         ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
         interface.ip_address = ip_address
         interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address

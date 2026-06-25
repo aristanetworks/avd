@@ -133,6 +133,7 @@ class PortChannelInterfacesMixin(Protocol):
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """Set the IPv4-only configuration on a PortChannelInterface from its l3_port_channel."""
+        # TODO: AVD 7.0.0 - early-return when `ip_address is None`, mirroring the IPv6 path. OSPFv2 requires a valid IPv4.
         port_channel_interface.ip_address = l3_port_channel.ip_address
         port_channel_interface.ip_address_secondaries = EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries(l3_port_channel.ip_address_secondaries)
         interface_ip = l3_port_channel.ip_address
