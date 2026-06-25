@@ -27434,15 +27434,14 @@ class EosDesigns(EosDesignsRootModel):
                 For asdot notation in
                 YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                 number.
+                note: `peer_filter` or `remote_as` is required.
                 """
                 peer_id_include_router_id: bool | None
                 """Include router ID as part of peer filter."""
                 peer_filter: str | None
                 """
                 Peer-filter name.
-                note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                If both are
-                defined, `peer_filter` takes precedence.
+                note: `peer_filter` or `remote_as` is required.
                 """
 
                 if TYPE_CHECKING:
@@ -27468,12 +27467,11 @@ class EosDesigns(EosDesignsRootModel):
                                For asdot notation in
                                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                number.
+                               note: `peer_filter` or `remote_as` is required.
                             peer_id_include_router_id: Include router ID as part of peer filter.
                             peer_filter:
                                Peer-filter name.
-                               note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                               If both are
-                               defined, `peer_filter` takes precedence.
+                               note: `peer_filter` or `remote_as` is required.
 
                         """
 
@@ -34493,15 +34491,14 @@ class EosDesigns(EosDesignsRootModel):
                     For asdot notation in
                     YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                     number.
+                    note: `peer_filter` or `remote_as` is required.
                     """
                     peer_id_include_router_id: bool | None
                     """Include router ID as part of peer filter."""
                     peer_filter: str | None
                     """
                     Peer-filter name.
-                    note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                    If both are
-                    defined, `peer_filter` takes precedence.
+                    note: `peer_filter` or `remote_as` is required.
                     """
 
                     if TYPE_CHECKING:
@@ -34527,12 +34524,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For asdot notation in
                                    YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                    number.
+                                   note: `peer_filter` or `remote_as` is required.
                                 peer_id_include_router_id: Include router ID as part of peer filter.
                                 peer_filter:
                                    Peer-filter name.
-                                   note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                                   If both are
-                                   defined, `peer_filter` takes precedence.
+                                   note: `peer_filter` or `remote_as` is required.
 
                             """
 
@@ -74266,15 +74262,14 @@ class EosDesigns(EosDesignsRootModel):
                         For asdot notation in
                         YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                         number.
+                        note: `peer_filter` or `remote_as` is required.
                         """
                         peer_id_include_router_id: bool | None
                         """Include router ID as part of peer filter."""
                         peer_filter: str | None
                         """
                         Peer-filter name.
-                        note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                        If both are
-                        defined, `peer_filter` takes precedence.
+                        note: `peer_filter` or `remote_as` is required.
                         """
 
                         if TYPE_CHECKING:
@@ -74300,12 +74295,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For asdot notation in
                                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                        number.
+                                       note: `peer_filter` or `remote_as` is required.
                                     peer_id_include_router_id: Include router ID as part of peer filter.
                                     peer_filter:
                                        Peer-filter name.
-                                       note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                                       If both are
-                                       defined, `peer_filter` takes precedence.
+                                       note: `peer_filter` or `remote_as` is required.
 
                                 """
 
@@ -81365,15 +81359,14 @@ class EosDesigns(EosDesignsRootModel):
                             For asdot notation in
                             YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                             number.
+                            note: `peer_filter` or `remote_as` is required.
                             """
                             peer_id_include_router_id: bool | None
                             """Include router ID as part of peer filter."""
                             peer_filter: str | None
                             """
                             Peer-filter name.
-                            note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                            If both are
-                            defined, `peer_filter` takes precedence.
+                            note: `peer_filter` or `remote_as` is required.
                             """
 
                             if TYPE_CHECKING:
@@ -81399,12 +81392,11 @@ class EosDesigns(EosDesignsRootModel):
                                            For asdot notation in
                                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                            number.
+                                           note: `peer_filter` or `remote_as` is required.
                                         peer_id_include_router_id: Include router ID as part of peer filter.
                                         peer_filter:
                                            Peer-filter name.
-                                           note: `peer_filter` or `remote_as` is required but mutually exclusive.
-                                           If both are
-                                           defined, `peer_filter` takes precedence.
+                                           note: `peer_filter` or `remote_as` is required.
 
                                     """
 

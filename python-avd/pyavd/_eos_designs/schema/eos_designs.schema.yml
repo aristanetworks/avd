@@ -4936,7 +4936,9 @@ keys:
                         "<1-65535>.<0-65535>".
 
                         For asdot notation in YAML inputs, the value must be put in
-                        quotes, to prevent it from being interpreted as a float number.'
+                        quotes, to prevent it from being interpreted as a float number.
+
+                        note: `peer_filter` or `remote_as` is required.'
                       convert_types:
                       - int
                     peer_id_include_router_id:
@@ -4946,10 +4948,7 @@ keys:
                       type: str
                       description: 'Peer-filter name.
 
-                        note: `peer_filter` or `remote_as` is required but mutually
-                        exclusive.
-
-                        If both are defined, `peer_filter` takes precedence.
+                        note: `peer_filter` or `remote_as` is required.
 
                         '
         igmp_snooping:
