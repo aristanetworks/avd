@@ -23,5 +23,6 @@ tenants:
         nodes: [missing-peer-filter-or-remote-as]
 
 expected_error_message: >-
-  'Tenant_X.bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].peer_filter or Tenant_X.bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].remote_as'
+  'Tenant_X.bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].peer_filter or
+  Tenant_X.bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].remote_as'
   is required but was not found.

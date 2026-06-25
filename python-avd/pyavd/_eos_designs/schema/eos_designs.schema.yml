@@ -6842,8 +6842,9 @@ keys:
                     listen_ranges:
                       type: list
                       $ref: eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges
-                      description: 'Note - bgp_peer_groups[].nodes[] must have a node
-                        matching with the hostname to configure the bgp listen ranges.
+                      description: 'Note - vrfs[].bgp_peer_groups[].nodes[] must have
+                        a node matching with the hostname to configure the bgp listen
+                        ranges.
 
                         When set for VRF default, this is configured under root `router
                         bgp <as>`. For other VRFs this is configured under

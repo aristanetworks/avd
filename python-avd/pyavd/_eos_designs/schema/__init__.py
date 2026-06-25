@@ -35002,13 +35002,14 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 listen_ranges: ListenRanges
                 """
-                Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
-                listen ranges.
-                When set for VRF default, this is configured under root `router bgp <as>`. For other
-                VRFs this is configured under
+                Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                bgp listen ranges.
+                When set for VRF default, this is configured under root `router bgp <as>`. For
+                other VRFs this is configured under
                 respective VRF.
 
-                Subclass of AvdList with `ListenRangesItem` items.
+                Subclass of AvdList with `ListenRangesItem`
+                items.
                 """
                 metadata: Metadata
                 """Subclass of AvdModel."""
@@ -35179,13 +35180,14 @@ class EosDesigns(EosDesignsRootModel):
                             address_family_ipv4: Subclass of AvdModel.
                             address_family_ipv6: Subclass of AvdModel.
                             listen_ranges:
-                               Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
-                               listen ranges.
-                               When set for VRF default, this is configured under root `router bgp <as>`. For other
-                               VRFs this is configured under
+                               Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                               bgp listen ranges.
+                               When set for VRF default, this is configured under root `router bgp <as>`. For
+                               other VRFs this is configured under
                                respective VRF.
 
-                               Subclass of AvdList with `ListenRangesItem` items.
+                               Subclass of AvdList with `ListenRangesItem`
+                               items.
                             metadata: Subclass of AvdModel.
                             remote_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -81878,13 +81880,14 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         listen_ranges: ListenRanges
                         """
-                        Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
-                        listen ranges.
-                        When set for VRF default, this is configured under root `router bgp <as>`. For other
-                        VRFs this is configured under
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                        bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For
+                        other VRFs this is configured under
                         respective VRF.
 
-                        Subclass of AvdList with `ListenRangesItem` items.
+                        Subclass of AvdList with `ListenRangesItem`
+                        items.
                         """
                         metadata: Metadata
                         """Subclass of AvdModel."""
@@ -82055,13 +82058,14 @@ class EosDesigns(EosDesignsRootModel):
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
                                     listen_ranges:
-                                       Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
-                                       listen ranges.
-                                       When set for VRF default, this is configured under root `router bgp <as>`. For other
-                                       VRFs this is configured under
+                                       Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                                       bgp listen ranges.
+                                       When set for VRF default, this is configured under root `router bgp <as>`. For
+                                       other VRFs this is configured under
                                        respective VRF.
 
-                                       Subclass of AvdList with `ListenRangesItem` items.
+                                       Subclass of AvdList with `ListenRangesItem`
+                                       items.
                                     metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
