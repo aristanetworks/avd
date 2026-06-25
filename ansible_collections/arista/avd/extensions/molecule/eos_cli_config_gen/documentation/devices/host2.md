@@ -1136,7 +1136,7 @@ router ospf 701
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | True | 1000 |
+| default | - | True | - |
 | data | 2.2.2.2 | True | 100 |
 | MGMT | 2.2.2.2 | True | 100 |
 | Test_VRF | 1.1.1.1 | True | 1000 |
@@ -1146,10 +1146,10 @@ router ospf 701
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | - | - | - |
-| data | - | - | - |
+| data | - | - | 1000 |
 | FULL | 3.3.3.3 | True | 500 |
-| MGMT | - | - | - |
-| Test | - | - | - |
+| MGMT | - | True | - |
+| Test | 1.1.1.1 | - | - |
 
 #### Router OSPFv3 IPv4 Address Family Redistribution
 
@@ -1188,10 +1188,10 @@ router ospf 701
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | - | - | - |
-| data | - | - | - |
+| data | - | - | 1000 |
 | FULL | 4.4.4.4 | True | 500 |
-| MGMT | - | - | - |
-| Test | - | - | - |
+| MGMT | - | True | - |
+| Test | - | True | - |
 
 #### Router OSPFv3 IPv6 Address Family Redistribution
 
@@ -1260,9 +1260,9 @@ router ospfv3 vrf FULL
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
-   passive-interface default
    !
    address-family ipv4
+      passive-interface default
       redistribute bgp
       redistribute connected
       redistribute isis
@@ -1270,6 +1270,7 @@ router ospfv3 vrf MGMT
       redistribute static
    !
    address-family ipv6
+      passive-interface default
       redistribute bgp
       redistribute dhcp
       redistribute connected
@@ -1279,11 +1280,13 @@ router ospfv3 vrf MGMT
 !
 router ospfv3 vrf Test
    address-family ipv4
+      router-id 1.1.1.1
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
    !
    address-family ipv6
+      passive-interface default
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
@@ -1295,10 +1298,10 @@ router ospfv3 vrf Test_VRF
 !
 router ospfv3 vrf data
    router-id 2.2.2.2
-   auto-cost reference-bandwidth 100
    passive-interface default
    !
    address-family ipv4
+      auto-cost reference-bandwidth 1000
       redistribute bgp route-map map1
       redistribute connected route-map map1
       redistribute isis route-map map1
@@ -1306,6 +1309,7 @@ router ospfv3 vrf data
       redistribute static route-map map1
    !
    address-family ipv6
+      auto-cost reference-bandwidth 1000
       redistribute bgp route-map map1
       redistribute dhcp route-map map1
       redistribute connected route-map map1
@@ -1314,8 +1318,6 @@ router ospfv3 vrf data
       redistribute static route-map map1
 !
 router ospfv3
-   router-id 1.1.1.1
-   auto-cost reference-bandwidth 1000
    passive-interface default
    !
    address-family ipv4

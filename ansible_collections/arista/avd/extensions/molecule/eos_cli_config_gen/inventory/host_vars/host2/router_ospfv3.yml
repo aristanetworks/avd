@@ -1,8 +1,6 @@
 ---
 router_ospfv3:
-  router_id: 1.1.1.1
   passive_interface_default: true
-  auto_cost_reference_bandwidth: 1000
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -131,6 +129,7 @@ router_ospfv3:
       auto_cost_reference_bandwidth: 100
       address_family_ipv4:
         enabled: true
+        auto_cost_reference_bandwidth: 1000
         redistribute:
           bgp:
             enabled: true
@@ -149,6 +148,7 @@ router_ospfv3:
             route_map: map1
       address_family_ipv6:
         enabled: true
+        auto_cost_reference_bandwidth: 1000
         redistribute:
           bgp:
             enabled: true
@@ -174,6 +174,7 @@ router_ospfv3:
       passive_interface_default: true
       address_family_ipv4:
         enabled: true
+        passive_interface_default: true
         redistribute:
           bgp:
             enabled: true
@@ -187,6 +188,7 @@ router_ospfv3:
             enabled: true
       address_family_ipv6:
         enabled: true
+        passive_interface_default: true
         redistribute:
           bgp:
             enabled: true
@@ -203,6 +205,7 @@ router_ospfv3:
     - name: Test
       address_family_ipv4:
         enabled: true
+        router_id: 1.1.1.1
         redistribute:
           ospfv3:
             match_internal:
@@ -213,6 +216,7 @@ router_ospfv3:
               enabled: true
       address_family_ipv6:
         enabled: true
+        passive_interface_default: true
         redistribute:
           ospfv3:
             match_internal:

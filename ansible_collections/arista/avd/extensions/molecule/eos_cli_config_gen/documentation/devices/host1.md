@@ -9243,9 +9243,9 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | True | 1000 |
+| default | 1.1.1.1 | - | - |
 | data | 2.2.2.2 | True | 100 |
-| MGMT | 2.2.2.2 | True | 100 |
+| MGMT | - | - | 100 |
 
 #### Router OSPFv3 Address Family IPv4
 
@@ -9299,9 +9299,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 ```eos
 !
 router ospfv3 vrf MGMT
-   router-id 2.2.2.2
    auto-cost reference-bandwidth 100
-   passive-interface default
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -9321,8 +9319,6 @@ router ospfv3 vrf data
 !
 router ospfv3
    router-id 1.1.1.1
-   auto-cost reference-bandwidth 1000
-   passive-interface default
    !
    address-family ipv4
       redistribute bgp include leaked route-map map1
