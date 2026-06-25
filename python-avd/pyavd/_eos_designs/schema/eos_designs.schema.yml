@@ -12524,8 +12524,8 @@ $defs:
               By default this is configured regardless of the spanning-tree mode.
 
               When ''avd_design_future.only_configure_pvst_border_when_mode_is_mstp''
-              is set to ''true'', this will only take effect when ''spanning_tree_mode''
-              is ''mstp''.'
+              is set to ''true'', this will only take effect when the spanning-tree
+              mode is ''mstp''.'
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
