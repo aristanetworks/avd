@@ -109,7 +109,8 @@ keys:
             max_total_size:
               type: str
               description: |-
-                Maximum total size of log files.
+                Maximum total size of log files (e.g. 110m, 1g).
+                Supported suffixes: k (kilobytes), m (megabytes), g (gigabytes).
             command:
               type: str
               required: true
