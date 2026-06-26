@@ -15501,14 +15501,14 @@ maintenance
 
 | Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
-| at_date_interval | at 06:00:00 2027-12-22 interval 60 | show logging | 10 | 30 | - | - | - |
+| at_date_interval | at 06:00:00 2027-12-22 interval 60 minutes | show logging | 10 | 30 | - | - | - |
 | at_date_once | at 11:11:11 02/12/2029 once | show tech-support | 3 | 3 | - | - | - |
 | at_time_once | at 08:00:00 once | show ip route | 5 | - | - | - | - |
-| interval_full_options | interval 44 | show running-config | 3 | 30 | True | flash:/schedule | 1024m |
-| interval_minimal | interval 5 | show version | 44 | 4 | - | - | - |
-| interval_simple | interval 31 | show lldp neighbors | 2 | 30 | - | - | - |
-| interval_standard | interval 33 | show interfaces | 4 | 30 | - | - | - |
-| now_interval_full | now interval 5 | show bgp summary | 3 | 4 | True | flash:/logs | - |
+| interval_full_options | interval 44 minutes | show running-config | 3 | 30 | True | flash:/schedule | 1024m |
+| interval_minimal | interval 5 minutes | show version | 44 | 4 | - | - | - |
+| interval_simple | interval 31 minutes | show lldp neighbors | 2 | 30 | - | - | - |
+| interval_standard | interval 33 minutes | show interfaces | 4 | 30 | - | - | - |
+| now_interval_full | now interval 5 minutes | show bgp summary | 3 | 4 | True | flash:/logs | - |
 
 ### Schedule Device Configuration
 
