@@ -1087,7 +1087,10 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
-            description: Enable MST PVST border ports.
+            description: |-
+              Enable MST PVST border ports.
+              By default this is configured regardless of the spanning-tree mode.
+              When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will only take effect when the spanning-tree mode is 'mstp'.
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
@@ -1161,8 +1164,9 @@ $defs:
               The VLAN and SVI on the parent switches must be created using network services data models.
 
               This setting is applicable to L2 switches (switches using L2 trunks as uplinks).
+
+              When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway and the default route.
             type: str
-            format: ipv4_cidr
           inband_mgmt_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -1170,6 +1174,8 @@ $defs:
               Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
 
               This setting is applicable to L2 switches (switches using L2 trunks as uplinks).
+
+              This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
             type: str
             format: ipv4
           inband_mgmt_ipv6_address:
