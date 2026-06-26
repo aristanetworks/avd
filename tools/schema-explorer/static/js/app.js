@@ -176,14 +176,14 @@ function resolvedTreeParentId(row, currentModule, rowIds) {
   return candidates.find(candidate => rowIds.has(candidate)) || directParentId;
 }
 function orderedTreeRows(vars, currentModule) {
-  const sortedVars = [...vars].sort((a, b) => `${rowModule(a, currentModule)}:${a.key_path}`.localeCompare(`${rowModule(b, currentModule)}:${b.key_path}`));
-  const rowIds = new Set(sortedVars.map(row => treeRowId(row, currentModule)));
+  const sourceVars = [...vars];
+  const rowIds = new Set(sourceVars.map(row => treeRowId(row, currentModule)));
   const childCount = new Map();
   const childrenByParent = new Map();
   const parentIds = new Map();
   const rootRows = [];
 
-  for (const row of sortedVars) {
+  for (const row of sourceVars) {
     const rowId = treeRowId(row, currentModule);
     const resolvedParentId = resolvedTreeParentId(row, currentModule, rowIds);
     const visibleParentId = resolvedParentId && rowIds.has(resolvedParentId) ? resolvedParentId : "";
@@ -207,7 +207,7 @@ function orderedTreeRows(vars, currentModule) {
     (childrenByParent.get(rowId) || []).forEach(visit);
   }
   rootRows.forEach(visit);
-  sortedVars.forEach(visit);
+  sourceVars.forEach(visit);
   return { rows: orderedRows, childCount, parentIds, rowIds };
 }
 function treeGroupId(row, currentModule) {
@@ -761,7 +761,7 @@ function getVar(db, release, module, key_path) {
 }
 
 function getChildren(db, release, module, parent_path) {
-  return rows(db, "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND parent_path = ? ORDER BY key_path", [release, module, parent_path]);
+  return rows(db, "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND parent_path = ? ORDER BY id", [release, module, parent_path]);
 }
 
 function getSiblings(db, release, module, parent_path, exclude_key) {
@@ -950,7 +950,7 @@ function renderResults(db, release, module, state) {
   // Flat list view caps at 500 since users only consume the head visibly.
   const hierarchical = state.view === "tree" || state.view === "yaml" || state.view === "docs";
   const limit = hierarchical ? 20000 : 500;
-  const results = state.rows || searchVars(db, release, module, { ...state, limit, order: state.view === "yaml" ? "id" : "key_path" });
+  const results = state.rows || searchVars(db, release, module, { ...state, limit, order: hierarchical ? "id" : "key_path" });
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
