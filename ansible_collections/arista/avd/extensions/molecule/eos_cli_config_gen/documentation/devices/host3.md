@@ -117,6 +117,12 @@ management accounts
 
 ## Management LDAP
 
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+
 ### LDAP Server Hosts
 
 | Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
@@ -128,6 +134,9 @@ management accounts
 ```eos
 !
 management ldap
+   server defaults
+      authorization group policy LDAP_GROUP_POLICY
+   !
    server host ldap1.example.com
       ssl-profile LDAP_HOST_SSL_PROFILE
 ```

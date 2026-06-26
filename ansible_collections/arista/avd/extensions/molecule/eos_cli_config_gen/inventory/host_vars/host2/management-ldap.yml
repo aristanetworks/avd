@@ -2,6 +2,6 @@
 management_ldap:
   # Test to not define server_defaults.search.password_type and groups
   server_defaults:
-     search:
+    search:
       username: cn=ldap-admin,dc=example,dc=com
       password: LdapAdminPass123!

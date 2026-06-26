@@ -1359,7 +1359,6 @@ management api models
 | ------------------------- | ----------------------- |
 | group | member |
 
-
 ### Management LDAP Device Configuration
 
 ```eos

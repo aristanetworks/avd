@@ -33,7 +33,7 @@ management_ldap:
       search:
         username: cn=admin2,dc=example,dc=com
         password: Admin2Pass123!
-    
+
     # Host3: Without search key
     - host: 10.1.1.1
       ssl_profile: LDAP_HOST_SSL_PROFILE
@@ -59,7 +59,7 @@ management_ldap:
 
     # Policy 3: neither search_filter nor groups — tests the skip (false) branch of the inner if
     - policy: EMPTY_GROUP_POLICY
-  
+
     # Policy 4: no groups defined
     - policy: LDAP_SEARCH_FILTER_POLICY
       search_filter:

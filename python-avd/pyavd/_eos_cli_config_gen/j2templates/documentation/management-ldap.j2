@@ -76,14 +76,14 @@
 {%             if group_policy.search_filter is arista.avd.defined or group_policy.groups is arista.avd.defined %}
 
 #### Group Policy: {{ group_policy.policy }}
-
 {%                 if group_policy.search_filter is arista.avd.defined %}
+
 | Search Filter Objectclass | Search Filter Attribute |
 | ------------------------- | ----------------------- |
 | {{ group_policy.search_filter.objectclass }} | {{ group_policy.search_filter.attribute }} |
-
 {%                 endif %}
 {%                 if group_policy.groups is arista.avd.defined %}
+
 | Group Name | Role | Privilege |
 | ---------- | ---- | --------- |
 {%                     for group in group_policy.groups %}

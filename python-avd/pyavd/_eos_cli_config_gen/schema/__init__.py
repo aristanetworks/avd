@@ -25659,7 +25659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             host: str
             """Hostname or IP address of the LDAP server."""
             port: int | None
-            """port of LDAP server (EOS default 389)."""
+            """Port of LDAP server (EOS default 389)."""
             vrf: str | None
             timeout: int | None
             """Time in seconds to wait for a response from this LDAP server."""
@@ -25701,7 +25701,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         host: Hostname or IP address of the LDAP server.
-                        port: port of LDAP server (EOS default 389).
+                        port: Port of LDAP server (EOS default 389).
                         vrf: vrf
                         timeout: Time in seconds to wait for a response from this LDAP server.
                         base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
