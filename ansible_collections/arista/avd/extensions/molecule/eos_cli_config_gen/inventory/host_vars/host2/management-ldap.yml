@@ -1,0 +1,5 @@
+---
+management_ldap:
+  # Test to not define server_hosts and groups
+  server_defaults:
+    base_dn: dc=example,dc=com

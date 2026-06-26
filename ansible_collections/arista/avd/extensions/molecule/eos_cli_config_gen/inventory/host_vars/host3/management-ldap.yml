@@ -1,0 +1,6 @@
+---
+management_ldap:
+  # Test to not define server_defaults
+  server_hosts:
+    - host: ldap1.example.com
+      ssl_profile: LDAP_HOST_SSL_PROFILE

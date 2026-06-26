@@ -1311,7 +1311,6 @@ management api models
 
 | Setting | Value |
 | ------- | ----- |
-| Base DN | dc=example,dc=com |
 | RDN Attribute (User) | cn |
 | SSL Profile | LDAP_SSL_PROFILE |
 | Authorization Group Policy | LDAP_GROUP_POLICY |
@@ -1358,7 +1357,6 @@ management api models
 !
 management ldap
    server defaults
-      base-dn dc=example,dc=com
       rdn attribute user cn
       ssl-profile LDAP_SSL_PROFILE
       authorization group policy LDAP_GROUP_POLICY

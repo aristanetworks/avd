@@ -39,7 +39,7 @@ management ldap
 {%         endif %}
 {%         set ns.needs_separator = true %}
 {%     endif %}
-{%     for server_host in management_ldap.server_hosts %}
+{%     for server_host in management_ldap.server_hosts | arista.avd.default([]) %}
 {%         if not loop.first or ns.needs_separator %}
    !
 {%         endif %}

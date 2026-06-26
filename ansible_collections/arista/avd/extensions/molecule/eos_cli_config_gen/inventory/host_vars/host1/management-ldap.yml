@@ -3,7 +3,6 @@ management_ldap:
 
   # server_defaults: covers all default fields + search with password_type
   server_defaults:
-    base_dn: dc=example,dc=com
     rdn_attribute_user: cn
     ssl_profile: LDAP_SSL_PROFILE
     authorization_group_policy: LDAP_GROUP_POLICY

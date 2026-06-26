@@ -115,6 +115,23 @@ No specific password policy is set for management accounts.
 management accounts
 ```
 
+## Management LDAP
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
+| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server host ldap1.example.com
+      ssl-profile LDAP_HOST_SSL_PROFILE
+```
+
 ## CVX
 
 CVX is enabled
