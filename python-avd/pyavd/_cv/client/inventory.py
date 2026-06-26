@@ -47,13 +47,14 @@ class InventoryMixin(Protocol):
         request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time) if time else None)
         if devices:
             for serial_number, system_mac_address, hostname in devices:
-                request.partial_eq_filter.append(
-                    Device(
-                        key=DeviceKey(device_id=serial_number),
-                        system_mac_address=system_mac_address,
-                        hostname=hostname,
-                    ),
-                )
+                device_filter = Device()
+                if serial_number is not None:
+                    device_filter.key = DeviceKey(device_id=serial_number)
+                if system_mac_address is not None:
+                    device_filter.system_mac_address = system_mac_address
+                if hostname is not None:
+                    device_filter.hostname = hostname
+                request.partial_eq_filter.append(device_filter)
         client = self.new_stub(DeviceServiceStub)
         responses = client.get_all(request, timeout=timeout)
 
