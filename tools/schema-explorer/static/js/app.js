@@ -821,11 +821,7 @@ function renderModule(db, release, module, options = {}) {
     ? { name: "All Modules", icon: "bi-search", description: "Search across both AVD Design and EOS Config schemas." }
     : SCHEMA_MODULES[module];
 
-  const categories = getCategoryCounts(db, release, module);
-  const docTables = getDocTableCounts(db, release, module);
   const total = moduleStats.var_count || 0;
-  const categoryOptionsHtml = categories.map((item, index) => `<option value="category:${index}">${escapeHtml(item.category || "(none)")}</option>`).join("");
-  const docTableOptionsHtml = docTables.map((item, index) => `<option value="doc_table:${index}">${escapeHtml(item.doc_table || "(none)")}</option>`).join("");
   const headerHtml = chrome === "none" ? "" : `
     <div class="d-flex align-items-center mb-3 schema-browser-heading">
       ${embedded ? "" : `<a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>`}
@@ -855,21 +851,6 @@ function renderModule(db, release, module, options = {}) {
             </div>
           </div>
         </div>
-        <div class="schema-browse-filter-field">
-          <label class="schema-filter-label" for="browse-filter">Browse by</label>
-          <div class="input-group input-group-sm">
-            <span class="input-group-text"><i class="bi bi-tag"></i></span>
-            <select class="form-control schema-browse-select" id="browse-filter">
-              <option value="">All categories and tables</option>
-              <optgroup label="Categories">
-                ${categoryOptionsHtml}
-              </optgroup>
-              <optgroup label="Tables">
-                ${docTableOptionsHtml}
-              </optgroup>
-            </select>
-          </div>
-        </div>
       </div>
       <div class="schema-active-filters mt-2 small text-muted" id="active-filters"></div>
     </form>
@@ -892,7 +873,6 @@ function renderModule(db, release, module, options = {}) {
   const refresh = debounce(() => renderResults(db, release, module, state), 250);
 
   const qInput = host.querySelector("#q");
-  const browseInput = host.querySelector("#browse-filter");
   const activeFilters = host.querySelector("#active-filters");
   function updateActiveFilters() {
     const filters = [];
@@ -903,15 +883,6 @@ function renderModule(db, release, module, options = {}) {
   }
 
   qInput.addEventListener("input", e => { state.q = e.target.value.trim(); updateActiveFilters(); refresh(); });
-  browseInput.addEventListener("change", e => {
-    const [kind, indexValue] = e.target.value.split(":", 2);
-    state.category = "";
-    state.docTable = "";
-    if (kind === "category") state.category = categories[Number(indexValue)]?.category || "";
-    if (kind === "doc_table") state.docTable = docTables[Number(indexValue)]?.doc_table || "";
-    updateActiveFilters();
-    renderResults(db, release, module, state);
-  });
   const viewButtons = {
     tree: host.querySelector("#btn-view-tree"),
     flat: host.querySelector("#btn-view-flat"),

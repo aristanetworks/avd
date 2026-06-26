@@ -724,15 +724,6 @@
   min-width: 16rem;
 }
 
-:where(.schema-spa-host, .schema-embed) .schema-browse-filter-field {
-  flex: 0 1 13rem;
-  min-width: 11rem;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-browse-select {
-  min-width: 0;
-}
-
 :where(.schema-spa-host, .schema-embed) .schema-view-mode-row {
   margin-top: 0.45rem;
 }
