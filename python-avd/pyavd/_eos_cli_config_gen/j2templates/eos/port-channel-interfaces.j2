@@ -759,7 +759,11 @@ interface {{ port_channel_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge_keyword is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
