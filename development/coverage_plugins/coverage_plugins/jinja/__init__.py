@@ -19,6 +19,7 @@ from coverage.exceptions import ConfigError
 
 from .compiled_parser import parse_compiled_template
 from .source_template import (
+    covered_adjacent_static_branch_arcs,
     covered_else_branch_arcs,
     covered_generated_body_branch_arcs,
     covered_multiline_tag_branch_arcs,
@@ -140,6 +141,9 @@ class JinjaTemplateFileReporter(FileReporter):
         )
         translated_arcs.update(
             covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, template.reportable_lines),
+        )
+        translated_arcs.update(
+            covered_adjacent_static_branch_arcs(recorded_arcs, possible_arcs, template.reportable_lines),
         )
         return translated_arcs
 

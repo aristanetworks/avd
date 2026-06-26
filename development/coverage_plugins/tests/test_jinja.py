@@ -693,6 +693,16 @@ def test_nested_optional_input_shape_reports_missing_inner_output(tmp_path: Path
     assert analysis.missing_branch_arcs() == {3: [4]}
 
 
+def test_optional_block_after_static_output_records_both_branches(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% for item in items %}\nheading {{ item.name }}\n{% if item.enabled %}\noptional\n{% endif %}\n{% endfor %}\n",
+        {"items": [{"name": "enabled", "enabled": True}, {"name": "disabled", "enabled": False}]},
+    )
+
+    assert not analysis.missing_branch_arcs()
+
+
 def test_long_elif_chain_reports_unvisited_alternatives(tmp_path: Path) -> None:
     analysis = _analyze_rendered_template(
         tmp_path,
