@@ -67217,12 +67217,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 once: bool | None
                 """
                 Run the command a single time at the given time/date.
-                Mutually exclusive with `at.interval`.
+                Mutually exclusive with `at.interval`. Takes
+                precedence over `at.interval` if both are set.
                 """
                 interval: int | None
                 """
                 Set interval for CLI command execution.
-                Mutually exclusive with `at.once`.
+                Mutually exclusive with `at.once`. `at.once` takes
+                precedence if both are set.
                 """
 
                 if TYPE_CHECKING:
@@ -67246,31 +67248,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             date: Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
                             once:
                                Run the command a single time at the given time/date.
-                               Mutually exclusive with `at.interval`.
+                               Mutually exclusive with `at.interval`. Takes
+                               precedence over `at.interval` if both are set.
                             interval:
                                Set interval for CLI command execution.
-                               Mutually exclusive with `at.once`.
-
-                        """
-
-            class Now(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"interval": {"type": int}}
-                interval: int
-                """Set interval for CLI command execution."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, interval: int | UndefinedType = Undefined) -> None:
-                        """
-                        Now.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            interval: Set interval for CLI command execution.
+                               Mutually exclusive with `at.once`. `at.once` takes
+                               precedence if both are set.
 
                         """
 
@@ -67278,7 +67261,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "name": {"type": str},
                 "interval": {"type": int},
                 "at": {"type": At},
-                "now": {"type": Now},
+                "now_interval": {"type": int},
                 "timeout": {"type": int},
                 "max_log_files": {"type": int},
                 "logging_verbose": {"type": bool},
@@ -67291,34 +67274,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             interval: int | None
             """
             Run the command every N minutes (standalone, no start time).
-            Mutually exclusive with `at` and `now`.
+            Mutually exclusive with `at` and
+            `now_interval`. Takes precedence over both if multiple are set.
             """
             at: At
             """
             Schedule job at a specific time, optionally on a specific date.
             Mutually exclusive with `interval`
-            (standalone) and `now`.
+            (standalone) and `now_interval`.
+            Takes precedence over `now_interval` if both are set. Ignored if
+            `interval` is set.
 
             Subclass of AvdModel.
             """
-            now: Now
+            now_interval: int | None
             """
-            Start the schedule immediately and repeat at the given interval.
-            Mutually exclusive with `interval`
-            and `at`.
-
-            Subclass of AvdModel.
+            Start the schedule immediately and repeat every N minutes.
+            Mutually exclusive with `interval` and
+            `at`. `interval` or `at` take precedence if they are set.
             """
             timeout: int | None
             """Job timeout. Must be less than the job interval."""
-            max_log_files: int | None
+            max_log_files: int
             """Maximum number of log files to retain."""
             logging_verbose: bool | None
             """Enable verbose logging."""
             loglocation: str | None
-            """Log file location path."""
+            """Log file location path (e.g. flash:/schedule/logs)."""
             max_total_size: str | None
-            """Maximum total size of log files."""
+            """
+            Maximum total size of log files (e.g. 110m, 1g).
+            Supported suffixes: k (kilobytes), m (megabytes), g
+            (gigabytes).
+            """
             command: str
             """EOS CLI command to execute."""
 
@@ -67330,9 +67318,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     interval: int | None | UndefinedType = Undefined,
                     at: At | UndefinedType = Undefined,
-                    now: Now | UndefinedType = Undefined,
+                    now_interval: int | None | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
-                    max_log_files: int | None | UndefinedType = Undefined,
+                    max_log_files: int | UndefinedType = Undefined,
                     logging_verbose: bool | None | UndefinedType = Undefined,
                     loglocation: str | None | UndefinedType = Undefined,
                     max_total_size: str | None | UndefinedType = Undefined,
@@ -67348,24 +67336,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: Schedule job name.
                         interval:
                            Run the command every N minutes (standalone, no start time).
-                           Mutually exclusive with `at` and `now`.
+                           Mutually exclusive with `at` and
+                           `now_interval`. Takes precedence over both if multiple are set.
                         at:
                            Schedule job at a specific time, optionally on a specific date.
                            Mutually exclusive with `interval`
-                           (standalone) and `now`.
+                           (standalone) and `now_interval`.
+                           Takes precedence over `now_interval` if both are set. Ignored if
+                           `interval` is set.
 
                            Subclass of AvdModel.
-                        now:
-                           Start the schedule immediately and repeat at the given interval.
-                           Mutually exclusive with `interval`
-                           and `at`.
-
-                           Subclass of AvdModel.
+                        now_interval:
+                           Start the schedule immediately and repeat every N minutes.
+                           Mutually exclusive with `interval` and
+                           `at`. `interval` or `at` take precedence if they are set.
                         timeout: Job timeout. Must be less than the job interval.
                         max_log_files: Maximum number of log files to retain.
                         logging_verbose: Enable verbose logging.
-                        loglocation: Log file location path.
-                        max_total_size: Maximum total size of log files.
+                        loglocation: Log file location path (e.g. flash:/schedule/logs).
+                        max_total_size:
+                           Maximum total size of log files (e.g. 110m, 1g).
+                           Supported suffixes: k (kilobytes), m (megabytes), g
+                           (gigabytes).
                         command: EOS CLI command to execute.
 
                     """

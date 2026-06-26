@@ -5,7 +5,7 @@
 #}
 {# eos - schedule #}
 {% if schedule is arista.avd.defined %}
-{%     if schedule.config is arista.avd.defined %}
+{%     if schedule.config.max_concurrent_jobs is arista.avd.defined or schedule.config.prepend_hostname_logfile is arista.avd.defined %}
 {%         if schedule.config.max_concurrent_jobs is arista.avd.defined %}
 schedule config max-concurrent-jobs {{ schedule.config.max_concurrent_jobs }}
 {%         endif %}
@@ -27,15 +27,13 @@ schedule config prepend-hostname-logfile
 {%             elif job.at.interval is arista.avd.defined %}
 {%                 set schedule_cli = schedule_cli ~ " interval " ~ job.at.interval %}
 {%             endif %}
-{%         elif job.now is arista.avd.defined %}
-{%             set schedule_cli = schedule_cli ~ " now interval " ~ job.now.interval %}
+{%         elif job.now_interval is arista.avd.defined %}
+{%             set schedule_cli = schedule_cli ~ " now interval " ~ job.now_interval %}
 {%         endif %}
 {%         if job.timeout is arista.avd.defined %}
 {%             set schedule_cli = schedule_cli ~ " timeout " ~ job.timeout %}
 {%         endif %}
-{%         if job.max_log_files is arista.avd.defined %}
-{%             set schedule_cli = schedule_cli ~ " max-log-files " ~ job.max_log_files %}
-{%         endif %}
+{%         set schedule_cli = schedule_cli ~ " max-log-files " ~ job.max_log_files %}
 {%         if job.max_total_size is arista.avd.defined %}
 {%             set schedule_cli = schedule_cli ~ " max-total-size " ~ job.max_total_size %}
 {%         endif %}

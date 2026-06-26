@@ -42,12 +42,13 @@ keys:
                 - str
               description: |-
                 Run the command every N minutes (standalone, no start time).
-                Mutually exclusive with `at` and `now`.
+                Mutually exclusive with `at` and `now_interval`. Takes precedence over both if multiple are set.
             at:
               type: dict
               description: |-
                 Schedule job at a specific time, optionally on a specific date.
-                Mutually exclusive with `interval` (standalone) and `now`.
+                Mutually exclusive with `interval` (standalone) and `now_interval`.
+                Takes precedence over `now_interval` if both are set. Ignored if `interval` is set.
               keys:
                 time:
                   required: true
@@ -61,7 +62,7 @@ keys:
                   type: bool
                   description: |-
                     Run the command a single time at the given time/date.
-                    Mutually exclusive with `at.interval`.
+                    Mutually exclusive with `at.interval`. Takes precedence over `at.interval` if both are set.
                 interval:
                   type: int
                   min: 2
@@ -70,21 +71,16 @@ keys:
                     - str
                   description: |-
                     Set interval for CLI command execution.
-                    Mutually exclusive with `at.once`.
-            now:
-              type: dict
+                    Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
+            now_interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+                - str
               description: |-
-                Start the schedule immediately and repeat at the given interval.
-                Mutually exclusive with `interval` and `at`.
-              keys:
-                interval:
-                  type: int
-                  required: true
-                  min: 2
-                  max: 1440
-                  convert_types:
-                    - str
-                  description: Set interval for CLI command execution.
+                Start the schedule immediately and repeat every N minutes.
+                Mutually exclusive with `interval` and `at`. `interval` or `at` take precedence if they are set.
             timeout:
               type: int
               min: 1
@@ -95,6 +91,7 @@ keys:
                 Job timeout. Must be less than the job interval.
             max_log_files:
               type: int
+              required: true
               min: 0
               max: 10000
               convert_types:
@@ -105,7 +102,7 @@ keys:
               description: Enable verbose logging.
             loglocation:
               type: str
-              description: Log file destination path. Must start with flash: (e.g. flash:/schedule/logs).
+              description: Log file location path (e.g. flash:/schedule/logs).
             max_total_size:
               type: str
               description: |-

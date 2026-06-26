@@ -34,12 +34,12 @@
 {%                 elif job.at.interval is arista.avd.defined %}
 {%                     set period = period ~ " interval " ~ job.at.interval %}
 {%                 endif %}
-{%             elif job.now is arista.avd.defined %}
-{%                 set period = "now interval " ~ job.now.interval %}
+{%             elif job.now_interval is arista.avd.defined %}
+{%                 set period = "now interval " ~ job.now_interval %}
 {%             else %}
 {%                 set period = "-" %}
 {%             endif %}
-| {{ job.name }} | {{ period }} | {{ job.command }} | {{ job.max_log_files | arista.avd.default("-") }} | {{ job.timeout | arista.avd.default("-") }} | {{ job.logging_verbose | arista.avd.default("-") }} | {{ job.loglocation | arista.avd.default("-") }} | {{ job.max_total_size | arista.avd.default("-") }} |
+| {{ job.name }} | {{ period }} | {{ job.command }} | {{ job.max_log_files }} | {{ job.timeout | arista.avd.default("-") }} | {{ job.logging_verbose | arista.avd.default("-") }} | {{ job.loglocation | arista.avd.default("-") }} | {{ job.max_total_size | arista.avd.default("-") }} |
 {%         endfor %}
 
 {%     endif %}

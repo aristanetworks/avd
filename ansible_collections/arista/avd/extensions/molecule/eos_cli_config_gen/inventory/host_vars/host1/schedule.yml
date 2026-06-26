@@ -52,8 +52,7 @@ schedule:
       command: show interfaces
     # now interval <N> — start immediately and repeat every N minutes (interval must be > timeout)
     - name: now_interval_full
-      now:
-        interval: 5
+      now_interval: 5
       timeout: 4
       max_log_files: 3
       logging_verbose: true
