@@ -145,7 +145,7 @@ make schema-explorer-build
 URLs once `mkdocs serve` is up:
 
 - `http://127.0.0.1:8000/_assets/schema-explorer/index.html` — standalone SPA
-- `http://127.0.0.1:8000/docs/data-models/README.html` — page with embed demo
+- `http://127.0.0.1:8000/data-models/` — page with embed demo
 - `http://127.0.0.1:8000/_assets/schema-explorer/data/devel/schema.sqlite` —
   the SQLite the browser fetches
 

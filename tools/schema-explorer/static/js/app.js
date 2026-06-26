@@ -421,7 +421,8 @@ async function ensureSqlJs() {
   }
 })().catch(err => {
   if (app) fail("Failed to initialise: " + err.message);
-  else console.error("Schema Explorer init failed:", err);
+  document.querySelectorAll("schema-explorer").forEach(el => failEmbed(el, "Failed to initialise: " + err.message));
+  console.error("Schema Explorer init failed:", err);
 });
 
 // Per-group tree visibility — a row is shown iff every ancestor along its
@@ -741,10 +742,11 @@ function getSiblings(db, release, module, parent_path, exclude_key) {
 }
 
 function getDescendants(db, release, module, key_path) {
+  const escapedPath = escapeSqlLike(key_path);
   return rows(
     db,
-    "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND (key_path LIKE ? OR key_path LIKE ?) ORDER BY id LIMIT 2000",
-    [release, module, `${key_path}.%`, `${key_path}[]%`],
+    "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND (key_path LIKE ? ESCAPE '\\' OR key_path LIKE ? ESCAPE '\\') ORDER BY id LIMIT 2000",
+    [release, module, `${escapedPath}.%`, `${escapedPath}[]%`],
   );
 }
 

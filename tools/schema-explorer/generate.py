@@ -363,7 +363,7 @@ def main() -> int:
         "--site-dir",
         type=Path,
         required=True,
-        help="Output directory for the built explorer (e.g. docs/schema-explorer). "
+        help="Output directory for the built explorer (e.g. tools/schema-explorer/build). "
         "Static assets are copied here and the SQLite is written under "
         "data/<release>/schema.sqlite.",
     )
