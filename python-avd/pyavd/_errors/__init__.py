@@ -22,6 +22,9 @@ class AristaAvdError(Exception):
         self.message = message
         super().__init__(self.message)
 
+    def __reduce__(self):
+        return (type(self).from_message, (self.message, self.host))
+
     @classmethod
     def from_message(cls, message: str, host: str | None = None) -> Self:
         """Alternate constructor that initializes any subclass from a plain message, bypassing the subclass __init__."""
