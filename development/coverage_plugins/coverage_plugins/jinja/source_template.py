@@ -127,6 +127,33 @@ def covered_else_branch_arcs(
     return covered_else_arcs
 
 
+def covered_generated_body_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    translated_arcs: set[tuple[int, int]],
+    possible_arcs: Collection[tuple[int, int]],
+    reportable_lines: Collection[int],
+) -> set[tuple[int, int]]:
+    """
+    Return body branch arcs covered by generated code entering reportable body lines.
+
+    Jinja compiles ``set`` and ``do`` statements, and sometimes static output,
+    into generated Python lines that enter the source body line without a direct
+    source-to-source arc. If the condition was evaluated and generated code
+    reached the body line, credit the source branch body arc.
+    """
+    executed_lines = {line for arc in translated_arcs for line in arc if line > 0}
+    executed_lines.update(raw_to_line for _raw_from_line, raw_to_line in recorded_arcs if raw_to_line in reportable_lines)
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line not in executed_lines or to_line not in reportable_lines:
+            continue
+
+        if any(raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs):
+            covered_branch_arcs.add((from_line, to_line))
+
+    return covered_branch_arcs
+
+
 def find_reportable_jinja_lines(filename: Path) -> frozenset[int]:
     """Return reportable source lines for a Jinja template with file-stamp cache invalidation."""
     if (stamp := file_stamp(filename)) is None:
@@ -190,19 +217,20 @@ def _find_structural_control_label_lines_cached(filename: Path, stamp: FileStamp
 
 
 def static_template_lines(source: str) -> tuple[tuple[int, str], ...]:
-    """Return non-empty static-data lines from a Jinja source template."""
+    """Return static-data lines from a Jinja source template."""
     try:
         from jinja2 import Environment  # noqa: PLC0415
     except ImportError:
         return ()
 
     environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    source_lines = source.splitlines()
     static_lines: list[tuple[int, str]] = []
     try:
         tokens = environment.lex(source)
         for lineno, kind, value in tokens:
             if kind == "data":
-                static_lines.extend(_numbered_non_whitespace_lines(lineno, value))
+                static_lines.extend(_numbered_static_lines(lineno, value, source_lines))
     except Exception:
         return ()
 
@@ -372,14 +400,14 @@ def block_statement_lines(source: str) -> tuple[tuple[int, str], ...]:
     return tuple(block_statements)
 
 
-def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[int, str]]:
-    """Split a Jinja static-data token into stripped non-empty lines with source line numbers."""
+def _numbered_static_lines(start_lineno: int, value: str, source_lines: list[str]) -> list[tuple[int, str]]:
+    """Split a Jinja static-data token into stripped source lines with line numbers."""
     numbered_lines: list[tuple[int, str]] = []
     line_number = start_lineno
     for line in value.splitlines(keepends=True):
         line_without_newline = line.removesuffix("\n").removesuffix("\r")
         stripped_line = line_without_newline.strip()
-        if stripped_line:
+        if stripped_line or _source_line_is_blank(line_number, source_lines):
             numbered_lines.append((line_number, stripped_line))
 
         if line.endswith(("\n", "\r")):
@@ -388,9 +416,23 @@ def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[
     return numbered_lines
 
 
-def non_whitespace_lines(value: str) -> list[str]:
-    """Return stripped non-empty lines from rendered static output."""
-    return [line.strip() for line in value.splitlines() if line.strip()]
+def _source_line_is_blank(line_number: int, source_lines: list[str]) -> bool:
+    """Return whether a source line is whitespace-only."""
+    return 0 < line_number <= len(source_lines) and not source_lines[line_number - 1].strip()
+
+
+def rendered_static_lines(value: str) -> list[str]:
+    """Return stripped rendered static lines, including intentional blank lines."""
+    rendered_lines: list[str] = []
+    for index, line in enumerate(value.splitlines(keepends=True)):
+        line_without_newline = line.removesuffix("\n").removesuffix("\r")
+        stripped_line = line_without_newline.strip()
+        if stripped_line:
+            rendered_lines.append(stripped_line)
+        elif index > 0:
+            rendered_lines.append("")
+
+    return rendered_lines
 
 
 def find_possible_jinja_arcs(source_filename: Path) -> frozenset[tuple[int, int]]:
