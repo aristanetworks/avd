@@ -22,7 +22,7 @@ class AristaAvdError(Exception):
         self.message = message
         super().__init__(self.message)
 
-    def __reduce__(self):
+    def __reduce__(self) -> tuple[object, tuple[str, str | None]]:
         return (type(self).from_message, (self.message, self.host))
 
     @classmethod
