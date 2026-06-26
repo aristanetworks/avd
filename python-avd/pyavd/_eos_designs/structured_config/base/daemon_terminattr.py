@@ -11,7 +11,6 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -49,9 +48,13 @@ class DaemonTerminattrMixin(Protocol):
             ingestexclude=cv_settings.terminattr.ingestexclude,
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
-            cvtargetconfigs=cv_settings.terminattr.cvtargetconfigs or Undefined,
             flowdns=cv_settings.terminattr.flowdns,
         )
+
+        if cv_settings.terminattr.cvtargetconfigs:
+            self.structured_config.daemon_terminattr.cvtargetconfigs = cv_settings.terminattr.cvtargetconfigs._cast_as(
+                EosCliConfigGen.DaemonTerminattr.Cvtargetconfigs
+            )
 
         if first_tracker_exported_to_cloudvision is not None:
             flow_tracking_vrf = self.shared_utils.get_vrf(
