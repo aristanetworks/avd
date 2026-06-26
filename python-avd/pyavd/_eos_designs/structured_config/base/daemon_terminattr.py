@@ -11,6 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import Undefined
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -48,7 +49,7 @@ class DaemonTerminattrMixin(Protocol):
             ingestexclude=cv_settings.terminattr.ingestexclude,
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
-            cvtargetconfigs=cv_settings.terminattr.cvtargetconfigs or None,
+            cvtargetconfigs=cv_settings.terminattr.cvtargetconfigs or Undefined,
             flowdns=cv_settings.terminattr.flowdns,
         )
 
