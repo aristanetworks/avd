@@ -32,6 +32,7 @@
   --se-success: #198754;
   --se-danger: #dc3545;
   --se-warning: #ffc107;
+
   box-sizing: border-box;
 }
 
@@ -367,7 +368,7 @@
   display: inline-block;
   width: 1rem;
   height: 1rem;
-  border: 0.15em solid currentColor;
+  border: 0.15em solid currentcolor;
   border-right-color: transparent;
   border-radius: 50%;
   animation: se-spinner-border .75s linear infinite;
@@ -516,6 +517,7 @@
   --se-light-bg: rgba(68, 115, 169, 0.12);
   --se-brand: var(--md-typeset-a-color, #6ea8fe);
   --hover-bg: rgba(68, 115, 169, 0.18);
+
   color: var(--md-default-fg-color, #dee2e6);
 }
 
@@ -1242,7 +1244,7 @@ html.in-iframe body { padding-top: 0; }
   position: sticky;
   top: 0;
   z-index: 1030;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .schema-docs-header-inner {
   max-width: none;
@@ -1301,7 +1303,7 @@ html.in-iframe body { padding-top: 0; }
 
 /* Apply Roboto to the standalone SPA. Embeds inherit MkDocs Material's page
    typography so they match surrounding docs content. */
-.schema-spa-host { font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }
+.schema-spa-host { font-family: Roboto, -apple-system, BlinkMacSystemFont, sans-serif; }
 .schema-embed { font-family: inherit; }
 .schema-spa-host code, .schema-spa-host pre, .schema-spa-host .font-monospace {
   font-family: "Roboto Mono", "Fira Mono", monospace;
@@ -1613,7 +1615,8 @@ html.style-none #schema-navbar { display: none !important; }
     width: 1px !important;
     height: 1px;
     overflow: hidden;
-    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   :where(.schema-spa-host, .schema-embed) .schema-var-table tr {
@@ -1674,6 +1677,7 @@ html.style-none #schema-navbar { display: none !important; }
   --se-border-color: var(--schema-material-border);
   --se-muted: var(--schema-material-muted);
   --se-light-bg: var(--md-code-bg-color, rgba(0, 0, 0, 0.03));
+
   color: var(--schema-material-fg);
 }
 
@@ -1939,6 +1943,7 @@ html.style-none #schema-navbar { display: none !important; }
   --se-border-color: var(--schema-material-border);
   --se-muted: var(--schema-material-muted);
   --se-light-bg: rgba(68, 115, 169, 0.16);
+
   color: var(--schema-material-fg);
 }
 

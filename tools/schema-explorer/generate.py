@@ -293,14 +293,16 @@ def _create_schema(conn: sqlite3.Connection) -> None:
 
 
 def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
-    if out.exists():
-        out.unlink()
     out.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"  loading schemas from {avd_root}/python-avd")
     store = _load_resolved_store(avd_root)
 
-    conn = sqlite3.connect(str(out))
+    tmp_out = out.with_suffix(out.suffix + ".tmp")
+    if tmp_out.exists():
+        tmp_out.unlink()
+
+    conn = sqlite3.connect(str(tmp_out))
     try:
         _create_schema(conn)
         counts: dict[str, int] = {}
@@ -328,9 +330,12 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
             counts[module] = len(rows)
             print(f"    {len(rows)} variables")
         conn.commit()
+        tmp_out.replace(out)
         return counts
     finally:
         conn.close()
+        if tmp_out.exists():
+            tmp_out.unlink()
 
 
 def _copy_static_assets(site_dir: Path) -> None:

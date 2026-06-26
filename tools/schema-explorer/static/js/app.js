@@ -158,16 +158,21 @@ function treeRowId(row, currentModule) {
 function treeParentId(row, currentModule) {
   return row.parent_path ? `${rowModule(row, currentModule)}:${row.parent_path}` : "";
 }
+function parentPathCandidates(row) {
+  const parentPath = String(row.parent_path || "");
+  if (!parentPath) return [];
+  const candidates = [parentPath];
+  if (parentPath.endsWith("[]")) candidates.push(parentPath.slice(0, -2));
+  const collapsedListPath = parentPath.replace(/\[\](?=\.|$)/g, "");
+  if (collapsedListPath !== parentPath) candidates.push(collapsedListPath);
+  return [...new Set(candidates)];
+}
 function resolvedTreeParentId(row, currentModule, rowIds) {
   const directParentId = treeParentId(row, currentModule);
   if (!directParentId || !rowIds || rowIds.has(directParentId)) return directParentId;
 
-  const parentPath = String(row.parent_path || "");
   const rowModuleId = rowModule(row, currentModule);
-  const candidates = [];
-  if (parentPath.endsWith("[]")) candidates.push(`${rowModuleId}:${parentPath.slice(0, -2)}`);
-  const collapsedListPath = parentPath.replace(/\[\](?=\.|$)/g, "");
-  if (collapsedListPath !== parentPath) candidates.push(`${rowModuleId}:${collapsedListPath}`);
+  const candidates = parentPathCandidates(row).slice(1).map(keyPath => `${rowModuleId}:${keyPath}`);
   return candidates.find(candidate => rowIds.has(candidate)) || directParentId;
 }
 function orderedTreeRows(vars, currentModule) {
@@ -588,14 +593,19 @@ function getCategoryCounts(db, release, module) {
   return rows(db, "SELECT category, COUNT(*) AS count FROM schema_vars WHERE release = ? AND module = ? GROUP BY category ORDER BY category", [release, module]);
 }
 
+function escapeSqlLike(value) {
+  return String(value).replace(/[\\%_]/g, "\\$&");
+}
+
 function searchVars(db, release, module, opts = {}) {
   const conds = ["release = ?"];
   const ps = [release];
   if (module !== "all") { conds.push("module = ?"); ps.push(module); }
   if (opts.rootModule && module === "all") { conds.push("module = ?"); ps.push(opts.rootModule); }
   if (opts.root) {
-    conds.push("(key_path = ? OR key_path LIKE ? OR key_path LIKE ?)");
-    ps.push(opts.root, `${opts.root}.%`, `${opts.root}[]%`);
+    const escapedRoot = escapeSqlLike(opts.root);
+    conds.push("(key_path = ? OR key_path LIKE ? ESCAPE '\\' OR key_path LIKE ? ESCAPE '\\')");
+    ps.push(opts.root, `${escapedRoot}.%`, `${escapedRoot}[]%`);
   }
   if (opts.q) { conds.push("(key_path LIKE ? OR description LIKE ?)"); ps.push(`%${opts.q}%`, `%${opts.q}%`); }
   if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
@@ -1023,8 +1033,10 @@ function renderTreeResults(target, db, release, module, state, matches) {
     const ancestorRows = [];
     let toFetch = [];
     for (const v of matches) {
-      const parentId = treeParentId(v, module);
-      if (v.parent_path && !knownByPath.has(parentId)) toFetch.push({ module: rowModule(v, module), keyPath: v.parent_path });
+      const fetchModule = rowModule(v, module);
+      for (const keyPath of parentPathCandidates(v)) {
+        if (!knownByPath.has(`${fetchModule}:${keyPath}`)) toFetch.push({ module: fetchModule, keyPath });
+      }
     }
     toFetch = [...new Map(toFetch.map(v => [`${v.module}:${v.keyPath}`, v])).values()];
     while (toFetch.length) {
@@ -1042,8 +1054,10 @@ function renderTreeResults(target, db, release, module, state, matches) {
       const next = [];
       for (const a of fetched) {
         knownByPath.set(treeRowId(a, module), a);
-        const parentId = treeParentId(a, module);
-        if (a.parent_path && !knownByPath.has(parentId)) next.push({ module: rowModule(a, module), keyPath: a.parent_path });
+        const fetchModule = rowModule(a, module);
+        for (const keyPath of parentPathCandidates(a)) {
+          if (!knownByPath.has(`${fetchModule}:${keyPath}`)) next.push({ module: fetchModule, keyPath });
+        }
       }
       toFetch = [...new Map(next.map(v => [`${v.module}:${v.keyPath}`, v])).values()];
     }
