@@ -53,6 +53,7 @@
 {%         for server_host in management_ldap.server_hosts %}
 {%             if server_host.search is arista.avd.defined %}
 {%                 set ns.has_search = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%         if ns.has_search %}

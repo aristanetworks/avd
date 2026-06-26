@@ -327,7 +327,8 @@ management api http-commands
 
 | Setting | Value |
 | ------- | ----- |
-| Base DN | dc=example,dc=com |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+| Search Password | <removed> |
 
 ### Management LDAP Device Configuration
 
@@ -335,7 +336,7 @@ management api http-commands
 !
 management ldap
    server defaults
-      base-dn dc=example,dc=com
+      search username cn=ldap-admin,dc=example,dc=com password <removed>
 ```
 
 ## CVX

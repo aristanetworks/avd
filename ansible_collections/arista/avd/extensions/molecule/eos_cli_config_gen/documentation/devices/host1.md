@@ -1311,6 +1311,7 @@ management api models
 
 | Setting | Value |
 | ------- | ----- |
+| Base DN | dc=example,dc=com |
 | RDN Attribute (User) | cn |
 | SSL Profile | LDAP_SSL_PROFILE |
 | Authorization Group Policy | LDAP_GROUP_POLICY |
@@ -1324,6 +1325,7 @@ management api models
 | ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
 | ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY |
 | ldap2.example.com | - | default | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - |
 
 #### Server Host Search Credentials
 
@@ -1351,12 +1353,20 @@ management api models
 | Network Admin | network-admin | 15 |
 | Read Only | read-only | - |
 
+#### Group Policy: LDAP_SEARCH_FILTER_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+
 ### Management LDAP Device Configuration
 
 ```eos
 !
 management ldap
    server defaults
+      base-dn dc=example,dc=com
       rdn attribute user cn
       ssl-profile LDAP_SSL_PROFILE
       authorization group policy LDAP_GROUP_POLICY
@@ -1373,6 +1383,9 @@ management ldap
    server host ldap2.example.com
       search username cn=admin2,dc=example,dc=com password <removed>
    !
+   server host 10.1.1.1
+      ssl-profile LDAP_HOST_SSL_PROFILE
+   !
    group policy HOST_GROUP_POLICY
       group "Network Operator" role network-operator
    !
@@ -1380,6 +1393,9 @@ management ldap
       search filter objectclass group attribute member
       group "Network Admin" role network-admin privilege 15
       group "Read Only" role read-only
+   !
+   group policy LDAP_SEARCH_FILTER_POLICY
+      search filter objectclass group attribute member
 ```
 
 ## CVX

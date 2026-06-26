@@ -3,6 +3,7 @@ management_ldap:
 
   # server_defaults: covers all default fields + search with password_type
   server_defaults:
+    base_dn: dc=example,dc=com
     rdn_attribute_user: cn
     ssl_profile: LDAP_SSL_PROFILE
     authorization_group_policy: LDAP_GROUP_POLICY
@@ -32,6 +33,10 @@ management_ldap:
       search:
         username: cn=admin2,dc=example,dc=com
         password: Admin2Pass123!
+    
+    # Host3: Without search key
+    - host: 10.1.1.1
+      ssl_profile: LDAP_HOST_SSL_PROFILE
 
   group_policies:
     # Policy 1: both search_filter and groups; one group with privilege, one without
@@ -54,3 +59,9 @@ management_ldap:
 
     # Policy 3: neither search_filter nor groups — tests the skip (false) branch of the inner if
     - policy: EMPTY_GROUP_POLICY
+  
+    # Policy 4: no groups defined
+    - policy: LDAP_SEARCH_FILTER_POLICY
+      search_filter:
+        objectclass: group
+        attribute: member
