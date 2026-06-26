@@ -1518,10 +1518,8 @@ function renderDocsResults(target, release, module, state, inputRows) {
   }).join("");
 
   target.innerHTML = `
-    <div class="schema-results-toolbar card-header bg-light text-muted small">${inputRows.length} variable${inputRows.length === 1 ? "" : "s"} in documentation view</div>
     <div class="schema-docs-view">
       <aside class="schema-docs-nav" aria-label="Schema documentation navigation">
-        <div class="schema-docs-nav-title">Documentation</div>
         ${navRows}
       </aside>
       <section class="schema-docs-detail" aria-live="polite">${renderDocsDetail(selected, release, module, isAll)}</section>

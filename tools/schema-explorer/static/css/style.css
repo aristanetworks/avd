@@ -1448,14 +1448,6 @@ html.style-none #schema-navbar { display: none !important; }
   background: var(--se-light-bg);
 }
 
-:where(.schema-spa-host, .schema-embed) .schema-docs-nav-title {
-  margin: 0 0 0.45rem;
-  color: var(--se-muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
 :where(.schema-spa-host, .schema-embed) .schema-docs-nav-row {
   display: flex;
   align-items: center;
@@ -1818,18 +1810,6 @@ html.style-none #schema-navbar { display: none !important; }
   padding: 0.75rem 0.9rem 1rem 0;
   border-right: 0.05rem solid var(--schema-material-border);
   background: transparent;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-docs-nav-title {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: var(--schema-material-bg);
-  margin: 0 0 0.55rem;
-  color: var(--schema-material-muted);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-nav-row {
