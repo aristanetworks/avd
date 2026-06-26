@@ -2648,7 +2648,7 @@ keys:
 
           When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled`
           is `true`.'
-      render_spanning_tree_portfast_edge_keyword:
+      render_spanning_tree_portfast_edge:
         type: bool
         default: false
         description: 'Available from AVD 6.3.0.

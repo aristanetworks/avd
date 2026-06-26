@@ -918,7 +918,7 @@ interface {{ ethernet_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
-{%         if eos_config_future.render_spanning_tree_portfast_edge_keyword is arista.avd.defined(true) %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
    spanning-tree portfast edge
 {%         else %}
    spanning-tree portfast
