@@ -10,6 +10,11 @@ l2leaf:
         minimum: 201
         maximum: 2001
 
+# Here the settings from node config will get precedence
+spanning_tree_settings:
+  mode: mstp
+  priority: 16384
+
 tenants:
   - name: test
     vrfs:
