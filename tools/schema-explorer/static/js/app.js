@@ -598,6 +598,20 @@ function escapeSqlLike(value) {
   return String(value).replace(/[\\%_]/g, "\\$&");
 }
 
+const SEARCH_SCOPE_LABELS = {
+  both: "Path + description",
+  path: "Path",
+  description: "Description",
+};
+
+function normalizeSearchScope(scope) {
+  return Object.prototype.hasOwnProperty.call(SEARCH_SCOPE_LABELS, scope) ? scope : "both";
+}
+
+function searchScopeLabel(scope) {
+  return SEARCH_SCOPE_LABELS[normalizeSearchScope(scope)];
+}
+
 function searchVars(db, release, module, opts = {}) {
   const conds = ["release = ?"];
   const ps = [release];
@@ -608,7 +622,20 @@ function searchVars(db, release, module, opts = {}) {
     conds.push("(key_path = ? OR key_path LIKE ? ESCAPE '\\' OR key_path LIKE ? ESCAPE '\\')");
     ps.push(opts.root, `${escapedRoot}.%`, `${escapedRoot}[]%`);
   }
-  if (opts.q) { conds.push("(key_path LIKE ? OR description LIKE ?)"); ps.push(`%${opts.q}%`, `%${opts.q}%`); }
+  if (opts.q) {
+    const pattern = `%${opts.q}%`;
+    const searchScope = normalizeSearchScope(opts.searchScope);
+    if (searchScope === "path") {
+      conds.push("key_path LIKE ?");
+      ps.push(pattern);
+    } else if (searchScope === "description") {
+      conds.push("description LIKE ?");
+      ps.push(pattern);
+    } else {
+      conds.push("(key_path LIKE ? OR description LIKE ?)");
+      ps.push(pattern, pattern);
+    }
+  }
   if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
   const orderBy = opts.order === "id" ? "id" : "key_path";
@@ -840,7 +867,12 @@ function renderModule(db, release, module, options = {}) {
           <label class="schema-filter-label" for="q">Search</label>
           <div class="input-group input-group-sm">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control" id="q" placeholder="Search key paths or descriptions...">
+            <input type="search" class="form-control schema-search-input" id="q" placeholder="Search key paths or descriptions...">
+            <select class="form-control schema-search-scope" id="search-scope" aria-label="Search scope">
+              <option value="both" selected>Both</option>
+              <option value="path">Path</option>
+              <option value="description">Description</option>
+            </select>
           </div>
           <div class="schema-view-mode-row">
             <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
@@ -867,22 +899,29 @@ function renderModule(db, release, module, options = {}) {
     rootModule: "",
     category: "",
     docTable: "",
+    searchScope: "both",
     view: initialView,
     target: host.querySelector("#results"),
   };
   const refresh = debounce(() => renderResults(db, release, module, state), 250);
 
   const qInput = host.querySelector("#q");
+  const scopeInput = host.querySelector("#search-scope");
   const activeFilters = host.querySelector("#active-filters");
   function updateActiveFilters() {
     const filters = [];
-    if (state.q) filters.push(`Search: <code>${escapeHtml(state.q)}</code>`);
+    if (state.q) filters.push(`Search (${escapeHtml(searchScopeLabel(state.searchScope))}): <code>${escapeHtml(state.q)}</code>`);
     if (state.category) filters.push(`Category: <code>${escapeHtml(state.category)}</code>`);
     if (state.docTable) filters.push(`Table: <code>${escapeHtml(state.docTable)}</code>`);
     activeFilters.innerHTML = filters.length ? filters.join(" <span class=\"mx-1\">|</span> ") : "No filters applied";
   }
 
   qInput.addEventListener("input", e => { state.q = e.target.value.trim(); updateActiveFilters(); refresh(); });
+  scopeInput.addEventListener("change", e => {
+    state.searchScope = normalizeSearchScope(e.target.value);
+    updateActiveFilters();
+    renderResults(db, release, module, state);
+  });
   const viewButtons = {
     tree: host.querySelector("#btn-view-tree"),
     flat: host.querySelector("#btn-view-flat"),
@@ -1521,7 +1560,11 @@ function renderDocsResults(target, release, module, state, inputRows) {
     target.querySelectorAll(".schema-docs-nav-row.active").forEach(row => row.classList.remove("active"));
     select.closest(".schema-docs-nav-row")?.classList.add("active");
     const selectedRow = rowsById.get(state.docsSelectedId);
-    if (selectedRow) target.querySelector(".schema-docs-detail").innerHTML = renderDocsDetail(selectedRow, release, module, isAll);
+    if (selectedRow) {
+      const detail = target.querySelector(".schema-docs-detail");
+      detail.innerHTML = renderDocsDetail(selectedRow, release, module, isAll);
+      detail.scrollTop = 0;
+    }
   });
   applyDocsVisibility();
 }
@@ -1783,7 +1826,12 @@ async function mountEmbed(el) {
           <label class="schema-filter-label" for="${idPrefix}-q">Search</label>
           <div class="input-group input-group-sm">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control" id="${idPrefix}-q" placeholder="Search key paths or descriptions...">
+            <input type="search" class="form-control schema-search-input" id="${idPrefix}-q" placeholder="Search key paths or descriptions...">
+            <select class="form-control schema-search-scope" id="${idPrefix}-search-scope" aria-label="Search scope">
+              <option value="both" selected>Both</option>
+              <option value="path">Path</option>
+              <option value="description">Description</option>
+            </select>
           </div>
         </div>
         <div class="schema-root-filter-field">
@@ -1811,6 +1859,7 @@ async function mountEmbed(el) {
     rootModule: defaultRootStateValue.rootModule,
     category: "",
     docTable: "",
+    searchScope: "both",
     view,
     target: el.querySelector(".schema-embed-results"),
     embedCompact: true,
@@ -1833,6 +1882,10 @@ async function mountEmbed(el) {
   el.querySelector(`#${CSS.escape(idPrefix)}-q`).addEventListener("input", e => {
     state.q = e.target.value.trim();
     refresh();
+  });
+  el.querySelector(`#${CSS.escape(idPrefix)}-search-scope`).addEventListener("change", e => {
+    state.searchScope = normalizeSearchScope(e.target.value);
+    renderEmbedResults();
   });
   const rootInput = el.querySelector(`#${CSS.escape(idPrefix)}-root`);
   rootInput.addEventListener("change", e => {

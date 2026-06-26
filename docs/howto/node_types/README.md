@@ -246,14 +246,6 @@ custom_node_type_keys:
 
 6. **Review default properties**: Before overriding a default node type, review all its properties to ensure you maintain necessary functionality.
 
-## Schema Reference
-
-```schema-explorer
-module: eos_designs
-root: <node_type_keys.key>
-height: 500px
-```
-
 ## Troubleshooting
 
 ### Configuration not applied

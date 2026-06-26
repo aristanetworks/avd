@@ -1736,6 +1736,18 @@ html.style-none #schema-navbar { display: none !important; }
   border-radius: 0 0.1rem 0.1rem 0;
 }
 
+:where(.schema-spa-host, .schema-embed) .input-group .schema-search-input {
+  border-radius: 0;
+}
+
+:where(.schema-spa-host, .schema-embed) .input-group .schema-search-scope {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 7.4rem;
+  border-left: 0;
+  border-radius: 0 0.1rem 0.1rem 0;
+}
+
 :where(.schema-spa-host, .schema-embed) .form-control:focus {
   border-color: var(--schema-material-accent);
   outline: 0;
@@ -1791,19 +1803,28 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-view {
   grid-template-columns: minmax(13.5rem, 16rem) minmax(0, 1fr);
-  min-height: 38rem;
+  grid-template-rows: minmax(0, 1fr);
+  height: clamp(30rem, 68vh, 52rem);
+  min-height: 0;
   border-top: 0;
   background: transparent;
+  overflow: hidden;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-nav {
+  min-height: 0;
   max-height: none;
+  overflow: auto;
   padding: 0.75rem 0.9rem 1rem 0;
   border-right: 0.05rem solid var(--schema-material-border);
   background: transparent;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-nav-title {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--schema-material-bg);
   margin: 0 0 0.55rem;
   color: var(--schema-material-muted);
   font-size: 0.68rem;
@@ -1842,6 +1863,8 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-detail {
+  min-height: 0;
+  overflow: auto;
   padding: 0.75rem 0 2rem 1.5rem;
 }
 
@@ -1914,6 +1937,19 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 @media (max-width: 900px) {
+  :where(.schema-spa-host, .schema-embed) .schema-docs-view {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    height: clamp(34rem, 75vh, 52rem);
+  }
+
+  :where(.schema-spa-host, .schema-embed) .schema-docs-nav {
+    max-height: 14rem;
+    border-right: 0;
+    border-bottom: 0.05rem solid var(--schema-material-border);
+    padding-right: 0;
+  }
+
   :where(.schema-spa-host, .schema-embed) .schema-docs-detail {
     padding-left: 0;
   }
