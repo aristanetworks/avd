@@ -105,7 +105,7 @@ keys:
               description: Enable verbose logging.
             loglocation:
               type: str
-              description: Log file location path.
+              description: Log file destination path. Must start with flash: (e.g. flash:/schedule/logs).
             max_total_size:
               type: str
               description: |-
