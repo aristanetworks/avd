@@ -11223,7 +11223,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -12159,7 +12159,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -16516,7 +16516,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -17461,7 +17461,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -52980,7 +52980,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -53899,7 +53899,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -58268,7 +58268,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -59196,7 +59196,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -63476,7 +63476,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -64406,7 +64406,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -68758,7 +68758,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -69686,7 +69686,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -88128,7 +88128,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -89047,7 +89047,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -93416,7 +93416,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -94344,7 +94344,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -98624,7 +98624,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -99554,7 +99554,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -103906,7 +103906,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -104834,7 +104834,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.

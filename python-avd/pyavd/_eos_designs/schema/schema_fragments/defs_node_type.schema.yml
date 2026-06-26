@@ -872,7 +872,7 @@ $defs:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
             description: |
-              Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+              Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
               L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
             type: dict
             keys:
