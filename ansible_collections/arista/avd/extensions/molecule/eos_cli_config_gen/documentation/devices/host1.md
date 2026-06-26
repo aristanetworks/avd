@@ -727,14 +727,14 @@ clock timezone GMT
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | - | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 20.20.20.20 | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -764,7 +764,7 @@ ntp server vrf MGMT 1.2.3.4 local-interface lo0
 ntp server vrf MGMT 2.2.2.55
 ntp server vrf MGMT 10.1.1.1
 ntp server vrf MGMT 10.1.1.2 prefer
-ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT 20.20.20.1 source-address 20.20.20.20 key <removed>
 ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```
@@ -2026,18 +2026,20 @@ address locking
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
-| certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl | False |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | True |
-| test1-chain-cert | - | - | - | - | - | - |
-| test1-trust-cert | - | - | - | - | - | - |
-| test2-chain-cert | - | - | - | - | - | - |
-| test2-trust-cert | - | - | - | - | - | - |
-| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - |
-| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - |
-| tls-versions-profile | 1.0 1.1 | - | - | - | - | True |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| auto-certificate-precedence-profile | - | - | - | auto-est | - | - | - |
+| auto-certificate-profile | - | - | - | auto-est | - | - | - |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | - | ca.crl<br>intermediate.crl | False |
+| cipher-list-profile | - | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | - | True |
+| test1-chain-cert | - | - | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - | - | True |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
@@ -2184,6 +2186,12 @@ management security
       tls versions 1.1 1.2
       fips restrictions
       certificate SSL_CERT key SSL_KEY
+   !
+   ssl profile auto-certificate-precedence-profile
+      certificate auto-certificate auto-est
+   !
+   ssl profile auto-certificate-profile
+      certificate auto-certificate auto-est
    !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key

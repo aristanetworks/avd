@@ -10252,6 +10252,13 @@ keys:
                   type: str
                 key:
                   type: str
+                auto_certificate:
+                  description: 'Automatically managed certificate profile.
+
+                    Mutually exclusive with ''file'' and ''key''.'
+                  type: str
+                  convert_types:
+                  - int
             certificate_revocation_lists:
               type: list
               description: 'List of CRLs (Certificate Revocation List).
@@ -12445,7 +12452,16 @@ keys:
               - str
             local_interface:
               type: str
-              description: Source interface.
+              description: 'Source interface.
+
+                Mutually exclusive with ''source_address''. Takes precedence if both
+                are set.'
+            source_address:
+              type: str
+              description: 'Source IPv4 address.
+
+                Mutually exclusive with ''local_interface''. ''local_interface'' takes
+                precedence if both are set.'
             maxpoll:
               type: int
               min: 3
