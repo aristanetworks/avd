@@ -876,10 +876,10 @@ function renderModule(db, release, module, options = {}) {
           </div>
           <div class="schema-view-mode-row">
             <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-tree">Tree</button>
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-flat">Table</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-tree">Navigator</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-docs">Reference</button>
               <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-yaml">YAML</button>
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-docs">Docs</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-flat">Index</button>
             </div>
           </div>
         </div>
