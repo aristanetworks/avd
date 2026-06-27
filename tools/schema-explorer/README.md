@@ -18,7 +18,7 @@ Tracked in `aristanetworks/avd-internal#503`.
 | Mode | Syntax / URL | When to use |
 | ---- | ------------ | ----------- |
 | **Standalone SPA** | `/_assets/schema-explorer/index.html` | Full-screen browser experience: landing -> module -> variable detail, with the SPA's own chrome. Reached from the Data Models overview card. |
-| **Markdown embed** | ```` ```schema-explorer ```` fenced block | Drop a focused, scoped tree such as `router_bgp` or `platform_settings` inline next to the prose that explains it. Material header, left nav, and right-rail TOC stay intact. |
+| **Markdown embed** | ```` ```schema-explorer ```` fenced block | Drop a focused, scoped navigator such as `router_bgp` or `platform_settings` inline next to the prose that explains it. Material header, left nav, and right-rail TOC stay intact. |
 
 Both modes share one set of static assets and one SQLite per release.
 
@@ -41,9 +41,9 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 | `release` | `devel` | Schema release tag. |
 | `module` | `eos_designs` | `eos_designs`, `eos_cli_config_gen`, or `all`. |
 | `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp` or `platform_settings`. |
-| `view` | `tree` | `tree`, `flat`, or `yaml`. |
+| `view` | `navigator` | `navigator`, `reference`, `yaml`, or `index`. |
 | `height` | `600px` | CSS max-height for the embed scroll container. |
-| `chrome` | `compact` | `compact` shows the per-tree expand/collapse bar; `none` hides it. |
+| `chrome` | `compact` | `compact` shows the per-navigator expand/collapse bar; `none` hides it. |
 
 ## Components
 
@@ -108,7 +108,7 @@ Loads each schema through pyavd's `schema_tools` resolver so:
 - Cross-schema `$ref` (e.g. `eos_cli_config_gen#/...` from inside
   `eos_designs`) is stripped before resolution and surfaced as a `cross_ref`
   column on the leaf row, so the SQLite stays ~7.5 MB instead of materializing
-  the whole `eos_cli_config_gen` tree under every `structured_config`.
+  the whole `eos_cli_config_gen` hierarchy under every `structured_config`.
 
 ### What the Markdown formatter does
 

@@ -103,7 +103,7 @@ function renderDefaultObjectTable(obj, className = "schema-default-field-table")
 function renderStructuredDefault(parts) {
   if (!parts.parseOk) return "";
   if (Array.isArray(parts.parsed) && parts.parsed.every(item => item && typeof item === "object" && !Array.isArray(item))) {
-    const idPrefix = `d${++_treeRenderSeq}`;
+    const idPrefix = `d${++_navigatorRenderSeq}`;
     const itemsHtml = parts.parsed.map((item, idx) => {
       const fields = Object.fromEntries(Object.entries(item).filter(([key]) => key !== "platforms"));
       const platforms = Array.isArray(item.platforms) && item.platforms.length
@@ -152,10 +152,10 @@ function renderDefaultValue(value, options = {}) {
 function rowModule(row, currentModule) {
   return currentModule === "all" ? row.module : currentModule;
 }
-function treeRowId(row, currentModule) {
+function navigatorRowId(row, currentModule) {
   return `${rowModule(row, currentModule)}:${row.key_path}`;
 }
-function treeParentId(row, currentModule) {
+function navigatorParentId(row, currentModule) {
   return row.parent_path ? `${rowModule(row, currentModule)}:${row.parent_path}` : "";
 }
 function parentPathCandidates(row) {
@@ -167,25 +167,25 @@ function parentPathCandidates(row) {
   if (collapsedListPath !== parentPath) candidates.push(collapsedListPath);
   return [...new Set(candidates)];
 }
-function resolvedTreeParentId(row, currentModule, rowIds) {
-  const directParentId = treeParentId(row, currentModule);
+function resolvedNavigatorParentId(row, currentModule, rowIds) {
+  const directParentId = navigatorParentId(row, currentModule);
   if (!directParentId || !rowIds || rowIds.has(directParentId)) return directParentId;
 
   const rowModuleId = rowModule(row, currentModule);
   const candidates = parentPathCandidates(row).slice(1).map(keyPath => `${rowModuleId}:${keyPath}`);
   return candidates.find(candidate => rowIds.has(candidate)) || directParentId;
 }
-function orderedTreeRows(vars, currentModule) {
+function orderedNavigatorRows(vars, currentModule) {
   const sourceVars = [...vars];
-  const rowIds = new Set(sourceVars.map(row => treeRowId(row, currentModule)));
+  const rowIds = new Set(sourceVars.map(row => navigatorRowId(row, currentModule)));
   const childCount = new Map();
   const childrenByParent = new Map();
   const parentIds = new Map();
   const rootRows = [];
 
   for (const row of sourceVars) {
-    const rowId = treeRowId(row, currentModule);
-    const resolvedParentId = resolvedTreeParentId(row, currentModule, rowIds);
+    const rowId = navigatorRowId(row, currentModule);
+    const resolvedParentId = resolvedNavigatorParentId(row, currentModule, rowIds);
     const visibleParentId = resolvedParentId && rowIds.has(resolvedParentId) ? resolvedParentId : "";
     parentIds.set(rowId, visibleParentId);
     if (!visibleParentId) {
@@ -200,7 +200,7 @@ function orderedTreeRows(vars, currentModule) {
   const orderedRows = [];
   const visited = new Set();
   function visit(row) {
-    const rowId = treeRowId(row, currentModule);
+    const rowId = navigatorRowId(row, currentModule);
     if (visited.has(rowId)) return;
     visited.add(rowId);
     orderedRows.push(row);
@@ -210,7 +210,7 @@ function orderedTreeRows(vars, currentModule) {
   sourceVars.forEach(visit);
   return { rows: orderedRows, childCount, parentIds, rowIds };
 }
-function treeGroupId(row, currentModule) {
+function navigatorGroupId(row, currentModule) {
   const root = rootSegment(row.key_path);
   return currentModule === "all" ? `${rowModule(row, currentModule)}:${root}` : root;
 }
@@ -425,33 +425,33 @@ async function ensureSqlJs() {
   console.error("Schema Explorer init failed:", err);
 });
 
-// Per-group tree visibility — a row is shown iff every ancestor along its
+// Per-group navigator visibility — a row is shown iff every ancestor along its
 // parent_path chain has data-expanded="1". Used by the chevron handler and
 // by the group-level Expand/Collapse all buttons.
-function setTreeRowExpanded(row, expanded) {
+function setNavigatorRowExpanded(row, expanded) {
   row.dataset.expanded = expanded ? "1" : "0";
-  const icon = row.querySelector(".tree-toggle-icon");
+  const icon = row.querySelector(".navigator-toggle-icon");
   if (icon) {
     icon.classList.toggle("bi-chevron-right", !expanded);
     icon.classList.toggle("bi-chevron-down", expanded);
   }
 }
 
-function expandGroupRootRows(groupEl) {
+function expandNavigatorRootRows(groupEl) {
   if (!groupEl) return;
-  const rows = groupEl.querySelectorAll("tr.schema-tree-row");
+  const rows = groupEl.querySelectorAll("tr.schema-navigator-row");
   const byPath = new Map();
   for (const r of rows) byPath.set(r.dataset.rowId, r);
   for (const r of rows) {
     if (r.dataset.isBranch !== "1") continue;
     const parentId = r.dataset.parentId;
-    if (!parentId || !byPath.has(parentId)) setTreeRowExpanded(r, true);
+    if (!parentId || !byPath.has(parentId)) setNavigatorRowExpanded(r, true);
   }
 }
 
-function applyTreeVisibility(groupEl) {
+function applyNavigatorVisibility(groupEl) {
   if (!groupEl) return;
-  const rows = groupEl.querySelectorAll("tr.schema-tree-row");
+  const rows = groupEl.querySelectorAll("tr.schema-navigator-row");
   const byPath = new Map();
   const metadataByPath = new Map();
   for (const detailRow of groupEl.querySelectorAll("tr.schema-row-metadata")) {
@@ -476,7 +476,7 @@ function applyTreeVisibility(groupEl) {
   }
 }
 
-// Delegated handler for tree-row chevron clicks. Lives at document level so
+// Delegated handler for navigator-row chevron clicks. Lives at document level so
 // it survives every renderResults innerHTML refresh and works across multiple
 // embed roots on the same page.
 document.addEventListener("click", e => {
@@ -497,21 +497,21 @@ document.addEventListener("click", e => {
   const header = e.target.closest(".schema-group-header");
   if (header) {
     const groupEl = header.closest(".schema-group");
-    expandGroupRootRows(groupEl);
-    applyTreeVisibility(groupEl);
+    expandNavigatorRootRows(groupEl);
+    applyNavigatorVisibility(groupEl);
     return;
   }
 
-  const toggle = e.target.closest("[data-tree-action='toggle-row'], .tree-toggle-icon");
+  const toggle = e.target.closest("[data-navigator-action='toggle-row'], .navigator-toggle-icon");
   if (!toggle) return;
   e.preventDefault();
   e.stopPropagation();
-  const row = toggle.closest("tr.schema-tree-row");
+  const row = toggle.closest("tr.schema-navigator-row");
   if (!row) return;
   const groupEl = row.closest(".schema-group");
   const shouldExpand = row.dataset.expanded !== "1";
-  setTreeRowExpanded(row, shouldExpand);
-  applyTreeVisibility(groupEl);
+  setNavigatorRowExpanded(row, shouldExpand);
+  applyNavigatorVisibility(groupEl);
 });
 
 // ── hash router ──────────────────────────────────────────────────────────────
@@ -719,7 +719,7 @@ function renderRowMetadata(row, release, visibleColumns, detailId) {
       ? `<span class="badge bg-warning text-dark">deprecated</span>`
       : `<span class="text-muted">active</span>`;
   return `
-    <tr class="schema-row-metadata" id="${escapeAttr(detailId)}" data-detail-for="${escapeAttr(treeRowId(row, row.module))}" data-open="0" style="display: none;">
+    <tr class="schema-row-metadata" id="${escapeAttr(detailId)}" data-detail-for="${escapeAttr(navigatorRowId(row, row.module))}" data-open="0" style="display: none;">
       <td colspan="${visibleColumns}">
         <div class="schema-row-metadata-panel">
           <div><span class="schema-meta-label">Default</span>${renderDefaultValue(row.default_value, { compact: true })}</div>
@@ -733,23 +733,23 @@ function renderRowMetadata(row, release, visibleColumns, detailId) {
     </tr>`;
 }
 
-function treeKeyControl(row, release, module, state, isBranch, leaf, indent, initiallyExpanded) {
+function navigatorKeyControl(row, release, module, state, isBranch, leaf, indent, initiallyExpanded) {
   const link = `#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}`;
   const chevron = isBranch
-    ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon"></i>`
-    : `<span class="tree-toggle-spacer"></span>`;
+    ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} navigator-toggle-icon"></i>`
+    : `<span class="navigator-toggle-spacer"></span>`;
   const keyHtml = `<code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code>`;
   const detailsLink = `<a href="${link}" class="schema-row-detail-link link-brand text-decoration-none" title="Open details for ${escapeAttr(row.key_path)}"><i class="bi bi-box-arrow-up-right"></i></a>`;
   if (isBranch) {
     return `
-      <span class="schema-tree-indent" style="padding-left: ${indent}rem;">
+      <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">
         ${chevron}
-        <button type="button" class="schema-key-toggle link-brand" data-tree-action="toggle-row" title="${escapeAttr(row.key_path)}">${keyHtml}</button>
+        <button type="button" class="schema-key-toggle link-brand" data-navigator-action="toggle-row" title="${escapeAttr(row.key_path)}">${keyHtml}</button>
         ${detailsLink}
       </span>`;
   }
   return `
-    <span class="schema-tree-indent" style="padding-left: ${indent}rem;">
+    <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">
       ${chevron}
       <a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}">${keyHtml}</a>
     </span>`;
@@ -832,7 +832,7 @@ function renderModule(db, release, module, options = {}) {
   const host = options.target || app;
   const embedded = !!options.embed;
   const defaultRoot = options.root || "";
-  const initialView = ["tree", "flat", "yaml", "docs"].includes(options.view) ? options.view : "tree";
+  const initialView = ["navigator", "reference", "yaml", "index"].includes(options.view) ? options.view : "navigator";
   const chrome = options.chrome || "compact";
   const isAll = module === "all";
   if (!isAll && !SCHEMA_MODULES[module]) {
@@ -876,10 +876,10 @@ function renderModule(db, release, module, options = {}) {
           </div>
           <div class="schema-view-mode-row">
             <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-tree">Navigator</button>
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-docs">Reference</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-navigator">Navigator</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-reference">Reference</button>
               <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-yaml">YAML</button>
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-flat">Index</button>
+              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-index">Index</button>
             </div>
           </div>
         </div>
@@ -923,20 +923,20 @@ function renderModule(db, release, module, options = {}) {
     renderResults(db, release, module, state);
   });
   const viewButtons = {
-    tree: host.querySelector("#btn-view-tree"),
-    flat: host.querySelector("#btn-view-flat"),
+    navigator: host.querySelector("#btn-view-navigator"),
+    index: host.querySelector("#btn-view-index"),
     yaml: host.querySelector("#btn-view-yaml"),
-    docs: host.querySelector("#btn-view-docs"),
+    reference: host.querySelector("#btn-view-reference"),
   };
   function setViewMode(view) {
     state.view = view;
     for (const [mode, button] of Object.entries(viewButtons)) button.classList.toggle("active", mode === view);
     renderResults(db, release, module, state);
   }
-  viewButtons.tree.addEventListener("click", () => setViewMode("tree"));
-  viewButtons.flat.addEventListener("click", () => setViewMode("flat"));
+  viewButtons.navigator.addEventListener("click", () => setViewMode("navigator"));
+  viewButtons.index.addEventListener("click", () => setViewMode("index"));
   viewButtons.yaml.addEventListener("click", () => setViewMode("yaml"));
-  viewButtons.docs.addEventListener("click", () => setViewMode("docs"));
+  viewButtons.reference.addEventListener("click", () => setViewMode("reference"));
 
   updateActiveFilters();
   setViewMode(initialView);
@@ -944,23 +944,23 @@ function renderModule(db, release, module, options = {}) {
 
 function renderResults(db, release, module, state) {
   const target = state.target || document.getElementById("results");
-  // Tree and YAML views need every row in the active scope so the hierarchy is
+  // Navigator, Reference, and YAML views need every row in the active scope so the hierarchy is
   // complete — anything dropped at the SQL boundary disappears from the output
   // entirely (eos_cli_config_gen has 6.4k rows; "all modules" hits ~12.6k).
-  // Flat list view caps at 500 since users only consume the head visibly.
-  const hierarchical = state.view === "tree" || state.view === "yaml" || state.view === "docs";
+  // Index view caps at 500 since users only consume the head visibly.
+  const hierarchical = state.view === "navigator" || state.view === "yaml" || state.view === "reference";
   const limit = hierarchical ? 20000 : 500;
   const results = state.rows || searchVars(db, release, module, { ...state, limit, order: hierarchical ? "id" : "key_path" });
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
   }
-  if (state.view === "tree") return renderTreeResults(target, db, release, module, state, results);
+  if (state.view === "navigator") return renderNavigatorResults(target, db, release, module, state, results);
   if (state.view === "yaml") return renderYamlResults(target, module, results);
-  if (state.view === "docs") return renderDocsResults(target, release, module, state, results);
+  if (state.view === "reference") return renderReferenceResults(target, release, module, state, results);
   const isAll = module === "all";
   if (state.embedCompact) {
-    const flatColumns = isAll ? `<col style="width: 9rem;"><col style="width: 30%;"><col>` : `<col style="width: 34%;"><col>`;
+    const indexColumns = isAll ? `<col style="width: 9rem;"><col style="width: 30%;"><col>` : `<col style="width: 34%;"><col>`;
     const rowsHtml = results.map(v => {
       const mod = isAll ? v.module : module;
       const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
@@ -977,7 +977,7 @@ function renderResults(db, release, module, state) {
       <div class="schema-results-scroll">
         <div class="table-responsive">
         <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
-          <colgroup>${flatColumns}</colgroup>
+          <colgroup>${indexColumns}</colgroup>
           <thead class="table-light"><tr>
             ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
             <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
@@ -993,7 +993,7 @@ function renderResults(db, release, module, state) {
   const rowsHtml = results.map(v => {
     const mod = isAll ? v.module : module;
     const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
-    const detailId = `m${++_treeRenderSeq}`;
+    const detailId = `m${++_navigatorRenderSeq}`;
     const modBadge = isAll ? `<td data-label="Module"><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
     return `
       <tr>
@@ -1008,7 +1008,7 @@ function renderResults(db, release, module, state) {
     <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
     <div class="schema-results-scroll">
       <div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0 schema-var-table schema-flat-table">
+      <table class="table table-sm table-hover align-middle mb-0 schema-var-table schema-index-table">
         <colgroup>
           ${isAll ? `<col class="schema-col-module">` : ""}
           <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-description">
@@ -1026,12 +1026,12 @@ function renderResults(db, release, module, state) {
     </div>`;
 }
 
-let _treeRenderSeq = 0;
+let _navigatorRenderSeq = 0;
 
-function renderTreeResults(target, db, release, module, state, matches) {
+function renderNavigatorResults(target, db, release, module, state, matches) {
   const isAll = module === "all";
   const filtered = isFilterActive(state);
-  const idPrefix = `t${++_treeRenderSeq}`;
+  const idPrefix = `t${++_navigatorRenderSeq}`;
 
   // When a filter is active, walk parent chains via the parent_path column
   // and emit ancestor rows (tagged is_context) so the hierarchical structure
@@ -1041,7 +1041,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
   // eos_cli_config_gen).
   let rowsForGroups;
   if (filtered && matches.length) {
-    const knownByPath = new Map(matches.map(v => [treeRowId(v, module), v]));
+    const knownByPath = new Map(matches.map(v => [navigatorRowId(v, module), v]));
     const ancestorRows = [];
     let toFetch = [];
     for (const v of matches) {
@@ -1065,7 +1065,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
       ancestorRows.push(...fetched);
       const next = [];
       for (const a of fetched) {
-        knownByPath.set(treeRowId(a, module), a);
+        knownByPath.set(navigatorRowId(a, module), a);
         const fetchModule = rowModule(a, module);
         for (const keyPath of parentPathCandidates(a)) {
           if (!knownByPath.has(`${fetchModule}:${keyPath}`)) next.push({ module: fetchModule, keyPath });
@@ -1084,7 +1084,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
   const groups = new Map();
   const matchCounts = new Map();
   for (const v of rowsForGroups) {
-    const groupId = treeGroupId(v, module);
+    const groupId = navigatorGroupId(v, module);
     const root = rootSegment(v.key_path);
     if (!groups.has(groupId)) groups.set(groupId, { root, module: rowModule(v, module), vars: [] });
     groups.get(groupId).vars.push(v);
@@ -1095,17 +1095,17 @@ function renderTreeResults(target, db, release, module, state, matches) {
   const visibleColumns = isAll ? 5 : 4;
 
   const groupRowsHtml = sorted.map(([groupId, group], idx) => {
-    const tree = orderedTreeRows(group.vars, module);
-    const { childCount, parentIds } = tree;
+    const navOrder = orderedNavigatorRows(group.vars, module);
+    const { childCount, parentIds } = navOrder;
 
     const rootDepth = state.root ? splitKeyPath(state.root).length : 1;
-    return tree.rows.map(v => {
+    return navOrder.rows.map(v => {
       const mod = isAll ? v.module : module;
       const leaf = state.root && v.key_path === state.root ? displayPath(v.key_path) : leafSegment(v.key_path);
       const depth = Math.max(1, (v.depth || 1) - (state.root ? rootDepth - 1 : 0));
       const indent = (depth - 1) * 1.25;
       const modBadge = isAll ? `<td data-label="Module"><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
-      const rowId = treeRowId(v, module);
+      const rowId = navigatorRowId(v, module);
       const parentId = parentIds.get(rowId) || "";
       const isBranch = (childCount.get(rowId) || 0) > 0;
       const isNestedRoot = !parentId;
@@ -1118,10 +1118,10 @@ function renderTreeResults(target, db, release, module, state, matches) {
       if (state.embedCompact) {
         const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
         const chevron = isBranch
-          ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon"></i>`
-          : `<span class="tree-toggle-spacer"></span>`;
+          ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} navigator-toggle-icon"></i>`
+          : `<span class="navigator-toggle-spacer"></span>`;
         return `
-          <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
+          <tr class="schema-navigator-row${v.is_context ? " schema-row-context" : ""}"
               data-row-id="${escapeAttr(rowId)}"
               data-parent-id="${escapeAttr(parentId)}"
               data-is-branch="${isBranch ? "1" : "0"}"
@@ -1129,7 +1129,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
               data-expanded="${initiallyExpanded ? "1" : "0"}"${groupStartAttr}${styleAttr}>
             ${modBadge}
             <td class="schema-key-cell px-3" data-label="Key">
-              <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
+              <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
             </td>
             <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
             <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
@@ -1137,16 +1137,16 @@ function renderTreeResults(target, db, release, module, state, matches) {
           </tr>`;
       }
 
-      const detailId = `m${++_treeRenderSeq}`;
+      const detailId = `m${++_navigatorRenderSeq}`;
       return `
-        <tr class="schema-tree-row${v.is_context ? " schema-row-context" : ""}"
+        <tr class="schema-navigator-row${v.is_context ? " schema-row-context" : ""}"
             data-row-id="${escapeAttr(rowId)}"
             data-parent-id="${escapeAttr(parentId)}"
             data-is-branch="${isBranch ? "1" : "0"}"
             data-depth="${depth}"
             data-expanded="${initiallyExpanded ? "1" : "0"}"${groupStartAttr}${styleAttr}>
           ${modBadge}
-          <td class="schema-key-cell px-3" data-label="Key">${treeKeyControl(v, release, mod, state, isBranch, leaf, indent, initiallyExpanded)}</td>
+          <td class="schema-key-cell px-3" data-label="Key">${navigatorKeyControl(v, release, mod, state, isBranch, leaf, indent, initiallyExpanded)}</td>
           <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
           <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
           <td class="schema-description-text text-muted small" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
@@ -1154,7 +1154,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
     }).join("");
   }).join("");
 
-  const tableClass = state.embedCompact ? "schema-embed-table" : "schema-tree-table";
+  const tableClass = state.embedCompact ? "schema-embed-table" : "schema-navigator-table";
   const tableHtml = `
     <div class="table-responsive">
       <table class="table table-sm table-hover align-middle mb-0 schema-var-table ${tableClass}">
@@ -1177,8 +1177,8 @@ function renderTreeResults(target, db, release, module, state, matches) {
     <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
       <span class="text-muted small">${total} variable${total === 1 ? "" : "s"} in ${sorted.length} group${sorted.length === 1 ? "" : "s"}</span>
       <div>
-        <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" data-tree-action="expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
-        <button type="button" class="btn btn-sm btn-link text-muted p-0" data-tree-action="collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
+        <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" data-navigator-action="expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
+        <button type="button" class="btn btn-sm btn-link text-muted p-0" data-navigator-action="collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
       </div>
     </div>
     <div class="schema-results-scroll">
@@ -1186,35 +1186,35 @@ function renderTreeResults(target, db, release, module, state, matches) {
     </div>`;
 
   target.querySelectorAll(".schema-group").forEach(group => {
-    if (state.root) expandGroupRootRows(group);
-    applyTreeVisibility(group);
+    if (state.root) expandNavigatorRootRows(group);
+    applyNavigatorVisibility(group);
   });
 
-  function setAllTreeRows(expanded) {
-    target.querySelectorAll("tr.schema-tree-row").forEach(r => {
+  function setAllNavigatorRows(expanded) {
+    target.querySelectorAll("tr.schema-navigator-row").forEach(r => {
       if (r.dataset.isBranch === "1") {
         r.dataset.expanded = expanded ? "1" : "0";
-        const icon = r.querySelector(".tree-toggle-icon");
+        const icon = r.querySelector(".navigator-toggle-icon");
         if (icon) {
           icon.classList.toggle("bi-chevron-right", !expanded);
           icon.classList.toggle("bi-chevron-down", expanded);
         }
       }
     });
-    target.querySelectorAll(".schema-group").forEach(applyTreeVisibility);
+    target.querySelectorAll(".schema-group").forEach(applyNavigatorVisibility);
   }
 
-  target.querySelector("[data-tree-action='expand-all']")?.addEventListener("click", () => setAllTreeRows(true));
-  target.querySelector("[data-tree-action='collapse-all']")?.addEventListener("click", () => setAllTreeRows(false));
+  target.querySelector("[data-navigator-action='expand-all']")?.addEventListener("click", () => setAllNavigatorRows(true));
+  target.querySelector("[data-navigator-action='collapse-all']")?.addEventListener("click", () => setAllNavigatorRows(false));
 }
 
-function renderDetailChildrenTree(release, module, rootPath, children, descendants) {
+function renderDetailChildrenNavigator(release, module, rootPath, children, descendants) {
   const childRows = [...children, ...descendants].filter((row, index, arr) => arr.findIndex(item => item.key_path === row.key_path) === index);
-  const tree = orderedTreeRows(childRows, module);
-  const { childCount, parentIds } = tree;
+  const navOrder = orderedNavigatorRows(childRows, module);
+  const { childCount, parentIds } = navOrder;
 
-  const rowsHtml = tree.rows.map(row => {
-    const rowId = treeRowId(row, module);
+  const rowsHtml = navOrder.rows.map(row => {
+    const rowId = navigatorRowId(row, module);
     const parentId = parentIds.get(rowId) || "";
     const depth = Math.max(1, (row.depth || 1) - splitKeyPath(rootPath).length);
     const indent = (depth - 1) * 1.25;
@@ -1222,18 +1222,18 @@ function renderDetailChildrenTree(release, module, rootPath, children, descendan
     const isNestedRoot = !parentId;
     const initiallyExpanded = isNestedRoot;
     const chevron = isBranch
-      ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} tree-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
+      ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} navigator-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
       : `<span style="display: inline-block; width: 1.15rem;"></span>`;
     const styleAttr = depth > 1 && !isNestedRoot ? ` style="display: none;"` : "";
     return `
-      <tr class="schema-tree-row"
+      <tr class="schema-navigator-row"
           data-row-id="${escapeAttr(rowId)}"
           data-parent-id="${escapeAttr(parentId)}"
           data-is-branch="${isBranch ? "1" : "0"}"
           data-depth="${depth}"
           data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
         <td class="px-3">
-          <span class="schema-tree-indent" style="padding-left: ${indent}rem;">${chevron}<a href="#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(row.key_path))}</code></a></span>
+          <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(row.key_path))}</code></a></span>
         </td>
         <td>${lifecycleBadge(row)}</td>
         <td class="text-center">${row.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
@@ -1290,7 +1290,7 @@ function renderVarDetail(db, release, module, key_path) {
     .join("");
 
   const descendants = children.length ? getDescendants(db, release, module, key_path) : [];
-  const childrenHtml = children.length ? renderDetailChildrenTree(release, module, key_path, children, descendants) : "";
+  const childrenHtml = children.length ? renderDetailChildrenNavigator(release, module, key_path, children, descendants) : "";
 
   const lifecycleHeader = v.removed
     ? `<span class="badge bg-danger ms-1">removed</span>`
@@ -1419,13 +1419,13 @@ function debounce(fn, ms) {
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
-// ── Documentation view ───────────────────────────────────────────────────────
+// ── Reference view ───────────────────────────────────────────────────────
 
-function docsPath(row) {
+function referencePath(row) {
   return `.${displayPath(row.key_path)}`;
 }
 
-function renderDocsDetail(row, release, module, isAll) {
+function renderReferenceDetail(row, release, module, isAll) {
   const mod = isAll ? row.module : module;
   const constraints = yamlConstraints(row);
   const constraintsText = yamlRestrictionParts(row, constraints).join("; ");
@@ -1435,17 +1435,17 @@ function renderDocsDetail(row, release, module, isAll) {
       ? `<span class="badge bg-warning text-dark ms-1">deprecated</span>`
       : "";
   const validValues = Array.isArray(constraints.valid_values) && constraints.valid_values.length
-    ? `<h3>Valid Values</h3><div class="schema-docs-prose"><ul>${constraints.valid_values.map(value => `<li><code>${escapeHtml(String(value))}</code></li>`).join("")}</ul></div>`
+    ? `<h3>Valid Values</h3><div class="schema-reference-prose"><ul>${constraints.valid_values.map(value => `<li><code>${escapeHtml(String(value))}</code></li>`).join("")}</ul></div>`
     : "";
   const defaultHtml = row.default_value ? `<tr><th>Default</th><td>${renderDefaultValue(row.default_value, { compact: true })}</td></tr>` : "";
   const constraintsHtml = constraintsText ? `<tr><th>Constraints</th><td>${escapeHtml(constraintsText)}</td></tr>` : "";
   const moduleHtml = isAll ? `<tr><th>Module</th><td><code>${escapeHtml(mod)}</code></td></tr>` : "";
   return `
-    <div class="schema-docs-detail-inner">
-      <div class="schema-docs-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
+    <div class="schema-reference-detail-inner">
+      <div class="schema-reference-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
       <h2>Key ${lifecycle}</h2>
-      <div class="schema-docs-key-table-wrap">
-        <table class="schema-docs-key-table">
+      <div class="schema-reference-key-table-wrap">
+        <table class="schema-reference-key-table">
           <thead><tr><th>Key Name</th><th>Type</th><th>Required</th></tr></thead>
           <tbody><tr>
             <td><code>${escapeHtml(leafSegment(row.key_path))}</code></td>
@@ -1455,13 +1455,13 @@ function renderDocsDetail(row, release, module, isAll) {
         </table>
       </div>
       <h2>Description</h2>
-      <div class="schema-docs-prose">${formatDescriptionMarkdown(row.description || "-")}</div>
+      <div class="schema-reference-prose">${formatDescriptionMarkdown(row.description || "-")}</div>
       <h2>Path</h2>
-      <blockquote class="schema-docs-note">NOTE: The path is shown in jq-style notation.</blockquote>
-      <p><code>${escapeHtml(docsPath(row))}</code></p>
+      <blockquote class="schema-reference-note">NOTE: The path is shown in jq-style notation.</blockquote>
+      <p><code>${escapeHtml(referencePath(row))}</code></p>
       ${(row.default_value || constraintsText || isAll) ? `
         <h2>Properties</h2>
-        <div class="schema-docs-key-table-wrap"><table class="schema-docs-key-table"><tbody>
+        <div class="schema-reference-key-table-wrap"><table class="schema-reference-key-table"><tbody>
           ${moduleHtml}
           ${defaultHtml}
           ${constraintsHtml}
@@ -1472,44 +1472,44 @@ function renderDocsDetail(row, release, module, isAll) {
     </div>`;
 }
 
-function renderDocsResults(target, release, module, state, inputRows) {
+function renderReferenceResults(target, release, module, state, inputRows) {
   const isAll = module === "all";
-  const rowsById = new Map(inputRows.map(row => [treeRowId(row, module), row]));
+  const rowsById = new Map(inputRows.map(row => [navigatorRowId(row, module), row]));
 
   const groups = new Map();
   for (const row of inputRows) {
-    const groupId = treeGroupId(row, module);
+    const groupId = navigatorGroupId(row, module);
     if (!groups.has(groupId)) groups.set(groupId, { module: rowModule(row, module), root: rootSegment(row.key_path), rows: [] });
     groups.get(groupId).rows.push(row);
   }
   const orderedGroups = [...groups.values()].sort((a, b) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
-  const orderedNavRows = orderedGroups.flatMap(group => orderedTreeRows(group.rows, module).rows);
-  if (!state.docsSelectedId || !rowsById.has(state.docsSelectedId)) {
-    state.docsSelectedId = treeRowId(orderedNavRows[0] || inputRows[0], module);
+  const orderedNavRows = orderedGroups.flatMap(group => orderedNavigatorRows(group.rows, module).rows);
+  if (!state.referenceSelectedId || !rowsById.has(state.referenceSelectedId)) {
+    state.referenceSelectedId = navigatorRowId(orderedNavRows[0] || inputRows[0], module);
   }
-  const selected = rowsById.get(state.docsSelectedId) || orderedNavRows[0] || inputRows[0];
+  const selected = rowsById.get(state.referenceSelectedId) || orderedNavRows[0] || inputRows[0];
 
   const navRows = orderedGroups.map(group => {
-    const tree = orderedTreeRows(group.rows, module);
-    return tree.rows.map(row => {
-      const rowId = treeRowId(row, module);
-      const parentId = tree.parentIds.get(rowId) || "";
+    const navOrder = orderedNavigatorRows(group.rows, module);
+    return navOrder.rows.map(row => {
+      const rowId = navigatorRowId(row, module);
+      const parentId = navOrder.parentIds.get(rowId) || "";
       const depth = row.depth || 1;
-      const isBranch = (tree.childCount.get(rowId) || 0) > 0;
+      const isBranch = (navOrder.childCount.get(rowId) || 0) > 0;
       const expanded = false;
       const hidden = depth > 1 ? ` style="display: none;"` : "";
-      const selectedClass = rowId === state.docsSelectedId ? " active" : "";
-      const moduleBadge = isAll && depth === 1 ? `<span class="schema-docs-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
+      const selectedClass = rowId === state.referenceSelectedId ? " active" : "";
+      const moduleBadge = isAll && depth === 1 ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
       return `
-        <div class="schema-docs-nav-row${selectedClass}"
+        <div class="schema-reference-nav-row${selectedClass}"
              data-row-id="${escapeAttr(rowId)}"
              data-parent-id="${escapeAttr(parentId)}"
              data-is-branch="${isBranch ? "1" : "0"}"
              data-expanded="${expanded ? "1" : "0"}"
              data-depth="${depth}"${hidden}>
-          <button type="button" class="schema-docs-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
-          <button type="button" class="schema-docs-nav-key" data-docs-select="${escapeAttr(rowId)}" style="padding-left: ${Math.max(0, depth - 1) * 1.05}rem;">
-            <span class="schema-docs-file-icon"><i class="bi bi-file-earmark-text"></i></span>
+          <button type="button" class="schema-reference-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
+          <button type="button" class="schema-reference-nav-key" data-reference-select="${escapeAttr(rowId)}" style="padding-left: ${Math.max(0, depth - 1) * 1.05}rem;">
+            <span class="schema-reference-file-icon"><i class="bi bi-file-earmark-text"></i></span>
             <span>${highlight(leafSegment(row.key_path), state.q)}</span>
             ${moduleBadge}
           </button>
@@ -1518,16 +1518,16 @@ function renderDocsResults(target, release, module, state, inputRows) {
   }).join("");
 
   target.innerHTML = `
-    <div class="schema-docs-view">
-      <aside class="schema-docs-nav" aria-label="Schema documentation navigation">
+    <div class="schema-reference-view">
+      <aside class="schema-reference-nav" aria-label="Schema documentation navigation">
         ${navRows}
       </aside>
-      <section class="schema-docs-detail" aria-live="polite">${renderDocsDetail(selected, release, module, isAll)}</section>
+      <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, release, module, isAll)}</section>
     </div>`;
 
-  function applyDocsVisibility() {
-    const nav = target.querySelector(".schema-docs-nav");
-    const rows = [...nav.querySelectorAll(".schema-docs-nav-row")];
+  function applyReferenceVisibility() {
+    const nav = target.querySelector(".schema-reference-nav");
+    const rows = [...nav.querySelectorAll(".schema-reference-nav-row")];
     const byId = new Map(rows.map(row => [row.dataset.rowId, row]));
     for (const row of rows) {
       let visible = true;
@@ -1542,29 +1542,29 @@ function renderDocsResults(target, release, module, state, inputRows) {
     }
   }
 
-  target.querySelector(".schema-docs-nav")?.addEventListener("click", event => {
-    const toggle = event.target.closest(".schema-docs-toggle");
+  target.querySelector(".schema-reference-nav")?.addEventListener("click", event => {
+    const toggle = event.target.closest(".schema-reference-toggle");
     if (toggle && !toggle.disabled) {
-      const row = toggle.closest(".schema-docs-nav-row");
+      const row = toggle.closest(".schema-reference-nav-row");
       const open = row.dataset.expanded !== "1";
       row.dataset.expanded = open ? "1" : "0";
       toggle.innerHTML = `<i class="bi ${open ? "bi-chevron-down" : "bi-chevron-right"}"></i>`;
-      applyDocsVisibility();
+      applyReferenceVisibility();
       return;
     }
-    const select = event.target.closest("[data-docs-select]");
+    const select = event.target.closest("[data-reference-select]");
     if (!select) return;
-    state.docsSelectedId = select.dataset.docsSelect;
-    target.querySelectorAll(".schema-docs-nav-row.active").forEach(row => row.classList.remove("active"));
-    select.closest(".schema-docs-nav-row")?.classList.add("active");
-    const selectedRow = rowsById.get(state.docsSelectedId);
+    state.referenceSelectedId = select.dataset.referenceSelect;
+    target.querySelectorAll(".schema-reference-nav-row.active").forEach(row => row.classList.remove("active"));
+    select.closest(".schema-reference-nav-row")?.classList.add("active");
+    const selectedRow = rowsById.get(state.referenceSelectedId);
     if (selectedRow) {
-      const detail = target.querySelector(".schema-docs-detail");
-      detail.innerHTML = renderDocsDetail(selectedRow, release, module, isAll);
+      const detail = target.querySelector(".schema-reference-detail");
+      detail.innerHTML = renderReferenceDetail(selectedRow, release, module, isAll);
       detail.scrollTop = 0;
     }
   });
-  applyDocsVisibility();
+  applyReferenceVisibility();
 }
 
 // ── YAML view ────────────────────────────────────────────────────────────────
@@ -1715,18 +1715,18 @@ function renderYamlResults(target, module, inputRows) {
   const groupedRows = new Map();
   const groupCounts = new Map();
   for (const row of sourceRows) {
-    const groupId = treeGroupId(row, module);
+    const groupId = navigatorGroupId(row, module);
     groupCounts.set(groupId, (groupCounts.get(groupId) || 0) + 1);
   }
   for (const row of topRows) {
-    const groupId = treeGroupId(row, module);
+    const groupId = navigatorGroupId(row, module);
     if (!groupedRows.has(groupId)) {
       groupedRows.set(groupId, { root: rootSegment(row.key_path), module: rowModule(row, module), rows: [] });
     }
     groupedRows.get(groupId).rows.push(row);
   }
 
-  const idPrefix = `y${++_treeRenderSeq}`;
+  const idPrefix = `y${++_navigatorRenderSeq}`;
   const groupsHtml = [...groupedRows.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`)).map(([groupId, group], idx) => {
     const lines = [];
     group.rows.forEach(row => renderYamlRow(lines, row, 0));
@@ -1758,7 +1758,7 @@ function renderYamlResults(target, module, inputRows) {
 
 // ── embed mounting ──────────────────────────────────────────────────────────
 //
-// Renders a scoped tree view inside any <schema-explorer> element on the page.
+// Renders a scoped navigator view inside any <schema-explorer> element on the page.
 // The element is treated like a sealed component: docs author drops the tag,
 // the SPA fills it in.
 //
@@ -1766,7 +1766,7 @@ function renderYamlResults(target, module, inputRows) {
 //   release  — schema release tag (default: "devel")
 //   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
 //   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
-//   view     — "tree" | "flat" | "yaml" | "docs" (default: "tree")
+//   view     — "navigator" | "reference" | "yaml" | "index" (default: "navigator")
 //   height   — CSS max-height for the scroll container (default: "600px")
 //   chrome   — "compact" | "none" (default: "compact"). "none" hides the
 //              "N variables in M groups" / expand-all bar.
@@ -1783,8 +1783,8 @@ async function mountEmbed(el) {
   const release = normalizeRelease(_embedAttr(el, "release", DEFAULT_RELEASE));
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
-  const view    = _embedAttr(el, "view", "tree");
-  if (!["tree", "flat", "yaml", "docs"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
+  const view    = _embedAttr(el, "view", "navigator");
+  if (!["navigator", "reference", "yaml", "index"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
   const height  = _embedAttr(el, "height", "600px");
   const chrome  = _embedAttr(el, "chrome", "compact");
 
@@ -1815,7 +1815,7 @@ async function mountEmbed(el) {
   }).join("");
   const hasDefaultRootOption = !defaultRootSelection || rootOptions.some(row => rootOptionValue(row, module) === defaultRootSelection);
   const rootFallbackOption = hasDefaultRootOption ? "" : `<option value="${escapeAttr(defaultRootSelection)}" selected>${escapeHtml(displayPath(defaultRootStateValue.root))}</option>`;
-  const idPrefix = `embed-${++_treeRenderSeq}`;
+  const idPrefix = `embed-${++_navigatorRenderSeq}`;
 
   el.innerHTML = `
     <form class="schema-embed-filters p-3 border-bottom" onsubmit="return false">
