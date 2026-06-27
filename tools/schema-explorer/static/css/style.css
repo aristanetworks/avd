@@ -1894,6 +1894,7 @@ html.style-none #schema-navbar { display: none !important; }
   color: var(--schema-material-muted);
   background: transparent;
   font-weight: 500;
+  text-align: left;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-docs-prose {
