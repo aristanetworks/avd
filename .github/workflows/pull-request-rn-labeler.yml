@@ -16,16 +16,8 @@ jobs:
   if_merged:
     name: "PR was merged"
     if: (github.event.pull_request.merged == true) && ( github.event.action == 'closed' || (github.event.action == 'edited' && github.event.changes.title != null) )
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
-      contents: read
       pull-requests: write
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/rn-pr-labeler-action
-        with:
-          auto_create_label: true
+    uses: ./.github/workflows/release-note-labeler.yml
+    with:
+      auto_create_label: true
