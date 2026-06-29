@@ -23,14 +23,14 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.15.17",
+    "ruff==0.15.18",
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "twine>=6.2.0",
     "yamllint>=1.38.0",
 ]
 coverage = [
-    "coverage[toml]==7.14.1",
+    "coverage[toml]==7.14.2",
 ]
 doc = [
     "mkdocs<2",
@@ -268,7 +268,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.3.0-dev0"
+current_version = "6.3.0-dev1"
 
 allow_dirty = true
 commit = false
