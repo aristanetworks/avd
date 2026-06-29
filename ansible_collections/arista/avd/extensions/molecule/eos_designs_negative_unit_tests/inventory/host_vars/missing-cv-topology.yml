@@ -27,4 +27,4 @@ core_interfaces:
       include_in_underlay_protocol: true
 
 expected_error_message: >-
-  'cv_topology' is required when 'use_cv_topology' is set to 'true'.
+  'cv_topology' is required when 'use_cv_topology' is set to 'true' for host 'missing-cv-topology'.
