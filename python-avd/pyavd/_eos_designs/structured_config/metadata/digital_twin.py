@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Protocol
 
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get
 
 if TYPE_CHECKING:
@@ -45,20 +45,17 @@ class DigitalTwinMixin(Protocol):
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}' using platform '{self.shared_utils.platform}'."
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
                     )
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
                 if not ip_addr and digital_twin_node_type not in ["cloudeos", "veos"]:
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 if ip_addr == "dhcp":
-                    msg = (
-                        f"'mgmt_ip: dhcp' is not supported for Digital Twin. "
-                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
-                    )
-                    raise AristaAvdError(msg)
+                    msg = "'mgmt_ip: dhcp' is not supported for Digital Twin. A static management IP address is required."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 version = default(
                     self.shared_utils.node_config.digital_twin.act_os_version,
                     self.inputs.digital_twin.fabric.act_os_version,

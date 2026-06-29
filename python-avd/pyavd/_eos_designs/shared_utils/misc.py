@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -62,7 +62,7 @@ class MiscMixin(Protocol):
         if self.inputs.fabric_numbering.node_id.algorithm == "pool_manager":
             if not isinstance(self.pool_manager, PoolManager):
                 msg = "'fabric_numbering.id.algorithm' is set to 'pool_manager' but no PoolManager instance is available."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             id_from_pool = self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self, requested_value=node_id)
 
@@ -290,7 +290,7 @@ class MiscMixin(Protocol):
                 f"since no substitution value was found for interface '{interface_name}'. "
                 "Make sure to set the appropriate fields on the interface."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         return replacement_value
 

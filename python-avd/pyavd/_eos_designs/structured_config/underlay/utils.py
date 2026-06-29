@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -230,7 +230,7 @@ class UtilsMixin(Protocol):
                 f"set on SVI for uplink_native_vlan '{link.native_vlan}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
         return main_interface, interfaces
 
     def _get_l2_as_subint(
@@ -279,7 +279,7 @@ class UtilsMixin(Protocol):
                 f"set on the SVI '{svi.id}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         # Only set VRRPv4 if ip_address is set
         if subinterface.ip_address:

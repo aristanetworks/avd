@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -209,7 +209,7 @@ class VxlanInterfaceMixin(Protocol):
                     "'vxlan_flood_multicast' is only supported in combination with either node_settings 'underlay_multicast.pim_sm.enabled: true' "
                     "or 'underlay_multicast_pim_sm: true'."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             vxlan_vlan.flood_group = (
                 vlan.vxlan_flood_multicast.underlay_multicast_group
                 if vlan.vxlan_flood_multicast.underlay_multicast_group and vlan.vxlan_flood_multicast.enabled is True

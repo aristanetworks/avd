@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
@@ -314,7 +314,7 @@ class RouterBgpMixin(Protocol):
         ):
             if not self.shared_utils.platform_settings.feature_support.evpn_gateway_rd_rt_rewrite:
                 msg = "The EVPN gateway RD/RT rewrite mode is not supported by this platform, refer to platform_settings.feature_support."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
             self._update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(bgp_vrf, vrf, vrf_rt)
             # Remove evpn from the set so the shared loop below only handles the remaining address families (e.g. vpn-ipv4).

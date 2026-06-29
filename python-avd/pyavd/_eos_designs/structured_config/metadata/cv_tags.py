@@ -7,7 +7,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
@@ -150,7 +150,7 @@ class CvTagsMixin(Protocol):
                     f"The CloudVision tag name 'generate_cv_tags.device_tags[name={generate_tag.name}] is invalid. "
                     "System Tags cannot be overridden. Try using a different name for this tag."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Get value from either 'value' key, structured config based on the 'data_path' key or raise.
             if generate_tag.value is not None:
@@ -162,10 +162,10 @@ class CvTagsMixin(Protocol):
                         f"'generate_cv_tags.device_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                         f"points to a list or dict. This is not supported for cloudvision tag data_paths."
                     )
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
             else:
                 msg = f"'generate_cv_tags.device_tags[name={generate_tag.name}]' is missing either a static 'value' or a dynamic 'data_path'"
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Silently ignoring empty values since structured config may vary between devices.
             if value is not None and value != "":
@@ -196,10 +196,10 @@ class CvTagsMixin(Protocol):
                             f"'generate_cv_tags.interface_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                             f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
                         )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdInvalidInputsError(msg)
                 else:
                     msg = f"'generate_cv_tags.interface_tags[name={generate_tag.name}]' is missing either a static 'value' or a dynamic 'data_path'"
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
 
                 # Silently ignoring empty values since structured config may vary between devices.
                 if value is not None and value != "":

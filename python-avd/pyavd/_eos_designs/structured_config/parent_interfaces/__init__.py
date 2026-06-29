@@ -39,7 +39,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -75,7 +75,7 @@ class ParentInterfacesTracker:
             self.required_ethernet_parents.add(parent_name)
         else:
             msg = f"Expected subinterface name with dot, got '{subinterface_name}'"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
     def register_ethernet_parent(self, parent_name: str) -> None:
         """Register an existing Ethernet parent interface."""
@@ -88,7 +88,7 @@ class ParentInterfacesTracker:
             self.required_port_channel_parents.add(parent_name)
         else:
             msg = f"Expected subinterface name with dot, got '{subinterface_name}'"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
     def register_port_channel_parent(self, parent_name: str) -> None:
         """Register an existing Port-Channel parent interface."""
