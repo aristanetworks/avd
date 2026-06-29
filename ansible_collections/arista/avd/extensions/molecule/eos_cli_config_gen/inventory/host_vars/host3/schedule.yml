@@ -1,0 +1,12 @@
+---
+schedule:
+  config:
+    max_concurrent_jobs: 3
+  jobs:
+    # at <time> interval <N> — no date (covers at.interval with date absent)
+    - name: at_interval_nodate
+      at:
+        time: "10:00:00"
+        interval: 60
+      max_log_files: 1
+      command: show clock

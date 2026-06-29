@@ -140,7 +140,6 @@
   - [STUN Device Configuration](#stun-device-configuration)
 - [Schedule](#schedule)
   - [Schedule Config](#schedule-config)
-  - [Schedule Jobs Summary](#schedule-jobs-summary)
   - [Schedule Device Configuration](#schedule-device-configuration)
 
 ## Management
@@ -1995,15 +1994,8 @@ stun
 | ------------------- | ------------------------ |
 | - | False |
 
-### Schedule Jobs Summary
-
-| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
-| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
-| check_version | interval 10 minutes | show version | 2 | 5 | - | - | - |
-
 ### Schedule Device Configuration
 
 ```eos
 no schedule config prepend-hostname-logfile
-schedule check_version interval 10 timeout 5 max-log-files 2 command show version
 ```

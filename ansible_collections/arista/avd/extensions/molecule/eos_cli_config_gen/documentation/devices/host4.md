@@ -20,6 +20,9 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Schedule](#schedule)
+  - [Schedule Jobs Summary](#schedule-jobs-summary)
+  - [Schedule Device Configuration](#schedule-device-configuration)
 
 ## Management
 
@@ -448,4 +451,18 @@ router multicast
 ```eos
 !
 vrf instance FUTURE_IPV4
+```
+
+## Schedule
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
+| interval_basic | interval 10 minutes | show version | 1 | 5 | - | - | - |
+
+### Schedule Device Configuration
+
+```eos
+schedule interval_basic interval 10 timeout 5 max-log-files 1 command show version
 ```
