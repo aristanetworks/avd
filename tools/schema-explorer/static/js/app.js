@@ -779,6 +779,14 @@ function getDescendants(db, release, module, key_path) {
 
 // ── views ────────────────────────────────────────────────────────────────────
 
+function renderDevelopmentNotice() {
+  return `
+    <div class="schema-development-notice" role="note">
+      <div class="schema-development-notice-title"><i class="bi bi-tools"></i> Under construction</div>
+      <div>This Schema Explorer is still in development. A GitHub Discussion will be used to collect comments, concerns, and feature requests.</div>
+    </div>`;
+}
+
 function renderLanding(db, release) {
   const stats = Object.fromEntries(getStats(db, release).map(s => [s.module, s]));
   const cards = Object.entries(SCHEMA_MODULES).map(([id, mod]) => {
@@ -812,6 +820,7 @@ function renderLanding(db, release) {
     <p class="text-muted small mb-3">
       Browse the AVD data model schemas. Select a module to explore variables, search by key path, and view detailed documentation.
     </p>
+    ${renderDevelopmentNotice()}
     <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">${cards}</div>
     <div class="row mb-4"><div class="col">
       <a href="#/all?release=${releaseParam(release)}" class="text-decoration-none d-block">
@@ -858,9 +867,11 @@ function renderModule(db, release, module, options = {}) {
       </div>
     </div>
     <p class="text-muted small mb-3">${escapeHtml(info.description)}</p>`;
+  const developmentNoticeHtml = chrome === "none" ? "" : renderDevelopmentNotice();
 
   host.innerHTML = `
     ${headerHtml}
+    ${developmentNoticeHtml}
     <form id="filter-form" class="mb-3 schema-filter-sticky" onsubmit="return false">
       <div class="d-flex flex-wrap align-items-start gap-3">
         <div class="flex-grow-1 schema-filter-field">

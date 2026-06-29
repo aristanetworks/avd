@@ -361,6 +361,30 @@
 .schema-embed .alert { padding: 1rem; border: 1px solid transparent; border-radius: 0.25rem; }
 .schema-spa-host .alert-danger,
 .schema-embed .alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+
+:where(.schema-spa-host, .schema-embed) .schema-development-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(212, 113, 34, 0.35);
+  border-left: 3px solid var(--arista-orange);
+  border-radius: 0.25rem;
+  background: rgba(212, 113, 34, 0.08);
+  color: inherit;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-development-notice-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--schema-material-fg, #212529);
+  font-weight: 600;
+}
 .schema-spa-host .collapse:not(.show),
 .schema-embed .collapse:not(.show) { display: none; }
 .schema-spa-host .spinner-border,
