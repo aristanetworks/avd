@@ -1,0 +1,130 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  errdisable_settings:
+    type: dict
+    documentation_options:
+      table: system-settings
+    description: |-
+      Errdisable settings for the device.
+      Causes are filtered based on platform feature support defined in
+      `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
+      `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
+    keys:
+      recovery_interval:
+        type: int
+        description: |-
+          Interval for all recovery causes in seconds.
+        min: 30
+        max: 86400
+        convert_types:
+          - str
+      causes:
+        type: dict
+        keys:
+          acl:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          arp_inspection:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          bpduguard:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          dot1x:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          dot1x_coa:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          dot1x_phone_classification:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          dot1x_session_replace:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          error_correction_encoding:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          fabric_capacity_low:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          hardware_speed_group:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          hitless_reload_down:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          interface_speed:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          internal_error:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          lacp_rate_limit:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          link_change:
+            type: dict
+            keys:
+              detection:
+                type: bool
+          link_flap:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          no_internal_vlan:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          port_breakout:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          portchannelguard:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          portsec:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          speed_misconfigured:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          storm_control:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          stuck_queue:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          switchcard_unreachable:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          tap_port_init:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          tapagg:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          tpid:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          transceiver_adapter:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          uplink_failure_detection:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
+          xcvr_misconfigured:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          xcvr_overheat:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          xcvr_power_unsupported:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery"
+          xcvr_unsupported:
+            type: dict
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/recovery_only"
