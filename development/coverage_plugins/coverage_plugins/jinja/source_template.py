@@ -101,6 +101,35 @@ def covered_multiline_tag_branch_arcs(
     return covered_branch_arcs
 
 
+def covered_structural_control_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    possible_arcs: Collection[tuple[int, int]],
+    tag_ranges: Mapping[int, tuple[int, int]],
+    reportable_lines: Collection[int],
+) -> set[tuple[int, int]]:
+    """
+    Return branch arcs covered by jumps from multiline tags to structural labels.
+
+    No-else ``if`` statements use the source ``endif`` line as the false branch
+    target. Jinja may report the runtime jump from the last line in a multiline
+    ``if`` tag to that ``endif`` label instead of from the first tag line.
+    """
+    recorded_arc_set = set(recorded_arcs)
+    reportable_line_set = set(reportable_lines)
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line <= 0 or to_line <= 0:
+            continue
+        if to_line in reportable_line_set:
+            continue
+
+        start_line, end_line = tag_ranges.get(from_line, (from_line, from_line))
+        if any((line_number, to_line) in recorded_arc_set for line_number in range(start_line, end_line + 1)):
+            covered_branch_arcs.add((from_line, to_line))
+
+    return covered_branch_arcs
+
+
 def covered_else_branch_arcs(
     recorded_arcs: tuple[tuple[int, int], ...],
     translated_arcs: set[tuple[int, int]],

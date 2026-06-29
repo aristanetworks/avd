@@ -23,6 +23,7 @@ from .source_template import (
     covered_else_branch_arcs,
     covered_generated_body_branch_arcs,
     covered_multiline_tag_branch_arcs,
+    covered_structural_control_branch_arcs,
     source_template,
     translate_recorded_arc_endpoint,
 )
@@ -135,6 +136,9 @@ class JinjaTemplateFileReporter(FileReporter):
         source_filename = Path(self.filename)
         translated_arcs.update(
             covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, template.tag_ranges, template.reportable_lines),
+        )
+        translated_arcs.update(
+            covered_structural_control_branch_arcs(recorded_arcs, possible_arcs, template.tag_ranges, template.reportable_lines),
         )
         translated_arcs.update(
             covered_generated_body_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, template.reportable_lines),

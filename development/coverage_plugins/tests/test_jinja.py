@@ -467,6 +467,41 @@ def test_coverage_marks_multiline_jinja_branch_body_arc_as_executed(tmp_path: Pa
     assert analysis.missing_branch_arcs() == {2: [6]}
 
 
+def test_coverage_marks_multiline_no_else_false_arc_as_executed(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "template.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if primary is defined or\n"
+        "      secondary is defined or\n"
+        "      fallback is defined %}\n"
+        "{% set value = 'covered' %}\n"
+        "{% endif %}\n"
+        "{% for item in items %}\n"
+        "{{ item }}\n"
+        "{% endfor %}\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    environment.get_template("template.j2").render(primary=True, items=["leaf"])
+    environment.get_template("template.j2").render(items=["leaf"])
+    coverage.stop()
+    coverage.save()
+
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert analysis.branch_stats()[1] == (2, 2)
+    assert analysis.missing_branch_arcs() == {}
+
+
 def test_coverage_marks_jinja_else_tag_as_executed_with_else_body(tmp_path: Path) -> None:
     analysis = _analyze_rendered_template(
         tmp_path,
