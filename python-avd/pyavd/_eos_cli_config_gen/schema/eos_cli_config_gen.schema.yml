@@ -24615,7 +24615,7 @@ keys:
                   max: 1440
                   convert_types:
                   - str
-                  description: 'Repeat interval in minutes.
+                  description: 'Set interval.
 
                     Mutually exclusive with `at.once`. `at.once` takes precedence
                     if both are set.'

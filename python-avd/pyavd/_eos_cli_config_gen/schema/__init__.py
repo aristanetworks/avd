@@ -67256,9 +67256,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 interval: int | None
                 """
-                Repeat interval in minutes.
-                Mutually exclusive with `at.once`. `at.once` takes precedence if both
-                are set.
+                Set interval.
+                Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
                 """
 
                 if TYPE_CHECKING:
@@ -67285,9 +67284,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Mutually exclusive with `at.interval`. Takes
                                precedence over `at.interval` if both are set.
                             interval:
-                               Repeat interval in minutes.
-                               Mutually exclusive with `at.once`. `at.once` takes precedence if both
-                               are set.
+                               Set interval.
+                               Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
 
                         """
 
