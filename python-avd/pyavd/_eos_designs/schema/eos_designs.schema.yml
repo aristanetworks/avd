@@ -354,6 +354,13 @@ keys:
 
           Configure management interface to accept DHCP default route when the management
           IP is set to ''dhcp''.'
+      accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          Configure inband management interface to accept DHCP default route when
+          the inband management IP is set to ''dhcp''.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -388,6 +395,15 @@ keys:
         description: 'Available from AVD 6.2.0.
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
+        default: false
+      only_configure_pvst_border_when_mode_is_mstp:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+
+          When enabled, AVD renders PVST border configuration only when the spanning-tree
+          mode is set to ''mstp''.'
         default: false
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool
@@ -10173,6 +10189,46 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: dns_settings
+  spanning_tree_settings:
+    type: dict
+    keys:
+      mode:
+        type: str
+        description: 'Spanning tree operating mode.
+
+          ''spanning_tree_mode'' can also be set under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+        valid_values:
+        - mstp
+        - rstp
+        - rapid-pvst
+        - none
+      priority:
+        type: int
+        convert_types:
+        - str
+        default: 32768
+        description: 'Spanning-tree priority configured for the selected mode.
+
+          For ''rapid-pvst'' the priority can also be set per VLAN under network services.
+
+          ''spanning_tree_priority'' can also be set under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+      port_id_allocation_port_channel_range:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range
+        description: 'Specify range of port-ids to reserve for port-channels.
+
+          ''spanning_tree_port_id_allocation_port_channel_range'' can also be set
+          under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+      loop_guard_default:
+        type: bool
+        description: Enable loopguard by default on all ports.
+        default: false
   ssh_settings:
     type: dict
     keys:
@@ -13747,7 +13803,13 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
-            description: Enable MST PVST border ports.
+            description: 'Enable MST PVST border ports.
+
+              By default this is configured regardless of the spanning-tree mode.
+
+              When ''avd_design_future.only_configure_pvst_border_when_mode_is_mstp''
+              is set to ''true'', this will only take effect when the spanning-tree
+              mode is ''mstp''.'
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
@@ -13860,9 +13922,13 @@ $defs:
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
 
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', the `inband_mgmt_gateway` setting is ignored since the DHCP
+              server is expected to provide the gateway and the default route.
+
               '
             type: str
-            format: ipv4_cidr
           inband_mgmt_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -13873,6 +13939,11 @@ $defs:
 
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
+
+
+              This setting is ignored when ''inband_mgmt_ip'' is set to ''dhcp'' and
+              ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.
 
               '
             type: str
