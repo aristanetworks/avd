@@ -54,6 +54,7 @@
     | [<samp>&nbsp;&nbsp;cv_loss_timeout</samp>](## "daemon_terminattr.cv_loss_timeout") | Integer |  |  |  | Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.<br>The recommended timeout is five minutes. |
     | [<samp>&nbsp;&nbsp;cvtargetconfigs</samp>](## "daemon_terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;flowdns</samp>](## "daemon_terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
 
 === "YAML"
 
@@ -217,4 +218,8 @@
       # Used for MSS (Multi-Domain Segmentation Service) integrations.
       cvtargetconfigs: # >=1 items
         - <str>
+
+      # Enable DNS resolution for flow records (TerminAttr default is true).
+      # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+      flowdns: <bool>
     ```

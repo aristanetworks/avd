@@ -1,0 +1,12 @@
+---
+ethernet_interfaces:
+  - name: Ethernet1
+    description: Test portfast edge keyword
+    switchport:
+      enabled: true
+    spanning_tree_portfast: edge
+  - name: Ethernet2
+    description: Test portfast network keyword
+    switchport:
+      enabled: true
+    spanning_tree_portfast: network

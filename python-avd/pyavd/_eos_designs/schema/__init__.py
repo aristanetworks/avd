@@ -6707,10 +6707,17 @@ class EosDesigns(EosDesignsRootModel):
         class Terminattr(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cvtargetconfigs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Cvtargetconfigs._item_type = str
+
             _fields: ClassVar[dict] = {
                 "ingestexclude": {"type": str},
                 "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
                 "disable_aaa": {"type": bool, "default": False},
+                "cvtargetconfigs": {"type": Cvtargetconfigs},
+                "flowdns": {"type": bool},
             }
             ingestexclude: str | None
             """
@@ -6732,6 +6739,21 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            cvtargetconfigs: Cvtargetconfigs
+            """
+            Set the target configuration path(s) for dynamic device configuration from CloudVision.
+            Used for MSS
+            (Multi-Domain Segmentation Service) integrations.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            flowdns: bool | None
+            """
+            Enable DNS resolution for flow records (TerminAttr default is true).
+            Set to false to disable DNS
+            lookups on sFlow/IPFIX flow records.
+            """
 
             if TYPE_CHECKING:
 
@@ -6741,6 +6763,8 @@ class EosDesigns(EosDesignsRootModel):
                     ingestexclude: str | None | UndefinedType = Undefined,
                     smashexcludes: str | UndefinedType = Undefined,
                     disable_aaa: bool | UndefinedType = Undefined,
+                    cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
+                    flowdns: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Terminattr.
@@ -6759,6 +6783,17 @@ class EosDesigns(EosDesignsRootModel):
                            Disable AAA authorization and accounting.
                            When setting this flag, all commands pushed from
                            CloudVision are applied directly to the CLI without authorization.
+                        cvtargetconfigs:
+                           Set the target configuration path(s) for dynamic device configuration from CloudVision.
+                           Used for MSS
+                           (Multi-Domain Segmentation Service) integrations.
+
+
+                           Subclass of AvdList with `str` items.
+                        flowdns:
+                           Enable DNS resolution for flow records (TerminAttr default is true).
+                           Set to false to disable DNS
+                           lookups on sFlow/IPFIX flow records.
 
                     """
 
