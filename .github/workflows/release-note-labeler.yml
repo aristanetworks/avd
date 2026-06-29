@@ -28,7 +28,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          old_label="$(gh pr view "$PR_NUMBER" --json labels -q '.labels[].name' | grep 'rn: ' || true)"
+          labels="$(gh pr view "$PR_NUMBER" --json labels -q '.labels[].name')"
+          old_label="$(grep -F 'rn: ' <<< "$labels" || true)"
           if [[ -n "$old_label" ]]; then
             while IFS= read -r label; do
               gh pr edit "$PR_NUMBER" --remove-label "$label"
