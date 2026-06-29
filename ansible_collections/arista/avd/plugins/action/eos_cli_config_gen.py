@@ -70,6 +70,8 @@ class ActionModule(AVDActionPlugin):
         structured_config = self.load_structured_config(hostname)
         self.logger.debug("Loading structured config [done].")
 
+        self.result["changed"] = False
+
         has_custom_templates = bool(task_vars.get("custom_templates"))
         template_vars: dict | ChainMap = ChainMap(structured_config, task_vars) if has_custom_templates else {}
 
