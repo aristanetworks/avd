@@ -685,7 +685,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
 --8<--
 
-### Node type IP-VPN gateway for EVPN to MPLS IP-VPN interworking configuration
+### Node type EVPN to MPLS IP-VPN gateway configuration
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
