@@ -17,6 +17,7 @@ port_channel_interfaces:
       mode: trunk
       trunk:
         allowed_vlan: 110,201
+        native_vlan_tag: true
     mlag: 5
     ntp_serve: true
     storm_control:
@@ -477,6 +478,10 @@ port_channel_interfaces:
         mode: sha
         sha:
           key_id: 5
+      level_2:
+        mode: sha
+        sha:
+          key_id: 6
 
   - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
@@ -490,6 +495,7 @@ port_channel_interfaces:
         preference_value: 100
         dont_preempt: true
         hold_time: 10
+        subsequent_hold_time: 20
         candidate_reachability_required: true
       route_target: "00:00:01:02:03:04"
     isis_authentication:
@@ -568,6 +574,10 @@ port_channel_interfaces:
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
         key_type: "8a"
+    bfd:
+      echo: false
+      per_link:
+        enabled: true
 
   - name: Port-Channel17
     description: PBR Description
@@ -577,6 +587,14 @@ port_channel_interfaces:
     service_policy:
       pbr:
         input: MyPolicy
+
+  - name: Port-Channel21
+    description: Loop protection enable
+    loop_protection: true
+
+  - name: Port-Channel22
+    description: Loop protection disable
+    loop_protection: false
 
   - name: Port-Channel99
     description: MCAST
@@ -589,10 +607,16 @@ port_channel_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        border_router: true
         neighbor_filter: Test_Filter_PortChannel
         hello:
           count: 4.5
           interval: 15
+    ip_proxy_arp: true
+    logging:
+      event:
+        storm_control_discards: false
+    vmtracer: true
 
   - name: Port-Channel101
     description: PVLAN Promiscuous Access - only one secondary
@@ -1135,6 +1159,15 @@ port_channel_interfaces:
         number: 2
         unit: milliseconds
 
+  - name: Port-Channel138
+    description: Traffic Engineering Interface Defaults
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.8/31
+    ipv6_enable: true
+    traffic_engineering:
+      enabled: true
+
   # VRRP
   - name: Port-Channel667
     description: Multiple VRIDs
@@ -1227,6 +1260,13 @@ port_channel_interfaces:
     ipv6_enable: true
     ipv6_addresses:
       - 2001:db8:300::1/64
+    ipv6_address_link_local: fe80::301/64
+    isis_enable: ISIS_TEST
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
     ipv6_nd:
       ra:
         disabled: true
@@ -1244,3 +1284,30 @@ port_channel_interfaces:
           valid_lifetime: 400
           preferred_lifetime: 200
           no_autoconfig_flag: true
+
+  - name: Port-Channel302
+    description: Legacy IPv6 address and managed config flag
+    shutdown: false
+    ipv6_addresses:
+      - 2001:db8:302::1/64
+    ipv6_nd:
+      managed_config_flag: true
+
+  # TODO: Open issue. documentation/port-channel-interfaces.j2 has a fallback IPv6
+  # address branch for port-channels without ipv6_addresses, ipv6_address or
+  # ipv6_address_auto_config, but those are the same keys required for the
+  # interface to be included in the IPv6 documentation table.
+
+  - name: Port-Channel303
+    description: Traffic Engineering Static Delay Coverage
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.10/31
+    traffic_engineering:
+      enabled: true
+      bandwidth:
+        number: 42
+        unit: percent
+      min_delay_static:
+        number: 7
+        unit: microseconds

@@ -6,6 +6,9 @@ queue_monitor_length:
   # test with only the high threshold set
   default_thresholds:
     high: 100
+  cpu:
+    thresholds:
+      high: 200000
   mirror:
     destination:
       tunnel_mode_gre:
