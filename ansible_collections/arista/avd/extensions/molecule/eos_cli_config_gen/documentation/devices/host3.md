@@ -340,7 +340,6 @@ router ospf 702
 
 ### Router OSPFv3
 
-
 #### Router OSPFv3 Address Family IPv4
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |

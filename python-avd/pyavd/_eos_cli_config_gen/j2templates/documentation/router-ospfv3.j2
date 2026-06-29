@@ -7,7 +7,6 @@
 {% if router_ospfv3 is arista.avd.defined %}
 
 ### Router OSPFv3
-
 {%     set has_summary = false %}
 {%     if (router_ospfv3.router_id is arista.avd.defined
                and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
@@ -37,6 +36,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if has_summary %}
+
 #### Router OSPFv3 Summary
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
