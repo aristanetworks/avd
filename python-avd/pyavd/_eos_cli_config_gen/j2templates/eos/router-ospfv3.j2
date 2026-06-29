@@ -31,6 +31,7 @@ router ospfv3 vrf {{ vrf.name }}
 {%     endif %}
 {%     if vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
    address-family ipv4
+{%         set use_delimiter = true %}
 {%         if vrf.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ vrf.address_family_ipv4.router_id }}
 {%         endif %}
@@ -111,7 +112,7 @@ router ospfv3 vrf {{ vrf.name }}
       {{ redistribute_static_cli }}
 {%         endif %}
 {%     endif %}
-{%     if (use_delimiter is arista.avd.defined(true) or vrf.address_family_ipv4.enabled is arista.avd.defined(true)) and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%     if use_delimiter is arista.avd.defined(true) and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
    !
 {%     endif %}
 {%     if vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -235,6 +236,7 @@ router ospfv3
 {%     endif %}
 {%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
    address-family ipv4
+{%         set use_delimiter = true %}
 {%         if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ router_ospfv3.address_family_ipv4.router_id }}
 {%         endif %}
@@ -315,7 +317,7 @@ router ospfv3
       {{ redistribute_static_cli }}
 {%         endif %}
 {%     endif %}
-{%     if (use_delimiter is arista.avd.defined(true) or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)) and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%     if use_delimiter is arista.avd.defined(true) and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
    !
 {%     endif %}
 {%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}

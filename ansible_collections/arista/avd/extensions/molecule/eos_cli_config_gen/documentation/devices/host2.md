@@ -1137,8 +1137,8 @@ router ospf 701
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | - | True | - |
-| data | 2.2.2.2 | True | 100 |
-| MGMT | 2.2.2.2 | True | 100 |
+| data | 2.2.2.2 | True | - |
+| MGMT | 2.2.2.2 | - | 100 |
 | Test_VRF | 1.1.1.1 | True | 1000 |
 
 #### Router OSPFv3 Address Family IPv4
@@ -1158,30 +1158,30 @@ router ospf 701
 | default | bgp | True | map3 |
 | default | connected | True | map3 |
 | default | isis level-1 | True | map3 |
-| default | ospfv3 leaked | - | map3 |
-| default | ospfv3 leaked match external | - | map3 |
-| default | ospfv3 leaked match nssa-external | - | map3 |
+| default | ospfv3 | True | map3 |
+| default | ospfv3 match external | True | map3 |
+| default | ospfv3 match nssa-external | True | map3 |
 | default | static | True | map3 |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | isis | - | map1 |
-| data | ospfv3 leaked | - | map1 |
+| data | ospfv3 | True | map1 |
 | data | static | - | map1 |
 | FULL | bgp | True | - |
 | FULL | connected | True | - |
 | FULL | isis level-2 | True | - |
-| FULL | ospfv3 leaked match internal | - | map2 |
-| FULL | ospfv3 leaked match external | - | map2 |
-| FULL | ospfv3 leaked match nssa-external | - | map2 |
+| FULL | ospfv3 match internal | True | map2 |
+| FULL | ospfv3 match external | True | map2 |
+| FULL | ospfv3 match nssa-external | True | map2 |
 | FULL | static | True | - |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | isis | - | - |
-| MGMT | ospfv3 leaked | - | - |
+| MGMT | ospfv3 | True | - |
 | MGMT | static | - | - |
-| Test | ospfv3 leaked match internal | - | - |
-| Test | ospfv3 leaked match external | - | - |
-| Test | ospfv3 leaked match nssa-external | - | - |
+| Test | ospfv3 match internal | True | - |
+| Test | ospfv3 match external | True | - |
+| Test | ospfv3 match nssa-external | True | - |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -1201,32 +1201,32 @@ router ospf 701
 | default | connected | True | map3 |
 | default | dhcp | - | map3 |
 | default | isis level-1 | True | map3 |
-| default | ospfv3 leaked | - | map3 |
-| default | ospfv3 leaked match external | - | map3 |
-| default | ospfv3 leaked match nssa-external | - | map3 |
+| default | ospfv3 | True | map3 |
+| default | ospfv3 match external | True | map3 |
+| default | ospfv3 match nssa-external | True | map3 |
 | default | static | True | map3 |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | dhcp | - | map1 |
 | data | isis | - | map1 |
-| data | ospfv3 leaked | - | map1 |
+| data | ospfv3 | True | map1 |
 | data | static | - | map1 |
 | FULL | bgp | True | - |
 | FULL | connected | True | - |
 | FULL | isis level-2 | True | - |
-| FULL | ospfv3 leaked match internal | - | map2 |
-| FULL | ospfv3 leaked match external | - | map2 |
-| FULL | ospfv3 leaked match nssa-external | - | map2 |
+| FULL | ospfv3 match internal | True | map2 |
+| FULL | ospfv3 match external | True | map2 |
+| FULL | ospfv3 match nssa-external | True | map2 |
 | FULL | static | True | - |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | dhcp | - | - |
 | MGMT | isis | - | - |
-| MGMT | ospfv3 leaked | - | - |
+| MGMT | ospfv3 | True | - |
 | MGMT | static | - | - |
-| Test | ospfv3 leaked match internal | - | - |
-| Test | ospfv3 leaked match external | - | - |
-| Test | ospfv3 leaked match nssa-external | - | - |
+| Test | ospfv3 match internal | True | - |
+| Test | ospfv3 match external | True | - |
+| Test | ospfv3 match nssa-external | True | - |
 
 #### Router OSPFv3 Device Configuration
 

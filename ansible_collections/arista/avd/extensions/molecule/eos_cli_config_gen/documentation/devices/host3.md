@@ -344,7 +344,6 @@ router ospf 702
 
 | VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
 | --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | True | 1000 |
 
 #### Router OSPFv3 Address Family IPv4
 
@@ -356,9 +355,9 @@ router ospf 702
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 leaked match internal | - | map1 |
-| default | ospfv3 leaked match external | - | map1 |
-| default | ospfv3 leaked match nssa-external | - | map1 |
+| default | ospfv3 match internal | True | map1 |
+| default | ospfv3 match external | True | map1 |
+| default | ospfv3 match nssa-external | True | map1 |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -370,9 +369,9 @@ router ospf 702
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 leaked match internal | - | map1 |
-| default | ospfv3 leaked match external | - | map1 |
-| default | ospfv3 leaked match nssa-external | - | map1 |
+| default | ospfv3 match internal | True | map1 |
+| default | ospfv3 match external | True | map1 |
+| default | ospfv3 match nssa-external | True | map1 |
 
 #### Router OSPFv3 Device Configuration
 
