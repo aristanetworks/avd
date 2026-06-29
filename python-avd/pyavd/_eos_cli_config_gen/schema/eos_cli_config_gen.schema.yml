@@ -24615,7 +24615,7 @@ keys:
                   max: 1440
                   convert_types:
                   - str
-                  description: 'Set interval for CLI command execution.
+                  description: 'Repeat interval in minutes.
 
                     Mutually exclusive with `at.once`. `at.once` takes precedence
                     if both are set.'

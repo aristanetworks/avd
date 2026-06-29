@@ -11,6 +11,8 @@ schedule config max-concurrent-jobs {{ schedule.config.max_concurrent_jobs }}
 {%         endif %}
 {%         if schedule.config.prepend_hostname_logfile is arista.avd.defined(true) %}
 schedule config prepend-hostname-logfile
+{%         elif schedule.config.prepend_hostname_logfile is arista.avd.defined(false) %}
+no schedule config prepend-hostname-logfile
 {%         endif %}
 {%     endif %}
 {%     for job in schedule.jobs | arista.avd.natural_sort('name') %}

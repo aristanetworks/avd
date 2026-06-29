@@ -70,7 +70,7 @@ keys:
                   convert_types:
                     - str
                   description: |-
-                    Set interval for CLI command execution.
+                    Set interval.
                     Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
             now_interval:
               type: int

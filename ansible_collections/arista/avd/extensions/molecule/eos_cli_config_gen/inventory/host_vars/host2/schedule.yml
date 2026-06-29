@@ -1,0 +1,10 @@
+---
+schedule:
+  config:
+    prepend_hostname_logfile: false
+  jobs:
+    - name: check_version
+      interval: 10
+      timeout: 5
+      max_log_files: 2
+      command: show version
