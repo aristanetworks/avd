@@ -1818,6 +1818,14 @@ keys:
           '
         items:
           type: str
+      flowdns:
+        type: bool
+        description: 'Enable DNS resolution for flow records (TerminAttr default is
+          true).
+
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+
+          '
   daemons:
     type: list
     primary_key: name

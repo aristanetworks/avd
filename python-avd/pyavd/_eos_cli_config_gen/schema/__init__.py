@@ -4185,6 +4185,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cvconfig": {"type": bool},
             "cv_loss_timeout": {"type": int},
             "cvtargetconfigs": {"type": Cvtargetconfigs},
+            "flowdns": {"type": bool},
         }
         cvaddrs: Cvaddrs
         """
@@ -4301,6 +4302,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        flowdns: bool | None
+        """
+        Enable DNS resolution for flow records (TerminAttr default is true).
+        Set to false to disable DNS
+        lookups on sFlow/IPFIX flow records.
+        """
 
         if TYPE_CHECKING:
 
@@ -4330,6 +4337,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cvconfig: bool | None | UndefinedType = Undefined,
                 cv_loss_timeout: int | None | UndefinedType = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
+                flowdns: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4414,6 +4422,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    flowdns:
+                       Enable DNS resolution for flow records (TerminAttr default is true).
+                       Set to false to disable DNS
+                       lookups on sFlow/IPFIX flow records.
 
                 """
 
