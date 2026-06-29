@@ -10260,6 +10260,13 @@ keys:
                   type: str
                 key:
                   type: str
+                auto_certificate:
+                  description: 'Automatically managed certificate profile.
+
+                    Mutually exclusive with ''file'' and ''key''.'
+                  type: str
+                  convert_types:
+                  - int
             certificate_revocation_lists:
               type: list
               description: 'List of CRLs (Certificate Revocation List).
@@ -11377,10 +11384,6 @@ keys:
       enabled:
         type: bool
         description: Enable monitor layer1.
-        deprecation:
-          warning: true
-          removed: false
-          remove_in_version: 7.0.0
       logging_mac_fault:
         type: bool
         description: Enable MAC fault logging.
