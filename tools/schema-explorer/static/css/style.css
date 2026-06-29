@@ -2106,3 +2106,11 @@ html.style-none #schema-navbar { display: none !important; }
   background: color-mix(in srgb, var(--se-danger) 22%, transparent) !important;
   color: #ffccd5 !important;
 }
+
+.schema-spa-host[data-bs-theme="dark"] .schema-type-cell :where(.badge.bg-light, .badge.text-dark),
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-type-cell :where(.badge.bg-light, .badge.text-dark),
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-type-cell :where(.badge.bg-light, .badge.text-dark) {
+  border-color: color-mix(in srgb, var(--md-default-fg-color, #d8dee6) 24%, transparent) !important;
+  background: color-mix(in srgb, var(--md-default-fg-color, #d8dee6) 12%, transparent) !important;
+  color: var(--md-code-fg-color, var(--md-default-fg-color, #e7edf4)) !important;
+}
