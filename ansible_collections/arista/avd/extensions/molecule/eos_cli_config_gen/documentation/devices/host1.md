@@ -7480,6 +7480,7 @@ interface Loopback100
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 | Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
+| Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
 
 ##### IPv4
 
@@ -7488,6 +7489,7 @@ interface Loopback100
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
+| Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
 
 ##### IPv6
 
@@ -7498,6 +7500,7 @@ interface Loopback100
 | Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - | - |
 | Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - | - |
 | Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - | - |
+| Tunnel6 | default | - | 1400 | - | True | - | True | True | capacity: 100 | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7585,6 +7588,18 @@ interface Tunnel5
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:200::/64 250 125 no-autoconfig
    tunnel source 20.20.20.20
+   tunnel destination 2.2.2.2
+!
+interface Tunnel6
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ip address 10.99.99.1/30
+   ipv6 nd cache dynamic capacity 100
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   tcp mss ceiling ipv6 1400
+   tunnel mode gre
+   tunnel source 1.1.1.1
    tunnel destination 2.2.2.2
 ```
 
