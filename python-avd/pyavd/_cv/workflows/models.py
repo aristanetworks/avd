@@ -50,9 +50,9 @@ class CVProxyConfiguration:
         if self.username and self.password:
             username = quote(self.username, safe="")
             password = quote(self.password, safe="")
-            return f"http://{username}:{password}@{self.host}:{self.port}"
+            return f"http://{username}:{password}@{self.host}:{self.port}"  # NOSONAR: accept http for proxy.
 
-        return f"http://{self.host}:{self.port}"
+        return f"http://{self.host}:{self.port}"  # NOSONAR: accept http for proxy.
 
     def get_requests_proxies(self) -> dict[str, str]:
         """Build requests proxy configuration."""
