@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | PREVIEW: This data model is currently in "preview" mode and is not used anywhere yet.<br>IPv4 standard access-lists catalog. |
+    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | IPv4 standard access-lists catalog. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_standard_acls.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv4_standard_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_standard_acls.[].entries") | List, items: Dictionary |  |  |  |  |
@@ -25,7 +25,6 @@
 === "YAML"
 
     ```yaml
-    # PREVIEW: This data model is currently in "preview" mode and is not used anywhere yet.
     # IPv4 standard access-lists catalog.
     ipv4_standard_acls:
 

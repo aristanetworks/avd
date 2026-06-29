@@ -105668,12 +105668,10 @@ class EosDesigns(EosDesignsRootModel):
     """
     ipv4_standard_acls: Ipv4StandardAcls
     """
-    PREVIEW: This data model is currently in "preview" mode and is not used anywhere yet.
-    IPv4 standard
-    access-lists catalog.
+    IPv4 standard access-lists catalog.
 
-    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is
-    `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items.
+    Primary key is `name` (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -107752,12 +107750,10 @@ class EosDesigns(EosDesignsRootModel):
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv4_standard_acls:
-                   PREVIEW: This data model is currently in "preview" mode and is not used anywhere yet.
-                   IPv4 standard
-                   access-lists catalog.
+                   IPv4 standard access-lists catalog.
 
-                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is
-                   `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items.
+                   Primary key is `name` (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
