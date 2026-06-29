@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
@@ -16,6 +15,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_cli_config_gen"
+LOG_HANDLERS_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers"
+LOG_CONFIG_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 
 
@@ -90,7 +91,6 @@ MOCK_TMP_DIR = "/avd/mocked/tmp"
 )
 def test_run_emits_expected_debug_logs_and_routes_to_display(
     action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
     generate_device_config: bool,
     generate_device_doc: bool,
     with_custom_templates: bool,
@@ -111,6 +111,9 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
     if with_custom_templates:
         task_vars["custom_templates"] = ["some/template.j2"]
 
+    # verbosity=3 makes the base class configure the AVD logger at DEBUG, routing to display.vvv
+    shared_display = MagicMock(verbosity=3)
+
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
@@ -120,19 +123,17 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
         patch.object(module, "render_template_with_ansible_templar", return_value="! custom\n"),
         patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
         patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
-        patch(f"{MODULE_PATH}.display") as mock_display,
-        caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
     ):
         module.run(task_vars=task_vars)
 
-    assert caplog.messages == expected_messages
-    assert all(r.levelno == logging.DEBUG for r in caplog.records)
-    display_messages = [call.args[0] for call in mock_display.vvv.call_args_list]
+    display_messages = [call.args[0] for call in shared_display.vvv.call_args_list]
     assert display_messages == [f"<{hostname}> {msg}" for msg in expected_messages]
 
 
 def test_load_structured_config_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
-    """Test that AnsibleActionFail is raised with a message identifying the missing host."""
+    """Test that FileNotFoundError is raised with a message identifying the missing host."""
     module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
@@ -146,7 +147,7 @@ def test_load_structured_config_raises_when_file_missing(action_module: Callable
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=(
                 r"Missing the validated structured config for host 'my-spine-device'. "
                 r"Ensure the 'arista.avd.validate_inputs' task ran successfully for this host "
@@ -157,9 +158,10 @@ def test_load_structured_config_raises_when_file_missing(action_module: Callable
         module.load_structured_config("my-spine-device")
 
 
-def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
+def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
     """Test that any exception during execution is wrapped with the 'Error during plugin execution:' prefix and chained."""
     module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.eos_cli_config_gen"  # pyright: ignore[reportAttributeAccessIssue]
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
         "generate_device_config": True,
@@ -167,14 +169,19 @@ def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., Actio
         "config_filename": "/output/config.cfg",
     }
     original_error = RuntimeError("pyavd exploded")
+    shared_display = MagicMock(verbosity=0)
 
     with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch.object(module, "validate_args", return_value=validated_args),
         patch.object(module, "load_structured_config", return_value={}),
         patch(f"{MODULE_PATH}.get_device_config", side_effect=original_error, create=True),
-        pytest.raises(AnsibleActionFail, match=r"Error during plugin execution: pyavd exploded") as exc_info,
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_cli_config_gen' execution: 'pyavd exploded'") as exc_info,
     ):
-        module.main("test-device", {}, {})
+        module.run(task_vars={"inventory_hostname": "test-device"})
 
     assert exc_info.value.__cause__ is original_error
 
@@ -182,10 +189,14 @@ def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., Actio
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
     module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.eos_cli_config_gen"  # pyright: ignore[reportAttributeAccessIssue]
+    shared_display = MagicMock(verbosity=0)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
         pytest.raises(AnsibleActionFail, match=r"The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"),
     ):
         module.run(task_vars={"inventory_hostname": "test-device"})
