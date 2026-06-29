@@ -304,6 +304,272 @@ $defs:
                 Enable hardware validation for the device.
                 When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
               default: true
+            errdisable_causes:
+              type: dict
+              description: |-
+                Per-cause support for errdisable detection and recovery.
+                Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+                Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.
+                The supported causes depends on the EOS version and the hardware platform.
+              keys:
+                acl:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                arp_inspection:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                bpduguard:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_coa:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_phone_classification:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_session_replace:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                error_correction_encoding:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                fabric_capacity_low:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                hardware_speed_group:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                hitless_reload_down:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                interface_speed:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                internal_error:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                lacp_rate_limit:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                link_change:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                link_flap:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                no_internal_vlan:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                port_breakout:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                portchannelguard:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                portsec:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                speed_misconfigured:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                storm_control:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                stuck_queue:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                switchcard_unreachable:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                tap_port_init:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                tapagg:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                tpid:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                transceiver_adapter:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                uplink_failure_detection:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_misconfigured:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_overheat:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_power_unsupported:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_unsupported:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
         management_interface:
           type: str
           default: Management1

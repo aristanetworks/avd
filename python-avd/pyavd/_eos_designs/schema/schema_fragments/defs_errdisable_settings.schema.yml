@@ -1,0 +1,34 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  errdisable_settings:
+    type: dict
+    keys:
+      detect_and_recovery:
+        type: dict
+        keys:
+          detection:
+            type: bool
+          recovery:
+            type: bool
+          recovery_interval:
+            type: int
+            description: |-
+              Interval for each recovery cause in seconds.
+            min: 30
+            max: 86400
+            convert_types:
+              - str
+      recovery_only:
+        type: dict
+        keys:
+          recovery:
+            type: bool
+          recovery_interval:
+            type: int
+            $ref: "eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery/keys/recovery_interval"
