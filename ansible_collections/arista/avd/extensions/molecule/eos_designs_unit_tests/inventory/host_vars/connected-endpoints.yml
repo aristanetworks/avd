@@ -159,10 +159,10 @@ servers:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet47, Ethernet48]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
-        description: "Interface description {interface!t} {endpoint_type}_{endpoint!l}{endpoint_port?<_!u}"
+        description: "Interface description {interface!c} {endpoint_type}_{endpoint!l}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
-          description: "Port channel description {interface!t} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!l}"
+          description: "Port channel description {interface!c} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!l}"
           endpoint_port_channel: ENDPOINT_PORT_CHANNEL
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
