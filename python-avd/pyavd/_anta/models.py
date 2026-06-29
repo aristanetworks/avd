@@ -90,7 +90,7 @@ class InputFactoryDataSource:
         """Get the AVDDeviceData object for this device."""
         device_data = self._fabric_data.devices.get(self.hostname)
         if device_data is None:
-            raise AristaAvdError(message=f"Device '{self.hostname}' structured configuration is not loaded in AVDFabricData.")
+            raise AristaAvdError(f"Device '{self.hostname}' structured configuration is not loaded in AVDFabricData.")
         return device_data
 
     @cached_property
