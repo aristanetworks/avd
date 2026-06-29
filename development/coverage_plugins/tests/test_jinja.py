@@ -119,6 +119,40 @@ def test_file_tracer_maps_blank_only_yield_after_jinja_pass(tmp_path: Path) -> N
     assert tracer.line_number_range(_frame(6)) == (2, 2)
 
 
+def test_file_tracer_maps_blank_only_yield_after_else_pass(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "blank_else.j2"
+    compiled_file = compiled_root / "blank_else.py"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if enabled %}\ntrue\n{% else %}\n\n{% for item in items %}\n- {{ item }}\n{% endfor %}\n{% endif %}\n",
+        encoding="utf-8",
+    )
+    compiled_file.write_text(
+        "name = 'blank_else.j2'\n"
+        "\n"
+        "def root(context):\n"
+        "    if context.get('enabled'):\n"
+        "        yield 'true'\n"
+        "    else:\n"
+        "        pass\n"
+        "        yield '\\n'\n"
+        "        for item in context.get('items'):\n"
+        "            yield '- '\n"
+        "            yield str(item)\n"
+        "debug_info = '1=4&2=5&5=9&6=10'\n",
+        encoding="utf-8",
+    )
+
+    tracer = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)).file_tracer(str(compiled_file))
+
+    assert tracer is not None
+    assert tracer.line_number_range(_frame(8)) == (3, 4)
+
+
 def test_file_tracer_without_compiled_template_roots_traces_no_files(tmp_path: Path) -> None:
     compiled_file = tmp_path / "compiled_templates/template.py"
     compiled_file.parent.mkdir()
