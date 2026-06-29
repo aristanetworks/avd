@@ -109,14 +109,12 @@ function renderStructuredDefault(parts) {
       const platforms = Array.isArray(item.platforms) && item.platforms.length
         ? item.platforms.join(", ")
         : `Item ${idx + 1}`;
-      const settingsCount = Object.keys(fields).length;
       const id = `${idPrefix}-item-${idx}`;
       return `
         <div class="schema-group schema-default-group">
           <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
             <i class="bi bi-chevron-right collapse-icon"></i>
-            <code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${escapeHtml(platforms)}</code>
-            <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${settingsCount} setting${settingsCount === 1 ? "" : "s"}</span>
+            <code class="schema-key-code">${escapeHtml(platforms)}</code>
           </div>
           <div class="collapse" id="${id}">
             ${renderDefaultObjectTable(fields)}
@@ -271,7 +269,7 @@ const app = document.getElementById("app");
 //
 // Two mount modes share this script:
 //
-//   * **Standalone**: a page declares `<main id="app">` + `<select id="release-select">`
+//   * **Standalone**: a page declares `<main id="app">`
 //     (the SPA's own `index.html` at `/_assets/schema-explorer/index.html`).
 //     Uses the URL hash for routing — landing / module / var-detail views.
 //
@@ -405,13 +403,6 @@ async function ensureSqlJs() {
 
   if (hasStandalone) {
     window.addEventListener("hashchange", route);
-    const releaseSelect = document.getElementById("release-select");
-    if (releaseSelect) {
-      releaseSelect.addEventListener("change", e => {
-        const path = location.hash.slice(1) || "/";
-        location.hash = path + (path.includes("?") ? "&" : "?") + "release=" + encodeURIComponent(e.target.value);
-      });
-    }
     await route();
   }
 
@@ -479,7 +470,29 @@ function applyNavigatorVisibility(groupEl) {
 // Delegated handler for navigator-row chevron clicks. Lives at document level so
 // it survives every renderResults innerHTML refresh and works across multiple
 // embed roots on the same page.
+document.addEventListener("change", e => {
+  const select = e.target.closest("[data-reference-default-select]");
+  if (!select) return;
+  const target = document.getElementById(select.dataset.referenceDefaultTarget || "");
+  if (!target) return;
+  target.querySelectorAll("[data-reference-default-item]").forEach(item => {
+    item.hidden = item.dataset.referenceDefaultItem !== select.value;
+  });
+});
+
 document.addEventListener("click", e => {
+  const yamlAnnotationToggle = e.target.closest("[data-yaml-annotation-target]");
+  if (yamlAnnotationToggle) {
+    e.preventDefault();
+    e.stopPropagation();
+    const annotation = document.getElementById(yamlAnnotationToggle.dataset.yamlAnnotationTarget || "");
+    if (!annotation) return;
+    annotation.scrollIntoView({ block: "nearest" });
+    annotation.classList.add("schema-yaml-annotation-active");
+    setTimeout(() => annotation.classList.remove("schema-yaml-annotation-active"), 1200);
+    return;
+  }
+
   const metadataToggle = e.target.closest(".schema-row-info-toggle");
   if (metadataToggle) {
     e.preventDefault();
@@ -508,10 +521,10 @@ document.addEventListener("click", e => {
   e.stopPropagation();
   const row = toggle.closest("tr.schema-navigator-row");
   if (!row) return;
-  const groupEl = row.closest(".schema-group");
+  const navigatorEl = row.closest(".schema-group, .schema-detail-children");
   const shouldExpand = row.dataset.expanded !== "1";
   setNavigatorRowExpanded(row, shouldExpand);
-  applyNavigatorVisibility(groupEl);
+  applyNavigatorVisibility(navigatorEl);
 });
 
 // ── hash router ──────────────────────────────────────────────────────────────
@@ -532,8 +545,6 @@ function parseHash() {
 async function route() {
   const { segments, params } = parseHash();
   const release = normalizeRelease(params.get("release") || DEFAULT_RELEASE);
-  const releaseSelect = document.getElementById("release-select");
-  if (releaseSelect) releaseSelect.value = release;
   try {
     const db = await getDb(release);
     if (segments.length === 0)             return renderLanding(db, release);
@@ -581,10 +592,6 @@ function rows(db, sql, params = []) {
   while (stmt.step()) out.push(stmt.getAsObject());
   stmt.free();
   return out;
-}
-
-function getStats(db, release) {
-  return rows(db, "SELECT module, var_count, loaded_at FROM schema_meta WHERE release = ?", [release]);
 }
 
 function getCategoryCounts(db, release, module) {
@@ -684,9 +691,9 @@ function isFilterActive(state) {
 }
 
 function lifecycleBadge(v) {
-  if (v.removed) return `<span class="badge bg-danger">removed</span>`;
-  if (v.deprecated) return `<span class="badge bg-warning text-dark">deprecated</span>`;
-  return `<span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "-")}</span>`;
+  if (v.removed) return `<span class="schema-type-label text-muted">removed</span>`;
+  if (v.deprecated) return `<span class="schema-type-label text-muted">deprecated</span>`;
+  return `<span class="schema-type-label">${escapeHtml(v.var_type || "-")}</span>`;
 }
 
 function requiredMarker(row) {
@@ -714,9 +721,9 @@ function renderRowMetadata(row, release, visibleColumns, detailId) {
   if (!rowHasMetadata(row)) return "";
   const constraints = yamlRestrictionParts(row, yamlConstraints(row));
   const lifecycle = row.removed
-    ? `<span class="badge bg-danger">removed</span>`
+    ? `<span class="schema-detail-status text-muted">removed</span>`
     : row.deprecated
-      ? `<span class="badge bg-warning text-dark">deprecated</span>`
+      ? `<span class="schema-detail-status text-muted">deprecated</span>`
       : `<span class="text-muted">active</span>`;
   return `
     <tr class="schema-row-metadata" id="${escapeAttr(detailId)}" data-detail-for="${escapeAttr(navigatorRowId(row, row.module))}" data-open="0" style="display: none;">
@@ -724,8 +731,8 @@ function renderRowMetadata(row, release, visibleColumns, detailId) {
         <div class="schema-row-metadata-panel">
           <div><span class="schema-meta-label">Default</span>${renderDefaultValue(row.default_value, { compact: true })}</div>
           <div><span class="schema-meta-label">Valid / constraints</span>${constraints.length ? escapeHtml(constraints.join("; ")) : `<span class="text-muted">-</span>`}</div>
-          <div><span class="schema-meta-label">Category</span>${row.category ? `<span class="badge schema-category-badge">${escapeHtml(row.category)}</span>` : `<span class="text-muted">-</span>`}</div>
-          <div><span class="schema-meta-label">Doc table</span>${row.doc_table ? `<span class="badge schema-category-badge">${escapeHtml(row.doc_table)}</span>` : `<span class="text-muted">-</span>`}</div>
+          <div><span class="schema-meta-label">Category</span>${row.category ? `<span class="schema-plain-value">${escapeHtml(row.category)}</span>` : `<span class="text-muted">-</span>`}</div>
+          <div><span class="schema-meta-label">Doc table</span>${row.doc_table ? `<span class="schema-plain-value">${escapeHtml(row.doc_table)}</span>` : `<span class="text-muted">-</span>`}</div>
           <div><span class="schema-meta-label">Lifecycle</span>${lifecycle}</div>
           ${row.cross_ref ? `<div><span class="schema-meta-label">Cross-schema</span>${renderCrossRefRow(row.cross_ref, release).replace(/^<tr><td[^>]*>Cross-schema<\/td><td>|<\/td><\/tr>$/g, "")}</div>` : ""}
         </div>
@@ -738,7 +745,7 @@ function navigatorKeyControl(row, release, module, state, isBranch, leaf, indent
   const chevron = isBranch
     ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} navigator-toggle-icon"></i>`
     : `<span class="navigator-toggle-spacer"></span>`;
-  const keyHtml = `<code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code>`;
+  const keyHtml = `<code class="schema-key-code">${highlight(leaf, state.q)}</code>`;
   const detailsLink = `<a href="${link}" class="schema-row-detail-link link-brand text-decoration-none" title="Open details for ${escapeAttr(row.key_path)}"><i class="bi bi-box-arrow-up-right"></i></a>`;
   if (isBranch) {
     return `
@@ -783,15 +790,12 @@ function renderDevelopmentNotice() {
   return `
     <div class="schema-development-notice" role="note">
       <div class="schema-development-notice-title"><i class="bi bi-tools"></i> Under construction</div>
-      <div>This Schema Explorer is still in development. A GitHub Discussion will be used to collect comments, concerns, and feature requests.</div>
+      <div>This Schema Explorer is still in development. Please use <a href="https://github.com/aristanetworks/avd/discussions/7186" target="_blank" rel="noopener">GitHub Discussion</a> to share comments, concerns, and feature requests.</div>
     </div>`;
 }
 
 function renderLanding(db, release) {
-  const stats = Object.fromEntries(getStats(db, release).map(s => [s.module, s]));
   const cards = Object.entries(SCHEMA_MODULES).map(([id, mod]) => {
-    const s = stats[id] || {};
-    const count = s.var_count || 0;
     return `
       <div class="col">
         <a href="#/${id}?release=${releaseParam(release)}" class="text-decoration-none d-block h-100">
@@ -802,7 +806,6 @@ function renderLanding(db, release) {
                 <div class="me-auto">
                   <h6 class="mb-0 fw-semibold">${escapeHtml(mod.name)}</h6>
                   <div class="text-muted" style="font-size:0.7rem;"><code>${id}</code></div>
-                  <span class="badge mt-1" style="background-color:#198754; font-size:0.65rem;">${count} variables</span>
                 </div>
               </div>
               <p class="text-muted small mb-0">${escapeHtml(mod.description)}</p>
@@ -813,10 +816,6 @@ function renderLanding(db, release) {
   }).join("");
 
   app.innerHTML = `
-    <div class="d-flex align-items-center mb-3">
-      <h4 class="fw-bold mb-0 brand-color"><i class="bi bi-search me-2"></i>Schema Explorer</h4>
-      <span class="badge ms-2" style="background-color: #16325B;">aristanetworks/avd</span>
-    </div>
     <p class="text-muted small mb-3">
       Browse the AVD data model schemas. Select a module to explore variables, search by key path, and view detailed documentation.
     </p>
@@ -841,7 +840,7 @@ function renderModule(db, release, module, options = {}) {
   const host = options.target || app;
   const embedded = !!options.embed;
   const defaultRoot = options.root || "";
-  const initialView = ["navigator", "reference", "yaml", "index"].includes(options.view) ? options.view : "navigator";
+  const initialView = ["navigator", "reference", "yaml"].includes(options.view) ? options.view : "reference";
   const chrome = options.chrome || "compact";
   const isAll = module === "all";
   if (!isAll && !SCHEMA_MODULES[module]) {
@@ -849,21 +848,15 @@ function renderModule(db, release, module, options = {}) {
     return;
   }
 
-  const stats = getStats(db, release);
-  const moduleStats = isAll
-    ? { var_count: stats.reduce((sum, item) => sum + item.var_count, 0) }
-    : stats.find(item => item.module === module) || {};
   const info = isAll
     ? { name: "All Modules", icon: "bi-search", description: "Search across both AVD Design and EOS Config schemas." }
     : SCHEMA_MODULES[module];
 
-  const total = moduleStats.var_count || 0;
   const headerHtml = chrome === "none" ? "" : `
     <div class="d-flex align-items-center mb-3 schema-browser-heading">
       ${embedded ? "" : `<a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>`}
       <div>
         <h4 class="mb-1 fw-bold brand-color"><i class="bi ${info.icon} me-2"></i>${escapeHtml(info.name)}${isAll ? "" : ` <small class="text-muted fw-normal" style="font-size:0.6em;"><code>${escapeHtml(module)}</code></small>`}</h4>
-        ${total ? `<span class="badge" style="background-color:#198754; font-size:0.65rem;">${total} variables</span>` : ""}
       </div>
     </div>
     <p class="text-muted small mb-3">${escapeHtml(info.description)}</p>`;
@@ -890,7 +883,6 @@ function renderModule(db, release, module, options = {}) {
               <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-navigator">Navigator</button>
               <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-reference">Reference</button>
               <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-yaml">YAML</button>
-              <button type="button" class="btn btn-outline-secondary schema-view-mode-button" id="btn-view-index">Index</button>
             </div>
           </div>
         </div>
@@ -935,7 +927,6 @@ function renderModule(db, release, module, options = {}) {
   });
   const viewButtons = {
     navigator: host.querySelector("#btn-view-navigator"),
-    index: host.querySelector("#btn-view-index"),
     yaml: host.querySelector("#btn-view-yaml"),
     reference: host.querySelector("#btn-view-reference"),
   };
@@ -945,7 +936,6 @@ function renderModule(db, release, module, options = {}) {
     renderResults(db, release, module, state);
   }
   viewButtons.navigator.addEventListener("click", () => setViewMode("navigator"));
-  viewButtons.index.addEventListener("click", () => setViewMode("index"));
   viewButtons.yaml.addEventListener("click", () => setViewMode("yaml"));
   viewButtons.reference.addEventListener("click", () => setViewMode("reference"));
 
@@ -958,10 +948,7 @@ function renderResults(db, release, module, state) {
   // Navigator, Reference, and YAML views need every row in the active scope so the hierarchy is
   // complete — anything dropped at the SQL boundary disappears from the output
   // entirely (eos_cli_config_gen has 6.4k rows; "all modules" hits ~12.6k).
-  // Index view caps at 500 since users only consume the head visibly.
-  const hierarchical = state.view === "navigator" || state.view === "yaml" || state.view === "reference";
-  const limit = hierarchical ? 20000 : 500;
-  const results = state.rows || searchVars(db, release, module, { ...state, limit, order: hierarchical ? "id" : "key_path" });
+  const results = state.rows || searchVars(db, release, module, { ...state, limit: 20000, order: "id" });
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
@@ -969,72 +956,7 @@ function renderResults(db, release, module, state) {
   if (state.view === "navigator") return renderNavigatorResults(target, db, release, module, state, results);
   if (state.view === "yaml") return renderYamlResults(target, module, results);
   if (state.view === "reference") return renderReferenceResults(target, release, module, state, results);
-  const isAll = module === "all";
-  if (state.embedCompact) {
-    const indexColumns = isAll ? `<col style="width: 9rem;"><col style="width: 30%;"><col>` : `<col style="width: 34%;"><col>`;
-    const rowsHtml = results.map(v => {
-      const mod = isAll ? v.module : module;
-      const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
-      const modBadge = isAll ? `<td><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
-      return `
-        <tr>
-          ${modBadge}
-          <td class="px-3"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
-          <td class="schema-description-text text-muted small">${formatMarkdownInline(v.description || "-", state.q)}</td>
-        </tr>`;
-    }).join("");
-    target.innerHTML = `
-      <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
-      <div class="schema-results-scroll">
-        <div class="table-responsive">
-        <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
-          <colgroup>${indexColumns}</colgroup>
-          <thead class="table-light"><tr>
-            ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
-            <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key Path</th>
-            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
-          </tr></thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-        </div>
-      </div>`;
-    return;
-  }
-  const visibleColumns = isAll ? 5 : 4;
-  const rowsHtml = results.map(v => {
-    const mod = isAll ? v.module : module;
-    const link = `#/${mod}/${encodeURI(v.key_path)}?release=${releaseParam(release)}`;
-    const detailId = `m${++_navigatorRenderSeq}`;
-    const modBadge = isAll ? `<td data-label="Module"><span class="badge ${v.module === "eos_designs" ? "bg-primary" : "bg-success"}">${escapeHtml(SCHEMA_MODULES[v.module]?.name || v.module)}</span></td>` : "";
-    return `
-      <tr>
-        ${modBadge}
-        <td class="schema-key-cell px-3" data-label="Key"><a href="${link}" class="link-brand text-decoration-none"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(displayPath(v.key_path), state.q)}</code></a></td>
-        <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
-        <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
-        <td class="schema-description-text text-muted small" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
-      </tr>${renderRowMetadata(v, release, visibleColumns, detailId)}`;
-  }).join("");
-  target.innerHTML = `
-    <div class="schema-results-toolbar card-header bg-light text-muted small">${results.length} variable${results.length === 1 ? "" : "s"} ${results.length >= 500 ? "(showing first 500)" : "found"}</div>
-    <div class="schema-results-scroll">
-      <div class="table-responsive">
-      <table class="table table-sm table-hover align-middle mb-0 schema-var-table schema-index-table">
-        <colgroup>
-          ${isAll ? `<col class="schema-col-module">` : ""}
-          <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-description">
-        </colgroup>
-        <thead class="table-light"><tr>
-          ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
-          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-          <th class="text-muted small text-uppercase text-center" style="font-size: 0.72rem;">Req</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
-        </tr></thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
-      </div>
-    </div>`;
+  return renderNavigatorResults(target, db, release, module, { ...state, view: "navigator" }, results);
 }
 
 let _navigatorRenderSeq = 0;
@@ -1093,17 +1015,14 @@ function renderNavigatorResults(target, db, release, module, state, matches) {
   }
 
   const groups = new Map();
-  const matchCounts = new Map();
   for (const v of rowsForGroups) {
     const groupId = navigatorGroupId(v, module);
     const root = rootSegment(v.key_path);
     if (!groups.has(groupId)) groups.set(groupId, { root, module: rowModule(v, module), vars: [] });
     groups.get(groupId).vars.push(v);
-    if (!v.is_context) matchCounts.set(groupId, (matchCounts.get(groupId) || 0) + 1);
   }
   const sorted = [...groups.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
-  const total = matches.length;
-  const visibleColumns = isAll ? 5 : 4;
+  const visibleColumns = isAll ? 7 : 6;
 
   const groupRowsHtml = sorted.map(([groupId, group], idx) => {
     const navOrder = orderedNavigatorRows(group.vars, module);
@@ -1140,11 +1059,13 @@ function renderNavigatorResults(target, db, release, module, state, matches) {
               data-expanded="${initiallyExpanded ? "1" : "0"}"${groupStartAttr}${styleAttr}>
             ${modBadge}
             <td class="schema-key-cell px-3" data-label="Key">
-              <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code fw-bold" style="font-size: 0.82rem;">${highlight(leaf, state.q)}</code></a></span>
+              <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="${link}" class="link-brand text-decoration-none" title="${escapeAttr(v.key_path)}"><code class="schema-key-code">${highlight(leaf, state.q)}</code></a></span>
             </td>
             <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
             <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
-            <td class="schema-description-text text-muted small" data-label="Description">${formatMarkdownInline(v.description || "-", state.q)}</td>
+            <td class="schema-default-cell" data-label="Default">${renderDefaultValue(v.default_value, { compact: true })}</td>
+            <td class="schema-constraints-cell text-muted" data-label="Value Restrictions">${constraintsSummary(v)}</td>
+            <td class="schema-description-text text-muted" data-label="Description">${formatMarkdownInline(v.description || "-", state.q)}</td>
           </tr>`;
       }
 
@@ -1160,7 +1081,9 @@ function renderNavigatorResults(target, db, release, module, state, matches) {
           <td class="schema-key-cell px-3" data-label="Key">${navigatorKeyControl(v, release, mod, state, isBranch, leaf, indent, initiallyExpanded)}</td>
           <td class="schema-type-cell" data-label="Type">${lifecycleBadge(v)}</td>
           <td class="schema-required-cell text-center" data-label="Req">${requiredMarker(v)}</td>
-          <td class="schema-description-text text-muted small" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
+          <td class="schema-default-cell" data-label="Default">${renderDefaultValue(v.default_value, { compact: true })}</td>
+          <td class="schema-constraints-cell text-muted" data-label="Value Restrictions">${constraintsSummary(v)}</td>
+          <td class="schema-description-text text-muted" data-label="Description"><div class="schema-description-cell">${rowMetadataButton(v, detailId)}<span>${formatMarkdownInline(v.description || "-", state.q)}</span></div></td>
         </tr>${renderRowMetadata(v, release, visibleColumns, detailId)}`;
     }).join("");
   }).join("");
@@ -1171,14 +1094,16 @@ function renderNavigatorResults(target, db, release, module, state, matches) {
       <table class="table table-sm table-hover align-middle mb-0 schema-var-table ${tableClass}">
         <colgroup>
           ${isAll ? `<col class="schema-col-module">` : ""}
-          <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-description">
+          <col class="schema-col-key"><col class="schema-col-type"><col class="schema-col-required"><col class="schema-col-default"><col class="schema-col-constraints"><col class="schema-col-description">
         </colgroup>
         <thead class="table-light"><tr>
-          ${isAll ? `<th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Module</th>` : ""}
-          <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-          <th class="text-muted small text-uppercase text-center" style="font-size: 0.72rem;">Req</th>
-          <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
+          ${isAll ? `<th class="text-muted small text-uppercase">Module</th>` : ""}
+          <th class="text-muted small text-uppercase px-3">Key</th>
+          <th class="text-muted small text-uppercase">Type</th>
+          <th class="text-muted small text-uppercase text-center">Req</th>
+          <th class="text-muted small text-uppercase">Default</th>
+          <th class="text-muted small text-uppercase">Value Restrictions</th>
+          <th class="text-muted small text-uppercase">Description</th>
         </tr></thead>
         <tbody>${groupRowsHtml}</tbody>
       </table>
@@ -1186,7 +1111,6 @@ function renderNavigatorResults(target, db, release, module, state, matches) {
 
   target.innerHTML = `
     <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
-      <span class="text-muted small">${total} variable${total === 1 ? "" : "s"} in ${sorted.length} group${sorted.length === 1 ? "" : "s"}</span>
       <div>
         <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" data-navigator-action="expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
         <button type="button" class="btn btn-sm btn-link text-muted p-0" data-navigator-action="collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
@@ -1231,7 +1155,7 @@ function renderDetailChildrenNavigator(release, module, rootPath, children, desc
     const indent = (depth - 1) * 1.25;
     const isBranch = (childCount.get(rowId) || 0) > 0;
     const isNestedRoot = !parentId;
-    const initiallyExpanded = isNestedRoot;
+    const initiallyExpanded = false;
     const chevron = isBranch
       ? `<i class="bi ${initiallyExpanded ? "bi-chevron-down" : "bi-chevron-right"} navigator-toggle-icon" style="cursor: pointer; width: 1rem; display: inline-block; margin-right: 0.15rem;"></i>`
       : `<span style="display: inline-block; width: 1.15rem;"></span>`;
@@ -1244,32 +1168,37 @@ function renderDetailChildrenNavigator(release, module, rootPath, children, desc
           data-depth="${depth}"
           data-expanded="${initiallyExpanded ? "1" : "0"}"${styleAttr}>
         <td class="px-3">
-          <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}"><code class="schema-key-code fw-bold" style="font-size:0.82rem;">${escapeHtml(leafSegment(row.key_path))}</code></a></span>
+          <span class="schema-navigator-indent" style="padding-left: ${indent}rem;">${chevron}<a href="#/${module}/${encodeURI(row.key_path)}?release=${releaseParam(release)}" class="link-brand text-decoration-none" title="${escapeAttr(row.key_path)}"><code class="schema-key-code">${escapeHtml(leafSegment(row.key_path))}</code></a></span>
         </td>
         <td>${lifecycleBadge(row)}</td>
         <td class="text-center">${row.required ? `<i class="bi bi-check-circle-fill text-success"></i>` : ""}</td>
-        <td class="schema-description-text text-muted small">${formatMarkdownInline(row.description || "-")}</td>
+        <td class="schema-default-cell">${renderDefaultValue(row.default_value, { compact: true })}</td>
+        <td class="schema-constraints-cell text-muted">${constraintsSummary(row)}</td>
+        <td class="schema-description-text text-muted">${formatMarkdownInline(row.description || "-")}</td>
       </tr>`;
   }).join("");
 
   return `
     <h5 class="fw-bold brand-color mb-2"><i class="bi bi-diagram-2 me-2"></i>Child Variables
-      <span class="badge bg-secondary ms-1" style="font-size: 0.65rem; vertical-align: middle;">${childRows.length}</span>
     </h5>
     <div class="card border-0 shadow-sm mb-4 schema-detail-children">
       <div class="table-responsive">
         <table class="table table-sm table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
           <colgroup>
-            <col style="width: 32%;">
+            <col style="width: 28%;">
             <col style="width: 8rem;">
             <col style="width: 4rem;">
+            <col style="width: 8rem;">
+            <col style="width: 10rem;">
             <col>
           </colgroup>
           <thead class="table-light"><tr>
-            <th class="text-muted small text-uppercase px-3" style="font-size: 0.72rem;">Key</th>
-            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Type</th>
-            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Req</th>
-            <th class="text-muted small text-uppercase" style="font-size: 0.72rem;">Description</th>
+            <th class="text-muted small text-uppercase px-3">Key</th>
+            <th class="text-muted small text-uppercase">Type</th>
+            <th class="text-muted small text-uppercase">Req</th>
+            <th class="text-muted small text-uppercase">Default</th>
+            <th class="text-muted small text-uppercase">Value Restrictions</th>
+            <th class="text-muted small text-uppercase">Description</th>
           </tr></thead>
           <tbody>${rowsHtml}</tbody>
         </table>
@@ -1283,6 +1212,7 @@ function renderVarDetail(db, release, module, key_path) {
   if (!v) return fail(`Variable not found: ${module}/${key_path}`);
 
   const constraints = v.constraints ? JSON.parse(v.constraints) : {};
+  const constraintsText = yamlRestrictionParts(v, constraints).join("; ");
   const children = getChildren(db, release, module, key_path);
   const dynamicSource = dynamicKeySource(v.key_path);
 
@@ -1291,7 +1221,7 @@ function renderVarDetail(db, release, module, key_path) {
     <div class="card border-0 shadow-sm mb-4"><div class="card-body p-0">
       ${constraints.valid_values.map((val, i, arr) => `
         <div class="d-flex align-items-start px-3 py-2 ${i < arr.length - 1 ? "border-bottom" : ""}">
-          <div class="me-3" style="min-width: 3.5rem;"><code class="schema-valid-value">${escapeHtml(String(val))}</code></div>
+          <div class="me-3" style="min-width: 3.5rem;"><span class="schema-valid-value">${escapeHtml(String(val))}</span></div>
         </div>`).join("")}
     </div></div>` : "";
 
@@ -1304,35 +1234,33 @@ function renderVarDetail(db, release, module, key_path) {
   const childrenHtml = children.length ? renderDetailChildrenNavigator(release, module, key_path, children, descendants) : "";
 
   const lifecycleHeader = v.removed
-    ? `<span class="badge bg-danger ms-1">removed</span>`
+    ? `<span class="schema-detail-status text-muted ms-1">removed</span>`
     : v.deprecated
-      ? `<span class="badge bg-warning text-dark ms-1">deprecated</span>`
+      ? `<span class="schema-detail-status text-muted ms-1">deprecated</span>`
       : "";
   app.innerHTML = `
-    <div class="d-flex align-items-center mb-4">
+    <div class="d-flex align-items-center mb-4 schema-detail-heading">
       <a href="#/${module}?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
       <div>
         <h4 class="mb-1 fw-bold brand-color"><code class="schema-key-code">${escapeHtml(displayPath(v.key_path))}</code></h4>
-        <span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "unknown")}</span>
+        <span class="schema-type-label">${escapeHtml(v.var_type || "unknown")}</span>
         ${lifecycleHeader}
         <span class="text-muted small ms-2">${escapeHtml(SCHEMA_MODULES[module]?.name || module)}</span>
       </div>
     </div>
-    <div class="row g-3">
+    <div class="row g-3 schema-detail-page">
       <div class="col-12">
-        ${v.description ? `
-          <h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
-          <div class="card border-0 shadow-sm mb-4"><div class="card-body schema-description">${formatDescriptionMarkdown(v.description)}</div></div>` : ""}
+        <h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
+        <div class="card border-0 shadow-sm mb-4"><div class="card-body schema-description">${formatDescriptionMarkdown(v.description || "-")}</div></div>
 
         <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Properties</h5>
         <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
           <table class="table table-sm align-middle mb-0"><tbody>
-            <tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">Type</td><td><span class="badge bg-light text-dark border">${escapeHtml(v.var_type || "-")}</span></td></tr>
-            ${(v.removed || v.deprecated) ? `<tr><td class="px-3 fw-semibold small text-muted">Status</td><td>${v.removed ? `<span class="badge bg-danger">removed</span>` : `<span class="badge bg-warning text-dark">deprecated</span>`}</td></tr>` : ""}
+            <tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">Type</td><td><span class="schema-type-label">${escapeHtml(v.var_type || "-")}</span></td></tr>
+            ${(v.removed || v.deprecated) ? `<tr><td class="px-3 fw-semibold small text-muted">Status</td><td><span class="schema-detail-status text-muted">${v.removed ? "removed" : "deprecated"}</span></td></tr>` : ""}
             <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none", open: true })}</td></tr>
+            <tr><td class="px-3 fw-semibold small text-muted">Value Restrictions</td><td>${constraintsText ? escapeHtml(constraintsText) : `<span class="text-muted">none</span>`}</td></tr>
             <tr><td class="px-3 fw-semibold small text-muted">Required</td><td>${v.required ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>` : `<span class="text-muted">No</span>`}</td></tr>
-            ${v.category ? `<tr><td class="px-3 fw-semibold small text-muted">Category</td><td><span class="badge schema-category-badge">${escapeHtml(v.category)}</span></td></tr>` : ""}
-            ${v.doc_table ? `<tr><td class="px-3 fw-semibold small text-muted">Doc table</td><td><span class="badge schema-category-badge" title="documentation_options.table from the AVD schema">${escapeHtml(v.doc_table)}</span></td></tr>` : ""}
             ${v.cross_ref ? renderCrossRefRow(v.cross_ref, release) : ""}
             ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${releaseParam(release)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
@@ -1436,49 +1364,109 @@ function referencePath(row) {
   return `.${displayPath(row.key_path)}`;
 }
 
+function referenceDefaultOptionLabel(item, idx) {
+  if (item && typeof item === "object" && !Array.isArray(item)) {
+    if (Array.isArray(item.platforms) && item.platforms.length) return item.platforms.join(", ");
+    for (const key of ["name", "key", "type", "platform"]) {
+      const value = item[key];
+      if (value === null || value === undefined || typeof value === "object") continue;
+      return String(value);
+    }
+  }
+  return `Item ${idx + 1}`;
+}
+
+function referenceDefaultItemFields(item) {
+  if (!(item && typeof item === "object") || Array.isArray(item)) return item;
+  const fields = Object.fromEntries(Object.entries(item).filter(([key]) => key !== "platforms"));
+  return Object.keys(fields).length ? fields : item;
+}
+
+function renderReferenceDefaultItem(item) {
+  const fields = referenceDefaultItemFields(item);
+  if (fields && typeof fields === "object" && !Array.isArray(fields)) {
+    return renderDefaultObjectTable(fields, "schema-reference-default-table");
+  }
+  return renderDefaultFieldValue(fields);
+}
+
+function renderReferenceScalarList(items) {
+  return `<ul class="schema-reference-default-list">${items.map(item => `<li>${renderDefaultScalar(item)}</li>`).join("")}</ul>`;
+}
+
+function renderReferenceDefaultContent(parts, id) {
+  if (Array.isArray(parts.parsed)) {
+    const allObjects = parts.parsed.every(item => item && typeof item === "object" && !Array.isArray(item));
+    if (allObjects && parts.parsed.length > 1) {
+      const options = parts.parsed.map((item, idx) => `<option value="${idx}">${escapeHtml(referenceDefaultOptionLabel(item, idx))}</option>`).join("");
+      const items = parts.parsed.map((item, idx) => `
+        <div class="schema-reference-default-item" data-reference-default-item="${idx}"${idx === 0 ? "" : " hidden"}>
+          ${renderReferenceDefaultItem(item)}
+        </div>`).join("");
+      return `
+        <label class="schema-reference-default-label" for="${id}-select">Option</label>
+        <select class="schema-reference-default-select" id="${id}-select" data-reference-default-select data-reference-default-target="${id}-items">
+          ${options}
+        </select>
+        <div class="schema-reference-default-items" id="${id}-items">
+          ${items}
+        </div>`;
+    }
+    if (allObjects && parts.parsed.length === 1) return `<div class="schema-reference-default-items">${renderReferenceDefaultItem(parts.parsed[0])}</div>`;
+    return renderReferenceScalarList(parts.parsed);
+  }
+
+  if (parts.parsed && typeof parts.parsed === "object") {
+    return `<div class="schema-reference-default-items">${renderReferenceDefaultItem(parts.parsed)}</div>`;
+  }
+
+  return "";
+}
+
+function renderReferenceDefaultValue(row) {
+  const parts = defaultValueParts(row.default_value);
+  if (!parts.hasValue || !parts.large || !parts.parseOk) return "";
+
+  const id = `reference-default-${++_navigatorRenderSeq}`;
+  const content = renderReferenceDefaultContent(parts, id);
+  if (!content) return "";
+
+  return `
+    <section class="schema-reference-default-browser" aria-labelledby="${id}-heading">
+      <h2 id="${id}-heading">Default Value</h2>
+      ${content}
+    </section>`;
+}
+
 function renderReferenceDetail(row, release, module, isAll) {
-  const mod = isAll ? row.module : module;
   const constraints = yamlConstraints(row);
   const constraintsText = yamlRestrictionParts(row, constraints).join("; ");
   const lifecycle = row.removed
-    ? `<span class="badge bg-danger ms-1">removed</span>`
+    ? `<span class="schema-detail-status text-muted ms-1">removed</span>`
     : row.deprecated
-      ? `<span class="badge bg-warning text-dark ms-1">deprecated</span>`
+      ? `<span class="schema-detail-status text-muted ms-1">deprecated</span>`
       : "";
   const validValues = Array.isArray(constraints.valid_values) && constraints.valid_values.length
     ? `<h3>Valid Values</h3><div class="schema-reference-prose"><ul>${constraints.valid_values.map(value => `<li><code>${escapeHtml(String(value))}</code></li>`).join("")}</ul></div>`
     : "";
-  const defaultHtml = row.default_value ? `<tr><th>Default</th><td>${renderDefaultValue(row.default_value, { compact: true })}</td></tr>` : "";
-  const constraintsHtml = constraintsText ? `<tr><th>Constraints</th><td>${escapeHtml(constraintsText)}</td></tr>` : "";
-  const moduleHtml = isAll ? `<tr><th>Module</th><td><code>${escapeHtml(mod)}</code></td></tr>` : "";
   return `
     <div class="schema-reference-detail-inner">
       <div class="schema-reference-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
       <h2>Key ${lifecycle}</h2>
       <div class="schema-reference-key-table-wrap">
         <table class="schema-reference-key-table">
-          <thead><tr><th>Key Name</th><th>Type</th><th>Required</th></tr></thead>
-          <tbody><tr>
-            <td><code>${escapeHtml(leafSegment(row.key_path))}</code></td>
-            <td>${escapeHtml(row.var_type || "-")}</td>
-            <td>${row.required ? "Yes" : "None"}</td>
-          </tr></tbody>
+          <tbody>
+            <tr><th>Key Name</th><td><code>${escapeHtml(leafSegment(row.key_path))}</code></td></tr>
+            <tr><th>Type</th><td>${escapeHtml(row.var_type || "-")}</td></tr>
+            <tr><th>Required</th><td>${row.required ? "Yes" : "None"}</td></tr>
+            <tr><th>Default</th><td>${renderDefaultValue(row.default_value, { compact: true })}</td></tr>
+            <tr><th>Value Restrictions</th><td>${constraintsText ? escapeHtml(constraintsText) : `<span class="text-muted">-</span>`}</td></tr>
+          </tbody>
         </table>
       </div>
       <h2>Description</h2>
       <div class="schema-reference-prose">${formatDescriptionMarkdown(row.description || "-")}</div>
-      <h2>Path</h2>
-      <blockquote class="schema-reference-note">NOTE: The path is shown in jq-style notation.</blockquote>
-      <p><code>${escapeHtml(referencePath(row))}</code></p>
-      ${(row.default_value || constraintsText || isAll) ? `
-        <h2>Properties</h2>
-        <div class="schema-reference-key-table-wrap"><table class="schema-reference-key-table"><tbody>
-          ${moduleHtml}
-          ${defaultHtml}
-          ${constraintsHtml}
-          ${row.category ? `<tr><th>Category</th><td>${escapeHtml(row.category)}</td></tr>` : ""}
-          ${row.doc_table ? `<tr><th>Table</th><td>${escapeHtml(row.doc_table)}</td></tr>` : ""}
-        </tbody></table></div>` : ""}
+      ${renderReferenceDefaultValue(row)}
       ${validValues}
     </div>`;
 }
@@ -1508,7 +1496,7 @@ function renderReferenceResults(target, release, module, state, inputRows) {
       const depth = row.depth || 1;
       const isBranch = (navOrder.childCount.get(rowId) || 0) > 0;
       const expanded = false;
-      const hidden = depth > 1 ? ` style="display: none;"` : "";
+      const rowStyle = `--schema-reference-depth: ${Math.max(0, depth - 1)};${depth > 1 ? " display: none;" : ""}`;
       const selectedClass = rowId === state.referenceSelectedId ? " active" : "";
       const moduleBadge = isAll && depth === 1 ? `<span class="schema-reference-module">${escapeHtml(SCHEMA_MODULES[row.module]?.name || row.module)}</span>` : "";
       return `
@@ -1517,9 +1505,10 @@ function renderReferenceResults(target, release, module, state, inputRows) {
              data-parent-id="${escapeAttr(parentId)}"
              data-is-branch="${isBranch ? "1" : "0"}"
              data-expanded="${expanded ? "1" : "0"}"
-             data-depth="${depth}"${hidden}>
+             data-depth="${depth}"
+             style="${rowStyle}">
           <button type="button" class="schema-reference-toggle" ${isBranch ? "" : "disabled"}>${isBranch ? `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>` : ""}</button>
-          <button type="button" class="schema-reference-nav-key" data-reference-select="${escapeAttr(rowId)}" style="padding-left: ${Math.max(0, depth - 1) * 1.05}rem;">
+          <button type="button" class="schema-reference-nav-key" data-reference-select="${escapeAttr(rowId)}">
             <span class="schema-reference-file-icon"><i class="bi bi-file-earmark-text"></i></span>
             <span>${highlight(leafSegment(row.key_path), state.q)}</span>
             ${moduleBadge}
@@ -1628,6 +1617,59 @@ function yamlDefaultPart(row) {
   }
 }
 
+function yamlAnnotationScalar(value) {
+  if (value === null) return "null";
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value === "number") return Number.isFinite(value) ? String(value) : `"${String(value)}"`;
+  const stringValue = String(value);
+  if (!stringValue) return '""';
+  if (/^[A-Za-z0-9_./:@+-]+$/.test(stringValue) && !/^(true|false|null|yes|no|on|off)$/i.test(stringValue)) return stringValue;
+  return JSON.stringify(stringValue);
+}
+
+function yamlAnnotationKey(key) {
+  return /^[A-Za-z0-9_.-]+$/.test(key) ? key : JSON.stringify(key);
+}
+
+function yamlAnnotationDump(value, indentCount = 0) {
+  const indent = " ".repeat(indentCount);
+  if (Array.isArray(value)) {
+    if (!value.length) return `${indent}[]\n`;
+    return value.map(item => {
+      if (item && typeof item === "object") {
+        return `${indent}-\n${yamlAnnotationDump(item, indentCount + 2)}`;
+      }
+      return `${indent}- ${yamlAnnotationScalar(item)}\n`;
+    }).join("");
+  }
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value);
+    if (!entries.length) return `${indent}{}\n`;
+    return entries.map(([key, item]) => {
+      const renderedKey = yamlAnnotationKey(key);
+      if (item && typeof item === "object") {
+        return `${indent}${renderedKey}:\n${yamlAnnotationDump(item, indentCount + 2)}`;
+      }
+      return `${indent}${renderedKey}: ${yamlAnnotationScalar(item)}\n`;
+    }).join("");
+  }
+  return `${indent}${yamlAnnotationScalar(value)}\n`;
+}
+
+function yamlDefaultAnnotation(row) {
+  if (!row.default_value) return "";
+  try {
+    const value = JSON.parse(row.default_value);
+    const isCollection = Array.isArray(value) || (value && typeof value === "object");
+    if (!isCollection) return "";
+    const collectionLength = Array.isArray(value) ? value.length : Object.keys(value).length;
+    if (collectionLength <= 1 && String(row.default_value).length <= 40) return "";
+    return yamlAnnotationDump({ [yamlKeySegment(row.key_path)]: value }).trimEnd();
+  } catch {
+    return "";
+  }
+}
+
 function yamlValueParts(row, includeType) {
   const constraints = yamlConstraints(row);
   const parts = includeType ? [yamlBaseType(row) || "any"] : [];
@@ -1645,7 +1687,16 @@ function yamlDescriptionLines(row, indentCount, listItem) {
   return ["", ...lines];
 }
 
-function yamlHighlightValue(rawValue) {
+function yamlHighlightYamlAnnotationComment(commentPart, annotationIdPrefix) {
+  const escapedComment = escapeHtml(commentPart);
+  if (!annotationIdPrefix) return escapedComment;
+  return escapedComment.replace(/\((\d+)\)!$/, (_match, number) => {
+    const targetId = `${annotationIdPrefix}-annotation-${number}`;
+    return `<button type="button" class="se-yaml-annotation-link" data-yaml-annotation-target="${escapeAttr(targetId)}" aria-label="Show default value annotation ${escapeAttr(number)}">+</button>`;
+  });
+}
+
+function yamlHighlightValue(rawValue, annotationIdPrefix = "") {
   const commentIndex = rawValue.indexOf(" #");
   const valuePart = commentIndex === -1 ? rawValue : rawValue.slice(0, commentIndex);
   const commentPart = commentIndex === -1 ? "" : rawValue.slice(commentIndex);
@@ -1653,10 +1704,10 @@ function yamlHighlightValue(rawValue) {
     .replace(/(&quot;[^&]*?&quot;)/g, '<span class="se-yaml-string">$1</span>')
     .replace(/\b(true|false|null)\b/g, '<span class="se-yaml-literal">$1</span>')
     .replace(/(?<![-\w])(-?\d+(?:\.\d+)?)(?![-\w])/g, '<span class="se-yaml-number">$1</span>');
-  return html + (commentPart ? `<span class="se-yaml-comment">${escapeHtml(commentPart)}</span>` : "");
+  return html + (commentPart ? `<span class="se-yaml-comment">${yamlHighlightYamlAnnotationComment(commentPart, annotationIdPrefix)}</span>` : "");
 }
 
-function yamlHighlightLine(line) {
+function yamlHighlightLine(line, annotationIdPrefix = "") {
   if (!line) return "";
   const commentMatch = line.match(/^(\s*#.*)$/);
   if (commentMatch) return `<span class="se-yaml-comment">${escapeHtml(line)}</span>`;
@@ -1664,11 +1715,11 @@ function yamlHighlightLine(line) {
   const fieldMatch = line.match(/^(\s*)(-\s*)?([^:#]+:)(.*)$/);
   if (!fieldMatch) return escapeHtml(line);
   const [, indent, listMarker = "", key, value] = fieldMatch;
-  return `${escapeHtml(indent)}${listMarker ? `<span class="se-yaml-marker">${escapeHtml(listMarker)}</span>` : ""}<span class="se-yaml-key">${escapeHtml(key)}</span>${yamlHighlightValue(value)}`;
+  return `${escapeHtml(indent)}${listMarker ? `<span class="se-yaml-marker">${escapeHtml(listMarker)}</span>` : ""}<span class="se-yaml-key">${escapeHtml(key)}</span>${yamlHighlightValue(value, annotationIdPrefix)}`;
 }
 
-function yamlHighlightBlock(text) {
-  return String(text).split("\n").map(yamlHighlightLine).join("\n");
+function yamlHighlightBlock(text, annotationIdPrefix = "") {
+  return String(text).split("\n").map(line => yamlHighlightLine(line, annotationIdPrefix)).join("\n");
 }
 
 function renderYamlResults(target, module, inputRows) {
@@ -1686,49 +1737,66 @@ function renderYamlResults(target, module, inputRows) {
   function childrenOf(row) { return childrenByParent.get(rowKey(row)) || []; }
   function yamlLinePrefix(indentCount, listItem) { return " ".repeat(indentCount) + (listItem ? "- " : ""); }
   function yamlFieldName(row) { return yamlKeySegment(row.key_path); }
-  function yamlPropertiesComment(row) {
+  function registerYamlAnnotation(context, row) {
+    const content = yamlDefaultAnnotation(row);
+    if (!content) return "";
+    const number = context.annotations.length + 1;
+    context.annotations.push({ number, content });
+    return number;
+  }
+  function yamlPropertiesComment(row, annotationNumber = "") {
     const parts = yamlValueParts(row, false);
+    if (annotationNumber && parts.length) return ` # ${parts.join("; ")} (${annotationNumber})!`;
+    if (annotationNumber) return ` # (${annotationNumber})!`;
     return parts.length ? ` # ${parts.join("; ")}` : "";
   }
 
-  function renderListChildren(lines, childRows, listIndent) {
+  function renderListChildren(context, lines, childRows, listIndent) {
     childRows.forEach((child, idx) => {
-      if (idx === 0) renderYamlRow(lines, child, listIndent + 2, true);
-      else renderYamlRow(lines, child, listIndent + 4, false);
+      if (idx === 0) renderYamlRow(context, lines, child, listIndent + 2, true);
+      else renderYamlRow(context, lines, child, listIndent + 4, false);
     });
   }
 
-  function renderYamlRow(lines, row, indentCount, listItem = false) {
+  function renderYamlRow(context, lines, row, indentCount, listItem = false) {
     const type = yamlBaseType(row);
     const childRows = childrenOf(row);
     lines.push(...yamlDescriptionLines(row, indentCount, listItem));
     const prefix = yamlLinePrefix(indentCount, listItem);
     const fieldName = yamlFieldName(row);
+    const annotationNumber = registerYamlAnnotation(context, row);
 
     if (type === "list") {
       const fallback = childRows.length ? "" : " <list>";
-      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row)}`);
-      renderListChildren(lines, childRows, indentCount);
+      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row, annotationNumber)}`);
+      renderListChildren(context, lines, childRows, indentCount);
       return;
     }
 
     if (type === "dict") {
       const fallback = childRows.length ? "" : " <dict>";
-      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row)}`);
-      childRows.forEach(child => renderYamlRow(lines, child, indentCount + (listItem ? 4 : 2)));
+      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row, annotationNumber)}`);
+      childRows.forEach(child => renderYamlRow(context, lines, child, indentCount + (listItem ? 4 : 2)));
       return;
     }
 
     lines.push(`${prefix}${fieldName}: <${yamlValueParts(row, true).join("; ")}>`);
   }
 
+  function renderYamlAnnotations(context, annotationIdPrefix) {
+    if (!context.annotations.length) return "";
+    return `
+      <ol class="schema-yaml-annotations">
+        ${context.annotations.map(annotation => `
+          <li id="${escapeAttr(`${annotationIdPrefix}-annotation-${annotation.number}`)}">
+            <div class="schema-yaml-annotation-title">Default Value</div>
+            <pre class="schema-yaml-block schema-yaml-annotation-block"><code>${yamlHighlightBlock(annotation.content)}</code></pre>
+          </li>`).join("")}
+      </ol>`;
+  }
+
   const topRows = sourceRows.filter(row => !row.parent_path || !rowsByPath.has(`${row.module}:${row.parent_path}`));
   const groupedRows = new Map();
-  const groupCounts = new Map();
-  for (const row of sourceRows) {
-    const groupId = navigatorGroupId(row, module);
-    groupCounts.set(groupId, (groupCounts.get(groupId) || 0) + 1);
-  }
   for (const row of topRows) {
     const groupId = navigatorGroupId(row, module);
     if (!groupedRows.has(groupId)) {
@@ -1740,7 +1808,8 @@ function renderYamlResults(target, module, inputRows) {
   const idPrefix = `y${++_navigatorRenderSeq}`;
   const groupsHtml = [...groupedRows.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`)).map(([groupId, group], idx) => {
     const lines = [];
-    group.rows.forEach(row => renderYamlRow(lines, row, 0));
+    const context = { annotations: [] };
+    group.rows.forEach(row => renderYamlRow(context, lines, row, 0));
     const yamlText = lines.join("\n").trim() || "# No YAML fields match.";
     const id = `${idPrefix}-group-${idx}`;
     const groupModuleBadge = module === "all" ? `<span class="badge ${group.module === "eos_designs" ? "bg-primary" : "bg-success"} ms-1" style="font-size: 0.6rem;">${escapeHtml(SCHEMA_MODULES[group.module]?.name || group.module)}</span>` : "";
@@ -1748,20 +1817,17 @@ function renderYamlResults(target, module, inputRows) {
       <div class="schema-group" data-group-id="${id}">
         <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
           <i class="bi bi-chevron-right collapse-icon"></i>
-          <code class="schema-key-code fw-bold" style="font-size: 0.88rem;">${escapeHtml(group.root)}</code>
+          <code class="schema-key-code schema-yaml-group-key">${escapeHtml(group.root)}</code>
           ${groupModuleBadge}
-          <span class="badge bg-secondary ms-1" style="font-size: 0.6rem;">${groupCounts.get(groupId) || group.rows.length}</span>
         </div>
         <div class="collapse" id="${id}">
-          <pre class="schema-yaml-block"><code>${yamlHighlightBlock(yamlText)}</code></pre>
+          <pre class="schema-yaml-block"><code>${yamlHighlightBlock(yamlText, id)}</code></pre>
+          ${renderYamlAnnotations(context, id)}
         </div>
       </div>`;
   }).join("");
 
   target.innerHTML = `
-    <div class="schema-results-toolbar card-header bg-light d-flex align-items-center justify-content-between">
-      <span class="text-muted small">YAML preview for ${sourceRows.length} variable${sourceRows.length === 1 ? "" : "s"} in ${groupedRows.size} group${groupedRows.size === 1 ? "" : "s"}</span>
-    </div>
     <div class="schema-results-scroll">
       ${groupsHtml}
     </div>`;
@@ -1777,10 +1843,9 @@ function renderYamlResults(target, module, inputRows) {
 //   release  — schema release tag (default: "devel")
 //   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
 //   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
-//   view     — "navigator" | "reference" | "yaml" | "index" (default: "navigator")
+//   view     — "navigator" | "reference" | "yaml" (default: "reference")
 //   height   — CSS max-height for the scroll container (default: "600px")
-//   chrome   — "compact" | "none" (default: "compact"). "none" hides the
-//              "N variables in M groups" / expand-all bar.
+//   chrome   — "compact" | "none" (default: "compact").
 
 function _embedAttr(el, name, fallback) {
   return el.getAttribute(`data-${name}`) || el.getAttribute(name) || fallback;
@@ -1794,8 +1859,8 @@ async function mountEmbed(el) {
   const release = normalizeRelease(_embedAttr(el, "release", DEFAULT_RELEASE));
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
-  const view    = _embedAttr(el, "view", "navigator");
-  if (!["navigator", "reference", "yaml", "index"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
+  const view    = _embedAttr(el, "view", "reference");
+  if (!["navigator", "reference", "yaml"].includes(view)) throw new Error("Unsupported schema explorer view: " + view);
   const height  = _embedAttr(el, "height", "600px");
   const chrome  = _embedAttr(el, "chrome", "compact");
 

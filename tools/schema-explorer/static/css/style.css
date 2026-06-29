@@ -12,7 +12,7 @@
    not affected. The standalone index.html sets class="schema-spa-host"
    on <body>; mountEmbed() adds .schema-embed to each embed element. */
 .schema-spa-host {
-  font-size: 0.92rem;
+  font-size: inherit;
 }
 .schema-embed {
   font-size: inherit;
@@ -952,6 +952,65 @@
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-string { color: #0a7f37; }
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number { color: #8250df; }
+
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-annotation-link {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-annotation-link:hover,
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-annotation-link:focus-visible {
+  color: var(--md-typeset-a-color, var(--se-brand, #16325b));
+  outline: 0;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotations {
+  margin: 0;
+  padding: 0.75rem 1rem 1rem 2.5rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest, #e1e4e8);
+  background: var(--md-default-bg-color, #fff);
+  color: var(--md-default-fg-color, inherit);
+  font-size: 0.82rem;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotations > li {
+  margin: 0.25rem 0 0.75rem;
+  padding-left: 0.25rem;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-title {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-active {
+  background: color-mix(in srgb, var(--md-accent-fg-color, #d47122) 12%, transparent);
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-block {
+  margin: 0;
+  padding: 0.75rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--md-code-bg-color, #f8fafc);
+  color: inherit;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow: auto;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-block code,
+:where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-block span {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
 [data-bs-theme="dark"] .schema-spa-host .schema-yaml-block,
 [data-bs-theme="dark"] .schema-embed .schema-yaml-block {
   background: #111827;
@@ -975,6 +1034,18 @@
 [data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number,
 [data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
 [data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number { color: #d2a8ff; }
+
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-annotations,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-annotations {
+  border-top-color: var(--md-default-fg-color--lightest, rgba(255, 255, 255, 0.12));
+  background: var(--md-default-bg-color, #0d1117);
+  color: var(--md-default-fg-color, #dee2e6);
+}
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-block,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-yaml-annotation-block {
+  background: var(--md-code-bg-color, #111827);
+  color: var(--md-code-fg-color, var(--md-default-fg-color, #dee2e6));
+}
 
 /* Large default values are summarized in tables and formatted on detail pages. */
 :where(.schema-spa-host, .schema-embed) .schema-default-compact {
@@ -1383,6 +1454,16 @@ html.in-iframe body { padding-top: 0; }
    sub-page padding tweaks; the parent page (whatever it is) provides chrome. */
 html.style-none #schema-navbar { display: none !important; }
 
+:where(.schema-spa-host, .schema-embed) .schema-navigator-table :where(code, .schema-default-compact, .schema-type-label),
+:where(.schema-spa-host, .schema-embed) .schema-detail-children :where(code, .schema-default-compact, .schema-type-label) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
 /* Schema variable tables */
 :where(.schema-spa-host, .schema-embed) .schema-var-table {
   table-layout: fixed;
@@ -1393,12 +1474,36 @@ html.style-none #schema-navbar { display: none !important; }
 :where(.schema-spa-host, .schema-embed) .schema-col-key { width: 28%; }
 :where(.schema-spa-host, .schema-embed) .schema-col-type { width: 7.5rem; }
 :where(.schema-spa-host, .schema-embed) .schema-col-required { width: 3.5rem; }
+:where(.schema-spa-host, .schema-embed) .schema-col-default { width: 8rem; }
+:where(.schema-spa-host, .schema-embed) .schema-col-constraints { width: 10rem; }
 :where(.schema-spa-host, .schema-embed) .schema-col-description { width: auto; }
 
 :where(.schema-spa-host, .schema-embed) .schema-type-cell,
+:where(.schema-spa-host, .schema-embed) .schema-default-cell,
+:where(.schema-spa-host, .schema-embed) .schema-constraints-cell,
 :where(.schema-spa-host, .schema-embed) .schema-description-text {
   overflow-wrap: anywhere;
   word-break: normal;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-navigator-table :where(td, th, code, .schema-type-label, .schema-default-compact, .schema-constraints-summary),
+:where(.schema-spa-host, .schema-embed) .schema-detail-children :where(td, th, code, .schema-type-label, .schema-default-compact, .schema-constraints-summary) {
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-navigator-table thead th,
+:where(.schema-spa-host, .schema-embed) .schema-detail-children thead th {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-navigator-table .schema-key-cell code,
+:where(.schema-spa-host, .schema-embed) .schema-detail-children .schema-key-code {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-description-cell {
@@ -1476,6 +1581,7 @@ html.style-none #schema-navbar { display: none !important; }
   display: flex;
   align-items: center;
   min-width: 0;
+  padding-left: calc(var(--schema-reference-depth, 0) * 1.05rem);
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-toggle {
@@ -1489,7 +1595,8 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-toggle:disabled {
-  opacity: 0.35;
+  opacity: 0;
+  pointer-events: none;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-key {
@@ -1819,17 +1926,17 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-view {
   grid-template-columns: minmax(13.5rem, 16rem) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr);
-  height: clamp(30rem, 68vh, 52rem);
+  grid-template-rows: auto;
+  align-items: start;
   min-height: 0;
   border-top: 0;
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav {
   min-height: 0;
-  max-height: none;
+  max-height: clamp(22rem, calc(100vh - 16rem), 46rem);
   overflow: auto;
   padding: 0.75rem 0.9rem 1rem 0;
   border-right: 0.05rem solid var(--schema-material-border);
@@ -1838,6 +1945,7 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-nav-row {
   min-height: 1.35rem;
+  padding-left: calc(var(--schema-reference-depth, 0) * 1.05rem);
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-toggle {
@@ -1852,8 +1960,9 @@ html.style-none #schema-navbar { display: none !important; }
   gap: 0.28rem;
   padding: 0.12rem 0.2rem;
   border-radius: 0.1rem;
-  color: var(--schema-material-muted);
-  font-size: 0.74rem;
+  color: var(--md-default-fg-color--light, var(--schema-material-muted));
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-file-icon {
@@ -1868,8 +1977,9 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail {
   min-height: 0;
-  overflow: auto;
-  padding: 0.75rem 0 2rem 1.5rem;
+  overflow: visible;
+  padding: 0.35rem 0 1.25rem 1.5rem;
+  color: var(--md-default-fg-color, inherit);
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail-inner {
@@ -1877,18 +1987,18 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb {
-  margin-bottom: 1rem;
-  color: var(--schema-material-muted);
-  font-size: 0.72rem;
+  margin-bottom: 0.8rem;
+  color: var(--md-default-fg-color--light, var(--schema-material-muted));
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail h2 {
-  margin: 1.6rem 0 0.65rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 0.05rem solid var(--schema-material-border);
-  color: var(--schema-material-fg);
-  font-size: 1.2rem;
-  font-weight: 400;
+  margin: 1.2rem 0 0.65rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  color: var(--md-default-fg-color, inherit);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail h2:first-of-type {
@@ -1896,26 +2006,30 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail h3 {
-  color: var(--schema-material-fg);
-  font-size: 0.95rem;
+  margin: 1rem 0 0.55rem;
+  color: var(--md-default-fg-color, inherit);
+  font-size: 0.9rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-key-table {
   width: 100%;
-  margin: 0.45rem 0 1rem;
-  font-size: 0.8rem;
+  margin: 0.4rem 0 1rem;
+  font-size: inherit;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-key-table th,
 :where(.schema-spa-host, .schema-embed) .schema-reference-key-table td {
-  padding: 0.48rem 0.65rem;
+  padding: 0.45rem 0.65rem;
   border: 0;
-  border-top: 1px solid var(--schema-material-border);
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  vertical-align: top;
 }
 
-:where(.schema-spa-host, .schema-embed) .schema-reference-key-table thead th {
-  color: var(--schema-material-muted);
+:where(.schema-spa-host, .schema-embed) .schema-reference-key-table th {
+  width: 9.5rem;
+  color: var(--md-default-fg-color--light, var(--schema-material-muted));
   background: transparent;
   font-weight: 500;
   text-align: left;
@@ -1923,29 +2037,97 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-prose {
   max-width: 42rem;
-  color: var(--schema-material-fg);
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.6;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-browser {
+  margin: 1rem 0 0;
+  max-width: 48rem;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-label {
+  display: block;
+  margin: 0 0 0.3rem;
+  color: var(--md-default-fg-color--light, var(--schema-material-muted));
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-select {
+  display: block;
+  width: min(100%, 24rem);
+  min-height: 2.1rem;
+  margin: 0 0 0.9rem;
+  padding: 0.38rem 2.1rem 0.38rem 0.65rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  border-radius: 0.12rem;
+  color: var(--md-default-fg-color, inherit);
+  background-color: var(--md-default-bg-color, #fff);
+  font-family: inherit;
   font-size: 0.82rem;
-  line-height: 1.7;
+  font-weight: 400;
+  line-height: 1.45;
+  cursor: pointer;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-select:focus {
+  border-color: var(--md-accent-fg-color, var(--se-brand, #16325b));
+  box-shadow: 0 0 0 0.1rem color-mix(in srgb, var(--md-accent-fg-color, #16325b) 18%, transparent);
+  outline: 0;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-items {
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-item[hidden] {
+  display: none !important;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table {
+  width: 100%;
+  margin: 0;
+  font-size: 0.82rem;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table td {
+  padding: 0.45rem 0.65rem;
+  border: 0;
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  vertical-align: top;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-list {
+  margin: 0;
+  padding: 0.45rem 0 0.45rem 1.2rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-list li {
+  margin: 0.18rem 0;
+}
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .schema-reference-default-select,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-reference-default-select {
+  border-color: var(--md-default-fg-color--lightest, rgba(255, 255, 255, 0.14));
+  color: var(--md-default-fg-color, #dee2e6);
+  background-color: var(--md-default-bg-color, #0d1117);
 }
 
 :where(.schema-spa-host, .schema-embed) code {
   border-radius: 0.1rem;
-  background: var(--schema-material-code-bg);
+  background: var(--md-code-bg-color, var(--schema-material-code-bg));
   color: var(--md-code-fg-color, inherit);
   padding: 0.05em 0.28em;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-note {
-  border-left-color: var(--schema-material-accent);
-  color: var(--schema-material-muted);
-  font-size: 0.78rem;
+  margin: 0.5rem 0;
+  border-left-color: var(--md-accent-fg-color, var(--schema-material-accent));
+  color: var(--md-default-fg-color--light, var(--schema-material-muted));
 }
 
 @media (max-width: 900px) {
   :where(.schema-spa-host, .schema-embed) .schema-reference-view {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
-    height: clamp(34rem, 75vh, 52rem);
+    height: auto;
   }
 
   :where(.schema-spa-host, .schema-embed) .schema-reference-nav {
@@ -2113,4 +2295,91 @@ html.style-none #schema-navbar { display: none !important; }
   border-color: color-mix(in srgb, var(--md-default-fg-color, #d8dee6) 24%, transparent) !important;
   background: color-mix(in srgb, var(--md-default-fg-color, #d8dee6) 12%, transparent) !important;
   color: var(--md-code-fg-color, var(--md-default-fg-color, #e7edf4)) !important;
+}
+
+
+/* Plain detail metadata should match MkDocs table text, not Bootstrap badges/pills. */
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-row-metadata-panel, .schema-reference-detail-inner) :where(code, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page table, .schema-row-metadata-panel, .schema-reference-detail-inner table) :where(td, th, code, span, .small, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value, .schema-detail-status) {
+  font-size: 0.82rem !important;
+  line-height: 1.5;
+}
+
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-row-metadata-panel, .schema-reference-detail-inner) .schema-detail-status {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--md-default-fg-color--light, #6c757d) !important;
+  padding: 0 !important;
+  font-weight: 400 !important;
+}
+
+
+:where(.schema-spa-host, .schema-embed) .schema-detail-page .schema-valid-value {
+  display: inline !important;
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+
+
+/* Keep Reference and YAML typography aligned with the Navigator tables. */
+:where(.schema-spa-host, .schema-embed) :where(.schema-reference-nav-key, .schema-reference-key-table, .schema-reference-key-table td, .schema-reference-key-table th, .schema-reference-prose, .schema-reference-prose p, .schema-reference-prose li, .schema-reference-note, .schema-reference-breadcrumb, .schema-reference-detail-inner p, .schema-reference-detail-inner li, .schema-reference-detail-inner code) {
+  font-size: 0.82rem !important;
+  line-height: 1.5;
+}
+
+:where(.schema-spa-host, .schema-embed) :where(.schema-reference-key-table th, .schema-reference-detail h2, .schema-reference-detail h3) {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-detail h2,
+:where(.schema-spa-host, .schema-embed) .schema-reference-detail h3 {
+  color: var(--se-brand, var(--md-default-fg-color, inherit));
+  text-transform: uppercase;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb code,
+:where(.schema-spa-host, .schema-embed) .schema-reference-key-table code,
+:where(.schema-spa-host, .schema-embed) .schema-reference-prose code,
+:where(.schema-spa-host, .schema-embed) .schema-reference-detail-inner > p code {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+}
+
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block,
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block code,
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block span {
+  font-size: 0.82rem !important;
+  line-height: 1.5;
+}
+
+
+:where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-key {
+  font-family: var(--md-code-font-family, "Roboto Mono", "Fira Mono", monospace) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: var(--md-typeset-a-color, var(--se-brand, #16325b)) !important;
+}
+
+
+:where(.schema-spa-host, .schema-embed) .schema-yaml-group-key {
+  font-family: var(--md-code-font-family, "Roboto Mono", "Fira Mono", monospace) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: var(--md-typeset-a-color, var(--se-brand, #16325b)) !important;
 }
