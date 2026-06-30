@@ -727,14 +727,14 @@ clock timezone GMT
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | - | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 20.20.20.20 | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -764,7 +764,7 @@ ntp server vrf MGMT 1.2.3.4 local-interface lo0
 ntp server vrf MGMT 2.2.2.55
 ntp server vrf MGMT 10.1.1.1
 ntp server vrf MGMT 10.1.1.2 prefer
-ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT 20.20.20.1 source-address 20.20.20.20 key <removed>
 ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```
@@ -2026,18 +2026,20 @@ address locking
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
-| certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl | False |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | True |
-| test1-chain-cert | - | - | - | - | - | - |
-| test1-trust-cert | - | - | - | - | - | - |
-| test2-chain-cert | - | - | - | - | - | - |
-| test2-trust-cert | - | - | - | - | - | - |
-| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - |
-| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - |
-| tls-versions-profile | 1.0 1.1 | - | - | - | - | True |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| auto-certificate-precedence-profile | - | - | - | auto-est | - | - | - |
+| auto-certificate-profile | - | - | - | auto-est | - | - | - |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | - | ca.crl<br>intermediate.crl | False |
+| cipher-list-profile | - | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | - | True |
+| test1-chain-cert | - | - | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - | - | True |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
@@ -2184,6 +2186,12 @@ management security
       tls versions 1.1 1.2
       fips restrictions
       certificate SSL_CERT key SSL_KEY
+   !
+   ssl profile auto-certificate-precedence-profile
+      certificate auto-certificate auto-est
+   !
+   ssl profile auto-certificate-profile
+      certificate auto-certificate auto-est
    !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
@@ -2527,7 +2535,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false
    no shutdown
 ```
 
@@ -7472,6 +7480,7 @@ interface Loopback100
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 | Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
+| Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
 
 ##### IPv4
 
@@ -7480,6 +7489,7 @@ interface Loopback100
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
+| Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
 
 ##### IPv6
 
@@ -7490,6 +7500,7 @@ interface Loopback100
 | Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - | - |
 | Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - | - |
 | Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - | - |
+| Tunnel6 | default | - | 1400 | - | True | - | True | True | capacity: 100 | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7578,6 +7589,18 @@ interface Tunnel5
    ipv6 nd prefix 2001:db8:200::/64 250 125 no-autoconfig
    tunnel source 20.20.20.20
    tunnel destination 2.2.2.2
+!
+interface Tunnel6
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ip address 10.99.99.1/30
+   ipv6 nd cache dynamic capacity 100
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   tcp mss ceiling ipv6 1400
+   tunnel mode gre
+   tunnel source 1.1.1.1
+   tunnel destination 2.2.2.2
 ```
 
 ### VLAN Interfaces
@@ -7619,6 +7642,15 @@ interface Tunnel5
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | v6 nd new structure | default | - | - |
 | Vlan341 | IP address as dhcp and Install default-route obtained via DHCP | default | - | - |
+| Vlan361 | TCP MSS ceiling - IPv4 | default | - | - |
+| Vlan362 | TCP MSS ceiling - IPv6 | default | - | - |
+| Vlan363 | TCP MSS ceiling - IPv4 and IPv6 | default | - | - |
+| Vlan364 | TCP MSS ceiling - IPv4 ingress | default | - | - |
+| Vlan365 | TCP MSS ceiling - IPv6 ingress | default | - | - |
+| Vlan366 | TCP MSS ceiling - IPv4 and IPv6 ingress | default | - | - |
+| Vlan367 | TCP MSS ceiling - IPv4 egress | default | - | - |
+| Vlan368 | TCP MSS ceiling - IPv6 egress | default | - | - |
+| Vlan369 | TCP MSS ceiling - IPv4 and IPv6 egress | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7634,6 +7666,20 @@ interface Tunnel5
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
 | Vlan110 | 111-112 |
+
+##### TCP MSS Ceiling
+
+| Interface | IPv4 MSS | IPv6 MSS | Direction |
+| --------- | -------- | -------- | --------- |
+| Vlan361 | 1310 | - | - |
+| Vlan362 | - | 1320 | - |
+| Vlan363 | 1330 | 1340 | - |
+| Vlan364 | 1310 | - | ingress |
+| Vlan365 | - | 1320 | ingress |
+| Vlan366 | 1330 | 1340 | ingress |
+| Vlan367 | 1310 | - | egress |
+| Vlan368 | - | 1320 | egress |
+| Vlan369 | 1330 | 1340 | egress |
 
 ##### IPv4
 
@@ -7672,6 +7718,15 @@ interface Tunnel5
 | Vlan339 | default | - | - | - | - | - |
 | Vlan340 | default | - | - | - | - | - |
 | Vlan341 | default | dhcp | - | - | - | - |
+| Vlan361 | default | - | - | - | - | - |
+| Vlan362 | default | - | - | - | - | - |
+| Vlan363 | default | - | - | - | - | - |
+| Vlan364 | default | - | - | - | - | - |
+| Vlan365 | default | - | - | - | - | - |
+| Vlan366 | default | - | - | - | - | - |
+| Vlan367 | default | - | - | - | - | - |
+| Vlan368 | default | - | - | - | - | - |
+| Vlan369 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -8110,6 +8165,42 @@ interface Vlan341
    dhcp client accept default-route
    ip verify unicast source reachable-via rx
    ip directed-broadcast
+!
+interface Vlan361
+   description TCP MSS ceiling - IPv4
+   tcp mss ceiling ipv4 1310
+!
+interface Vlan362
+   description TCP MSS ceiling - IPv6
+   tcp mss ceiling ipv6 1320
+!
+interface Vlan363
+   description TCP MSS ceiling - IPv4 and IPv6
+   tcp mss ceiling ipv4 1330 ipv6 1340
+!
+interface Vlan364
+   description TCP MSS ceiling - IPv4 ingress
+   tcp mss ceiling ipv4 1310 ingress
+!
+interface Vlan365
+   description TCP MSS ceiling - IPv6 ingress
+   tcp mss ceiling ipv6 1320 ingress
+!
+interface Vlan366
+   description TCP MSS ceiling - IPv4 and IPv6 ingress
+   tcp mss ceiling ipv4 1330 ipv6 1340 ingress
+!
+interface Vlan367
+   description TCP MSS ceiling - IPv4 egress
+   tcp mss ceiling ipv4 1310 egress
+!
+interface Vlan368
+   description TCP MSS ceiling - IPv6 egress
+   tcp mss ceiling ipv6 1320 egress
+!
+interface Vlan369
+   description TCP MSS ceiling - IPv4 and IPv6 egress
+   tcp mss ceiling ipv4 1330 ipv6 1340 egress
 !
 interface Vlan501
    description SVI Description
