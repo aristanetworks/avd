@@ -11,9 +11,9 @@ ipv4_standard_acls:
         source: 10.0.0.1
   - name: SNMP-MGMT
     entries:
-    - sequence: 10
-      action: permit
-      source: 10.0.0.12
+      - sequence: 10
+        action: permit
+        source: 10.0.0.12
 
 type: l2leaf
 

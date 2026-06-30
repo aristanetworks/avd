@@ -18,7 +18,7 @@ snmp_settings:
     - name: SNMP-COMMUNITY-2
       access: rw
       access_list_ipv4:
-       name: SNMP-MGMT
+        name: SNMP-MGMT
       access_list_ipv6:
         name: SNMP-MGMT
       view: VW-READ
