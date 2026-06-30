@@ -9,7 +9,8 @@ l2leaf:
     - name: mgmt-interface-ipv6-address-auto-config
       ipv6_mgmt_ip: auto-config
       id: 105
-# ipv6_mgmt_gateway and ipv6_mgmt_destination_networks will be ignored as ipv6_mgmt_ip set to ip-config with avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true
+# ipv6_mgmt_gateway and ipv6_mgmt_destination_networks will be ignored as ipv6_mgmt_ip set to auto-config with
+# avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true
 ipv6_mgmt_gateway: 0200::1
 ipv6_mgmt_destination_networks:
   - 0210:1::/64
