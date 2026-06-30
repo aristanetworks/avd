@@ -97,7 +97,7 @@ jobs:
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
               - '.github/workflows/pull-request-management.yml'
-              - 'sonar-project.properties'
+              - '.sonarcloud.properties'
               - '.pre-commit-config.yaml'
             pyavd:
               - 'python-avd/**/*'

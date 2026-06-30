@@ -1101,6 +1101,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
 --8<--
 
+## Spanning Tree settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-settings.md
+--8<--
+
 ## Monitoring
 
 ### Event monitor

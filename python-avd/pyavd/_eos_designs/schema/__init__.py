@@ -981,12 +981,14 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "enforce_acl_presence_in_ipv4_standard_acl_catalog": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
+            "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
@@ -997,6 +999,14 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.2.0.
         Configure management interface to accept DHCP default route when the
         management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
+        accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool
+        """
+        Available from AVD 6.3.0.
+        Configure inband management interface to accept DHCP default route when
+        the inband management IP is set to 'dhcp'.
 
         Default value: `False`
         """
@@ -1047,6 +1057,16 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_pvst_border_when_mode_is_mstp: bool
+        """
+        Available from AVD 6.3.0.
+        PVST border parameters have no effect unless the spanning-tree mode is
+        MSTP.
+        When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+        'mstp'.
+
+        Default value: `False`
+        """
         only_configure_route_map_connected_to_bgp_vrfs_when_used: bool
         """
         Available from AVD 6.3.0.
@@ -1090,12 +1110,14 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 enforce_acl_presence_in_ipv4_standard_acl_catalog: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
+                only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
@@ -1112,6 +1134,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
                        management IP is set to 'dhcp'.
+                    accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+                       Available from AVD 6.3.0.
+                       Configure inband management interface to accept DHCP default route when
+                       the inband management IP is set to 'dhcp'.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
@@ -1135,6 +1161,12 @@ class EosDesigns(EosDesignsRootModel):
                     only_configure_mlag_vrfs_peer_group_when_used:
                        Available from AVD 6.2.0.
                        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+                    only_configure_pvst_border_when_mode_is_mstp:
+                       Available from AVD 6.3.0.
+                       PVST border parameters have no effect unless the spanning-tree mode is
+                       MSTP.
+                       When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to
+                       'mstp'.
                     only_configure_route_map_connected_to_bgp_vrfs_when_used:
                        Available from AVD 6.3.0.
                        Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
@@ -11327,7 +11359,12 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_root_super: bool
         """Default value: `False`"""
         spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
+        """
+        Enable MST PVST border ports.
+        By default this is configured regardless of the spanning-tree mode.
+        When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+        only take effect when the spanning-tree mode is 'mstp'.
+        """
         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
         """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
@@ -11399,6 +11436,11 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable
         to L2 switches (switches using L2 trunks as uplinks).
+
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+        and the default route.
         """
         inband_mgmt_gateway: str | None
         """
@@ -11407,6 +11449,10 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
+
+        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+        will provide the gateway.
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -12201,7 +12247,11 @@ class EosDesigns(EosDesignsRootModel):
                        For `rapid-pvst` the priority can also be
                        set per VLAN under network services.
                     spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_mst_pvst_boundary:
+                       Enable MST PVST border ports.
+                       By default this is configured regardless of the spanning-tree mode.
+                       When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                       only take effect when the spanning-tree mode is 'mstp'.
                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
@@ -12258,12 +12308,21 @@ class EosDesigns(EosDesignsRootModel):
 
                        This setting is applicable
                        to L2 switches (switches using L2 trunks as uplinks).
+
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                       and the default route.
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
+
+                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                       will provide the gateway.
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -16593,7 +16652,12 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_root_super: bool
         """Default value: `False`"""
         spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
+        """
+        Enable MST PVST border ports.
+        By default this is configured regardless of the spanning-tree mode.
+        When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+        only take effect when the spanning-tree mode is 'mstp'.
+        """
         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
         """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
@@ -16665,6 +16729,11 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable
         to L2 switches (switches using L2 trunks as uplinks).
+
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+        and the default route.
         """
         inband_mgmt_gateway: str | None
         """
@@ -16673,6 +16742,10 @@ class EosDesigns(EosDesignsRootModel):
 
         This setting is applicable to L2 switches (switches
         using L2 trunks as uplinks).
+
+        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+        will provide the gateway.
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -17476,7 +17549,11 @@ class EosDesigns(EosDesignsRootModel):
                        For `rapid-pvst` the priority can also be
                        set per VLAN under network services.
                     spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_mst_pvst_boundary:
+                       Enable MST PVST border ports.
+                       By default this is configured regardless of the spanning-tree mode.
+                       When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                       only take effect when the spanning-tree mode is 'mstp'.
                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
@@ -17533,12 +17610,21 @@ class EosDesigns(EosDesignsRootModel):
 
                        This setting is applicable
                        to L2 switches (switches using L2 trunks as uplinks).
+
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                       and the default route.
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
                        using L2 trunks as uplinks).
+
+                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                       will provide the gateway.
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -43876,6 +43962,86 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class SpanningTreeSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+        _fields: ClassVar[dict] = {
+            "mode": {"type": str},
+            "priority": {"type": int, "default": 32768},
+            "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
+            "loop_guard_default": {"type": bool, "default": False},
+        }
+        mode: Mode | None
+        """
+        Spanning tree operating mode.
+        'spanning_tree_mode' can also be set under node type settings.
+        If both
+        are set, the setting under node type settings takes precedence.
+        """
+        priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For 'rapid-pvst' the priority can also be
+        set per VLAN under network services.
+        'spanning_tree_priority' can also be set under node type
+        settings.
+        If both are set, the setting under node type settings takes precedence.
+
+        Default value: `32768`
+        """
+        port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """
+        Specify range of port-ids to reserve for port-channels.
+        'spanning_tree_port_id_allocation_port_channel_range' can also be set under node type settings.
+        If
+        both are set, the setting under node type settings takes precedence.
+        """
+        loop_guard_default: bool
+        """
+        Enable loopguard by default on all ports.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                mode: Mode | None | UndefinedType = Undefined,
+                priority: int | UndefinedType = Undefined,
+                port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                loop_guard_default: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                SpanningTreeSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mode:
+                       Spanning tree operating mode.
+                       'spanning_tree_mode' can also be set under node type settings.
+                       If both
+                       are set, the setting under node type settings takes precedence.
+                    priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For 'rapid-pvst' the priority can also be
+                       set per VLAN under network services.
+                       'spanning_tree_priority' can also be set under node type
+                       settings.
+                       If both are set, the setting under node type settings takes precedence.
+                    port_id_allocation_port_channel_range:
+                       Specify range of port-ids to reserve for port-channels.
+                       'spanning_tree_port_id_allocation_port_channel_range' can also be set under node type settings.
+                       If
+                       both are set, the setting under node type settings takes precedence.
+                    loop_guard_default: Enable loopguard by default on all ports.
+
+                """
+
     class SshSettings(AvdModel):
         """Subclass of AvdModel."""
 
@@ -53204,7 +53370,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -53276,6 +53447,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -53284,6 +53460,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -54061,7 +54241,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -54118,12 +54302,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -58465,7 +58658,12 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
+                        """
+                        Enable MST PVST border ports.
+                        By default this is configured regardless of the spanning-tree mode.
+                        When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                        only take effect when the spanning-tree mode is 'mstp'.
+                        """
                         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                         """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
@@ -58537,6 +58735,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable
                         to L2 switches (switches using L2 trunks as uplinks).
+
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                        and the default route.
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -58545,6 +58748,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
+
+                        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                        will provide the gateway.
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -59331,7 +59538,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_mst_pvst_boundary:
+                                       Enable MST PVST border ports.
+                                       By default this is configured regardless of the spanning-tree mode.
+                                       When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                       only take effect when the spanning-tree mode is 'mstp'.
                                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
@@ -59388,12 +59599,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable
                                        to L2 switches (switches using L2 trunks as uplinks).
+
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                       and the default route.
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
+
+                                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                       will provide the gateway.
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -63646,7 +63866,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -63718,6 +63943,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -63726,6 +63956,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -64514,7 +64748,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -64571,12 +64809,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -68901,7 +69148,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -68973,6 +69225,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -68981,6 +69238,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -69767,7 +70028,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -69824,12 +70089,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -88244,7 +88518,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -88316,6 +88595,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -88324,6 +88608,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -89101,7 +89389,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -89158,12 +89450,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -93505,7 +93806,12 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
+                        """
+                        Enable MST PVST border ports.
+                        By default this is configured regardless of the spanning-tree mode.
+                        When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                        only take effect when the spanning-tree mode is 'mstp'.
+                        """
                         spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                         """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
@@ -93577,6 +93883,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable
                         to L2 switches (switches using L2 trunks as uplinks).
+
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                        `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                        and the default route.
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -93585,6 +93896,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         This setting is applicable to L2 switches (switches
                         using L2 trunks as uplinks).
+
+                        This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                        will provide the gateway.
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -94371,7 +94686,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_mst_pvst_boundary:
+                                       Enable MST PVST border ports.
+                                       By default this is configured regardless of the spanning-tree mode.
+                                       When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                       only take effect when the spanning-tree mode is 'mstp'.
                                     spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
@@ -94428,12 +94747,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable
                                        to L2 switches (switches using L2 trunks as uplinks).
+
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                       `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                       and the default route.
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
                                        using L2 trunks as uplinks).
+
+                                       This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                       will provide the gateway.
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -98686,7 +99014,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -98758,6 +99091,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -98766,6 +99104,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -99554,7 +99896,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -99611,12 +99957,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -103941,7 +104296,12 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
+                    """
+                    Enable MST PVST border ports.
+                    By default this is configured regardless of the spanning-tree mode.
+                    When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                    only take effect when the spanning-tree mode is 'mstp'.
+                    """
                     spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
                     """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
@@ -104013,6 +104373,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable
                     to L2 switches (switches using L2 trunks as uplinks).
+
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                    `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                    and the default route.
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -104021,6 +104386,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     This setting is applicable to L2 switches (switches
                     using L2 trunks as uplinks).
+
+                    This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                    will provide the gateway.
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -104807,7 +105176,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_mst_pvst_boundary:
+                                   Enable MST PVST border ports.
+                                   By default this is configured regardless of the spanning-tree mode.
+                                   When 'avd_design_future.only_configure_pvst_border_when_mode_is_mstp' is set to 'true', this will
+                                   only take effect when the spanning-tree mode is 'mstp'.
                                 spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
@@ -104864,12 +105237,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable
                                    to L2 switches (switches using L2 trunks as uplinks).
+
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', the
+                                   `inband_mgmt_gateway` setting is ignored since the DHCP server is expected to provide the gateway
+                                   and the default route.
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
                                    using L2 trunks as uplinks).
+
+                                   This setting is ignored when 'inband_mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: true', since the DHCP server
+                                   will provide the gateway.
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -105903,6 +106285,7 @@ class EosDesigns(EosDesignsRootModel):
         "shutdown_interfaces_towards_undeployed_peers": {"type": bool, "default": True},
         "snmp_settings": {"type": SnmpSettings},
         "source_interfaces": {"type": SourceInterfaces},
+        "spanning_tree_settings": {"type": SpanningTreeSettings},
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
@@ -107630,6 +108013,8 @@ class EosDesigns(EosDesignsRootModel):
     Errors will also be raised if an interface is not found for a device.
     Subclass of AvdModel.
     """
+    spanning_tree_settings: SpanningTreeSettings
+    """Subclass of AvdModel."""
     ssh_settings: SshSettings
     """Subclass of AvdModel."""
     svi_profiles: SviProfiles
@@ -108229,6 +108614,7 @@ class EosDesigns(EosDesignsRootModel):
             shutdown_interfaces_towards_undeployed_peers: bool | UndefinedType = Undefined,
             snmp_settings: SnmpSettings | UndefinedType = Undefined,
             source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+            spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
@@ -109500,6 +109886,7 @@ class EosDesigns(EosDesignsRootModel):
                    raised in case of conflicts.
                    Errors will also be raised if an interface is not found for a device.
                    Subclass of AvdModel.
+                spanning_tree_settings: Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
                 svi_profiles:
                    Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
