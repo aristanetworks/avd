@@ -1288,8 +1288,10 @@ port_channel_interfaces:
   - name: Port-Channel302
     description: Legacy IPv6 address and managed config flag
     shutdown: false
-    ipv6_address: 2001:db8:302::1/64
-    ipv6_nd_managed_config_flag: true
+    ipv6_addresses:
+      - 2001:db8:302::1/64
+    ipv6_nd:
+      managed_config_flag: true
 
   # TODO: Open issue. documentation/port-channel-interfaces.j2 has a fallback IPv6
   # address branch for port-channels without ipv6_addresses, ipv6_address or
