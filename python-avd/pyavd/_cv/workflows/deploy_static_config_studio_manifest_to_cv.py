@@ -263,7 +263,7 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
     desired_container_ids = {container.id for container in cv_manifest.containers}
 
     def add_preserved_container_subtree(container_id: str) -> None:
-        """Mark an existing child and its descendants as intentionally outside this manifest's ownership boundary."""
+        """Mark an existing container and its descendants as intentionally outside this manifest's ownership boundary."""
         queue = deque([container_id])
         while queue:
             queued_container_id = queue.popleft()
@@ -319,26 +319,41 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
     for container_id in manual_delete_roots:
         add_container_subtree_to_delete(container_id)
 
-    # Delete manifest-managed containers that are no longer declared, unless they belong
-    # to an existing sibling branch preserved by preserve_existing_sub_containers.
+    # Delete manifest-managed containers that are no longer declared, unless they belong to an existing
+    # root branch preserved by preserve_existing_containers or sibling branch preserved by preserve_existing_sub_containers.
     # Their non-desired descendants are deleted as part of the same stale subtree cleanup.
-    for container_id in existing_state.manifest_managed_container_ids - desired_container_ids - preserved_container_ids:
-        add_container_subtree_to_delete(container_id)
-
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
     desired_root_ids_set = set(desired_root_ids)
     existing_root_ids_set = set(existing_state.root_ids)
     missing_root_ids = desired_root_ids_set - existing_root_ids_set
 
+    if cv_manifest.preserve_existing_containers:
+        # Preserve existing root containers, including manual roots, in their current positions.
+        # Manifest-managed root subtrees omitted from this manifest are outside this deployment's
+        # ownership boundary and must not be removed by stale cleanup below.
+        for root_id in existing_state.root_ids:
+            if root_id not in desired_root_ids_set:
+                add_preserved_container_subtree(root_id)
+
+    for container_id in existing_state.manifest_managed_container_ids - desired_container_ids - preserved_container_ids:
+        add_container_subtree_to_delete(container_id)
+
     if missing_root_ids:
         # This preserves the documented behavior: when new manifest roots are introduced, managed roots
         # are placed first and existing manual roots are kept after them.
         manual_root_ids = [container_id for container_id in existing_state.root_ids if not _is_manifest_managed_id(container_id)]
-        new_root_ids = desired_root_ids + manual_root_ids
+        if cv_manifest.preserve_existing_containers:
+            existing_managed_root_ids = [container_id for container_id in existing_state.root_ids if _is_manifest_managed_id(container_id)]
+            new_desired_root_ids = [container_id for container_id in desired_root_ids if container_id not in existing_root_ids_set]
+            new_root_ids = existing_managed_root_ids + new_desired_root_ids + manual_root_ids
+        else:
+            new_root_ids = desired_root_ids + manual_root_ids
     else:
         # If no managed roots are added, preserve the existing root order and only filter removed managed roots.
         new_root_ids = [
-            container_id for container_id in existing_state.root_ids if container_id in desired_root_ids_set or not _is_manifest_managed_id(container_id)
+            container_id
+            for container_id in existing_state.root_ids
+            if cv_manifest.preserve_existing_containers or container_id in desired_root_ids_set or not _is_manifest_managed_id(container_id)
         ]
 
     return _ContainerPlan(
