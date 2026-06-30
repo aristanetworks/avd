@@ -28,7 +28,7 @@ The AVD collection has the following requirements:
 
 !!! danger "Python Version Compatibility Warning"
     **Avoid Python 3.13.10, 3.13.11, 3.14.1 and 3.14.2** - These versions contain a bug that causes AVD to crash.
-    See the [release notes](../../../docs/release-notes/5.x.x.md#python-31310-and-31311-incompatibility) for more information.
+    See the [release notes](../../../docs/release-notes/5.x.x.md#python-versions-incompatibility) for more information.
 
 ## Installation
 
