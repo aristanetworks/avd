@@ -11815,7 +11815,7 @@ router multicast
 
 BFD enabled: True
 
-Message hello address secondary ipv6
+Message hello address secondary ipv6: True
 
 Make-before-break: False
 Register Local Interface: Ethernet1
