@@ -65923,6 +65923,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "bfd": {"type": bool},
                 "make_before_break": {"type": bool},
+                "message_hello_address_secondary_ipv6": {"type": bool},
                 "ssm_range": {"type": str},
                 "register_local_interface": {"type": str},
                 "rp_addresses": {"type": RpAddresses},
@@ -65932,6 +65933,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable BFD."""
             make_before_break: bool | None
             """Enable/Disable Make-Before-Break."""
+            message_hello_address_secondary_ipv6: bool | None
+            """Allow PIM IPv4 over IPv6 nexthop."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
             register_local_interface: str | None
@@ -65948,6 +65951,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     bfd: bool | None | UndefinedType = Undefined,
                     make_before_break: bool | None | UndefinedType = Undefined,
+                    message_hello_address_secondary_ipv6: bool | None | UndefinedType = Undefined,
                     ssm_range: str | None | UndefinedType = Undefined,
                     register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
@@ -65962,6 +65966,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
+                        message_hello_address_secondary_ipv6: Allow PIM IPv4 over IPv6 nexthop.
                         ssm_range: IPv4 Prefix associated with SSM.
                         register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.

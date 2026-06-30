@@ -18,6 +18,9 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Allow PIM IPv4 over IPv6 nexthop.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.

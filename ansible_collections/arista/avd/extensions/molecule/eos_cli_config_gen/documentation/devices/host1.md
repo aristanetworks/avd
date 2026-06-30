@@ -11815,6 +11815,8 @@ router multicast
 
 BFD enabled: True
 
+Message hello address secondary ipv6
+
 Make-before-break: False
 Register Local Interface: Ethernet1
 
@@ -11863,6 +11865,7 @@ router pim sparse-mode
    ipv4
       ssm range standard
       bfd
+      message hello address secondary ipv6
       make-before-break disabled
       rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30
