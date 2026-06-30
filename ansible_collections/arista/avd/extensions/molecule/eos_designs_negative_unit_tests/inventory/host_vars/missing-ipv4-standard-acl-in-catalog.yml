@@ -34,4 +34,3 @@ snmp_settings:
 
 expected_error_message: >-
   'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found.
-  
