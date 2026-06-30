@@ -56,7 +56,6 @@ class DaemonTerminattrMixin(Protocol):
                 EosCliConfigGen.DaemonTerminattr.Cvtargetconfigs
             )
 
-
         if cv_settings.terminattr.custom_cv_options:
             self.structured_config.daemon_terminattr.custom_cv_options = cv_settings.terminattr.custom_cv_options._cast_as(
                 EosCliConfigGen.DaemonTerminattr.CustomCvOptions
