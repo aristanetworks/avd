@@ -6,7 +6,33 @@ site_description: Arista AVD documentation
 copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
-  /README.md
+  # Deny everything, then re-include only doc content.
+  # Snippet targets (tables, .cfg artifacts, molecule files, example configs)
+  # are read directly from disk by pymdownx.snippets and do not need
+  # to be part of the MkDocs build.
+  *
+
+  # --- Root ---
+  !/index.md
+
+  # --- docs/ tree (bulk of the site) ---
+  !/docs/**
+  /docs/release-notes/[1-5].*
+  /docs/porting-guides/[4-5].*
+  /docs/pyavd/simple_example_*
+
+  # --- Ansible collection roles ---
+  !/ansible_collections/arista/avd/roles/*/README.md
+  !/ansible_collections/arista/avd/roles/*/docs/**
+  /ansible_collections/arista/avd/roles/*/docs/tables/*
+  /ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
+
+  # --- Ansible collection examples ---
+  !/ansible_collections/arista/avd/examples/README.md
+  !/ansible_collections/arista/avd/examples/*/README.md
+  /ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/README.md
+  !/ansible_collections/arista/avd/examples/*/images/**
+  !/ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/**
 
 # Repository information
 repo_name: AVD on Github
@@ -67,59 +93,6 @@ extra_javascript:
   - docs/stylesheets/sticky-banner.js
 
 plugins:
-  - exclude:
-      glob:
-        - README.md
-        - contributing.md
-        - pylintrc-ansible
-        - ansible_collections/arista/avd/bindep.txt
-        - ansible_collections/arista/avd/CHANGELOG.rst
-        - ansible_collections/arista/avd/CNAME
-        - ansible_collections/arista/avd/collections.yml
-        - ansible_collections/arista/avd/galaxy.yml
-        - ansible_collections/arista/avd/LICENSE
-        - ansible_collections/arista/avd/pytest.ini
-        - ansible_collections/arista/avd/README.md
-        - ansible_collections/arista/avd/requirements.txt
-        - ansible_collections/arista/avd/meta/*
-        - ansible_collections/arista/avd/playbooks/*
-        - ansible_collections/arista/avd/plugins/*
-        - ansible_collections/arista/avd/changelogs/*
-        - ansible_collections/arista/avd/extensions/molecule/*
-        - ansible_collections/arista/avd/tests/*
-        - ansible_collections/arista/avd/plugins/README.md
-        - docs/release-notes/1.0.x.md
-        - docs/release-notes/1.1.x.md
-        - docs/release-notes/2.x.x.md
-        - docs/release-notes/3.x.x.md
-        - docs/release-notes/4.x.x.md
-        - docs/release-notes/5.x.x.md
-        - docs/porting-guides/4.x.x.md
-        - docs/porting-guides/5.x.x.md
-        - docs/pyavd/simple_example_5_to_6.md
-        - docs/pyavd/simple_example_5_x.md
-        - docs/pyavd/simple_example_6_x.md
-        - ansible_collections/arista/avd/roles/*/docs/tables/*
-        # Exclude the table used only as a snippet to avoid mkdocs info log
-        - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
-
-        - development/*
-        - galaxy-importer/*
-        - python-avd/*
-      regex:
-        # Exclude examples common md snippets
-        - 'ansible_collections\/arista\/avd\/examples\/common/.*'
-        # Exclude all examples but single-dc-l3ls which is referenced in getting getting-started
-        - 'ansible_collections\/arista\/avd\/examples\/((?!single-dc-l3ls).*)\/documentation\/.*'
-        # Previous regex matches the ipv6 scenario
-        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/documentation\/.*'
-        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/README.md'
-        # Exclude all single-dc-l3ls files not referenced in getting getting-started
-        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls\/documentation\/fabric\/((?!FABRIC-documentation.md).*)'
-        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls\/documentation\/devices\/((?!dc1-leaf1a.md).*)'
-        - ".*.py$"
-        - ".*.pyc$"
-        - ".*.j2$"
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
