@@ -79,6 +79,8 @@ flow_tracking:
         record_export:
           on_inactive_timeout: 3666
           on_interval: 5666
+          # TODO: Open an issue. eos/flow-tracking.j2 supports hardware tracker record_export.mpls,
+          # but flow_tracking.hardware.trackers[].record_export.mpls is rejected by the schema.
         exporters:
           # Test for sort with ignore_case: false
           - name: a2-e1

@@ -60,6 +60,8 @@ ntp authenticate
 {%         endif %}
 {%         if server.local_interface is arista.avd.defined %}
 {%             set ntp_server_cli = ntp_server_cli ~ " local-interface " ~ server.local_interface %}
+{%         elif server.source_address is arista.avd.defined %}
+{%             set ntp_server_cli = ntp_server_cli ~ " source-address " ~ server.source_address %}
 {%         endif %}
 {%         if server.key is arista.avd.defined %}
 {%             set ntp_server_cli = ntp_server_cli ~ " key " ~ server.key | arista.avd.hide_passwords(hide_passwords) %}

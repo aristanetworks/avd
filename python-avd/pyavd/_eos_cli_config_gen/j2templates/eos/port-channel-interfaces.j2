@@ -436,6 +436,11 @@ interface {{ port_channel_interface.name }}
       address-family ipv6 disabled
 {%         endif %}
 {%     endif %}
+{%     if port_channel_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif port_channel_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
+{%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
 {%     endif %}
@@ -759,7 +764,11 @@ interface {{ port_channel_interface.name }}
    no logging event storm-control discards
 {%     endif %}
 {%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
+{%         if eos_config_future.render_spanning_tree_portfast_edge is arista.avd.defined(true) %}
+   spanning-tree portfast edge
+{%         else %}
    spanning-tree portfast
+{%         endif %}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}

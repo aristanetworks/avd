@@ -6,7 +6,7 @@ name: Reusable build container workflow
 
 env:
   # BUILDX_NO_DEFAULT_ATTESTATIONS must be set to build only arm64 and amd64 images.
-  # The devcontainers/ci@v0.3 build will fail if this env variable is not set.
+  # The devcontainers/ci build will fail if this env variable is not set.
   BUILDX_NO_DEFAULT_ATTESTATIONS: 1
 
 "on":
@@ -63,51 +63,61 @@ env:
 jobs:
   build_image:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Starting container build
         run: echo "Starting container build. Be patient. 🐢"
       - name: Checkout code ✅
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       # Build image tags based on Python version and AVD version (if defined).
       # If container_tags is not defined, then image_tags will be auto-generated.
       # If container_tags is latest, it will be added to auto-generated image_tags.
       # If container_tags is defined and not latest, it will be used as-is.
       - name: Build image tags 🏷️
         id: build-tags
+        env:
+          CONTAINER_NAME: ${{ inputs.container_name }}
+          CONTAINER_TAGS: ${{ inputs.container_tags }}
+          PYTHON_VERSION: ${{ inputs.python_version }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [ -z "${{ inputs.container_tags }}" ]; then
-            case ${{ inputs.container_name }} in
+          if [ -z "$CONTAINER_TAGS" ]; then
+            case "$CONTAINER_NAME" in
               base)
-                echo "image_tags=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
-                echo "image_version=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
+                echo "image_tags=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
+                echo "image_version=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
                 ;;
               dev)
-                echo "image_tags=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
-                echo "image_version=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
+                echo "image_tags=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
+                echo "image_version=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
                 ;;
               *)
-                echo "image_tags=python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-                echo "image_version=python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
+                echo "image_tags=python$PYTHON_VERSION-avd-$REF_NAME" >> "$GITHUB_OUTPUT"
+                echo "image_version=python$PYTHON_VERSION-avd-$REF_NAME" >> "$GITHUB_OUTPUT"
                 ;;
             esac
           else
-            if [ "${{ inputs.container_tags }}" == "latest" ]; then
-              case ${{ inputs.container_name }} in
+            if [ "$CONTAINER_TAGS" == "latest" ]; then
+              case "$CONTAINER_NAME" in
                 base)
-                  echo "image_tags=latest,python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
-                  echo "image_version=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
+                  echo "image_tags=latest,python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
+                  echo "image_version=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
                   ;;
                 dev)
-                  echo "image_tags=latest,python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
-                  echo "image_version=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
+                  echo "image_tags=latest,python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
+                  echo "image_version=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
                   ;;
                 *)
-                  echo "image_tags=latest,python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-                  echo "image_version=python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
+                  echo "image_tags=latest,python$PYTHON_VERSION-avd-$REF_NAME" >> "$GITHUB_OUTPUT"
+                  echo "image_version=python$PYTHON_VERSION-avd-$REF_NAME" >> "$GITHUB_OUTPUT"
                   ;;
               esac
             else
-              echo "image_tags=${{ inputs.container_tags }}" >> $GITHUB_OUTPUT
+              echo "image_tags=$CONTAINER_TAGS" >> "$GITHUB_OUTPUT"
             fi
           fi
 
@@ -119,14 +129,19 @@ jobs:
         # 3) All other images will be built from the base image.
         # 4) "from_image" and "from_variant" can be passed transparently to the build step,
         #    but that is not implemented currently.
+        env:
+          CONTAINER_NAME: ${{ inputs.container_name }}
+          FROM_IMAGE: ${{ inputs.from_image }}
+          PYTHON_VERSION: ${{ inputs.python_version }}
+          REPOSITORY: ${{ github.repository }}
         run: |
-          if [ "${{ inputs.from_image }}" == "python" ]; then
-            if [ "${{ inputs.container_name }}" == "base" ]; then
-              echo "from_image=${{ inputs.from_image }}" >> $GITHUB_OUTPUT
-              echo "from_variant=${{ inputs.python_version }}-slim-bookworm" >> $GITHUB_OUTPUT
+          if [ "$FROM_IMAGE" == "python" ]; then
+            if [ "$CONTAINER_NAME" == "base" ]; then
+              echo "from_image=$FROM_IMAGE" >> "$GITHUB_OUTPUT"
+              echo "from_variant=$PYTHON_VERSION-slim-bookworm" >> "$GITHUB_OUTPUT"
             else
-              echo "from_image=ghcr.io/${{ github.repository }}/base" >> $GITHUB_OUTPUT
-              echo "from_variant=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
+              echo "from_image=ghcr.io/$REPOSITORY/base" >> "$GITHUB_OUTPUT"
+              echo "from_variant=python$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
             fi
           else
             echo "Only python-slim images are supported at the moment. Exiting."
@@ -135,17 +150,21 @@ jobs:
 
       - name: Find ansible and pyavd install location
         id: find-install-locations
+        env:
+          GITHUB_TAG: ${{ inputs.github_tag }}
+          REF_NAME: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
         run: |
-          if [ -z "${{ inputs.github_tag }}" ]; then
-            PYAVD_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git@${{ github.ref_name }}#subdirectory=python-avd"
-            ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ github.ref_name }}"
-            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
-            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+          if [ -z "$GITHUB_TAG" ]; then
+            PYAVD_INSTALL_LOCATION="git+https://github.com/$REPOSITORY.git@$REF_NAME#subdirectory=python-avd"
+            ANSIBLE_INSTALL_LOCATION="git+https://github.com/$REPOSITORY.git#/ansible_collections/arista/avd/,$REF_NAME"
+            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> "$GITHUB_OUTPUT"
+            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> "$GITHUB_OUTPUT"
           else
-            PYAVD_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git@${{ inputs.github_tag }}#subdirectory=python-avd"
-            ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ inputs.github_tag }}"
-            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
-            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+            PYAVD_INSTALL_LOCATION="git+https://github.com/$REPOSITORY.git@$GITHUB_TAG#subdirectory=python-avd"
+            ANSIBLE_INSTALL_LOCATION="git+https://github.com/$REPOSITORY.git#/ansible_collections/arista/avd/,$GITHUB_TAG"
+            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> "$GITHUB_OUTPUT"
+            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> "$GITHUB_OUTPUT"
           fi
 
       # This check is temporarily deactivated, will be rewised in later PRs
@@ -168,7 +187,7 @@ jobs:
 
       - name: Setup QEMU for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: docker/setup-qemu-action@v4
+        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4.1.0
         with:
           platforms: ${{ inputs.platform }}
           image: tonistiigi/binfmt:qemu-v9.2.2-52
@@ -177,11 +196,11 @@ jobs:
 
       - name: Setup Docker buildX for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
 
       - name: Login to Docker Hub 🗝️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: docker/login-action@v4
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -193,7 +212,7 @@ jobs:
 
       - name: Pre-build dev container image 🔨
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: devcontainers/ci@v0.3
+        uses: devcontainers/ci@513af61f4de4f75d37e4438f184ba4358f0fc1ca # v0.3.1900000450
         env:
           FROM_IMAGE: ${{ steps.generate-from-parameters.outputs.from_image }}
           FROM_VARIANT: ${{ steps.generate-from-parameters.outputs.from_variant }}

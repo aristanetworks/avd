@@ -13,6 +13,7 @@ __all__ = (
     "ErrorCode",
     "WarningCode",
     "InfoCode",
+    "ImageSource",
     "SoftwareImage",
     "ImageMetadata",
     "Extension",
@@ -376,6 +377,25 @@ class InfoCode(aristaproto.Enum):
     INFO_CODE_UNIVERSAL_IMAGE_ARCH_APPLIED represents cases where a specific architecture is
     picked for a Universal (multiarch) EOS image.
     """
+
+
+class ImageSource(aristaproto.Enum):
+    """ImageSource indicates the source type for the image configuration."""
+
+    UNSPECIFIED = 0
+    """IMAGE_SOURCE_UNSPECIFIED uninitialized value"""
+
+    STUDIO = 1
+    """IMAGE_SOURCE_STUDIO - image configured from studio"""
+
+    NETWORK_PROVISIONING = 2
+    """
+    IMAGE_SOURCE_NETWORK_PROVISIONING - image configured from
+    network provisioning workflow
+    """
+
+    HIERARCHY = 3
+    """IMAGE_SOURCE_HIERARCHY - image configured from hierarchy workflow"""
 
 
 @dataclass(eq=False, repr=False)

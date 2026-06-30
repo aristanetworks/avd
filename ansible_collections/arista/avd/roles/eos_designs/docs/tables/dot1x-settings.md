@@ -56,6 +56,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.lldp.system_description.enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.lldp.system_description.auth_only") | Boolean |  | `False` |  | Send the attribute only once when first learned. |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
+    | [<samp>&nbsp;&nbsp;web_authentication</samp>](## "dot1x_settings.web_authentication") | Dictionary |  |  |  | The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.<br>Requires `dot1x_settings.dynamic_authorization.enabled: true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.web_authentication.enabled") | Boolean | Required |  |  | Enable the Web Authentication feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.web_authentication.url") | String |  |  | Pattern: `https?://[^\s/:]+(:\d+)?` | Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.<br>If both are configured, the RADIUS-provided URL takes precedence.<br>Supported format: http[s]://<hostname>[:<port>] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.web_authentication.ssl_profile") | String |  |  |  | SSL profile name, enabling HTTPS redirection on port 443.<br>Without this, only HTTP redirection is supported.<br>Can be used alone (when RADIUS provides the URL dynamically) or together with `url`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.web_authentication.start_limit_infinite") | Boolean |  |  |  | Disable the loop-protection mechanism that limits captive portal authentication retries.<br>By default, EOS limits a supplicant to 16 consecutive attempts before logging it off. |
 
 === "YAML"
 
@@ -197,4 +202,25 @@
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>
+
+      # The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.
+      # Requires `dot1x_settings.dynamic_authorization.enabled: true`.
+      web_authentication:
+
+        # Enable the Web Authentication feature.
+        enabled: <bool; required>
+
+        # Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.
+        # If both are configured, the RADIUS-provided URL takes precedence.
+        # Supported format: http[s]://<hostname>[:<port>]
+        url: <str>
+
+        # SSL profile name, enabling HTTPS redirection on port 443.
+        # Without this, only HTTP redirection is supported.
+        # Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
+        ssl_profile: <str>
+
+        # Disable the loop-protection mechanism that limits captive portal authentication retries.
+        # By default, EOS limits a supplicant to 16 consecutive attempts before logging it off.
+        start_limit_infinite: <bool>
     ```
