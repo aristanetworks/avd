@@ -12,7 +12,6 @@
   - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
 - [Management LDAP](#management-ldap)
-  - [LDAP Server Defaults](#ldap-server-defaults)
   - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Device Configuration](#cvx-device-configuration)
@@ -322,11 +321,6 @@ management api http-commands
 ```
 
 ## Management LDAP
-
-### LDAP Server Defaults
-
-| Setting | Value |
-| ------- | ----- |
 
 ### Management LDAP Device Configuration
 
