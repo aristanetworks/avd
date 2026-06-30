@@ -1314,6 +1314,7 @@ management api models
 | Base DN | dc=example,dc=com |
 | RDN Attribute (User) | cn |
 | SSL Profile | LDAP_SSL_PROFILE |
+| Timeout | 123 seconds |
 | Authorization Group Policy | LDAP_GROUP_POLICY |
 
 ### LDAP Server Hosts
@@ -1358,6 +1359,7 @@ management ldap
       base-dn dc=example,dc=com
       rdn attribute user cn
       ssl-profile LDAP_SSL_PROFILE
+      timeout 123
       authorization group policy LDAP_GROUP_POLICY
       search username cn=ldap-admin,dc=example,dc=com password 7 <removed>
    !
