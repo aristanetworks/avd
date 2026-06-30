@@ -110933,10 +110933,12 @@ class EosDesigns(EosDesignsRootModel):
     List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
     gateway.
     Replaces the default route.
-    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-
-    config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' under
-    node config since the router advertisements are expected to provide the gateway and the default
-    route.
+    Ignored when both
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', because in that case the router
+    advertisements are
+    expected to supply the gateway and default route.
 
 
     Subclass of AvdList with `str` items.
@@ -110946,10 +110948,12 @@ class EosDesigns(EosDesignsRootModel):
     OOB Management interface gateway in IPv6 format.
     Used as next-hop for default gateway or static
     routes defined under 'ipv6_mgmt_destination_networks'.
-    This setting is ignored when 'ipv6_mgmt_ip'
-    is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
-    true' under node config since the router advertisements are expected to provide the gateway and the
-    default route.
+    Ignored when both
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', because in that case the router
+    advertisements are
+    expected to supply the gateway and default route.
     """
     is_deployed: bool
     """
@@ -113026,10 +113030,12 @@ class EosDesigns(EosDesignsRootModel):
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
                    Replaces the default route.
-                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-
-                   config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' under
-                   node config since the router advertisements are expected to provide the gateway and the default
-                   route.
+                   Ignored when both
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', because in that case the router
+                   advertisements are
+                   expected to supply the gateway and default route.
 
 
                    Subclass of AvdList with `str` items.
@@ -113037,10 +113043,12 @@ class EosDesigns(EosDesignsRootModel):
                    OOB Management interface gateway in IPv6 format.
                    Used as next-hop for default gateway or static
                    routes defined under 'ipv6_mgmt_destination_networks'.
-                   This setting is ignored when 'ipv6_mgmt_ip'
-                   is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
-                   true' under node config since the router advertisements are expected to provide the gateway and the
-                   default route.
+                   Ignored when both
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', because in that case the router
+                   advertisements are
+                   expected to supply the gateway and default route.
                 is_deployed:
                    If the device is already deployed in the fabric.
                    When set to false:

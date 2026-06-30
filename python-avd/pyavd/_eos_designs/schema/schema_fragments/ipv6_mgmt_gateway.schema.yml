@@ -14,4 +14,6 @@ keys:
     description: |
       OOB Management interface gateway in IPv6 format.
       Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.
-      This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' under node config since the router advertisements are expected to provide the gateway and the default route.
+      Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+      'ipv6_mgmt_ip' under node config is set to 'auto-config', because in that case the router
+      advertisements are expected to supply the gateway and default route.
