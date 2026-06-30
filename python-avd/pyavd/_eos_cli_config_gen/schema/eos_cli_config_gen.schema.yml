@@ -9934,7 +9934,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: LDAP group name. Quoted strings are supported for
                       names containing spaces (e.g., "Network Admin").
                   role:
