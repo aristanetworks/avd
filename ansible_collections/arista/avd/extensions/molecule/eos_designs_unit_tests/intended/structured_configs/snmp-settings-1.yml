@@ -101,6 +101,17 @@ snmp_server:
     enable: false
   - name: MGMT
     enable: true
+standard_access_lists:
+- name: onur
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.1
+- name: SNMP-MGMT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.12
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

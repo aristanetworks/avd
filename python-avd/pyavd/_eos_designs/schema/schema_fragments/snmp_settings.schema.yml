@@ -186,7 +186,38 @@ keys:
                   vrf: "use_inband_mgmt_vrf"
       communities:
         type: list
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/communities"
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name.
+            access:
+              type: str
+              valid_values: ["ro", "rw"]
+            access_list_ipv4:
+              type: dict
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: ipv4_standard_acl
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 access list name.
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name.
+            view:
+              type: str
       views:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/views"

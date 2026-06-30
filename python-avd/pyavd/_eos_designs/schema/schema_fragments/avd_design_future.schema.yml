@@ -30,6 +30,12 @@ keys:
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
+      enforce_acl_presence_in_ipv4_standard_acl_catalog:
+        type: bool
+        description: |-
+          Available from AVD 6.3.0.
+          When true, this key enforces `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
+        default: false
       fix_radius_server_group_tls:
         type: bool
         default: false

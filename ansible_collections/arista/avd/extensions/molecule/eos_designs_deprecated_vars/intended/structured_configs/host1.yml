@@ -282,6 +282,27 @@ router_multicast:
     routing: true
     software_forwarding: sfe
 service_routing_protocols_model: multi-agent
+snmp_server:
+  contact: example@example.com
+  communities:
+  - name: SNMP-COMMUNITY-1
+    access: ro
+    access_list_ipv4:
+      name: onur
+  - name: SNMP-COMMUNITY-2
+    access: rw
+    access_list_ipv4:
+      name: SNMP-MGMT
+    access_list_ipv6:
+      name: SNMP-MGMT
+    view: VW-READ
+  - name: SNMP-COMMUNITY-3
+standard_access_lists:
+- name: onur
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.1
 static_routes:
 - vrf: default
   prefix: 0.0.0.0/0
