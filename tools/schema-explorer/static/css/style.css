@@ -874,45 +874,12 @@
   padding: 0.15em 0.4em;
 }
 
-/* Navigator view indentation. Use inline-flex so the chevron + key text stay on
-   the same line even when the cell is narrow — without this, a tight Key
-   column can wrap the chevron above the key (looks broken). The leaf code
-   itself still allows long names to wrap inside the cell when needed. */
-:where(.schema-spa-host, .schema-embed) .schema-navigator-indent {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25rem;
-  max-width: 100%;
-  min-width: 0;
-}
-:where(.schema-spa-host, .schema-embed) .navigator-toggle-icon,
-:where(.schema-spa-host, .schema-embed) .navigator-toggle-spacer {
-  flex: 0 0 1rem;
-  width: 1rem;
-}
-:where(.schema-spa-host, .schema-embed) .navigator-toggle-icon {
-  cursor: pointer;
-}
-:where(.schema-spa-host, .schema-embed) .schema-key-toggle {
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-:where(.schema-spa-host, .schema-embed) .schema-row-detail-link {
-  flex: 0 0 auto;
-  opacity: 0.72;
-  font-size: 0.75rem;
-}
 :where(.schema-spa-host, .schema-embed) .schema-key-cell {
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: normal;
 }
-:where(.schema-spa-host, .schema-embed) .schema-key-cell code,
-:where(.schema-spa-host, .schema-embed) .schema-key-toggle code {
+:where(.schema-spa-host, .schema-embed) .schema-key-cell code {
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -1454,16 +1421,6 @@ html.in-iframe body { padding-top: 0; }
    sub-page padding tweaks; the parent page (whatever it is) provides chrome. */
 html.style-none #schema-navbar { display: none !important; }
 
-:where(.schema-spa-host, .schema-embed) .schema-navigator-table :where(code, .schema-default-compact, .schema-type-label),
-:where(.schema-spa-host, .schema-embed) .schema-detail-children :where(code, .schema-default-compact, .schema-type-label) {
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: inherit !important;
-  padding: 0 !important;
-}
-
 /* Schema variable tables */
 :where(.schema-spa-host, .schema-embed) .schema-var-table {
   table-layout: fixed;
@@ -1485,81 +1442,6 @@ html.style-none #schema-navbar { display: none !important; }
   overflow-wrap: anywhere;
   word-break: normal;
 }
-
-:where(.schema-spa-host, .schema-embed) .schema-navigator-table :where(td, th, code, .schema-type-label, .schema-default-compact, .schema-constraints-summary),
-:where(.schema-spa-host, .schema-embed) .schema-detail-children :where(td, th, code, .schema-type-label, .schema-default-compact, .schema-constraints-summary) {
-  font-size: 0.82rem !important;
-  font-weight: 400 !important;
-  line-height: 1.5;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-navigator-table thead th,
-:where(.schema-spa-host, .schema-embed) .schema-detail-children thead th {
-  font-size: 0.82rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-navigator-table .schema-key-cell code,
-:where(.schema-spa-host, .schema-embed) .schema-detail-children .schema-key-code {
-  font-size: 0.82rem !important;
-  font-weight: 500 !important;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-description-cell {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-description-cell > span {
-  min-width: 0;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-row-info-toggle {
-  flex: 0 0 auto;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--se-muted);
-  line-height: 1.2;
-  cursor: pointer;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-row-info-toggle:hover {
-  color: var(--se-brand);
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-row-metadata > td {
-  padding: 0;
-  background: var(--se-light-bg);
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-row-metadata-panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem 1rem;
-  padding: 0.65rem 0.85rem;
-  border-top: 1px solid var(--se-border-color);
-  color: inherit;
-  font-size: 0.82rem;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-row-metadata-panel > div {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-:where(.schema-spa-host, .schema-embed) .schema-meta-label {
-  display: block;
-  margin-bottom: 0.15rem;
-  color: var(--se-muted);
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-
 
 /* Documentation-style schema browser */
 :where(.schema-spa-host, .schema-embed) .schema-reference-view {
@@ -1759,22 +1641,8 @@ html.style-none #schema-navbar { display: none !important; }
     padding-top: 0.2rem;
   }
 
-  :where(.schema-spa-host, .schema-embed) .schema-var-table .schema-key-cell::before,
-  :where(.schema-spa-host, .schema-embed) .schema-var-table .schema-row-metadata td::before {
+  :where(.schema-spa-host, .schema-embed) .schema-var-table .schema-key-cell::before {
     content: none;
-  }
-
-  :where(.schema-spa-host, .schema-embed) .schema-var-table .schema-row-metadata td {
-    display: block;
-    padding: 0;
-  }
-
-  :where(.schema-spa-host, .schema-embed) .schema-row-metadata-panel {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  :where(.schema-spa-host, .schema-embed) .schema-navigator-indent {
-    padding-left: 0 !important;
   }
 }
 
@@ -2236,9 +2104,9 @@ html.style-none #schema-navbar { display: none !important; }
   color: #c5ced8 !important;
 }
 
-.schema-spa-host[data-bs-theme="dark"] :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand),
-[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand),
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand) {
+.schema-spa-host[data-bs-theme="dark"] :where(.schema-key-code, a.link-brand),
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, a.link-brand),
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, a.link-brand) {
   color: #7ab7ff !important;
 }
 
@@ -2282,9 +2150,9 @@ html.style-none #schema-navbar { display: none !important; }
   color: var(--schema-material-muted) !important;
 }
 
-.schema-spa-host[data-bs-theme="dark"] :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand),
-[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand),
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, .schema-key-toggle, .schema-key-toggle code, a.link-brand) {
+.schema-spa-host[data-bs-theme="dark"] :where(.schema-key-code, a.link-brand),
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, a.link-brand),
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-key-code, a.link-brand) {
   color: var(--md-typeset-a-color, var(--schema-material-primary)) !important;
 }
 
@@ -2328,7 +2196,7 @@ html.style-none #schema-navbar { display: none !important; }
 
 
 /* Plain detail metadata should match MkDocs table text, not Bootstrap badges/pills. */
-:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-row-metadata-panel, .schema-reference-detail-inner) :where(code, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value) {
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-reference-detail-inner) :where(code, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value) {
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -2337,12 +2205,12 @@ html.style-none #schema-navbar { display: none !important; }
   padding: 0 !important;
 }
 
-:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page table, .schema-row-metadata-panel, .schema-reference-detail-inner table) :where(td, th, code, span, .small, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value, .schema-detail-status) {
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page table, .schema-reference-detail-inner table) :where(td, th, code, span, .small, .schema-default-compact, .schema-type-label, .schema-plain-value, .schema-valid-value, .schema-detail-status) {
   font-size: 0.82rem !important;
   line-height: 1.5;
 }
 
-:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-row-metadata-panel, .schema-reference-detail-inner) .schema-detail-status {
+:where(.schema-spa-host, .schema-embed) :where(.schema-detail-heading, .schema-detail-page, .schema-reference-detail-inner) .schema-detail-status {
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -2363,7 +2231,7 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 
-/* Keep Reference and YAML typography aligned with the Navigator tables. */
+/* Keep Reference and YAML typography aligned. */
 :where(.schema-spa-host, .schema-embed) :where(.schema-reference-nav-key, .schema-reference-key-table, .schema-reference-key-table td, .schema-reference-key-table th, .schema-reference-prose, .schema-reference-prose p, .schema-reference-prose li, .schema-reference-note, .schema-reference-breadcrumb, .schema-reference-detail-inner p, .schema-reference-detail-inner li, .schema-reference-detail-inner code) {
   font-size: 0.82rem !important;
   line-height: 1.5;

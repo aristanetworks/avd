@@ -12,12 +12,12 @@ import yaml
 
 _ALLOWED_ATTRIBUTES = frozenset({"release", "module", "root", "view", "height", "chrome"})
 _ALLOWED_MODULES = frozenset({"eos_designs", "eos_cli_config_gen", "all"})
-_ALLOWED_VIEWS = frozenset({"navigator", "reference", "yaml", "index"})
+_ALLOWED_VIEWS = frozenset({"reference", "yaml"})
 _ALLOWED_CHROME = frozenset({"compact", "none"})
 _DEFAULTS = {
     "release": "devel",
     "module": "eos_designs",
-    "view": "navigator",
+    "view": "reference",
     "height": "600px",
     "chrome": "compact",
 }
