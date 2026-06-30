@@ -1,0 +1,22 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - environment #}
+{% if environment_fan_speed.minimum is arista.avd.defined %}
+
+## Environment
+
+### Environment Summary
+
+| Minimum Fan Speed |
+| ----------------- |
+| {{ environment_fan_speed.minimum }}% |
+
+### Environment Device Configuration
+
+```eos
+{%     include 'eos/environment-fan-speed.j2' %}
+```
+{% endif %}
