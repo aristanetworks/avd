@@ -74,7 +74,7 @@ def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., Action
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         pytest.raises(
             AnsibleActionFail,
-            match=r"The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error",
+            match=r"The 'arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error",
         ),
     ):
         module.run(task_vars={})
