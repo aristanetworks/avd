@@ -31,6 +31,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cvtargetconfigs</samp>](## "cv_settings.terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "cv_settings.terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowdns</samp>](## "cv_settings.terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;custom_cv_options</samp>](## "cv_settings.terminattr.custom_cv_options") | List, items: Dictionary |  |  |  | Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.<br>Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.<br>Options are appended at the end of the TerminAttr exec command line after all other flags.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;flag</samp>](## "cv_settings.terminattr.custom_cv_options.[].flag") | String | Required |  | Min Length: 1 | TerminAttr CLI flag name without the leading dash.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "cv_settings.terminattr.custom_cv_options.[].value") | String |  |  |  | Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).<br>If set, the flag is rendered as `-flag=value`.<br> |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "cv_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>Can be set to `false` to avoid changes when migrating from the old `cv_instances` model. |
     | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
@@ -135,6 +138,18 @@
         # Enable DNS resolution for flow records (TerminAttr default is true).
         # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
         flowdns: <bool>
+
+        # Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
+        # Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+        # Options are appended at the end of the TerminAttr exec command line after all other flags.
+        custom_cv_options:
+
+            # TerminAttr CLI flag name without the leading dash.
+          - flag: <str; length >=1; required>
+
+            # Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+            # If set, the flag is rendered as `-flag=value`.
+            value: <str>
 
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.

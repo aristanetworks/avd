@@ -1826,6 +1826,39 @@ keys:
           Set to false to disable DNS lookups on sFlow/IPFIX flow records.
 
           '
+      custom_cv_options:
+        type: list
+        description: 'Escape hatch for arbitrary TerminAttr CLI options not covered
+          by the schema.
+
+          Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>`
+          when `value` is omitted.
+
+          Options are appended at the end of the TerminAttr exec command line after
+          all other flags.
+
+          '
+        items:
+          type: dict
+          keys:
+            flag:
+              type: str
+              required: true
+              min_length: 1
+              description: 'TerminAttr CLI flag name without the leading dash.
+
+                '
+            value:
+              type: str
+              description: 'Flag value. If omitted, the flag is rendered without a
+                value (e.g. `-someflag`).
+
+                If set, the flag is rendered as `-flag=value`.
+
+                '
+              convert_types:
+              - bool
+              - int
   daemons:
     type: list
     primary_key: name

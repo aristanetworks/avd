@@ -1836,6 +1836,20 @@ keys:
           flowdns:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
+          custom_cv_options:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/custom_cv_options
+            items:
+              type: dict
+              keys:
+                flag:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  convert_types:
+                  - bool
+                  - int
       set_source_interfaces:
         type: bool
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,

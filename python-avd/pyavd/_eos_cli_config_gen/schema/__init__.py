@@ -4161,6 +4161,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Cvtargetconfigs._item_type = str
 
+        class CustomCvOptionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+            flag: str
+            """TerminAttr CLI flag name without the leading dash."""
+            value: str | None
+            """
+            Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+            If set, the flag is
+            rendered as `-flag=value`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    CustomCvOptionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        flag: TerminAttr CLI flag name without the leading dash.
+                        value:
+                           Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                           If set, the flag is
+                           rendered as `-flag=value`.
+
+                    """
+
+        class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+            """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+        CustomCvOptions._item_type = CustomCvOptionsItem
+
         _fields: ClassVar[dict] = {
             "cvaddrs": {"type": Cvaddrs},
             "clusters": {"type": Clusters},
@@ -4186,6 +4222,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_loss_timeout": {"type": int},
             "cvtargetconfigs": {"type": Cvtargetconfigs},
             "flowdns": {"type": bool},
+            "custom_cv_options": {"type": CustomCvOptions},
         }
         cvaddrs: Cvaddrs
         """
@@ -4308,6 +4345,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Set to false to disable DNS
         lookups on sFlow/IPFIX flow records.
         """
+        custom_cv_options: CustomCvOptions
+        """
+        Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
+        Each entry renders as
+        `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+        Options are appended at
+        the end of the TerminAttr exec command line after all other flags.
+
+
+        Subclass of AvdList with
+        `CustomCvOptionsItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -4338,6 +4387,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_loss_timeout: int | None | UndefinedType = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                 flowdns: bool | None | UndefinedType = Undefined,
+                custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4426,6 +4476,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Enable DNS resolution for flow records (TerminAttr default is true).
                        Set to false to disable DNS
                        lookups on sFlow/IPFIX flow records.
+                    custom_cv_options:
+                       Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
+                       Each entry renders as
+                       `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+                       Options are appended at
+                       the end of the TerminAttr exec command line after all other flags.
+
+
+                       Subclass of AvdList with
+                       `CustomCvOptionsItem` items.
 
                 """
 

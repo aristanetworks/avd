@@ -125,6 +125,14 @@ daemon TerminAttr
 {%     elif daemon_terminattr.flowdns is arista.avd.defined(false) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -flowdns=false" %}
 {%     endif %}
+{%     for option in daemon_terminattr.custom_cv_options | arista.avd.default([]) %}
+{%         if option.value is arista.avd.defined %}
+{%             set _value = option.value | lower if option.value in ["True", "False"] else option.value %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -" ~ option.flag ~ "=" ~ _value %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -" ~ option.flag %}
+{%         endif %}
+{%     endfor %}
    {{ cvp_config.cli }}
    no shutdown
 {% endif %}

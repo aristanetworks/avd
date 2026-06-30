@@ -66,6 +66,8 @@ cv_settings:
     cvtargetconfigs:
       - arista/traffic-policy
     flowdns: false
+    custom_cv_options:
+      - flag: somecustomflag
 # Test for export sflow setting vrf to cloudvision
 sflow_settings:
   export_to_cloudvision:

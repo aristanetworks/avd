@@ -55,6 +55,9 @@
     | [<samp>&nbsp;&nbsp;cvtargetconfigs</samp>](## "daemon_terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;flowdns</samp>](## "daemon_terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
+    | [<samp>&nbsp;&nbsp;custom_cv_options</samp>](## "daemon_terminattr.custom_cv_options") | List, items: Dictionary |  |  |  | Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.<br>Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.<br>Options are appended at the end of the TerminAttr exec command line after all other flags.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;flag</samp>](## "daemon_terminattr.custom_cv_options.[].flag") | String | Required |  | Min Length: 1 | TerminAttr CLI flag name without the leading dash.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "daemon_terminattr.custom_cv_options.[].value") | String |  |  |  | Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).<br>If set, the flag is rendered as `-flag=value`.<br> |
 
 === "YAML"
 
@@ -222,4 +225,16 @@
       # Enable DNS resolution for flow records (TerminAttr default is true).
       # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
       flowdns: <bool>
+
+      # Escape hatch for arbitrary TerminAttr CLI options not covered by the schema.
+      # Each entry renders as `-<flag>=<value>` when `value` is set, or `-<flag>` when `value` is omitted.
+      # Options are appended at the end of the TerminAttr exec command line after all other flags.
+      custom_cv_options:
+
+          # TerminAttr CLI flag name without the leading dash.
+        - flag: <str; length >=1; required>
+
+          # Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+          # If set, the flag is rendered as `-flag=value`.
+          value: <str>
     ```

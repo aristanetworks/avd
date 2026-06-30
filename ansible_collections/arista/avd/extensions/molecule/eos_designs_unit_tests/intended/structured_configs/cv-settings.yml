@@ -68,6 +68,8 @@ daemon_terminattr:
   cvtargetconfigs:
   - arista/traffic-policy
   flowdns: false
+  custom_cv_options:
+  - flag: somecustomflag
 dns_domain: testfabric.local
 enable_password:
   disabled: true
