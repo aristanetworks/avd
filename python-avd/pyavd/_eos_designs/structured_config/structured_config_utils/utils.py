@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
 
@@ -45,7 +45,7 @@ class UtilsMixin(Protocol):
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
     def _set_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str, validate_acl: bool) -> None:
-        if  validate_acl and acl_name not in self.inputs.ipv4_standard_acls:
+        if validate_acl and acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg)
         if acl_name in self.inputs.ipv4_standard_acls:

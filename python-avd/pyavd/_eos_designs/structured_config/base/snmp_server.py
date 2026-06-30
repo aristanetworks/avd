@@ -61,10 +61,10 @@ class SnmpServerMixin(Protocol):
                 access_list_ipv6=community.access_list_ipv6._cast_as(EosCliConfigGen.SnmpServer.CommunitiesItem.AccessListIpv6),
                 view=community.view,
             )
-            if acl_name:=community.ipv4_standard_acl:
+            if acl_name := community.ipv4_standard_acl:
                 community_item.access_list_ipv4.name = acl_name
                 self.structured_config_utils._set_standard_acl(acl_name, True)
-            elif acl_name:=community.access_list_ipv4.name:
+            elif acl_name := community.access_list_ipv4.name:
                 community_item.access_list_ipv4.name = acl_name
                 self.structured_config_utils._set_standard_acl(acl_name, self.inputs.avd_design_future.enforce_acl_presence_in_ipv4_standard_acl_catalog)
             self.structured_config.snmp_server.communities.append(community_item)
