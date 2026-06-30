@@ -1897,14 +1897,11 @@ errdisable recovery cause uplink-failure-detection
 
 License is not installed.
 
-FIPS restrictions enabled.
-
 ### MACsec Device Configuration
 
 ```eos
 !
 mac security
-   fips restrictions
 ```
 
 ### Traffic Policies information
