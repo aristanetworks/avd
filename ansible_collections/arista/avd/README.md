@@ -21,10 +21,14 @@ AVD Documentation:
 
 The AVD collection has the following requirements:
 
-- Python 3.10 or above
+- Python 3.10 to 3.14
 - Ansible Core 2.16.0 to 2.18.x
 - the Python package `pyavd[ansible-collection]` matching the collection version
 - Modify the `ansible.cfg` file to support additional Jinja2 extensions
+
+!!! danger "Python Version Compatibility Warning"
+    **Avoid Python 3.13.10, 3.13.11, 3.14.1 and 3.14.2** - These versions contain a bug that causes AVD to crash.
+    See the [release notes](../../../docs/release-notes/5.x.x.md#python-versions-incompatibility) for more information.
 
 ## Installation
 
