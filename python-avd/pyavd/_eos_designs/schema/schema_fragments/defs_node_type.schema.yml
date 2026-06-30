@@ -76,14 +76,19 @@ $defs:
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv6 address.
+            description: |-
+              Node management interface IPv6 address.
+              Set 'auto-config' to use SLAAC to automatically configure the IPv6 address
+              When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+              This will also configure the management interface to accept the default route and honor route preferences from Router Advertisements.
             type: str
-            format: cidr
           ipv6_mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+            description: |-
+              This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+              This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
