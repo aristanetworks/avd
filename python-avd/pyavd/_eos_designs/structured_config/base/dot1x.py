@@ -128,6 +128,8 @@ class Dot1xMixin(Protocol):
             ssl_profile=web_authentication.ssl_profile,
             url=web_authentication.url,
         )
+        if web_authentication.ipv4_standard_acl is not None:
+            self.structured_config.dot1x.captive_portal.access_list_ipv4 = self.structured_config_utils._set_standard_acl(web_authentication.ipv4_standard_acl, validate_acl=True)
 
     def _configure_dot1x_device_profiling(
         self: AvdStructuredConfigBaseProtocol,
