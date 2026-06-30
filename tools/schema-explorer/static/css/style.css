@@ -1983,7 +1983,8 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-detail-inner {
-  max-width: 48rem;
+  width: 100%;
+  max-width: none;
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-breadcrumb {
@@ -2036,7 +2037,8 @@ html.style-none #schema-navbar { display: none !important; }
 }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-prose {
-  max-width: 42rem;
+  width: 100%;
+  max-width: none;
   color: inherit;
   font-size: inherit;
   line-height: 1.6;
@@ -2044,7 +2046,8 @@ html.style-none #schema-navbar { display: none !important; }
 
 :where(.schema-spa-host, .schema-embed) .schema-reference-default-browser {
   margin: 1rem 0 0;
-  max-width: 48rem;
+  width: 100%;
+  max-width: none;
 }
 :where(.schema-spa-host, .schema-embed) .schema-reference-default-label {
   display: block;
@@ -2082,15 +2085,41 @@ html.style-none #schema-navbar { display: none !important; }
   display: none !important;
 }
 :where(.schema-spa-host, .schema-embed) .schema-reference-default-table {
+  display: block;
   width: 100%;
   margin: 0;
   font-size: 0.82rem;
 }
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table tbody {
+  display: block;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table tr {
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+  align-items: start;
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
+}
 :where(.schema-spa-host, .schema-embed) .schema-reference-default-table td {
+  min-width: 0;
   padding: 0.45rem 0.65rem;
   border: 0;
-  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest, var(--schema-material-border));
   vertical-align: top;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table > tbody > tr > td:last-child {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table > tbody > tr > td:last-child > code {
+  white-space: nowrap;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table .schema-default-nested-table {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+}
+:where(.schema-spa-host, .schema-embed) .schema-reference-default-table .schema-default-nested-table tr:first-child {
+  border-top: 0;
 }
 :where(.schema-spa-host, .schema-embed) .schema-reference-default-list {
   margin: 0;
