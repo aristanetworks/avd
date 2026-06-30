@@ -7,6 +7,13 @@ l2leaf:
     - name: dot1x-settings-2
       mgmt_ip: 192.168.0.2/24
 
+ipv4_standard_acls:
+  - name: web-acl
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.1
+
 dot1x_settings:
   enabled: true
   authentication:
@@ -41,6 +48,7 @@ dot1x_settings:
     enabled: true
     ssl_profile: captive-portal-ssl-profile
     url: https://captive.arista.com
+    ipv4_standard_acl: web-acl
     start_limit_infinite: true
 
 aaa_settings:
