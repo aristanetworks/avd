@@ -32726,7 +32726,7 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be
                 defined under `ipv6_acls` and supports substitution of the field "interface_ip".
                 The "interface_ip"
-                substitution field is resolved from the first IPv6 address set on the interface.
+                substitution field is resolved from the IPv6 address set on the interface for this node.
                 """
                 ipv6_acl_out: str | None
                 """
@@ -32734,7 +32734,7 @@ class EosDesigns(EosDesignsRootModel):
                 The access-list must be defined
                 under `ipv6_acls` and supports substitution of the field "interface_ip".
                 The "interface_ip"
-                substitution field is resolved from the first IPv6 address set on the interface.
+                substitution field is resolved from the IPv6 address set on the interface for this node.
                 """
                 ospf: Ospf
                 """
@@ -32867,13 +32867,13 @@ class EosDesigns(EosDesignsRootModel):
                                The access-list must be
                                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
                                The "interface_ip"
-                               substitution field is resolved from the first IPv6 address set on the interface.
+                               substitution field is resolved from the IPv6 address set on the interface for this node.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv6_acls` and supports substitution of the field "interface_ip".
                                The "interface_ip"
-                               substitution field is resolved from the first IPv6 address set on the interface.
+                               substitution field is resolved from the IPv6 address set on the interface for this node.
                             ospf:
                                OSPF interface configuration.
 
@@ -79547,7 +79547,7 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be
                         defined under `ipv6_acls` and supports substitution of the field "interface_ip".
                         The "interface_ip"
-                        substitution field is resolved from the first IPv6 address set on the interface.
+                        substitution field is resolved from the IPv6 address set on the interface for this node.
                         """
                         ipv6_acl_out: str | None
                         """
@@ -79555,7 +79555,7 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv6_acls` and supports substitution of the field "interface_ip".
                         The "interface_ip"
-                        substitution field is resolved from the first IPv6 address set on the interface.
+                        substitution field is resolved from the IPv6 address set on the interface for this node.
                         """
                         ospf: Ospf
                         """
@@ -79688,13 +79688,13 @@ class EosDesigns(EosDesignsRootModel):
                                        The access-list must be
                                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
                                        The "interface_ip"
-                                       substitution field is resolved from the first IPv6 address set on the interface.
+                                       substitution field is resolved from the IPv6 address set on the interface for this node.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv6_acls` and supports substitution of the field "interface_ip".
                                        The "interface_ip"
-                                       substitution field is resolved from the first IPv6 address set on the interface.
+                                       substitution field is resolved from the IPv6 address set on the interface for this node.
                                     ospf:
                                        OSPF interface configuration.
 

@@ -5931,7 +5931,7 @@ keys:
                         substitution of the field "interface_ip".
 
                         The "interface_ip" substitution field is resolved from the
-                        first IPv6 address set on the interface.'
+                        IPv6 address set on the interface for this node.'
                       type: str
                       convert_types:
                       - int
@@ -5943,7 +5943,7 @@ keys:
                         substitution of the field "interface_ip".
 
                         The "interface_ip" substitution field is resolved from the
-                        first IPv6 address set on the interface.'
+                        IPv6 address set on the interface for this node.'
                       type: str
                       convert_types:
                       - int
