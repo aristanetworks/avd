@@ -805,7 +805,7 @@ jobs:
     name: Cargo build, test and linting on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    # Rust code moved to pyavd-utils for the v5.7 release line.
+    # Rust code moved to pyavd-utils for the v6 release line and was unused for v5.7.
     if: ${{ false }}
     strategy:
       fail-fast: false
@@ -865,7 +865,7 @@ jobs:
     name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    # Rust code moved to pyavd-utils for the v5.7 release line.
+    # Rust code moved to pyavd-utils for the v6 release line and was unused for v5.7.
     if: ${{ false }}
     strategy:
       fail-fast: false
@@ -905,7 +905,7 @@ jobs:
     name: Python 3.11 on ubuntu x64
     runs-on: ubuntu-latest
     needs: [file-changes]
-    # Rust code moved to pyavd-utils for the v5.7 release line.
+    # Rust code moved to pyavd-utils for the v6 release line and was unused for v5.7.
     if: ${{ false }}
     steps:
       - uses: actions/checkout@v5
