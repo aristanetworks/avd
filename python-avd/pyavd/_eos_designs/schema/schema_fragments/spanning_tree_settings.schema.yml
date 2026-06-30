@@ -1,0 +1,43 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  spanning_tree_settings:
+    type: dict
+    keys:
+      mode:
+        type: str
+        description: |-
+          Spanning tree operating mode.
+          'spanning_tree_mode' can also be set under node type settings.
+          If both are set, the setting under node type settings takes precedence.
+        valid_values:
+          - mstp
+          - rstp
+          - rapid-pvst
+          - none
+      priority:
+        type: int
+        convert_types:
+          - str
+        default: 32768
+        description: |-
+          Spanning-tree priority configured for the selected mode.
+          For 'rapid-pvst' the priority can also be set per VLAN under network services.
+          'spanning_tree_priority' can also be set under node type settings.
+          If both are set, the setting under node type settings takes precedence.
+      port_id_allocation_port_channel_range:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range"
+        description: |-
+          Specify range of port-ids to reserve for port-channels.
+          'spanning_tree_port_id_allocation_port_channel_range' can also be set under node type settings.
+          If both are set, the setting under node type settings takes precedence.
+      loop_guard_default:
+        type: bool
+        description: Enable loopguard by default on all ports.
+        default: false
