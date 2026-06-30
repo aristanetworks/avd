@@ -9,7 +9,7 @@ management_ldap:
     authorization_group_policy: LDAP_GROUP_POLICY
     search:
       username: cn=ldap-admin,dc=example,dc=com
-      password: LdapAdminPass123!
+      password: 09604A080924131F0202342B383779616663
       password_type: "7"
 
   server_hosts:

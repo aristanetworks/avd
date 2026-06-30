@@ -327,8 +327,6 @@ management api http-commands
 
 | Setting | Value |
 | ------- | ----- |
-| Search Username | cn=ldap-admin,dc=example,dc=com |
-| Search Password | <removed> |
 
 ### Management LDAP Device Configuration
 

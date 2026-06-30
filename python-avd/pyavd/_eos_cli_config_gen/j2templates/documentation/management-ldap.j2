@@ -13,7 +13,8 @@
           management_ldap.server_defaults.rdn_attribute_user is arista.avd.defined or
           management_ldap.server_defaults.ssl_profile is arista.avd.defined or
           management_ldap.server_defaults.authorization_group_policy is arista.avd.defined or
-          management_ldap.server_defaults.search is arista.avd.defined %}
+          management_ldap.server_defaults.search is arista.avd.defined or
+          management_ldap.server_defaults.timeout is arista.avd.defined %}
 
 ### LDAP Server Defaults
 
@@ -28,16 +29,11 @@
 {%         if management_ldap.server_defaults.ssl_profile is arista.avd.defined %}
 | SSL Profile | {{ management_ldap.server_defaults.ssl_profile }} |
 {%         endif %}
+{%         if management_ldap.server_defaults.timeout is arista.avd.defined %}
+| Timeout | {{ management_ldap.server_defaults.timeout }} seconds |
+{%         endif %}
 {%         if management_ldap.server_defaults.authorization_group_policy is arista.avd.defined %}
 | Authorization Group Policy | {{ management_ldap.server_defaults.authorization_group_policy }} |
-{%         endif %}
-{%         if management_ldap.server_defaults.search is arista.avd.defined %}
-{%             set search = management_ldap.server_defaults.search %}
-| Search Username | {{ search.username }} |
-| Search Password | {{ search.password | arista.avd.hide_passwords(hide_passwords) }} |
-{%             if search.password_type is arista.avd.defined %}
-| Search Password Type | {{ search.password_type }} |
-{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if management_ldap.server_hosts is arista.avd.defined %}
@@ -49,30 +45,11 @@
 {%         for server_host in management_ldap.server_hosts %}
 | {{ server_host.host }} | {{ server_host.port | arista.avd.default('-') }} | {{ server_host.vrf | arista.avd.default('-') }} | {{ server_host.timeout | arista.avd.default('-') }} | {{ server_host.base_dn | arista.avd.default('-') }} | {{ server_host.rdn_attribute_user | arista.avd.default('-') }} | {{ server_host.ssl_profile | arista.avd.default('-') }} | {{ server_host.authorization_group_policy | arista.avd.default('-') }} |
 {%         endfor %}
-{%         set ns = namespace(has_search=false) %}
-{%         for server_host in management_ldap.server_hosts %}
-{%             if server_host.search is arista.avd.defined %}
-{%                 set ns.has_search = true %}
-{%                 break %}
-{%             endif %}
-{%         endfor %}
-{%         if ns.has_search %}
-
-#### Server Host Search Credentials
-
-| Host | Search Username | Search Password | Password Type |
-| ---- | --------------- | --------------- | ------------- |
-{%             for server_host in management_ldap.server_hosts %}
-{%                 if server_host.search is arista.avd.defined %}
-| {{ server_host.host }} | {{ server_host.search.username }} | {{ server_host.search.password | arista.avd.hide_passwords(hide_passwords) }} | {{ server_host.search.password_type | arista.avd.default('-') }} |
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
 {%     endif %}
 {%     if management_ldap.group_policies is arista.avd.defined %}
 
 ### LDAP Group Policies
-{%         for group_policy in management_ldap.group_policies | arista.avd.natural_sort(sort_key="policy") %}
+{%         for group_policy in management_ldap.group_policies | arista.avd.natural_sort(sort_key="policy", ignore_case=false) %}
 {%             if group_policy.search_filter is arista.avd.defined or group_policy.groups is arista.avd.defined %}
 
 #### Group Policy: {{ group_policy.policy }}

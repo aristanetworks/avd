@@ -14,7 +14,8 @@ management ldap
           management_ldap.server_defaults.rdn_attribute_user is arista.avd.defined or
           management_ldap.server_defaults.ssl_profile is arista.avd.defined or
           management_ldap.server_defaults.authorization_group_policy is arista.avd.defined or
-          management_ldap.server_defaults.search is arista.avd.defined %}
+          management_ldap.server_defaults.search is arista.avd.defined or
+          management_ldap.server_defaults.timeout is arista.avd.defined %}
    server defaults
 {%         if management_ldap.server_defaults.base_dn is arista.avd.defined %}
       base-dn {{ management_ldap.server_defaults.base_dn }}
@@ -24,6 +25,9 @@ management ldap
 {%         endif %}
 {%         if management_ldap.server_defaults.ssl_profile is arista.avd.defined %}
       ssl-profile {{ management_ldap.server_defaults.ssl_profile }}
+{%         endif %}
+{%         if management_ldap.server_defaults.timeout is arista.avd.defined %}
+      timeout {{ management_ldap.server_defaults.timeout }}
 {%         endif %}
 {%         if management_ldap.server_defaults.authorization_group_policy is arista.avd.defined %}
       authorization group policy {{ management_ldap.server_defaults.authorization_group_policy }}
@@ -79,7 +83,7 @@ management ldap
 {%     if management_ldap.server_hosts is arista.avd.defined %}
 {%         set ns.needs_separator = true %}
 {%     endif %}
-{%     for group_policy in management_ldap.group_policies | arista.avd.natural_sort(sort_key="policy") %}
+{%     for group_policy in management_ldap.group_policies | arista.avd.natural_sort(sort_key="policy", ignore_case=false) %}
 {%         if group_policy.search_filter is arista.avd.defined or group_policy.groups is arista.avd.defined %}
 {%             if ns.needs_separator %}
    !

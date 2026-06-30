@@ -25549,6 +25549,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "rdn_attribute_user": {"type": str},
                 "ssl_profile": {"type": str},
                 "authorization_group_policy": {"type": str},
+                "timeout": {"type": int},
                 "search": {"type": Search},
             }
             base_dn: str | None
@@ -25559,6 +25560,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """SSL profile name to secure LDAP connections."""
             authorization_group_policy: str | None
             """LDAP group policy name to use for user authorization."""
+            timeout: int | None
+            """Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server."""
             search: Search
             """
             Credentials used by the switch to perform LDAP search bind operations.
@@ -25575,6 +25578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rdn_attribute_user: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
                     authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                     search: Search | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25588,6 +25592,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
                         ssl_profile: SSL profile name to secure LDAP connections.
                         authorization_group_policy: LDAP group policy name to use for user authorization.
+                        timeout: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
                         search:
                            Credentials used by the switch to perform LDAP search bind operations.
 
@@ -25649,11 +25654,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "host": {"type": str},
                 "port": {"type": int},
                 "vrf": {"type": str},
-                "timeout": {"type": int},
                 "base_dn": {"type": str},
                 "rdn_attribute_user": {"type": str},
                 "ssl_profile": {"type": str},
                 "authorization_group_policy": {"type": str},
+                "timeout": {"type": int},
                 "search": {"type": Search},
             }
             host: str
@@ -25661,8 +25666,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             port: int | None
             """Port of LDAP server (EOS default 389)."""
             vrf: str | None
-            timeout: int | None
-            """Time in seconds to wait for a response from this LDAP server."""
             base_dn: str | None
             """Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com)."""
             rdn_attribute_user: str | None
@@ -25671,6 +25674,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """SSL profile name to secure LDAP connections."""
             authorization_group_policy: str | None
             """LDAP group policy name to use for user authorization."""
+            timeout: int | None
+            """Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server."""
             search: Search
             """
             Credentials used by the switch to perform LDAP search bind operations.
@@ -25686,11 +25691,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     host: str | UndefinedType = Undefined,
                     port: int | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    timeout: int | None | UndefinedType = Undefined,
                     base_dn: str | None | UndefinedType = Undefined,
                     rdn_attribute_user: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
                     authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
                     search: Search | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25703,11 +25708,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         host: Hostname or IP address of the LDAP server.
                         port: Port of LDAP server (EOS default 389).
                         vrf: vrf
-                        timeout: Time in seconds to wait for a response from this LDAP server.
                         base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
                         rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
                         ssl_profile: SSL profile name to secure LDAP connections.
                         authorization_group_policy: LDAP group policy name to use for user authorization.
+                        timeout: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
                         search:
                            Credentials used by the switch to perform LDAP search bind operations.
 
@@ -25778,8 +25783,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class Groups(AvdList[GroupsItem]):
-                """Subclass of AvdList with `GroupsItem` items."""
+            class Groups(AvdIndexedList[str, GroupsItem]):
+                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
 
             Groups._item_type = GroupsItem
 
@@ -25796,8 +25803,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             List of LDAP group-to-role mappings within this policy.
 
-            Subclass of AvdList with `GroupsItem`
-            items.
+            Subclass of AvdIndexedList with
+            `GroupsItem` items. Primary key is `name` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -25824,8 +25831,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         groups:
                            List of LDAP group-to-role mappings within this policy.
 
-                           Subclass of AvdList with `GroupsItem`
-                           items.
+                           Subclass of AvdIndexedList with
+                           `GroupsItem` items. Primary key is `name` (`str`).
 
                     """
 

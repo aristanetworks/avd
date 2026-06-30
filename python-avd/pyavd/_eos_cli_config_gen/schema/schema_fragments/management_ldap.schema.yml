@@ -25,6 +25,11 @@ keys:
           authorization_group_policy:
             type: str
             description: LDAP group policy name to use for user authorization.
+          timeout:
+            type: int
+            min: 1
+            max: 1000
+            description: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
           search:
             type: dict
             description: Credentials used by the switch to perform LDAP search bind operations.
@@ -73,11 +78,6 @@ keys:
               type: str
               convert_types:
                 - int
-            timeout:
-              type: int
-              min: 1
-              max: 1000
-              description: Time in seconds to wait for a response from this LDAP server.
       group_policies:
         type: list
         primary_key: policy
@@ -102,6 +102,7 @@ keys:
                   description: LDAP attribute that holds group member DNs (e.g., member).
             groups:
               type: list
+              primary_key: name
               description: List of LDAP group-to-role mappings within this policy.
               items:
                 type: dict

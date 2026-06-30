@@ -1315,9 +1315,6 @@ management api models
 | RDN Attribute (User) | cn |
 | SSL Profile | LDAP_SSL_PROFILE |
 | Authorization Group Policy | LDAP_GROUP_POLICY |
-| Search Username | cn=ldap-admin,dc=example,dc=com |
-| Search Password | <removed> |
-| Search Password Type | 7 |
 
 ### LDAP Server Hosts
 
@@ -1326,13 +1323,6 @@ management api models
 | ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY |
 | ldap2.example.com | - | default | - | - | - | - | - |
 | 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - |
-
-#### Server Host Search Credentials
-
-| Host | Search Username | Search Password | Password Type |
-| ---- | --------------- | --------------- | ------------- |
-| ldap1.example.com | cn=host-admin,dc=example,dc=com | <removed> | 0 |
-| ldap2.example.com | cn=admin2,dc=example,dc=com | <removed> | - |
 
 ### LDAP Group Policies
 

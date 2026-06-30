@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rdn_attribute_user</samp>](## "management_ldap.server_defaults.rdn_attribute_user") | String |  |  |  | Relative Distinguished Name attribute(s) for user lookup (e.g., cn). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_ldap.server_defaults.ssl_profile") | String |  |  |  | SSL profile name to secure LDAP connections. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;authorization_group_policy</samp>](## "management_ldap.server_defaults.authorization_group_policy") | String |  |  |  | LDAP group policy name to use for user authorization. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "management_ldap.server_defaults.timeout") | Integer |  |  | Min: 1<br>Max: 1000 | Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;search</samp>](## "management_ldap.server_defaults.search") | Dictionary |  |  |  | Credentials used by the switch to perform LDAP search bind operations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_ldap.server_defaults.search.username") | String | Required |  |  | LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "management_ldap.server_defaults.search.password") | String | Required |  |  | Password for the search bind user. |
@@ -21,11 +22,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "management_ldap.server_hosts.[].host") | String | Required, Unique |  |  | Hostname or IP address of the LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_ldap.server_hosts.[].port") | Integer |  |  | Min: 0<br>Max: 65535 | Port of LDAP server (EOS default 389). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ldap.server_hosts.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "management_ldap.server_hosts.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 | Time in seconds to wait for a response from this LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base_dn</samp>](## "management_ldap.server_hosts.[].base_dn") | String |  |  |  | Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rdn_attribute_user</samp>](## "management_ldap.server_hosts.[].rdn_attribute_user") | String |  |  |  | Relative Distinguished Name attribute(s) for user lookup (e.g., cn). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_ldap.server_hosts.[].ssl_profile") | String |  |  |  | SSL profile name to secure LDAP connections. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authorization_group_policy</samp>](## "management_ldap.server_hosts.[].authorization_group_policy") | String |  |  |  | LDAP group policy name to use for user authorization. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "management_ldap.server_hosts.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 | Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search</samp>](## "management_ldap.server_hosts.[].search") | Dictionary |  |  |  | Credentials used by the switch to perform LDAP search bind operations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_ldap.server_hosts.[].search.username") | String | Required |  |  | LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "management_ldap.server_hosts.[].search.password") | String | Required |  |  | Password for the search bind user. |
@@ -36,7 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objectclass</samp>](## "management_ldap.group_policies.[].search_filter.objectclass") | String | Required |  |  | LDAP objectclass value to match (e.g., group). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute</samp>](## "management_ldap.group_policies.[].search_filter.attribute") | String | Required |  |  | LDAP attribute that holds group member DNs (e.g., member). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "management_ldap.group_policies.[].groups") | List, items: Dictionary |  |  |  | List of LDAP group-to-role mappings within this policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_ldap.group_policies.[].groups.[].name") | String | Required |  |  | LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin"). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_ldap.group_policies.[].groups.[].name") | String | Required, Unique |  |  | LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin"). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "management_ldap.group_policies.[].groups.[].role") | String | Required |  |  | EOS role assigned to members of this LDAP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "management_ldap.group_policies.[].groups.[].privilege") | Integer |  |  | Min: 0<br>Max: 15 | Optional privilege level (0-15) assigned alongside the role. |
 
@@ -59,6 +60,9 @@
 
         # LDAP group policy name to use for user authorization.
         authorization_group_policy: <str>
+
+        # Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
+        timeout: <int; 1-1000>
 
         # Credentials used by the switch to perform LDAP search bind operations.
         search:
@@ -86,9 +90,6 @@
           port: <int; 0-65535>
           vrf: <str>
 
-          # Time in seconds to wait for a response from this LDAP server.
-          timeout: <int; 1-1000>
-
           # Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
           base_dn: <str>
 
@@ -100,6 +101,9 @@
 
           # LDAP group policy name to use for user authorization.
           authorization_group_policy: <str>
+
+          # Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
+          timeout: <int; 1-1000>
 
           # Credentials used by the switch to perform LDAP search bind operations.
           search:
@@ -136,7 +140,7 @@
           groups:
 
               # LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin").
-            - name: <str; required>
+            - name: <str; required; unique>
 
               # EOS role assigned to members of this LDAP group.
               role: <str; required>
