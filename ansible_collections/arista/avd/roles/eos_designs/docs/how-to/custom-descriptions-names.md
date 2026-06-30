@@ -28,8 +28,9 @@ The following syntax is supported: `"{" [field_name] ["?"] ["<" prefix] [">" suf
 - `[">" suffix]`: The suffix string including spaces which will be inserted after the field value. Most useful in combination with `?`. The suffix should not contain `"<"`, `">"`, `"!"` or `":"`.
 - `["!" conversion]`: Convert string to supported methods. Note the regular Python conversions "!r", "!s", "!a" have been removed.
   - `"!u"`: convert all characters to upper case. Symbols and numbers are ignored.
-  - `"!l"`: Convert all characters to lower case. Symbols and numbers are ignored.
-  - `"!t"`: Convert interfaces to shorter name. e.g. Portchannel20.1 to Po20.1.
+  - `"!l"`: convert all characters to lower case. Symbols and numbers are ignored.
+  - `"!t"`: convert a string to title case. e.g server to Server.
+  - `"!c"`: convert portchannel, ethernet and vlan interfaces to shorter names. e.g. Portchannel20 to Po20. Using this conversion may have unexpected results on other strings.
 - `[":" format_spec]`: Format specifications are used within replacement fields contained within a format string to define how individual values are presented. Please consult [Format Specification Mini-Language](https://docs.python.org/3/library/string.html#grammar-token-format-spec-format_spec) for usage details.
 
 Example:

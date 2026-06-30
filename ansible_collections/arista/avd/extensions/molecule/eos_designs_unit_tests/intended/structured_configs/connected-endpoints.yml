@@ -156,7 +156,7 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
 - name: Ethernet47
-  description: Interface description Et47 custom_server_old_sw-1/10_ENDPOINT_PORT1
+  description: Interface description Et47 Custom_Server_old_sw-1/10_ENDPOINT_PORT1
   shutdown: false
   channel_group:
     id: 47
@@ -167,7 +167,7 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
 - name: Ethernet48
-  description: Interface description Et48 custom_server_old_sw-1/10_ENDPOINT_PORT2
+  description: Interface description Et48 Custom_Server_old_sw-1/10_ENDPOINT_PORT2
   shutdown: false
   channel_group:
     id: 47

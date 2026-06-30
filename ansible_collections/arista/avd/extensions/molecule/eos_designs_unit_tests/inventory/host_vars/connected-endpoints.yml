@@ -159,7 +159,7 @@ servers:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet47, Ethernet48]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
-        description: "Interface description {interface!c} {endpoint_type}_{endpoint!l}{endpoint_port?<_!u}"
+        description: "Interface description {interface!c} {endpoint_type!t}_{endpoint!l}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
           description: "Port channel description {interface!c} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!l}"
