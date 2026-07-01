@@ -29,7 +29,7 @@ keys:
             type: int
             min: 1
             max: 1000
-            description: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
+            description: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
           search:
             type: dict
             description: Credentials used by the switch to perform LDAP search bind operations.
