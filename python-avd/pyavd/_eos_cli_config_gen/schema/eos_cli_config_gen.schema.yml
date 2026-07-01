@@ -2529,6 +2529,17 @@ keys:
           on an EOS device.
 
           '
+  environment_fan_speed:
+    type: dict
+    description: Environment fan-speed settings.
+    keys:
+      minimum:
+        type: int
+        convert_types:
+        - str
+        min: 30
+        max: 100
+        description: Set the minimum fan speed in percent.
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
