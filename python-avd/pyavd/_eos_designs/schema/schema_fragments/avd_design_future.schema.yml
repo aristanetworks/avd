@@ -39,7 +39,7 @@ keys:
       enforce_presence_of_acl_in_ipv4_standard_acl_catalog:
         type: bool
         description: |-
-          Available from AVD 6.3.0.
+          Available from AVD 6.4.0.
           When true, this key enforces `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
         default: false
       fix_radius_server_group_tls:

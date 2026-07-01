@@ -1029,7 +1029,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         enforce_presence_of_acl_in_ipv4_standard_acl_catalog: bool
         """
-        Available from AVD 6.3.0.
+        Available from AVD 6.4.0.
         When true, this key enforces
         `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
 
@@ -1148,7 +1148,7 @@ class EosDesigns(EosDesignsRootModel):
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
                     enforce_presence_of_acl_in_ipv4_standard_acl_catalog:
-                       Available from AVD 6.3.0.
+                       Available from AVD 6.4.0.
                        When true, this key enforces
                        `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
                     fix_radius_server_group_tls:
