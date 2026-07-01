@@ -72,6 +72,9 @@ keys:
                 ipv4:
                   type: bool
                   description: Enable/disable address locking for IPv4.
+                ipv6:
+                  type: bool
+                  description: Enable/disable address locking for IPv6.
         encapsulation_dot1q:
           type: dict
           keys:
