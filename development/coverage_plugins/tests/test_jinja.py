@@ -276,6 +276,44 @@ def test_multiline_jinja_control_flow_arcs_target_body_after_tag(tmp_path: Path)
     assert (6, 7) not in arcs
 
 
+def test_reporter_translates_loop_backedge_to_no_else_endif_arc(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text(
+        "{% for item in items %}\n"
+        "{% if item.enabled %}\n"
+        "{{ item.name }}\n"
+        "{% endif %}\n"
+        "{% endfor %}\n",
+        encoding="utf-8",
+    )
+
+    reporter = JinjaTemplateFileReporter(str(source_file))
+
+    assert reporter.arcs() == {(1, 2), (2, 3), (2, 4)}
+    assert (2, 4) in reporter.translate_arcs([(2, 1)])
+
+
+def test_reporter_does_not_infer_no_else_endif_arc_from_true_branch(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text(
+        "{% for item in items %}\n"
+        "{% if item.enabled %}\n"
+        "{{ item.name }}\n"
+        "{% endif %}\n"
+        "{% endfor %}\n",
+        encoding="utf-8",
+    )
+
+    assert (2, 4) not in JinjaTemplateFileReporter(str(source_file)).translate_arcs([(2, 3)])
+
+
+def test_reporter_does_not_alias_no_else_endif_arc_outside_loop(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text("{% if enabled %}\n{{ name }}\n{% endif %}\n", encoding="utf-8")
+
+    assert (1, 3) not in JinjaTemplateFileReporter(str(source_file)).translate_arcs([(1, -1)])
+
+
 def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Path) -> None:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
