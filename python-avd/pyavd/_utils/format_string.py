@@ -25,7 +25,7 @@ class AvdStringFormatter(Formatter):
         suffix ::= string including spaces which will be inserted after the field value.
                    Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
         conversion ::= "!u" for "upper()", "!l" for "lower()", "!t" for "title()" and
-                       "!c" for short name of the portchannel, vlan and ethernet interfaces. e.g Portchannel2.2 > Po2.2, Ethernet1 > Et1.
+                       "!c" for short name of the network interfaces. e.g Portchannel2.2 > Po2.2, Ethernet1 > Et1.
                        Using "!c" for other strings may have unexpected results. (The regular Python conversions "!r", "!s", "!a" have been removed).
 
     Note the order of syntax field matters!
@@ -142,7 +142,8 @@ class AvdStringFormatter(Formatter):
         """
         Convert the value according to the given conversion instruction.
 
-        Mostly a copy from the base class, but only supporting !u for upper().
+        Mostly a copy from the base class, but supporting !u for upper(), !t for title(), !l for lower() and
+        !c for short names of portchannel, ethernet and vlan interfaces.
         """
         # do any conversion on the resulting object
         if conversion is None:
@@ -159,6 +160,7 @@ class AvdStringFormatter(Formatter):
             interface_type = str(value).title()[:2]
             if interface and interface_type:
                 return interface_type + interface.group()
+            return str(value)
         msg = f"Unknown conversion specifier {conversion!s}"
         raise ValueError(msg)
 
