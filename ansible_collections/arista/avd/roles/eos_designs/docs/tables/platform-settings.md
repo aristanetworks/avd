@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.<br>Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT` (use `720DT-24S` or `720DT-48S`). |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -74,6 +74,93 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable_causes</samp>](## "platform_settings.[].feature_support.errdisable_causes") | Dictionary |  |  |  | Per-cause support for errdisable detection and recovery.<br>Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.<br>Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.<br>The supported causes depends on the EOS version and the hardware platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.errdisable_causes.acl") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.acl.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.acl.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_inspection</samp>](## "platform_settings.[].feature_support.errdisable_causes.arp_inspection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.arp_inspection.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.arp_inspection.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bpduguard</samp>](## "platform_settings.[].feature_support.errdisable_causes.bpduguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.bpduguard.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_coa</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_coa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_coa.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_coa.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_phone_classification.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.dot1x_session_replace.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "platform_settings.[].feature_support.errdisable_causes.error_correction_encoding") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.error_correction_encoding.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.fabric_capacity_low.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "platform_settings.[].feature_support.errdisable_causes.hardware_speed_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.hardware_speed_group.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitless_reload_down</samp>](## "platform_settings.[].feature_support.errdisable_causes.hitless_reload_down") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.hitless_reload_down.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "platform_settings.[].feature_support.errdisable_causes.interface_speed") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.interface_speed.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.interface_speed.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "platform_settings.[].feature_support.errdisable_causes.internal_error") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.internal_error.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.internal_error.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_rate_limit</samp>](## "platform_settings.[].feature_support.errdisable_causes.lacp_rate_limit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.lacp_rate_limit.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_change</samp>](## "platform_settings.[].feature_support.errdisable_causes.link_change") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.link_change.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_flap</samp>](## "platform_settings.[].feature_support.errdisable_causes.link_flap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.link_flap.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_internal_vlan</samp>](## "platform_settings.[].feature_support.errdisable_causes.no_internal_vlan") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.no_internal_vlan.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_breakout</samp>](## "platform_settings.[].feature_support.errdisable_causes.port_breakout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.port_breakout.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.port_breakout.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portchannelguard</samp>](## "platform_settings.[].feature_support.errdisable_causes.portchannelguard") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.portchannelguard.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portsec</samp>](## "platform_settings.[].feature_support.errdisable_causes.portsec") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.portsec.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_misconfigured</samp>](## "platform_settings.[].feature_support.errdisable_causes.speed_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.speed_misconfigured.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "platform_settings.[].feature_support.errdisable_causes.storm_control") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.storm_control.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.storm_control.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stuck_queue</samp>](## "platform_settings.[].feature_support.errdisable_causes.stuck_queue") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.stuck_queue.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.switchcard_unreachable.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap_port_init</samp>](## "platform_settings.[].feature_support.errdisable_causes.tap_port_init") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.tap_port_init.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "platform_settings.[].feature_support.errdisable_causes.tapagg") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.tapagg.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.tapagg.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "platform_settings.[].feature_support.errdisable_causes.tpid") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.tpid.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.tpid.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "platform_settings.[].feature_support.errdisable_causes.transceiver_adapter") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.transceiver_adapter.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_failure_detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.uplink_failure_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.uplink_failure_detection.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_misconfigured.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_overheat") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_overheat.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_overheat.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_power_unsupported</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported.detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_power_unsupported.recovery") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_unsupported</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_unsupported") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "platform_settings.[].feature_support.errdisable_causes.xcvr_unsupported.recovery") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -96,6 +183,7 @@
     # If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
     # If you need to add custom platforms, create them under `custom_platform_settings`.
     # Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    # Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT` (use `720DT-24S` or `720DT-48S`).
     platform_settings: # (1)!
       - platforms:
           - <str>
@@ -253,6 +341,98 @@
           # Enable hardware validation for the device.
           # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
+
+          # Per-cause support for errdisable detection and recovery.
+          # Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+          # Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.
+          # The supported causes depends on the EOS version and the hardware platform.
+          errdisable_causes:
+            acl:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            arp_inspection:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            bpduguard:
+              recovery: <bool; default=True>
+            dot1x:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_coa:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_phone_classification:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            dot1x_session_replace:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            error_correction_encoding:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            fabric_capacity_low:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            hardware_speed_group:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            hitless_reload_down:
+              recovery: <bool; default=True>
+            interface_speed:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            internal_error:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            lacp_rate_limit:
+              recovery: <bool; default=True>
+            link_change:
+              detection: <bool; default=True>
+            link_flap:
+              recovery: <bool; default=True>
+            no_internal_vlan:
+              recovery: <bool; default=True>
+            port_breakout:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            portchannelguard:
+              recovery: <bool; default=True>
+            portsec:
+              recovery: <bool; default=True>
+            speed_misconfigured:
+              recovery: <bool; default=True>
+            storm_control:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            stuck_queue:
+              recovery: <bool; default=True>
+            switchcard_unreachable:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            tap_port_init:
+              recovery: <bool; default=True>
+            tapagg:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            tpid:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            transceiver_adapter:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            uplink_failure_detection:
+              recovery: <bool; default=True>
+            xcvr_misconfigured:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_overheat:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_power_unsupported:
+              detection: <bool; default=True>
+              recovery: <bool; default=True>
+            xcvr_unsupported:
+              recovery: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -308,6 +488,48 @@
             sflow_subinterfaces: false
             subinterface_mtu: false
             per_interface_l2_mru: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -323,6 +545,48 @@
             sflow_subinterfaces: false
             subinterface_mtu: false
             per_interface_l2_mru: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -342,6 +606,29 @@
             per_interface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -349,7 +636,126 @@
             platform: vEOS-lab
         - platforms:
           - 720DP
+          - 720DP-24S
+          feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DP-48S
+          feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 722XP
+          feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 710P
           feature_support:
             poe: true
@@ -358,6 +764,26 @@
             per_interface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -372,6 +798,26 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -384,6 +830,26 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -391,6 +857,7 @@
             platform: vEOS-lab
         - platforms:
           - 720DT
+          - 720DT-48S
           - 7010TX
           feature_support:
             queue_monitor_length_notify: false
@@ -398,6 +865,56 @@
             per_interface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              tap_port_init:
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DT-24S
+          feature_support:
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -434,6 +951,23 @@
               traffic_policy: false
               vlan: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -441,7 +975,100 @@
             platform: vEOS-lab
         - platforms:
           - 7280R
+          lag_hardware_only: true
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+          feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
+            private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7280R2
+          lag_hardware_only: true
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+          feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
+            private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7020R
           lag_hardware_only: true
           reload_delay:
@@ -453,6 +1080,49 @@
             subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -466,6 +1136,42 @@
             evpn_gateway_rd_rt_rewrite: true
             per_interface_l2_mtu: false
             private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
             subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
@@ -500,6 +1206,23 @@
               traffic_policy: false
               vlan: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
           management_interface: Management0
           reload_delay:
             mlag: 300
@@ -508,6 +1231,62 @@
             platform: vEOS-lab
         - platforms:
           - 7500R
+          lag_hardware_only: true
+          management_interface: Management0
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+          feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
+            private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7500R2
           lag_hardware_only: true
           management_interface: Management0
@@ -520,6 +1299,50 @@
             subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -534,6 +1357,47 @@
             evpn_gateway_all_active_multihoming: true
             evpn_gateway_rd_rt_rewrite: true
             private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
             subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
@@ -549,6 +1413,30 @@
             evpn_gateway_all_active_multihoming: true
             evpn_gateway_rd_rt_rewrite: true
             private_vlan: false
+            errdisable_causes:
+              acl:
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
             subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
@@ -566,6 +1454,38 @@
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: true
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -578,6 +1498,38 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -590,6 +1542,60 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+              xcvr_misconfigured:
+                detection: false
+                recovery: false
+              xcvr_overheat:
+                detection: false
+                recovery: false
+              xcvr_power_unsupported:
+                detection: false
+                recovery: false
+              xcvr_unsupported:
+                recovery: false
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
           digital_twin:
@@ -611,6 +1617,65 @@
             evpn_gateway_rd_rt_rewrite: true
             sflow_subinterfaces: false
             hardware_validation: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+              xcvr_misconfigured:
+                detection: false
+                recovery: false
+              xcvr_overheat:
+                detection: false
+                recovery: false
+              xcvr_power_unsupported:
+                detection: false
+                recovery: false
+              xcvr_unsupported:
+                recovery: false
             subinterface_monitor_session: false
           reload_delay:
             mlag: 300
@@ -634,6 +1699,65 @@
             evpn_gateway_rd_rt_rewrite: true
             sflow_subinterfaces: false
             hardware_validation: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+              xcvr_misconfigured:
+                detection: false
+                recovery: false
+              xcvr_overheat:
+                detection: false
+                recovery: false
+              xcvr_power_unsupported:
+                detection: false
+                recovery: false
+              xcvr_unsupported:
+                recovery: false
             subinterface_monitor_session: false
           management_interface: Management1
           reload_delay:
@@ -650,6 +1774,60 @@
             queue_monitor_length_notify: false
             sflow: false
             hardware_validation: false
+            errdisable_causes:
+              acl:
+                detection: false
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              speed_misconfigured:
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
+              xcvr_misconfigured:
+                detection: false
+                recovery: false
+              xcvr_overheat:
+                detection: false
+                recovery: false
+              xcvr_power_unsupported:
+                detection: false
+                recovery: false
+              xcvr_unsupported:
+                recovery: false
             subinterface_monitor_session: false
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -669,6 +1847,47 @@
               supported: true
               max_rx_queues: 6
             sflow: false
+            errdisable_causes:
+              acl:
+                detection: false
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -688,6 +1907,50 @@
               supported: true
               max_rx_queues: 16
             sflow: false
+            errdisable_causes:
+              acl:
+                detection: false
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -702,6 +1965,49 @@
             poe: true
             per_interface_l2_mru: false
             sflow: false
+            errdisable_causes:
+              acl:
+                detection: false
+                recovery: false
+              dot1x:
+                detection: false
+                recovery: false
+              error_correction_encoding:
+                detection: false
+                recovery: false
+              fabric_capacity_low:
+                detection: false
+                recovery: false
+              hardware_speed_group:
+                detection: false
+                recovery: false
+              interface_speed:
+                detection: false
+                recovery: false
+              internal_error:
+                detection: false
+                recovery: false
+              port_breakout:
+                detection: false
+                recovery: false
+              storm_control:
+                detection: false
+                recovery: false
+              stuck_queue:
+                recovery: false
+              switchcard_unreachable:
+                detection: false
+                recovery: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
+              tpid:
+                detection: false
+                recovery: false
+              transceiver_adapter:
+                detection: false
+                recovery: false
             subinterface_monitor_session: false
           management_interface: Management1
           p2p_uplinks_mtu: 9194
