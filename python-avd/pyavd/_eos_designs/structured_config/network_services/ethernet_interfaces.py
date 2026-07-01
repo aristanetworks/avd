@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -114,7 +114,7 @@ class EthernetInterfacesMixin(Protocol):
                     "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for l3_interfaces for"
                     f" {vrf.name} in {tenant.name}"
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             for node_index, node_name in enumerate(l3_interface.nodes):
                 if node_name != self.shared_utils.hostname:
@@ -208,14 +208,14 @@ class EthernetInterfacesMixin(Protocol):
                                 f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
                                 f"'evpn_l3_multicast.enabled: true' under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                             )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdInvalidInputsError(msg)
 
                     if not getattr(vrf._internal_data, "pim_rp_addresses", None):
                         msg = (
                             f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires at least one RP"
                             f" defined in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                         )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdInvalidInputsError(msg)
 
                     interface.pim.ipv4.sparse_mode = True
 

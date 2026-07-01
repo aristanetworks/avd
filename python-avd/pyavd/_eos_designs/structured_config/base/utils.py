@@ -7,7 +7,7 @@ from hashlib import sha1
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import radius_encrypt, tacacs_encrypt
 
 if TYPE_CHECKING:
@@ -70,7 +70,7 @@ class UtilsMixin(Protocol):
             inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
             if include_mgmt_interface and (inband_mgmt_vrf == self.shared_utils.mgmt_interface_vrf):
                 msg = f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             if inband_mgmt_vrf == "default":
                 source_interfaces.source_interface = self.shared_utils.inband_mgmt_interface

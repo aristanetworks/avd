@@ -8,7 +8,7 @@ from functools import cached_property
 from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
@@ -44,7 +44,7 @@ class UtilsMixin(Protocol):
             if "evpn" in tenant.vrfs["default"].address_families:
                 if self.inputs.underlay_filter_peer_as:
                     msg = "'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF."
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 return True
 
         return False

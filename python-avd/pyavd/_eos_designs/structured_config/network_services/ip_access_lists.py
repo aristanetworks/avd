@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -58,7 +58,7 @@ class IpAccesslistsMixin(Protocol):
             # TODO: We still have one nat for all interfaces, need to also add logic to make nat per interface
             # if acl needs substitution
             msg = f"ipv4_acls[name={acl_name}] field substitution is not supported for internet exit access lists"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         # Use default using interface_ips
         if interface_ips:
@@ -97,7 +97,7 @@ class IpAccesslistsMixin(Protocol):
             # TODO: We still have one nat for all interfaces, need to also add logic to make nat per interface
             # if acl needs substitution
             msg = f"ipv4_acls[name={acl_name}] field substitution is not supported for internet exit access lists"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         ip_access_list = EosCliConfigGen.IpAccessListsItem(name=acl_name)
         ip_access_list.entries.append_new(sequence=10, action="permit", protocol="ip", source="any", destination="any")

@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
+from pyavd._errors import AristaAvdInvalidInputsError, AvdDeprecationWarning
 from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
@@ -355,16 +355,16 @@ class RouterBgpMixin(Protocol):
         ) and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
             if self.shared_utils.node_config.mlag:
                 msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
                 msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if self.shared_utils.overlay_ipvpn_gateway:
                 msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                 msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Check if both old and new configuration models are defined
             d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
@@ -592,7 +592,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.is_wan_client:
             if not self._ip_in_listen_ranges(self.shared_utils.vtep_ip, self.shared_utils.wan_listen_ranges):
                 msg = f"{self.shared_utils.vtep_loopback} IP {self.shared_utils.vtep_ip} is not in the Route Reflector listen range prefixes"
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             for wan_route_server in self.shared_utils.filtered_wan_route_servers:
                 neighbor = self._create_neighbor(
                     cast("str", wan_route_server.vtep_ip),
@@ -669,7 +669,7 @@ class RouterBgpMixin(Protocol):
             # In both cases if any key is missing raise
             if bgp_as is None or ip_address is None:
                 msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
             self.structured_config.router_bgp.neighbors.append(neighbor)

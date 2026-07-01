@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_address
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
@@ -94,7 +94,7 @@ class OverlayMixin(Protocol):
         overlay_routing_protocol_address_family = self.inputs.overlay_routing_protocol_address_family
         if overlay_routing_protocol_address_family == "ipv6" and not (self.underlay_ipv6 is True and self.inputs.underlay_rfc5549):
             msg = "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
         return overlay_routing_protocol_address_family
 
     @cached_property

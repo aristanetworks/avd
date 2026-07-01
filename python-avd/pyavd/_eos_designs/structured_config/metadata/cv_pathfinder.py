@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
@@ -116,7 +116,7 @@ class CvPathfinderMixin(Protocol):
                     "If this is an auto-generated policy, ensure that at least one default_preference "
                     "for a non excluded path-group is set to 'preferred' (or unset as this is the default)."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
         for vrf in avt_vrfs:
             vrf_policy = cast("str", vrf.policy)

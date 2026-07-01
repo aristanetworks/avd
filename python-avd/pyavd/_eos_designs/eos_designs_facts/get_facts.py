@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
@@ -76,12 +76,8 @@ def get_facts(
     for hostname, generator in peer_facts_generators.items():
         try:
             all_facts[hostname] = generator.render()
-        except AristaAvdMissingVariableError as e:  # noqa: PERF203
-            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
-        except AristaAvdError as e:
-            host = e.host if hasattr(e, "host") and e.host else hostname
-            msg = f"{str(e).removesuffix('.')} for host '{host}'."
-            raise type(e)(msg, host=host) from e
+        except AristaAvdError as e:  # noqa: PERF203
+            raise e.with_host(e.host or hostname) from e
 
     return all_facts
 

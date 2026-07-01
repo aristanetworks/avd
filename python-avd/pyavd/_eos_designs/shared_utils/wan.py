@@ -94,7 +94,7 @@ class WanMixin(Protocol):
                 "At least one WAN interface must be configured on a WAN router. "
                 "Add WAN interfaces under 'l3_interfaces' or 'l3_port_channels' node setting with 'wan_carrier' set."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         wan_carriers_dict = {}
         # Collect WAN carriers information for WAN l3_interfaces
@@ -217,7 +217,7 @@ class WanMixin(Protocol):
                     f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is not defined'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             # Returning None for WAN client is not important as it is not used in AVD
             return None
 
@@ -227,7 +227,7 @@ class WanMixin(Protocol):
                     f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is set to 'dhcp'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             return "dhcp"
 
         return get_ip_from_ip_prefix(interface.ip_address)
@@ -326,7 +326,7 @@ class WanMixin(Protocol):
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     msg = f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs.hostname} is different from our own: {self.bgp_as}."
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
 
                 # Prefer values coming from the input variables over peer facts
                 if not wan_rs.vtep_ip:
@@ -501,7 +501,7 @@ class WanMixin(Protocol):
         if not interfaces.intersection(uplink_interfaces):
             return False
         msg = "Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks."
-        raise AristaAvdError(msg)
+        raise AristaAvdInvalidInputsError(msg)
 
     @cached_property
     def wan_ha_interfaces(self: SharedUtilsProtocol) -> list[str]:
@@ -624,6 +624,6 @@ class WanMixin(Protocol):
 
         if self.node_group_config and len(self.node_group_config.nodes) != 1:
             msg = f"WAN gateway is supported only on sites with a single WAN router, configured: {len(self.node_group_config.nodes)}"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         return gateway

@@ -6,7 +6,7 @@ import re
 from collections.abc import Iterator
 from functools import partial
 
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import ensure_type
 
 # Not using f-strings since more {} in there would just make it harder to follow.
@@ -64,7 +64,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
                 f"Invalid IP pool(s) '{pool}'. Each pool and range must be larger than the prefix length of each subnet: {prefixlen}."
                 "IP ranges must also start and end on proper subnet boundaries for this prefix length size."
             )
-            raise AristaAvdError(msg) from e
+            raise AristaAvdInvalidInputsError(msg) from e
 
         if (remaining_subnet_offset + 1) * subnet_size > pool_network_size:
             # This pool does not have enough addresses to allocate the requested offset. Subtract the size and try the next pool.
@@ -77,7 +77,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
 
     if not subnet:
         msg = f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}"
-        raise AristaAvdError(msg)
+        raise AristaAvdInvalidInputsError(msg)
 
     try:
         if subnet_size > 2:
@@ -92,7 +92,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
 
     except IndexError as e:
         msg = f"Unable to get {ip_offset + 1} hosts in subnet {subnet} taken from pool {pool}"
-        raise AristaAvdError(msg) from e
+        raise AristaAvdInvalidInputsError(msg) from e
 
     return str(ip)
 
@@ -115,7 +115,7 @@ def get_ipv4_networks_from_pool(pool: str) -> Iterator[ipaddress.IPv4Network]:
         yield from map(ensure_ipv4_type, get_networks_from_pool(pool))
     except TypeError as e:
         msg = f"Invalid IP pool(s) '{pool}': {e}"
-        raise AristaAvdError(msg) from e
+        raise AristaAvdInvalidInputsError(msg) from e
 
 
 def get_ipv6_networks_from_pool(pool: str) -> Iterator[ipaddress.IPv6Network]:
@@ -136,7 +136,7 @@ def get_ipv6_networks_from_pool(pool: str) -> Iterator[ipaddress.IPv6Network]:
         yield from map(ensure_ipv6_type, get_networks_from_pool(pool))
     except TypeError as e:
         msg = f"Invalid IP pool(s) '{pool}': {e}"
-        raise AristaAvdError(msg) from e
+        raise AristaAvdInvalidInputsError(msg) from e
 
 
 def get_networks_from_pool(pool: str) -> Iterator[ipaddress.IPv4Network | ipaddress.IPv6Network]:
@@ -164,18 +164,18 @@ def get_networks_from_pool(pool: str) -> Iterator[ipaddress.IPv4Network | ipaddr
                 yield ipaddress.ip_network(ip_prefix, strict=False)
             except ValueError as e:
                 msg = f"Invalid IP pool(s) '{pool}'. Unable to load '{ip_prefix}' as an IP prefix: {e}"
-                raise AristaAvdError(msg) from e
+                raise AristaAvdInvalidInputsError(msg) from e
 
         if ip_range:
             try:
                 yield from ipaddress.summarize_address_range(*(ipaddress.ip_address(ip) for ip in ip_range.split("-")))
             except (TypeError, ValueError) as e:
                 msg = f"Invalid IP pool(s) '{pool}'. Unable to load '{ip_range}' as an IP range: {e}"
-                raise AristaAvdError(msg) from e
+                raise AristaAvdInvalidInputsError(msg) from e
 
     if not counter:
         msg = (
             f"Invalid format of IP pool(s) '{pool}'. "
             "Must be one or more prefixes (like 10.10.10.0/24) and/or ranges (like 10.10.10.10-10.10.10.20) separated by commas."
         )
-        raise AristaAvdError(msg)
+        raise AristaAvdInvalidInputsError(msg)

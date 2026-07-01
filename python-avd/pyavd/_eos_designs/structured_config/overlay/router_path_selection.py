@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get, get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -80,7 +80,7 @@ class RouterPathSelectionMixin(Protocol):
                             f"Invalid value '{interval}' for dps_keepalive.interval - "
                             f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{path_group.name}]"
                         )
-                        raise AristaAvdError(msg)
+                        raise AristaAvdInvalidInputsError(msg)
                     path_group_item.keepalive._update(interval=int(interval), failure_threshold=path_group.dps_keepalive.failure_threshold)
 
             self.structured_config.router_path_selection.path_groups.append(path_group_item)
@@ -166,7 +166,7 @@ class RouterPathSelectionMixin(Protocol):
                 if "." in interface_name:
                     schema_key = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}]"
                     msg = f"Fields 'receive_bandwidth' and 'transmit_bandwidth' configured on {schema_key} are not supported for subinterfaces."
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 self.structured_config.router_path_selection.interfaces.append_new(
                     name=interface_name,
                     metric_bandwidth=EosCliConfigGen.RouterPathSelection.InterfacesItem.MetricBandwidth(

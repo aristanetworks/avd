@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -129,7 +129,7 @@ class UtilsMixin(Protocol):
         # Verify a mix of odd and even IDs
         if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
             msg = "MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         odd_id = self._mlag_primary_id
         if odd_id % 2 == 0:
@@ -166,7 +166,7 @@ class UtilsMixin(Protocol):
             f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
             "in the downlink_switch does not match any of the downlink_pools"
         )
-        raise AristaAvdError(msg)
+        raise AristaAvdInvalidInputsError(msg)
 
     def _get_downlink_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int] | tuple[None, None]:
         """
@@ -198,7 +198,7 @@ class UtilsMixin(Protocol):
             f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
             "in the downlink_switch does not match any of the downlink_pools"
         )
-        raise AristaAvdError(msg)
+        raise AristaAvdInvalidInputsError(msg)
 
     def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
         """
@@ -219,7 +219,7 @@ class UtilsMixin(Protocol):
                 f"Unable to assign IPs for uplinks. 'uplink_ipv4_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
@@ -250,7 +250,7 @@ class UtilsMixin(Protocol):
                 f"Unable to assign IPs for uplinks. 'uplink_ipv6_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index

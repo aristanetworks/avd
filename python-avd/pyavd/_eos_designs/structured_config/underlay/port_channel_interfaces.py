@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
@@ -193,7 +193,7 @@ class PortChannelInterfacesMixin(Protocol):
                 "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 Port-Channel '{l3_port_channel.name}'."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         if "." in l3_port_channel.name:
             self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)

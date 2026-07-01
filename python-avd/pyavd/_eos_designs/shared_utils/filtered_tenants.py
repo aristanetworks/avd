@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
@@ -86,7 +86,7 @@ class FilteredTenantsMixin(Protocol):
                     continue
                 if self.inputs.underlay_filter_peer_as:
                     msg = "WAN configuration is not compatible with 'underlay_filter_peer_as'"
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 break
 
         return filtered_tenants._natural_sorted()
@@ -531,7 +531,7 @@ class FilteredTenantsMixin(Protocol):
         if svi.ospf.enabled:
             if not vrf.ospf.enabled:
                 msg = f"OSPF is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             config._update(
                 ospf_area=svi.ospf.area,
                 ospf_network_point_to_point=svi.ospf.point_to_point,
