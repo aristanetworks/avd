@@ -85,12 +85,6 @@ radius_server:
     - host: coa.arista.com
       key: 0215114B0E144232494D1B1C115A190E15
 service_routing_protocols_model: multi-agent
-standard_access_lists:
-- name: web-acl
-  entries:
-  - sequence: 10
-    action: permit
-    source: 10.0.0.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

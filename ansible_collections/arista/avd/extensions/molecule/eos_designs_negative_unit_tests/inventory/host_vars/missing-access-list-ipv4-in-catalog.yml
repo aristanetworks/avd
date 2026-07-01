@@ -1,7 +1,7 @@
 ---
 
 avd_design_future:
-  enforce_acl_presence_in_ipv4_standard_acl_catalog: true
+  enforce_presence_of_acl_in_ipv4_standard_acl_catalog: true
 
 ipv4_standard_acls:
   - name: onur

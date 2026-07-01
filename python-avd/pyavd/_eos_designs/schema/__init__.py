@@ -984,7 +984,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
-            "enforce_acl_presence_in_ipv4_standard_acl_catalog": {"type": bool, "default": False},
+            "enforce_presence_of_acl_in_ipv4_standard_acl_catalog": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1027,7 +1027,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        enforce_acl_presence_in_ipv4_standard_acl_catalog: bool
+        enforce_presence_of_acl_in_ipv4_standard_acl_catalog: bool
         """
         Available from AVD 6.3.0.
         When true, this key enforces
@@ -1113,7 +1113,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
-                enforce_acl_presence_in_ipv4_standard_acl_catalog: bool | UndefinedType = Undefined,
+                enforce_presence_of_acl_in_ipv4_standard_acl_catalog: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1147,7 +1147,7 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
-                    enforce_acl_presence_in_ipv4_standard_acl_catalog:
+                    enforce_presence_of_acl_in_ipv4_standard_acl_catalog:
                        Available from AVD 6.3.0.
                        When true, this key enforces
                        `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
@@ -18740,13 +18740,7 @@ class EosDesigns(EosDesignsRootModel):
         class WebAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "enabled": {"type": bool},
-                "url": {"type": str},
-                "ssl_profile": {"type": str},
-                "ipv4_standard_acl": {"type": str},
-                "start_limit_infinite": {"type": bool},
-            }
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "url": {"type": str}, "ssl_profile": {"type": str}, "start_limit_infinite": {"type": bool}}
             enabled: bool
             """Enable the Web Authentication feature."""
             url: str | None
@@ -18764,12 +18758,6 @@ class EosDesigns(EosDesignsRootModel):
             supported.
             Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
             """
-            ipv4_standard_acl: str | None
-            """
-            Name of the IPv4 standard access-list to apply to the captive portal.
-            This ACL must be present in
-            `ipv4_standard_acls` catalog.
-            """
             start_limit_infinite: bool | None
             """
             Disable the loop-protection mechanism that limits captive portal authentication retries.
@@ -18785,7 +18773,6 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | UndefinedType = Undefined,
                     url: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
-                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
                     start_limit_infinite: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18807,10 +18794,6 @@ class EosDesigns(EosDesignsRootModel):
                            Without this, only HTTP redirection is
                            supported.
                            Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
-                        ipv4_standard_acl:
-                           Name of the IPv4 standard access-list to apply to the captive portal.
-                           This ACL must be present in
-                           `ipv4_standard_acls` catalog.
                         start_limit_infinite:
                            Disable the loop-protection mechanism that limits captive portal authentication retries.
                            By default,
@@ -43444,7 +43427,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}}
                 name: str | None
-                """IPv4 access list name."""
+                """
+                IPv4 access list name.
+                If this ACL is included in `ipv4_standard_acls` catalog and
+                `avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acls_catalog`
+                is set to False, then the
+                IPv4 ACL is configured.
+                """
 
                 if TYPE_CHECKING:
 
@@ -43456,7 +43445,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: IPv4 access list name.
+                            name:
+                               IPv4 access list name.
+                               If this ACL is included in `ipv4_standard_acls` catalog and
+                               `avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acls_catalog`
+                               is set to False, then the
+                               IPv4 ACL is configured.
 
                         """
 

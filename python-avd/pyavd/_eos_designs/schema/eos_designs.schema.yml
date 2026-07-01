@@ -377,7 +377,7 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
-      enforce_acl_presence_in_ipv4_standard_acl_catalog:
+      enforce_presence_of_acl_in_ipv4_standard_acl_catalog:
         type: bool
         description: 'Available from AVD 6.3.0.
 
@@ -2664,12 +2664,6 @@ keys:
 
               Can be used alone (when RADIUS provides the URL dynamically) or together
               with `url`.'
-          ipv4_standard_acl:
-            type: str
-            description: 'Name of the IPv4 standard access-list to apply to the captive
-              portal.
-
-              This ACL must be present in `ipv4_standard_acls` catalog.'
           start_limit_infinite:
             type: bool
             description: 'Disable the loop-protection mechanism that limits captive
@@ -8925,7 +8919,11 @@ keys:
               keys:
                 name:
                   type: str
-                  description: IPv4 access list name.
+                  description: 'IPv4 access list name.
+
+                    If this ACL is included in `ipv4_standard_acls` catalog and `avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acls_catalog`
+
+                    is set to False, then the IPv4 ACL is configured.'
             ipv4_standard_acl:
               type: str
               description: IPv4 access list name.

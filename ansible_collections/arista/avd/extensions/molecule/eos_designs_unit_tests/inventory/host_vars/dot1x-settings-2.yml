@@ -48,7 +48,6 @@ dot1x_settings:
     enabled: true
     ssl_profile: captive-portal-ssl-profile
     url: https://captive.arista.com
-    ipv4_standard_acl: web-acl
     start_limit_infinite: true
 
 aaa_settings:
