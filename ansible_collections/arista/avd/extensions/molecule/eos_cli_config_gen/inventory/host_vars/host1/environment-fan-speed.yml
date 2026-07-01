@@ -1,0 +1,4 @@
+---
+### Environment ###
+environment_fan_speed:
+  minimum: 60

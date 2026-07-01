@@ -1,0 +1,40 @@
+---
+# Testing errdisable_settings without platform settings
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: errdisable-settings
+      id: 42
+
+errdisable_settings:
+  recovery_interval: 200
+  causes:
+    acl:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    arp_inspection:
+      detection: true
+      recovery: true
+      recovery_interval: 90
+    bpduguard:
+      recovery: true
+      recovery_interval: 300
+    dot1x:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    link_change:
+      detection: true
+    # recovery explicitly set to false with recovery_interval set — interval must not appear in config
+    lacp_rate_limit:
+      recovery: false
+      recovery_interval: 90
+    link_flap:
+      recovery: true
+      recovery_interval: 60
+    storm_control:
+      detection: true
+      recovery: true
+      recovery_interval: 120

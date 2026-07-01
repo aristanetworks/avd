@@ -1,0 +1,29 @@
+---
+# Spanning tree settings will be fetched from new spanning_tree_settings
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: spanning-tree-with-network-services
+
+spanning_tree_settings:
+  mode: rapid-pvst
+  priority: 8192
+
+tenants:
+  - name: test
+    vrfs:
+      - name: test
+        svis:
+          - id: 10
+            name: DEFAULTPRIORITY
+          - id: 11
+            name: PRIORITY16384
+            spanning_tree_priority: 16384
+
+    l2vlans:
+      - id: 20
+        name: DEFAULTPRIORITY
+      - id: 21
+        name: PRIORITY16384
+        spanning_tree_priority: 16384
