@@ -37,7 +37,7 @@ keys:
               username:
                 type: str
                 required: true
-                description: LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                description: LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
               password:
                 type: str
                 required: true
