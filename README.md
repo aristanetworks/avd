@@ -54,6 +54,8 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
+<!-- Intentional autofix workflow test typo: teh -->
+
 ## License
 
 Copyright (c) 2019-2026 Arista Networks, Inc.
