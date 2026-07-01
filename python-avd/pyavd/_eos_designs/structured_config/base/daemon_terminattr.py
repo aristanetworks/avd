@@ -48,7 +48,13 @@ class DaemonTerminattrMixin(Protocol):
             ingestexclude=cv_settings.terminattr.ingestexclude,
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
+            flowdns=cv_settings.terminattr.flowdns,
         )
+
+        if cv_settings.terminattr.cvtargetconfigs:
+            self.structured_config.daemon_terminattr.cvtargetconfigs = cv_settings.terminattr.cvtargetconfigs._cast_as(
+                EosCliConfigGen.DaemonTerminattr.Cvtargetconfigs
+            )
 
         if first_tracker_exported_to_cloudvision is not None:
             flow_tracking_vrf = self.shared_utils.get_vrf(

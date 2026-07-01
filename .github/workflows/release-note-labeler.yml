@@ -1,0 +1,55 @@
+---
+name: "Reusable Release Note Labeler"
+
+"on":
+  workflow_call:
+    inputs:
+      auto_create_label:
+        description: "Boolean to indicate if the label should be auto created"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  label_release_note:
+    name: "Label PR for release notes"
+    if: (github.event.pull_request.merged == true) && (github.event.action == 'closed' || (github.event.action == 'edited' && github.event.changes.title != null))
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Label PR for release notes
+        env:
+          AUTO_CREATE_LABEL: ${{ inputs.auto_create_label }}
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          labels="$(gh pr view "$PR_NUMBER" --json labels -q '.labels[].name')"
+          old_label="$(grep -F 'rn: ' <<< "$labels" || true)"
+          if [[ -n "$old_label" ]]; then
+            while IFS= read -r label; do
+              gh pr edit "$PR_NUMBER" --remove-label "$label"
+            done <<< "$old_label"
+          fi
+
+          label="$(printf '%s' "$PR_TITLE" | cut -d ':' -f 1 | tr -d ' ' | tr ',' '|')"
+          rn_label="rn: $label"
+          encoded_rn_label="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$rn_label")"
+
+          if [[ "$AUTO_CREATE_LABEL" == "true" ]]; then
+            if ! gh api "repos/{owner}/{repo}/labels/$encoded_rn_label" --silent 2>/dev/null; then
+              label_create_error="${RUNNER_TEMP:-.}/label_create_error"
+              if ! gh label create "$rn_label" 2>"$label_create_error"; then
+                if ! grep -Fq "already exists" "$label_create_error"; then
+                  cat "$label_create_error" >&2
+                  exit 1
+                fi
+              fi
+            fi
+          fi
+
+          gh pr edit "$PR_NUMBER" --add-label "$rn_label"
