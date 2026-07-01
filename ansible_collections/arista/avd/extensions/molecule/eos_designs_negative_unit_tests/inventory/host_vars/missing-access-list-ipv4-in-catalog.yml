@@ -19,7 +19,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: missing-ipv4-standard-acl-in-catalog
+    - name: missing-access-list-ipv4-in-catalog
       id: 43
       mgmt_ip: 10.10.10.43/26
 
