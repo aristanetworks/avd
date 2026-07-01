@@ -15,16 +15,13 @@
 | Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
 | --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
-{%         set tunnel_interface_has_ipv6 = (
-               tunnel_interface.ipv6_addresses is arista.avd.defined
+{%         if tunnel_interface.ipv6_addresses is arista.avd.defined
                or tunnel_interface.ipv6_address is arista.avd.defined
                or tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true)
                or tunnel_interface.ipv6_nd is arista.avd.defined
                or tunnel_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined
                or tunnel_interface.ipv6_access_group_in is arista.avd.defined
-               or tunnel_interface.ipv6_access_group_out is arista.avd.defined
-           ) %}
-{%         if tunnel_interface_has_ipv6 %}
+               or tunnel_interface.ipv6_access_group_out is arista.avd.defined %}
 {%             do tunnel_interfaces_ipv6.append(tunnel_interface) %}
 {%         endif %}
 {%         if tunnel_interface.ip_address is arista.avd.defined %}
