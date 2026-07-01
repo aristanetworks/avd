@@ -66,7 +66,7 @@ class SnmpServerMixin(Protocol):
                 self.structured_config_utils._set_standard_acl(acl_name, validate_acl=True)
             elif acl_name := community.access_list_ipv4.name:
                 community_item.access_list_ipv4.name = acl_name
-                self.structured_config_utils._set_standard_acl(acl_name, self.inputs.avd_design_future.enforce_acl_presence_in_ipv4_standard_acl_catalog)
+                self.structured_config_utils._set_standard_acl(acl_name, self.inputs.avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acl_catalog)
             self.structured_config.snmp_server.communities.append(community_item)
 
     def _get_snmp_engine_id_ip(self: AvdStructuredConfigBaseProtocol) -> str | None:
