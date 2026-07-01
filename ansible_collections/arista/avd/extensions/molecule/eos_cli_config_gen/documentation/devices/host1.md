@@ -78,6 +78,9 @@ Serial Number: DEADBEEFC0FFEW
 - [Kernel Settings](#kernel-settings)
   - [Kernel Device Summary](#kernel-device-summary)
   - [Kernel Device configuration](#kernel-device-configuration)
+- [Environment](#environment)
+  - [Environment Summary](#environment-summary)
+  - [Environment Device Configuration](#environment-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -2518,6 +2521,21 @@ boot secret 5 <removed>
 ```eos
 !
 kernel software forwarding ecmp
+```
+
+## Environment
+
+### Environment Summary
+
+| Minimum Fan Speed |
+| ----------------- |
+| 60% |
+
+### Environment Device Configuration
+
+```eos
+!
+environment fan-speed minimum 60
 ```
 
 ## Monitoring
@@ -6423,6 +6441,8 @@ interface Ethernet90
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | tag | - | - | - | 5 | - |
+| Port-Channel6 | TEST_ADDRESS_LOCKING_IPV6_DISABLED | access | 100 | - | - | - | - | - | - |
+| Port-Channel7 | TEST_ADDRESS_LOCKING_BOTH_DISABLED | access | 100 | - | - | - | - | - | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel13 | EVPN-Vxlan single-active redundancy | - | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
@@ -6698,6 +6718,25 @@ interface Port-Channel5
    Comment created from eos_cli under port_channel_interfaces.Port-Channel5
    EOF
 
+!
+interface Port-Channel6
+   description TEST_ADDRESS_LOCKING_IPV6_DISABLED
+   switchport access vlan 100
+   switchport mode access
+   switchport
+   !
+   address locking
+      address-family ipv6 disabled
+!
+interface Port-Channel7
+   description TEST_ADDRESS_LOCKING_BOTH_DISABLED
+   switchport access vlan 100
+   switchport mode access
+   switchport
+   !
+   address locking
+      address-family ipv4 disabled
+      address-family ipv6 disabled
 !
 interface Port-Channel8
    description to Dev02 Port-channel 8
