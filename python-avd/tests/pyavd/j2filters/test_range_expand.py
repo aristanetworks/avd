@@ -13,7 +13,7 @@ from pyavd.j2filters import range_expand
 RANGE_TO_EXPAND_INVALID_VALUES = [
     pytest.param(True, TypeError, "value must be a Sequence, got <class 'bool'>", id="Wrong input type - bool"),
     pytest.param({"key": "value"}, TypeError, "value must be a Sequence, got <class 'dict'>", id="Wrong input type - dict"),
-    pytest.param(33, TypeError, "", id="Wrong input type - int"),
+    pytest.param(33, TypeError, "value must be a Sequence, got <class 'int'>: 33", id="Wrong input type - int"),
     pytest.param(
         "Ethernet4-2",
         ValueError,
