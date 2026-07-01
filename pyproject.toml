@@ -1,3 +1,8 @@
+[project]
+name = "avd-dev"
+version = "0"
+requires-python = ">=3.10"
+
 [dependency-groups]
 # pyavd minimal requirements when running from source
 # anta is set to latest version to make sure developers run with the latest version
@@ -66,6 +71,9 @@ schema-tools = [
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
 ]
+
+[tool.uv]
+package = false
 
 [tool.ruff]
 line-length = 160

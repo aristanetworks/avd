@@ -56,6 +56,20 @@ uv-pyavd-editable-install: ## Build and install PyAVD as editable
 	uv pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
 
 #########################################
+# Dependency lock files                 #
+#########################################
+
+.PHONY: lock
+lock: ## Update uv lock files.
+	uv lock --project . --python 3.10
+	uv lock --project python-avd --python 3.10
+
+.PHONY: lock-check
+lock-check: ## Check uv lock files are fresh.
+	uv lock --project . --python 3.10 --check
+	uv lock --project python-avd --python 3.10 --check
+
+#########################################
 # Code Validation using ansible-test 	#
 #########################################
 

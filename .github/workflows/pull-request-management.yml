@@ -29,6 +29,7 @@ env:
 jobs:
   required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
+      - lock_files
       - python_type_checking
       - python_requirements
       - molecule_eos_cli_config_gen
@@ -94,6 +95,10 @@ jobs:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
+              - 'pyproject.toml'
+              - 'uv.lock'
+              - 'python-avd/pyproject.toml'
+              - 'python-avd/uv.lock'
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
@@ -111,6 +116,24 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
+
+  # ----------------------------------- #
+  # uv lock file freshness
+  # ----------------------------------- #
+  lock_files:
+    name: Check uv lock files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.10"
+      - name: Install uv
+        run: pip install uv==0.10.9
+      - name: Check uv lock files
+        run: make lock-check
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
