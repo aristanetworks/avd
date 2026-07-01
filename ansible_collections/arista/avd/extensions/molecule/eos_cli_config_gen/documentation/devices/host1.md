@@ -78,6 +78,9 @@ Serial Number: DEADBEEFC0FFEW
 - [Kernel Settings](#kernel-settings)
   - [Kernel Device Summary](#kernel-device-summary)
   - [Kernel Device configuration](#kernel-device-configuration)
+- [Environment](#environment)
+  - [Environment Summary](#environment-summary)
+  - [Environment Device Configuration](#environment-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -2518,6 +2521,21 @@ boot secret 5 <removed>
 ```eos
 !
 kernel software forwarding ecmp
+```
+
+## Environment
+
+### Environment Summary
+
+| Minimum Fan Speed |
+| ----------------- |
+| 60% |
+
+### Environment Device Configuration
+
+```eos
+!
+environment fan-speed minimum 60
 ```
 
 ## Monitoring
