@@ -279,11 +279,7 @@ def test_multiline_jinja_control_flow_arcs_target_body_after_tag(tmp_path: Path)
 def test_reporter_translates_loop_backedge_to_no_else_endif_arc(tmp_path: Path) -> None:
     source_file = tmp_path / "template.j2"
     source_file.write_text(
-        "{% for item in items %}\n"
-        "{% if item.enabled %}\n"
-        "{{ item.name }}\n"
-        "{% endif %}\n"
-        "{% endfor %}\n",
+        "{% for item in items %}\n{% if item.enabled %}\n{{ item.name }}\n{% endif %}\n{% endfor %}\n",
         encoding="utf-8",
     )
 
@@ -296,11 +292,7 @@ def test_reporter_translates_loop_backedge_to_no_else_endif_arc(tmp_path: Path) 
 def test_reporter_does_not_infer_no_else_endif_arc_from_true_branch(tmp_path: Path) -> None:
     source_file = tmp_path / "template.j2"
     source_file.write_text(
-        "{% for item in items %}\n"
-        "{% if item.enabled %}\n"
-        "{{ item.name }}\n"
-        "{% endif %}\n"
-        "{% endfor %}\n",
+        "{% for item in items %}\n{% if item.enabled %}\n{{ item.name }}\n{% endif %}\n{% endfor %}\n",
         encoding="utf-8",
     )
 
