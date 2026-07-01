@@ -25556,7 +25556,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
                 username: str
-                """LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                """LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
                 password: str
                 """Password for the search bind user."""
                 password_type: PasswordType | None
@@ -25585,7 +25585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            username: LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            username: LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
                             password: Password for the search bind user.
                             password_type:
                                Password encryption type.
@@ -25614,7 +25614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             authorization_group_policy: str | None
             """LDAP group policy name to use for user authorization."""
             timeout: int | None
-            """Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server."""
+            """Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server."""
             search: Search
             """
             Credentials used by the switch to perform LDAP search bind operations.
@@ -25645,7 +25645,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
                         ssl_profile: SSL profile name to secure LDAP connections.
                         authorization_group_policy: LDAP group policy name to use for user authorization.
-                        timeout: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
+                        timeout: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
                         search:
                            Credentials used by the switch to perform LDAP search bind operations.
 
@@ -25662,7 +25662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
                 username: str
-                """LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                """LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
                 password: str
                 """Password for the search bind user."""
                 password_type: PasswordType | None
@@ -25691,7 +25691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            username: LDAP username (DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            username: LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
                             password: Password for the search bind user.
                             password_type:
                                Password encryption type.
@@ -25728,7 +25728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             authorization_group_policy: str | None
             """LDAP group policy name to use for user authorization."""
             timeout: int | None
-            """Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server."""
+            """Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server."""
             search: Search
             """
             Credentials used by the switch to perform LDAP search bind operations.
@@ -25765,7 +25765,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
                         ssl_profile: SSL profile name to secure LDAP connections.
                         authorization_group_policy: LDAP group policy name to use for user authorization.
-                        timeout: Time in seconds(EOS default 30 seconds) to wait for a response from this LDAP server.
+                        timeout: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
                         search:
                            Credentials used by the switch to perform LDAP search bind operations.
 
@@ -25812,7 +25812,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "role": {"type": str}, "privilege": {"type": int}}
                 name: str
-                """LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin")."""
+                """LDAP group name."""
                 role: str
                 """EOS role assigned to members of this LDAP group."""
                 privilege: int | None
@@ -25830,7 +25830,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin").
+                            name: LDAP group name.
                             role: EOS role assigned to members of this LDAP group.
                             privilege: Optional privilege level (0-15) assigned alongside the role.
 

@@ -30,6 +30,8 @@ keys:
             min: 1
             max: 1000
             description: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
+            convert_types:
+              - str
           search:
             type: dict
             description: Credentials used by the switch to perform LDAP search bind operations.
@@ -74,6 +76,8 @@ keys:
               description: Port of LDAP server (EOS default 389).
               min: 0
               max: 65535
+              convert_types:
+                - str
             vrf:
               type: str
               convert_types:
@@ -109,7 +113,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: LDAP group name. Quoted strings are supported for names containing spaces (e.g., "Network Admin").
+                    description: LDAP group name.
                   role:
                     type: str
                     required: true
@@ -119,3 +123,5 @@ keys:
                     min: 0
                     max: 15
                     description: Optional privilege level (0-15) assigned alongside the role.
+                    convert_types:
+                      - str

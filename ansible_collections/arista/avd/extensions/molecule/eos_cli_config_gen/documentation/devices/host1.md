@@ -1319,14 +1319,15 @@ management api models
 | SSL Profile | LDAP_SSL_PROFILE |
 | Timeout | 123 seconds |
 | Authorization Group Policy | LDAP_GROUP_POLICY |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
 
 ### LDAP Server Hosts
 
-| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
-| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
-| ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY |
-| ldap2.example.com | - | default | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - |
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY | cn=host-admin,dc=example,dc=com |
+| ldap2.example.com | - | default | - | - | - | - | - | cn=admin2,dc=example,dc=com |
+| 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
 
 ### LDAP Group Policies
 

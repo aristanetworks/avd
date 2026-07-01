@@ -13,7 +13,8 @@
           management_ldap.server_defaults.rdn_attribute_user is arista.avd.defined or
           management_ldap.server_defaults.ssl_profile is arista.avd.defined or
           management_ldap.server_defaults.authorization_group_policy is arista.avd.defined or
-          management_ldap.server_defaults.timeout is arista.avd.defined %}
+          management_ldap.server_defaults.timeout is arista.avd.defined or
+          management_ldap.server_defaults.search.username is arista.avd.defined %}
 
 ### LDAP Server Defaults
 
@@ -34,15 +35,18 @@
 {%         if management_ldap.server_defaults.authorization_group_policy is arista.avd.defined %}
 | Authorization Group Policy | {{ management_ldap.server_defaults.authorization_group_policy }} |
 {%         endif %}
+{%         if management_ldap.server_defaults.search.username is arista.avd.defined %}
+| Search Username | {{ management_ldap.server_defaults.search.username }} |
+{%         endif %}
 {%     endif %}
 {%     if management_ldap.server_hosts is arista.avd.defined %}
 
 ### LDAP Server Hosts
 
-| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
-| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
 {%         for server_host in management_ldap.server_hosts %}
-| {{ server_host.host }} | {{ server_host.port | arista.avd.default('-') }} | {{ server_host.vrf | arista.avd.default('-') }} | {{ server_host.timeout | arista.avd.default('-') }} | {{ server_host.base_dn | arista.avd.default('-') }} | {{ server_host.rdn_attribute_user | arista.avd.default('-') }} | {{ server_host.ssl_profile | arista.avd.default('-') }} | {{ server_host.authorization_group_policy | arista.avd.default('-') }} |
+| {{ server_host.host }} | {{ server_host.port | arista.avd.default('-') }} | {{ server_host.vrf | arista.avd.default('-') }} | {{ server_host.timeout | arista.avd.default('-') }} | {{ server_host.base_dn | arista.avd.default('-') }} | {{ server_host.rdn_attribute_user | arista.avd.default('-') }} | {{ server_host.ssl_profile | arista.avd.default('-') }} | {{ server_host.authorization_group_policy | arista.avd.default('-') }} | {{ server_host.search.username | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     if management_ldap.group_policies is arista.avd.defined %}

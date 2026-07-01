@@ -125,9 +125,9 @@ management accounts
 
 ### LDAP Server Hosts
 
-| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy |
-| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- |
-| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - |
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
 
 ### Management LDAP Device Configuration
 
