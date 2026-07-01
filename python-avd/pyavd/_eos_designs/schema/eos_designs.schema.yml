@@ -10182,7 +10182,7 @@ keys:
                   description: IPv4 access list name.
             ipv4_standard_acl:
               type: str
-              description: IPv4 access list name.
+              description: IPv4 standard access list name.
             access_list_ipv6:
               type: dict
               keys:

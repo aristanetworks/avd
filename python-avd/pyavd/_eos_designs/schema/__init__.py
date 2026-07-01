@@ -46580,7 +46580,7 @@ class EosDesigns(EosDesignsRootModel):
             access_list_ipv4: AccessListIpv4
             """Subclass of AvdModel."""
             ipv4_standard_acl: str | None
-            """IPv4 access list name."""
+            """IPv4 standard access list name."""
             access_list_ipv6: AccessListIpv6
             """Subclass of AvdModel."""
             view: str | None
@@ -46607,7 +46607,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: Community name.
                         access: access
                         access_list_ipv4: Subclass of AvdModel.
-                        ipv4_standard_acl: IPv4 access list name.
+                        ipv4_standard_acl: IPv4 standard access list name.
                         access_list_ipv6: Subclass of AvdModel.
                         view: view
 
