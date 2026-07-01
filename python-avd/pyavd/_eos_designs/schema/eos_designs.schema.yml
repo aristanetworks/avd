@@ -5068,10 +5068,10 @@ keys:
                     description: Outbound prefix-list name.
               listen_ranges:
                 type: list
+                description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                  with the hostname to configure the bgp listen ranges.
                 items:
                   type: dict
-                  description: Note - bgp_peer_groups[].nodes[] must have a node matching
-                    with the hostname to configure the bgp listen ranges.
                   keys:
                     prefix:
                       type: str

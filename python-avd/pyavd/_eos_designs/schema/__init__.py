@@ -29181,7 +29181,12 @@ class EosDesigns(EosDesignsRootModel):
             address_family_ipv6: AddressFamilyIpv6
             """Subclass of AvdModel."""
             listen_ranges: ListenRanges
-            """Subclass of AvdList with `ListenRangesItem` items."""
+            """
+            Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+            listen ranges.
+
+            Subclass of AvdList with `ListenRangesItem` items.
+            """
             metadata: Metadata
             """Subclass of AvdModel."""
             remote_as: str | None
@@ -29350,7 +29355,11 @@ class EosDesigns(EosDesignsRootModel):
                            of AvdList with `str` items.
                         address_family_ipv4: Subclass of AvdModel.
                         address_family_ipv6: Subclass of AvdModel.
-                        listen_ranges: Subclass of AvdList with `ListenRangesItem` items.
+                        listen_ranges:
+                           Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                           listen ranges.
+
+                           Subclass of AvdList with `ListenRangesItem` items.
                         metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -78134,7 +78143,12 @@ class EosDesigns(EosDesignsRootModel):
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
                     listen_ranges: ListenRanges
-                    """Subclass of AvdList with `ListenRangesItem` items."""
+                    """
+                    Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                    listen ranges.
+
+                    Subclass of AvdList with `ListenRangesItem` items.
+                    """
                     metadata: Metadata
                     """Subclass of AvdModel."""
                     remote_as: str | None
@@ -78303,7 +78317,11 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
-                                listen_ranges: Subclass of AvdList with `ListenRangesItem` items.
+                                listen_ranges:
+                                   Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                                   listen ranges.
+
+                                   Subclass of AvdList with `ListenRangesItem` items.
                                 metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
