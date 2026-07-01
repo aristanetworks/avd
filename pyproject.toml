@@ -1,3 +1,8 @@
+[project]
+name = "avd-dev"
+version = "0"
+requires-python = ">=3.10"
+
 [dependency-groups]
 # pyavd minimal requirements when running from source
 dev = [
@@ -69,6 +74,7 @@ schema-tools = [
 ]
 
 [tool.uv]
+package = false
 required-version = ">=0.9.17"
 # Apply a seven-day cutoff to each distribution's upload time, including transitive dependencies.
 # Renovate's release-age check instead uses the version's earliest upload.
