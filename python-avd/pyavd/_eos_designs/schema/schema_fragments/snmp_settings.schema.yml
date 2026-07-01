@@ -206,10 +206,7 @@ keys:
               keys:
                 name:
                   type: str
-                  description: |-
-                    IPv4 access list name.
-                    If this ACL is included in `ipv4_standard_acls` catalog and `avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acls_catalog`
-                    is set to False, then the IPv4 ACL is configured.
+                  description: IPv4 access list name.
             ipv4_standard_acl:
               type: str
               description: IPv4 access list name.
