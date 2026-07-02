@@ -113,6 +113,11 @@ def covered_structural_control_branch_arcs(
     No-else ``if`` statements use the source ``endif`` line as the false branch
     target. Jinja may report the runtime jump from the last line in a multiline
     ``if`` tag to that ``endif`` label instead of from the first tag line.
+
+    When the ``if`` is the last statement in its parent block body, the false
+    branch jumps past the ``endif`` to the first statement of the enclosing
+    block's continuation. Accept any arc from the tag range that lands beyond
+    the ``endif`` line as also covering the false branch.
     """
     recorded_arc_set = set(recorded_arcs)
     reportable_line_set = set(reportable_lines)
@@ -124,7 +129,11 @@ def covered_structural_control_branch_arcs(
             continue
 
         start_line, end_line = tag_ranges.get(from_line, (from_line, from_line))
-        if any((line_number, to_line) in recorded_arc_set for line_number in range(start_line, end_line + 1)):
+        tag_line_range = range(start_line, end_line + 1)
+        if any((line_number, to_line) in recorded_arc_set for line_number in tag_line_range):
+            covered_branch_arcs.add((from_line, to_line))
+        elif any(raw_from_line in tag_line_range and raw_to_line > to_line for raw_from_line, raw_to_line in recorded_arcs):
+            # The if is the last statement in its parent body: false branch jumps past the endif.
             covered_branch_arcs.add((from_line, to_line))
 
     return covered_branch_arcs
