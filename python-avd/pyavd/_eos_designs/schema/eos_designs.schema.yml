@@ -3643,6 +3643,16 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+      suspended_vlans:
+        type: list
+        primary_key: id
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+            name:
+              type: str
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

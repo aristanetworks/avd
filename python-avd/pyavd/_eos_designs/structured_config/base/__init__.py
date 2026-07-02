@@ -215,6 +215,15 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.vlan_internal_order = self.inputs.internal_vlan_order._cast_as(EosCliConfigGen.VlanInternalOrder)
 
     @structured_config_contributor
+    def vlans(self) -> None:
+        """Suspend vlans set based on general_settings.suspended_vlans data-model."""
+        if not (suspended_vlans := self.inputs.general_settings.suspended_vlans):
+            return
+
+        for vlan in suspended_vlans:
+            self.structured_config.vlans.append_new(id=vlan.id, name=vlan.name, state="suspend")
+
+    @structured_config_contributor
     def config_end(self) -> None:
         """config_end is always set to match EOS default config and historic configs."""
         self.structured_config.config_end = True

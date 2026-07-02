@@ -50,3 +50,13 @@ keys:
               Blocks DHCP relay for packets arriving via the MLAG peer-link.
               This will only be configured on VXLAN VTEPs which are also MLAG devices.
             default: false
+      suspended_vlans:
+        type: list
+        primary_key: id
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+            name:
+              type: str
