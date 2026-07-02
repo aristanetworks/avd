@@ -10,8 +10,6 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -245,24 +243,6 @@
 | DC2 | DC2-RS2 | 172.16.20.2/32 |
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
-
-### VRF Summary
-
-| VRF | RD Pattern | Import RT | Export RT | Nodes |
-| --- | ---------- | --------- | --------- | ----- |
-| Common_VRF | 1025 | 1025:1025 | 1025:1025 | DC1-POD1-LEAF1B, DC1-POD1-LEAF2B, DC1-POD2-LEAF1A, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A |
-| vrf_with_loopbacks_dc1_pod1_only | 1102 | 1102:1102 | 1102:1102 | DC1-POD1-LEAF1B, DC1-POD1-LEAF2B, DC1-POD2-LEAF1A, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A |
-| vrf_with_loopbacks_from_overlapping_pool | 1100 | 1100:1100 | 1100:1100 | DC1-POD1-LEAF1B, DC1-POD1-LEAF2B, DC1-POD2-LEAF1A, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A |
-| vrf_with_loopbacks_from_pod_pools | 1101 | 1101:1101 | 1101:1101 | DC1-POD1-LEAF1B, DC1-POD1-LEAF2B, DC1-POD2-LEAF1A, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| EVPN-OVERLAY-CORE | - | Loopback0 | Yes | all | DC1-POD1-LEAF2B, DC1.POD1.LEAF2A |
-| EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | DC1-POD1-LEAF1A, DC1-POD1-LEAF2B, DC1-POD1-SPINE1, DC1-POD2-LEAF1A, DC1-POD2-SPINE1, DC1-POD2-SPINE2, DC1-RS1, DC1-RS2, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A, DC2-POD1-LEAF2A, DC2-POD1-SPINE1, DC2-RS1, DC2-SUPER-SPINE1 |
-| IPv4-UNDERLAY-PEERS | - | - | No | all | DC1-POD1-LEAF1A, DC1-POD1-LEAF1B, DC1-POD1-LEAF2B, DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD2-LEAF1A, DC1-POD2-SPINE1, DC1-POD2-SPINE2, DC1-RS1, DC1-RS2, DC1-SUPER-SPINE1, DC1-SUPER-SPINE2, DC1.POD1.LEAF2A, DC2-POD1-LEAF1A, DC2-POD1-LEAF2A, DC2-POD1-SPINE1, DC2-POD1-SPINE2, DC2-RS1, DC2-RS2, DC2-SUPER-SPINE1, DC2-SUPER-SPINE2 |
-| MLAG-IPv4-UNDERLAY-PEER | 65112.100 | - | No | all | DC1-POD1-LEAF2B, DC1.POD1.LEAF2A |
 
 ### VRF Routing Protocols
 

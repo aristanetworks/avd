@@ -14,8 +14,6 @@
   - [MPLS and LDP Configuration](#mpls-and-ldp-configuration)
   - [BGP MPLS Overlay](#bgp-mpls-overlay)
   - [MPLS Route Reflectors](#mpls-route-reflectors)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -150,20 +148,6 @@
 | ---- | ---- | ------ | --------- | ---------- |
 | rr1 | rr | 65001 | 10.255.2.1 | 10.255.2.1 |
 | rr2 | rr | 65001 | 10.255.2.2 | 10.255.2.2 |
-
-### VRF Summary
-
-| VRF | RD Pattern | Import RT | Export RT | Nodes |
-| --- | ---------- | --------- | --------- | ----- |
-| C1_VRF1 | 10 | 10:10 | 10:10 | pe1, pe2, pe3 |
-| C2_VRF1 | 20 | 20:20 | 20:20 | pe1, pe2, pe3 |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| MPLS-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | pe1, pe2, pe3, rr1, rr2 |
-| RR-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | rr1, rr2 |
 
 ### VRF Routing Protocols
 

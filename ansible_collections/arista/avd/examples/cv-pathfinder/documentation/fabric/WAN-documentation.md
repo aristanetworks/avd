@@ -10,8 +10,6 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -143,23 +141,6 @@
 | WAN | site4-border1 | 192.168.255.13/32 |
 | WAN | site4-border2 | 192.168.255.14/32 |
 | WAN | site4-wan1 | 192.168.255.15/32 |
-
-### VRF Summary
-
-| VRF | RD Pattern | Import RT | Export RT | Nodes |
-| --- | ---------- | --------- | --------- | ----- |
-| BLUE | 100 | 100:100 | 100:100 | site1-border1, site1-border2, site1-wan1, site1-wan2, site2-leaf1, site2-leaf2, site2-wan1, site2-wan2, site3-wan1, site4-border1, site4-border2, site4-wan1 |
-| RED | 101 | 101:101 | 101:101 | site1-border1, site1-border2, site1-wan1, site1-wan2, site2-leaf1, site2-leaf2, site2-wan1, site2-wan2, site3-wan1, site4-border1, site4-border2, site4-wan1 |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | site4-border1, site4-wan1 |
-| IPv4-UNDERLAY-PEERS | - | - | No | all | site1-border1, site1-border2, site1-wan1, site1-wan2, site2-leaf1, site2-leaf2, site2-wan1, site2-wan2, site4-border1, site4-border2, site4-wan1 |
-| MLAG-IPv4-UNDERLAY-PEER | - | - | No | all | site1-border1, site1-border2, site2-leaf1, site2-leaf2, site4-border1, site4-border2 |
-| WAN-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2, site1-wan1, site1-wan2, site2-wan1, site2-wan2, site3-wan1, site4-wan1 |
-| WAN-RR-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2 |
 
 ### VRF Routing Protocols
 
