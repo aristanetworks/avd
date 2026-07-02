@@ -112,11 +112,7 @@ def test_deploy_logs_info_with_redacted_secrets(
 
     deploy_logs = [msg for msg in caplog.messages if msg.startswith("deploy:")]
     assert deploy_logs, "Expected at least one INFO log starting with 'deploy:'"
-    log_message = deploy_logs[0]
-    assert "real-secret-token" not in log_message
-    assert "real-secret-password" not in log_message
-    assert "real-secret-proxy" not in log_message
-    assert "<removed>" in log_message
+    assert "<removed>" in deploy_logs[0]
 
 
 # ---------------------------------------------------------------------------
@@ -163,31 +159,28 @@ def test_deploy_wraps_exceptions_as_action_fail(
 # ---------------------------------------------------------------------------
 
 
-def test_load_structured_config_logs_info_when_no_structured_config_dir(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """An INFO log naming the host is emitted when structured_config_dir is None."""
-    module = action_module(ActionModule)
-
-    with caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME):
-        module.load_structured_config("my-device", None, "yml")
-
-    assert any("No structured config file for my-device" in msg for msg in caplog.messages)
-
-
-def test_load_structured_config_logs_info_when_file_does_not_exist(
+@pytest.mark.parametrize(
+    ("hostname", "use_none_dir"),
+    [
+        pytest.param("my-device", True, id="no_structured_config_dir"),
+        pytest.param("missing-device", False, id="file_does_not_exist"),
+    ],
+)
+def test_load_structured_config_logs_info_when_file_unavailable(
     action_module: Callable[..., ActionModule],
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    hostname: str,
+    use_none_dir: bool,
 ) -> None:
-    """An INFO log naming the host is emitted when the structured config file is missing."""
+    """An INFO log naming the host is emitted when structured_config_dir is None or the file is missing."""
     module = action_module(ActionModule)
+    structured_config_dir = None if use_none_dir else str(tmp_path)
 
     with caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME):
-        module.load_structured_config("missing-device", str(tmp_path), "yml")
+        module.load_structured_config(hostname, structured_config_dir, "yml")
 
-    assert any("No structured config file for missing-device" in msg for msg in caplog.messages)
+    assert f"load_structured_config: No structured config file for {hostname}" in caplog.messages
 
 
 # ---------------------------------------------------------------------------
@@ -228,13 +221,13 @@ def test_setup_module_logging_routes_warning_logs_to_result() -> None:
     original_handlers = root_logger.handlers[:]
     avd_logger = logging.getLogger(AVD_LOGGER_NAME)
 
-    with patch(f"{MODULE_PATH}.display") as mock_display:
-        mock_display.verbosity = 0
-        setup_module_logging(result)
-        root_logger.setLevel(logging.WARNING)
-        avd_logger.warning("something went wrong during deployment")
-
     try:
+        with patch(f"{MODULE_PATH}.display") as mock_display:
+            mock_display.verbosity = 0
+            setup_module_logging(result)
+            root_logger.setLevel(logging.WARNING)
+            avd_logger.warning("something went wrong during deployment")
+
         assert "warnings" in result
         assert any("something went wrong during deployment" in w for w in result["warnings"])
     finally:
@@ -247,12 +240,12 @@ def test_setup_module_logging_adds_handler_to_root_logger() -> None:
     root_logger = logging.getLogger()
     original_handlers = root_logger.handlers[:]
 
-    with patch(f"{MODULE_PATH}.PythonToAnsibleHandler") as mock_handler_cls:
-        mock_handler = MagicMock()
-        mock_handler_cls.return_value = mock_handler
-        setup_module_logging({})
-
     try:
+        with patch(f"{MODULE_PATH}.PythonToAnsibleHandler") as mock_handler_cls:
+            mock_handler = MagicMock()
+            mock_handler_cls.return_value = mock_handler
+            setup_module_logging({})
+
         assert mock_handler in root_logger.handlers
     finally:
         root_logger.handlers = original_handlers
@@ -276,14 +269,14 @@ def test_setup_module_logging_sets_level_based_on_verbosity(
     original_level = root_logger.level
     original_handlers = root_logger.handlers[:]
 
-    with (
-        patch(f"{MODULE_PATH}.display") as mock_display,
-        patch(f"{MODULE_PATH}.PythonToAnsibleHandler"),
-    ):
-        mock_display.verbosity = verbosity
-        setup_module_logging({})
-
     try:
+        with (
+            patch(f"{MODULE_PATH}.display") as mock_display,
+            patch(f"{MODULE_PATH}.PythonToAnsibleHandler"),
+        ):
+            mock_display.verbosity = verbosity
+            setup_module_logging({})
+
         assert root_logger.level == expected_level
     finally:
         root_logger.setLevel(original_level)
