@@ -12,7 +12,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING
 
 from .models import CompiledTemplate, FileStamp, file_stamp
-from .source_template import else_branch_line_ranges, if_endif_lines, non_whitespace_lines, source_tag_ranges, static_template_lines
+from .source_template import block_statement_lines, else_branch_line_ranges, if_endif_lines, rendered_static_lines, source_tag_ranges, static_template_lines
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -102,7 +102,7 @@ def _generated_line_ranges(tree: ast.Module, source_filename: Path, debug_map: t
     tag_ranges = source_tag_ranges(source_filename)
     else_line_ranges = else_branch_line_ranges(source_filename)
     generated_line_ranges = {generated_line: tag_ranges.get(template_line, (template_line, template_line)) for generated_line, template_line in debug_map}
-    generated_line_ranges.update(_generated_static_line_ranges(tree, source_filename))
+    generated_line_ranges.update(_generated_static_line_ranges(tree, source_filename, debug_map))
     generated_line_ranges.update(_generated_endif_line_ranges(tree, source_filename, debug_map, generated_line_ranges))
     for generated_line, (start_line, end_line) in generated_line_ranges.items():
         if else_branch_range := else_line_ranges.get(start_line):
@@ -193,14 +193,15 @@ def _parse_debug_info(debug_info: str) -> tuple[tuple[int, int], ...]:
     return tuple(sorted(debug_map))
 
 
-def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> dict[int, tuple[int, int]]:
+def _generated_static_line_ranges(tree: ast.Module, source_filename: Path, debug_map: tuple[tuple[int, int], ...]) -> dict[int, tuple[int, int]]:
     """
     Map generated ``yield 'static text'`` lines back to source template ranges.
 
     Jinja ``debug_info`` does not reliably credit static output text to source
     lines. This function uses generated literal-yield nodes as runtime evidence
-    and matches their non-empty rendered lines back to the static text tokens in
-    the source template. Ambiguous matches are ignored.
+    and matches their rendered lines back to the static text tokens in the source
+    template. Whitespace-only static lines are included since documentation
+    templates intentionally render blank lines for Markdown structure.
     """
     try:
         source = source_filename.read_text(encoding="utf-8")
@@ -213,6 +214,7 @@ def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> di
 
     ranges: dict[int, tuple[int, int]] = {}
     source_index = 0
+    blank_only_yield_lines = _blank_only_yield_lines_by_generated_line(tree, source, source_static_lines, debug_map)
     yield_nodes = sorted(
         (node for node in ast.walk(tree) if isinstance(node, ast.Yield)),
         key=lambda node: node.lineno,
@@ -221,17 +223,34 @@ def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> di
         if not isinstance(node, ast.Yield) or not isinstance(node.value, ast.Constant) or not isinstance(node.value.value, str):
             continue
 
-        rendered_lines = non_whitespace_lines(node.value.value)
+        rendered_lines = rendered_static_lines(node.value.value)
         if not rendered_lines:
+            if not node.value.value.strip() and (line_number := blank_only_yield_lines.get(node.lineno)) is not None:
+                ranges[node.lineno] = (line_number, line_number)
+                if (matched_index := _find_static_line_index(source_static_lines, line_number, source_index)) is not None:
+                    source_index = matched_index + 1
+
             continue
 
         matched_line_numbers: list[int] = []
         next_source_index = source_index
+        if (
+            node.value.value.startswith(("\n", "\r"))
+            and rendered_lines[0]
+            and next_source_index < len(source_static_lines)
+            and not source_static_lines[next_source_index][1]
+        ):
+            matched_line_numbers.append(source_static_lines[next_source_index][0])
+            next_source_index += 1
+
         for rendered_line in rendered_lines:
             matched_index = _find_next_static_line(source_static_lines, rendered_line, next_source_index)
             if matched_index is None:
-                matched_line_numbers.clear()
-                break
+                if rendered_line:
+                    matched_line_numbers.clear()
+                    break
+
+                continue
 
             matched_line_numbers.append(source_static_lines[matched_index][0])
             next_source_index = matched_index + 1
@@ -241,6 +260,96 @@ def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> di
             source_index = next_source_index
 
     return ranges
+
+
+def _blank_only_yield_lines_by_generated_line(
+    tree: ast.Module,
+    source: str,
+    source_static_lines: tuple[tuple[int, str], ...],
+    debug_map: tuple[tuple[int, int], ...],
+) -> dict[int, int]:
+    """Return generated yield lines that should be credited to blank-only source lines."""
+    source_lines_by_generated_line = dict(debug_map)
+    first_blank_source_line_by_block_line = _first_blank_source_line_before_next_block(source, source_static_lines)
+    else_line_by_conditional_line = _else_line_by_conditional_line(source)
+    blank_only_yield_lines: dict[int, int] = {}
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.If):
+            continue
+
+        source_line = source_lines_by_generated_line.get(node.lineno)
+        if source_line is None:
+            continue
+
+        _add_blank_only_yield_line(blank_only_yield_lines, node.body, source_line, first_blank_source_line_by_block_line)
+        if else_line := else_line_by_conditional_line.get(source_line):
+            _add_blank_only_yield_line(blank_only_yield_lines, node.orelse, else_line, first_blank_source_line_by_block_line)
+
+    return blank_only_yield_lines
+
+
+def _add_blank_only_yield_line(
+    blank_only_yield_lines: dict[int, int],
+    statements: list[ast.stmt],
+    source_line: int,
+    first_blank_source_line_by_block_line: dict[int, int],
+) -> None:
+    """Add the first blank-only yield generated for one control-flow body."""
+    if source_line not in first_blank_source_line_by_block_line or not statements:
+        return
+
+    first_statement = next((statement for statement in statements if not isinstance(statement, ast.Pass)), None)
+    if (
+        isinstance(first_statement, ast.Expr)
+        and isinstance(first_statement.value, ast.Yield)
+        and isinstance(first_statement.value.value, ast.Constant)
+        and isinstance(first_statement.value.value.value, str)
+        and not first_statement.value.value.value.strip()
+    ):
+        blank_only_yield_lines[first_statement.value.lineno] = first_blank_source_line_by_block_line[source_line]
+
+
+def _first_blank_source_line_before_next_block(source: str, source_static_lines: tuple[tuple[int, str], ...]) -> dict[int, int]:
+    """Return the first blank static source line immediately inside a control-flow body."""
+    block_lines = block_statement_lines(source)
+    blank_static_lines = [line_number for line_number, line_text in source_static_lines if not line_text]
+    blank_source_lines_by_block_line: dict[int, int] = {}
+    for block_line, block_name in block_lines:
+        if block_name not in {"if", "elif", "else"}:
+            continue
+
+        next_block_line = next((line_number for line_number, _name in block_lines if line_number > block_line), None)
+        blank_line = next((line_number for line_number in blank_static_lines if line_number > block_line), None)
+        if blank_line is not None and (next_block_line is None or blank_line < next_block_line):
+            blank_source_lines_by_block_line[block_line] = blank_line
+
+    return blank_source_lines_by_block_line
+
+
+def _else_line_by_conditional_line(source: str) -> dict[int, int]:
+    """Return matching source ``else`` lines for ``if`` and ``elif`` conditions."""
+    else_lines_by_conditional_line: dict[int, int] = {}
+    conditional_line_stack: list[int] = []
+    for block_line, block_name in block_statement_lines(source):
+        if block_name == "if":
+            conditional_line_stack.append(block_line)
+        elif block_name == "elif" and conditional_line_stack:
+            conditional_line_stack[-1] = block_line
+        elif block_name == "else" and conditional_line_stack:
+            else_lines_by_conditional_line[conditional_line_stack[-1]] = block_line
+        elif block_name == "endif" and conditional_line_stack:
+            conditional_line_stack.pop()
+
+    return else_lines_by_conditional_line
+
+
+def _find_static_line_index(source_static_lines: tuple[tuple[int, str], ...], line_number: int, start_index: int) -> int | None:
+    """Find a source static line by source line number."""
+    for index, (source_line_number, _source_line) in enumerate(source_static_lines[start_index:], start=start_index):
+        if source_line_number == line_number:
+            return index
+
+    return None
 
 
 def _find_next_static_line(source_static_lines: tuple[tuple[int, str], ...], rendered_line: str, start_index: int) -> int | None:
