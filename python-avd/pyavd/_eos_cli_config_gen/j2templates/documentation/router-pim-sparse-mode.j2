@@ -14,7 +14,7 @@
 BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         if router_pim_sparse_mode.ipv4.message_hello_address_secondary_ipv6 is arista.avd.defined(true) %}
 
-Message hello address secondary ipv6: True
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.make_before_break is arista.avd.defined %}
 

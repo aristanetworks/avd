@@ -11865,7 +11865,7 @@ router multicast
 
 BFD enabled: True
 
-Message hello address secondary ipv6: True
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
 
 Make-before-break: False
 Register Local Interface: Ethernet1
