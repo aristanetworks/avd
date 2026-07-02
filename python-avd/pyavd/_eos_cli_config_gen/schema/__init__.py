@@ -65990,7 +65990,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             make_before_break: bool | None
             """Enable/Disable Make-Before-Break."""
             message_hello_address_secondary_ipv6: bool | None
-            """Allow PIM IPv4 over IPv6 nexthop."""
+            """Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
             register_local_interface: str | None
@@ -66022,7 +66022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
-                        message_hello_address_secondary_ipv6: Allow PIM IPv4 over IPv6 nexthop.
+                        message_hello_address_secondary_ipv6: Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
                         ssm_range: IPv4 Prefix associated with SSM.
                         register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.

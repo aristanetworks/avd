@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;ipv4</samp>](## "router_pim_sparse_mode.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_pim_sparse_mode.ipv4.bfd") | Boolean |  |  |  | Enable/Disable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;make_before_break</samp>](## "router_pim_sparse_mode.ipv4.make_before_break") | Boolean |  |  |  | Enable/Disable Make-Before-Break. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;message_hello_address_secondary_ipv6</samp>](## "router_pim_sparse_mode.ipv4.message_hello_address_secondary_ipv6") | Boolean |  |  |  | Allow PIM IPv4 over IPv6 nexthop. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;message_hello_address_secondary_ipv6</samp>](## "router_pim_sparse_mode.ipv4.message_hello_address_secondary_ipv6") | Boolean |  |  |  | Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssm_range</samp>](## "router_pim_sparse_mode.ipv4.ssm_range") | String |  |  |  | IPv4 Prefix associated with SSM. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;register_local_interface</samp>](## "router_pim_sparse_mode.ipv4.register_local_interface") | String |  |  |  | Local interface to use for PIM register messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rp_addresses</samp>](## "router_pim_sparse_mode.ipv4.rp_addresses") | List, items: Dictionary |  |  |  |  |
@@ -62,7 +62,7 @@
         # Enable/Disable Make-Before-Break.
         make_before_break: <bool>
 
-        # Allow PIM IPv4 over IPv6 nexthop.
+        # Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
         message_hello_address_secondary_ipv6: <bool>
 
         # IPv4 Prefix associated with SSM.

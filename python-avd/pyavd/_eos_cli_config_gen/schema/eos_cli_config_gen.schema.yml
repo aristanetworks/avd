@@ -24065,7 +24065,8 @@ keys:
             description: Enable/Disable Make-Before-Break.
           message_hello_address_secondary_ipv6:
             type: bool
-            description: Allow PIM IPv4 over IPv6 nexthop.
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over
+              IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
