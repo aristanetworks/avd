@@ -62,14 +62,16 @@ keys:
                   - int
       server_hosts:
         type: list
-        primary_key: host
-        description: List of LDAP server hosts.
+        description: |-
+          List of LDAP server hosts.
+          Combination of 'host', 'port' and 'vrf' should be unique.
         items:
           type: dict
           $ref: "eos_cli_config_gen#/keys/management_ldap/keys/server_defaults"
           keys:
             host:
               type: str
+              required: true
               description: Hostname or IP address of the LDAP server.
             port:
               type: int
