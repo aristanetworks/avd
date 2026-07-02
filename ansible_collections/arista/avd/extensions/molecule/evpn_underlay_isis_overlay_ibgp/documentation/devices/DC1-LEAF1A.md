@@ -620,9 +620,9 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.5:1
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 

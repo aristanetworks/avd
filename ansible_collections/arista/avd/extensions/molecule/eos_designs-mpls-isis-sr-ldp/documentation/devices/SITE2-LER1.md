@@ -1086,11 +1086,11 @@ patch panel
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| TENANT_B_INTRA | - | enabled |
-| TENANT_B_WAN | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| TENANT_B_INTRA | enabled |
+| TENANT_B_WAN | enabled |
 
 ### VRF Instances Device Configuration
 

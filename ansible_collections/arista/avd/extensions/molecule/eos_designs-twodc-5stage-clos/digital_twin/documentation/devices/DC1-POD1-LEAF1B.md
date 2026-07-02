@@ -676,13 +676,13 @@ router bgp 65111.100
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| Common_VRF | - | enabled |
-| MGMT | - | disabled |
-| vrf_with_loopbacks_dc1_pod1_only | - | enabled |
-| vrf_with_loopbacks_from_overlapping_pool | - | enabled |
-| vrf_with_loopbacks_from_pod_pools | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| Common_VRF | enabled |
+| MGMT | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | enabled |
+| vrf_with_loopbacks_from_overlapping_pool | enabled |
+| vrf_with_loopbacks_from_pod_pools | enabled |
 
 ### VRF Instances Device Configuration
 

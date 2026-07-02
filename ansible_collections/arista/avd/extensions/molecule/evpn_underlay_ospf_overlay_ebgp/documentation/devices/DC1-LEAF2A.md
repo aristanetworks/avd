@@ -864,10 +864,10 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| Tenant_B_OP_Zone | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| Tenant_B_OP_Zone | enabled |
 
 ### VRF Instances Device Configuration
 

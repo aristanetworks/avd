@@ -12858,18 +12858,18 @@ mac access-list TEST5
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| BLAH | - | disabled |
-| defauls | - | disabled |
-| defaulu | - | disabled |
-| MGMT | - | disabled |
-| TENANT_A_PROJECT01 | - | enabled |
-| TENANT_A_PROJECT02 | - | enabled |
-| TEST1 | - | enabled |
-| TEST2 | - | enabled (ipv6 interface) |
-| TEST3 | 100:100 | enabled |
-| TEST4 | 10.20.30.40:102 | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| BLAH | disabled |
+| defauls | disabled |
+| defaulu | disabled |
+| MGMT | disabled |
+| TENANT_A_PROJECT01 | enabled |
+| TENANT_A_PROJECT02 | enabled |
+| TEST1 | enabled |
+| TEST2 | enabled (ipv6 interface) |
+| TEST3 | enabled |
+| TEST4 | disabled |
 
 ### VRF Instances Device Configuration
 

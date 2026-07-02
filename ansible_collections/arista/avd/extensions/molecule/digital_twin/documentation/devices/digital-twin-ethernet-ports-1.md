@@ -838,10 +838,10 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| TENANT_A_VRF_A | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| TENANT_A_VRF_A | enabled |
 
 ### VRF Instances Device Configuration
 

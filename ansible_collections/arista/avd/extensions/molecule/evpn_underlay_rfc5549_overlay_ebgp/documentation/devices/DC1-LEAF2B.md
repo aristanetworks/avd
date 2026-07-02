@@ -1329,15 +1329,15 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| Tenant_A_APP_Zone | - | enabled |
-| Tenant_A_DB_Zone | - | enabled |
-| Tenant_A_OP_Zone | - | enabled |
-| Tenant_A_WEB_Zone | - | enabled |
-| Tenant_B_OP_Zone | - | enabled |
-| Tenant_C_OP_Zone | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| Tenant_A_APP_Zone | enabled |
+| Tenant_A_DB_Zone | enabled |
+| Tenant_A_OP_Zone | enabled |
+| Tenant_A_WEB_Zone | enabled |
+| Tenant_B_OP_Zone | enabled |
+| Tenant_C_OP_Zone | enabled |
 
 ### VRF Instances Device Configuration
 

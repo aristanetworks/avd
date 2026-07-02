@@ -192,11 +192,11 @@ router bgp 65006
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| TENANT_A | - | enabled |
-| TENANT_B | - | enabled (ipv6 interface) |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| TENANT_A | enabled |
+| TENANT_B | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

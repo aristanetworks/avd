@@ -1070,11 +1070,11 @@ ip access-list ACL-INTERNET-IN_Port-Channel4
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| BLUE | - | enabled |
-| MGMT | - | disabled |
-| RED | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| BLUE | enabled |
+| MGMT | disabled |
+| RED | enabled |
 
 ### VRF Instances Device Configuration
 

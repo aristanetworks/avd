@@ -310,9 +310,9 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 

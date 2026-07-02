@@ -1147,11 +1147,11 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.7:202
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| BLUE | - | enabled |
-| MGMT | - | disabled |
-| RED | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| BLUE | enabled |
+| MGMT | disabled |
+| RED | enabled |
 
 ### VRF Instances Device Configuration
 

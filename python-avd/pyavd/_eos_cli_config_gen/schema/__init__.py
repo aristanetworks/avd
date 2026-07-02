@@ -74965,7 +74965,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """VRF Name."""
         description: str | None
         rd: str | None
-        """Route Distinguisher."""
+        """
+        Route Distinguisher (RD) rendered under the `vrf instance` submode.
+
+        This is deprecated in EOS:
+        configuring the RD under the `vrf instance` submode is no longer required.
+        Since the RD is needed
+        for BGP operation, configure it under the `router bgp` VRF submode instead using
+        `router_bgp.vrfs[].rd`.
+        This key is kept only to support existing/legacy device configurations and
+        is intentionally not shown in the generated device documentation.
+        """
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
@@ -75000,7 +75010,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: VRF Name.
                     description: description
-                    rd: Route Distinguisher.
+                    rd:
+                       Route Distinguisher (RD) rendered under the `vrf instance` submode.
+
+                       This is deprecated in EOS:
+                       configuring the RD under the `vrf instance` submode is no longer required.
+                       Since the RD is needed
+                       for BGP operation, configure it under the `router bgp` VRF submode instead using
+                       `router_bgp.vrfs[].rd`.
+                       This key is kept only to support existing/legacy device configurations and
+                       is intentionally not shown in the generated device documentation.
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces

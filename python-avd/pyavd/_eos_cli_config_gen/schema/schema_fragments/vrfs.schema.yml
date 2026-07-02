@@ -24,7 +24,12 @@ keys:
           type: str
         rd:
           type: str
-          description: Route Distinguisher.
+          description: |-
+            Route Distinguisher (RD) rendered under the `vrf instance` submode.
+
+            This is deprecated in EOS: configuring the RD under the `vrf instance` submode is no longer required.
+            Since the RD is needed for BGP operation, configure it under the `router bgp` VRF submode instead using `router_bgp.vrfs[].rd`.
+            This key is kept only to support existing/legacy device configurations and is intentionally not shown in the generated device documentation.
         ip_routing:
           type: bool
         ipv6_routing:

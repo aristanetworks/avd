@@ -938,14 +938,14 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
-| Tenant_A_WAN_Zone | - | enabled |
-| Tenant_B_OP_Zone | - | enabled |
-| Tenant_B_WAN_Zone | - | enabled |
-| Tenant_C_WAN_Zone | - | enabled |
-| Tenant_L3_VRF_Zone | - | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| Tenant_A_WAN_Zone | enabled |
+| Tenant_B_OP_Zone | enabled |
+| Tenant_B_WAN_Zone | enabled |
+| Tenant_C_WAN_Zone | enabled |
+| Tenant_L3_VRF_Zone | enabled |
 
 ### VRF Instances Device Configuration
 

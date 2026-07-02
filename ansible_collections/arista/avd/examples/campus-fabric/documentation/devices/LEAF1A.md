@@ -1658,9 +1658,9 @@ dot1x dynamic-authorization
 
 ### VRF Instances Summary
 
-| VRF Name | RD | IP Routing |
-| -------- | --- | ---------- |
-| MGMT | - | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
