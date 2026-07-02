@@ -3,7 +3,33 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip: [pyright, codespell, j2lint, markdownlint-cli2, check-schema-tables-in-docs]
+  autofix_prs: false
+  # Keep pre-commit.ci for autoupdate only. Run hooks through autofix.ci.
+  skip:
+    - trailing-whitespace
+    - end-of-file-fixer
+    - check-added-large-files
+    - check-merge-conflict
+    - insert-license
+    - ruff
+    - ruff-format
+    - pyright
+    - pylint
+    - yamllint
+    - j2lint
+    - codespell
+    - zizmor
+    - pdm-export
+    - docs-plugin-modules
+    - docs-plugin-filter
+    - docs-plugin-lookup
+    - docs-plugin-test
+    - docs-plugin-vars
+    - schemas
+    - check-schema-tables-in-docs
+    - sort-hosts-yml
+    - templates
+    - markdownlint-cli2
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -111,7 +137,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 3b3f7c3f57fe9925356faf5fe6230835138be230  # frozen: v0.15.17
+    rev: c59bba8fb259db0fec2bbb77ad8ba51ea7341b56  # frozen: v0.15.20
     hooks:
       # Run the linter.
       - id: ruff
@@ -121,7 +147,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: 509391adec397533e39c65449e0c85d93d48e777  # frozen: v1.1.410
+    rev: 392b6ba8e54be6d603e02e9f8d601d27b7a48d12  # frozen: v1.1.411
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -183,7 +209,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: 9257c6050c0261b8c57e712f632dc4a8010109a9  # frozen: v1.25.2
+    rev: e3eebf65325ccc992422292cb7a4baee967cf815  # frozen: v1.26.1
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -192,7 +218,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "0d939146d20336fda803dee0637253d8d3ea9bac"  # frozen: 2.27.0
+    rev: "feb66b6b753448b11d37d202f4cb88aba815ab30"  # frozen: 2.28.0
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
