@@ -88,7 +88,7 @@ keys:
               convert_types:
                 - str
               description: |-
-                Job timeout. Must be less than the job interval.
+                Job timeout in minutes for CLI command execution. Must be less than the job interval.
             max_log_files:
               type: int
               required: true
