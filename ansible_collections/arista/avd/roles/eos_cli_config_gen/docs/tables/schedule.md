@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;once</samp>](## "schedule.jobs.[].at.once") | Boolean |  |  |  | Run the command a single time at the given time/date.<br>Mutually exclusive with `at.interval`. Takes precedence over `at.interval` if both are set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "schedule.jobs.[].at.interval") | Integer |  |  | Min: 2<br>Max: 1440 | Set interval.<br>Mutually exclusive with `at.once`. `at.once` takes precedence if both are set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;now_interval</samp>](## "schedule.jobs.[].now_interval") | Integer |  |  | Min: 2<br>Max: 1440 | Start the schedule immediately and repeat every N minutes.<br>Mutually exclusive with `interval` and `at`. `interval` or `at` take precedence if they are set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "schedule.jobs.[].timeout") | Integer |  |  | Min: 1<br>Max: 480 | Job timeout. Must be less than the job interval. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "schedule.jobs.[].timeout") | Integer |  |  | Min: 1<br>Max: 480 | Job timeout in minutes for CLI command execution. Must be less than the job interval. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_log_files</samp>](## "schedule.jobs.[].max_log_files") | Integer | Required |  | Min: 0<br>Max: 10000 | Maximum number of log files to retain. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging_verbose</samp>](## "schedule.jobs.[].logging_verbose") | Boolean |  |  |  | Enable verbose logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loglocation</samp>](## "schedule.jobs.[].loglocation") | String |  |  |  | Log file location path (e.g. flash:/schedule/logs). |
@@ -75,7 +75,7 @@
           # Mutually exclusive with `interval` and `at`. `interval` or `at` take precedence if they are set.
           now_interval: <int; 2-1440>
 
-          # Job timeout. Must be less than the job interval.
+          # Job timeout in minutes for CLI command execution. Must be less than the job interval.
           timeout: <int; 1-480>
 
           # Maximum number of log files to retain.

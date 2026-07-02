@@ -67362,7 +67362,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `at`. `interval` or `at` take precedence if they are set.
             """
             timeout: int | None
-            """Job timeout. Must be less than the job interval."""
+            """Job timeout in minutes for CLI command execution. Must be less than the job interval."""
             max_log_files: int
             """Maximum number of log files to retain."""
             logging_verbose: bool | None
@@ -67418,7 +67418,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Start the schedule immediately and repeat every N minutes.
                            Mutually exclusive with `interval` and
                            `at`. `interval` or `at` take precedence if they are set.
-                        timeout: Job timeout. Must be less than the job interval.
+                        timeout: Job timeout in minutes for CLI command execution. Must be less than the job interval.
                         max_log_files: Maximum number of log files to retain.
                         logging_verbose: Enable verbose logging.
                         loglocation: Log file location path (e.g. flash:/schedule/logs).
