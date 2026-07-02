@@ -76,10 +76,11 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 5. `filter.only_vlans_in_use: true` keeps `l2leaf2` lean — it would
    otherwise carry every VLAN defined in network services, even ones it
    never trunks.
-6. `inband_mgmt_vlan: 110` puts management traffic for `l2leaf3` on a
-   tenant VLAN already trunked through the ring; the matching SVI is
-   created automatically. The VLAN must exist in network services and be
-   reachable on every hop along the ring.
+6. `inband_mgmt_vlan: 110` together with `inband_mgmt_ip` puts
+   management traffic for `l2leaf3` on a tenant VLAN already trunked
+   through the ring; the matching SVI is created automatically. The VLAN
+   must exist in network services and be reachable on every hop along the
+   ring.
 
 ### Generated configuration on a ring node
 
@@ -152,8 +153,8 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
    L3 leafs source the gateway and EVPN extends it across the fabric.
 
 The ring node gets a routed SVI with the per-node IP. AVD also adds VLAN
-110 to the upstream trunks automatically because the node declared
-`inband_mgmt_vlan: 110`:
+110 to the upstream trunks automatically because the node declared both
+`inband_mgmt_vlan: 110` and `inband_mgmt_ip`:
 
 ```cli title="htl2r-l2leaf3 inband management"
 --8<--

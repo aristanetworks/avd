@@ -1,6 +1,6 @@
 ---
 # --8<-- [start:inband_mgmt]
-# Inband management subnet used by ring switches that lack out-of-band mgmt.
+# Supplemental inband management subnet used by the ring example.
 # The vlan ID (110) must exist in network services and be permitted by any
 # active filtering on the ring.
 inband_mgmt_subnet: 10.10.10.0/24

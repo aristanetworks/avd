@@ -340,7 +340,7 @@ vlan_interfaces:
   no_autostate: true
 - name: Vlan100
   description: PROD_VLAN100
-  shutdown: true
+  shutdown: false
   vrf: VRF_PROD
   ip_address_virtual: 10.180.100.1/24
   metadata:
@@ -348,7 +348,7 @@ vlan_interfaces:
     - TENANT1
 - name: Vlan101
   description: PROD_VLAN101
-  shutdown: true
+  shutdown: false
   vrf: VRF_PROD
   ip_address_virtual: 10.180.101.1/24
   metadata:
@@ -356,7 +356,7 @@ vlan_interfaces:
     - TENANT1
 - name: Vlan110
   description: INBAND_MGMT
-  shutdown: true
+  shutdown: false
   vrf: VRF_PROD
   ip_address_virtual: 10.10.10.1/24
   metadata:
