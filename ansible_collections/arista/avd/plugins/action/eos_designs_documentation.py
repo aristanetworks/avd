@@ -43,7 +43,8 @@ ARGUMENT_SPEC = {
     "mode": {"type": "str", "default": "0o664"},
     "fabric_documentation": {"type": "bool", "default": True},
     "include_connected_endpoints": {"type": "bool", "default": False},
-    "fabric_topology_details": {"type": "bool", "default": True},
+    "include_vrf_summary": {"type": "bool", "default": False},
+    "include_bgp_peer_groups": {"type": "bool", "default": False},
     "topology_csv_file": {"type": "str", "required": True},
     "topology_csv": {"type": "bool", "default": False},
     "p2p_links_csv_file": {"type": "str", "required": True},
@@ -103,7 +104,8 @@ class ActionModule(ActionBase):
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
             digital_twin=validated_args["digital_twin"],
-            fabric_topology_details=validated_args["fabric_topology_details"],
+            include_vrf_summary=validated_args["include_vrf_summary"],
+            include_bgp_peer_groups=validated_args["include_bgp_peer_groups"],
         )
         if output.fabric_documentation:
             result["changed"] = write_file(

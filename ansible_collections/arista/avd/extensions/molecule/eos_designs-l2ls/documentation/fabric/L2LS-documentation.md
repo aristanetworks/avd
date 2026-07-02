@@ -97,13 +97,6 @@
 | --- | ---- | ------------ |
 | L2LS_ISIS | ISIS-SPINE1 | 49.0001.1921.6825.5001.00 |
 
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| IPv4-UNDERLAY-PEERS | - | - | No | all | BGP-SPINE1, BGP-SPINE2 |
-| MLAG-IPv4-UNDERLAY-PEER | 65001 | - | No | all | BGP-SPINE1, BGP-SPINE2 |
-
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |

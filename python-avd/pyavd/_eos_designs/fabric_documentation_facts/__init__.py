@@ -35,7 +35,8 @@ class FabricDocumentationFacts(AvdFacts):
     _fabric_name: str
     _include_connected_endpoints: bool
     """Avoid building data for connected endpoints unless we need it."""
-    _fabric_topology_details: bool
+    _include_vrf_summary: bool
+    _include_bgp_peer_groups: bool
 
     # Overriding class vars from AvdFacts, since fabric documentation covers all devices.
     _hostvars = NotImplemented
@@ -48,14 +49,16 @@ class FabricDocumentationFacts(AvdFacts):
         fabric_name: str,
         include_connected_endpoints: bool,
         toc: bool,
-        fabric_topology_details: bool = True,
+        include_vrf_summary: bool = False,
+        include_bgp_peer_groups: bool = False,
     ) -> None:
         self.avd_facts = avd_facts
         self._fabric_name = fabric_name
         self.structured_configs = structured_configs
         self._include_connected_endpoints = include_connected_endpoints
         self._toc = toc
-        self._fabric_topology_details = fabric_topology_details
+        self._include_vrf_summary = include_vrf_summary
+        self._include_bgp_peer_groups = include_bgp_peer_groups
 
     def render(self) -> dict[str, Any]:
         return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
@@ -71,9 +74,14 @@ class FabricDocumentationFacts(AvdFacts):
         return self._toc
 
     @cached_property
-    def fabric_topology_details(self) -> bool:
-        """Render `VRF Summary` and `BGP Peer Groups` sections in the fabric documentation."""
-        return self._fabric_topology_details
+    def include_vrf_summary(self) -> bool:
+        """Include the VRF Summary section in the fabric documentation."""
+        return self._include_vrf_summary
+
+    @cached_property
+    def include_bgp_peer_groups(self) -> bool:
+        """Include the BGP Peer Groups section in the fabric documentation."""
+        return self._include_bgp_peer_groups
 
     @cached_property
     def fabric_switches(self) -> list[dict]:
@@ -100,7 +108,7 @@ class FabricDocumentationFacts(AvdFacts):
                     "router_isis_net": get(structured_config, "router_isis.net"),
                     # MPLS/SP fields
                     "mpls_router_id": get(structured_config, "mpls.ldp.router_id"),
-                    "mpls_ldp_enabled": get(structured_config, "mpls.ldp.shutdown") is False if get(structured_config, "mpls.ldp") else None,
+                    "mpls_ldp_enabled": get(structured_config, "mpls.ldp.shutdown") is False or None if get(structured_config, "mpls.ldp") else None,
                     "bgp_as": self.avd_facts[hostname].bgp_as,
                     "router_id": self.avd_facts[hostname].router_id,
                     "isis_sr_enabled": get(structured_config, "router_isis.segment_routing_mpls.enabled"),

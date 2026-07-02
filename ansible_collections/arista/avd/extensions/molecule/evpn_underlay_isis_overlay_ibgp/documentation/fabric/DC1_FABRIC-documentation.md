@@ -11,7 +11,6 @@
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [ISIS CLNS interfaces](#isis-clns-interfaces)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -166,13 +165,6 @@
 | DC1_FABRIC | DC1-SPINE4 | 49.0001.1921.6825.5004.00 |
 | DC1_FABRIC | DC1-SVC3A | 49.0001.1921.6825.5008.00 |
 | DC1_FABRIC | DC1-SVC3B | 49.0001.1921.6825.5009.00 |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| EVPN-OVERLAY-CORE | - | Loopback0 | Yes | all | DC1-BL1A, DC1-BL1B |
-| OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | DC1-BL1A, DC1-BL1B, DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SPINE1, DC1-SPINE4, DC1-SVC3A, DC1-SVC3B |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

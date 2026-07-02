@@ -10,8 +10,6 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -89,19 +87,6 @@
 | DIGITAL_TWIN | digital-twin-ethernet-ports-1 | 192.168.3.129/32 |
 | DIGITAL_TWIN | digital-twin-ethernet-ports-3 | 192.168.3.129/32 |
 | DIGITAL_TWIN | digital.twin.ethernet.ports.2 | 192.168.3.130/32 |
-
-### VRF Summary
-
-| VRF | RD Pattern | Import RT | Export RT | Nodes |
-| --- | ---------- | --------- | --------- | ----- |
-| TENANT_A_VRF_A | 1025 | 1025:1025 | 1025:1025 | digital-twin-ethernet-ports-1, digital-twin-ethernet-ports-3, digital.twin.ethernet.ports.2 |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| IPv4-UNDERLAY-PEERS | - | - | No | all | digital-twin-ethernet-ports-1, digital-twin-ethernet-ports-3, digital.twin.ethernet.ports.2 |
-| MLAG-IPv4-UNDERLAY-PEER | 65001 | - | No | all | digital-twin-ethernet-ports-1, digital.twin.ethernet.ports.2 |
 
 ### VRF Routing Protocols
 

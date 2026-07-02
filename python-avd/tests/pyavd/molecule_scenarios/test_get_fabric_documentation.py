@@ -82,7 +82,8 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
         topology_csv = get(first_hostvars, "eos_designs_documentation.topology_csv", default=False)
         p2p_links_csv = get(first_hostvars, "eos_designs_documentation.p2p_links_csv", default=False)
         toc = get(first_hostvars, "eos_designs_documentation.toc", default=True)
-        fabric_topology_details = get(first_hostvars, "eos_designs_documentation.fabric_topology_details", default=True)
+        include_vrf_summary = get(first_hostvars, "eos_designs_documentation.sections.vrf_summary", default=False)
+        include_bgp_peer_groups = get(first_hostvars, "eos_designs_documentation.sections.bgp_peer_groups", default=False)
 
         fabric_documentation_obj = get_fabric_documentation(
             avd_facts=molecule_avd_facts,
@@ -94,7 +95,8 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
             p2p_links_csv=p2p_links_csv,
             toc=toc,
             digital_twin=molecule_scenario.digital_twin,
-            fabric_topology_details=fabric_topology_details,
+            include_vrf_summary=include_vrf_summary,
+            include_bgp_peer_groups=include_bgp_peer_groups,
         )
 
     assert isinstance(fabric_documentation_obj, FabricDocumentation)

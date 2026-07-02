@@ -2463,19 +2463,21 @@ keys:
           with thousands of endpoints.'
         type: bool
         default: false
-      fabric_topology_details:
-        description: 'Include the `VRF Summary` and `BGP Peer Groups` sections in
-          the fabric-wide documentation.
+      sections:
+        description: 'Control individual documentation sections.
 
-          Both sections list every node where each VRF or peer group is present, which
-          can become
-
-          unreadable on large fabrics. Set to `false` to omit both sections; per-device
-          documentation
-
-          still covers the same data.'
-        type: bool
-        default: true
+          New sections default to `false` so users must opt in.'
+        type: dict
+        keys:
+          vrf_summary:
+            description: Include the `VRF Summary` section in the fabric-wide documentation.
+            type: bool
+            default: false
+          bgp_peer_groups:
+            description: Include the `BGP Peer Groups` section in the fabric-wide
+              documentation.
+            type: bool
+            default: false
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
         type: bool
