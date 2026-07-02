@@ -3880,7 +3880,9 @@ keys:
   ipv4_standard_acls:
     type: list
     primary_key: name
-    description: IPv4 standard access-lists catalog.
+    description: 'IPv4 standard access-lists catalog.
+
+      These access-lists will only be configured on devices where they are in use.'
     items:
       type: dict
       keys:

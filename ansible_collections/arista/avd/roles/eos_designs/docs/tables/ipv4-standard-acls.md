@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | IPv4 standard access-lists catalog. |
+    | [<samp>ipv4_standard_acls</samp>](## "ipv4_standard_acls") | List, items: Dictionary |  |  |  | IPv4 standard access-lists catalog.<br>These access-lists will only be configured on devices where they are in use. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_standard_acls.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv4_standard_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv4_standard_acls.[].entries") | List, items: Dictionary |  |  |  |  |
@@ -26,6 +26,7 @@
 
     ```yaml
     # IPv4 standard access-lists catalog.
+    # These access-lists will only be configured on devices where they are in use.
     ipv4_standard_acls:
 
         # Access-list Name.
