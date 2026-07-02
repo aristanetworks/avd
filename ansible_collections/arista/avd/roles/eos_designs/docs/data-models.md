@@ -867,6 +867,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 
 ## Catalogs
 
+### BGP Peer Filters Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-peer-filters-catalog.md
+--8<--
+
 ### IPv4 extended ACLs Catalog
 
 --8<--
