@@ -57,7 +57,7 @@ management_ldap:
       port: 101
       vrf: vrf2
 
-    # Host3b: Same host name with vrf (no port)
+    # Host8: Same host name with vrf (no port)
     - host: 10.1.1.1
       vrf: vrf3
 
