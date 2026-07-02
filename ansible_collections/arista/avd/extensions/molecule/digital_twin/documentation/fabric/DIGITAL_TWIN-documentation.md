@@ -10,7 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Routing Protocols](#vrf-routing-protocols)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -88,7 +88,7 @@
 | DIGITAL_TWIN | digital-twin-ethernet-ports-3 | 192.168.3.129/32 |
 | DIGITAL_TWIN | digital.twin.ethernet.ports.2 | 192.168.3.130/32 |
 
-### VRF Routing Protocols
+### VRF Redistribute Summary
 
 | Node | Type | VRF | Router ID | Redistribute |
 | ---- | ---- | --- | --------- | ------------ |
