@@ -40,8 +40,8 @@
 {%             endif %}
 | {{ job.name }} | {{ period }} | {{ job.command }} | {{ job.max_log_files }} | {{ job.timeout | arista.avd.default("-") }} | {{ job.logging_verbose | arista.avd.default("-") }} | {{ job.loglocation | arista.avd.default("-") }} | {{ job.max_total_size | arista.avd.default("-") }} |
 {%         endfor %}
-
 {%     endif %}
+
 ### Schedule Device Configuration
 
 ```eos
