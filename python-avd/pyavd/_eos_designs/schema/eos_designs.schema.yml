@@ -643,6 +643,15 @@ keys:
       Only supported in combination with MPLS overlay.
 
       '
+  bgp_peer_filters_catalog:
+    type: list
+    description: 'BGP peer filter catalog.
+
+      Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in listen ranges.'
+    $ref: eos_cli_config_gen#/keys/peer_filters
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -5057,6 +5066,38 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                  with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.
+
+                        note: `peer_filter` or `remote_as` is required.'
+                      convert_types:
+                      - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: 'Peer-filter name.
+
+                        note: `peer_filter` or `remote_as` is required.
+
+                        '
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -6944,6 +6985,17 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges
+                      description: 'Note - vrfs[].bgp_peer_groups[].nodes[] must have
+                        a node matching with the hostname to configure the bgp listen
+                        ranges.
+
+                        When set for VRF default, this is configured under root `router
+                        bgp <as>`. For other VRFs this is configured under
+
+                        respective VRF.'
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -11756,12 +11808,14 @@ $defs:
             type: bool
             description: 'Enable address locking for IPv4.
 
-              Key `ipv4` can only be set to false.
+              For Port-Channels, only `ipv4: false` is supported.
 
               For EOS version 4.31 and higher.'
           ipv6:
             type: bool
             description: 'Enable address locking for IPv6.
+
+              For Port-Channels, only `ipv6: false` is supported.
 
               For EOS version 4.31 and higher.'
       poe:
@@ -13545,8 +13599,8 @@ $defs:
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
-            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
-              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+            description: 'Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN
+              interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
 
               L3 Reachability is required for this to work, the preferred method to
               establish underlay connectivity is to use core_interfaces.

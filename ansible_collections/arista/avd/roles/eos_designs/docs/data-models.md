@@ -685,7 +685,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
 --8<--
 
-### Node type EVPN gateway configuration
+### Node type EVPN to MPLS IP-VPN gateway configuration
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
@@ -866,6 +866,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 --8<--
 
 ## Catalogs
+
+### BGP Peer Filters Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-peer-filters-catalog.md
+--8<--
 
 ### IPv4 extended ACLs Catalog
 
