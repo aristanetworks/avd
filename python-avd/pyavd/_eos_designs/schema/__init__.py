@@ -3090,14 +3090,16 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4: bool | None
                 """
                 Enable address locking for IPv4.
-                Key `ipv4` can only be set to false.
-                For EOS version 4.31 and
-                higher.
+                For Port-Channels, only `ipv4: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
                 ipv6: bool | None
                 """
                 Enable address locking for IPv6.
-                For EOS version 4.31 and higher.
+                For Port-Channels, only `ipv6: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
 
                 if TYPE_CHECKING:
@@ -3112,12 +3114,14 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             ipv4:
                                Enable address locking for IPv4.
-                               Key `ipv4` can only be set to false.
-                               For EOS version 4.31 and
-                               higher.
+                               For Port-Channels, only `ipv4: false` is supported.
+                               For EOS version
+                               4.31 and higher.
                             ipv6:
                                Enable address locking for IPv6.
-                               For EOS version 4.31 and higher.
+                               For Port-Channels, only `ipv6: false` is supported.
+                               For EOS version
+                               4.31 and higher.
 
                         """
 
@@ -6707,10 +6711,17 @@ class EosDesigns(EosDesignsRootModel):
         class Terminattr(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cvtargetconfigs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Cvtargetconfigs._item_type = str
+
             _fields: ClassVar[dict] = {
                 "ingestexclude": {"type": str},
                 "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
                 "disable_aaa": {"type": bool, "default": False},
+                "cvtargetconfigs": {"type": Cvtargetconfigs},
+                "flowdns": {"type": bool},
             }
             ingestexclude: str | None
             """
@@ -6732,6 +6743,21 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            cvtargetconfigs: Cvtargetconfigs
+            """
+            Set the target configuration path(s) for dynamic device configuration from CloudVision.
+            Used for MSS
+            (Multi-Domain Segmentation Service) integrations.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            flowdns: bool | None
+            """
+            Enable DNS resolution for flow records (TerminAttr default is true).
+            Set to false to disable DNS
+            lookups on sFlow/IPFIX flow records.
+            """
 
             if TYPE_CHECKING:
 
@@ -6741,6 +6767,8 @@ class EosDesigns(EosDesignsRootModel):
                     ingestexclude: str | None | UndefinedType = Undefined,
                     smashexcludes: str | UndefinedType = Undefined,
                     disable_aaa: bool | UndefinedType = Undefined,
+                    cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
+                    flowdns: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Terminattr.
@@ -6759,6 +6787,17 @@ class EosDesigns(EosDesignsRootModel):
                            Disable AAA authorization and accounting.
                            When setting this flag, all commands pushed from
                            CloudVision are applied directly to the CLI without authorization.
+                        cvtargetconfigs:
+                           Set the target configuration path(s) for dynamic device configuration from CloudVision.
+                           Used for MSS
+                           (Multi-Domain Segmentation Service) integrations.
+
+
+                           Subclass of AvdList with `str` items.
+                        flowdns:
+                           Enable DNS resolution for flow records (TerminAttr default is true).
+                           Set to false to disable DNS
+                           lookups on sFlow/IPFIX flow records.
 
                     """
 
@@ -11223,7 +11262,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -12159,7 +12198,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -16516,7 +16555,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -17461,7 +17500,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -19048,6 +19087,1133 @@ class EosDesigns(EosDesignsRootModel):
                     topology_csv: Generate Topology CSV with all interfaces towards other devices.
                     p2p_links_csv: Generate P2P links CSV with all routed point-to-point links between devices.
                     toc: Generate the table of content(TOC) on fabric documentation.
+
+                """
+
+    class ErrdisableSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Causes(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Acl(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Acl.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class ArpInspection(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ArpInspection.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Bpduguard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Bpduguard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Dot1xCoa(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1xCoa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Dot1xPhoneClassification(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1xPhoneClassification.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Dot1xSessionReplace(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1xSessionReplace.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class ErrorCorrectionEncoding(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ErrorCorrectionEncoding.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class FabricCapacityLow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        FabricCapacityLow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class HardwareSpeedGroup(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HardwareSpeedGroup.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class HitlessReloadDown(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        HitlessReloadDown.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class InterfaceSpeed(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        InterfaceSpeed.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class InternalError(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        InternalError.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class LacpRateLimit(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        LacpRateLimit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class LinkChange(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}}
+                detection: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, detection: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        LinkChange.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+
+                        """
+
+            class LinkFlap(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        LinkFlap.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class NoInternalVlan(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        NoInternalVlan.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class PortBreakout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PortBreakout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Portchannelguard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Portchannelguard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Portsec(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Portsec.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class SpeedMisconfigured(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        SpeedMisconfigured.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class StormControl(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        StormControl.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class StuckQueue(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        StuckQueue.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class SwitchcardUnreachable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        SwitchcardUnreachable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class TapPortInit(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        TapPortInit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Tapagg(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Tapagg.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Tpid(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Tpid.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class TransceiverAdapter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TransceiverAdapter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class UplinkFailureDetection(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        UplinkFailureDetection.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class XcvrMisconfigured(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        XcvrMisconfigured.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class XcvrOverheat(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        XcvrOverheat.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class XcvrPowerUnsupported(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                detection: bool | None
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        detection: bool | None | UndefinedType = Undefined,
+                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery_interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        XcvrPowerUnsupported.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            detection: detection
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class XcvrUnsupported(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                recovery: bool | None
+                recovery_interval: int | None
+                """Interval for each recovery cause in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        XcvrUnsupported.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            recovery: recovery
+                            recovery_interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "acl": {"type": Acl},
+                "arp_inspection": {"type": ArpInspection},
+                "bpduguard": {"type": Bpduguard},
+                "dot1x": {"type": Dot1x},
+                "dot1x_coa": {"type": Dot1xCoa},
+                "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
+                "dot1x_session_replace": {"type": Dot1xSessionReplace},
+                "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                "fabric_capacity_low": {"type": FabricCapacityLow},
+                "hardware_speed_group": {"type": HardwareSpeedGroup},
+                "hitless_reload_down": {"type": HitlessReloadDown},
+                "interface_speed": {"type": InterfaceSpeed},
+                "internal_error": {"type": InternalError},
+                "lacp_rate_limit": {"type": LacpRateLimit},
+                "link_change": {"type": LinkChange},
+                "link_flap": {"type": LinkFlap},
+                "no_internal_vlan": {"type": NoInternalVlan},
+                "port_breakout": {"type": PortBreakout},
+                "portchannelguard": {"type": Portchannelguard},
+                "portsec": {"type": Portsec},
+                "speed_misconfigured": {"type": SpeedMisconfigured},
+                "storm_control": {"type": StormControl},
+                "stuck_queue": {"type": StuckQueue},
+                "switchcard_unreachable": {"type": SwitchcardUnreachable},
+                "tap_port_init": {"type": TapPortInit},
+                "tapagg": {"type": Tapagg},
+                "tpid": {"type": Tpid},
+                "transceiver_adapter": {"type": TransceiverAdapter},
+                "uplink_failure_detection": {"type": UplinkFailureDetection},
+                "xcvr_misconfigured": {"type": XcvrMisconfigured},
+                "xcvr_overheat": {"type": XcvrOverheat},
+                "xcvr_power_unsupported": {"type": XcvrPowerUnsupported},
+                "xcvr_unsupported": {"type": XcvrUnsupported},
+            }
+            acl: Acl
+            """Subclass of AvdModel."""
+            arp_inspection: ArpInspection
+            """Subclass of AvdModel."""
+            bpduguard: Bpduguard
+            """Subclass of AvdModel."""
+            dot1x: Dot1x
+            """Subclass of AvdModel."""
+            dot1x_coa: Dot1xCoa
+            """Subclass of AvdModel."""
+            dot1x_phone_classification: Dot1xPhoneClassification
+            """Subclass of AvdModel."""
+            dot1x_session_replace: Dot1xSessionReplace
+            """Subclass of AvdModel."""
+            error_correction_encoding: ErrorCorrectionEncoding
+            """Subclass of AvdModel."""
+            fabric_capacity_low: FabricCapacityLow
+            """Subclass of AvdModel."""
+            hardware_speed_group: HardwareSpeedGroup
+            """Subclass of AvdModel."""
+            hitless_reload_down: HitlessReloadDown
+            """Subclass of AvdModel."""
+            interface_speed: InterfaceSpeed
+            """Subclass of AvdModel."""
+            internal_error: InternalError
+            """Subclass of AvdModel."""
+            lacp_rate_limit: LacpRateLimit
+            """Subclass of AvdModel."""
+            link_change: LinkChange
+            """Subclass of AvdModel."""
+            link_flap: LinkFlap
+            """Subclass of AvdModel."""
+            no_internal_vlan: NoInternalVlan
+            """Subclass of AvdModel."""
+            port_breakout: PortBreakout
+            """Subclass of AvdModel."""
+            portchannelguard: Portchannelguard
+            """Subclass of AvdModel."""
+            portsec: Portsec
+            """Subclass of AvdModel."""
+            speed_misconfigured: SpeedMisconfigured
+            """Subclass of AvdModel."""
+            storm_control: StormControl
+            """Subclass of AvdModel."""
+            stuck_queue: StuckQueue
+            """Subclass of AvdModel."""
+            switchcard_unreachable: SwitchcardUnreachable
+            """Subclass of AvdModel."""
+            tap_port_init: TapPortInit
+            """Subclass of AvdModel."""
+            tapagg: Tapagg
+            """Subclass of AvdModel."""
+            tpid: Tpid
+            """Subclass of AvdModel."""
+            transceiver_adapter: TransceiverAdapter
+            """Subclass of AvdModel."""
+            uplink_failure_detection: UplinkFailureDetection
+            """Subclass of AvdModel."""
+            xcvr_misconfigured: XcvrMisconfigured
+            """Subclass of AvdModel."""
+            xcvr_overheat: XcvrOverheat
+            """Subclass of AvdModel."""
+            xcvr_power_unsupported: XcvrPowerUnsupported
+            """Subclass of AvdModel."""
+            xcvr_unsupported: XcvrUnsupported
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    acl: Acl | UndefinedType = Undefined,
+                    arp_inspection: ArpInspection | UndefinedType = Undefined,
+                    bpduguard: Bpduguard | UndefinedType = Undefined,
+                    dot1x: Dot1x | UndefinedType = Undefined,
+                    dot1x_coa: Dot1xCoa | UndefinedType = Undefined,
+                    dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
+                    dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
+                    error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                    fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
+                    hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
+                    hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
+                    interface_speed: InterfaceSpeed | UndefinedType = Undefined,
+                    internal_error: InternalError | UndefinedType = Undefined,
+                    lacp_rate_limit: LacpRateLimit | UndefinedType = Undefined,
+                    link_change: LinkChange | UndefinedType = Undefined,
+                    link_flap: LinkFlap | UndefinedType = Undefined,
+                    no_internal_vlan: NoInternalVlan | UndefinedType = Undefined,
+                    port_breakout: PortBreakout | UndefinedType = Undefined,
+                    portchannelguard: Portchannelguard | UndefinedType = Undefined,
+                    portsec: Portsec | UndefinedType = Undefined,
+                    speed_misconfigured: SpeedMisconfigured | UndefinedType = Undefined,
+                    storm_control: StormControl | UndefinedType = Undefined,
+                    stuck_queue: StuckQueue | UndefinedType = Undefined,
+                    switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
+                    tap_port_init: TapPortInit | UndefinedType = Undefined,
+                    tapagg: Tapagg | UndefinedType = Undefined,
+                    tpid: Tpid | UndefinedType = Undefined,
+                    transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
+                    uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
+                    xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
+                    xcvr_overheat: XcvrOverheat | UndefinedType = Undefined,
+                    xcvr_power_unsupported: XcvrPowerUnsupported | UndefinedType = Undefined,
+                    xcvr_unsupported: XcvrUnsupported | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Causes.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        acl: Subclass of AvdModel.
+                        arp_inspection: Subclass of AvdModel.
+                        bpduguard: Subclass of AvdModel.
+                        dot1x: Subclass of AvdModel.
+                        dot1x_coa: Subclass of AvdModel.
+                        dot1x_phone_classification: Subclass of AvdModel.
+                        dot1x_session_replace: Subclass of AvdModel.
+                        error_correction_encoding: Subclass of AvdModel.
+                        fabric_capacity_low: Subclass of AvdModel.
+                        hardware_speed_group: Subclass of AvdModel.
+                        hitless_reload_down: Subclass of AvdModel.
+                        interface_speed: Subclass of AvdModel.
+                        internal_error: Subclass of AvdModel.
+                        lacp_rate_limit: Subclass of AvdModel.
+                        link_change: Subclass of AvdModel.
+                        link_flap: Subclass of AvdModel.
+                        no_internal_vlan: Subclass of AvdModel.
+                        port_breakout: Subclass of AvdModel.
+                        portchannelguard: Subclass of AvdModel.
+                        portsec: Subclass of AvdModel.
+                        speed_misconfigured: Subclass of AvdModel.
+                        storm_control: Subclass of AvdModel.
+                        stuck_queue: Subclass of AvdModel.
+                        switchcard_unreachable: Subclass of AvdModel.
+                        tap_port_init: Subclass of AvdModel.
+                        tapagg: Subclass of AvdModel.
+                        tpid: Subclass of AvdModel.
+                        transceiver_adapter: Subclass of AvdModel.
+                        uplink_failure_detection: Subclass of AvdModel.
+                        xcvr_misconfigured: Subclass of AvdModel.
+                        xcvr_overheat: Subclass of AvdModel.
+                        xcvr_power_unsupported: Subclass of AvdModel.
+                        xcvr_unsupported: Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {"recovery_interval": {"type": int}, "causes": {"type": Causes}}
+        recovery_interval: int | None
+        """Interval for all recovery causes in seconds."""
+        causes: Causes
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, recovery_interval: int | None | UndefinedType = Undefined, causes: Causes | UndefinedType = Undefined) -> None:
+                """
+                ErrdisableSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    recovery_interval: Interval for all recovery causes in seconds.
+                    causes: Subclass of AvdModel.
 
                 """
 
@@ -25971,14 +27137,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -25993,12 +27161,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -27503,6 +28673,69 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ListenRangesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "remote_as": {"type": str},
+                    "peer_id_include_router_id": {"type": bool},
+                    "peer_filter": {"type": str},
+                }
+                prefix: str
+                """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                remote_as: str | None
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                note: `peer_filter` or `remote_as` is required.
+                """
+                peer_id_include_router_id: bool | None
+                """Include router ID as part of peer filter."""
+                peer_filter: str | None
+                """
+                Peer-filter name.
+                note: `peer_filter` or `remote_as` is required.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
+                        peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                        peer_filter: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ListenRangesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                            remote_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                               note: `peer_filter` or `remote_as` is required.
+                            peer_id_include_router_id: Include router ID as part of peer filter.
+                            peer_filter:
+                               Peer-filter name.
+                               note: `peer_filter` or `remote_as` is required.
+
+                        """
+
+            class ListenRanges(AvdList[ListenRangesItem]):
+                """Subclass of AvdList with `ListenRangesItem` items."""
+
+            ListenRanges._item_type = ListenRangesItem
+
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -27889,6 +29122,7 @@ class EosDesigns(EosDesignsRootModel):
                 "nodes": {"type": Nodes},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "listen_ranges": {"type": ListenRanges},
                 "metadata": {"type": Metadata},
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
@@ -27954,6 +29188,13 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             address_family_ipv6: AddressFamilyIpv6
             """Subclass of AvdModel."""
+            listen_ranges: ListenRanges
+            """
+            Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+            listen ranges.
+
+            Subclass of AvdList with `ListenRangesItem` items.
+            """
             metadata: Metadata
             """Subclass of AvdModel."""
             remote_as: str | None
@@ -28058,6 +29299,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    listen_ranges: ListenRanges | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
@@ -28121,6 +29363,11 @@ class EosDesigns(EosDesignsRootModel):
                            of AvdList with `str` items.
                         address_family_ipv4: Subclass of AvdModel.
                         address_family_ipv6: Subclass of AvdModel.
+                        listen_ranges:
+                           Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                           listen ranges.
+
+                           Subclass of AvdList with `ListenRangesItem` items.
                         metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -34492,6 +35739,69 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class ListenRangesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "prefix": {"type": str},
+                        "remote_as": {"type": str},
+                        "peer_id_include_router_id": {"type": bool},
+                        "peer_filter": {"type": str},
+                    }
+                    prefix: str
+                    """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                    remote_as: str | None
+                    """
+                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                    For asdot notation in
+                    YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                    number.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+                    peer_id_include_router_id: bool | None
+                    """Include router ID as part of peer filter."""
+                    peer_filter: str | None
+                    """
+                    Peer-filter name.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            remote_as: str | None | UndefinedType = Undefined,
+                            peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                            peer_filter: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ListenRangesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                remote_as:
+                                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                   For asdot notation in
+                                   YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                   number.
+                                   note: `peer_filter` or `remote_as` is required.
+                                peer_id_include_router_id: Include router ID as part of peer filter.
+                                peer_filter:
+                                   Peer-filter name.
+                                   note: `peer_filter` or `remote_as` is required.
+
+                            """
+
+                class ListenRanges(AvdList[ListenRangesItem]):
+                    """Subclass of AvdList with `ListenRangesItem` items."""
+
+                ListenRanges._item_type = ListenRangesItem
+
                 class Metadata(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -34885,6 +36195,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_password": {"type": str},
                     "address_family_ipv4": {"type": AddressFamilyIpv4},
                     "address_family_ipv6": {"type": AddressFamilyIpv6},
+                    "listen_ranges": {"type": ListenRanges},
                     "metadata": {"type": Metadata},
                     "remote_as": {"type": str},
                     "local_as": {"type": str},
@@ -34950,6 +36261,17 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 address_family_ipv6: AddressFamilyIpv6
                 """Subclass of AvdModel."""
+                listen_ranges: ListenRanges
+                """
+                Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                bgp listen ranges.
+                When set for VRF default, this is configured under root `router bgp <as>`. For
+                other VRFs this is configured under
+                respective VRF.
+
+                Subclass of AvdList with `ListenRangesItem`
+                items.
+                """
                 metadata: Metadata
                 """Subclass of AvdModel."""
                 remote_as: str | None
@@ -35054,6 +36376,7 @@ class EosDesigns(EosDesignsRootModel):
                         cleartext_password: str | None | UndefinedType = Undefined,
                         address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                         address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                        listen_ranges: ListenRanges | UndefinedType = Undefined,
                         metadata: Metadata | UndefinedType = Undefined,
                         remote_as: str | None | UndefinedType = Undefined,
                         local_as: str | None | UndefinedType = Undefined,
@@ -35117,6 +36440,15 @@ class EosDesigns(EosDesignsRootModel):
                                make use of a vault or similar.
                             address_family_ipv4: Subclass of AvdModel.
                             address_family_ipv6: Subclass of AvdModel.
+                            listen_ranges:
+                               Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                               bgp listen ranges.
+                               When set for VRF default, this is configured under root `router bgp <as>`. For
+                               other VRFs this is configured under
+                               respective VRF.
+
+                               Subclass of AvdList with `ListenRangesItem`
+                               items.
                             metadata: Subclass of AvdModel.
                             remote_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -39138,6 +40470,946 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ErrdisableCauses(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Acl(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Acl.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class ArpInspection(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ArpInspection.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Bpduguard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Bpduguard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Dot1x(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1x.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xCoa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xCoa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xPhoneClassification(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xPhoneClassification.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xSessionReplace(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xSessionReplace.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class ErrorCorrectionEncoding(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ErrorCorrectionEncoding.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class FabricCapacityLow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            FabricCapacityLow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class HardwareSpeedGroup(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            HardwareSpeedGroup.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class HitlessReloadDown(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            HitlessReloadDown.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class InterfaceSpeed(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            InterfaceSpeed.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class InternalError(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            InternalError.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class LacpRateLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LacpRateLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class LinkChange(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LinkChange.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+
+                            """
+
+                class LinkFlap(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LinkFlap.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class NoInternalVlan(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            NoInternalVlan.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class PortBreakout(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            PortBreakout.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Portchannelguard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Portchannelguard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Portsec(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Portsec.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class SpeedMisconfigured(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SpeedMisconfigured.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class StormControl(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            StormControl.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class StuckQueue(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            StuckQueue.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class SwitchcardUnreachable(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SwitchcardUnreachable.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class TapPortInit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            TapPortInit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Tapagg(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tapagg.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Tpid(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tpid.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class TransceiverAdapter(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            TransceiverAdapter.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class UplinkFailureDetection(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            UplinkFailureDetection.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class XcvrMisconfigured(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrMisconfigured.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrOverheat(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrOverheat.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrPowerUnsupported(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrPowerUnsupported.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrUnsupported(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrUnsupported.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": Acl},
+                    "arp_inspection": {"type": ArpInspection},
+                    "bpduguard": {"type": Bpduguard},
+                    "dot1x": {"type": Dot1x},
+                    "dot1x_coa": {"type": Dot1xCoa},
+                    "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
+                    "dot1x_session_replace": {"type": Dot1xSessionReplace},
+                    "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                    "fabric_capacity_low": {"type": FabricCapacityLow},
+                    "hardware_speed_group": {"type": HardwareSpeedGroup},
+                    "hitless_reload_down": {"type": HitlessReloadDown},
+                    "interface_speed": {"type": InterfaceSpeed},
+                    "internal_error": {"type": InternalError},
+                    "lacp_rate_limit": {"type": LacpRateLimit},
+                    "link_change": {"type": LinkChange},
+                    "link_flap": {"type": LinkFlap},
+                    "no_internal_vlan": {"type": NoInternalVlan},
+                    "port_breakout": {"type": PortBreakout},
+                    "portchannelguard": {"type": Portchannelguard},
+                    "portsec": {"type": Portsec},
+                    "speed_misconfigured": {"type": SpeedMisconfigured},
+                    "storm_control": {"type": StormControl},
+                    "stuck_queue": {"type": StuckQueue},
+                    "switchcard_unreachable": {"type": SwitchcardUnreachable},
+                    "tap_port_init": {"type": TapPortInit},
+                    "tapagg": {"type": Tapagg},
+                    "tpid": {"type": Tpid},
+                    "transceiver_adapter": {"type": TransceiverAdapter},
+                    "uplink_failure_detection": {"type": UplinkFailureDetection},
+                    "xcvr_misconfigured": {"type": XcvrMisconfigured},
+                    "xcvr_overheat": {"type": XcvrOverheat},
+                    "xcvr_power_unsupported": {"type": XcvrPowerUnsupported},
+                    "xcvr_unsupported": {"type": XcvrUnsupported},
+                }
+                acl: Acl
+                """Subclass of AvdModel."""
+                arp_inspection: ArpInspection
+                """Subclass of AvdModel."""
+                bpduguard: Bpduguard
+                """Subclass of AvdModel."""
+                dot1x: Dot1x
+                """Subclass of AvdModel."""
+                dot1x_coa: Dot1xCoa
+                """Subclass of AvdModel."""
+                dot1x_phone_classification: Dot1xPhoneClassification
+                """Subclass of AvdModel."""
+                dot1x_session_replace: Dot1xSessionReplace
+                """Subclass of AvdModel."""
+                error_correction_encoding: ErrorCorrectionEncoding
+                """Subclass of AvdModel."""
+                fabric_capacity_low: FabricCapacityLow
+                """Subclass of AvdModel."""
+                hardware_speed_group: HardwareSpeedGroup
+                """Subclass of AvdModel."""
+                hitless_reload_down: HitlessReloadDown
+                """Subclass of AvdModel."""
+                interface_speed: InterfaceSpeed
+                """Subclass of AvdModel."""
+                internal_error: InternalError
+                """Subclass of AvdModel."""
+                lacp_rate_limit: LacpRateLimit
+                """Subclass of AvdModel."""
+                link_change: LinkChange
+                """Subclass of AvdModel."""
+                link_flap: LinkFlap
+                """Subclass of AvdModel."""
+                no_internal_vlan: NoInternalVlan
+                """Subclass of AvdModel."""
+                port_breakout: PortBreakout
+                """Subclass of AvdModel."""
+                portchannelguard: Portchannelguard
+                """Subclass of AvdModel."""
+                portsec: Portsec
+                """Subclass of AvdModel."""
+                speed_misconfigured: SpeedMisconfigured
+                """Subclass of AvdModel."""
+                storm_control: StormControl
+                """Subclass of AvdModel."""
+                stuck_queue: StuckQueue
+                """Subclass of AvdModel."""
+                switchcard_unreachable: SwitchcardUnreachable
+                """Subclass of AvdModel."""
+                tap_port_init: TapPortInit
+                """Subclass of AvdModel."""
+                tapagg: Tapagg
+                """Subclass of AvdModel."""
+                tpid: Tpid
+                """Subclass of AvdModel."""
+                transceiver_adapter: TransceiverAdapter
+                """Subclass of AvdModel."""
+                uplink_failure_detection: UplinkFailureDetection
+                """Subclass of AvdModel."""
+                xcvr_misconfigured: XcvrMisconfigured
+                """Subclass of AvdModel."""
+                xcvr_overheat: XcvrOverheat
+                """Subclass of AvdModel."""
+                xcvr_power_unsupported: XcvrPowerUnsupported
+                """Subclass of AvdModel."""
+                xcvr_unsupported: XcvrUnsupported
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: Acl | UndefinedType = Undefined,
+                        arp_inspection: ArpInspection | UndefinedType = Undefined,
+                        bpduguard: Bpduguard | UndefinedType = Undefined,
+                        dot1x: Dot1x | UndefinedType = Undefined,
+                        dot1x_coa: Dot1xCoa | UndefinedType = Undefined,
+                        dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
+                        dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
+                        error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                        fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
+                        hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
+                        hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
+                        interface_speed: InterfaceSpeed | UndefinedType = Undefined,
+                        internal_error: InternalError | UndefinedType = Undefined,
+                        lacp_rate_limit: LacpRateLimit | UndefinedType = Undefined,
+                        link_change: LinkChange | UndefinedType = Undefined,
+                        link_flap: LinkFlap | UndefinedType = Undefined,
+                        no_internal_vlan: NoInternalVlan | UndefinedType = Undefined,
+                        port_breakout: PortBreakout | UndefinedType = Undefined,
+                        portchannelguard: Portchannelguard | UndefinedType = Undefined,
+                        portsec: Portsec | UndefinedType = Undefined,
+                        speed_misconfigured: SpeedMisconfigured | UndefinedType = Undefined,
+                        storm_control: StormControl | UndefinedType = Undefined,
+                        stuck_queue: StuckQueue | UndefinedType = Undefined,
+                        switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
+                        tap_port_init: TapPortInit | UndefinedType = Undefined,
+                        tapagg: Tapagg | UndefinedType = Undefined,
+                        tpid: Tpid | UndefinedType = Undefined,
+                        transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
+                        uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
+                        xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
+                        xcvr_overheat: XcvrOverheat | UndefinedType = Undefined,
+                        xcvr_power_unsupported: XcvrPowerUnsupported | UndefinedType = Undefined,
+                        xcvr_unsupported: XcvrUnsupported | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ErrdisableCauses.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: Subclass of AvdModel.
+                            arp_inspection: Subclass of AvdModel.
+                            bpduguard: Subclass of AvdModel.
+                            dot1x: Subclass of AvdModel.
+                            dot1x_coa: Subclass of AvdModel.
+                            dot1x_phone_classification: Subclass of AvdModel.
+                            dot1x_session_replace: Subclass of AvdModel.
+                            error_correction_encoding: Subclass of AvdModel.
+                            fabric_capacity_low: Subclass of AvdModel.
+                            hardware_speed_group: Subclass of AvdModel.
+                            hitless_reload_down: Subclass of AvdModel.
+                            interface_speed: Subclass of AvdModel.
+                            internal_error: Subclass of AvdModel.
+                            lacp_rate_limit: Subclass of AvdModel.
+                            link_change: Subclass of AvdModel.
+                            link_flap: Subclass of AvdModel.
+                            no_internal_vlan: Subclass of AvdModel.
+                            port_breakout: Subclass of AvdModel.
+                            portchannelguard: Subclass of AvdModel.
+                            portsec: Subclass of AvdModel.
+                            speed_misconfigured: Subclass of AvdModel.
+                            storm_control: Subclass of AvdModel.
+                            stuck_queue: Subclass of AvdModel.
+                            switchcard_unreachable: Subclass of AvdModel.
+                            tap_port_init: Subclass of AvdModel.
+                            tapagg: Subclass of AvdModel.
+                            tpid: Subclass of AvdModel.
+                            transceiver_adapter: Subclass of AvdModel.
+                            uplink_failure_detection: Subclass of AvdModel.
+                            xcvr_misconfigured: Subclass of AvdModel.
+                            xcvr_overheat: Subclass of AvdModel.
+                            xcvr_power_unsupported: Subclass of AvdModel.
+                            xcvr_unsupported: Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -39162,6 +41434,7 @@ class EosDesigns(EosDesignsRootModel):
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
                 "hardware_validation": {"type": bool, "default": True},
+                "errdisable_causes": {"type": ErrdisableCauses},
             }
             queue_monitor: bool
             """
@@ -39351,6 +41624,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            errdisable_causes: ErrdisableCauses
+            """
+            Per-cause support for errdisable detection and recovery.
+            Causes with `detection: false` will
+            suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+            Causes with `recovery: false` will suppress recovery for that cause even if enabled in
+            `errdisable_settings.causes.<cause>.recovery`.
+            The supported causes depends on the EOS version and
+            the hardware platform.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -39380,6 +41665,7 @@ class EosDesigns(EosDesignsRootModel):
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                     hardware_validation: bool | UndefinedType = Undefined,
+                    errdisable_causes: ErrdisableCauses | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -39488,6 +41774,16 @@ class EosDesigns(EosDesignsRootModel):
                            When `false`, all hardware tests are skipped, therefore
                            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
                            are ignored.
+                        errdisable_causes:
+                           Per-cause support for errdisable detection and recovery.
+                           Causes with `detection: false` will
+                           suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+                           Causes with `recovery: false` will suppress recovery for that cause even if enabled in
+                           `errdisable_settings.causes.<cause>.recovery`.
+                           The supported causes depends on the EOS version and
+                           the hardware platform.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -39923,6 +42219,946 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ErrdisableCauses(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Acl(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Acl.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class ArpInspection(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ArpInspection.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Bpduguard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Bpduguard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Dot1x(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1x.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xCoa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xCoa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xPhoneClassification(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xPhoneClassification.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Dot1xSessionReplace(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Dot1xSessionReplace.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class ErrorCorrectionEncoding(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ErrorCorrectionEncoding.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class FabricCapacityLow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            FabricCapacityLow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class HardwareSpeedGroup(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            HardwareSpeedGroup.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class HitlessReloadDown(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            HitlessReloadDown.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class InterfaceSpeed(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            InterfaceSpeed.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class InternalError(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            InternalError.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class LacpRateLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LacpRateLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class LinkChange(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LinkChange.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+
+                            """
+
+                class LinkFlap(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            LinkFlap.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class NoInternalVlan(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            NoInternalVlan.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class PortBreakout(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            PortBreakout.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Portchannelguard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Portchannelguard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Portsec(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Portsec.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class SpeedMisconfigured(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SpeedMisconfigured.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class StormControl(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            StormControl.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class StuckQueue(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            StuckQueue.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class SwitchcardUnreachable(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SwitchcardUnreachable.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class TapPortInit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            TapPortInit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class Tapagg(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tapagg.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class Tpid(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Tpid.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class TransceiverAdapter(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            TransceiverAdapter.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class UplinkFailureDetection(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            UplinkFailureDetection.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                class XcvrMisconfigured(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrMisconfigured.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrOverheat(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrOverheat.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrPowerUnsupported(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrPowerUnsupported.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                detection: detection
+                                recovery: recovery
+
+                            """
+
+                class XcvrUnsupported(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
+                            """
+                            XcvrUnsupported.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                recovery: recovery
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": Acl},
+                    "arp_inspection": {"type": ArpInspection},
+                    "bpduguard": {"type": Bpduguard},
+                    "dot1x": {"type": Dot1x},
+                    "dot1x_coa": {"type": Dot1xCoa},
+                    "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
+                    "dot1x_session_replace": {"type": Dot1xSessionReplace},
+                    "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                    "fabric_capacity_low": {"type": FabricCapacityLow},
+                    "hardware_speed_group": {"type": HardwareSpeedGroup},
+                    "hitless_reload_down": {"type": HitlessReloadDown},
+                    "interface_speed": {"type": InterfaceSpeed},
+                    "internal_error": {"type": InternalError},
+                    "lacp_rate_limit": {"type": LacpRateLimit},
+                    "link_change": {"type": LinkChange},
+                    "link_flap": {"type": LinkFlap},
+                    "no_internal_vlan": {"type": NoInternalVlan},
+                    "port_breakout": {"type": PortBreakout},
+                    "portchannelguard": {"type": Portchannelguard},
+                    "portsec": {"type": Portsec},
+                    "speed_misconfigured": {"type": SpeedMisconfigured},
+                    "storm_control": {"type": StormControl},
+                    "stuck_queue": {"type": StuckQueue},
+                    "switchcard_unreachable": {"type": SwitchcardUnreachable},
+                    "tap_port_init": {"type": TapPortInit},
+                    "tapagg": {"type": Tapagg},
+                    "tpid": {"type": Tpid},
+                    "transceiver_adapter": {"type": TransceiverAdapter},
+                    "uplink_failure_detection": {"type": UplinkFailureDetection},
+                    "xcvr_misconfigured": {"type": XcvrMisconfigured},
+                    "xcvr_overheat": {"type": XcvrOverheat},
+                    "xcvr_power_unsupported": {"type": XcvrPowerUnsupported},
+                    "xcvr_unsupported": {"type": XcvrUnsupported},
+                }
+                acl: Acl
+                """Subclass of AvdModel."""
+                arp_inspection: ArpInspection
+                """Subclass of AvdModel."""
+                bpduguard: Bpduguard
+                """Subclass of AvdModel."""
+                dot1x: Dot1x
+                """Subclass of AvdModel."""
+                dot1x_coa: Dot1xCoa
+                """Subclass of AvdModel."""
+                dot1x_phone_classification: Dot1xPhoneClassification
+                """Subclass of AvdModel."""
+                dot1x_session_replace: Dot1xSessionReplace
+                """Subclass of AvdModel."""
+                error_correction_encoding: ErrorCorrectionEncoding
+                """Subclass of AvdModel."""
+                fabric_capacity_low: FabricCapacityLow
+                """Subclass of AvdModel."""
+                hardware_speed_group: HardwareSpeedGroup
+                """Subclass of AvdModel."""
+                hitless_reload_down: HitlessReloadDown
+                """Subclass of AvdModel."""
+                interface_speed: InterfaceSpeed
+                """Subclass of AvdModel."""
+                internal_error: InternalError
+                """Subclass of AvdModel."""
+                lacp_rate_limit: LacpRateLimit
+                """Subclass of AvdModel."""
+                link_change: LinkChange
+                """Subclass of AvdModel."""
+                link_flap: LinkFlap
+                """Subclass of AvdModel."""
+                no_internal_vlan: NoInternalVlan
+                """Subclass of AvdModel."""
+                port_breakout: PortBreakout
+                """Subclass of AvdModel."""
+                portchannelguard: Portchannelguard
+                """Subclass of AvdModel."""
+                portsec: Portsec
+                """Subclass of AvdModel."""
+                speed_misconfigured: SpeedMisconfigured
+                """Subclass of AvdModel."""
+                storm_control: StormControl
+                """Subclass of AvdModel."""
+                stuck_queue: StuckQueue
+                """Subclass of AvdModel."""
+                switchcard_unreachable: SwitchcardUnreachable
+                """Subclass of AvdModel."""
+                tap_port_init: TapPortInit
+                """Subclass of AvdModel."""
+                tapagg: Tapagg
+                """Subclass of AvdModel."""
+                tpid: Tpid
+                """Subclass of AvdModel."""
+                transceiver_adapter: TransceiverAdapter
+                """Subclass of AvdModel."""
+                uplink_failure_detection: UplinkFailureDetection
+                """Subclass of AvdModel."""
+                xcvr_misconfigured: XcvrMisconfigured
+                """Subclass of AvdModel."""
+                xcvr_overheat: XcvrOverheat
+                """Subclass of AvdModel."""
+                xcvr_power_unsupported: XcvrPowerUnsupported
+                """Subclass of AvdModel."""
+                xcvr_unsupported: XcvrUnsupported
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: Acl | UndefinedType = Undefined,
+                        arp_inspection: ArpInspection | UndefinedType = Undefined,
+                        bpduguard: Bpduguard | UndefinedType = Undefined,
+                        dot1x: Dot1x | UndefinedType = Undefined,
+                        dot1x_coa: Dot1xCoa | UndefinedType = Undefined,
+                        dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
+                        dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
+                        error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                        fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
+                        hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
+                        hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
+                        interface_speed: InterfaceSpeed | UndefinedType = Undefined,
+                        internal_error: InternalError | UndefinedType = Undefined,
+                        lacp_rate_limit: LacpRateLimit | UndefinedType = Undefined,
+                        link_change: LinkChange | UndefinedType = Undefined,
+                        link_flap: LinkFlap | UndefinedType = Undefined,
+                        no_internal_vlan: NoInternalVlan | UndefinedType = Undefined,
+                        port_breakout: PortBreakout | UndefinedType = Undefined,
+                        portchannelguard: Portchannelguard | UndefinedType = Undefined,
+                        portsec: Portsec | UndefinedType = Undefined,
+                        speed_misconfigured: SpeedMisconfigured | UndefinedType = Undefined,
+                        storm_control: StormControl | UndefinedType = Undefined,
+                        stuck_queue: StuckQueue | UndefinedType = Undefined,
+                        switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
+                        tap_port_init: TapPortInit | UndefinedType = Undefined,
+                        tapagg: Tapagg | UndefinedType = Undefined,
+                        tpid: Tpid | UndefinedType = Undefined,
+                        transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
+                        uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
+                        xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
+                        xcvr_overheat: XcvrOverheat | UndefinedType = Undefined,
+                        xcvr_power_unsupported: XcvrPowerUnsupported | UndefinedType = Undefined,
+                        xcvr_unsupported: XcvrUnsupported | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ErrdisableCauses.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: Subclass of AvdModel.
+                            arp_inspection: Subclass of AvdModel.
+                            bpduguard: Subclass of AvdModel.
+                            dot1x: Subclass of AvdModel.
+                            dot1x_coa: Subclass of AvdModel.
+                            dot1x_phone_classification: Subclass of AvdModel.
+                            dot1x_session_replace: Subclass of AvdModel.
+                            error_correction_encoding: Subclass of AvdModel.
+                            fabric_capacity_low: Subclass of AvdModel.
+                            hardware_speed_group: Subclass of AvdModel.
+                            hitless_reload_down: Subclass of AvdModel.
+                            interface_speed: Subclass of AvdModel.
+                            internal_error: Subclass of AvdModel.
+                            lacp_rate_limit: Subclass of AvdModel.
+                            link_change: Subclass of AvdModel.
+                            link_flap: Subclass of AvdModel.
+                            no_internal_vlan: Subclass of AvdModel.
+                            port_breakout: Subclass of AvdModel.
+                            portchannelguard: Subclass of AvdModel.
+                            portsec: Subclass of AvdModel.
+                            speed_misconfigured: Subclass of AvdModel.
+                            storm_control: Subclass of AvdModel.
+                            stuck_queue: Subclass of AvdModel.
+                            switchcard_unreachable: Subclass of AvdModel.
+                            tap_port_init: Subclass of AvdModel.
+                            tapagg: Subclass of AvdModel.
+                            tpid: Subclass of AvdModel.
+                            transceiver_adapter: Subclass of AvdModel.
+                            uplink_failure_detection: Subclass of AvdModel.
+                            xcvr_misconfigured: Subclass of AvdModel.
+                            xcvr_overheat: Subclass of AvdModel.
+                            xcvr_power_unsupported: Subclass of AvdModel.
+                            xcvr_unsupported: Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -39947,6 +43183,7 @@ class EosDesigns(EosDesignsRootModel):
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
                 "hardware_validation": {"type": bool, "default": True},
+                "errdisable_causes": {"type": ErrdisableCauses},
             }
             queue_monitor: bool
             """
@@ -40136,6 +43373,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            errdisable_causes: ErrdisableCauses
+            """
+            Per-cause support for errdisable detection and recovery.
+            Causes with `detection: false` will
+            suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+            Causes with `recovery: false` will suppress recovery for that cause even if enabled in
+            `errdisable_settings.causes.<cause>.recovery`.
+            The supported causes depends on the EOS version and
+            the hardware platform.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -40165,6 +43414,7 @@ class EosDesigns(EosDesignsRootModel):
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                     hardware_validation: bool | UndefinedType = Undefined,
+                    errdisable_causes: ErrdisableCauses | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -40273,6 +43523,16 @@ class EosDesigns(EosDesignsRootModel):
                            When `false`, all hardware tests are skipped, therefore
                            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
                            are ignored.
+                        errdisable_causes:
+                           Per-cause support for errdisable detection and recovery.
+                           Causes with `detection: false` will
+                           suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+                           Causes with `recovery: false` will suppress recovery for that cause even if enabled in
+                           `errdisable_settings.causes.<cause>.recovery`.
+                           The supported causes depends on the EOS version and
+                           the hardware platform.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -41230,14 +44490,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -41252,12 +44514,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -52980,7 +56244,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -53899,7 +57163,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -58268,7 +61532,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -59196,7 +62460,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -63476,7 +66740,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -64406,7 +67670,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -68758,7 +72022,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -69686,7 +72950,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -70971,14 +74235,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -70993,12 +74259,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -73023,14 +76291,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -73045,12 +76315,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -74366,6 +77638,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class ListenRangesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "prefix": {"type": str},
+                            "remote_as": {"type": str},
+                            "peer_id_include_router_id": {"type": bool},
+                            "peer_filter": {"type": str},
+                        }
+                        prefix: str
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        remote_as: str | None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in
+                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                        number.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+                        peer_id_include_router_id: bool | None
+                        """Include router ID as part of peer filter."""
+                        peer_filter: str | None
+                        """
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                prefix: str | UndefinedType = Undefined,
+                                remote_as: str | None | UndefinedType = Undefined,
+                                peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                peer_filter: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                ListenRangesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    remote_as:
+                                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                       For asdot notation in
+                                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                       number.
+                                       note: `peer_filter` or `remote_as` is required.
+                                    peer_id_include_router_id: Include router ID as part of peer filter.
+                                    peer_filter:
+                                       Peer-filter name.
+                                       note: `peer_filter` or `remote_as` is required.
+
+                                """
+
+                    class ListenRanges(AvdList[ListenRangesItem]):
+                        """Subclass of AvdList with `ListenRangesItem` items."""
+
+                    ListenRanges._item_type = ListenRangesItem
+
                     class Metadata(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -74761,6 +78096,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
+                        "listen_ranges": {"type": ListenRanges},
                         "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
@@ -74826,6 +78162,13 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
+                    listen_ranges: ListenRanges
+                    """
+                    Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                    listen ranges.
+
+                    Subclass of AvdList with `ListenRangesItem` items.
+                    """
                     metadata: Metadata
                     """Subclass of AvdModel."""
                     remote_as: str | None
@@ -74930,6 +78273,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                            listen_ranges: ListenRanges | UndefinedType = Undefined,
                             metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
@@ -74993,6 +78337,11 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
+                                listen_ranges:
+                                   Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                                   listen ranges.
+
+                                   Subclass of AvdList with `ListenRangesItem` items.
                                 metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -81395,6 +84744,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class ListenRangesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "remote_as": {"type": str},
+                                "peer_id_include_router_id": {"type": bool},
+                                "peer_filter": {"type": str},
+                            }
+                            prefix: str
+                            """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                            remote_as: str | None
+                            """
+                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                            For asdot notation in
+                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                            number.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+                            peer_id_include_router_id: bool | None
+                            """Include router ID as part of peer filter."""
+                            peer_filter: str | None
+                            """
+                            Peer-filter name.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | UndefinedType = Undefined,
+                                    remote_as: str | None | UndefinedType = Undefined,
+                                    peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                    peer_filter: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    ListenRangesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                        remote_as:
+                                           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                           For asdot notation in
+                                           YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                           number.
+                                           note: `peer_filter` or `remote_as` is required.
+                                        peer_id_include_router_id: Include router ID as part of peer filter.
+                                        peer_filter:
+                                           Peer-filter name.
+                                           note: `peer_filter` or `remote_as` is required.
+
+                                    """
+
+                        class ListenRanges(AvdList[ListenRangesItem]):
+                            """Subclass of AvdList with `ListenRangesItem` items."""
+
+                        ListenRanges._item_type = ListenRangesItem
+
                         class Metadata(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -81794,6 +85206,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
+                            "listen_ranges": {"type": ListenRanges},
                             "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
@@ -81859,6 +85272,17 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
+                        listen_ranges: ListenRanges
+                        """
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                        bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For
+                        other VRFs this is configured under
+                        respective VRF.
+
+                        Subclass of AvdList with `ListenRangesItem`
+                        items.
+                        """
                         metadata: Metadata
                         """Subclass of AvdModel."""
                         remote_as: str | None
@@ -81963,6 +85387,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                listen_ranges: ListenRanges | UndefinedType = Undefined,
                                 metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
@@ -82026,6 +85451,15 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
+                                    listen_ranges:
+                                       Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                                       bgp listen ranges.
+                                       When set for VRF default, this is configured under root `router bgp <as>`. For
+                                       other VRFs this is configured under
+                                       respective VRF.
+
+                                       Subclass of AvdList with `ListenRangesItem`
+                                       items.
                                     metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -88128,7 +91562,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -89047,7 +92481,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -93416,7 +96850,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -94344,7 +97778,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -98624,7 +102058,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -99554,7 +102988,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -103906,7 +107340,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -104834,7 +108268,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -105328,6 +108762,7 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_graceful_restart": {"type": BgpGracefulRestart},
         "bgp_maximum_paths": {"type": int},
         "bgp_mesh_pes": {"type": bool, "default": False},
+        "bgp_peer_filters_catalog": {"type": EosCliConfigGen.PeerFilters},
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
@@ -105397,6 +108832,7 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_return_structured_config": {"type": bool, "default": False},
         "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
+        "errdisable_settings": {"type": ErrdisableSettings},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
@@ -105621,6 +109057,23 @@ class EosDesigns(EosDesignsRootModel):
                             "sflow_subinterfaces": False,
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
@@ -105634,6 +109087,23 @@ class EosDesigns(EosDesignsRootModel):
                             "sflow_subinterfaces": False,
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
@@ -105649,12 +109119,22 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["720DP", "722XP", "710P"],
+                        "platforms": ["720DP", "720DP-24S"],
                         "feature_support": {
                             "poe": True,
                             "queue_monitor_length_notify": False,
@@ -105662,6 +109142,88 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DP-48S"],
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["722XP"],
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["710P"],
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105674,6 +109236,15 @@ class EosDesigns(EosDesignsRootModel):
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105685,18 +109256,56 @@ class EosDesigns(EosDesignsRootModel):
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["720DT", "7010TX"],
+                        "platforms": ["720DT", "720DT-48S", "7010TX"],
                         "feature_support": {
                             "queue_monitor_length_notify": False,
                             "subinterface_mtu": False,
                             "per_interface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "tap_port_init": {"recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DT-24S"],
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105733,12 +109342,72 @@ class EosDesigns(EosDesignsRootModel):
                                 "vlan": False,
                             },
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["7280R", "7280R2", "7020R"],
+                        "platforms": ["7280R"],
+                        "lag_hardware_only": True,
+                        "reload_delay": {"mlag": 900, "non_mlag": 1020},
+                        "tcam_profile": "vxlan-routing",
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["7280R2"],
+                        "lag_hardware_only": True,
+                        "reload_delay": {"mlag": 900, "non_mlag": 1020},
+                        "tcam_profile": "vxlan-routing",
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["7020R"],
                         "lag_hardware_only": True,
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
@@ -105747,6 +109416,23 @@ class EosDesigns(EosDesignsRootModel):
                             "subinterface_monitor_session": False,
                             "per_interface_l2_mtu": False,
                             "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -105759,6 +109445,21 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "per_interface_l2_mtu": False,
                             "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105795,13 +109496,51 @@ class EosDesigns(EosDesignsRootModel):
                                 "vlan": False,
                             },
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                         },
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["7500R", "7500R2"],
+                        "platforms": ["7500R"],
+                        "lag_hardware_only": True,
+                        "management_interface": "Management0",
+                        "reload_delay": {"mlag": 900, "non_mlag": 1020},
+                        "tcam_profile": "vxlan-routing",
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
+                        },
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["7500R2"],
                         "lag_hardware_only": True,
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
@@ -105811,6 +109550,23 @@ class EosDesigns(EosDesignsRootModel):
                             "subinterface_monitor_session": False,
                             "per_interface_l2_mtu": False,
                             "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -105824,6 +109580,22 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_all_active_multihoming": True,
                             "evpn_gateway_rd_rt_rewrite": True,
                             "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105838,6 +109610,17 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_all_active_multihoming": True,
                             "evpn_gateway_rd_rt_rewrite": True,
                             "private_vlan": False,
+                            "errdisable_causes": {
+                                "acl": {"recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -105854,6 +109637,19 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_for_convergence": True,
                             "bgp_update_wait_install": True,
                             "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -105861,14 +109657,56 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["7368X4"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False},
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7300X3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 1200, "non_mlag": 1320},
-                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False},
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "errdisable_causes": {
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                                "xcvr_misconfigured": {"detection": False, "recovery": False},
+                                "xcvr_overheat": {"detection": False, "recovery": False},
+                                "xcvr_power_unsupported": {"detection": False, "recovery": False},
+                                "xcvr_unsupported": {"recovery": False},
+                            },
+                        },
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -105886,6 +109724,29 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                                "xcvr_misconfigured": {"detection": False, "recovery": False},
+                                "xcvr_overheat": {"detection": False, "recovery": False},
+                                "xcvr_power_unsupported": {"detection": False, "recovery": False},
+                                "xcvr_unsupported": {"recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -105905,6 +109766,29 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
+                            "errdisable_causes": {
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_coa": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "dot1x_session_replace": {"detection": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                                "xcvr_misconfigured": {"detection": False, "recovery": False},
+                                "xcvr_overheat": {"detection": False, "recovery": False},
+                                "xcvr_power_unsupported": {"detection": False, "recovery": False},
+                                "xcvr_unsupported": {"recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "management_interface": "Management1",
@@ -105920,6 +109804,27 @@ class EosDesigns(EosDesignsRootModel):
                             "queue_monitor_length_notify": False,
                             "sflow": False,
                             "hardware_validation": False,
+                            "errdisable_causes": {
+                                "acl": {"detection": False, "recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "speed_misconfigured": {"recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                                "xcvr_misconfigured": {"detection": False, "recovery": False},
+                                "xcvr_overheat": {"detection": False, "recovery": False},
+                                "xcvr_power_unsupported": {"detection": False, "recovery": False},
+                                "xcvr_unsupported": {"recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "p2p_uplinks_mtu": 9194,
@@ -105937,6 +109842,22 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6},
                             "sflow": False,
+                            "errdisable_causes": {
+                                "acl": {"detection": False, "recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
@@ -105954,6 +109875,23 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16},
                             "sflow": False,
+                            "errdisable_causes": {
+                                "acl": {"detection": False, "recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "dot1x_phone_classification": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
@@ -105969,6 +109907,23 @@ class EosDesigns(EosDesignsRootModel):
                             "poe": True,
                             "per_interface_l2_mru": False,
                             "sflow": False,
+                            "errdisable_causes": {
+                                "acl": {"detection": False, "recovery": False},
+                                "dot1x": {"detection": False, "recovery": False},
+                                "error_correction_encoding": {"detection": False, "recovery": False},
+                                "fabric_capacity_low": {"detection": False, "recovery": False},
+                                "hardware_speed_group": {"detection": False, "recovery": False},
+                                "interface_speed": {"detection": False, "recovery": False},
+                                "internal_error": {"detection": False, "recovery": False},
+                                "port_breakout": {"detection": False, "recovery": False},
+                                "storm_control": {"detection": False, "recovery": False},
+                                "stuck_queue": {"recovery": False},
+                                "switchcard_unreachable": {"detection": False, "recovery": False},
+                                "tap_port_init": {"recovery": False},
+                                "tapagg": {"detection": False},
+                                "tpid": {"detection": False, "recovery": False},
+                                "transceiver_adapter": {"detection": False, "recovery": False},
+                            },
                             "subinterface_monitor_session": False,
                         },
                         "management_interface": "Management1",
@@ -106189,6 +110144,13 @@ class EosDesigns(EosDesignsRootModel):
     supported in combination with MPLS overlay.
 
     Default value: `False`
+    """
+    bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters
+    """
+    BGP peer filter catalog.
+    Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+    the configuration when
+    they are explicitly referenced in listen ranges.
     """
     bgp_peer_groups: BgpPeerGroups
     """
@@ -106750,6 +110712,15 @@ class EosDesigns(EosDesignsRootModel):
     size and the available resources, you may want to adjust this number.
 
     Default value: `10`
+    """
+    errdisable_settings: ErrdisableSettings
+    """
+    Errdisable settings for the device.
+    Causes are filtered based on platform feature support defined in
+    `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
+    `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
+
+    Subclass of AvdModel.
     """
     event_handlers: EosCliConfigGen.EventHandlers
     """
@@ -107632,10 +111603,12 @@ class EosDesigns(EosDesignsRootModel):
     If you need to add custom platforms, create them under `custom_platform_settings`.
     Entries under `custom_platform_settings` will be matched before the equivalent entries from
     `platform_settings`.
+    Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`),
+    `720DT` (use `720DT-24S` or `720DT-48S`).
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "subinterface_monitor_session": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "subinterface_monitor_session": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False, "subinterface_monitor_session": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False, "subinterface_monitor_session": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "720DP-24S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-48S"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["722XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "720DT-48S", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "tap_port_init": {"recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT-24S"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R2"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mtu": False, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False, "errdisable_causes": {"acl": {"recovery": False}, "dot1x": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "errdisable_causes": {"dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False, "errdisable_causes": {"dot1x": {"detection": False, "recovery": False}, "dot1x_coa": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "dot1x_session_replace": {"detection": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "speed_misconfigured": {"recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}, "xcvr_misconfigured": {"detection": False, "recovery": False}, "xcvr_overheat": {"detection": False, "recovery": False}, "xcvr_power_unsupported": {"detection": False, "recovery": False}, "xcvr_unsupported": {"recovery": False}}, "subinterface_monitor_session": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "subinterface_monitor_session": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "dot1x_phone_classification": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False, "errdisable_causes": {"acl": {"detection": False, "recovery": False}, "dot1x": {"detection": False, "recovery": False}, "error_correction_encoding": {"detection": False, "recovery": False}, "fabric_capacity_low": {"detection": False, "recovery": False}, "hardware_speed_group": {"detection": False, "recovery": False}, "interface_speed": {"detection": False, "recovery": False}, "internal_error": {"detection": False, "recovery": False}, "port_breakout": {"detection": False, "recovery": False}, "storm_control": {"detection": False, "recovery": False}, "stuck_queue": {"recovery": False}, "switchcard_unreachable": {"detection": False, "recovery": False}, "tap_port_init": {"recovery": False}, "tapagg": {"detection": False}, "tpid": {"detection": False, "recovery": False}, "transceiver_adapter": {"detection": False, "recovery": False}}, "subinterface_monitor_session": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -108185,6 +112158,7 @@ class EosDesigns(EosDesignsRootModel):
             bgp_graceful_restart: BgpGracefulRestart | UndefinedType = Undefined,
             bgp_maximum_paths: int | None | UndefinedType = Undefined,
             bgp_mesh_pes: bool | UndefinedType = Undefined,
+            bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters | UndefinedType = Undefined,
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -108232,6 +112206,7 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             eos_designs_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            errdisable_settings: ErrdisableSettings | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
@@ -108471,6 +112446,11 @@ class EosDesigns(EosDesignsRootModel):
                    Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
                    Only
                    supported in combination with MPLS overlay.
+                bgp_peer_filters_catalog:
+                   BGP peer filter catalog.
+                   Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+                   the configuration when
+                   they are explicitly referenced in listen ranges.
                 bgp_peer_groups:
                    Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                    Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
@@ -108902,6 +112882,13 @@ class EosDesigns(EosDesignsRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                errdisable_settings:
+                   Errdisable settings for the device.
+                   Causes are filtered based on platform feature support defined in
+                   `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
+                   `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
+
+                   Subclass of AvdModel.
                 event_handlers:
                    Gives the ability to monitor and react to Syslog messages.
                    Event Handlers provide a powerful and
@@ -109540,6 +113527,8 @@ class EosDesigns(EosDesignsRootModel):
                    If you need to add custom platforms, create them under `custom_platform_settings`.
                    Entries under `custom_platform_settings` will be matched before the equivalent entries from
                    `platform_settings`.
+                   Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`),
+                   `720DT` (use `720DT-24S` or `720DT-48S`).
 
                    Subclass of AvdList with `PlatformSettingsItem` items.
                 platform_speed_groups:

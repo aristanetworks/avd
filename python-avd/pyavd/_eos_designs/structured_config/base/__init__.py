@@ -21,6 +21,7 @@ from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
 from .dns_settings import DnsSettingsMixin
 from .dot1x import Dot1xMixin
+from .errdisable import ErrDisableMixin
 from .logging import LoggingMixin
 from .management_interface import ManagementInterfaceMixin
 from .management_ssh import ManagementSshMixin
@@ -41,6 +42,7 @@ class AvdStructuredConfigBaseProtocol(
     DaemonTerminattrMixin,
     DnsSettingsMixin,
     Dot1xMixin,
+    ErrDisableMixin,
     ManagementInterfaceMixin,
     LoggingMixin,
     ManagementSshMixin,

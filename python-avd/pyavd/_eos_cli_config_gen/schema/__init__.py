@@ -4185,6 +4185,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cvconfig": {"type": bool},
             "cv_loss_timeout": {"type": int},
             "cvtargetconfigs": {"type": Cvtargetconfigs},
+            "flowdns": {"type": bool},
         }
         cvaddrs: Cvaddrs
         """
@@ -4301,6 +4302,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        flowdns: bool | None
+        """
+        Enable DNS resolution for flow records (TerminAttr default is true).
+        Set to false to disable DNS
+        lookups on sFlow/IPFIX flow records.
+        """
 
         if TYPE_CHECKING:
 
@@ -4330,6 +4337,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cvconfig: bool | None | UndefinedType = Undefined,
                 cv_loss_timeout: int | None | UndefinedType = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
+                flowdns: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4414,6 +4422,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    flowdns:
+                       Enable DNS resolution for flow records (TerminAttr default is true).
+                       Set to false to disable DNS
+                       lookups on sFlow/IPFIX flow records.
 
                 """
 
@@ -6464,6 +6476,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class EnvironmentFanSpeed(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"minimum": {"type": int}}
+        minimum: int | None
+        """Set the minimum fan speed in percent."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, minimum: int | None | UndefinedType = Undefined) -> None:
+                """
+                EnvironmentFanSpeed.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    minimum: Set the minimum fan speed in percent.
+
+                """
+
     class EosCliConfigGenConfiguration(AvdModel):
         """Subclass of AvdModel."""
 
@@ -6556,6 +6589,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
+            "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6607,6 +6641,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        render_spanning_tree_portfast_edge: bool
+        """
+        Available from AVD 6.3.0.
+        When `true`, renders `spanning-tree portfast edge` on
+        `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`,
+        matching the running-config preserved by EOS 4.33.2F and later.
+        When `false` (default), renders the
+        legacy `spanning-tree portfast` without the `edge` keyword.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6618,6 +6663,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
+                render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6656,6 +6702,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        matter the value of `monitor_layer1.enabled` is `true` or `false`.
                        When `false` (default), renders
                        the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
+                    render_spanning_tree_portfast_edge:
+                       Available from AVD 6.3.0.
+                       When `true`, renders `spanning-tree portfast edge` on
+                       `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`,
+                       matching the running-config preserved by EOS 4.33.2F and later.
+                       When `false` (default), renders the
+                       legacy `spanning-tree portfast` without the `edge` keyword.
 
                 """
 
@@ -34585,13 +34638,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
                 ipv4: bool | None
                 """Enable/disable address locking for IPv4."""
+                ipv6: bool | None
+                """Enable/disable address locking for IPv6."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -34600,6 +34655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             ipv4: Enable/disable address locking for IPv4.
+                            ipv6: Enable/disable address locking for IPv6.
 
                         """
 
@@ -75635,6 +75691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "dps_interfaces": {"type": DpsInterfaces},
         "dynamic_prefix_lists": {"type": DynamicPrefixLists},
         "enable_password": {"type": EnablePassword},
+        "environment_fan_speed": {"type": EnvironmentFanSpeed},
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
@@ -75972,6 +76029,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`)."""
     enable_password: EnablePassword
     """Subclass of AvdModel."""
+    environment_fan_speed: EnvironmentFanSpeed
+    """
+    Environment fan-speed settings.
+
+    Subclass of AvdModel.
+    """
     eos_cli: str | None
     """Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration."""
     eos_cli_config_gen_configuration: EosCliConfigGenConfiguration
@@ -76480,6 +76543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dps_interfaces: DpsInterfaces | UndefinedType = Undefined,
             dynamic_prefix_lists: DynamicPrefixLists | UndefinedType = Undefined,
             enable_password: EnablePassword | UndefinedType = Undefined,
+            environment_fan_speed: EnvironmentFanSpeed | UndefinedType = Undefined,
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
@@ -76770,6 +76834,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dps_interfaces: Subclass of AvdIndexedList with `DpsInterfacesItem` items. Primary key is `name` (`str`).
                 dynamic_prefix_lists: Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`).
                 enable_password: Subclass of AvdModel.
+                environment_fan_speed:
+                   Environment fan-speed settings.
+
+                   Subclass of AvdModel.
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.

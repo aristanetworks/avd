@@ -1,0 +1,118 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+errdisable:
+  detect_cause:
+    acl: true
+    arp_inspection: true
+    link_change: true
+  recovery_cause:
+    acl:
+      enabled: true
+      interval: 60
+    arp_inspection:
+      enabled: true
+      interval: 90
+    bpduguard:
+      enabled: true
+      interval: 300
+    link_flap:
+      enabled: true
+      interval: 60
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_errdisable-veos-lab_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.3/31
+  metadata:
+    peer: errdisable-veos-lab
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: errdisable-ceos-lab
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.10.2/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.10.20.2/32
+metadata:
+  is_deployed: true
+  platform: cEOSLab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.10.20.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 10.10.10.2
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 10.10.50.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-veos-lab
+    description: errdisable-veos-lab_Ethernet2
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: errdisable-ceos-lab_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789

@@ -1818,6 +1818,14 @@ keys:
           '
         items:
           type: str
+      flowdns:
+        type: bool
+        description: 'Enable DNS resolution for flow records (TerminAttr default is
+          true).
+
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+
+          '
   daemons:
     type: list
     primary_key: name
@@ -2517,6 +2525,17 @@ keys:
           on an EOS device.
 
           '
+  environment_fan_speed:
+    type: dict
+    description: Environment fan-speed settings.
+    keys:
+      minimum:
+        type: int
+        convert_types:
+        - str
+        min: 30
+        max: 100
+        description: Set the minimum fan speed in percent.
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
@@ -2648,6 +2667,17 @@ keys:
 
           When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled`
           is `true`.'
+      render_spanning_tree_portfast_edge:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces`
+          and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`,
+          matching the running-config preserved by EOS 4.33.2F and later.
+
+          When `false` (default), renders the legacy `spanning-tree portfast` without
+          the `edge` keyword.'
   errdisable:
     type: dict
     keys:
@@ -13449,6 +13479,9 @@ keys:
                 ipv4:
                   type: bool
                   description: Enable/disable address locking for IPv4.
+                ipv6:
+                  type: bool
+                  description: Enable/disable address locking for IPv6.
         encapsulation_dot1q:
           type: dict
           keys:
