@@ -121,27 +121,25 @@
 | {{ rr_node.node }} | {{ rr_node.type }} | {{ rr_node.bgp_as }} | {{ rr_node.router_id }} | {{ rr_node.cluster_id }} |
 {%     endfor %}
 {% endif %}
-{% if fabric_topology_details %}
-{%     if has_vrfs %}
+{% if include_vrf_summary and has_vrfs %}
 
 ### VRF Summary
 
 | VRF | RD Pattern | Import RT | Export RT | Nodes |
 | --- | ---------- | --------- | --------- | ----- |
-{%         for vrf in vrf_summary %}
+{%     for vrf in vrf_summary %}
 | {{ vrf.vrf }} | {{ vrf.rd_pattern }} | {{ vrf.import_rt }} | {{ vrf.export_rt }} | {{ vrf.nodes }} |
-{%         endfor %}
-{%     endif %}
-{%     if has_bgp_peer_groups %}
+{%     endfor %}
+{% endif %}
+{% if include_bgp_peer_groups and has_bgp_peer_groups %}
 
 ### BGP Peer Groups
 
 | Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
-{%         for pg in bgp_peer_groups %}
+{%     for pg in bgp_peer_groups %}
 | {{ pg.name }} | {{ pg.remote_as }} | {{ pg.update_source }} | {{ pg.bfd }} | {{ pg.send_community }} | {{ pg.nodes }} |
-{%         endfor %}
-{%     endif %}
+{%     endfor %}
 {% endif %}
 {% if has_vrf_routing_protocols %}
 

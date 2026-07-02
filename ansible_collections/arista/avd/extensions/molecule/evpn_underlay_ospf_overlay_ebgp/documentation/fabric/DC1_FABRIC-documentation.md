@@ -10,8 +10,6 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -151,19 +149,6 @@
 | DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.9/32 |
-
-### VRF Summary
-
-| VRF | RD Pattern | Import RT | Export RT | Nodes |
-| --- | ---------- | --------- | --------- | ----- |
-| Tenant_B_OP_Zone | 20 | 20:20 | 20:20 | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
-
-### BGP Peer Groups
-
-| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
-| ---------- | --------- | ------------- | --- | -------------- | ----- |
-| EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | DC1-BL1A, DC1-BL1B, DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4, DC1-SVC3A, DC1-SVC3B |
-| MLAG-IPv4-UNDERLAY-PEER | - | - | No | all | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
 
 ### VRF Routing Protocols
 
