@@ -14,7 +14,7 @@
   - [MPLS and LDP Configuration](#mpls-and-ldp-configuration)
   - [BGP MPLS Overlay](#bgp-mpls-overlay)
   - [MPLS Route Reflectors](#mpls-route-reflectors)
-  - [VRF Routing Protocols](#vrf-routing-protocols)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -149,7 +149,7 @@
 | rr1 | rr | 65001 | 10.255.2.1 | 10.255.2.1 |
 | rr2 | rr | 65001 | 10.255.2.2 | 10.255.2.2 |
 
-### VRF Routing Protocols
+### VRF Redistribute Summary
 
 | Node | Type | VRF | Router ID | Redistribute |
 | ---- | ---- | --- | --------- | ------------ |

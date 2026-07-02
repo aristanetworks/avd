@@ -10,7 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Routing Protocols](#vrf-routing-protocols)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
@@ -244,7 +244,7 @@
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
 
-### VRF Routing Protocols
+### VRF Redistribute Summary
 
 | Node | Type | VRF | Router ID | Redistribute |
 | ---- | ---- | --- | --------- | ------------ |

@@ -17,7 +17,7 @@
   - [MPLS Route Reflectors](#mpls-route-reflectors)
   - [VRF Summary](#vrf-summary)
   - [BGP Peer Groups](#bgp-peer-groups)
-  - [VRF Routing Protocols](#vrf-routing-protocols)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -182,7 +182,7 @@
 | MPLS-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-LER1, SITE1-LER2, SITE1-RR1, SITE2-LER1, SITE2-RR1 |
 | RR-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-RR1, SITE2-RR1, SITE3-RR1 |
 
-### VRF Routing Protocols
+### VRF Redistribute Summary
 
 | Node | Type | VRF | Router ID | Redistribute |
 | ---- | ---- | --- | --------- | ------------ |
