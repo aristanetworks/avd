@@ -60,6 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.web_authentication.enabled") | Boolean | Required |  |  | Enable the Web Authentication feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.web_authentication.url") | String |  |  | Pattern: `https?://[^\s/:]+(:\d+)?` | Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.<br>If both are configured, the RADIUS-provided URL takes precedence.<br>Supported format: http[s]://<hostname>[:<port>] |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.web_authentication.ssl_profile") | String |  |  |  | SSL profile name, enabling HTTPS redirection on port 443.<br>Without this, only HTTP redirection is supported.<br>Can be used alone (when RADIUS provides the URL dynamically) or together with `url`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "dot1x_settings.web_authentication.ipv4_standard_acl") | String |  |  |  | Standard IPv4 ACL name.<br>This ACL must be present in `ipv4_standard_acls` catalog. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.web_authentication.start_limit_infinite") | Boolean |  |  |  | Disable the loop-protection mechanism that limits captive portal authentication retries.<br>By default, EOS limits a supplicant to 16 consecutive attempts before logging it off. |
 
 === "YAML"
@@ -219,6 +220,10 @@
         # Without this, only HTTP redirection is supported.
         # Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
         ssl_profile: <str>
+
+        # Standard IPv4 ACL name.
+        # This ACL must be present in `ipv4_standard_acls` catalog.
+        ipv4_standard_acl: <str>
 
         # Disable the loop-protection mechanism that limits captive portal authentication retries.
         # By default, EOS limits a supplicant to 16 consecutive attempts before logging it off.
