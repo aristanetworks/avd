@@ -16,3 +16,7 @@ schedule:
         once: true
       max_log_files: 1
       command: show interfaces
+# adding test only for coverage
+    - name: no_at
+      max_log_files: 1
+      command: show interfaces

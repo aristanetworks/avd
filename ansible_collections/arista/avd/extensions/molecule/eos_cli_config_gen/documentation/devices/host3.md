@@ -600,6 +600,7 @@ stun
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
 | at_interval_nodate | at 10:00:00 interval 60 minutes | show clock | 1 | - | - | - | - |
 | at_time_only | at 12:00:00 once | show interfaces | 1 | - | - | - | - |
+| no_at | - | show interfaces | 1 | - | - | - | - |
 
 ### Schedule Device Configuration
 
