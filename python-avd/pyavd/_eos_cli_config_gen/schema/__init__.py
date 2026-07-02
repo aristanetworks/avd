@@ -25773,10 +25773,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class ServerHosts(AvdIndexedList[str, ServerHostsItem]):
-            """Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is `host` (`str`)."""
-
-            _primary_key: ClassVar[str] = "host"
+        class ServerHosts(AvdList[ServerHostsItem]):
+            """Subclass of AvdList with `ServerHostsItem` items."""
 
         ServerHosts._item_type = ServerHostsItem
 
@@ -25910,9 +25908,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         server_hosts: ServerHosts
         """
         List of LDAP server hosts.
+        Combination of 'host', 'port' and 'vrf' should be unique.
 
-        Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
-        `host` (`str`).
+        Subclass of
+        AvdList with `ServerHostsItem` items.
         """
         group_policies: GroupPolicies
         """
@@ -25944,9 +25943,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     server_hosts:
                        List of LDAP server hosts.
+                       Combination of 'host', 'port' and 'vrf' should be unique.
 
-                       Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
-                       `host` (`str`).
+                       Subclass of
+                       AvdList with `ServerHostsItem` items.
                     group_policies:
                        Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
 
