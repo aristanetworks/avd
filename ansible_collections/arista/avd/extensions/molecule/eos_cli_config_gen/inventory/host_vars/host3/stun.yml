@@ -1,0 +1,5 @@
+---
+stun:
+  server:
+    local_interfaces:
+      - Ethernet2

@@ -222,6 +222,8 @@ keys:
 
               - "group radius group MYGROUP local"
 
+              - "group ldap"
+
               '
           command_api:
             type: str
@@ -336,6 +338,8 @@ keys:
               - "group MYGROUP none"
 
               - "group radius group MYGROUP local"
+
+              - "group ldap"
 
               '
       config_commands:
@@ -1818,6 +1822,14 @@ keys:
           '
         items:
           type: str
+      flowdns:
+        type: bool
+        description: 'Enable DNS resolution for flow records (TerminAttr default is
+          true).
+
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+
+          '
   daemons:
     type: list
     primary_key: name
@@ -2517,6 +2529,17 @@ keys:
           on an EOS device.
 
           '
+  environment_fan_speed:
+    type: dict
+    description: Environment fan-speed settings.
+    keys:
+      minimum:
+        type: int
+        convert_types:
+        - str
+        min: 30
+        max: 100
+        description: Set the minimum fan speed in percent.
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
@@ -2637,6 +2660,28 @@ keys:
 
           When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
           even if no sub-settings are set.'
+      render_monitor_layer1_without_enabled:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*`
+          / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the
+          value of `monitor_layer1.enabled` is `true` or `false`.
+
+          When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled`
+          is `true`.'
+      render_spanning_tree_portfast_edge:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces`
+          and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`,
+          matching the running-config preserved by EOS 4.33.2F and later.
+
+          When `false` (default), renders the legacy `spanning-tree portfast` without
+          the `edge` keyword.'
   errdisable:
     type: dict
     keys:
@@ -3872,6 +3917,11 @@ keys:
                 required: true
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -9783,6 +9833,137 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
             in the final EOS configuration.
+  management_ldap:
+    type: dict
+    keys:
+      server_defaults:
+        type: dict
+        description: Default LDAP options applied to all servers unless overridden
+          per host.
+        keys:
+          base_dn:
+            type: str
+            description: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+          rdn_attribute_user:
+            type: str
+            description: Relative Distinguished Name attribute(s) for user lookup
+              (e.g., cn).
+          ssl_profile:
+            type: str
+            description: SSL profile name to secure LDAP connections.
+          authorization_group_policy:
+            type: str
+            description: LDAP group policy name to use for user authorization.
+          timeout:
+            type: int
+            min: 1
+            max: 1000
+            description: Time in seconds (EOS default 30 seconds) to wait for a response
+              from this LDAP server.
+            convert_types:
+            - str
+          search:
+            type: dict
+            description: Credentials used by the switch to perform LDAP search bind
+              operations.
+            keys:
+              username:
+                type: str
+                required: true
+                description: LDAP username (full DN) for search bind operations (e.g.,
+                  cn=ldap-admin,dc=example,dc=com).
+              password:
+                type: str
+                required: true
+                description: Password for the search bind user.
+                convert_types:
+                - int
+              password_type:
+                type: str
+                valid_values:
+                - '0'
+                - '7'
+                - 8a
+                description: 'Password encryption type.
+
+                  - 0 = clear text
+
+                  - 7 = obfuscated
+
+                  - 8a = AES-256-GCM encrypted.
+
+                  Omit to provide an unobfuscated string (EOS will store it obfuscated).'
+                convert_types:
+                - int
+      server_hosts:
+        type: list
+        description: 'List of LDAP server hosts.
+
+          Combination of ''host'', ''port'' and ''vrf'' should be unique.'
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/management_ldap/keys/server_defaults
+          keys:
+            host:
+              type: str
+              required: true
+              description: Hostname or IP address of the LDAP server.
+            port:
+              type: int
+              description: Port of LDAP server (EOS default 389).
+              min: 0
+              max: 65535
+              convert_types:
+              - str
+            vrf:
+              type: str
+              convert_types:
+              - int
+      group_policies:
+        type: list
+        primary_key: policy
+        description: Named LDAP group policies that map LDAP groups to EOS roles and
+          privilege levels.
+        items:
+          type: dict
+          keys:
+            policy:
+              type: str
+              description: Group policy name. Referenced by server authorization_group_policy.
+            search_filter:
+              type: dict
+              description: LDAP search filter used to enumerate group membership.
+              keys:
+                objectclass:
+                  type: str
+                  required: true
+                  description: LDAP objectclass value to match (e.g., group).
+                attribute:
+                  type: str
+                  required: true
+                  description: LDAP attribute that holds group member DNs (e.g., member).
+            groups:
+              type: list
+              primary_key: name
+              description: List of LDAP group-to-role mappings within this policy.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: LDAP group name.
+                  role:
+                    type: str
+                    required: true
+                    description: EOS role assigned to members of this LDAP group.
+                  privilege:
+                    type: int
+                    min: 0
+                    max: 15
+                    description: Optional privilege level (0-15) assigned alongside
+                      the role.
+                    convert_types:
+                    - str
   management_security:
     type: dict
     keys:
@@ -10236,6 +10417,13 @@ keys:
                   type: str
                 key:
                   type: str
+                auto_certificate:
+                  description: 'Automatically managed certificate profile.
+
+                    Mutually exclusive with ''file'' and ''key''.'
+                  type: str
+                  convert_types:
+                  - int
             certificate_revocation_lists:
               type: list
               description: 'List of CRLs (Certificate Revocation List).
@@ -11352,7 +11540,6 @@ keys:
     keys:
       enabled:
         type: bool
-        required: true
         description: Enable monitor layer1.
       logging_mac_fault:
         type: bool
@@ -12426,7 +12613,16 @@ keys:
               - str
             local_interface:
               type: str
-              description: Source interface.
+              description: 'Source interface.
+
+                Mutually exclusive with ''source_address''. Takes precedence if both
+                are set.'
+            source_address:
+              type: str
+              description: 'Source IPv4 address.
+
+                Mutually exclusive with ''local_interface''. ''local_interface'' takes
+                precedence if both are set.'
             maxpoll:
               type: int
               min: 3
@@ -13398,6 +13594,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -13415,6 +13614,9 @@ keys:
                 ipv4:
                   type: bool
                   description: Enable/disable address locking for IPv4.
+                ipv6:
+                  type: bool
+                  description: Enable/disable address locking for IPv6.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -15243,6 +15445,37 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+              global_buffer:
+                type: dict
+                description: Set global shared memory thresholds.
+                keys:
+                  units:
+                    required: true
+                    type: str
+                    valid_values:
+                    - segments
+                    - bytes
+                    - kbytes
+                    - mbytes
+                    description: 'Units to be used for the threshold values.
+
+                      Threshold values depend on the hardware platform.
+
+                      '
+                  min:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN minimum-threshold.
+                  max:
+                    type: int
+                    required: true
+                    min: 1
+                    convert_types:
+                    - str
+                    description: Random-detect ECN maximum-threshold.
       tx_queue:
         type: dict
         description: Global transmit queue settings.
@@ -23965,6 +24198,10 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over
+              IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
@@ -26219,7 +26456,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:
@@ -26466,6 +26707,11 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: 'VRF used to reach the DHCP server.
+
+                  If not set, the VRF of the destination matches the VRF of this interface.
+
+                  Use the `default` to reach the DHCP server through the default VRF.'
                 convert_types:
                 - int
               local_interface:
@@ -26909,6 +27155,32 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: 'Optional direction (''ingress'', ''egress'')  for tcp
+                mss ceiling.
+
+                '
         traffic_policy:
           type: dict
           keys:

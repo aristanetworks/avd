@@ -11,7 +11,7 @@ platform_settings:
   - platforms: [vEOS-lab]
     digital_twin:
       platform: vEOS-lab
-      act_node_type: veos
+      act_node_type: generic
 
 avd_digital_twin_mode: true
 
