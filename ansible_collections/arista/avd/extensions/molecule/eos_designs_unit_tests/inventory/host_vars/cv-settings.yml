@@ -63,6 +63,9 @@ cv_settings:
     disable_aaa: true
     ingestexclude: this_is_ingest_excluded
     smashexcludes: this_is_smash_excluded
+    cvtargetconfigs:
+      - arista/traffic-policy
+    flowdns: false
 # Test for export sflow setting vrf to cloudvision
 sflow_settings:
   export_to_cloudvision:

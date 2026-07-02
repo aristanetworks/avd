@@ -28,6 +28,11 @@ Serial Number: DEADBEEFC0FFEW
   - [Management Console](#management-console)
   - [Management API HTTP](#management-api-http)
   - [Management API Models](#management-api-models)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [LDAP Server Hosts](#ldap-server-hosts)
+  - [LDAP Group Policies](#ldap-group-policies)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Services](#cvx-services)
   - [CVX Device Configuration](#cvx-device-configuration)
@@ -78,6 +83,9 @@ Serial Number: DEADBEEFC0FFEW
 - [Kernel Settings](#kernel-settings)
   - [Kernel Device Summary](#kernel-device-summary)
   - [Kernel Device configuration](#kernel-device-configuration)
+- [Environment](#environment)
+  - [Environment Summary](#environment-summary)
+  - [Environment Device Configuration](#environment-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -1300,6 +1308,106 @@ management api models
       path sys/logging/config/vrfLoggingHost/mgmt disabled
 ```
 
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Base DN | dc=example,dc=com |
+| RDN Attribute (User) | cn |
+| SSL Profile | LDAP_SSL_PROFILE |
+| Timeout | 123 seconds |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY | cn=host-admin,dc=example,dc=com |
+| ldap2.example.com | - | default | - | - | - | - | - | cn=admin2,dc=example,dc=com |
+| 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+| 10.1.1.1 | 101 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 201 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf1 | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf2 | - | - | - | - | - | - |
+| 10.1.1.1 | - | vrf3 | - | - | - | - | - | - |
+
+### LDAP Group Policies
+
+#### Group Policy: HOST_GROUP_POLICY
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Operator | network-operator | - |
+
+#### Group Policy: LDAP_GROUP_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Admin | network-admin | 15 |
+| Read Only | read-only | - |
+
+#### Group Policy: LDAP_SEARCH_FILTER_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      base-dn dc=example,dc=com
+      rdn attribute user cn
+      ssl-profile LDAP_SSL_PROFILE
+      timeout 123
+      authorization group policy LDAP_GROUP_POLICY
+      search username cn=ldap-admin,dc=example,dc=com password 7 <removed>
+   !
+   server host ldap1.example.com port 636 vrf MGMT
+      base-dn dc=host1,dc=example,dc=com
+      rdn attribute user uid
+      ssl-profile LDAP_HOST_SSL_PROFILE
+      timeout 10
+      authorization group policy HOST_GROUP_POLICY
+      search username cn=host-admin,dc=example,dc=com password 0 <removed>
+   !
+   server host ldap2.example.com
+      search username cn=admin2,dc=example,dc=com password <removed>
+   !
+   server host 10.1.1.1
+      ssl-profile LDAP_HOST_SSL_PROFILE
+   !
+   server host 10.1.1.1 port 101
+   !
+   server host 10.1.1.1 port 201
+   !
+   server host 10.1.1.1 port 101 vrf vrf1
+   !
+   server host 10.1.1.1 port 101 vrf vrf2
+   !
+   server host 10.1.1.1 vrf vrf3
+   !
+   group policy HOST_GROUP_POLICY
+      group "Network Operator" role network-operator
+   !
+   group policy LDAP_GROUP_POLICY
+      search filter objectclass group attribute member
+      group "Network Admin" role network-admin privilege 15
+      group "Read Only" role read-only
+   !
+   group policy LDAP_SEARCH_FILTER_POLICY
+      search filter objectclass group attribute member
+```
+
 ## CVX
 
 | Peer Hosts |
@@ -2026,18 +2134,20 @@ address locking
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
-| certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl | False |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | True |
-| test1-chain-cert | - | - | - | - | - | - |
-| test1-trust-cert | - | - | - | - | - | - |
-| test2-chain-cert | - | - | - | - | - | - |
-| test2-trust-cert | - | - | - | - | - | - |
-| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - |
-| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - |
-| tls-versions-profile | 1.0 1.1 | - | - | - | - | True |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| auto-certificate-precedence-profile | - | - | - | auto-est | - | - | - |
+| auto-certificate-profile | - | - | - | auto-est | - | - | - |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | - | ca.crl<br>intermediate.crl | False |
+| cipher-list-profile | - | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | False |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - | - | True |
+| test1-chain-cert | - | - | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - | - | True |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
@@ -2184,6 +2294,12 @@ management security
       tls versions 1.1 1.2
       fips restrictions
       certificate SSL_CERT key SSL_KEY
+   !
+   ssl profile auto-certificate-precedence-profile
+      certificate auto-certificate auto-est
+   !
+   ssl profile auto-certificate-profile
+      certificate auto-certificate auto-est
    !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
@@ -2512,6 +2628,21 @@ boot secret 5 <removed>
 kernel software forwarding ecmp
 ```
 
+## Environment
+
+### Environment Summary
+
+| Minimum Fan Speed |
+| ----------------- |
+| 60% |
+
+### Environment Device Configuration
+
+```eos
+!
+environment fan-speed minimum 60
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -2527,7 +2658,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy -flowdns=false
    no shutdown
 ```
 
@@ -6415,6 +6546,8 @@ interface Ethernet90
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | tag | - | - | - | 5 | - |
+| Port-Channel6 | TEST_ADDRESS_LOCKING_IPV6_DISABLED | access | 100 | - | - | - | - | - | - |
+| Port-Channel7 | TEST_ADDRESS_LOCKING_BOTH_DISABLED | access | 100 | - | - | - | - | - | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel13 | EVPN-Vxlan single-active redundancy | - | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
@@ -6582,9 +6715,12 @@ interface Ethernet90
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel51 | ipv6_prefix | - | - | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Port-Channel109 | Molecule ACLs | - | - | default | - | - | - | - | - | - | - | - | IPV6_ACL_IN | IPV6_ACL_OUT |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
+| Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
 
 ##### VRRP Details
 
@@ -6690,6 +6826,25 @@ interface Port-Channel5
    Comment created from eos_cli under port_channel_interfaces.Port-Channel5
    EOF
 
+!
+interface Port-Channel6
+   description TEST_ADDRESS_LOCKING_IPV6_DISABLED
+   switchport access vlan 100
+   switchport mode access
+   switchport
+   !
+   address locking
+      address-family ipv6 disabled
+!
+interface Port-Channel7
+   description TEST_ADDRESS_LOCKING_BOTH_DISABLED
+   switchport access vlan 100
+   switchport mode access
+   switchport
+   !
+   address locking
+      address-family ipv4 disabled
+      address-family ipv6 disabled
 !
 interface Port-Channel8
    description to Dev02 Port-channel 8
@@ -7357,6 +7512,14 @@ interface Port-Channel333
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
 !
+interface Port-Channel400
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 access-group TEST-V6-IN in
+   ipv6 access-group TEST-V6-OUT out
+!
 interface Port-Channel667
    description Multiple VRIDs
    vrrp 1 priority-level 105
@@ -7472,6 +7635,7 @@ interface Loopback100
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 | Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
+| Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
 
 ##### IPv4
 
@@ -7480,6 +7644,7 @@ interface Loopback100
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
+| Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
 
 ##### IPv6
 
@@ -7490,6 +7655,7 @@ interface Loopback100
 | Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - | - |
 | Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - | - |
 | Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - | - |
+| Tunnel6 | default | - | 1400 | - | True | - | True | True | capacity: 100 | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7577,6 +7743,18 @@ interface Tunnel5
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:200::/64 250 125 no-autoconfig
    tunnel source 20.20.20.20
+   tunnel destination 2.2.2.2
+!
+interface Tunnel6
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ip address 10.99.99.1/30
+   ipv6 nd cache dynamic capacity 100
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   tcp mss ceiling ipv6 1400
+   tunnel mode gre
+   tunnel source 1.1.1.1
    tunnel destination 2.2.2.2
 ```
 
@@ -11797,6 +11975,8 @@ router multicast
 
 BFD enabled: True
 
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
+
 Make-before-break: False
 Register Local Interface: Ethernet1
 
@@ -11845,6 +12025,7 @@ router pim sparse-mode
    ipv4
       ssm range standard
       bfd
+      message hello address secondary ipv6
       make-before-break disabled
       rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30

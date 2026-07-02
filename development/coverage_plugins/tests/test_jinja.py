@@ -90,6 +90,69 @@ def test_file_tracer_resolves_source_filename_and_maps_generated_lines(tmp_path:
     assert tracer.line_number_range(_frame(99)) == (-1, -1)
 
 
+def test_file_tracer_maps_blank_only_yield_after_jinja_pass(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "blank_pass.j2"
+    compiled_file = compiled_root / "blank_pass.py"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text("{% if items %}\n\n{% for item in items %}\n- {{ item }}\n{% endfor %}\n{% endif %}\n", encoding="utf-8")
+    compiled_file.write_text(
+        "name = 'blank_pass.j2'\n"
+        "\n"
+        "def root(context):\n"
+        "    if context.get('items'):\n"
+        "        pass\n"
+        "        yield '\\n'\n"
+        "        for item in context.get('items'):\n"
+        "            yield '- '\n"
+        "            yield str(item)\n"
+        "debug_info = '1=4&3=7&4=8'\n",
+        encoding="utf-8",
+    )
+
+    tracer = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)).file_tracer(str(compiled_file))
+
+    assert tracer is not None
+    assert tracer.line_number_range(_frame(6)) == (2, 2)
+
+
+def test_file_tracer_maps_blank_only_yield_after_else_pass(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "blank_else.j2"
+    compiled_file = compiled_root / "blank_else.py"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if enabled %}\ntrue\n{% else %}\n\n{% for item in items %}\n- {{ item }}\n{% endfor %}\n{% endif %}\n",
+        encoding="utf-8",
+    )
+    compiled_file.write_text(
+        "name = 'blank_else.j2'\n"
+        "\n"
+        "def root(context):\n"
+        "    if context.get('enabled'):\n"
+        "        yield 'true'\n"
+        "    else:\n"
+        "        pass\n"
+        "        yield '\\n'\n"
+        "        for item in context.get('items'):\n"
+        "            yield '- '\n"
+        "            yield str(item)\n"
+        "debug_info = '1=4&2=5&5=9&6=10'\n",
+        encoding="utf-8",
+    )
+
+    tracer = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)).file_tracer(str(compiled_file))
+
+    assert tracer is not None
+    assert tracer.line_number_range(_frame(8)) == (3, 4)
+
+
 def test_file_tracer_without_compiled_template_roots_traces_no_files(tmp_path: Path) -> None:
     compiled_file = tmp_path / "compiled_templates/template.py"
     compiled_file.parent.mkdir()
@@ -237,6 +300,180 @@ def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Pa
     assert tracer.line_number_range(_frame(20)) == (4, 5)
 
 
+@pytest.mark.parametrize(
+    ("spacer_values", "expected_executed", "expected_missing_branch_arcs"),
+    [
+        ([True], {1, 2, 3, 6}, {2: [4]}),
+        ([False], {1, 2, 6}, {2: [3]}),
+        ([True, False], {1, 2, 3, 6}, {}),
+    ],
+)
+def test_coverage_tracks_conditional_blank_static_lines(
+    tmp_path: Path,
+    spacer_values: list[bool],
+    expected_executed: set[int],
+    expected_missing_branch_arcs: dict[int, list[int]],
+) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "blank_branch.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if wrapper %}\n{% if spacer %}\n\n{% endif %}\n{% endif %}\nbody\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    for spacer in spacer_values:
+        environment.get_template("blank_branch.j2").render(wrapper=True, spacer=spacer)
+    coverage.stop()
+    coverage.save()
+
+    reporter = JinjaTemplateFileReporter(str(source_file))
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert reporter.lines() == {1, 2, 3, 6}
+    assert set(analysis.executed) == expected_executed
+    assert analysis.missing_branch_arcs() == expected_missing_branch_arcs
+    assert analysis.branch_stats()[2] == (2, 2 if spacer_values == [True, False] else 1)
+
+
+@pytest.mark.parametrize(
+    ("items_values", "expected_executed", "expected_missing_branch_arcs"),
+    [
+        ([["leaf"]], {1, 2, 3, 4, 5, 9}, {2: [7]}),
+        ([[]], {1, 2, 9}, {2: [3]}),
+        ([["leaf"], []], {1, 2, 3, 4, 5, 9}, {}),
+    ],
+)
+def test_coverage_tracks_conditional_blank_static_line_before_for(
+    tmp_path: Path,
+    items_values: list[list[str]],
+    expected_executed: set[int],
+    expected_missing_branch_arcs: dict[int, list[int]],
+) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "blank_before_for.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if wrapper %}\n{% if items %}\n\n{% for item in items %}\n- {{ item }}\n{% endfor %}\n{% endif %}\n{% endif %}\nbody\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    for items in items_values:
+        environment.get_template("blank_before_for.j2").render(wrapper=True, items=items)
+    coverage.stop()
+    coverage.save()
+
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert set(analysis.executed) == expected_executed
+    assert analysis.missing_branch_arcs() == expected_missing_branch_arcs
+    assert analysis.branch_stats()[2] == (2, 2 if items_values == [["leaf"], []] else 1)
+
+
+@pytest.mark.parametrize(
+    ("enabled_values", "expected_executed", "expected_missing_branch_arcs"),
+    [
+        ([True], {1, 2, 3, 6}, {2: [4]}),
+        ([False], {1, 2, 6}, {2: [3]}),
+        ([True, False], {1, 2, 3, 6}, {}),
+    ],
+)
+def test_coverage_tracks_conditional_set_only_body(
+    tmp_path: Path,
+    enabled_values: list[bool],
+    expected_executed: set[int],
+    expected_missing_branch_arcs: dict[int, list[int]],
+) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "set_branch.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if wrapper %}\n{% if enabled %}\n{% set value = 'yes' %}\n{% endif %}\n{% endif %}\n{{ value | default('-') }}\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    for enabled in enabled_values:
+        environment.get_template("set_branch.j2").render(wrapper=True, enabled=enabled)
+    coverage.stop()
+    coverage.save()
+
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert set(analysis.executed) == expected_executed
+    assert analysis.missing_branch_arcs() == expected_missing_branch_arcs
+    assert analysis.branch_stats()[2] == (2, 2 if enabled_values == [True, False] else 1)
+
+
+@pytest.mark.parametrize(
+    ("enabled_values", "expected_executed", "expected_missing_branch_arcs"),
+    [
+        ([True], {1, 2, 3, 4, 7}, {3: [5]}),
+        ([False], {1, 2, 3, 7}, {3: [4]}),
+        ([True, False], {1, 2, 3, 4, 7}, {}),
+    ],
+)
+def test_coverage_tracks_conditional_do_only_body(
+    tmp_path: Path,
+    enabled_values: list[bool],
+    expected_executed: set[int],
+    expected_missing_branch_arcs: dict[int, list[int]],
+) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "do_branch.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% set values = [] %}\n{% if wrapper %}\n{% if enabled %}\n{% do values.append('yes') %}\n{% endif %}\n{% endif %}\n{{ values | join(',') }}\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root), extensions=["jinja2.ext.do"]).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root), extensions=["jinja2.ext.do"])  # noqa: S701
+
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    for enabled in enabled_values:
+        environment.get_template("do_branch.j2").render(wrapper=True, enabled=enabled)
+    coverage.stop()
+    coverage.save()
+
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert set(analysis.executed) == expected_executed
+    assert analysis.missing_branch_arcs() == expected_missing_branch_arcs
+    assert analysis.branch_stats()[3] == (2, 2 if enabled_values == [True, False] else 1)
+
+
 def test_coverage_marks_multiline_jinja_tags_as_executed_ranges(tmp_path: Path) -> None:
     analysis = _analyze_rendered_template(
         tmp_path,
@@ -262,6 +499,41 @@ def test_coverage_marks_multiline_jinja_branch_body_arc_as_executed(tmp_path: Pa
 
     assert analysis.branch_stats()[2] == (2, 1)
     assert analysis.missing_branch_arcs() == {2: [6]}
+
+
+def test_coverage_marks_multiline_no_else_false_arc_as_executed(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "template.j2"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if primary is defined or\n"
+        "      secondary is defined or\n"
+        "      fallback is defined %}\n"
+        "{% set value = 'covered' %}\n"
+        "{% endif %}\n"
+        "{% for item in items %}\n"
+        "{{ item }}\n"
+        "{% endfor %}\n",
+        encoding="utf-8",
+    )
+
+    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.erase()
+    coverage.start()
+    environment.get_template("template.j2").render(primary=True, items=["leaf"])
+    environment.get_template("template.j2").render(items=["leaf"])
+    coverage.stop()
+    coverage.save()
+
+    analysis = coverage._analyze(str(source_file.resolve()))
+
+    assert analysis.branch_stats()[1] == (2, 2)
+    assert analysis.missing_branch_arcs() == {}
 
 
 def test_coverage_marks_jinja_else_tag_as_executed_with_else_body(tmp_path: Path) -> None:
@@ -441,7 +713,7 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
     assert data.file_tracer(source_filename) == "None.JinjaTemplateCoveragePlugin"
     source_lines = data.lines(source_filename)
     assert source_lines is not None
-    assert set(source_lines) >= {1, 2, 4, 8, 11}
+    assert set(source_lines) >= {1, 2, 3, 4, 8, 11}
     assert 6 not in source_lines
     assert 9 not in source_lines
     assert data.arcs(source_filename)
@@ -450,6 +722,7 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
 
     analysis = coverage._analyze(source_filename)
     assert max(analysis.executed) <= len(source_file.read_text(encoding="utf-8").splitlines())
+    assert 3 in analysis.executed
     assert 9 not in analysis.executed
 
 
@@ -487,6 +760,16 @@ def test_nested_optional_input_shape_reports_missing_inner_output(tmp_path: Path
 
     assert 4 in analysis.missing
     assert analysis.missing_branch_arcs() == {3: [4]}
+
+
+def test_optional_block_after_static_output_records_both_branches(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% for item in items %}\nheading {{ item.name }}\n{% if item.enabled %}\noptional\n{% endif %}\n{% endfor %}\n",
+        {"items": [{"name": "enabled", "enabled": True}, {"name": "disabled", "enabled": False}]},
+    )
+
+    assert not analysis.missing_branch_arcs()
 
 
 def test_long_elif_chain_reports_unvisited_alternatives(tmp_path: Path) -> None:
