@@ -206,6 +206,16 @@ class MacType(aristaproto.Enum):
     MAC_TYPE_CONFIGURED_STATIC_FRR indicates a MAC configured statically and protected by an EVPN FRR backup tunnel.
     """
 
+    VPLS_DYNAMIC_REMOTE = 32
+    """
+    MAC_TYPE_VPLS_DYNAMIC_REMOTE indicates a remote MAC learned dynamically from the VPLS.
+    """
+
+    CONFIGURED_SYS = 33
+    """
+    MAC_TYPE_CONFIGURED_SYS indicates a system MAC address configured on an interface.
+    """
+
     OTHER = 99999
     """MAC_TYPE_OTHER is used for capturing future MAC types."""
 

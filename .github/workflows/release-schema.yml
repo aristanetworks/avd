@@ -16,12 +16,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
+          persist-credentials: false
           ref: refs/tags/${{ inputs.tag || github.event.release.tag_name }}
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.12"
 
@@ -33,6 +34,7 @@ jobs:
         working-directory: python-avd
 
       - name: Upload schemas.json.gz to release
-        run: gh release upload ${{ inputs.tag || github.event.release.tag_name }} python-avd/pyavd/_schema/schemas.json.gz
+        run: gh release upload "$RELEASE_TAG" python-avd/pyavd/_schema/schemas.json.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}

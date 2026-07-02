@@ -177,6 +177,33 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: |-
+                  Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+                        note: `peer_filter` or `remote_as` is required.
+                      convert_types:
+                        - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: |
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -533,10 +560,25 @@ keys:
                       description: IPv4 DHCP server IP.
                     source_interface:
                       type: str
-                      description: Interface name.
+                      description: |-
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be used directly as the source interface.
                     source_vrf:
                       type: str
-                      description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                      description: |-
+                        VRF to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted according to these rules:
+                        - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                          An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                        - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                          An error will be raised if inband management is not configured for the device.
+                        - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be used directly as the source VRF name.
+                        - If not set, EOS uses the VRF on the SVI.
                       convert_types:
                         - int
               enable_mlag_ibgp_peering_vrfs:
@@ -1674,6 +1716,13 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: "eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges"
+                      description: |-
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For other VRFs this is configured under
+                        respective VRF.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

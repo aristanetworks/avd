@@ -10,8 +10,8 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -48,7 +48,6 @@ class RouterBgpMixin(Protocol):
         # These functions update structured config directly.
         self._router_bgp_peer_groups()
         self._router_bgp_vrfs()
-
         self._router_bgp_vlans(tenant_svis_l2vlans_dict)
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
@@ -128,12 +127,20 @@ class RouterBgpMixin(Protocol):
         Covers these areas:
         - vrfs for all VRFs.
         - neighbors and address_family_ipv4/6 for VRF default.
+        - bgp listen-ranges for router bgp, default VRF and non-default VRFs.
         """
         if not self.shared_utils.network_services_l3:
             return
 
         # For VRF default the bgp_vrf variable will be set to the global router_bgp for some settings.
         for tenant in self.shared_utils.filtered_tenants:
+            for bgp_peer_group in tenant.bgp_peer_groups:
+                context = f"tenants[name={tenant.name}].bgp_peer_groups[name={bgp_peer_group.name}]"
+                listen_range_bgp_vrf = self.structured_config.router_bgp
+                # Listen ranges are configured when a node from bgp_peer_group.nodes[] matches the hostname
+                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
+                    self._set_bgp_listen_ranges(bgp_peer_group, listen_range_bgp_vrf, context)
+
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
                     continue
@@ -199,6 +206,11 @@ class RouterBgpMixin(Protocol):
                     for aggregate_address in vrf.aggregate_addresses:
                         # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
                         bgp_vrf.aggregate_addresses.append(aggregate_address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True))
+
+                for bgp_peer_group in vrf.bgp_peer_groups:
+                    context = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].bgp_peer_groups[name={bgp_peer_group.name}]"
+                    if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
+                        self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf, context)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -361,7 +373,12 @@ class RouterBgpMixin(Protocol):
         vlan_id: int,
     ) -> None:
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
-        if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
+        # TODO: AVD7.0 - Move this logic to else block of self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549.
+        if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant) and not (
+            self.inputs.underlay_rfc5549
+            and self.inputs.overlay_mlag_rfc5549
+            and self.inputs.avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used
+        ):
             bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
             # Create route-map
             self.set_once_route_map_connected_to_bgp_vrfs()
@@ -806,3 +823,35 @@ class RouterBgpMixin(Protocol):
                     mtu=tenant.vpws.mtu,
                     label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
                 )
+
+    def _set_bgp_listen_ranges(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem,
+        bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
+        context: str,
+    ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
+        for index, listen_range in enumerate(bgp_peer_group.listen_ranges):
+            if not (listen_range.peer_filter or listen_range.remote_as):
+                msg = f"{context}.listen_ranges[{index}].peer_filter or {context}.listen_ranges[{index}].remote_as"
+                raise AristaAvdMissingVariableError(msg)
+            if listen_range.peer_filter and listen_range.remote_as:
+                msg = f"'{context}.listen_ranges[{index}].peer_filter' and '{context}.listen_ranges[{index}].remote_as' cannot be set together."
+                raise AristaAvdInvalidInputsError(msg)
+
+            bgp_vrf.listen_ranges.append_new(
+                prefix=listen_range.prefix,
+                peer_group=bgp_peer_group.name,
+                remote_as=listen_range.remote_as or Undefined,
+                peer_filter=listen_range.peer_filter or Undefined,
+                peer_id_include_router_id=listen_range.peer_id_include_router_id,
+            )
+            if listen_range.peer_filter:
+                self._set_bgp_peer_filter(listen_range.peer_filter)
+        return bgp_vrf
+
+    def _set_bgp_peer_filter(self: AvdStructuredConfigNetworkServicesProtocol, peer_filter: str) -> None:
+        if peer_filter not in self.inputs.bgp_peer_filters_catalog:
+            msg = f"bgp_peer_filters_catalog[name={peer_filter}]"
+            raise AristaAvdMissingVariableError(msg)
+        self.structured_config.peer_filters.append(self.inputs.bgp_peer_filters_catalog[peer_filter])

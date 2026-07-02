@@ -41,6 +41,17 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
+  cv_deploy_future:
+    description: |-
+      Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version.
+    type: dict
+    suboptions:
+      use_system_certs:
+        description: |-
+          Use system certificates instead of Python's bundled certificate store.
+          Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+        type: bool
+        default: false
   proxy_host:
     description: FQDN/IP of the HTTP CONNECT proxy server.
     type: str
@@ -99,6 +110,14 @@ options:
     description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
+      preserve_existing_containers:
+        description: |-
+          Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+          This enables partial manifests managing separate root-level branches.
+          Existing manifest-managed container order is preserved, and newly declared containers are appended.
+          Manually created root containers are always preserved and ordered after the manifest-managed containers.
+        type: bool
+        default: false
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.
@@ -118,6 +137,9 @@ options:
           - **description** (`str`, optional): An optional description for the container.
           - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
               a child container configlets. Valid choices are `match_all` or `match_first`.
+          - **preserve_existing_sub_containers** (`bool`, optional, default: `false`): Preserve existing manifest-managed child containers under this container
+              when they are not declared in the current manifest. This enables partial manifests managing sibling branches under a shared parent.
+              Existing manifest-managed child container order is preserved, and newly declared child containers are appended.
           - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
           - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
               allowing for a full hierarchy.
@@ -256,6 +278,8 @@ EXAMPLES = r"""
         cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # cv_deploy_future:
+        #   use_system_certs: false
         # proxy_host: "proxy.local.domain"
         # proxy_port: "8080"
         # proxy_username: "avd_user"

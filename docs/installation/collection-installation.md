@@ -18,7 +18,7 @@
 
 ```text
 --8<--
-docs/requirements.txt:4:
+docs/avd-requirements.txt:4:
 --8<--
 ```
 

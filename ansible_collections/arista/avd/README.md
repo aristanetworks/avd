@@ -71,7 +71,7 @@ pip3 install "pyavd[ansible-collection]==$ARISTA_AVD_VERSION"
 
 Please see the documentation for examples in data center, campus, and wide area network environments.
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started](https://avd.arista.com/stable/docs/user-manual/intro-to-ansible-and-avd.html)
 - [Examples](https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html)
 
 ### Testing

@@ -80,6 +80,11 @@ keys:
             default:
               - 'Arista Networks'
               - 'Arastra, Inc.'
+          ignore_no_transceivers:
+            type: bool
+            description: |-
+              Accept ports with no transceiver as valid when checking the approved manufacturers.
+            default: true
       cv_tags:
         type: dict
         keys:

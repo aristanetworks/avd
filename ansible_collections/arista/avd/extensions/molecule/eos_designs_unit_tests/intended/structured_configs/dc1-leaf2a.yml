@@ -1309,6 +1309,10 @@ vlan_interfaces:
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
   vrf: '12345678'
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
@@ -1321,6 +1325,10 @@ vlan_interfaces:
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
   vrf: '12345678'
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
@@ -1335,6 +1343,10 @@ vlan_interfaces:
   shutdown: false
   vrf: '12345678'
   ip_address_virtual: 10.4.12.254/24
+  ip_helpers:
+  - ip_helper: 1.1.1.3
+    source_interface: Management99
+    vrf: MGMT
   ipv6_enable: false
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
@@ -1354,7 +1366,19 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
+  ipv6_dhcp_relay_destinations:
+  - address: cafe::cafe:64
+    vrf: default
+  - address: ca::ca:64
+    local_interface: Loopback44
+    link_address: cafe::cafe:64
   ipv6_nd:
+    ra:
+      dns_servers:
+      - address: cafe::cafe:64
+      - address: ca::ca:64
+        lifetime: 100
+      dns_servers_lifetime: 200
     prefixes:
     - ipv6_prefix: 2001:db8:310::1/64
       valid_lifetime: '200'

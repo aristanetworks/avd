@@ -26,6 +26,12 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
+# Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
+# cv_deploy_future:
+#   # Use system certificates instead of Python's bundled certificate store.
+#   # Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables.
+#   use_system_certs: <bool; default=false>
+
 # Client-side gRPC keepalive settings for the CloudVision connection.
 cv_grpc_keepalives:
   # Enable client-side gRPC keepalives. When false, the other settings have no effect.
@@ -115,6 +121,12 @@ cv_workspace_build_timeout: 300
 
 # cv_static_config_manifest:
 #
+#   Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+#   This enables partial manifests managing separate root-level branches.
+#   Existing manifest-managed container order is preserved, and newly declared containers are appended.
+#   Manually created root containers are always preserved and ordered after the manifest-managed containers.
+#   preserve_existing_containers: <bool, default=false>
+#
 #   A list of dictionaries defining static configlets to be created in the Configlet Library.
 #   Configlet names must be unique across all defined configlets.
 #   configlets:
@@ -128,6 +140,7 @@ cv_workspace_build_timeout: 300
 #       description: <str, optional>
 #       tag_query: <str>
 #       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       preserve_existing_sub_containers: <bool, default=false>
 #       configlets:
 #         - name: <str>
 #       sub_containers:
@@ -135,6 +148,7 @@ cv_workspace_build_timeout: 300
 #           description: <str, optional>
 #           tag_query: <str>
 #           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           preserve_existing_sub_containers: <bool, default=false>
 #           configlets:
 #             - name: <str>
 #           sub_containers: <list of containers>
