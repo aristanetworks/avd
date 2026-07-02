@@ -6700,9 +6700,12 @@ interface Ethernet90
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel51 | ipv6_prefix | - | - | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Port-Channel109 | Molecule ACLs | - | - | default | - | - | - | - | - | - | - | - | IPV6_ACL_IN | IPV6_ACL_OUT |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
+| Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
 
 ##### VRRP Details
 
@@ -7493,6 +7496,14 @@ interface Port-Channel333
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
+!
+interface Port-Channel400
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 access-group TEST-V6-IN in
+   ipv6 access-group TEST-V6-OUT out
 !
 interface Port-Channel667
    description Multiple VRIDs
