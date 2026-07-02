@@ -762,6 +762,21 @@ def test_nested_optional_input_shape_reports_missing_inner_output(tmp_path: Path
     assert analysis.missing_branch_arcs() == {3: [4]}
 
 
+def test_last_if_in_body_false_branch_is_credited_when_parent_exits(tmp_path: Path) -> None:
+    # The inner `if` is the last statement in the outer body.  When outer=True
+    # but inner=False the runtime arc jumps past the inner endif directly to the
+    # statement that follows the outer endif.  The plugin must credit the false
+    # branch of the inner if even though the arc lands beyond its endif line.
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% if outer %}\n{% if inner %}\ncontent\n{% endif %}\n{% endif %}\nafter\n",
+        {"outer": True, "inner": False},
+    )
+
+    # The false branch (inner → endif) is covered; the true branch (content) is missing.
+    assert analysis.missing_branch_arcs() == {2: [3]}
+
+
 def test_optional_block_after_static_output_records_both_branches(tmp_path: Path) -> None:
     analysis = _analyze_rendered_template(
         tmp_path,
