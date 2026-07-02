@@ -14,9 +14,9 @@
 | Max Concurrent Jobs | Prepend Hostname Logfile |
 | ------------------- | ------------------------ |
 | {{ schedule.config.max_concurrent_jobs | arista.avd.default("-") }} | {{ schedule.config.prepend_hostname_logfile | arista.avd.default("-") }} |
-
 {%     endif %}
 {%     if schedule.jobs is arista.avd.defined %}
+
 ### Schedule Jobs Summary
 
 | Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
