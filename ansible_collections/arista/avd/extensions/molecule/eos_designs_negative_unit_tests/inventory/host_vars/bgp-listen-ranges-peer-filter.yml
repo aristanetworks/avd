@@ -1,0 +1,33 @@
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  node_groups:
+    - group: vrf-missing-id
+      nodes:
+        - name: bgp-listen-ranges-peer-filter
+          bgp_as: 42
+          id: 42
+
+type: l3leaf
+
+tenants:
+  # Tenant A Specific Information - VRFs / VLANs
+  - name: Tenant_X
+    mac_vrf_vni_base: 11000
+    bgp_peer_groups:
+      - name: Tenant_C_BGP_PEER_GROUP2
+        remote_as: "667"
+        description: "Tenant C peer group2"
+        listen_ranges:
+          - prefix: 192.168.142.0/24
+            remote_as: 111
+          - prefix: 192.168.143.0/24
+            remote_as: 111
+            peer_id_include_router_id: true
+            peer_filter: peerfilter
+        nodes: [bgp-listen-ranges-peer-filter]
+
+expected_error_message: >-
+  'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[1].peer_filter' and
+  'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[1].remote_as' cannot be set together.
