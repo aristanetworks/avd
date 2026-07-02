@@ -42,16 +42,16 @@ management_ldap:
     # Host4: Same host name with port
     - host: 10.1.1.1
       port: 101
-    
+
     # Host5: Same host name with different port
     - host: 10.1.1.1
       port: 201
-    
+
     # Host6: Same host and port with vrf
     - host: 10.1.1.1
       port: 101
       vrf: vrf1
-    
+
     # Host7: Same host and port with different vrf
     - host: 10.1.1.1
       port: 101
