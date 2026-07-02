@@ -1,6 +1,7 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from .api.eos_cli_config_gen import ConfigRenderConfiguration, DocRenderConfiguration, RenderConfiguration
 from .get_avd_facts import get_avd_facts
 from .get_device_config import get_device_config
 from .get_device_doc import get_device_doc
@@ -21,6 +22,9 @@ __license__ = "Apache 2.0"
 __version__ = "6.3.0.dev1"
 
 __all__ = [
+    "ConfigRenderConfiguration",
+    "DocRenderConfiguration",
+    "RenderConfiguration",
     "get_avd_facts",
     "get_device_config",
     "get_device_doc",

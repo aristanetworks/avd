@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from .api.eos_cli_config_gen import ConfigRenderConfiguration
     from .api.schemas import EOSConfig
 
 
-def get_device_config(structured_config: EOSConfig | dict) -> str:
+def get_device_config(structured_config: EOSConfig | dict, *, configuration: ConfigRenderConfiguration | None = None) -> str:
     """
     Render and return the device configuration using AVD eos_cli_config_gen templates.
 
@@ -21,6 +22,9 @@ def get_device_config(structured_config: EOSConfig | dict) -> str:
             - Alternatively, for backwards compatibility, variables can be given as a dictionary,
               which should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`,
               and take the data from the 'validated_data' attribute.
+
+        configuration:
+            Optional render configuration for the device EOS configuration.
 
     Returns:
         Device configuration in EOS CLI format.
@@ -40,5 +44,10 @@ def get_device_config(structured_config: EOSConfig | dict) -> str:
     if isinstance(structured_config, EOSConfig):
         structured_config = structured_config._as_dict()
 
+    template_vars: dict[str, Any] = structured_config
+    if configuration is not None and configuration.hide_passwords is not None:
+        template_vars = structured_config.copy()
+        template_vars["_eos_cli_config_gen_hide_passwords"] = configuration.hide_passwords
+
     templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
-    return templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, template_vars=structured_config)
+    return templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, template_vars=template_vars)

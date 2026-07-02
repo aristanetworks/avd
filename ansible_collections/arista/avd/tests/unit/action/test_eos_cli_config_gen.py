@@ -179,6 +179,37 @@ def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., Actio
     assert exc_info.value.__cause__ is original_error
 
 
+def test_main_passes_hide_passwords_options_to_pyavd(action_module: Callable[..., ActionModule]) -> None:
+    """Verify role render settings are passed explicitly to PyAVD."""
+    module = action_module(ActionModule)
+    structured_config = {"hostname": "test-device"}
+    validated_args = {
+        "tmp_dir": MOCK_TMP_DIR,
+        "generate_device_config": True,
+        "generate_device_doc": True,
+        "config_filename": "/output/config.cfg",
+        "documentation_filename": "/output/doc.md",
+        "device_doc_toc": False,
+        "configuration_hide_passwords": True,
+        "documentation_hide_passwords": False,
+    }
+
+    with (
+        patch.object(module, "validate_args", return_value=validated_args),
+        patch.object(module, "load_structured_config", return_value=structured_config),
+        patch.object(module, "write_file", return_value=False),
+        patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True) as mock_get_device_config,
+        patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True) as mock_get_device_doc,
+    ):
+        module.main("test-device", {}, {})
+
+    assert mock_get_device_config.call_args.args == (structured_config,)
+    assert mock_get_device_config.call_args.kwargs["configuration"].hide_passwords is True
+    assert mock_get_device_doc.call_args.args == (structured_config,)
+    assert mock_get_device_doc.call_args.kwargs["add_md_toc"] is False
+    assert mock_get_device_doc.call_args.kwargs["configuration"].hide_passwords is False
+
+
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
     module = action_module(ActionModule)
