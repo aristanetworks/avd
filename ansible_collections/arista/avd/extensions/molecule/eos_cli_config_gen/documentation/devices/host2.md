@@ -1994,5 +1994,6 @@ stun
 ### Schedule Device Configuration
 
 ```eos
+!
 no schedule config prepend-hostname-logfile
 ```

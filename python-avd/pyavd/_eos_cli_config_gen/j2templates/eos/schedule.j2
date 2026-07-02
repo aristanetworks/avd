@@ -4,7 +4,8 @@
  that can be found in the LICENSE file.
 #}
 {# eos - schedule #}
-{% if schedule is arista.avd.defined %}
+{% if schedule.config.max_concurrent_jobs is arista.avd.defined or schedule.config.prepend_hostname_logfile is arista.avd.defined or schedule.jobs is arista.avd.defined %}
+!
 {%     if schedule.config.max_concurrent_jobs is arista.avd.defined or schedule.config.prepend_hostname_logfile is arista.avd.defined %}
 {%         if schedule.config.max_concurrent_jobs is arista.avd.defined %}
 schedule config max-concurrent-jobs {{ schedule.config.max_concurrent_jobs }}

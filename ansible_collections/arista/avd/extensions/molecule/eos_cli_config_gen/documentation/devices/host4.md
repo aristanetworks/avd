@@ -464,5 +464,6 @@ vrf instance FUTURE_IPV4
 ### Schedule Device Configuration
 
 ```eos
+!
 schedule interval_basic interval 10 timeout 5 max-log-files 1 command show version
 ```
