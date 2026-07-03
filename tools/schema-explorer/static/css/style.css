@@ -907,6 +907,13 @@
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-literal,
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-number { color: #8250df; }
 
+:where(.schema-spa-host, .schema-embed) .schema-yaml-line {
+  scroll-margin-block: 6rem;
+}
+:where(.schema-spa-host, .schema-embed) .schema-yaml-line.active {
+  background: color-mix(in srgb, var(--md-accent-fg-color, #d47122) 12%, transparent);
+}
+
 :where(.schema-spa-host, .schema-embed) .schema-yaml-block .se-yaml-annotation-link {
   display: inline-flex;
   width: 1em;

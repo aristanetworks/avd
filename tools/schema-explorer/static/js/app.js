@@ -291,6 +291,10 @@ const CDN_DEPS = {
     },
   ],
 };
+const SQL_WASM = {
+  src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.wasm",
+  integrity: "sha384-kSm0AH9ho89napVfNFf/kCRTH6xBoCS3qf/ATGJeYFQFKiegBMLhQ3aUIZBlYLpa",
+};
 
 function _hasTagWithUrl(selector, attr, url) {
   for (const el of document.querySelectorAll(selector)) {
@@ -371,11 +375,30 @@ async function ensureDeps() {
   for (const dep of CDN_DEPS.js) await _loadScript(dep);
 }
 
+async function _verifiedWasmBinary(dep) {
+  const response = await fetch(dep.src);
+  if (!response.ok) {
+    throw new Error("Failed to load " + dep.src + " (" + response.status + ")");
+  }
+  const wasmBinary = await response.arrayBuffer();
+  if (!globalThis.crypto?.subtle) {
+    throw new Error("Unable to verify " + dep.src + ": Web Crypto is unavailable.");
+  }
+  const digest = await globalThis.crypto.subtle.digest("SHA-384", wasmBinary);
+  const digestBytes = String.fromCharCode(...new Uint8Array(digest));
+  const actualIntegrity = "sha384-" + btoa(digestBytes);
+  if (actualIntegrity !== dep.integrity) {
+    throw new Error("Integrity check failed for " + dep.src);
+  }
+  return wasmBinary;
+}
+
 async function ensureSqlJs() {
   if (SQL) return SQL;
   await ensureDeps();
+  const wasmBinary = await _verifiedWasmBinary(SQL_WASM);
   SQL = await window.initSqlJs({
-    locateFile: f => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${f}`,
+    wasmBinary,
   });
   return SQL;
 }
@@ -745,12 +768,29 @@ function renderResults(db, module, state) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
   }
-  if (state.view === "yaml") return renderYamlResults(target, module, results);
+  if (state.view === "yaml") return renderYamlResults(target, module, state, results);
   if (state.view === "reference") return renderReferenceResults(target, module, state, results);
   return renderReferenceResults(target, module, { ...state, view: "reference" }, results);
 }
 
 let _schemaRenderSeq = 0;
+
+function schemaBool(value) {
+  return value === true || value === 1 || value === "1";
+}
+
+function isPrimaryKey(row) {
+  return schemaBool(row.primary_key) || schemaBool(row.unique_key);
+}
+
+function renderPropertyRows(rows, headerTag = "td") {
+  return rows.filter(row => row.show !== false).map(row => {
+    const labelCell = headerTag === "th"
+      ? `<th>${escapeHtml(row.label)}</th>`
+      : `<td class="px-3 fw-semibold small text-muted"${row.width ? ` style="width:${escapeAttr(row.width)};"` : ""}>${escapeHtml(row.label)}</td>`;
+    return `<tr>${labelCell}<td>${row.value}</td></tr>`;
+  }).join("");
+}
 
 function renderVarDetail(db, module, key_path) {
   if (!SCHEMA_MODULES[module]) return fail(`Module not found: ${module}`);
@@ -760,6 +800,7 @@ function renderVarDetail(db, module, key_path) {
   const constraints = v.constraints ? JSON.parse(v.constraints) : {};
   const constraintsText = yamlRestrictionParts(v, constraints).join("; ");
   const dynamicSource = dynamicKeySource(v.key_path);
+  const primaryKey = isPrimaryKey(v);
 
   const validValuesHtml = constraints.valid_values ? `
     <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Valid Values</h5>
@@ -780,6 +821,14 @@ function renderVarDetail(db, module, key_path) {
     : v.deprecated
       ? `<span class="schema-detail-status text-muted ms-1">deprecated</span>`
       : "";
+  const propertyRows = renderPropertyRows([
+    { label: "Type", width: "140px", value: `<span class="schema-type-label">${escapeHtml(v.var_type || "-")}</span>` },
+    { label: "Status", value: `<span class="schema-detail-status text-muted">${v.removed ? "removed" : "deprecated"}</span>`, show: v.removed || v.deprecated },
+    { label: "Primary Key", value: `<span class="text-success"><i class="bi bi-key-fill me-1"></i>Yes</span>`, show: primaryKey },
+    { label: "Required", value: `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>`, show: schemaBool(v.required) && !primaryKey },
+    { label: "Default", value: renderDefaultValue(v.default_value, { noneLabel: "none", open: true }), show: v.default_value !== null && v.default_value !== undefined && v.default_value !== "" },
+    { label: "Value Restrictions", value: escapeHtml(constraintsText), show: !!constraintsText },
+  ]);
   app.innerHTML = `
     <div class="d-flex align-items-center mb-4 schema-detail-heading">
       <a href="#/${module}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
@@ -792,17 +841,13 @@ function renderVarDetail(db, module, key_path) {
     </div>
     <div class="row g-3 schema-detail-page">
       <div class="col-12">
-        <h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
-        <div class="card border-0 shadow-sm mb-4"><div class="card-body schema-description">${formatDescriptionMarkdown(v.description || "-")}</div></div>
+        ${v.description ? `<h5 class="fw-bold brand-color mb-2"><i class="bi bi-info-circle me-2"></i>Description</h5>
+        <div class="card border-0 shadow-sm mb-4"><div class="card-body schema-description">${formatDescriptionMarkdown(v.description)}</div></div>` : ""}
 
         <h5 class="fw-bold brand-color mb-2"><i class="bi bi-list-check me-2"></i>Properties</h5>
         <div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
           <table class="table table-sm align-middle mb-0"><tbody>
-            <tr><td class="px-3 fw-semibold small text-muted" style="width:140px;">Type</td><td><span class="schema-type-label">${escapeHtml(v.var_type || "-")}</span></td></tr>
-            ${(v.removed || v.deprecated) ? `<tr><td class="px-3 fw-semibold small text-muted">Status</td><td><span class="schema-detail-status text-muted">${v.removed ? "removed" : "deprecated"}</span></td></tr>` : ""}
-            <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none", open: true })}</td></tr>
-            <tr><td class="px-3 fw-semibold small text-muted">Value Restrictions</td><td>${constraintsText ? escapeHtml(constraintsText) : `<span class="text-muted">none</span>`}</td></tr>
-            <tr><td class="px-3 fw-semibold small text-muted">Required</td><td>${v.required ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>` : `<span class="text-muted">No</span>`}</td></tr>
+            ${propertyRows}
             ${v.cross_ref ? renderCrossRefRow(v.cross_ref) : ""}
             ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
@@ -1009,6 +1054,7 @@ function renderReferenceDefaultValue(row) {
 function renderReferenceDetail(row, module, isAll) {
   const constraints = yamlConstraints(row);
   const constraintsText = yamlRestrictionParts(row, constraints).join("; ");
+  const primaryKey = isPrimaryKey(row);
   const lifecycle = row.removed
     ? `<span class="schema-detail-status text-muted ms-1">removed</span>`
     : row.deprecated
@@ -1017,6 +1063,17 @@ function renderReferenceDetail(row, module, isAll) {
   const validValues = Array.isArray(constraints.valid_values) && constraints.valid_values.length
     ? `<h3>Valid Values</h3><div class="schema-reference-prose"><ul>${constraints.valid_values.map(value => `<li><code>${escapeHtml(String(value))}</code></li>`).join("")}</ul></div>`
     : "";
+  const propertyRows = renderPropertyRows([
+    { label: "Key Name", value: `<code>${escapeHtml(leafSegment(row.key_path))}</code>` },
+    { label: "Type", value: escapeHtml(row.var_type || "-") },
+    { label: "Primary Key", value: "Yes", show: primaryKey },
+    { label: "Required", value: "Yes", show: schemaBool(row.required) && !primaryKey },
+    { label: "Default", value: renderDefaultValue(row.default_value, { compact: true }), show: row.default_value !== null && row.default_value !== undefined && row.default_value !== "" },
+    { label: "Value Restrictions", value: escapeHtml(constraintsText), show: !!constraintsText },
+  ], "th");
+  const descriptionHtml = row.description
+    ? `<h2>Description</h2><div class="schema-reference-prose">${formatDescriptionMarkdown(row.description)}</div>`
+    : "";
   return `
     <div class="schema-reference-detail-inner">
       <div class="schema-reference-breadcrumb"><code>${escapeHtml(displayPath(row.key_path))}</code></div>
@@ -1024,16 +1081,11 @@ function renderReferenceDetail(row, module, isAll) {
       <div class="schema-reference-key-table-wrap">
         <table class="schema-reference-key-table">
           <tbody>
-            <tr><th>Key Name</th><td><code>${escapeHtml(leafSegment(row.key_path))}</code></td></tr>
-            <tr><th>Type</th><td>${escapeHtml(row.var_type || "-")}</td></tr>
-            <tr><th>Required</th><td>${row.required ? "Yes" : "None"}</td></tr>
-            <tr><th>Default</th><td>${renderDefaultValue(row.default_value, { compact: true })}</td></tr>
-            <tr><th>Value Restrictions</th><td>${constraintsText ? escapeHtml(constraintsText) : `<span class="text-muted">-</span>`}</td></tr>
+            ${propertyRows}
           </tbody>
         </table>
       </div>
-      <h2>Description</h2>
-      <div class="schema-reference-prose">${formatDescriptionMarkdown(row.description || "-")}</div>
+      ${descriptionHtml}
       ${renderReferenceDefaultValue(row)}
       ${validValues}
     </div>`;
@@ -1051,10 +1103,15 @@ function renderReferenceResults(target, module, state, inputRows) {
   }
   const orderedGroups = [...groups.values()].sort((a, b) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`));
   const orderedRows = orderedGroups.flatMap(group => orderedSchemaRows(group.rows, module).rows);
+  if (state.currentRowId && rowsById.has(state.currentRowId)) {
+    state.referenceSelectedId = state.currentRowId;
+  }
   if (!state.referenceSelectedId || !rowsById.has(state.referenceSelectedId)) {
     state.referenceSelectedId = schemaRowId(orderedRows[0] || inputRows[0], module);
   }
   const selected = rowsById.get(state.referenceSelectedId) || orderedRows[0] || inputRows[0];
+  state.currentRowId = schemaRowId(selected, module);
+  state.referenceSelectedId = state.currentRowId;
 
   const navRows = orderedGroups.map(group => {
     const hierarchy = orderedSchemaRows(group.rows, module);
@@ -1110,6 +1167,31 @@ function renderReferenceResults(target, module, state, inputRows) {
     }
   }
 
+  function referenceRowById(rowId) {
+    return [...target.querySelectorAll(".schema-reference-nav-row")].find(row => row.dataset.rowId === rowId) || null;
+  }
+
+  function setReferenceRowExpanded(row, expanded) {
+    row.dataset.expanded = expanded ? "1" : "0";
+    const toggle = row.querySelector(".schema-reference-toggle");
+    if (toggle && !toggle.disabled) {
+      toggle.innerHTML = `<i class="bi ${expanded ? "bi-chevron-down" : "bi-chevron-right"}"></i>`;
+    }
+  }
+
+  function revealReferenceSelection() {
+    const selectedRow = referenceRowById(state.referenceSelectedId);
+    let parentId = selectedRow?.dataset.parentId || "";
+    while (parentId) {
+      const parent = referenceRowById(parentId);
+      if (!parent) break;
+      setReferenceRowExpanded(parent, true);
+      parentId = parent.dataset.parentId;
+    }
+    applyReferenceVisibility();
+    selectedRow?.scrollIntoView({ block: "nearest" });
+  }
+
   target.querySelector(".schema-reference-nav")?.addEventListener("click", event => {
     const toggle = event.target.closest(".schema-reference-toggle");
     if (toggle && !toggle.disabled) {
@@ -1123,6 +1205,7 @@ function renderReferenceResults(target, module, state, inputRows) {
     const select = event.target.closest("[data-reference-select]");
     if (!select) return;
     state.referenceSelectedId = select.dataset.referenceSelect;
+    state.currentRowId = state.referenceSelectedId;
     target.querySelectorAll(".schema-reference-nav-row.active").forEach(row => row.classList.remove("active"));
     select.closest(".schema-reference-nav-row")?.classList.add("active");
     const selectedRow = rowsById.get(state.referenceSelectedId);
@@ -1132,7 +1215,7 @@ function renderReferenceResults(target, module, state, inputRows) {
       detail.scrollTop = 0;
     }
   });
-  applyReferenceVisibility();
+  revealReferenceSelection();
 }
 
 // ── YAML view ────────────────────────────────────────────────────────────────
@@ -1244,7 +1327,8 @@ function yamlValueParts(row, includeType) {
   parts.push(...yamlRestrictionParts(row, constraints));
   const defaultPart = yamlDefaultPart(row);
   if (defaultPart) parts.push(defaultPart);
-  if (row.required) parts.push(row.unique_key ? "required; unique" : "required");
+  if (isPrimaryKey(row)) parts.push(row.unique_key ? "primary key; unique" : "primary key");
+  else if (row.required) parts.push("required");
   return parts.filter(Boolean);
 }
 
@@ -1299,7 +1383,7 @@ function yamlHighlightBlock(text, annotationIdPrefix = "") {
   return String(text).split("\n").map(line => yamlHighlightLine(line, annotationIdPrefix)).join("\n");
 }
 
-function renderYamlResults(target, module, inputRows) {
+function renderYamlResults(target, module, state, inputRows) {
   const sourceRows = inputRows.filter(row => !row.removed);
   const rowsByPath = new Map(sourceRows.map(row => [`${row.module}:${row.key_path}`, row]));
   const childrenByParent = new Map();
@@ -1314,6 +1398,14 @@ function renderYamlResults(target, module, inputRows) {
   function childrenOf(row) { return childrenByParent.get(rowKey(row)) || []; }
   function yamlLinePrefix(indentCount, listItem) { return " ".repeat(indentCount) + (listItem ? "- " : ""); }
   function yamlFieldName(row) { return yamlKeySegment(row.key_path); }
+  function yamlLine(text, row = null) { return row ? { text, rowId: schemaRowId(row, module) } : text; }
+  function yamlLineHtml(line, annotationIdPrefix) {
+    const text = typeof line === "string" ? line : line.text;
+    const rowId = typeof line === "string" ? "" : line.rowId;
+    const activeClass = rowId && rowId === state.currentRowId ? " active" : "";
+    const rowAttr = rowId ? ` data-yaml-row-id="${escapeAttr(rowId)}"` : "";
+    return `<span class="schema-yaml-line${activeClass}"${rowAttr}>${yamlHighlightLine(text, annotationIdPrefix)}</span>`;
+  }
   function registerYamlAnnotation(context, row) {
     const content = yamlDefaultAnnotation(row);
     if (!content) return "";
@@ -1344,20 +1436,20 @@ function renderYamlResults(target, module, inputRows) {
     const annotationNumber = registerYamlAnnotation(context, row);
 
     if (type === "list") {
-      lines.push(prefix + fieldName + ":" + yamlPropertiesComment(row, annotationNumber));
+      lines.push(yamlLine(prefix + fieldName + ":" + yamlPropertiesComment(row, annotationNumber), row));
       if (childRows.length) renderListChildren(context, lines, childRows, indentCount);
-      else lines.push(" ".repeat(indentCount + 2) + "- <" + yamlListItemParts(row).join("; ") + ">");
+      else lines.push(yamlLine(" ".repeat(indentCount + 2) + "- <" + yamlListItemParts(row).join("; ") + ">", row));
       return;
     }
 
     if (type === "dict") {
       const fallback = childRows.length ? "" : " <dict>";
-      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row, annotationNumber)}`);
+      lines.push(yamlLine(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row, annotationNumber)}`, row));
       childRows.forEach(child => renderYamlRow(context, lines, child, indentCount + (listItem ? 4 : 2)));
       return;
     }
 
-    lines.push(`${prefix}${fieldName}: <${yamlValueParts(row, true).join("; ")}>`);
+    lines.push(yamlLine(`${prefix}${fieldName}: <${yamlValueParts(row, true).join("; ")}>`, row));
   }
 
   function renderYamlAnnotations(context, annotationIdPrefix) {
@@ -1382,23 +1474,26 @@ function renderYamlResults(target, module, inputRows) {
     groupedRows.get(groupId).rows.push(row);
   }
 
+  const selectedRow = sourceRows.find(row => schemaRowId(row, module) === state.currentRowId) || null;
+  const selectedGroupId = selectedRow ? schemaGroupId(selectedRow, module) : "";
   const idPrefix = `y${++_schemaRenderSeq}`;
   const groupsHtml = [...groupedRows.entries()].sort(([, a], [, b]) => `${a.module}:${a.root}`.localeCompare(`${b.module}:${b.root}`)).map(([groupId, group], idx) => {
     const lines = [];
     const context = { annotations: [] };
     group.rows.forEach(row => renderYamlRow(context, lines, row, 0));
-    const yamlText = lines.join("\n").trim() || "# No YAML fields match.";
     const id = `${idPrefix}-group-${idx}`;
+    const isSelectedGroup = groupId === selectedGroupId;
+    const yamlHtml = lines.length ? lines.map(line => yamlLineHtml(line, id)).join("\n") : yamlHighlightLine("# No YAML fields match.", id);
     const groupModuleBadge = module === "all" ? `<span class="badge ${group.module === "eos_designs" ? "bg-primary" : "bg-success"} ms-1" style="font-size: 0.6rem;">${escapeHtml(SCHEMA_MODULES[group.module]?.name || group.module)}</span>` : "";
     return `
-      <div class="schema-group" data-group-id="${id}">
-        <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="false" aria-controls="${id}">
-          <i class="bi bi-chevron-right collapse-icon"></i>
+      <div class="schema-group" data-group-id="${id}" data-schema-group-id="${escapeAttr(groupId)}">
+        <div class="schema-group-header" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="${isSelectedGroup ? "true" : "false"}" aria-controls="${id}">
+          <i class="bi ${isSelectedGroup ? "bi-chevron-down" : "bi-chevron-right"} collapse-icon"></i>
           <code class="schema-key-code schema-yaml-group-key">${escapeHtml(group.root)}</code>
           ${groupModuleBadge}
         </div>
-        <div class="collapse" id="${id}">
-          <pre class="schema-yaml-block"><code>${yamlHighlightBlock(yamlText, id)}</code></pre>
+        <div class="collapse${isSelectedGroup ? " show" : ""}" id="${id}">
+          <pre class="schema-yaml-block"><code>${yamlHtml}</code></pre>
           ${renderYamlAnnotations(context, id)}
         </div>
       </div>`;
@@ -1408,6 +1503,28 @@ function renderYamlResults(target, module, inputRows) {
     <div class="schema-results-scroll">
       ${groupsHtml}
     </div>`;
+
+  function rememberYamlLine(line) {
+    if (!line?.dataset.yamlRowId) return;
+    state.currentRowId = line.dataset.yamlRowId;
+    state.referenceSelectedId = state.currentRowId;
+    target.querySelectorAll(".schema-yaml-line.active").forEach(item => item.classList.remove("active"));
+    line.classList.add("active");
+  }
+
+  const activeLine = target.querySelector(".schema-yaml-line.active");
+  activeLine?.scrollIntoView({ block: "center" });
+  target.querySelector(".schema-results-scroll")?.addEventListener("click", event => {
+    rememberYamlLine(event.target.closest("[data-yaml-row-id]"));
+  });
+
+  const rememberYamlScroll = debounce(event => {
+    const block = event.currentTarget;
+    const blockTop = block.getBoundingClientRect().top;
+    const visibleLine = [...block.querySelectorAll("[data-yaml-row-id]")].find(line => line.getBoundingClientRect().bottom >= blockTop);
+    rememberYamlLine(visibleLine);
+  }, 80);
+  target.querySelectorAll(".schema-yaml-block").forEach(block => block.addEventListener("scroll", rememberYamlScroll));
 }
 
 // ── embed mounting ──────────────────────────────────────────────────────────

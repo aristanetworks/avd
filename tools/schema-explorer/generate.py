@@ -152,6 +152,7 @@ def _flatten(
         var_type = props.get("type", "")
         description = (props.get("description") or "").strip()
         is_primary_key = bool(list_primary_key and key_name == list_primary_key)
+        primary_key = 1 if is_primary_key else 0
         required = 1 if props.get("required") or is_primary_key else 0
         unique = 1 if is_primary_key and list_primary_key_unique else 0
         default = props.get("default")
@@ -197,6 +198,7 @@ def _flatten(
                 "description": description,
                 "default_value": default_value,
                 "required": required,
+                "primary_key": primary_key,
                 "unique": unique,
                 "parent_path": parent,
                 "depth": depth_value,
@@ -266,6 +268,7 @@ def _create_schema(conn: sqlite3.Connection) -> None:
             description TEXT,
             default_value TEXT,
             required INTEGER DEFAULT 0,
+            primary_key INTEGER DEFAULT 0,
             unique_key INTEGER DEFAULT 0,
             parent_path TEXT,
             depth INTEGER DEFAULT 0,
@@ -315,10 +318,10 @@ def build(avd_root: Path, out: Path) -> dict[str, int]:
             conn.executemany(
                 """INSERT INTO schema_vars
                    (module, key_path, var_type, description, default_value,
-                    required, unique_key, parent_path, depth, doc_table, deprecated,
+                    required, primary_key, unique_key, parent_path, depth, doc_table, deprecated,
                     removed, cross_ref, constraints)
                    VALUES (:module, :key_path, :var_type, :description,
-                           :default_value, :required, :unique, :parent_path, :depth,
+                           :default_value, :required, :primary_key, :unique, :parent_path, :depth,
                            :doc_table, :deprecated, :removed,
                            :cross_ref, :constraints)""",
                 rows,
