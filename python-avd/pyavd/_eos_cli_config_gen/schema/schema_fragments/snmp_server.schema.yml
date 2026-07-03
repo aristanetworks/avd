@@ -42,7 +42,7 @@ keys:
                     - str
       contact:
         type: str
-        description: SNMP contact.
+        description: SNMP contact name.
       location:
         type: str
         description: SNMP location.
