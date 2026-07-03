@@ -68706,7 +68706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         engine_ids: EngineIds
         """Subclass of AvdModel."""
         contact: str | None
-        """SNMP contact."""
+        """SNMP contact name."""
         location: str | None
         """SNMP location."""
         communities: Communities
@@ -68760,7 +68760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     engine_ids: Subclass of AvdModel.
-                    contact: SNMP contact.
+                    contact: SNMP contact name.
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
