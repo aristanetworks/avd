@@ -1,0 +1,90 @@
+---
+management_ldap:
+
+  # server_defaults: covers all default fields + search with password_type
+  server_defaults:
+    base_dn: dc=example,dc=com
+    rdn_attribute_user: cn
+    ssl_profile: LDAP_SSL_PROFILE
+    authorization_group_policy: LDAP_GROUP_POLICY
+    timeout: 123
+    search:
+      username: cn=ldap-admin,dc=example,dc=com
+      password: 09604A080924131F0202342B383779616663
+      password_type: "7"
+
+  server_hosts:
+    # Host 1: all per-host fields set; port + non-default vrf; search with password_type
+    - host: ldap1.example.com
+      port: 636
+      vrf: MGMT
+      base_dn: dc=host1,dc=example,dc=com
+      rdn_attribute_user: uid
+      ssl_profile: LDAP_HOST_SSL_PROFILE
+      timeout: 10
+      authorization_group_policy: HOST_GROUP_POLICY
+      search:
+        username: cn=host-admin,dc=example,dc=com
+        password: HostAdminPass123!
+        password_type: "0"
+
+    # Host 2: vrf "default" (skipped in CLI); search without password_type; minimal overrides
+    - host: ldap2.example.com
+      vrf: default
+      search:
+        username: cn=admin2,dc=example,dc=com
+        password: Admin2Pass123!
+
+    # Host3: Without search key
+    - host: 10.1.1.1
+      ssl_profile: LDAP_HOST_SSL_PROFILE
+
+    # Host4: Same host name with port
+    - host: 10.1.1.1
+      port: 101
+
+    # Host5: Same host name with different port
+    - host: 10.1.1.1
+      port: 201
+
+    # Host6: Same host and port with vrf
+    - host: 10.1.1.1
+      port: 101
+      vrf: vrf1
+
+    # Host7: Same host and port with different vrf
+    - host: 10.1.1.1
+      port: 101
+      vrf: vrf2
+
+    # Host8: Same host name with vrf (no port)
+    - host: 10.1.1.1
+      vrf: vrf3
+
+  group_policies:
+    # Policy 1: both search_filter and groups; one group with privilege, one without
+    - policy: LDAP_GROUP_POLICY
+      search_filter:
+        objectclass: group
+        attribute: member
+      groups:
+        - name: Network Admin
+          role: network-admin
+          privilege: 15
+        - name: Read Only
+          role: read-only
+
+    # Policy 2: groups only (no search_filter — covers the search_filter-absent branch)
+    - policy: HOST_GROUP_POLICY
+      groups:
+        - name: Network Operator
+          role: network-operator
+
+    # Policy 3: neither search_filter nor groups — tests the skip (false) branch of the inner if
+    - policy: EMPTY_GROUP_POLICY
+
+    # Policy 4: no groups defined
+    - policy: LDAP_SEARCH_FILTER_POLICY
+      search_filter:
+        objectclass: group
+        attribute: member
