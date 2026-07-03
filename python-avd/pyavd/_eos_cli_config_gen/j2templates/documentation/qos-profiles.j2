@@ -145,16 +145,12 @@
 {%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%                     set type = "Unicast" %}
 {%                     set precedence = uc_tx_queue.random_detect.drop.threshold.drop_precedence | arista.avd.default("-") %}
-{%                     set min = uc_tx_queue.random_detect.drop.threshold.min | arista.avd.default("-") %}
-{%                     set max = uc_tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
 {%                     set prob = uc_tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
 {%                     set weight = uc_tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
 {%                     set units = uc_tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
-{%                     if units %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
-{%                     else %}
+{%                     set min = (uc_tx_queue.random_detect.drop.threshold.min | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
+{%                     set max = (uc_tx_queue.random_detect.drop.threshold.max | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
 | {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} | {{ max }} | {{ prob }} | {{ weight }} |
-{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
