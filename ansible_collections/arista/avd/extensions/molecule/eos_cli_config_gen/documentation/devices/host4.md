@@ -4,6 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Management LDAP](#management-ldap)
+  - [LDAP Group Policies](#ldap-group-policies)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Routing](#routing)
@@ -50,6 +53,32 @@ interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Management LDAP
+
+### LDAP Group Policies
+
+#### Group Policy: LDAP_GROUP_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Admin | network-admin | 15 |
+| Read Only | read-only | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   group policy LDAP_GROUP_POLICY
+      search filter objectclass group attribute member
+      group "Network Admin" role network-admin privilege 15
+      group "Read Only" role read-only
 ```
 
 ## Monitoring
