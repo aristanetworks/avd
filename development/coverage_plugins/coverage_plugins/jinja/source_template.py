@@ -685,6 +685,10 @@ def _find_jinja_arc_aliases_cached(
                 visit_statements(statement.else_, enclosing_for_lines)
                 continue
 
+            if isinstance(statement, nodes.Macro):
+                visit_statements(statement.body)
+                continue
+
             if isinstance(statement, nodes.If):
                 _add_no_else_if_loop_backedge_aliases(
                     aliases,
@@ -698,6 +702,10 @@ def _find_jinja_arc_aliases_cached(
                     visit_statements(conditional_node.body, enclosing_for_lines)
 
                 visit_statements(statement.else_, enclosing_for_lines)
+                continue
+
+            if isinstance(statement, (nodes.Block, nodes.CallBlock, nodes.FilterBlock, nodes.With)):
+                visit_statements(statement.body, enclosing_for_lines)
 
     visit_statements(parsed_template.body)
     return aliases
@@ -712,16 +720,17 @@ def _add_no_else_if_loop_backedge_aliases(
     reportable_lines: set[int],
 ) -> None:
     """Add aliases from loop backedges to canonical no-else ``if`` false arcs."""
-    if not enclosing_for_lines or node.elif_ or node.else_:
+    if not enclosing_for_lines or node.else_:
         return
 
-    endif_line = endif_lines_by_conditional_line.get(node.lineno)
-    if endif_line is None or endif_line in reportable_lines or (node.lineno, endif_line) not in possible_arcs:
+    final_conditional_node = node.elif_[-1] if node.elif_ else node
+    endif_line = endif_lines_by_conditional_line.get(final_conditional_node.lineno)
+    if endif_line is None or endif_line in reportable_lines or (final_conditional_node.lineno, endif_line) not in possible_arcs:
         return
 
-    canonical_arc = (node.lineno, endif_line)
+    canonical_arc = (final_conditional_node.lineno, endif_line)
     for for_line in enclosing_for_lines:
-        aliases[(node.lineno, for_line)] = canonical_arc
+        aliases[(final_conditional_node.lineno, for_line)] = canonical_arc
 
 
 def _first_reportable_line_in_nodes(reportable_lines: Collection[int], nodes, after_line: int = 0) -> int | None:  # noqa: ANN001
