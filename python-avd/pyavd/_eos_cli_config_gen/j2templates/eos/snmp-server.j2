@@ -201,7 +201,7 @@ snmp-server enable traps {{ snmp_trap.name }}
 {%     endfor %}
 {%     if snmp_server.extensions is arista.avd.defined %}
 {%         for extension in snmp_server.extensions | sort(attribute='oid') %}
-{%             set snmp_server_extension_cli = extension.oid ~ " " ~ extension.path %}
+{%             set snmp_server_extension_cli = "snmp-server extension " ~ extension.oid ~ " " ~ extension.path %}
 {%             if extension.one_shot is arista.avd.defined(true) %}
 {%                 set snmp_server_extension_cli = snmp_server_extension_cli ~ " one-shot" %}
 {%             endif %}
