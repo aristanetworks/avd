@@ -197,6 +197,6 @@ def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., Action
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
-        pytest.raises(AnsibleActionFail, match=r"The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"),
+        pytest.raises(AnsibleActionFail, match=r"The 'arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"),
     ):
         module.run(task_vars={"inventory_hostname": "test-device"})

@@ -56,7 +56,7 @@ class ActionModule(AVDActionPlugin):
     def main(self, task_vars: dict[str, Any]) -> None:
         """Load the structured config and generate the device configuration and documentation."""
         if not HAS_PYAVD:
-            msg = "The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"
+            msg = "The 'arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"
             raise ImportError(msg)
 
         hostname = task_vars["inventory_hostname"]
@@ -105,7 +105,7 @@ class ActionModule(AVDActionPlugin):
                 device_doc = add_md_toc(device_doc, skip_lines=3)
 
             file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
-            self.result["changed"] = self.result.get("changed") or file_changed
+            self.result["changed"] = self.result["changed"] or file_changed
             self.logger.debug("Rendering documentation [done].")
 
     def validate_args(self) -> dict:
