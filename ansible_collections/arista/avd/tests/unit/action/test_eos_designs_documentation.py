@@ -91,9 +91,9 @@ def test_run_routes_missing_device_warning_to_display(action_module: Callable[..
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
     ):
-        result = module.run(task_vars={"fabric_name": FABRIC_NAME})
+        result = module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 
-    expected_message = "Could not find structured config files for 'leaf1'. The documentation may be incomplete."
+    expected_message = "<spine1> Could not find structured config files for 'leaf1'. The documentation may be incomplete."
     warning_messages = [call.args[0] for call in shared_display.warning.call_args_list]
     assert warning_messages == [expected_message]
     assert result.get("failed") is not True
@@ -141,7 +141,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
         pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: 'pyavd exploded'") as exc_info,
     ):
-        module.run(task_vars={"fabric_name": FABRIC_NAME})
+        module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 
     assert exc_info.value.__cause__ is original_error
 
@@ -159,4 +159,4 @@ def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., Action
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
         pytest.raises(AnsibleActionFail, match=r"The 'arista.avd.eos_designs_documentation' plugin requires the 'pyavd' Python library. Got import error."),
     ):
-        module.run(task_vars={"fabric_name": FABRIC_NAME})
+        module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
