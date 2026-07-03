@@ -106,7 +106,7 @@ def test_configured_coverage_records_checked_in_templates(tmp_path: Path) -> Non
         cwd=REPO_ROOT,
         env=env,
     )
-    subprocess.run(
+    subprocess.run(  # noqa: S603
         [sys.executable, "-m", "coverage", "combine", "--rcfile=pyproject.toml"],
         check=True,
         cwd=REPO_ROOT,
