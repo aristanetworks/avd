@@ -199,6 +199,15 @@ no snmp-server enable traps {{ snmp_trap.name }}
 snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
+{%     if snmp_server.extensions is arista.avd.defined %}
+{%         for extension in snmp_server.extensions | sort(attribute='oid') %}
+{%             set snmp_server_extension_cli = "snmp-server extension " ~ extension.oid ~ " " ~ extension.path %}
+{%             if extension.one_shot is arista.avd.defined(true) %}
+{%                 set snmp_server_extension_cli = snmp_server_extension_cli ~ " one-shot" %}
+{%             endif %}
+{{ snmp_server_extension_cli }}
+{%         endfor %}
+{%     endif %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 {%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | list %}
 {%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) %}
