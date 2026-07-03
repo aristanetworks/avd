@@ -9897,14 +9897,16 @@ keys:
                 - int
       server_hosts:
         type: list
-        primary_key: host
-        description: List of LDAP server hosts.
+        description: 'List of LDAP server hosts.
+
+          Combination of ''host'', ''port'' and ''vrf'' should be unique.'
         items:
           type: dict
           $ref: eos_cli_config_gen#/keys/management_ldap/keys/server_defaults
           keys:
             host:
               type: str
+              required: true
               description: Hostname or IP address of the LDAP server.
             port:
               type: int
@@ -24196,6 +24198,10 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over
+              IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.

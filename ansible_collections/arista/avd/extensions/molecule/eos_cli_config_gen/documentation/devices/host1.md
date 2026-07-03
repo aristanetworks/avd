@@ -1328,6 +1328,11 @@ management api models
 | ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY | cn=host-admin,dc=example,dc=com |
 | ldap2.example.com | - | default | - | - | - | - | - | cn=admin2,dc=example,dc=com |
 | 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+| 10.1.1.1 | 101 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 201 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf1 | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf2 | - | - | - | - | - | - |
+| 10.1.1.1 | - | vrf3 | - | - | - | - | - | - |
 
 ### LDAP Group Policies
 
@@ -1380,6 +1385,16 @@ management ldap
    !
    server host 10.1.1.1
       ssl-profile LDAP_HOST_SSL_PROFILE
+   !
+   server host 10.1.1.1 port 101
+   !
+   server host 10.1.1.1 port 201
+   !
+   server host 10.1.1.1 port 101 vrf vrf1
+   !
+   server host 10.1.1.1 port 101 vrf vrf2
+   !
+   server host 10.1.1.1 vrf vrf3
    !
    group policy HOST_GROUP_POLICY
       group "Network Operator" role network-operator
@@ -11955,6 +11970,8 @@ router multicast
 
 BFD enabled: True
 
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
+
 Make-before-break: False
 Register Local Interface: Ethernet1
 
@@ -12003,6 +12020,7 @@ router pim sparse-mode
    ipv4
       ssm range standard
       bfd
+      message hello address secondary ipv6
       make-before-break disabled
       rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30
