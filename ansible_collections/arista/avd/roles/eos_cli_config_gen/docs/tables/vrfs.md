@@ -10,7 +10,7 @@
     | [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | These keys are ignored if the name of the vrf is 'default'.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "vrfs.[].rd") | String |  |  |  | Route Distinguisher (RD) rendered under the `vrf instance` submode.<br><br>This is deprecated in EOS: configuring the RD under the `vrf instance` submode is no longer required.<br>Since the RD is needed for BGP operation, configure it under the `router bgp` VRF submode instead using `router_bgp.vrfs[].rd`.<br>This key is kept only to support existing/legacy device configurations and is intentionally not shown in the generated device documentation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "vrfs.[].rd") | String |  |  |  | Renders Route Distinguisher under 'vrf instance'.<br>This is deprecated in EOS; configure the Route Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.<br>This key is kept only to support existing/legacy device configurations and is intentionally not shown in the generated device documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing_ipv6_interfaces</samp>](## "vrfs.[].ip_routing_ipv6_interfaces") | Boolean |  |  |  |  |
@@ -28,10 +28,8 @@
       - name: <str; required; unique>
         description: <str>
 
-        # Route Distinguisher (RD) rendered under the `vrf instance` submode.
-        #
-        # This is deprecated in EOS: configuring the RD under the `vrf instance` submode is no longer required.
-        # Since the RD is needed for BGP operation, configure it under the `router bgp` VRF submode instead using `router_bgp.vrfs[].rd`.
+        # Renders Route Distinguisher under 'vrf instance'.
+        # This is deprecated in EOS; configure the Route Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.
         # This key is kept only to support existing/legacy device configurations and is intentionally not shown in the generated device documentation.
         rd: <str>
         ip_routing: <bool>
