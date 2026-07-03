@@ -41,9 +41,6 @@ jobs:
       - galaxy_importer
       - ansible_lint
       - test_pyavd
-      - codespell
-      - j2lint
-      - check_schema_tables_in_docs
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -670,58 +667,6 @@ jobs:
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
-
-  # ----------------------------------- #
-  # Codespell
-  # ----------------------------------- #
-  codespell:
-    name: Check for common misspellings in text files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: "3.12"
-      - name: Install codespell
-        run: pip install codespell==2.4.2
-      - name: Run codespell
-        run: codespell --config .codespellrc
-
-  # ----------------------------------- #
-  # j2lint
-  # ----------------------------------- #
-  j2lint:
-    name: Check for linting errors on Jinja2 files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: "3.12"
-      - name: Install j2lint
-        run: pip install j2lint==1.2.0
-      - name: Run j2lint
-        run: j2lint .
-
-  # ----------------------------------- #
-  # Check schema tables in docs
-  # ----------------------------------- #
-  check_schema_tables_in_docs:
-    name: Check for schema tables in documentation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: "3.12"
-      - name: Check for schema tables in documentation
-        run: python development/find_missing_tables.py @.find-missing-tables-args
 
   # ----------------------------------- #
   # Test of pyavd

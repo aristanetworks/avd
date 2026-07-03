@@ -4,6 +4,7 @@
 router_pim_sparse_mode:
   ipv4:
     bfd: true
+    message_hello_address_secondary_ipv6: true
     make_before_break: false
     register_local_interface: Ethernet1
     rp_addresses:

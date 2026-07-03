@@ -558,6 +558,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-c
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-defaults.md
 --8<--
 
+### Management LDAP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-ldap.md
+--8<--
+
 ### Management security
 
 --8<--
