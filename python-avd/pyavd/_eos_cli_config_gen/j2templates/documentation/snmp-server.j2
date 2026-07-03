@@ -183,8 +183,7 @@
 | OID | Script/File Path | One-shot |
 | --- | ---------------- | -------- |
 {%         for extension in snmp_server.extensions | sort(attribute='oid') %}
-{%             set one_shot = extension.one_shot | arista.avd.default(false) %}
-| {{ extension.oid }} | {{ extension.path }} | {{ one_shot }} |
+| {{ extension.oid }} | {{ extension.path }} | {{ extension.one_shot | arista.avd.default(false) }} |
 {%         endfor %}
 {%     endif %}
 
