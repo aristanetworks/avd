@@ -68146,15 +68146,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ExtensionsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"oid": {"type": str}, "path": {"type": str}}
+            _fields: ClassVar[dict] = {"oid": {"type": str}, "path": {"type": str}, "one_shot": {"type": bool}}
             oid: str
             """Object Identifier (OID) for the SNMP extension."""
             path: str
             """Path to the script or MIB file on the device (e.g., flash:/script.py)."""
+            one_shot: bool | None
+            """Enable one-shot mode for the extension script."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined, one_shot: bool | None | UndefinedType = Undefined
+                ) -> None:
                     """
                     ExtensionsItem.
 
@@ -68164,6 +68168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         oid: Object Identifier (OID) for the SNMP extension.
                         path: Path to the script or MIB file on the device (e.g., flash:/script.py).
+                        one_shot: Enable one-shot mode for the extension script.
 
                     """
 

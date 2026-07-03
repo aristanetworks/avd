@@ -2910,12 +2910,12 @@ mcs client
 
 #### SNMP Extensions
 
-| OID | Script/File Path |
-| --- | ---------------- |
-| .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py |
-| .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py |
-| .111.3.6.1.4.1.99999.2.1.0 | flash:/test1.py |
-| .2.3.6.1.4.1.99999.2.1.0 | flash:/test2.py |
+| OID | Script/File Path | One-shot |
+| --- | ---------------- | -------- |
+| .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py | False |
+| .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py | False |
+| .111.3.6.1.4.1.99999.2.1.0 | flash:/test1.py | True |
+| .2.3.6.1.4.1.99999.2.1.0 | flash:/test2.py | False |
 
 #### SNMP Device Configuration
 
@@ -2974,7 +2974,7 @@ snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
 snmp-server extension .1.3.6.1.4.1.30065.4.101.100.1.1 flash:/monitorConnectivity.py
 snmp-server extension .1.3.6.1.4.1.30065.4.101.100.2.33 flash:/test.py
-snmp-server extension .111.3.6.1.4.1.99999.2.1.0 flash:/test1.py
+snmp-server extension .111.3.6.1.4.1.99999.2.1.0 flash:/test1.py one-shot
 snmp-server extension .2.3.6.1.4.1.99999.2.1.0 flash:/test2.py
 no snmp-server vrf default
 snmp-server vrf MGMT

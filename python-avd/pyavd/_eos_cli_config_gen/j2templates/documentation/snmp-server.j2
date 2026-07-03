@@ -180,10 +180,11 @@
 
 #### SNMP Extensions
 
-| OID | Script/File Path |
-| --- | ---------------- |
+| OID | Script/File Path | One-shot |
+| --- | ---------------- | -------- |
 {%         for extension in snmp_server.extensions | sort(attribute='oid') %}
-| {{ extension.oid }} | {{ extension.path }} |
+{%             set one_shot = extension.one_shot | arista.avd.default(false) %}
+| {{ extension.oid }} | {{ extension.path }} | {{ one_shot }} |
 {%         endfor %}
 {%     endif %}
 
