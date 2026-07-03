@@ -29,6 +29,48 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Configure generated-file merge behavior for autofix
+        env:
+          PYTHONPATH: python-avd
+        run: |
+          # autofix-ci commits changes made by pre-commit, then for pull requests it
+          # checks out the real PR head and runs `git cherry-pick --no-commit` with
+          # the generated autofix commit. AVD marks large generated files as
+          # non-mergeable in committed .gitattributes, so that cherry-pick can fail
+          # even when the generated output is correct.
+          #
+          # Keep this override local to the Actions checkout. .git/info/attributes
+          # has higher precedence than committed .gitattributes, but it is not
+          # committed and does not affect contributors' local Git behavior.
+          # See development/ci.md for the rationale and rejected alternatives.
+          mkdir -p .git/info
+          python - <<'PY' >> .git/info/attributes
+          from schema_tools.constants import REPO_ROOT, SCHEMAS
+
+          generated_paths: set[str] = set()
+
+          for schema_paths in SCHEMAS.values():
+              if schema_paths.fragments_dir:
+                  generated_paths.add(schema_paths.yaml_file.relative_to(REPO_ROOT).as_posix())
+
+              if schema_paths.python_class:
+                  generated_paths.add(schema_paths.python_class.relative_to(REPO_ROOT).as_posix())
+
+              if schema_paths.docs_path:
+                  generated_paths.add((schema_paths.docs_path / "tables" / "*.md").relative_to(REPO_ROOT).as_posix())
+
+          for generated_path in sorted(generated_paths):
+              print(f"/{generated_path} merge=generated-autofix diff")
+          PY
+
+          # During autofix-ci's cherry-pick, %B is the incoming autofix-generated
+          # file and %A is the worktree file from the checked-out PR head.
+          git config --local merge.generated-autofix.name "Keep incoming autofix-generated file"
+          git config --local merge.generated-autofix.driver "cp %B %A"
+
+          git check-attr merge diff -- \
+            python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml
+
       - name: Run pre-commit autofix pass
         id: pre_commit
         uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
