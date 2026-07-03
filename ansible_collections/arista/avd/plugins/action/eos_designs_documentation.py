@@ -12,7 +12,7 @@ import yaml
 from ansible.parsing.yaml.dumper import AnsibleDumper
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import YamlLoader, get_eos_designs_facts_path, write_file
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
@@ -53,6 +53,7 @@ ARGUMENT_SPEC = {
 class ActionModule(AVDActionPlugin):
     """Action Module for eos_designs_documentation."""
 
+    _logging_config = AVDLoggingConfig(add_hostname_context=True)
     tmp_dir: str
 
     def main(self, task_vars: dict[str, Any]) -> None:
@@ -102,7 +103,7 @@ class ActionModule(AVDActionPlugin):
                 filename=validated_args["topology_csv_file"],
                 file_mode=validated_args["mode"],
             )
-            self.result["changed"] = self.result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
         if output.p2p_links_csv:
             changed = write_file(
@@ -110,7 +111,7 @@ class ActionModule(AVDActionPlugin):
                 filename=validated_args["p2p_links_csv_file"],
                 file_mode=validated_args["mode"],
             )
-            self.result["changed"] = self.result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
         if output.digital_twin:
             content = strip_empties_from_dict(
@@ -121,7 +122,7 @@ class ActionModule(AVDActionPlugin):
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
-            self.result["changed"] = self.result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
     def _validate_args(self) -> dict:
         """Get task arguments and validate them."""
