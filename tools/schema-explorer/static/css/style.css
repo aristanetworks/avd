@@ -719,19 +719,6 @@
   background-color: rgba(220,53,69,.08);
 }
 
-/* ── Changelog: release headers in sidebar ───────────────────────────────── */
-.schema-spa-host .release-header,
-.schema-embed .release-header {
-  background-color: rgba(22,50,91,.06);
-  border-left: 3px solid var(--arista-orange);
-}
-
-[data-bs-theme="dark"] .schema-spa-host .release-header,
-[data-bs-theme="dark"] .schema-embed .release-header {
-  background-color: rgba(110,168,254,.08);
-}
-
-
 /* Keep the results table full width inside MkDocs' content column. */
 .schema-spa-host .schema-module-layout,
 .schema-embed .schema-module-layout {
@@ -1168,7 +1155,8 @@
 :where(.schema-spa-host, .schema-embed) .schema-description p { font-size: 0.88rem; }
 :where(.schema-spa-host, .schema-embed) .schema-description ul { font-size: 0.88rem; }
 :where(.schema-spa-host, .schema-embed) .schema-description code,
-:where(.schema-spa-host, .schema-embed) .schema-description-text code {
+:where(.schema-spa-host, .schema-embed) .schema-description-text code,
+:where(.schema-spa-host, .schema-embed) .schema-reference-prose code {
   font-size: 0.82rem;
   padding: 0.1em 0.35em;
   background-color: #f0f4fa;
@@ -1176,14 +1164,17 @@
 }
 [data-bs-theme="dark"] .schema-spa-host .schema-description code,
 [data-bs-theme="dark"] .schema-spa-host .schema-description-text code,
+[data-bs-theme="dark"] .schema-spa-host .schema-reference-prose code,
 [data-bs-theme="dark"] .schema-embed .schema-description code,
-[data-bs-theme="dark"] .schema-embed .schema-description-text code {
+[data-bs-theme="dark"] .schema-embed .schema-description-text code,
+[data-bs-theme="dark"] .schema-embed .schema-reference-prose code {
   background-color: #1e3a5f;
   color: #b8d4fe;
 }
 
 [data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description code,
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description-text code {
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description-text code,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-reference-prose code {
   background-color: rgba(68, 115, 169, 0.24);
   color: var(--md-default-fg-color, #f5f5f5);
 }
@@ -1328,14 +1319,17 @@ html.in-iframe body { padding-top: 0; }
 }
 .md-typeset .schema-spa-host .schema-description code,
 .md-typeset .schema-spa-host .schema-description-text code,
+.md-typeset .schema-spa-host .schema-reference-prose code,
 .md-typeset .schema-spa-host code.schema-key-code {
   font-size: 0.9em !important;
 }
 
 [data-md-color-scheme="slate"] .md-typeset .schema-spa-host .schema-description code,
 [data-md-color-scheme="slate"] .md-typeset .schema-spa-host .schema-description-text code,
+[data-md-color-scheme="slate"] .md-typeset .schema-spa-host .schema-reference-prose code,
 [data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-description code,
-[data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-description-text code {
+[data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-description-text code,
+[data-md-color-scheme="slate"] .md-typeset .schema-embed .schema-reference-prose code {
   background-color: rgba(68, 115, 169, 0.38) !important;
   color: var(--md-default-fg-color, #f5f5f5) !important;
   box-shadow: none !important;
@@ -1354,6 +1348,7 @@ html.in-iframe body { padding-top: 0; }
 }
 .schema-embed .schema-description code,
 .schema-embed .schema-description-text code,
+.schema-embed .schema-reference-prose code,
 .schema-embed code.schema-key-code {
   font-size: 0.9em !important;
 }

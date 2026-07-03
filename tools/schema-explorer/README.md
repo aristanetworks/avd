@@ -8,7 +8,7 @@
 
 A static, [sql.js](https://github.com/sql-js/sql.js)-based browser of the AVD
 `eos_designs` and `eos_cli_config_gen` schemas, integrated into the AVD MkDocs
-docs site. All queries run in the browser against a per-release SQLite file —
+docs site. All queries run in the browser against a local SQLite file —
 no backend, no managed runtime, no live database.
 
 Tracked in `aristanetworks/avd-internal#503`.
@@ -20,7 +20,7 @@ Tracked in `aristanetworks/avd-internal#503`.
 | **Standalone SPA** | `/_assets/schema-explorer/index.html` | Full-screen browser experience: landing -> module -> variable detail, with the SPA's own chrome. Reached from the Data Models overview card. |
 | **Markdown embed** | ```` ```schema-explorer ```` fenced block | Drop a focused, scoped reference such as `router_bgp` or `platform_settings` inline next to the prose that explains it. Material header, left nav, and right-rail TOC stay intact. |
 
-Both modes share one set of static assets and one SQLite per release.
+Both modes share one set of static assets and one SQLite for the current docs build.
 
 ### Markdown embed syntax
 
@@ -38,7 +38,6 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 
 | Option | Default | Notes |
 | ------ | ------- | ----- |
-| `release` | `devel` | Schema release tag. |
 | `module` | `eos_designs` | `eos_designs`, `eos_cli_config_gen`, or `all`. |
 | `root` | *(none)* | Optional key_path prefix; only render that subtree, for example `router_bgp` or `platform_settings`. |
 | `view` | `reference` | `reference` or `yaml`. |
@@ -71,7 +70,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
                                                    ├── index.html
                                                    ├── css/style.css
                                                    ├── js/app.js
-                                                   └── data/<release>/schema.sqlite
+                                                   └── data/schema.sqlite
                                                           │
                                                           │   mkdocs build
                                                           ▼
@@ -82,7 +81,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
                                             ├── index.html         (/_assets/schema-explorer/index.html)
                                             ├── css/style.css
                                             ├── js/app.js
-                                            └── data/<release>/schema.sqlite
+                                            └── data/schema.sqlite
 ```
 
 Two key invariants:
@@ -145,15 +144,15 @@ URLs once `mkdocs serve` is up:
 
 - `http://127.0.0.1:8000/_assets/schema-explorer/index.html` — standalone SPA
 - `http://127.0.0.1:8000/data-models/` — page with embed demo
-- `http://127.0.0.1:8000/_assets/schema-explorer/data/devel/schema.sqlite` —
+- `http://127.0.0.1:8000/_assets/schema-explorer/data/schema.sqlite` —
   the SQLite the browser fetches
 
-## Per-release refresh
+## Schema refresh
 
-The SPA expects one SQLite per supported AVD minor release (5.7+). The
-publish pipeline runs the generator per release tag and drops each output
-under `tools/schema-explorer/build/data/<release>/schema.sqlite`, which the
-hook copies into `site/_assets/schema-explorer/data/<release>/`.
+The docs publishing workflow builds each docs version from the relevant branch.
+Schema Explorer publishes one SQLite bundle for that docs build under
+`tools/schema-explorer/build/data/schema.sqlite`, which the hook copies into
+`site/_assets/schema-explorer/data/`.
 
 The SPA fetches the SQLite with `cache: "no-cache"` so newly published files
 are picked up via a conditional GET on the next page load — no hard reload

@@ -47,7 +47,6 @@ SCHEMA_INPUTS = (
 )
 FORMATTER_SCRIPT = AVD_ROOT / "tools" / "schema_explorer_markdown.py"
 FORMATTER_MODULE = "_avd_schema_explorer_markdown"
-DEFAULT_RELEASE = "devel"
 ASSET_SUBPATH = "_assets/schema-explorer"
 # Only the SPA's own style.css + app.js are registered globally. Bootstrap
 # CSS/JS + Bootstrap Icons + sql.js are lazy-loaded by app.js at runtime
@@ -139,20 +138,18 @@ def _ensure_build() -> None:
     ``_assets/schema-explorer/*`` URLs. Running the generator on demand from the
     hook makes the SPA self-publishing for any host that can run ``mkdocs build``.
     """
-    sqlite_marker = BUILD_DIR / "data" / DEFAULT_RELEASE / "schema.sqlite"
+    sqlite_marker = BUILD_DIR / "data" / "schema.sqlite"
     if _database_is_current(sqlite_marker):
         _copy_static_assets()
         return
     reason = "missing" if not sqlite_marker.is_file() else "stale"
-    print(f"[schema-explorer] build/ {reason} — running generate.py for release={DEFAULT_RELEASE}")
+    print(f"[schema-explorer] build/ {reason} — running generate.py")
     subprocess.check_call(  # noqa: S603
         [
             sys.executable,
             str(GENERATE_SCRIPT),
             "--avd-root",
             str(AVD_ROOT),
-            "--release",
-            DEFAULT_RELEASE,
             "--site-dir",
             str(BUILD_DIR),
         ],

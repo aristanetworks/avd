@@ -29,7 +29,6 @@ any docs page via the ``<schema-explorer>`` custom element.
 Usage:
     python tools/schema-explorer/generate.py \\
         --avd-root <repo-root> \\
-        --release <tag> \\
         --site-dir tools/schema-explorer/build
 """
 
@@ -139,7 +138,6 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
 def _flatten(
     keys: dict,
     module: str,
-    release: str,
     prefix: str = "",
     parent: str = "",
     inherited_doc_table: str = "",
@@ -180,10 +178,19 @@ def _flatten(
         for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format", "convert_types"):
             if k in props:
                 constraints[k] = props[k]
+        items = props.get("items")
+        if var_type == "list" and isinstance(items, dict):
+            item_constraints = {}
+            if items.get("type"):
+                item_constraints["type"] = items["type"]
+            for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format", "convert_types"):
+                if k in items:
+                    item_constraints[k] = items[k]
+            if item_constraints:
+                constraints["items"] = item_constraints
 
         rows.append(
             {
-                "release": release,
                 "module": module,
                 "key_path": key_path,
                 "var_type": var_type,
@@ -202,7 +209,7 @@ def _flatten(
         )
 
         if isinstance(props.get("keys"), dict):
-            rows.extend(_flatten(props["keys"], module, release, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
+            rows.extend(_flatten(props["keys"], module, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
 
         # dynamic_keys: variable-name placeholders rendered as <name> in the
         # path, matching the convention used by pyavd's schema_tools docs.
@@ -211,16 +218,14 @@ def _flatten(
                 if not isinstance(dyn_schema, dict):
                     continue
                 dyn_key = f"<{dyn_name}>"
-                rows.extend(_flatten({dyn_key: dyn_schema}, module, release, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
+                rows.extend(_flatten({dyn_key: dyn_schema}, module, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
 
-        items = props.get("items")
         if isinstance(items, dict):
             if isinstance(items.get("keys"), dict):
                 rows.extend(
                     _flatten(
                         items["keys"],
                         module,
-                        release,
                         prefix=key_path + "[].",
                         parent=key_path,
                         inherited_doc_table=doc_table,
@@ -233,21 +238,21 @@ def _flatten(
                     if not isinstance(dyn_schema, dict):
                         continue
                     dyn_key = f"<{dyn_name}>"
-                    rows.extend(_flatten({dyn_key: dyn_schema}, module, release, prefix=key_path + "[].", parent=key_path, inherited_doc_table=doc_table))
+                    rows.extend(_flatten({dyn_key: dyn_schema}, module, prefix=key_path + "[].", parent=key_path, inherited_doc_table=doc_table))
 
     return rows
 
 
-def flatten_schema(data: dict, module: str, release: str) -> list[dict]:
+def flatten_schema(data: dict, module: str) -> list[dict]:
     rows: list[dict] = []
     if isinstance(data.get("keys"), dict):
-        rows.extend(_flatten(data["keys"], module, release))
+        rows.extend(_flatten(data["keys"], module))
     if isinstance(data.get("dynamic_keys"), dict):
         for dyn_name, dyn_schema in data["dynamic_keys"].items():
             if not isinstance(dyn_schema, dict):
                 continue
             dyn_key = f"<{dyn_name}>"
-            rows.extend(_flatten({dyn_key: dyn_schema}, module, release))
+            rows.extend(_flatten({dyn_key: dyn_schema}, module))
     return rows
 
 
@@ -255,7 +260,6 @@ def _create_schema(conn: sqlite3.Connection) -> None:
     conn.execute("""
         CREATE TABLE schema_vars (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            release TEXT NOT NULL,
             module TEXT NOT NULL,
             key_path TEXT NOT NULL,
             var_type TEXT,
@@ -272,22 +276,23 @@ def _create_schema(conn: sqlite3.Connection) -> None:
             constraints TEXT
         )
     """)
-    conn.execute("CREATE UNIQUE INDEX idx_schema_unique ON schema_vars(release, module, key_path)")
-    conn.execute("CREATE INDEX idx_schema_search ON schema_vars(release, key_path, module)")
-    conn.execute("CREATE INDEX idx_schema_parent ON schema_vars(release, module, parent_path)")
-    conn.execute("CREATE INDEX idx_schema_doc_table ON schema_vars(release, module, doc_table)")
+    conn.execute("CREATE UNIQUE INDEX idx_schema_unique ON schema_vars(module, key_path)")
+    conn.execute("CREATE INDEX idx_schema_search ON schema_vars(key_path, module)")
+    conn.execute("CREATE INDEX idx_schema_parent ON schema_vars(module, parent_path)")
+    conn.execute("CREATE INDEX idx_schema_doc_table ON schema_vars(module, doc_table)")
     conn.execute("""
         CREATE TABLE schema_meta (
-            release TEXT NOT NULL,
             module TEXT NOT NULL,
             loaded_at INTEGER,
             var_count INTEGER,
-            PRIMARY KEY (release, module)
+            PRIMARY KEY (module)
         )
     """)
 
 
-def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
+def build(avd_root: Path, out: Path) -> dict[str, int]:
+    if out.parent.exists():
+        shutil.rmtree(out.parent)
     out.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"  loading schemas from {avd_root}/python-avd")
@@ -306,21 +311,21 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
         for module in SCHEMA_IDS:
             data = store[module]
             print(f"  flattening {module}")
-            rows = flatten_schema(data, module, release)
+            rows = flatten_schema(data, module)
             conn.executemany(
                 """INSERT INTO schema_vars
-                   (release, module, key_path, var_type, description, default_value,
+                   (module, key_path, var_type, description, default_value,
                     required, unique_key, parent_path, depth, doc_table, deprecated,
                     removed, cross_ref, constraints)
-                   VALUES (:release, :module, :key_path, :var_type, :description,
+                   VALUES (:module, :key_path, :var_type, :description,
                            :default_value, :required, :unique, :parent_path, :depth,
                            :doc_table, :deprecated, :removed,
                            :cross_ref, :constraints)""",
                 rows,
             )
             conn.execute(
-                "INSERT INTO schema_meta (release, module, loaded_at, var_count) VALUES (?, ?, ?, ?)",
-                (release, module, loaded_at, len(rows)),
+                "INSERT INTO schema_meta (module, loaded_at, var_count) VALUES (?, ?, ?)",
+                (module, loaded_at, len(rows)),
             )
             counts[module] = len(rows)
             print(f"    {len(rows)} variables")
@@ -353,23 +358,22 @@ def _copy_static_assets(site_dir: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").strip().splitlines()[0])
     parser.add_argument("--avd-root", type=Path, required=True, help="Path to the avd repo root (the directory containing python-avd/)")
-    parser.add_argument("--release", required=True, help="Release tag to embed (e.g. 'devel', '5.7', '5.8')")
     parser.add_argument(
         "--site-dir",
         type=Path,
         required=True,
         help="Output directory for the built explorer (e.g. tools/schema-explorer/build). "
         "Static assets are copied here and the SQLite is written under "
-        "data/<release>/schema.sqlite.",
+        "data/schema.sqlite.",
     )
     args = parser.parse_args()
 
     site_dir = args.site_dir.resolve()
-    print(f"Building Schema Explorer for release={args.release}")
+    print("Building Schema Explorer")
     _copy_static_assets(site_dir)
 
-    sqlite_out = site_dir / "data" / args.release / "schema.sqlite"
-    counts = build(args.avd_root.resolve(), args.release, sqlite_out)
+    sqlite_out = site_dir / "data" / "schema.sqlite"
+    counts = build(args.avd_root.resolve(), sqlite_out)
     total = sum(counts.values())
     print(f"Wrote {sqlite_out} ({total} variables across {len(counts)} modules)")
     return 0

@@ -233,19 +233,6 @@ function inferSchemaBase() {
   return "data";
 }
 const SCHEMA_BASE = inferSchemaBase();
-const DEFAULT_RELEASE = "devel";
-const RELEASE_PATTERN = /^[A-Za-z0-9._-]+$/;
-
-function normalizeRelease(value) {
-  const release = String(value || DEFAULT_RELEASE);
-  if (RELEASE_PATTERN.test(release)) return release;
-  throw new Error("Invalid schema release: " + escapeHtml(release));
-}
-
-function releaseParam(release) {
-  return encodeURIComponent(release);
-}
-
 // SCHEMA_MODULES keys are the canonical module IDs stored in SQLite and used
 // in URL hashes; `name` is the user-visible label rendered in the UI.
 const SCHEMA_MODULES = {
@@ -261,7 +248,7 @@ const SCHEMA_MODULES = {
   },
 };
 
-const dbCache = new Map();    // release -> sql.js Database
+let dbCache = null;    // sql.js Database
 let SQL = null;
 const app = document.getElementById("app");
 
@@ -274,8 +261,7 @@ const app = document.getElementById("app");
 //     Uses the URL hash for routing — landing / module / var-detail views.
 //
 //   * **Embed**: any docs page drops one or more `<schema-explorer>` custom
-//     elements. Each embed is self-contained, scoped to a (release, module,
-//     root) tuple via data attributes, and never touches `location.hash`.
+//     elements. Each embed is self-contained, scoped to a (module, root) tuple via data attributes, and never touches `location.hash`.
 //     Multiple embeds on the same page share `dbCache`.
 //
 // Both modes can coexist — embeds work even when `#app` is also present.
@@ -457,12 +443,11 @@ function parseHash() {
 
 async function route() {
   const { segments, params } = parseHash();
-  const release = normalizeRelease(params.get("release") || DEFAULT_RELEASE);
   try {
-    const db = await getDb(release);
-    if (segments.length === 0)             return renderLanding(db, release);
-    if (segments.length === 1)             return renderModule(db, release, segments[0], { view: params.get("view") || "" });
-    return renderVarDetail(db, release, segments[0], segments.slice(1).join("/"));
+    const db = await getDb();
+    if (segments.length === 0)             return renderLanding(db);
+    if (segments.length === 1)             return renderModule(db, segments[0], { view: params.get("view") || "" });
+    return renderVarDetail(db, segments[0], segments.slice(1).join("/"));
   } catch (err) {
     fail(err.message);
   }
@@ -474,15 +459,15 @@ function fail(msg) {
 
 // ── sqlite loader ────────────────────────────────────────────────────────────
 
-async function getDb(release) {
-  if (dbCache.has(release)) return dbCache.get(release);
+async function getDb() {
+  if (dbCache) return dbCache;
   if (app) {
     app.innerHTML = `<div class="text-center py-5 text-muted">
       <span class="spinner-border spinner-border-sm"></span>
-      <span class="ms-2 small">Loading ${escapeHtml(release)} schema…</span>
+      <span class="ms-2 small">Loading schema…</span>
     </div>`;
   }
-  const url = `${SCHEMA_BASE}/${releaseParam(release)}/schema.sqlite`;
+  const url = `${SCHEMA_BASE}/schema.sqlite`;
   // cache: "no-cache" forces a conditional GET so the browser revalidates
   // against the server's Last-Modified / ETag every page load. Keeps the
   // bytes cached locally when nothing changed (304), but picks up a freshly
@@ -492,7 +477,7 @@ async function getDb(release) {
     return r.arrayBuffer();
   });
   const db = new SQL.Database(new Uint8Array(buf));
-  dbCache.set(release, db);
+  dbCache = db;
   return db;
 }
 
@@ -525,9 +510,9 @@ function searchScopeLabel(scope) {
   return SEARCH_SCOPE_LABELS[normalizeSearchScope(scope)];
 }
 
-function searchVars(db, release, module, opts = {}) {
-  const conds = ["release = ?"];
-  const ps = [release];
+function searchVars(db, module, opts = {}) {
+  const conds = [];
+  const ps = [];
   if (module !== "all") { conds.push("module = ?"); ps.push(module); }
   if (opts.rootModule && module === "all") { conds.push("module = ?"); ps.push(opts.rootModule); }
   if (opts.root) {
@@ -551,20 +536,21 @@ function searchVars(db, release, module, opts = {}) {
   }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
   const orderBy = opts.order === "id" ? "id" : "key_path";
-  const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY ${orderBy} LIMIT ${opts.limit || 500}`;
+  const whereClause = conds.length ? conds.join(" AND ") : "1=1";
+  const sql = `SELECT * FROM schema_vars WHERE ${whereClause} ORDER BY ${orderBy} LIMIT ${opts.limit || 500}`;
   return rows(db, sql, ps);
 }
 
-function getDocTableCounts(db, release, module) {
+function getDocTableCounts(db, module) {
   if (module === "all") {
-    return rows(db, "SELECT doc_table, COUNT(*) AS count FROM schema_vars WHERE release = ? GROUP BY doc_table ORDER BY doc_table", [release]);
+    return rows(db, "SELECT doc_table, COUNT(*) AS count FROM schema_vars GROUP BY doc_table ORDER BY doc_table");
   }
-  return rows(db, "SELECT doc_table, COUNT(*) AS count FROM schema_vars WHERE release = ? AND module = ? GROUP BY doc_table ORDER BY doc_table", [release, module]);
+  return rows(db, "SELECT doc_table, COUNT(*) AS count FROM schema_vars WHERE module = ? GROUP BY doc_table ORDER BY doc_table", [module]);
 }
 
-function getRootOptions(db, release, module) {
-  const conds = ["release = ?", "depth = 1"];
-  const ps = [release];
+function getRootOptions(db, module) {
+  const conds = ["depth = 1"];
+  const ps = [];
   if (module !== "all") { conds.push("module = ?"); ps.push(module); }
   return rows(db, `SELECT module, key_path FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY module, key_path`, ps);
 }
@@ -591,8 +577,8 @@ function defaultRootState(rootOptions, defaultRoot, module) {
   return { root: match.key_path, rootModule: match.module, selection: rootOptionValue(match, module) };
 }
 
-function getVar(db, release, module, key_path) {
-  const r = rows(db, "SELECT * FROM schema_vars WHERE release = ? AND module = ? AND key_path = ?", [release, module, key_path]);
+function getVar(db, module, key_path) {
+  const r = rows(db, "SELECT * FROM schema_vars WHERE module = ? AND key_path = ?", [module, key_path]);
   return r[0] || null;
 }
 
@@ -606,11 +592,11 @@ function renderDevelopmentNotice() {
     </div>`;
 }
 
-function renderLanding(db, release) {
+function renderLanding(db) {
   const cards = Object.entries(SCHEMA_MODULES).map(([id, mod]) => {
     return `
       <div class="col">
-        <a href="#/${id}?release=${releaseParam(release)}" class="text-decoration-none d-block h-100">
+        <a href="#/${id}" class="text-decoration-none d-block h-100">
           <div class="card h-100 border-0 shadow-sm module-card">
             <div class="card-body d-flex flex-column">
               <div class="d-flex align-items-start mb-2">
@@ -634,7 +620,7 @@ function renderLanding(db, release) {
     ${renderDevelopmentNotice()}
     <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">${cards}</div>
     <div class="row mb-4"><div class="col">
-      <a href="#/all?release=${releaseParam(release)}" class="text-decoration-none d-block">
+      <a href="#/all" class="text-decoration-none d-block">
         <div class="card border-0 shadow-sm module-card">
           <div class="card-body d-flex align-items-center">
             <span class="fs-3 me-3 brand-color"><i class="bi bi-search"></i></span>
@@ -648,7 +634,7 @@ function renderLanding(db, release) {
     </div></div>`;
 }
 
-function renderModule(db, release, module, options = {}) {
+function renderModule(db, module, options = {}) {
   const host = options.target || app;
   const embedded = !!options.embed;
   const defaultRoot = options.root || "";
@@ -666,7 +652,7 @@ function renderModule(db, release, module, options = {}) {
 
   const headerHtml = chrome === "none" ? "" : `
     <div class="d-flex align-items-center mb-3 schema-browser-heading">
-      ${embedded ? "" : `<a href="#/?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>`}
+      ${embedded ? "" : `<a href="#/" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>`}
       <div>
         <h4 class="mb-1 fw-bold brand-color"><i class="bi ${info.icon} me-2"></i>${escapeHtml(info.name)}${isAll ? "" : ` <small class="text-muted fw-normal" style="font-size:0.6em;"><code>${escapeHtml(module)}</code></small>`}</h4>
       </div>
@@ -716,7 +702,7 @@ function renderModule(db, release, module, options = {}) {
     view: initialView,
     target: host.querySelector("#results"),
   };
-  const refresh = debounce(() => renderResults(db, release, module, state), 250);
+  const refresh = debounce(() => renderResults(db, module, state), 250);
 
   const qInput = host.querySelector("#q");
   const scopeInput = host.querySelector("#search-scope");
@@ -732,7 +718,7 @@ function renderModule(db, release, module, options = {}) {
   scopeInput.addEventListener("change", e => {
     state.searchScope = normalizeSearchScope(e.target.value);
     updateActiveFilters();
-    renderResults(db, release, module, state);
+    renderResults(db, module, state);
   });
   const viewButtons = {
     yaml: host.querySelector("#btn-view-yaml"),
@@ -741,7 +727,7 @@ function renderModule(db, release, module, options = {}) {
   function setViewMode(view) {
     state.view = view;
     for (const [mode, button] of Object.entries(viewButtons)) button.classList.toggle("active", mode === view);
-    renderResults(db, release, module, state);
+    renderResults(db, module, state);
   }
   viewButtons.yaml.addEventListener("click", () => setViewMode("yaml"));
   viewButtons.reference.addEventListener("click", () => setViewMode("reference"));
@@ -750,25 +736,25 @@ function renderModule(db, release, module, options = {}) {
   setViewMode(initialView);
 }
 
-function renderResults(db, release, module, state) {
+function renderResults(db, module, state) {
   const target = state.target || document.getElementById("results");
   // Reference and YAML views need every row in the active scope so the hierarchy is complete.
   // Anything dropped at the SQL boundary disappears from the output entirely.
-  const results = state.rows || searchVars(db, release, module, { ...state, limit: 20000, order: "id" });
+  const results = state.rows || searchVars(db, module, { ...state, limit: 20000, order: "id" });
   if (!results.length) {
     target.innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i><span class="small">No variables match.</span></div>`;
     return;
   }
   if (state.view === "yaml") return renderYamlResults(target, module, results);
-  if (state.view === "reference") return renderReferenceResults(target, release, module, state, results);
-  return renderReferenceResults(target, release, module, { ...state, view: "reference" }, results);
+  if (state.view === "reference") return renderReferenceResults(target, module, state, results);
+  return renderReferenceResults(target, module, { ...state, view: "reference" }, results);
 }
 
 let _schemaRenderSeq = 0;
 
-function renderVarDetail(db, release, module, key_path) {
+function renderVarDetail(db, module, key_path) {
   if (!SCHEMA_MODULES[module]) return fail(`Module not found: ${module}`);
-  const v = getVar(db, release, module, key_path);
+  const v = getVar(db, module, key_path);
   if (!v) return fail(`Variable not found: ${module}/${key_path}`);
 
   const constraints = v.constraints ? JSON.parse(v.constraints) : {};
@@ -796,7 +782,7 @@ function renderVarDetail(db, release, module, key_path) {
       : "";
   app.innerHTML = `
     <div class="d-flex align-items-center mb-4 schema-detail-heading">
-      <a href="#/${module}?release=${releaseParam(release)}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
+      <a href="#/${module}" class="link-brand me-3"><i class="bi bi-arrow-left fs-4"></i></a>
       <div>
         <h4 class="mb-1 fw-bold brand-color"><code class="schema-key-code">${escapeHtml(displayPath(v.key_path))}</code></h4>
         <span class="schema-type-label">${escapeHtml(v.var_type || "unknown")}</span>
@@ -817,8 +803,8 @@ function renderVarDetail(db, release, module, key_path) {
             <tr><td class="px-3 fw-semibold small text-muted">Default</td><td>${renderDefaultValue(v.default_value, { noneLabel: "none", open: true })}</td></tr>
             <tr><td class="px-3 fw-semibold small text-muted">Value Restrictions</td><td>${constraintsText ? escapeHtml(constraintsText) : `<span class="text-muted">none</span>`}</td></tr>
             <tr><td class="px-3 fw-semibold small text-muted">Required</td><td>${v.required ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Yes</span>` : `<span class="text-muted">No</span>`}</td></tr>
-            ${v.cross_ref ? renderCrossRefRow(v.cross_ref, release) : ""}
-            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}?release=${releaseParam(release)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
+            ${v.cross_ref ? renderCrossRefRow(v.cross_ref) : ""}
+            ${v.parent_path ? `<tr><td class="px-3 fw-semibold small text-muted">Parent</td><td><a href="#/${module}/${encodeURI(v.parent_path)}" class="link-brand"><code class="schema-key-code">${escapeHtml(displayPath(v.parent_path))}</code></a></td></tr>` : ""}
             ${dynamicSource ? `<tr><td class="px-3 fw-semibold small text-muted">Dynamic key</td><td><code class="schema-key-code">${escapeHtml(dynamicSource)}</code></td></tr>` : ""}
           </tbody></table>
         </div></div>
@@ -836,7 +822,7 @@ function renderVarDetail(db, release, module, key_path) {
 // Schema $ref strings look like "eos_cli_config_gen#/keys/foo/keys/bar".
 // Convert into a SchemaExplorer hash link to the equivalent flattened key_path
 // in the target module so users can jump straight there.
-function renderCrossRefRow(ref, release) {
+function renderCrossRefRow(ref) {
   const [target, jsonPointer] = String(ref).split("#", 2);
   if (!target || !jsonPointer) return "";
   const segments = jsonPointer.split("/").filter(Boolean);
@@ -853,8 +839,8 @@ function renderCrossRefRow(ref, release) {
   }
   const keyPath = parts.join(".");
   const link = keyPath
-    ? `#/${target}/${encodeURI(keyPath)}?release=${releaseParam(release)}`
-    : `#/${target}?release=${releaseParam(release)}`;
+    ? `#/${target}/${encodeURI(keyPath)}`
+    : `#/${target}`;
   return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${link}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
 }
 
@@ -897,15 +883,42 @@ function formatMarkdownInline(text, q = "") {
 
 function formatDescriptionMarkdown(text, q = "") {
   if (!text) return escapeHtml("-");
-  const blocks = String(text).trim().split(/\n{2,}/);
-  return blocks.map(block => {
-    const lines = block.split(/\n/).map(line => line.trim()).filter(Boolean);
-    if (!lines.length) return "";
-    if (lines.every(line => /^[-*]\s+/.test(line))) {
-      return '<ul class="mb-0">' + lines.map(line => "<li>" + formatMarkdownInline(line.replace(/^[-*]\s+/, ""), q) + "</li>").join("") + "</ul>";
+  const lines = String(text).trim().split(/\n/);
+  const parts = [];
+  let paragraph = [];
+  let list = [];
+
+  function flushParagraph() {
+    if (!paragraph.length) return;
+    parts.push("<p class=\"mb-0\">" + formatMarkdownInline(paragraph.join(" "), q) + "</p>");
+    paragraph = [];
+  }
+
+  function flushList() {
+    if (!list.length) return;
+    parts.push("<ul class=\"mb-0\">" + list.map(item => "<li>" + formatMarkdownInline(item, q) + "</li>").join("") + "</ul>");
+    list = [];
+  }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      flushList();
+      continue;
     }
-    return '<p class="mb-0">' + formatMarkdownInline(lines.join(" "), q) + "</p>";
-  }).join("");
+    const listMatch = line.match(/^[-*]\s+(.*)$/);
+    if (listMatch) {
+      flushParagraph();
+      list.push(listMatch[1]);
+    } else {
+      flushList();
+      paragraph.push(line);
+    }
+  }
+  flushParagraph();
+  flushList();
+  return parts.join("") || escapeHtml("-");
 }
 
 function debounce(fn, ms) {
@@ -993,7 +1006,7 @@ function renderReferenceDefaultValue(row) {
     </section>`;
 }
 
-function renderReferenceDetail(row, release, module, isAll) {
+function renderReferenceDetail(row, module, isAll) {
   const constraints = yamlConstraints(row);
   const constraintsText = yamlRestrictionParts(row, constraints).join("; ");
   const lifecycle = row.removed
@@ -1026,7 +1039,7 @@ function renderReferenceDetail(row, release, module, isAll) {
     </div>`;
 }
 
-function renderReferenceResults(target, release, module, state, inputRows) {
+function renderReferenceResults(target, module, state, inputRows) {
   const isAll = module === "all";
   const rowsById = new Map(inputRows.map(row => [schemaRowId(row, module), row]));
 
@@ -1077,7 +1090,7 @@ function renderReferenceResults(target, release, module, state, inputRows) {
       <aside class="schema-reference-nav" aria-label="Schema documentation navigation">
         ${navRows}
       </aside>
-      <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, release, module, isAll)}</section>
+      <section class="schema-reference-detail" aria-live="polite">${renderReferenceDetail(selected, module, isAll)}</section>
     </div>`;
 
   function applyReferenceVisibility() {
@@ -1115,7 +1128,7 @@ function renderReferenceResults(target, release, module, state, inputRows) {
     const selectedRow = rowsById.get(state.referenceSelectedId);
     if (selectedRow) {
       const detail = target.querySelector(".schema-reference-detail");
-      detail.innerHTML = renderReferenceDetail(selectedRow, release, module, isAll);
+      detail.innerHTML = renderReferenceDetail(selectedRow, module, isAll);
       detail.scrollTop = 0;
     }
   });
@@ -1235,9 +1248,18 @@ function yamlValueParts(row, includeType) {
   return parts.filter(Boolean);
 }
 
-function yamlDescriptionLines(row, indentCount, listItem) {
+function yamlListItemParts(row) {
+  const itemConstraints = yamlConstraints(row).items || {};
+  const itemType = itemConstraints.type || "any";
+  const itemRow = { ...row, var_type: itemType };
+  const parts = [itemType];
+  parts.push(...yamlRestrictionParts(itemRow, itemConstraints));
+  return parts.filter(Boolean);
+}
+
+function yamlDescriptionLines(row, indentCount) {
   if (!row.description) return [];
-  const commentIndent = " ".repeat(listItem ? indentCount + 2 : indentCount);
+  const commentIndent = " ".repeat(indentCount);
   const lines = String(row.description).trim().split(/\n/).map(line => `${commentIndent}# ${line.trimEnd()}`);
   return ["", ...lines];
 }
@@ -1316,15 +1338,15 @@ function renderYamlResults(target, module, inputRows) {
   function renderYamlRow(context, lines, row, indentCount, listItem = false) {
     const type = yamlBaseType(row);
     const childRows = childrenOf(row);
-    lines.push(...yamlDescriptionLines(row, indentCount, listItem));
+    lines.push(...yamlDescriptionLines(row, indentCount));
     const prefix = yamlLinePrefix(indentCount, listItem);
     const fieldName = yamlFieldName(row);
     const annotationNumber = registerYamlAnnotation(context, row);
 
     if (type === "list") {
-      const fallback = childRows.length ? "" : " <list>";
-      lines.push(`${prefix}${fieldName}:${fallback}${yamlPropertiesComment(row, annotationNumber)}`);
-      renderListChildren(context, lines, childRows, indentCount);
+      lines.push(prefix + fieldName + ":" + yamlPropertiesComment(row, annotationNumber));
+      if (childRows.length) renderListChildren(context, lines, childRows, indentCount);
+      else lines.push(" ".repeat(indentCount + 2) + "- <" + yamlListItemParts(row).join("; ") + ">");
       return;
     }
 
@@ -1395,7 +1417,6 @@ function renderYamlResults(target, module, inputRows) {
 // the SPA fills it in.
 //
 // Supported data attributes:
-//   release  — schema release tag (default: "devel")
 //   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
 //   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
 //   view     — "reference" | "yaml" (default: "reference")
@@ -1411,7 +1432,6 @@ function failEmbed(el, msg) {
 }
 
 async function mountEmbed(el) {
-  const release = normalizeRelease(_embedAttr(el, "release", DEFAULT_RELEASE));
   const module  = _embedAttr(el, "module", "eos_designs");
   const root    = _embedAttr(el, "root", "");
   const view    = _embedAttr(el, "view", "reference");
@@ -1435,8 +1455,8 @@ async function mountEmbed(el) {
     <span class="ms-2">Loading <code>${escapeHtml(module)}</code> schema...</span>
   </div>`;
 
-  const db = await getDb(release);
-  const rootOptions = getRootOptions(db, release, module);
+  const db = await getDb();
+  const rootOptions = getRootOptions(db, module);
   const defaultRootStateValue = defaultRootState(rootOptions, root, module);
   const defaultRootSelection = defaultRootStateValue.selection;
   const rootOptionsHtml = rootOptions.map(row => {
@@ -1494,7 +1514,7 @@ async function mountEmbed(el) {
   };
 
   function renderEmbedResults() {
-    renderResults(db, release, module, state);
+    renderResults(db, module, state);
     if (chrome === "none") {
       const header = state.target.querySelector(".schema-results-toolbar");
       if (header) header.style.display = "none";

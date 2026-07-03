@@ -142,7 +142,7 @@ SCHEMA_EXPLORER_BUILD = tools/schema-explorer/build
 .PHONY: schema-explorer-build
 schema-explorer-build: ## Build the Schema Explorer (static assets + SQLite) into tools/schema-explorer/build/. mkdocs_hook.py copies it into site/_assets/schema-explorer/ on `mkdocs build`.
 	uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py \
-		--avd-root . --release devel --site-dir $(SCHEMA_EXPLORER_BUILD)
+		--avd-root . --site-dir $(SCHEMA_EXPLORER_BUILD)
 
 .PHONY: docs-serve
 docs-serve: schema-explorer-build ## Build the Schema Explorer SQLite then `mkdocs serve` on http://127.0.0.1:8000.
