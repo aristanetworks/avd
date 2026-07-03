@@ -607,7 +607,7 @@
   outline-color: var(--md-typeset-a-color, #6ea8fe);
 }
 
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.schema-cat-pill, .schema-category-badge, .badge.bg-light) {
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .badge.bg-light {
   background-color: rgba(68, 115, 169, 0.24) !important;
   color: var(--md-default-fg-color, #dee2e6) !important;
   border-color: var(--se-border-color) !important;
@@ -1186,65 +1186,6 @@
 [data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .schema-description-text code {
   background-color: rgba(68, 115, 169, 0.24);
   color: var(--md-default-fg-color, #f5f5f5);
-}
-
-
-/* Category badge */
-:where(.schema-spa-host, .schema-embed) .schema-category-badge {
-  font-size: 0.58rem;
-  padding: 0.15em 0.45em;
-  background-color: var(--arista-light-blue);
-  color: white;
-  vertical-align: middle;
-}
-
-[data-bs-theme="dark"] .schema-spa-host .schema-category-badge,
-[data-bs-theme="dark"] .schema-embed .schema-category-badge {
-  background-color: #4473a9;
-  color: #e0e0e0;
-}
-
-/* Mobile category pills */
-:where(.schema-spa-host, .schema-embed) .schema-category-pills {
-  display: none;
-}
-:where(.schema-spa-host, .schema-embed) .schema-cat-pill {
-  cursor: pointer;
-  background-color: #e9ecef;
-  color: #495057;
-  font-size: 0.75rem;
-  padding: 0.3em 0.65em;
-  transition: background-color 0.15s;
-}
-:where(.schema-spa-host, .schema-embed) .schema-cat-pill:hover {
-  background-color: var(--arista-light-blue);
-  color: white;
-}
-:where(.schema-spa-host, .schema-embed) .schema-cat-pill.active {
-  background-color: var(--se-brand);
-  color: white;
-}
-
-[data-bs-theme="dark"] .schema-spa-host .schema-cat-pill,
-[data-bs-theme="dark"] .schema-embed .schema-cat-pill {
-  background-color: #495057;
-  color: #dee2e6;
-}
-[data-bs-theme="dark"] .schema-spa-host .schema-cat-pill.active,
-[data-bs-theme="dark"] .schema-embed .schema-cat-pill.active {
-  background-color: var(--se-brand);
-}
-
-@media (max-width: 991.98px) {
-  :where(.schema-spa-host, .schema-embed) .schema-category-sidebar { display: none !important; }
-  :where(.schema-spa-host, .schema-embed) .schema-category-pills {
-    display: flex;
-    overflow-x: auto;
-    gap: 0.35rem;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
-  }
-  :where(.schema-spa-host, .schema-embed) .schema-category-pills .badge { white-space: nowrap; }
 }
 
 /* CI run report — rendered markdown */
@@ -2170,17 +2111,17 @@ html.style-none #schema-navbar { display: none !important; }
   box-shadow: none !important;
 }
 
-.schema-spa-host[data-bs-theme="dark"] :where(.badge, .schema-category-badge),
-[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.badge, .schema-category-badge),
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.badge, .schema-category-badge) {
+.schema-spa-host[data-bs-theme="dark"] .badge,
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .badge,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .badge {
   border: 0.05rem solid var(--schema-material-border) !important;
   background: var(--md-code-bg-color, rgba(255, 255, 255, 0.08)) !important;
   color: var(--schema-material-muted) !important;
 }
 
-.schema-spa-host[data-bs-theme="dark"] :where(.badge.bg-danger, .schema-category-badge.bg-danger),
-[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) :where(.badge.bg-danger, .schema-category-badge.bg-danger),
-[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) :where(.badge.bg-danger, .schema-category-badge.bg-danger) {
+.schema-spa-host[data-bs-theme="dark"] .badge.bg-danger,
+[data-bs-theme="dark"] :where(.schema-spa-host, .schema-embed) .badge.bg-danger,
+[data-md-color-scheme="slate"] :where(.schema-spa-host, .schema-embed) .badge.bg-danger {
   border-color: color-mix(in srgb, var(--se-danger) 45%, transparent) !important;
   background: color-mix(in srgb, var(--se-danger) 22%, transparent) !important;
   color: #ffccd5 !important;

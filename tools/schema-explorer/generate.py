@@ -44,8 +44,6 @@ import time
 from copy import deepcopy
 from pathlib import Path
 
-from categories import get_category
-
 SCHEMA_IDS = ("eos_designs", "eos_cli_config_gen")
 HERE = Path(__file__).resolve().parent
 STATIC_DIR = HERE / "static"
@@ -195,7 +193,6 @@ def _flatten(
                 "unique": unique,
                 "parent_path": parent,
                 "depth": depth_value,
-                "category": get_category(module, key_path),
                 "doc_table": doc_table,
                 "deprecated": deprecated,
                 "removed": removed,
@@ -268,7 +265,6 @@ def _create_schema(conn: sqlite3.Connection) -> None:
             unique_key INTEGER DEFAULT 0,
             parent_path TEXT,
             depth INTEGER DEFAULT 0,
-            category TEXT DEFAULT '',
             doc_table TEXT DEFAULT '',
             deprecated INTEGER DEFAULT 0,
             removed INTEGER DEFAULT 0,
@@ -279,7 +275,6 @@ def _create_schema(conn: sqlite3.Connection) -> None:
     conn.execute("CREATE UNIQUE INDEX idx_schema_unique ON schema_vars(release, module, key_path)")
     conn.execute("CREATE INDEX idx_schema_search ON schema_vars(release, key_path, module)")
     conn.execute("CREATE INDEX idx_schema_parent ON schema_vars(release, module, parent_path)")
-    conn.execute("CREATE INDEX idx_schema_category ON schema_vars(release, module, category)")
     conn.execute("CREATE INDEX idx_schema_doc_table ON schema_vars(release, module, doc_table)")
     conn.execute("""
         CREATE TABLE schema_meta (
@@ -315,11 +310,11 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
             conn.executemany(
                 """INSERT INTO schema_vars
                    (release, module, key_path, var_type, description, default_value,
-                    required, unique_key, parent_path, depth, category, doc_table, deprecated,
+                    required, unique_key, parent_path, depth, doc_table, deprecated,
                     removed, cross_ref, constraints)
                    VALUES (:release, :module, :key_path, :var_type, :description,
                            :default_value, :required, :unique, :parent_path, :depth,
-                           :category, :doc_table, :deprecated, :removed,
+                           :doc_table, :deprecated, :removed,
                            :cross_ref, :constraints)""",
                 rows,
             )

@@ -39,7 +39,6 @@ HERE = Path(__file__).resolve().parent
 BUILD_DIR = HERE / "build"
 STATIC_DIR = HERE / "static"
 GENERATE_SCRIPT = HERE / "generate.py"
-CATEGORIES_SCRIPT = HERE / "categories.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
 SCHEMA_INPUTS = (
@@ -127,7 +126,7 @@ def _database_is_current(sqlite_marker: Path) -> bool:
     if not sqlite_marker.is_file():
         return False
     sqlite_mtime = sqlite_marker.stat().st_mtime
-    input_paths = (GENERATE_SCRIPT, CATEGORIES_SCRIPT, *SCHEMA_INPUTS, *_iter_static_files())
+    input_paths = (GENERATE_SCRIPT, *SCHEMA_INPUTS, *_iter_static_files())
     return all(path.is_file() and path.stat().st_mtime <= sqlite_mtime for path in input_paths)
 
 

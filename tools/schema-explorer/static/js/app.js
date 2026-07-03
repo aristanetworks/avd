@@ -507,13 +507,6 @@ function rows(db, sql, params = []) {
   return out;
 }
 
-function getCategoryCounts(db, release, module) {
-  if (module === "all") {
-    return rows(db, "SELECT category, COUNT(*) AS count FROM schema_vars WHERE release = ? GROUP BY category ORDER BY category", [release]);
-  }
-  return rows(db, "SELECT category, COUNT(*) AS count FROM schema_vars WHERE release = ? AND module = ? GROUP BY category ORDER BY category", [release, module]);
-}
-
 function escapeSqlLike(value) {
   return String(value).replace(/[\\%_]/g, "\\$&");
 }
@@ -556,7 +549,6 @@ function searchVars(db, release, module, opts = {}) {
       ps.push(pattern, pattern);
     }
   }
-  if (opts.category) { conds.push("category = ?"); ps.push(opts.category); }
   if (opts.docTable) { conds.push("doc_table = ?"); ps.push(opts.docTable); }
   const orderBy = opts.order === "id" ? "id" : "key_path";
   const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY ${orderBy} LIMIT ${opts.limit || 500}`;
@@ -719,7 +711,6 @@ function renderModule(db, release, module, options = {}) {
     defaultRoot: "",
     defaultRootSelection: "",
     rootModule: "",
-    category: "",
     docTable: "",
     searchScope: "both",
     view: initialView,
@@ -733,7 +724,6 @@ function renderModule(db, release, module, options = {}) {
   function updateActiveFilters() {
     const filters = [];
     if (state.q) filters.push(`Search (${escapeHtml(searchScopeLabel(state.searchScope))}): <code>${escapeHtml(state.q)}</code>`);
-    if (state.category) filters.push(`Category: <code>${escapeHtml(state.category)}</code>`);
     if (state.docTable) filters.push(`Table: <code>${escapeHtml(state.docTable)}</code>`);
     activeFilters.innerHTML = filters.length ? filters.join(" <span class=\"mx-1\">|</span> ") : "No filters applied";
   }
@@ -1496,7 +1486,6 @@ async function mountEmbed(el) {
     defaultRoot: root,
     defaultRootSelection,
     rootModule: defaultRootStateValue.rootModule,
-    category: "",
     docTable: "",
     searchScope: "both",
     view,

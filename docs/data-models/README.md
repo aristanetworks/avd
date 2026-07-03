@@ -24,4 +24,4 @@
 
 </div>
 
-The **[Schema Explorer](../schema-explorer.md)** offers a browsable, searchable view of every variable across both data models — grouped by category or by documentation table, with full type, default, deprecation, and cross-schema reference detail. It renders inside Material's chrome (same header, same nav) — no switch to a separate SPA page.
+The **[Schema Explorer](../schema-explorer.md)** offers a browsable, searchable view of every variable across both data models, with full type, default, deprecation, and cross-schema reference detail. It renders inside Material's chrome (same header, same nav) — no switch to a separate SPA page.
