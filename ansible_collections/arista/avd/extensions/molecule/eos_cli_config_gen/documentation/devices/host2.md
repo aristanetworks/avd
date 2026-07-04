@@ -1175,13 +1175,11 @@ router ospf 701
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | bgp | True | map3 |
-| default | connected | True | map3 |
-| default | isis level-1 | True | map3 |
-| default | ospfv3 | True | map3 |
-| default | ospfv3 match external | True | map3 |
-| default | ospfv3 match nssa-external | True | map3 |
-| default | static | True | map3 |
+| default | bgp | - | - |
+| default | connected | - | - |
+| default | isis | - | - |
+| default | ospfv3 | True | - |
+| default | static | - | - |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | isis | - | map1 |
@@ -1193,12 +1191,12 @@ router ospf 701
 | FULL | ospfv3 match internal | True | map2 |
 | FULL | ospfv3 match external | True | map2 |
 | FULL | ospfv3 match nssa-external | True | map2 |
-| FULL | static | True | - |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | isis | - | - |
 | MGMT | ospfv3 | True | - |
 | MGMT | static | - | - |
+| Test | ospfv3 | True | - |
 | Test | ospfv3 match internal | True | - |
 | Test | ospfv3 match external | True | - |
 | Test | ospfv3 match nssa-external | True | - |
@@ -1217,14 +1215,12 @@ router ospf 701
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | bgp | True | map3 |
-| default | connected | True | map3 |
-| default | dhcp | - | map3 |
-| default | isis level-1 | True | map3 |
-| default | ospfv3 | True | map3 |
-| default | ospfv3 match external | True | map3 |
-| default | ospfv3 match nssa-external | True | map3 |
-| default | static | True | map3 |
+| default | bgp | - | - |
+| default | connected | - | - |
+| default | dhcp | - | - |
+| default | isis | - | - |
+| default | ospfv3 | True | - |
+| default | static | - | - |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | dhcp | - | map1 |
@@ -1237,13 +1233,13 @@ router ospf 701
 | FULL | ospfv3 match internal | True | map2 |
 | FULL | ospfv3 match external | True | map2 |
 | FULL | ospfv3 match nssa-external | True | map2 |
-| FULL | static | True | - |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | dhcp | - | - |
 | MGMT | isis | - | - |
 | MGMT | ospfv3 | True | - |
 | MGMT | static | - | - |
+| Test | ospfv3 | True | - |
 | Test | ospfv3 match internal | True | - |
 | Test | ospfv3 match external | True | - |
 | Test | ospfv3 match nssa-external | True | - |
@@ -1263,7 +1259,6 @@ router ospfv3 vrf FULL
       redistribute ospfv3 leaked match internal route-map map2
       redistribute ospfv3 leaked match external route-map map2
       redistribute ospfv3 leaked match nssa-external route-map map2
-      redistribute static include leaked
    !
    address-family ipv6
       router-id 4.4.4.4
@@ -1275,7 +1270,6 @@ router ospfv3 vrf FULL
       redistribute ospfv3 leaked match internal route-map map2
       redistribute ospfv3 leaked match external route-map map2
       redistribute ospfv3 leaked match nssa-external route-map map2
-      redistribute static include leaked
 !
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
@@ -1301,13 +1295,13 @@ router ospfv3 vrf MGMT
 router ospfv3 vrf Test
    address-family ipv4
       router-id 1.1.1.1
-      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
    !
    address-family ipv6
       passive-interface default
-      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
 !
@@ -1341,23 +1335,19 @@ router ospfv3
    passive-interface default
    !
    address-family ipv4
-      redistribute bgp include leaked route-map map3
-      redistribute connected include leaked route-map map3
-      redistribute isis include leaked level-1 route-map map3
-      redistribute ospfv3 leaked route-map map3
-      redistribute ospfv3 leaked match external route-map map3
-      redistribute ospfv3 leaked match nssa-external route-map map3
-      redistribute static include leaked route-map map3
+      redistribute bgp
+      redistribute connected
+      redistribute isis
+      redistribute ospfv3 leaked
+      redistribute static
    !
    address-family ipv6
-      redistribute bgp include leaked route-map map3
-      redistribute dhcp route-map map3
-      redistribute connected include leaked route-map map3
-      redistribute isis include leaked level-1 route-map map3
-      redistribute ospfv3 leaked route-map map3
-      redistribute ospfv3 leaked match external route-map map3
-      redistribute ospfv3 leaked match nssa-external route-map map3
-      redistribute static include leaked route-map map3
+      redistribute bgp
+      redistribute dhcp
+      redistribute connected
+      redistribute isis
+      redistribute ospfv3 leaked
+      redistribute static
 ```
 
 ### Router ISIS

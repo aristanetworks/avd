@@ -3,5 +3,46 @@ router_ospfv3:
   router_id: 1.1.1.1
   passive_interface_default: true
   auto_cost_reference_bandwidth: 1000
+  address_family_ipv4:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+        include_leaked: true
+      connected:
+        enabled: true
+        include_leaked: true
+      isis:
+        enabled: true
+        level: level-1
+        include_leaked: true
+      ospfv3:
+        enabled: true
+        route_map: map1
+      static:
+        enabled: true
+        route_map: map1
+  address_family_ipv6:
+    enabled: true
+    redistribute:
+      bgp:
+        enabled: true
+        include_leaked: true
+      connected:
+        enabled: true
+        include_leaked: true
+      isis:
+        enabled: true
+        level: level-1
+        include_leaked: true
+      ospfv3:
+        enabled: true
+        route_map: map1
+      static:
+        enabled: true
+        route_map: map1
+      dhcp:
+        enabled: true
+        route_map: map1
   eos_cli: |-
     bfd default

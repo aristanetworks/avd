@@ -14,6 +14,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
@@ -176,6 +177,52 @@ ip routing ipv6 interfaces vrf TENANT_B
 | MGMT | false |
 | TENANT_A | false |
 | TENANT_B | false |
+
+### Router OSPFv3
+
+#### Router OSPFv3 Address Family IPv4
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 2.2.2.2 | True | 2000 |
+
+#### Router OSPFv3 IPv4 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | ospfv3 | True | - |
+| default | ospfv3 match internal | True | - |
+
+#### Router OSPFv3 Address Family IPv6
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | 3.3.3.3 | True | 2000 |
+
+#### Router OSPFv3 IPv6 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | ospfv3 | True | - |
+| default | ospfv3 match internal | True | - |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked
+   !
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked
+```
 
 ### Router BGP
 

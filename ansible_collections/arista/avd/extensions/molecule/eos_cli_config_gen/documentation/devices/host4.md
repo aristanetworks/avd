@@ -149,6 +149,39 @@ router ospf 703
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | 1.1.1.1 | True | 1000 |
 
+#### Router OSPFv3 Address Family IPv4
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | - | - | - |
+
+#### Router OSPFv3 IPv4 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | bgp | True | - |
+| default | connected | True | - |
+| default | isis level-1 | True | - |
+| default | ospfv3 | True | map1 |
+| default | static | - | map1 |
+
+#### Router OSPFv3 Address Family IPv6
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | - | - | - |
+
+#### Router OSPFv3 IPv6 Address Family Redistribution
+
+| VRF | Source Protocol | Include Leaked | Route Map |
+| --- | --------------- | -------------- | --------- |
+| default | bgp | True | - |
+| default | connected | True | - |
+| default | dhcp | - | map1 |
+| default | isis level-1 | True | - |
+| default | ospfv3 | True | map1 |
+| default | static | - | map1 |
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
@@ -157,6 +190,21 @@ router ospfv3
    router-id 1.1.1.1
    auto-cost reference-bandwidth 1000
    passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp include leaked
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
+   !
+   address-family ipv6
+      redistribute bgp include leaked
+      redistribute dhcp route-map map1
+      redistribute connected include leaked
+      redistribute isis include leaked level-1
+      redistribute ospfv3 leaked route-map map1
+      redistribute static route-map map1
    bfd default
 ```
 
