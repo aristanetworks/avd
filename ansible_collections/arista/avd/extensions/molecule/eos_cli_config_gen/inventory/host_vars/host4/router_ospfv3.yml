@@ -1,5 +1,6 @@
 ---
 router_ospfv3:
+  auto_cost_reference_bandwidth: 100
   address_family_ipv4:
     enabled: true
     redistribute:
