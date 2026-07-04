@@ -142,12 +142,7 @@ router ospf 703
 ```
 
 ### Router OSPFv3
-
-#### Router OSPFv3 Summary
-
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | 1.1.1.1 | True | 1000 |
+| Test | 2.2.2.2 | True | 100 |
 
 #### Router OSPFv3 Address Family IPv4
 
@@ -186,11 +181,12 @@ router ospf 703
 
 ```eos
 !
-router ospfv3
-   router-id 1.1.1.1
-   auto-cost reference-bandwidth 1000
+router ospfv3 vrf Test
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
    passive-interface default
-   !
+!
+router ospfv3
    address-family ipv4
       redistribute bgp include leaked
       redistribute connected include leaked

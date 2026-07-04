@@ -1,8 +1,5 @@
 ---
 router_ospfv3:
-  router_id: 1.1.1.1
-  passive_interface_default: true
-  auto_cost_reference_bandwidth: 1000
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -44,5 +41,10 @@ router_ospfv3:
       dhcp:
         enabled: true
         route_map: map1
+  vrfs:
+    - name: Test
+      router_id: 2.2.2.2
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 100
   eos_cli: |-
     bfd default
