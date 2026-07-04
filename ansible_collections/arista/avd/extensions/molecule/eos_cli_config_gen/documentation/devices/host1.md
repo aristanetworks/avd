@@ -9441,7 +9441,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | default | ospfv3 | True | map1 |
 | default | ospfv3 match external | True | map1 |
 | default | ospfv3 match nssa-external | True | map1 |
-| default | static | - | map1 |
+| default | static | True | map1 |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -9461,7 +9461,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | default | ospfv3 | True | map1 |
 | default | ospfv3 match external | True | map1 |
 | default | ospfv3 match nssa-external | True | map1 |
-| default | static | - | map1 |
+| default | static | True | map1 |
 | MGMT | bgp | True | map1 |
 | MGMT | connected | True | map1 |
 | MGMT | dhcp | - | map1 |
@@ -9469,7 +9469,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | MGMT | ospfv3 | True | map1 |
 | MGMT | ospfv3 match external | True | map1 |
 | MGMT | ospfv3 match nssa-external | True | map1 |
-| MGMT | static | - | map1 |
+| MGMT | static | True | map1 |
 
 #### Router OSPFv3 Device Configuration
 
@@ -9486,7 +9486,7 @@ router ospfv3 vrf MGMT
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
-      redistribute static route-map map1
+      redistribute static include leaked route-map map1
 !
 router ospfv3 vrf data
    address-family ipv4
@@ -9504,7 +9504,7 @@ router ospfv3
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
-      redistribute static route-map map1
+      redistribute static include leaked route-map map1
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -9514,7 +9514,7 @@ router ospfv3
       redistribute ospfv3 leaked route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
-      redistribute static route-map map1
+      redistribute static include leaked route-map map1
 ```
 
 ### Router ISIS

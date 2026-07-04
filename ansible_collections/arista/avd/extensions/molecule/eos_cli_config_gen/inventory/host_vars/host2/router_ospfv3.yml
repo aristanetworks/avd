@@ -106,6 +106,7 @@ router_ospfv3:
             route_map: map1
           static:
             enabled: true
+            include_leaked: true
             route_map: map1
       address_family_ipv6:
         enabled: true

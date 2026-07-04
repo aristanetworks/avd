@@ -1184,7 +1184,7 @@ router ospf 701
 | data | connected | - | map1 |
 | data | isis | - | map1 |
 | data | ospfv3 | True | map1 |
-| data | static | - | map1 |
+| data | static | True | map1 |
 | FULL | bgp | True | - |
 | FULL | connected | True | - |
 | FULL | isis level-2 | True | - |
@@ -1320,7 +1320,7 @@ router ospfv3 vrf data
       redistribute connected route-map map1
       redistribute isis route-map map1
       redistribute ospfv3 leaked route-map map1
-      redistribute static route-map map1
+      redistribute static include leaked route-map map1
    !
    address-family ipv6
       auto-cost reference-bandwidth 1000
