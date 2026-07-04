@@ -25102,6 +25102,23 @@ keys:
                   type: int
                   convert_types:
                   - str
+      extensions:
+        type: list
+        primary_key: oid
+        items:
+          type: dict
+          keys:
+            oid:
+              type: str
+              description: Object Identifier (OID) for the SNMP extension.
+              pattern: \.[0-9]+(\.[0-9]+)*
+            path:
+              type: str
+              required: true
+              description: Path to the script or MIB file on the device (e.g., flash:/script.py).
+            one_shot:
+              type: bool
+              description: Enable one-shot mode for the extension script.
       contact:
         type: str
         description: SNMP contact.
@@ -27559,6 +27576,15 @@ keys:
           - int
         description:
           type: str
+        rd:
+          type: str
+          description: 'Renders Route Distinguisher under ''vrf instance''.
+
+            This is deprecated in EOS; configure the Route Distinguisher under ''router
+            bgp'' VRF submode instead using `router_bgp.vrfs[].rd`.
+
+            This key is kept only to support existing/legacy device configurations
+            and is intentionally not shown in the generated device documentation.'
         ip_routing:
           type: bool
         ipv6_routing:
