@@ -7,7 +7,7 @@
 {% if router_ospfv3 is arista.avd.defined %}
 
 ### Router OSPFv3
-{%     set has_summary = false %}
+{%     set ns = namespace(has_summary=false) %}
 {%     if (router_ospfv3.router_id is arista.avd.defined
                and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
                and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined)
@@ -17,9 +17,9 @@
            or (router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
                and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
                and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%         set has_summary = true %}
+{%         set ns.has_summary = true %}
 {%     endif %}
-{%     if not has_summary %}
+{%     if not ns.has_summary %}
 {%         for vrf in router_ospfv3.vrfs | arista.avd.default([]) %}
 {%             if (vrf.router_id is arista.avd.defined
                        and vrf.address_family_ipv4.router_id is not arista.avd.defined
@@ -30,12 +30,12 @@
                    or (vrf.auto_cost_reference_bandwidth is arista.avd.defined
                        and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
                        and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%                 set has_summary = true %}
+{%                 set ns.has_summary = true %}
 {%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if has_summary %}
+{%     if ns.has_summary %}
 
 #### Router OSPFv3 Summary
 
@@ -63,55 +63,55 @@
 {%             set auto_cost_reference_bandwidth = '-' %}
 {%         endif %}
 | default | {{ router_id }} | {{ passive_interface_default }} | {{ auto_cost_reference_bandwidth }} |
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
-{%         if (vrf.router_id is arista.avd.defined
-                   and vrf.address_family_ipv4.router_id is not arista.avd.defined
-                   and vrf.address_family_ipv6.router_id is not arista.avd.defined)
-               or (vrf.passive_interface_default is arista.avd.defined(true)
-                   and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-                   and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true))
-               or (vrf.auto_cost_reference_bandwidth is arista.avd.defined
-                   and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-                   and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%             if vrf.router_id is arista.avd.defined
-                   and vrf.address_family_ipv4.router_id is not arista.avd.defined
-                   and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
-{%                 set router_id = vrf.router_id %}
-{%             else %}
-{%                 set router_id = '-' %}
-{%             endif %}
-{%             if vrf.passive_interface_default is arista.avd.defined(true)
-                   and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-                   and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
-{%                 set passive_interface_default = vrf.passive_interface_default %}
-{%             else %}
-{%                 set passive_interface_default = '-' %}
-{%             endif %}
-{%             if vrf.auto_cost_reference_bandwidth is arista.avd.defined
-                   and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-                   and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
-{%                 set auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth %}
-{%             else %}
-{%                 set auto_cost_reference_bandwidth = '-' %}
-{%             endif %}
+{%         for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
+{%             if (vrf.router_id is arista.avd.defined
+                       and vrf.address_family_ipv4.router_id is not arista.avd.defined
+                       and vrf.address_family_ipv6.router_id is not arista.avd.defined)
+                   or (vrf.passive_interface_default is arista.avd.defined(true)
+                       and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
+                       and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true))
+                   or (vrf.auto_cost_reference_bandwidth is arista.avd.defined
+                       and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
+                       and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
+{%                 if vrf.router_id is arista.avd.defined
+                       and vrf.address_family_ipv4.router_id is not arista.avd.defined
+                       and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
+{%                     set router_id = vrf.router_id %}
+{%                 else %}
+{%                     set router_id = '-' %}
+{%                 endif %}
+{%                 if vrf.passive_interface_default is arista.avd.defined(true)
+                       and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
+                       and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
+{%                     set passive_interface_default = vrf.passive_interface_default %}
+{%                 else %}
+{%                     set passive_interface_default = '-' %}
+{%                 endif %}
+{%                 if vrf.auto_cost_reference_bandwidth is arista.avd.defined
+                       and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
+                       and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+{%                     set auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth %}
+{%                 else %}
+{%                     set auto_cost_reference_bandwidth = '-' %}
+{%                 endif %}
 | {{ vrf.name }} | {{ router_id }} | {{ passive_interface_default }} | {{ auto_cost_reference_bandwidth }} |
-{%         endif %}
-{%     endfor %}
-{# Address Family IPv4 #}
-{%     set has_address_family = false %}
-{%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
-{%         set has_address_family = true %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
-{%     if not has_address_family %}
+{# Address Family IPv4 #}
+{%     set ns = namespace(has_address_family=false) %}
+{%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
+{%         set ns.has_address_family = true %}
+{%     endif %}
+{%     if not ns.has_address_family %}
 {%         for vrf in router_ospfv3.vrfs | arista.avd.default([]) %}
 {%             if vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
-{%                 set has_address_family = true %}
+{%                 set ns.has_address_family = true %}
 {%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if has_address_family %}
+{%     if ns.has_address_family %}
 
 #### Router OSPFv3 Address Family IPv4
 
@@ -133,19 +133,19 @@
 {%         endfor %}
 {%     endif %}
 {# Address Family IPv4 Redistribution #}
-{%     set has_redistribution = false %}
+{%     set ns = namespace(has_redistribution=false) %}
 {%     if router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
-{%         set has_redistribution = true %}
+{%         set ns.has_redistribution = true %}
 {%     endif %}
-{%     if not has_redistribution %}
+{%     if not ns.has_redistribution %}
 {%         for vrf in router_ospfv3.vrfs | arista.avd.default([]) %}
 {%             if vrf.address_family_ipv4.redistribute is arista.avd.defined %}
-{%                 set has_redistribution = true %}
+{%                 set ns.has_redistribution = true %}
 {%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if has_redistribution %}
+{%     if ns.has_redistribution %}
 
 #### Router OSPFv3 IPv4 Address Family Redistribution
 
@@ -199,19 +199,19 @@
 {%         endfor %}
 {%     endif %}
 {# Address Family IPv6 #}
-{%     set has_ipv6_address_family = false %}
+{%     set ns = namespace(has_ipv6_address_family=false) %}
 {%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
-{%         set has_ipv6_address_family = true %}
+{%         set ns.has_ipv6_address_family = true %}
 {%     endif %}
-{%     if not has_ipv6_address_family %}
+{%     if not ns.has_ipv6_address_family %}
 {%         for vrf in router_ospfv3.vrfs | arista.avd.default([]) %}
 {%             if vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
-{%                 set has_ipv6_address_family = true %}
+{%                 set ns.has_ipv6_address_family = true %}
 {%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if has_ipv6_address_family %}
+{%     if ns.has_ipv6_address_family %}
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -233,19 +233,19 @@
 {%         endfor %}
 {%     endif %}
 {# Address Family IPv6 Redistribution #}
-{%     set has_ipv6_redistribution = false %}
+{%     set ns = namespace(has_ipv6_redistribution=false) %}
 {%     if router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
-{%         set has_ipv6_redistribution = true %}
+{%         set ns.has_ipv6_redistribution = true %}
 {%     endif %}
-{%     if not has_ipv6_redistribution %}
+{%     if not ns.has_ipv6_redistribution %}
 {%         for vrf in router_ospfv3.vrfs | arista.avd.default([]) %}
 {%             if vrf.address_family_ipv6.redistribute is arista.avd.defined %}
-{%                 set has_ipv6_redistribution = true %}
+{%                 set ns.has_ipv6_redistribution = true %}
 {%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if has_ipv6_redistribution %}
+{%     if ns.has_ipv6_redistribution %}
 
 #### Router OSPFv3 IPv6 Address Family Redistribution
 

@@ -142,6 +142,12 @@ router ospf 703
 ```
 
 ### Router OSPFv3
+
+#### Router OSPFv3 Summary
+
+| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
+| --- | --------- | ------------------------- | ----------------------------- |
+| default | - | - | - |
 | Test | 2.2.2.2 | True | 100 |
 
 #### Router OSPFv3 Address Family IPv4
