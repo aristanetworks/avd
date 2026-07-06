@@ -82,12 +82,6 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 1001
-  name: unused
-  state: suspend
-- id: 1010
-  name: suspend
-  state: suspend
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:

@@ -119,12 +119,6 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 1001
-  name: unused
-  state: suspend
-- id: 1010
-  name: suspend
-  state: suspend
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
