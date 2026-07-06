@@ -61,13 +61,13 @@ uv-pyavd-editable-install: ## Build and install PyAVD as editable
 
 .PHONY: lock
 lock: ## Update uv lock files.
-	uv lock --project . --python 3.10
-	uv lock --project python-avd --python 3.10
+	uv lock --project . --python 3.10 --fork-strategy requires-python
+	uv lock --project python-avd --python 3.10 --fork-strategy requires-python
 
 .PHONY: lock-check
 lock-check: ## Check uv lock files are fresh.
-	uv lock --project . --python 3.10 --check
-	uv lock --project python-avd --python 3.10 --check
+	uv lock --project . --python 3.10 --fork-strategy requires-python --check
+	uv lock --project python-avd --python 3.10 --fork-strategy requires-python --check
 
 #########################################
 # Code Validation using ansible-test 	#
