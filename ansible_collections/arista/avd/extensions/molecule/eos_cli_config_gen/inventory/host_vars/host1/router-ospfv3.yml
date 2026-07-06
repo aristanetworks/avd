@@ -73,6 +73,7 @@ router_ospfv3:
         router_id: 1.1.1.1
         passive_interface_default: true
         auto_cost_reference_bandwidth: 1000
+    # Test with IPv4 Address family
     - name: MGMT
       auto_cost_reference_bandwidth: 100
       address_family_ipv6:
@@ -107,3 +108,14 @@ router_ospfv3:
           dhcp:
             enabled: true
             route_map: map1
+    - name: TEST
+      auto_cost_reference_bandwidth: 100
+      # Address family configs will not render as enabled: false
+      address_family_ipv4:
+        enabled: false
+        router_id: 1.1.1.1
+        passive_interface_default: true
+      address_family_ipv6:
+        enabled: false
+        router_id: 1.1.1.1
+        passive_interface_default: true

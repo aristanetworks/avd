@@ -9441,6 +9441,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | --- | --------- | ------------------------- | ----------------------------- |
 | default | 1.1.1.1 | - | - |
 | MGMT | - | - | 100 |
+| TEST | - | - | 100 |
 
 #### Router OSPFv3 Address Family IPv4
 
@@ -9505,6 +9506,9 @@ router ospfv3 vrf MGMT
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
       redistribute static include leaked route-map map1
+!
+router ospfv3 vrf TEST
+   auto-cost reference-bandwidth 100
 !
 router ospfv3 vrf data
    address-family ipv4

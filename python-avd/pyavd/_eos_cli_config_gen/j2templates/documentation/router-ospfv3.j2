@@ -7,7 +7,7 @@
 {% if router_ospfv3 is arista.avd.defined %}
 
 ### Router OSPFv3
-{# --- Build rows for Router OSPFv3 Summary --- #}
+{#     Build rows for Router OSPFv3 Summary #}
 {%     set summary_rows = [] %}
 {%     if (router_ospfv3.router_id is arista.avd.defined
                and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
@@ -85,7 +85,7 @@
 | {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
 {%         endfor %}
 {%     endif %}
-{# --- Build rows for Router OSPFv3 Address Family IPv4 --- #}
+{#     Build rows for Router OSPFv3 Address Family IPv4 #}
 {%     set ipv4_af_rows = [] %}
 {%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
@@ -111,7 +111,7 @@
 | {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
 {%         endfor %}
 {%     endif %}
-{# --- Build rows for Router OSPFv3 IPv4 Address Family Redistribution --- #}
+{#     Build rows for Router OSPFv3 IPv4 Address Family Redistribution #}
 {%     set ipv4_redist_rows = [] %}
 {%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) and router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
 {%         set redistribute = router_ospfv3.address_family_ipv4.redistribute %}
@@ -181,7 +181,7 @@
 | {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
 {%         endfor %}
 {%     endif %}
-{# --- Build rows for Router OSPFv3 Address Family IPv6 --- #}
+{#     Build rows for Router OSPFv3 Address Family IPv6 #}
 {%     set ipv6_af_rows = [] %}
 {%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
@@ -207,7 +207,7 @@
 | {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
 {%         endfor %}
 {%     endif %}
-{# --- Build rows for Router OSPFv3 IPv6 Address Family Redistribution --- #}
+{#     Build rows for Router OSPFv3 IPv6 Address Family Redistribution #}
 {%     set ipv6_redist_rows = [] %}
 {%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) and router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
 {%         set redistribute = router_ospfv3.address_family_ipv6.redistribute %}
