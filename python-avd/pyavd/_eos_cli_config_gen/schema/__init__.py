@@ -73505,6 +73505,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        IsisCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
         class IsisAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
@@ -74597,6 +74599,51 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Mpls(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interface": {"type": bool}, "igp_sync": {"type": bool}}
+                interface: bool | None
+                igp_sync: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined, igp_sync: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Ldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interface: interface
+                            igp_sync: igp_sync
+
+                        """
+
+            _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}}
+            ip: bool | None
+            ldp: Ldp
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: bool | None | UndefinedType = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                    """
+                    Mpls.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: ip
+                        ldp: Subclass of AvdModel.
+
+                    """
+
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
@@ -74714,6 +74761,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "isis_passive": {"type": bool},
             "isis_metric": {"type": int},
             "isis_network_point_to_point": {"type": bool},
+            "isis_circuit_type": {"type": str},
+            "isis_hello_padding": {"type": bool},
             "isis_authentication": {"type": IsisAuthentication},
             "mtu": {"type": int},
             "no_autostate": {"type": bool},
@@ -74724,6 +74773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "service_policy": {"type": ServicePolicy},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "traffic_policy": {"type": TrafficPolicy},
+            "mpls": {"type": Mpls},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
             "metadata": {"type": Metadata},
@@ -74876,6 +74926,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_passive: bool | None
         isis_metric: int | None
         isis_network_point_to_point: bool | None
+        isis_circuit_type: IsisCircuitType | None
+        isis_hello_padding: bool | None
         isis_authentication: IsisAuthentication
         """Subclass of AvdModel."""
         mtu: int | None
@@ -74898,6 +74950,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         tcp_mss_ceiling: TcpMssCeiling
         """Subclass of AvdModel."""
         traffic_policy: TrafficPolicy
+        """Subclass of AvdModel."""
+        mpls: Mpls
         """Subclass of AvdModel."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
@@ -74974,6 +75028,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_passive: bool | None | UndefinedType = Undefined,
                 isis_metric: int | None | UndefinedType = Undefined,
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 no_autostate: bool | None | UndefinedType = Undefined,
@@ -74984,6 +75040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 service_policy: ServicePolicy | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
+                mpls: Mpls | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
                 metadata: Metadata | UndefinedType = Undefined,
@@ -75089,6 +75146,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     isis_passive: isis_passive
                     isis_metric: isis_metric
                     isis_network_point_to_point: isis_network_point_to_point
+                    isis_circuit_type: isis_circuit_type
+                    isis_hello_padding: isis_hello_padding
                     isis_authentication: Subclass of AvdModel.
                     mtu: mtu
                     no_autostate: no_autostate
@@ -75103,6 +75162,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     service_policy: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     traffic_policy: Subclass of AvdModel.
+                    mpls: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
                     metadata: Subclass of AvdModel.
