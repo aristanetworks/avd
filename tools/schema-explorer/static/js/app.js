@@ -1518,13 +1518,14 @@ function renderYamlResults(target, module, state, inputRows) {
     rememberYamlLine(event.target.closest("[data-yaml-row-id]"));
   });
 
-  const rememberYamlScroll = debounce(event => {
-    const block = event.currentTarget;
+  const rememberYamlScroll = debounce(block => {
     const blockTop = block.getBoundingClientRect().top;
     const visibleLine = [...block.querySelectorAll("[data-yaml-row-id]")].find(line => line.getBoundingClientRect().bottom >= blockTop);
     rememberYamlLine(visibleLine);
   }, 80);
-  target.querySelectorAll(".schema-yaml-block").forEach(block => block.addEventListener("scroll", rememberYamlScroll));
+  target.querySelectorAll(".schema-yaml-block").forEach(block => {
+    block.addEventListener("scroll", () => rememberYamlScroll(block));
+  });
 }
 
 // ── embed mounting ──────────────────────────────────────────────────────────
