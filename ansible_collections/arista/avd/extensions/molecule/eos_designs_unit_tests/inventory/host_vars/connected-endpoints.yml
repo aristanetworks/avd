@@ -157,7 +157,7 @@ servers:
   - name: OLD_SW-1/10
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
-        switch_ports: [Ethernet47, Ethernet48]
+        switch_ports: [Ethernet49, Ethernet50]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
         description: "Interface description {interface!c} {endpoint_type!t}_{endpoint!l}{endpoint_port?<_!u}"
         port_channel:
