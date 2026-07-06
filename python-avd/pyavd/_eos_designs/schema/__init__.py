@@ -111146,9 +111146,11 @@ class EosDesigns(EosDesignsRootModel):
     ipv4_standard_acls: Ipv4StandardAcls
     """
     IPv4 standard access-lists catalog.
+    These access-lists will only be configured on devices where they
+    are in use.
 
-    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items.
-    Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+    (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -113247,9 +113249,11 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv4_standard_acls:
                    IPv4 standard access-lists catalog.
+                   These access-lists will only be configured on devices where they
+                   are in use.
 
-                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items.
-                   Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be

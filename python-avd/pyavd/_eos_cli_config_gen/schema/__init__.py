@@ -25773,10 +25773,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class ServerHosts(AvdIndexedList[str, ServerHostsItem]):
-            """Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is `host` (`str`)."""
-
-            _primary_key: ClassVar[str] = "host"
+        class ServerHosts(AvdList[ServerHostsItem]):
+            """Subclass of AvdList with `ServerHostsItem` items."""
 
         ServerHosts._item_type = ServerHostsItem
 
@@ -25910,9 +25908,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         server_hosts: ServerHosts
         """
         List of LDAP server hosts.
+        Combination of 'host', 'port' and 'vrf' should be unique.
 
-        Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
-        `host` (`str`).
+        Subclass of
+        AvdList with `ServerHostsItem` items.
         """
         group_policies: GroupPolicies
         """
@@ -25944,9 +25943,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     server_hosts:
                        List of LDAP server hosts.
+                       Combination of 'host', 'port' and 'vrf' should be unique.
 
-                       Subclass of AvdIndexedList with `ServerHostsItem` items. Primary key is
-                       `host` (`str`).
+                       Subclass of
+                       AvdList with `ServerHostsItem` items.
                     group_policies:
                        Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
 
@@ -66394,6 +66394,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "bfd": {"type": bool},
                 "make_before_break": {"type": bool},
+                "message_hello_address_secondary_ipv6": {"type": bool},
                 "ssm_range": {"type": str},
                 "register_local_interface": {"type": str},
                 "rp_addresses": {"type": RpAddresses},
@@ -66403,6 +66404,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable BFD."""
             make_before_break: bool | None
             """Enable/Disable Make-Before-Break."""
+            message_hello_address_secondary_ipv6: bool | None
+            """Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
             register_local_interface: str | None
@@ -66419,6 +66422,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     bfd: bool | None | UndefinedType = Undefined,
                     make_before_break: bool | None | UndefinedType = Undefined,
+                    message_hello_address_secondary_ipv6: bool | None | UndefinedType = Undefined,
                     ssm_range: str | None | UndefinedType = Undefined,
                     register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
@@ -66433,6 +66437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
+                        message_hello_address_secondary_ipv6: Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
                         ssm_range: IPv4 Prefix associated with SSM.
                         register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
@@ -68143,6 +68148,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class ExtensionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"oid": {"type": str}, "path": {"type": str}, "one_shot": {"type": bool}}
+            oid: str
+            """Object Identifier (OID) for the SNMP extension."""
+            path: str
+            """Path to the script or MIB file on the device (e.g., flash:/script.py)."""
+            one_shot: bool | None
+            """Enable one-shot mode for the extension script."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined, one_shot: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ExtensionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        oid: Object Identifier (OID) for the SNMP extension.
+                        path: Path to the script or MIB file on the device (e.g., flash:/script.py).
+                        one_shot: Enable one-shot mode for the extension script.
+
+                    """
+
+        class Extensions(AvdIndexedList[str, ExtensionsItem]):
+            """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
+
+            _primary_key: ClassVar[str] = "oid"
+
+        Extensions._item_type = ExtensionsItem
+
         class CommunitiesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -68684,6 +68725,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "engine_ids": {"type": EngineIds},
+            "extensions": {"type": Extensions},
             "contact": {"type": str},
             "location": {"type": str},
             "communities": {"type": Communities},
@@ -68700,6 +68742,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         engine_ids: EngineIds
         """Subclass of AvdModel."""
+        extensions: Extensions
+        """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
         contact: str | None
         """SNMP contact."""
         location: str | None
@@ -68733,6 +68777,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 engine_ids: EngineIds | UndefinedType = Undefined,
+                extensions: Extensions | UndefinedType = Undefined,
                 contact: str | None | UndefinedType = Undefined,
                 location: str | None | UndefinedType = Undefined,
                 communities: Communities | UndefinedType = Undefined,
@@ -68755,6 +68800,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     engine_ids: Subclass of AvdModel.
+                    extensions: Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`).
                     contact: SNMP contact.
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
@@ -75440,6 +75486,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
+            "rd": {"type": str},
             "ip_routing": {"type": bool},
             "ipv6_routing": {"type": bool},
             "ip_routing_ipv6_interfaces": {"type": bool},
@@ -75448,6 +75495,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """VRF Name."""
         description: str | None
+        rd: str | None
+        """
+        Renders Route Distinguisher under 'vrf instance'.
+        This is deprecated in EOS; configure the Route
+        Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.
+        This key is kept
+        only to support existing/legacy device configurations and is intentionally not shown in the
+        generated device documentation.
+        """
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
@@ -75467,6 +75523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
+                rd: str | None | UndefinedType = Undefined,
                 ip_routing: bool | None | UndefinedType = Undefined,
                 ipv6_routing: bool | None | UndefinedType = Undefined,
                 ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -75481,6 +75538,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: VRF Name.
                     description: description
+                    rd:
+                       Renders Route Distinguisher under 'vrf instance'.
+                       This is deprecated in EOS; configure the Route
+                       Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.
+                       This key is kept
+                       only to support existing/legacy device configurations and is intentionally not shown in the
+                       generated device documentation.
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces

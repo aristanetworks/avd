@@ -1,4 +1,3 @@
----
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -12,6 +11,7 @@ keys:
     primary_key: name
     description: |-
       IPv4 standard access-lists catalog.
+      These access-lists will only be configured on devices where they are in use.
     items:
       type: dict
       keys:
