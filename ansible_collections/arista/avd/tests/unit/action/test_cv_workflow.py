@@ -206,4 +206,3 @@ def test_build_device_deployment_logs_info_for_each_device(
         asyncio.run(module.build_device_deployment("spine1", "/structured", "yml", "/configs", "AVD-${hostname}"))
 
     assert any("build_device_deployment: spine1" in msg for msg in caplog.messages)
-
