@@ -18,8 +18,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_ldap.server_defaults.search.username") | String | Required |  |  | LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "management_ldap.server_defaults.search.password") | String | Required |  |  | Password for the search bind user. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "management_ldap.server_defaults.search.password_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Password encryption type.<br>- 0 = clear text<br>- 7 = obfuscated<br>- 8a = AES-256-GCM encrypted.<br>Omit to provide an unobfuscated string (EOS will store it obfuscated). |
-    | [<samp>&nbsp;&nbsp;server_hosts</samp>](## "management_ldap.server_hosts") | List, items: Dictionary |  |  |  | List of LDAP server hosts. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "management_ldap.server_hosts.[].host") | String | Required, Unique |  |  | Hostname or IP address of the LDAP server. |
+    | [<samp>&nbsp;&nbsp;server_hosts</samp>](## "management_ldap.server_hosts") | List, items: Dictionary |  |  |  | List of LDAP server hosts.<br>Combination of 'host', 'port' and 'vrf' should be unique. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "management_ldap.server_hosts.[].host") | String | Required |  |  | Hostname or IP address of the LDAP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_ldap.server_hosts.[].port") | Integer |  |  | Min: 0<br>Max: 65535 | Port of LDAP server (EOS default 389). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ldap.server_hosts.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base_dn</samp>](## "management_ldap.server_hosts.[].base_dn") | String |  |  |  | Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com). |
@@ -81,10 +81,11 @@
           password_type: <str; "0" | "7" | "8a">
 
       # List of LDAP server hosts.
+      # Combination of 'host', 'port' and 'vrf' should be unique.
       server_hosts:
 
           # Hostname or IP address of the LDAP server.
-        - host: <str; required; unique>
+        - host: <str; required>
 
           # Port of LDAP server (EOS default 389).
           port: <int; 0-65535>
