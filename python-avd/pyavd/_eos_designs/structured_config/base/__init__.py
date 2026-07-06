@@ -99,10 +99,10 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
         """ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf."""
-        if self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config" and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.node_config.ipv6_mgmt_ip is None:
             return
 
-        if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.node_config.ipv6_mgmt_ip is None:
+        if self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config" and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
             return
 
         if self.inputs.ipv6_mgmt_destination_networks:
