@@ -156,10 +156,10 @@ class AvdStringFormatter(Formatter):
             return str(value).upper()
         if conversion == "c":
             # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2, Ethernet1/1/1 > Et1/1/1
-            interface = re.search(r"(\d.*)", str(value))
+            interface = re.match(r"(port-channel|ethernet|vlan|loopback|tunnel)(\d+(\.\d+)?)", str(value).lower())
             interface_type = str(value).title()[:2]
-            if interface and interface_type:
-                return interface_type + interface.group()
+            if interface:
+                return interface_type + interface.group(2)
             return str(value)
         msg = f"Unknown conversion specifier {conversion!s}"
         raise ValueError(msg)
