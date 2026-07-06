@@ -16,7 +16,7 @@ from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import MutableMapping, Sequence
+    from collections.abc import Mapping, MutableMapping, Sequence
 
     from jinja2 import Template
 
@@ -160,7 +160,7 @@ class Templar:
             },
         )
 
-    def render_template_from_file(self, template_file: str, template_vars: dict[str, Any]) -> str:
+    def render_template_from_file(self, template_file: str, template_vars: Mapping[str, Any]) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path]) -> None:

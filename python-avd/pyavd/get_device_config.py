@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -44,10 +45,11 @@ def get_device_config(structured_config: EOSConfig | dict, *, configuration: Con
     if isinstance(structured_config, EOSConfig):
         structured_config = structured_config._as_dict()
 
-    template_vars: dict[str, Any] = structured_config
+    template_vars: dict[str, Any] | ChainMap[str, Any] = structured_config
     if configuration is not None and configuration.hide_passwords is not None:
-        template_vars = structured_config.copy()
-        template_vars["_eos_cli_config_gen_hide_passwords"] = configuration.hide_passwords
+        # Keep structured_config first for the many normal template lookups. This means a caller-provided
+        # internal _eos_cli_config_gen_hide_passwords key would take precedence over the render option.
+        template_vars = ChainMap(structured_config, {"_eos_cli_config_gen_hide_passwords": configuration.hide_passwords})
 
     templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
     return templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, template_vars=template_vars)
