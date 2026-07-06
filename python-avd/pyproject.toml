@@ -85,7 +85,7 @@ version = {attr = "pyavd.__version__"}
 [dependency-groups]
 # helping pdm generate the flat list of requirements in pre-commit
 self = [
-  "pyavd==6.3.0.dev1"
+  "pyavd==6.4.0.dev0"
 ]
 
 [tool.black]
