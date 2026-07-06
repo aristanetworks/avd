@@ -670,6 +670,26 @@ ethernet_interfaces:
     peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet47
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  channel_group:
+    id: 47
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet48
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  channel_group:
+    id: 47
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -888,6 +908,17 @@ port_channel_interfaces:
 - name: Port-Channel45
   description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
   shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel47
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: false
   switchport:
     enabled: true
     mode: access

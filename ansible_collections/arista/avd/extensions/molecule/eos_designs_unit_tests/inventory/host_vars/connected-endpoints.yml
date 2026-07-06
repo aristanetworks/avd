@@ -327,12 +327,26 @@ servers:
         switch_ports: [Ethernet45, Ethernet46]
         mode: access
         vlans: 112
-        # setting ipv4: true to verify it is NOT rendered in port-channel configuration
+        # setting ipv4/ipv6: true to verify they are NOT rendered in port-channel configuration
         address_locking:
           ipv4: true
+          ipv6: true
         port_channel:
           mode: active
           channel_id: 45
+  - name: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet47, Ethernet48]
+        mode: access
+        vlans: 112
+        # setting ipv4: false and ipv6: false to verify both are rendered as disabled in port-channel configuration
+        address_locking:
+          ipv4: false
+          ipv6: false
+        port_channel:
+          mode: active
+          channel_id: 47
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
