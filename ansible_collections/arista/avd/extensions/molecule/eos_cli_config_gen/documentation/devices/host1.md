@@ -7971,21 +7971,21 @@ interface Tunnel6
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
-| Vlan42 | EVPN_UNDERLAY | - | - | - | Level-1: sha |
-| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 |
-| Vlan84 | EVPN_UNDERLAY | - | - | - | sha |
-| Vlan85 | EVPN_UNDERLAY | - | - | - | sha |
-| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret |
-| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret |
-| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
-| Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
-| Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan2002 | EVPN_UNDERLAY | True | - | passive | md5 |
-| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - |
-| Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Vlan42 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha |
+| Vlan83 | EVPN_UNDERLAY | - | - | - | level-2 | True | md5 |
+| Vlan84 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Vlan86 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Vlan87 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan90 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan92 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan2002 | EVPN_UNDERLAY | True | - | passive | - | - | md5 |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
+| Vlan4094 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
 
 ##### Multicast Routing
 
@@ -8118,6 +8118,8 @@ interface Vlan83
    description SVI Description
    no shutdown
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
+   isis hello padding
    isis authentication mode md5
    isis authentication key 0 password
    ip address virtual 10.10.83.1/24
@@ -8142,6 +8144,7 @@ interface Vlan85
    arp cache dynamic capacity 50000
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   mpls ip
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2
    isis authentication key 0 password
