@@ -8,7 +8,7 @@ import logging
 from collections import ChainMap
 from contextlib import suppress
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -23,11 +23,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_tmp_paths,
     raise_action_fail,
 )
-
-if TYPE_CHECKING:
-    from pyavd import ConfigRenderConfiguration, DocRenderConfiguration, get_device_config, get_device_doc
-    from pyavd._utils import strip_empties_from_dict, template
-    from pyavd.j2filters import add_md_toc
 
 try:
     from pyavd import ConfigRenderConfiguration, DocRenderConfiguration, get_device_config, get_device_doc
