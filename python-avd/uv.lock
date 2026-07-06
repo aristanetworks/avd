@@ -849,7 +849,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.0" },
     { name = "netaddr", marker = "extra == 'ansible-collection'", specifier = ">=0.7.19" },
     { name = "pyavd", extras = ["ansible-collection"], marker = "extra == 'ansible'" },
-    { name = "pyavd-utils", specifier = "==0.0.5" },
+    { name = "pyavd-utils", specifier = "==0.0.6" },
     { name = "python-socks", extras = ["asyncio"], specifier = ">=2.7.2" },
     { name = "pyyaml", specifier = ">=6.0.0" },
     { name = "requests", specifier = ">=2.27.0" },
@@ -857,20 +857,20 @@ requires-dist = [
 provides-extras = ["ansible", "ansible-collection"]
 
 [package.metadata.requires-dev]
-self = [{ name = "pyavd", specifier = "==6.2.0.dev3" }]
+self = [{ name = "pyavd", specifier = "==6.3.0.dev1" }]
 
 [[package]]
 name = "pyavd-utils"
-version = "0.0.5"
+version = "0.0.6"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/1c/73b1567810ce62a924b3c04f6e74068bb825916736396e3cfc2a6fb251ca/pyavd_utils-0.0.5-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:3d205716c69dc4a22a9b9e4f7a46215da9126b75ac7a888bff8382a24343c789", size = 1835494, upload-time = "2026-05-18T08:24:15.726Z" },
-    { url = "https://files.pythonhosted.org/packages/f5/90/9de33ed4d2b2a4674aff2aa9097ef4b1e5c6fec6b8b5dd2609596d177281/pyavd_utils-0.0.5-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:a3bee8ab71544e9f072aba4d44b5e4aa4aec68cce431bfb6cd476cd884d3d73a", size = 1763922, upload-time = "2026-05-18T08:24:17.7Z" },
-    { url = "https://files.pythonhosted.org/packages/d1/f6/5d5c1182bd754b21ea15d116ffb858de035ae92756ad877879c0d2f95ced/pyavd_utils-0.0.5-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:910065d9abfa0ade1de8cf4be82ac86c0704aa9381f75f560dcb2c86de1ff3ff", size = 1974019, upload-time = "2026-05-18T08:24:19.665Z" },
-    { url = "https://files.pythonhosted.org/packages/46/c0/23b6f1d5428bbf15815f0380bd00a00a760fc808b861fac01a4b1b6efdd3/pyavd_utils-0.0.5-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:bdef2d09058174627eff8cdc32304ced927b7a330e3c131ca8cc60d5c8d53e98", size = 2024269, upload-time = "2026-05-18T08:24:20.969Z" },
-    { url = "https://files.pythonhosted.org/packages/67/66/25374758dda1eb8172a8db2355571584cb297c432419b29a1788a76acd00/pyavd_utils-0.0.5-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:34ccada520a93bd9e7e23b8d69182e1591bcf66828a2ac07b2024a4eed83e274", size = 2033631, upload-time = "2026-05-18T08:24:22.372Z" },
-    { url = "https://files.pythonhosted.org/packages/35/0a/ad042ffe6170673d61caf49535d80d1b275109c948c701a989cab19d1176/pyavd_utils-0.0.5-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:bd127e86eb4cbe4e0384120640fc610431a8f26d3a8eb8c6409757aaabe2981d", size = 2120706, upload-time = "2026-05-18T08:24:23.862Z" },
-    { url = "https://files.pythonhosted.org/packages/7a/91/9ac9484e559159a19c816be814bd92663dfed53bda035da88f27d0d537e6/pyavd_utils-0.0.5-cp310-abi3-win_amd64.whl", hash = "sha256:b9e7d783d48b01ae1611c8fb27c05239b79254c771d4b860830299aeb7d442f3", size = 1545169, upload-time = "2026-05-18T08:24:26.253Z" },
+    { url = "https://files.pythonhosted.org/packages/01/1f/ac8e45256fbeb6d0f3d3d02551a3cc1f2f5ab6e06cc5ff325ec5c9a673ab/pyavd_utils-0.0.6-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:9946e6b3d4a39f1f7fdf6710f899ecdf1367317f55f06ff646bfd2547f53a43c", size = 1834931, upload-time = "2026-06-03T08:04:46.698Z" },
+    { url = "https://files.pythonhosted.org/packages/13/c4/a78972436f0c1edff082c5a0003ed538aa8f0a60fa45bc6f2795e557cce7/pyavd_utils-0.0.6-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:073cfd71e288172f9a9961d2f5949fe0a5c91d21879fea16379217d8e30334fc", size = 1764583, upload-time = "2026-06-03T08:04:48.27Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/f3/e8e11a16c49cce7ee0c80eb25fd23438a77cf389a9c27b14b0d45c1f54e0/pyavd_utils-0.0.6-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:2bd5c3bbf4f86f2a7249af33f060e2d0d0dd57f50d889b1d2a948254a8bdb51d", size = 1963546, upload-time = "2026-06-03T08:04:49.816Z" },
+    { url = "https://files.pythonhosted.org/packages/04/06/177e742f9f2c16b9ab33fb7b230fe4f188d84f8e1d278241bd685ce9b51f/pyavd_utils-0.0.6-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:3c56e50141f66d41bb1e160407ccc9c31837d117452fb1867237ab801a1f9af6", size = 2031381, upload-time = "2026-06-03T08:04:51.093Z" },
+    { url = "https://files.pythonhosted.org/packages/94/31/b0de03a91152fae882b34d0d8f4b01c9ee049ea8cf7f17c6140a7b9dc1fa/pyavd_utils-0.0.6-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:584003b121247f6a6b854c398a313ac8c27ef3018ac424ba5de1a343e4217365", size = 2028368, upload-time = "2026-06-03T08:04:52.653Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/6e/70aa86d8c3292197f778421b03705ff9726d91e3330131c3a4152121f6a1/pyavd_utils-0.0.6-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:99005aba81bbeb7cda9ffd20c953840fff75b0e341354ba95df4be4546b2a8b4", size = 2112821, upload-time = "2026-06-03T08:04:54.108Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/aa/d89bab7e261a07f4d39c12dfac2fb53c4a402921eab1f2fdae86a94e005a/pyavd_utils-0.0.6-cp310-abi3-win_amd64.whl", hash = "sha256:fc511f75ca675181b2ac0af27e0b100e962a0bb3b3c4856eaecc9fc54e7ee445", size = 1541009, upload-time = "2026-06-03T08:04:55.94Z" },
 ]
 
 [[package]]
