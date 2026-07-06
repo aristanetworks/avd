@@ -22584,6 +22584,158 @@ class EosDesigns(EosDesignsRootModel):
 
     Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
 
+    class Ipv4StandardAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "vlan": {"type": int},
+                "vlan_mask": {"type": str},
+                "inner_vlan": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "log": {"type": bool},
+                "mirror_session": {"type": str},
+            }
+            sequence: int | None
+            """Sequence ID."""
+            action: Action | None
+            """Action as string."""
+            remark: str | None
+            """Specify a comment. If remark is specified other keys of the entry are ignored."""
+            source: str | None
+            """
+            Required for non-remark entries.
+            The value can be:
+            1. A single source address.
+            2. Source address
+            with mask. e.g. '10.0.0.1/8'.
+            3. 'any' source address.
+            """
+            vlan: int | None
+            """Match packets by VLAN value."""
+            vlan_mask: str | None
+            """
+            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+            To ensure that a value like 0x001
+            is treated strictly as a string
+            and not converted to a decimal (like 1), use single or double
+            quotes.
+            """
+            inner_vlan: int | None
+            """Match packets by inner VLAN value."""
+            inner_vlan_mask: str | None
+            """
+            Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+            To ensure that a value
+            like 0x001 is treated strictly as a string
+            and not converted to a decimal (like 1), use single or
+            double quotes.
+            """
+            log: bool | None
+            """Enable logging when a packet matches the ACL rule."""
+            mirror_session: str | None
+            """Mirror session to mirror matches against this rule."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    mirror_session: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action: Action as string.
+                        remark: Specify a comment. If remark is specified other keys of the entry are ignored.
+                        source:
+                           Required for non-remark entries.
+                           The value can be:
+                           1. A single source address.
+                           2. Source address
+                           with mask. e.g. '10.0.0.1/8'.
+                           3. 'any' source address.
+                        vlan: Match packets by VLAN value.
+                        vlan_mask:
+                           VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+                           To ensure that a value like 0x001
+                           is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or double
+                           quotes.
+                        inner_vlan: Match packets by inner VLAN value.
+                        inner_vlan_mask:
+                           Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                           To ensure that a value
+                           like 0x001 is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or
+                           double quotes.
+                        log: Enable logging when a packet matches the ACL rule.
+                        mirror_session: Mirror session to mirror matches against this rule.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """Access-list Name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Ipv4StandardAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Access-list Name.
+                    counters_per_entry: counters_per_entry
+                    entries: Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class Ipv4StandardAcls(AvdIndexedList[str, Ipv4StandardAclsItem]):
+        """Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv4StandardAcls._item_type = Ipv4StandardAclsItem
+
     class Ipv6AclsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -108885,6 +109037,7 @@ class EosDesigns(EosDesignsRootModel):
         "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
+        "ipv4_standard_acls": {"type": Ipv4StandardAcls},
         "ipv6_acls": {"type": Ipv6Acls},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
         "ipv6_mgmt_gateway": {"type": str},
@@ -110995,6 +111148,15 @@ class EosDesigns(EosDesignsRootModel):
     - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
+    ipv4_standard_acls: Ipv4StandardAcls
+    """
+    IPv4 standard access-lists catalog.
+    These access-lists will only be configured on devices where they
+    are in use.
+
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+    (`str`).
+    """
     ipv6_acls: Ipv6Acls
     """
     IPv6 extended access-lists supporting substitution on certain fields.
@@ -112256,6 +112418,7 @@ class EosDesigns(EosDesignsRootModel):
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
+            ipv4_standard_acls: Ipv4StandardAcls | UndefinedType = Undefined,
             ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
             ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -113089,6 +113252,13 @@ class EosDesigns(EosDesignsRootModel):
                    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
+                ipv4_standard_acls:
+                   IPv4 standard access-lists catalog.
+                   These access-lists will only be configured on devices where they
+                   are in use.
+
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
