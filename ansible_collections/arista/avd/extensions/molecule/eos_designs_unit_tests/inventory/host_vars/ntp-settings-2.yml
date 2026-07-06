@@ -6,6 +6,9 @@ l2leaf:
       # mgmt_ip: 192.168.0.2/24
       inband_mgmt_ip: 192.168.1.2/24
       inband_mgmt_vrf: INBAND_MGMT
+# Test to not set ntp_settings.servers[0] first server as 'preferred'
+avd_design_future:
+  disable_first_ntp_server_preferred: true
 
 ntp_settings:
   server_vrf: use_inband_mgmt_vrf

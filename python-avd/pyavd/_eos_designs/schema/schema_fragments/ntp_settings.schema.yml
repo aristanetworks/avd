@@ -27,7 +27,8 @@ keys:
       servers:
         type: list
         description: |-
-          The first server is always set as "preferred".
+          By default, AVD sets the first NTP server as `preferred`.
+          Set `avd_design_future.disable_first_ntp_server_preferred: true` to disable this behavior.
         items:
           type: dict
           keys:

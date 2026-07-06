@@ -992,6 +992,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "disable_first_ntp_server_preferred": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1094,6 +1095,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        disable_first_ntp_server_preferred: bool
+        """
+        Available from AVD 6.4.0.
+        Disable setting the first NTP server as `preferred` when using
+        `ntp_settings.servers[]`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1112,6 +1121,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                disable_first_ntp_server_preferred: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1173,6 +1183,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    disable_first_ntp_server_preferred:
+                       Available from AVD 6.4.0.
+                       Disable setting the first NTP server as `preferred` when using
+                       `ntp_settings.servers[]`.
 
                 """
 
@@ -39879,9 +39893,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         servers: Servers
         """
-        The first server is always set as "preferred".
+        By default, AVD sets the first NTP server as `preferred`.
+        Set
+        `avd_design_future.disable_first_ntp_server_preferred: true` to disable this behavior.
 
-        Subclass of AvdList with `ServersItem` items.
+        Subclass of
+        AvdList with `ServersItem` items.
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -39927,9 +39944,12 @@ class EosDesigns(EosDesignsRootModel):
                        string will be used directly as the VRF name but local interface must be set with
                        `custom_structured_configuration_ntp` if needed.
                     servers:
-                       The first server is always set as "preferred".
+                       By default, AVD sets the first NTP server as `preferred`.
+                       Set
+                       `avd_design_future.disable_first_ntp_server_preferred: true` to disable this behavior.
 
-                       Subclass of AvdList with `ServersItem` items.
+                       Subclass of
+                       AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
