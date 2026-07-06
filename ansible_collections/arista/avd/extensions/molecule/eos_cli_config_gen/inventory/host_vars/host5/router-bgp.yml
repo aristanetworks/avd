@@ -5,6 +5,9 @@ router_bgp:
   bgp:
     additional_paths:
       send: backup
+  neighbors:
+    - ip_address: 192.0.2.1
+      remote_as: "65001"
   address_family_evpn:
     next_hop_unchanged: true
     next_hop_mpls_resolution_ribs:

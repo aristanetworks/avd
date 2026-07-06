@@ -333,7 +333,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endif %}
 {%             set active_parameter = namespace() %}
 {%             set active_parameter.remote_as = neighbor.remote_as | arista.avd.default(inherited.remote_as, '-') %}
-{%             set active_parameter.vrf = 'default' %}
+{%             set active_parameter.vrf = neighbor.vrf | arista.avd.default('default') %}
 {%             set active_parameter.send_community = neighbor.send_community | arista.avd.default(inherited.send_community, '-') %}
 {%             set active_parameter.bfd = neighbor.bfd | arista.avd.default(inherited.bfd, '-') %}
 {%             set active_parameter.bfd_timers = inherited.bfd_timers | arista.avd.default("-") %}
