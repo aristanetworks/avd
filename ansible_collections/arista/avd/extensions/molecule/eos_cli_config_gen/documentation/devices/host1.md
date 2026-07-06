@@ -28,6 +28,11 @@ Serial Number: DEADBEEFC0FFEW
   - [Management Console](#management-console)
   - [Management API HTTP](#management-api-http)
   - [Management API Models](#management-api-models)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [LDAP Server Hosts](#ldap-server-hosts)
+  - [LDAP Group Policies](#ldap-group-policies)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Services](#cvx-services)
   - [CVX Device Configuration](#cvx-device-configuration)
@@ -1301,6 +1306,106 @@ management api models
    provider sysdb
       path cell/1/agent disabled
       path sys/logging/config/vrfLoggingHost/mgmt disabled
+```
+
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Base DN | dc=example,dc=com |
+| RDN Attribute (User) | cn |
+| SSL Profile | LDAP_SSL_PROFILE |
+| Timeout | 123 seconds |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY | cn=host-admin,dc=example,dc=com |
+| ldap2.example.com | - | default | - | - | - | - | - | cn=admin2,dc=example,dc=com |
+| 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+| 10.1.1.1 | 101 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 201 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf1 | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf2 | - | - | - | - | - | - |
+| 10.1.1.1 | - | vrf3 | - | - | - | - | - | - |
+
+### LDAP Group Policies
+
+#### Group Policy: HOST_GROUP_POLICY
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Operator | network-operator | - |
+
+#### Group Policy: LDAP_GROUP_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+| Group Name | Role | Privilege |
+| ---------- | ---- | --------- |
+| Network Admin | network-admin | 15 |
+| Read Only | read-only | - |
+
+#### Group Policy: LDAP_SEARCH_FILTER_POLICY
+
+| Search Filter Objectclass | Search Filter Attribute |
+| ------------------------- | ----------------------- |
+| group | member |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      base-dn dc=example,dc=com
+      rdn attribute user cn
+      ssl-profile LDAP_SSL_PROFILE
+      timeout 123
+      authorization group policy LDAP_GROUP_POLICY
+      search username cn=ldap-admin,dc=example,dc=com password 7 <removed>
+   !
+   server host ldap1.example.com port 636 vrf MGMT
+      base-dn dc=host1,dc=example,dc=com
+      rdn attribute user uid
+      ssl-profile LDAP_HOST_SSL_PROFILE
+      timeout 10
+      authorization group policy HOST_GROUP_POLICY
+      search username cn=host-admin,dc=example,dc=com password 0 <removed>
+   !
+   server host ldap2.example.com
+      search username cn=admin2,dc=example,dc=com password <removed>
+   !
+   server host 10.1.1.1
+      ssl-profile LDAP_HOST_SSL_PROFILE
+   !
+   server host 10.1.1.1 port 101
+   !
+   server host 10.1.1.1 port 201
+   !
+   server host 10.1.1.1 port 101 vrf vrf1
+   !
+   server host 10.1.1.1 port 101 vrf vrf2
+   !
+   server host 10.1.1.1 vrf vrf3
+   !
+   group policy HOST_GROUP_POLICY
+      group "Network Operator" role network-operator
+   !
+   group policy LDAP_GROUP_POLICY
+      search filter objectclass group attribute member
+      group "Network Admin" role network-admin privilege 15
+      group "Read Only" role read-only
+   !
+   group policy LDAP_SEARCH_FILTER_POLICY
+      search filter objectclass group attribute member
 ```
 
 ## CVX
@@ -2803,6 +2908,15 @@ mcs client
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
+#### SNMP Extensions
+
+| OID | Script/File Path | One-shot |
+| --- | ---------------- | -------- |
+| .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py | False |
+| .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py | False |
+| .111.3.6.1.4.1.99999.2.1.0 | flash:/test1.py | True |
+| .2.3.6.1.4.1.99999.2.1.0 | flash:/test2.py | False |
+
 #### SNMP Device Configuration
 
 ```eos
@@ -2858,6 +2972,10 @@ snmp-server enable traps msdp backward-transition
 snmp-server enable traps msdp established
 snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.1.1 flash:/monitorConnectivity.py
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.2.33 flash:/test.py
+snmp-server extension .111.3.6.1.4.1.99999.2.1.0 flash:/test1.py one-shot
+snmp-server extension .2.3.6.1.4.1.99999.2.1.0 flash:/test2.py
 no snmp-server vrf default
 snmp-server vrf MGMT
 snmp-server vrf lower_case
@@ -6610,9 +6728,12 @@ interface Ethernet90
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel51 | ipv6_prefix | - | - | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Port-Channel109 | Molecule ACLs | - | - | default | - | - | - | - | - | - | - | - | IPV6_ACL_IN | IPV6_ACL_OUT |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
+| Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
 
 ##### VRRP Details
 
@@ -7403,6 +7524,14 @@ interface Port-Channel333
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
+!
+interface Port-Channel400
+   description TEST-IPV6-ND-WITHOUT-ADDR
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 access-group TEST-V6-IN in
+   ipv6 access-group TEST-V6-OUT out
 !
 interface Port-Channel667
    description Multiple VRIDs
@@ -8507,6 +8636,8 @@ ip virtual-router mac-address mlag-peer
 | TENANT_A_PROJECT02 | True |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
+| TEST3 | True |
+| TEST4 | - |
 
 #### IP Routing Device Configuration
 
@@ -8521,6 +8652,7 @@ ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ip routing vrf TEST1
 ip routing ipv6 interfaces vrf TEST2
+ip routing vrf TEST3
 ```
 
 ### IPv6 Routing
@@ -8539,6 +8671,8 @@ ip routing ipv6 interfaces vrf TEST2
 | TENANT_A_PROJECT02 | false |
 | TEST1 | true |
 | TEST2 | false |
+| TEST3 | false |
+| TEST4 | false |
 
 #### IPv6 Routing Device Configuration
 
@@ -11854,6 +11988,8 @@ router multicast
 
 BFD enabled: True
 
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
+
 Make-before-break: False
 Register Local Interface: Ethernet1
 
@@ -11902,6 +12038,7 @@ router pim sparse-mode
    ipv4
       ssm range standard
       bfd
+      message hello address secondary ipv6
       make-before-break disabled
       rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30
@@ -12925,6 +13062,8 @@ mac access-list TEST5
 | TENANT_A_PROJECT02 | enabled |
 | TEST1 | enabled |
 | TEST2 | enabled (ipv6 interface) |
+| TEST3 | enabled |
+| TEST4 | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -12941,6 +13080,12 @@ vrf instance TENANT_A_PROJECT02
 vrf instance TEST1
 !
 vrf instance TEST2
+!
+vrf instance TEST3
+   rd 100:100
+!
+vrf instance TEST4
+   rd 10.20.30.40:102
 !
 vrf instance defauls
 !

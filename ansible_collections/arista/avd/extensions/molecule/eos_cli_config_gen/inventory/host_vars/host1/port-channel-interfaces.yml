@@ -1314,10 +1314,16 @@ port_channel_interfaces:
     ipv6_nd:
       managed_config_flag: true
 
-  # TODO: Open issue. documentation/port-channel-interfaces.j2 has a fallback IPv6
-  # address branch for port-channels without ipv6_addresses, ipv6_address or
-  # ipv6_address_auto_config, but those are the same keys required for the
-  # interface to be included in the IPv6 documentation table.
+  # Validates that ipv6_nd / ipv6_access_group trigger IPv6 table inclusion without an IPv6 address.
+  - name: Port-Channel400
+    description: TEST-IPV6-ND-WITHOUT-ADDR
+    ipv6_nd:
+      ra:
+        disabled: true
+      managed_config_flag: true
+      other_config_flag: true
+    ipv6_access_group_in: TEST-V6-IN
+    ipv6_access_group_out: TEST-V6-OUT
 
   - name: Port-Channel303
     description: Traffic Engineering Static Delay Coverage
