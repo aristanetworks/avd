@@ -209,6 +209,12 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
+- id: 1001
+  name: unused
+  state: suspend
+- id: 1010
+  name: suspend
+  state: suspend
 - id: 4091
   name: MLAG_PEER
   trunk_groups:
