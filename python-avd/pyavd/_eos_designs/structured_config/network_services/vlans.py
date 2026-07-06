@@ -107,23 +107,21 @@ class VlansMixin(Protocol):
         feature_support = self.shared_utils.platform_settings.feature_support
         if feature_support.address_locking:
             if vlan.address_locking.ipv4:
-                if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled:
-                    vlans_vlan.address_locking.address_family.ipv4 = vlan.address_locking.ipv4
-                else:
-                    msg = (
-                        f"To configure address locking ipv4 for vlan {vlan.id} in Tenant '{tenant.name}' either `address_locking_settings.dhcp_servers_ipv4` "
-                        "or `address_locking_settings.locked_address.ipv4_enforcement_disabled` is required."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
+                self._apply_vlan_af_address_locking(
+                    vlans_vlan,
+                    vlan.id,
+                    tenant.name,
+                    "ipv4",
+                    self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled,
+                )
             if vlan.address_locking.ipv6 and feature_support.address_locking_ipv6_vlan:
-                if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv6_enforcement_disabled:
-                    vlans_vlan.address_locking.address_family.ipv6 = vlan.address_locking.ipv6
-                else:
-                    msg = (
-                        f"To configure address locking ipv6 for vlan {vlan.id} in Tenant '{tenant.name}' either `address_locking_settings.dhcp_servers_ipv4` "
-                        "or `address_locking_settings.locked_address.ipv6_enforcement_disabled` is required."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
+                self._apply_vlan_af_address_locking(
+                    vlans_vlan,
+                    vlan.id,
+                    tenant.name,
+                    "ipv6",
+                    self.inputs.address_locking_settings.locked_address.ipv6_enforcement_disabled,
+                )
         if self.inputs.enable_trunk_groups:
             trunk_groups = set(vlan.trunk_groups)
             if self.shared_utils.only_local_vlan_trunk_groups:
@@ -138,3 +136,21 @@ class VlansMixin(Protocol):
             vlans_vlan.trunk_groups.extend(natural_sort(trunk_groups))
 
         return vlans_vlan
+
+    def _apply_vlan_af_address_locking(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vlans_vlan: EosCliConfigGen.VlansItem,
+        vlan_id: int,
+        tenant_name: str,
+        ip_version: str,
+        enforcement_disabled: bool | None,
+    ) -> None:
+        """Helper to apply IPv4/IPv6 address locking per VLAN."""
+        if self.inputs.address_locking_settings.dhcp_servers_ipv4 or enforcement_disabled:
+            setattr(vlans_vlan.address_locking.address_family, ip_version, True)
+        else:
+            msg = (
+                f"To configure address locking {ip_version} for vlan {vlan_id} in Tenant '{tenant_name}' either `address_locking_settings.dhcp_servers_ipv4` "
+                f"or `address_locking_settings.locked_address.{ip_version}_enforcement_disabled` is required."
+            )
+            raise AristaAvdInvalidInputsError(msg)
