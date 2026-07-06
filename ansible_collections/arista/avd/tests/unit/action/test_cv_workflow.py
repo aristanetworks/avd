@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule, setup_module_logging
+from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -207,77 +207,3 @@ def test_build_device_deployment_logs_info_for_each_device(
 
     assert any("build_device_deployment: spine1" in msg for msg in caplog.messages)
 
-
-# ---------------------------------------------------------------------------
-# setup_module_logging() — logging tests
-# ---------------------------------------------------------------------------
-
-
-def test_setup_module_logging_routes_warning_logs_to_result() -> None:
-    """WARNING-level logs emitted via the AVD logger are appended to result['warnings'] by the handler."""
-    result: dict = {}
-    root_logger = logging.getLogger()
-    original_level = root_logger.level
-    original_handlers = root_logger.handlers[:]
-    avd_logger = logging.getLogger(AVD_LOGGER_NAME)
-
-    try:
-        with patch(f"{MODULE_PATH}.display") as mock_display:
-            mock_display.verbosity = 0
-            setup_module_logging(result)
-            root_logger.setLevel(logging.WARNING)
-            avd_logger.warning("something went wrong during deployment")
-
-        assert "warnings" in result
-        assert any("something went wrong during deployment" in w for w in result["warnings"])
-    finally:
-        root_logger.setLevel(original_level)
-        root_logger.handlers = original_handlers
-
-
-def test_setup_module_logging_adds_handler_to_root_logger() -> None:
-    """A PythonToAnsibleHandler is added to the root logger by setup_module_logging."""
-    root_logger = logging.getLogger()
-    original_handlers = root_logger.handlers[:]
-
-    try:
-        with patch(f"{MODULE_PATH}.PythonToAnsibleHandler") as mock_handler_cls:
-            mock_handler = MagicMock()
-            mock_handler_cls.return_value = mock_handler
-            setup_module_logging({})
-
-        assert mock_handler in root_logger.handlers
-    finally:
-        root_logger.handlers = original_handlers
-
-
-@pytest.mark.parametrize(
-    ("verbosity", "expected_level"),
-    [
-        pytest.param(3, logging.DEBUG, id="verbosity_3_sets_debug"),
-        pytest.param(4, logging.DEBUG, id="verbosity_4_sets_debug"),
-        pytest.param(1, logging.INFO, id="verbosity_1_sets_info"),
-        pytest.param(2, logging.INFO, id="verbosity_2_sets_info"),
-    ],
-)
-def test_setup_module_logging_sets_level_based_on_verbosity(
-    verbosity: int,
-    expected_level: int,
-) -> None:
-    """Root logger level is DEBUG when verbosity>=3, INFO when verbosity>=1."""
-    root_logger = logging.getLogger()
-    original_level = root_logger.level
-    original_handlers = root_logger.handlers[:]
-
-    try:
-        with (
-            patch(f"{MODULE_PATH}.display") as mock_display,
-            patch(f"{MODULE_PATH}.PythonToAnsibleHandler"),
-        ):
-            mock_display.verbosity = verbosity
-            setup_module_logging({})
-
-        assert root_logger.level == expected_level
-    finally:
-        root_logger.setLevel(original_level)
-        root_logger.handlers = original_handlers
