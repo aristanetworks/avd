@@ -14,7 +14,7 @@ monitor_connectivity:
   interval: 5
   interface_sets:
     - name: SET_INTERNET
-      interfaces: Ethernet1-2
+      interfaces: [Ethernet1, Ethernet2]
   local_interfaces: Loopback0
 
 expected_error_message: >-

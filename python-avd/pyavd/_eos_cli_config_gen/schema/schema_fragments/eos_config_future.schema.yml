@@ -11,21 +11,45 @@ keys:
     description: |-
       Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version.
     keys:
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.2.0.
+          Always render a '!' before the '(no) ip routing' command section.
+          Without this the '!' is missing when only configuring routing for VRFs.
       new_ip_radius_cli_order:
         type: bool
         default: false
         description: |-
+          Available from AVD 6.1.0.
           When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
           When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source interface name.
       new_ip_tacacs_cli_order:
         type: bool
         default: false
         description: |-
+          Available from AVD 6.1.0.
           When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name.
-      always_render_ip_routing_separator:
+      only_render_mpls_rsvp_with_settings:
         type: bool
         default: false
         description: |-
-          Always render a '!' before the '(no) ip routing' command section.
-          Without this the '!' is missing when only configuring routing for VRFs.
+          Available from AVD 6.2.0.
+          When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is defined.
+          When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no sub-settings are set.
+      render_monitor_layer1_without_enabled:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.3.0.
+          When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.
+          When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`.
+      render_spanning_tree_portfast_edge:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.3.0.
+          When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`, matching the running-config preserved by EOS 4.33.2F and later.
+          When `false` (default), renders the legacy `spanning-tree portfast` without the `edge` keyword.

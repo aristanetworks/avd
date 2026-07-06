@@ -23,11 +23,11 @@ class InbandManagementMixin(Protocol):
 
     @cached_property
     def configure_inband_mgmt(self: SharedUtilsProtocol) -> bool:
-        return bool(self.uplink_type == "port-channel" and self.inband_mgmt_ip)
+        return bool(self.uplink_type in ["port-channel", "l2-ethernet"] and self.inband_mgmt_ip)
 
     @cached_property
     def configure_inband_mgmt_ipv6(self: SharedUtilsProtocol) -> bool:
-        return bool(self.uplink_type == "port-channel" and self.inband_mgmt_ipv6_address)
+        return bool(self.uplink_type in ["port-channel", "l2-ethernet"] and self.inband_mgmt_ipv6_address)
 
     @cached_property
     def configure_parent_for_inband_mgmt(self: SharedUtilsProtocol) -> bool:
@@ -56,12 +56,17 @@ class InbandManagementMixin(Protocol):
         """
         Inband management gateway.
 
+        If inband_mgmt_ip is set to dhcp and
+        avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp is set to true then do not configure inband mgmt gateway and return None.
+
         If inband_mgmt_ip is set but not via inband_mgmt_subnet we return the value of inband_mgmt_gateway.
 
         Otherwise if inband_mgmt_subnet is set we return the gateway derived from inband_mgmt_subnet (first IP)
 
         Otherwise return None
         """
+        if self.inband_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+            return None
         if not self.configure_parent_for_inband_mgmt:
             return self.node_config.inband_mgmt_gateway
 

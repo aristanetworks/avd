@@ -6,8 +6,15 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+- [Routing](#routing)
+  - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+  - [Router BGP](#router-bgp)
 - [Multicast](#multicast)
   - [Router Multicast](#router-multicast)
+- [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
 
@@ -23,9 +30,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -56,6 +63,65 @@ daemon TerminAttr
    no shutdown
 ```
 
+## Routing
+
+### IP Routing
+
+#### IP Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
+
+#### IP Routing Device Configuration
+
+```eos
+!
+ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| FUTURE_IPV6_INTERFACES | false |
+
+### Router BGP
+
+ASN Notation: asplain
+
+#### Router BGP Summary
+
+| BGP AS | Router ID |
+| ------ | --------- |
+| 65005 | 192.0.2.5 |
+
+| BGP Tuning |
+| ---------- |
+| bgp additional-paths send backup |
+
+#### Router BGP EVPN Address Family
+
+- Next-hop-unchanged is explicitly configured (default behaviour)
+- Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
+
+#### Router BGP Device Configuration
+
+```eos
+!
+router bgp 65005
+   router-id 192.0.2.5
+   bgp additional-paths send backup
+   !
+   address-family evpn
+      bgp next-hop-unchanged
+      next-hop mpls resolution ribs tunnel-rib host5-rib
+```
+
 ## Multicast
 
 ### Router Multicast
@@ -72,4 +138,19 @@ router multicast
    !
    ipv6
       software-forwarding kernel
+```
+
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance FUTURE_IPV6_INTERFACES
 ```

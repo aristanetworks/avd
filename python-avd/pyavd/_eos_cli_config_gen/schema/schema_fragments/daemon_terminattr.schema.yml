@@ -220,3 +220,16 @@ keys:
           The recommended timeout is five minutes.
         convert_types:
           - str
+      cvtargetconfigs:
+        type: list
+        min_length: 1
+        description: |
+          Set the target configuration path(s) for dynamic device configuration from CloudVision.
+          Used for MSS (Multi-Domain Segmentation Service) integrations.
+        items:
+          type: str
+      flowdns:
+        type: bool
+        description: |
+          Enable DNS resolution for flow records (TerminAttr default is true).
+          Set to false to disable DNS lookups on sFlow/IPFIX flow records.

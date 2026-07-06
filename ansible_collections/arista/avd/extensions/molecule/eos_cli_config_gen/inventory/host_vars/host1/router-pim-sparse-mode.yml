@@ -4,6 +4,7 @@
 router_pim_sparse_mode:
   ipv4:
     bfd: true
+    message_hello_address_secondary_ipv6: true
     make_before_break: false
     register_local_interface: Ethernet1
     rp_addresses:
@@ -19,6 +20,7 @@ router_pim_sparse_mode:
           - RP_ACL
           - RP_ACL2
         priority: 20
+        hashmask: 30
       - address: 10.238.1.161
         groups:
           - 239.12.12.17/32

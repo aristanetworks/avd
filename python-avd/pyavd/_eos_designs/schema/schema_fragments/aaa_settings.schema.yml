@@ -50,6 +50,10 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "(?!radius$|tacacs\\+$|ldap$).+"
+                  description: |-
+                    List of Tacacs group names.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -124,6 +128,10 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "(?!radius$|tacacs\\+$|ldap$).+"
+                  description: |-
+                    List of Radius group names.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -158,7 +166,10 @@ keys:
                     - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are ignored.
+                  description: |-
+                    When TLS is configured, `key` and `cleartext_key` are ignored.
+                    For proper functionality to render TLS settings on the
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls: true`.
                   $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls"
           vrfs:
             type: list

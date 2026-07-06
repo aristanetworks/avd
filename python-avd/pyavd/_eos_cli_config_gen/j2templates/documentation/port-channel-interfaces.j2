@@ -274,7 +274,7 @@
 {# IPv6 #}
 {%     set port_channel_interfaces_ipv6 = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
-{%         if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%         if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) or port_channel_interface.ipv6_nd is arista.avd.defined or port_channel_interface.ipv6_access_group_in is arista.avd.defined or port_channel_interface.ipv6_access_group_out is arista.avd.defined or port_channel_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) or port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
 {%             do port_channel_interfaces_ipv6.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -282,8 +282,8 @@
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces_ipv6 | arista.avd.natural_sort(sort_key='name') %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
@@ -337,7 +337,8 @@
 {%             endif %}
 {%             set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%             set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_nd_other_config_flag }} | {{ nd_cache }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+{%             set ra_dns_servers = port_channel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_nd_other_config_flag }} | {{ nd_cache }} | {{ ra_dns_servers }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%         endfor %}
 {%     endif %}
 {# VRRP #}

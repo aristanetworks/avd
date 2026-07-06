@@ -11,6 +11,9 @@
   - [Management API gNMI](#management-api-gnmi)
   - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Device Configuration](#cvx-device-configuration)
 - [Authentication](#authentication)
@@ -80,6 +83,7 @@
   - [IP Routing](#ip-routing)
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -122,6 +126,8 @@
 - [IP DHCP Snooping](#ip-dhcp-snooping)
   - [IP DHCP Snooping Device Configuration](#ip-dhcp-snooping-device-configuration)
 - [IP NAT](#ip-nat)
+  - [NAT Pools](#nat-pools)
+  - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
@@ -171,9 +177,9 @@ EOF
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -301,7 +307,7 @@ management cvx
 
 | HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
 | ---- | ----- | ----------- | ---------------- | --------------- |
-| True | False | - | False | 1440 minutes |
+| True | False | False | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
@@ -310,8 +316,26 @@ management cvx
 management api http-commands
    no protocol https
    protocol http
+   no protocol unix-socket
    no default-services
    no shutdown
+```
+
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      search username cn=ldap-admin,dc=example,dc=com password <removed>
 ```
 
 ## CVX
@@ -326,6 +350,9 @@ cvx
    shutdown
    !
    service mcs
+      shutdown
+   !
+   service openstack
       shutdown
    !
    service vxlan
@@ -495,9 +522,9 @@ aaa accounting commands 0 default none
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
-| cipher-v1.0-v1.3 | - | - | - | v1.0 to v1.2: SHA256:SHA384<br>v1.3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256 | - | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| cipher-v1.0-v1.3 | - | - | - | - | v1.0 to v1.2: SHA256:SHA384<br>v1.3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256 | - | - |
 
 ### Management Security Device Configuration
 
@@ -570,7 +597,7 @@ dhcp relay
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
+   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false -flowdns
    no shutdown
 ```
 
@@ -875,13 +902,14 @@ no lldp run
 
 | Port-id range | Rate-limit default | System-priority |
 | ------------- | ------------------ | --------------- |
-| - | - | 0 |
+| - | True | 0 |
 
 ### LACP Device Configuration
 
 ```eos
 !
 lacp system-priority 0
+lacp rate-limit default
 ```
 
 ## Spanning Tree
@@ -984,9 +1012,11 @@ interface Dps1
 | ------- | ----- |
 | Shutdown | True |
 | UDP port | 4789 |
+| VXLAN flood-lists learning from data-plane | Disabled |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
 | Qos map dscp to traffic-class decapsulation | Disabled |
+| Multicast headend-replication | Disabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -1085,6 +1115,38 @@ VXLAN gateway: Enabled
 !
 router adaptive-virtual-topology
    topology role edge gateway vxlan
+```
+
+### Router OSPF
+
+#### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 701 | 10.255.0.2 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 701 | sr-peers | True |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 701 | 192.0.2.0/24 | 300 |
+
+#### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 701
+   router-id 10.255.0.2
+   segment-routing mpls
+      shutdown
+      prefix-segment 192.0.2.0/24 index 300
+      adjacency-segment allocation sr-peers
 ```
 
 ### Router ISIS
@@ -1460,7 +1522,7 @@ mpls rsvp
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
+| True | - | 100 | - | disabled | disabled | 200000 | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1475,6 +1537,7 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+queue-monitor length cpu threshold 200000
 !
 queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !
@@ -1592,6 +1655,11 @@ router pim sparse-mode
 | ---- | ----- | --------- |
 | Service Type | - | - |
 | Framed MTU | 1500 | - |
+| LLDP System-name | - | No |
+| LLDP System-description | - | No |
+| DHCP Hostname | - | No |
+| DHCP Parameter Request List | - | No |
+| DHCP Vendor Class ID | - | No |
 
 #### Dot1x Configuration
 
@@ -1601,6 +1669,11 @@ dot1x
    aaa unresponsive action traffic allow
    radius av-pair service-type
    radius av-pair framed-mtu 1500
+   radius av-pair lldp system-name
+   radius av-pair lldp system-description
+   radius av-pair dhcp hostname
+   radius av-pair dhcp parameter-request-list
+   radius av-pair dhcp vendor-class-id
 !
 dot1x system-auth-control
 dot1x protocol lldp bypass
@@ -1618,6 +1691,12 @@ dot1x dynamic-authorization
 | -------- | ----- |
 | MMU Headroom-pool Limit | 557 bytes |
 
+#### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Default Multicast Replication | fabric-egress |
+
 #### Platform FAP Summary
 
 | Settings | Value |
@@ -1630,6 +1709,8 @@ dot1x dynamic-authorization
 ```eos
 !
 platform fap buffering egress profile balanced
+!
+platform sand multicast replication default fabric-egress
 !
 platform trident mmu headroom-pool limit 557
 ```
@@ -1741,11 +1822,25 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 
 ## IP NAT
 
+### NAT Pools
+
+| Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
+| --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
+| host2-pool | ip-port | 32 | - | - | - |
+
+### NAT Synchronization
+
+| Setting | Value |
+| -------- | ----- |
+| State | Enabled |
+| Port Range Split | Enabled |
+
 ### IP NAT Device Configuration
 
 ```eos
 !
 !
+ip nat pool host2-pool prefix-length 32
 ip nat synchronization
 ```
 
@@ -1755,28 +1850,64 @@ ip nat synchronization
 
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
-| arp-inspection | - | True | - |
+| acl | False | - | - |
+| arp-inspection | False | False | - |
 | bpduguard | - | True | - |
-| hitless-reload-down | - | True | - |
+| dot1x | False | - | - |
+| dot1x-coa | False | - | - |
+| dot1x-phone-classification | False | - | - |
+| dot1x-session-replace | False | - | - |
+| error-correction-encoding | False | - | - |
+| hardware-speed-group | False | - | - |
+| hitless-reload-down | - | False | - |
+| interface-speed | False | - | - |
+| internal-error | False | - | - |
 | lacp-rate-limit | - | True | - |
+| link-change | False | - | - |
 | link-flap | - | True | - |
-| no-internal-vlan | - | True | - |
+| no-internal-vlan | - | False | - |
+| port-breakout | False | - | - |
 | portchannelguard | - | True | - |
 | portsec | - | True | - |
-| tapagg | - | True | - |
+| storm-control | False | - | - |
+| switchcard-unreachable | False | - | - |
+| tapagg | False | False | - |
+| transceiver-adapter | False | - | - |
 | uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | False | - | - |
+| xcvr-overheat | False | - | - |
+| xcvr-power-unsupported | False | - | - |
 
 ```eos
 !
-errdisable recovery cause arp-inspection
+no errdisable detect cause acl
+no errdisable detect cause arp-inspection
+no errdisable detect cause dot1x
+no errdisable detect cause dot1x-coa
+no errdisable detect cause dot1x-phone-classification
+no errdisable detect cause dot1x-session-replace
+no errdisable detect cause error-correction-encoding
+no errdisable detect cause hardware-speed-group
+no errdisable detect cause interface-speed
+no errdisable detect cause internal-error
+no errdisable detect cause link-change
+no errdisable detect cause port-breakout
+no errdisable detect cause storm-control
+no errdisable detect cause switchcard-unreachable
+no errdisable detect cause tapagg
+no errdisable detect cause transceiver-adapter
+no errdisable detect cause xcvr-misconfigured
+no errdisable detect cause xcvr-overheat
+no errdisable detect cause xcvr-power-unsupported
+no errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard
-errdisable recovery cause hitless-reload-down
+no errdisable recovery cause hitless-reload-down
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
-errdisable recovery cause no-internal-vlan
+no errdisable recovery cause no-internal-vlan
 errdisable recovery cause portchannelguard
 errdisable recovery cause portsec
-errdisable recovery cause tapagg
+no errdisable recovery cause tapagg
 errdisable recovery cause uplink-failure-detection
 ```
 
@@ -1786,14 +1917,11 @@ errdisable recovery cause uplink-failure-detection
 
 License is not installed.
 
-FIPS restrictions enabled.
-
 ### MACsec Device Configuration
 
 ```eos
 !
 mac security
-   fips restrictions
 ```
 
 ### Traffic Policies information

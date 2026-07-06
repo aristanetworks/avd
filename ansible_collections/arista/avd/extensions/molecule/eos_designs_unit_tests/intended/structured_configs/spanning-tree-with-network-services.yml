@@ -1,0 +1,49 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: spanning-tree-with-network-services
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: rapid-pvst
+  rapid_pvst_instances:
+  - id: 11,21
+    priority: 16384
+  - id: 1-10,12-20,22-4093
+    priority: 8192
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 10
+  name: DEFAULTPRIORITY
+  metadata:
+    tenants:
+    - test
+- id: 11
+  name: PRIORITY16384
+  metadata:
+    tenants:
+    - test
+- id: 20
+  name: DEFAULTPRIORITY
+  metadata:
+    tenants:
+    - test
+- id: 21
+  name: PRIORITY16384
+  metadata:
+    tenants:
+    - test
+vrfs:
+- name: MGMT
+  ip_routing: false

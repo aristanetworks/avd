@@ -22,7 +22,7 @@ AVD Documentation:
 The AVD collection has the following requirements:
 
 - Python 3.10 or above
-- Ansible Core 2.16.0 to 2.20.x
+- Ansible Core 2.16.0 to 2.21.x
 - the Python package `pyavd[ansible-collection]` matching the collection version
 
 ## Installation
@@ -71,7 +71,7 @@ pip3 install "pyavd[ansible-collection]==$ARISTA_AVD_VERSION"
 
 Please see the documentation for examples in data center, campus, and wide area network environments.
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started](https://avd.arista.com/stable/docs/user-manual/intro-to-ansible-and-avd.html)
 - [Examples](https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html)
 
 ### Testing

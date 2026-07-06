@@ -243,6 +243,9 @@ class EntityType(aristaproto.Enum):
     entity type for static config studio.
     """
 
+    DEPENDENCIES = 8
+    """ENTITY_TYPE_DEPENDENCIES indicates the Dependencies entity type."""
+
 
 class TemplateType(aristaproto.Enum):
     """
@@ -578,10 +581,17 @@ class Entities(aristaproto.Message):
 
     values: Dict[str, "Entity"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """
-    values is a map from entity type name to entity
-    The possible keys to this map are ENTITY_TYPE_STUDIO,
-    ENTITY_TYPE_INPUTS, ENTITY_TYPE_ASSIGNED_TAGS,
-    ENTITY_TYPE_BUILD_HOOK and ENTITY_TYPE_AUTOFILL_ACTION.
+    values is a map from EntityType enum name to Entity.
+    Keys are the EntityType enum names defined below, e.g.:
+
+    ```
+    \"ENTITY_TYPE_INPUTS\" -> Entity{
+        entity_type:      ENTITY_TYPE_INPUTS,
+        last_modified_at: 2026-05-07T12:34:56Z,
+        last_modified_by: \"admin\",
+        removed:          false,
+    }
+    ```
     """
 
 
@@ -930,10 +940,13 @@ class FloatInputFieldProps(aristaproto.Message):
     `{ fieldId: field_id }`.
 
     E.g,
+
+    ```
     [
-      `{ fieldId: floatField1ID }`,
-      `{ fieldId: floatField2ID }`
+      { fieldId: floatField1ID },
+      { fieldId: floatField2ID }
     ]
+    ```
     Here, the possible values for the floats identified by
     `floatField1ID` and `floatField2ID` are used as the
     possible values for this float.

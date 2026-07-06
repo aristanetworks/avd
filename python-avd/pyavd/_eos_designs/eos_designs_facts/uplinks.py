@@ -125,30 +125,36 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
-        if self.shared_utils.uplink_type == "port-channel":
-            if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel and self.shared_utils.underlay_router is True:
-                msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
-                raise AristaAvdInvalidInputsError(msg)
-            get_uplink = self._get_port_channel_uplink
-        elif self.shared_utils.uplink_type == "p2p-vrfs":
-            if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
-                msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'."
-                raise AristaAvdError(msg)
-            get_uplink = self._get_p2p_vrfs_uplink
-        elif self.shared_utils.uplink_type == "lan":
-            if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
-                msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'."
-                raise AristaAvdError(msg)
-            if len(self.shared_utils.uplink_interfaces) > 1:
-                msg = f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}."
-                raise AristaAvdError(msg)
-                # TODO: Adjust error message when we add lan-port-channel support.
-                # uplink_type: lan' only supports a single uplink interface.
-                # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
-            get_uplink = self._get_l2_uplink
-        else:
-            # Uplink type is 'p2p'.
-            get_uplink = self._get_p2p_uplink
+        match self.shared_utils.uplink_type:
+            case "port-channel":
+                if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel and self.shared_utils.underlay_router is True:
+                    msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
+                    raise AristaAvdInvalidInputsError(msg)
+                get_uplink = self._get_port_channel_uplink
+            case "l2-ethernet":
+                if self.shared_utils.underlay_router is True:
+                    msg = "'underlay_router: true' is not supported with 'uplink_type: l2-ethernet'."
+                    raise AristaAvdInvalidInputsError(msg)
+                get_uplink = self._get_l2_uplink
+            case "p2p-vrfs":
+                if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
+                    msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'."
+                    raise AristaAvdError(msg)
+                get_uplink = self._get_p2p_vrfs_uplink
+            case "lan":
+                if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
+                    msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'."
+                    raise AristaAvdError(msg)
+                if len(self.shared_utils.uplink_interfaces) > 1:
+                    msg = f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}."
+                    raise AristaAvdError(msg)
+                    # TODO: Adjust error message when we add lan-port-channel support.
+                    # uplink_type: lan' only supports a single uplink interface.
+                    # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
+                get_uplink = self._get_l2_uplink
+            case _:
+                # Uplink type is 'p2p'.
+                get_uplink = self._get_p2p_uplink
 
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
@@ -273,7 +279,11 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplink_switch: str,
         uplink_switch_interface: str,
     ) -> EosDesignsFactsProtocol.UplinksItem:
-        """Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and TODO: lan-port-channel."""
+        """
+        Return a single uplink dictionary for an L2 uplink.
+
+        Used for uplink_type port-channel, l2-ethernet, lan and TODO: lan-port-channel.
+        """
         uplink_switch_facts = self.get_peer_facts_generator(uplink_switch)
         uplink = EosDesignsFactsProtocol.UplinksItem(
             interface=uplink_interface,
@@ -295,7 +305,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             elif self.shared_utils.ptp_enabled:
                 uplink.ptp.enable = True
 
-        # Remove vlans if upstream switch does not have them #}
         if self.inputs.enable_trunk_groups:
             uplink.trunk_groups.append_unique("UPLINK")
             if self.shared_utils.mlag is True and self.shared_utils.group:
@@ -303,12 +312,14 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             else:
                 uplink.peer_trunk_groups.append_unique(self.shared_utils.hostname)
 
-        uplink_vlans = set(self._vlans)
-        uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
-
-        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
-            uplink_vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
+        if self.inputs.avd_design_future.consistent_uplink_vlans or self.shared_utils.uplink_type == "l2-ethernet":
+            uplink_vlans = self._available_vlans
+        else:
+            uplink_vlans = self._candidate_vlans
+            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._candidate_vlans)
+            if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
+                # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
+                uplink_vlans = uplink_vlans.union((self.shared_utils.node_config.inband_mgmt_vlan,))
 
         uplink.vlans = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
 

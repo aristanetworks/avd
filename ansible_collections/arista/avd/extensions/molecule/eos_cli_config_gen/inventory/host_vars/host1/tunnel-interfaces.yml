@@ -15,6 +15,11 @@ tunnel_interfaces:
         rx_accept:
           default_route: true
           route_preference: true
+        dns_servers:
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
       managed_config_flag: true
       prefixes:
         - ipv6_prefix: 2345:ABCD:3FE0::1/96
@@ -114,4 +119,20 @@ tunnel_interfaces:
           preferred_lifetime: 125
           no_autoconfig_flag: true
     source: 20.20.20.20
+    destination: 2.2.2.2
+  # Validates that ipv6_nd / tcp_mss_ceiling.ipv6 trigger IPv6 table inclusion without an IPv6 address.
+  - name: Tunnel6
+    description: TEST-IPV6-ND-WITHOUT-ADDR
+    ip_address: 10.99.99.1/30
+    ipv6_nd:
+      cache:
+        dynamic_capacity: 100
+      ra:
+        disabled: true
+      managed_config_flag: true
+      other_config_flag: true
+    tcp_mss_ceiling:
+      ipv6: 1400
+    tunnel_mode: gre
+    source: 1.1.1.1
     destination: 2.2.2.2
