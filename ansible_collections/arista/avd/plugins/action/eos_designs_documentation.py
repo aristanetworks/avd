@@ -53,7 +53,6 @@ ARGUMENT_SPEC = {
 class ActionModule(AVDActionPlugin):
     """Action Module for eos_designs_documentation."""
 
-    _logging_config = AVDLoggingConfig()
     tmp_dir: str
 
     def main(self, task_vars: dict[str, Any]) -> None:
