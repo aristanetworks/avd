@@ -132,6 +132,7 @@ class JinjaTemplateFileReporter(FileReporter):
             if translated_from_line is not None and translated_to_line is not None:
                 translated_arcs.add((translated_from_line, translated_to_line))
 
+        translated_arcs.update(template.arc_aliases[arc] for arc in tuple(translated_arcs) if arc in template.arc_aliases)
         possible_arcs = template.possible_arcs
         source_filename = Path(self.filename)
         translated_arcs.update(
