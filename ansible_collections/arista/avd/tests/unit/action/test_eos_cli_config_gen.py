@@ -68,6 +68,18 @@ MOCK_TMP_DIR = "/avd/mocked/tmp"
             id="doc_only",
         ),
         pytest.param(
+            False,
+            False,
+            False,
+            [
+                "Validating task arguments...",
+                "Validating task arguments [done].",
+                "Loading structured config...",
+                "Loading structured config [done].",
+            ],
+            id="no_generation",
+        ),
+        pytest.param(
             True,
             True,
             True,
@@ -119,17 +131,20 @@ def test_run_emits_expected_debug_logs_and_routes_to_display(
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch.object(module, "validate_args", return_value=validated_args),
         patch.object(module, "load_structured_config", return_value={}),
-        patch.object(module, "write_file", return_value=False),
+        patch.object(module, "write_file", return_value=False) as mock_write_file,
         patch.object(module, "render_template_with_ansible_templar", return_value="! custom\n"),
         patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
         patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
     ):
-        module.run(task_vars=task_vars)
+        result = module.run(task_vars=task_vars)
 
     display_messages = [call.args[0] for call in shared_display.vvv.call_args_list]
     assert display_messages == [f"<{hostname}> {msg}" for msg in expected_messages]
+    if not generate_device_config and not generate_device_doc:
+        assert result["changed"] is False
+        mock_write_file.assert_not_called()
 
 
 def test_load_structured_config_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:

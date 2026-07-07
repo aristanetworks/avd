@@ -125,6 +125,7 @@ class ActionModule(AVDActionPlugin):
     def render_template_with_ansible_templar(self, template_vars: dict | ChainMap, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
         if not hasattr(self, "ansible_templar"):
+            # Get updated templar instance to be passed along to our simplified "templater"
             self.ansible_templar = get_templar(self, template_vars)  # pyright: ignore[reportArgumentType]
 
         return template(templatefile, template_vars, self.ansible_templar)
@@ -133,14 +134,12 @@ class ActionModule(AVDActionPlugin):
         """
         Write the file only if the content has changed.
 
-        Parameters
-        ----------
-            content: The content to write
-            filename: Target filename
+        Args:
+            content: The content to write.
+            filename: Target filename.
 
         Returns:
-        -------
-            bool: Indicate if the content of filename has changed.
+            Indicate if the content of filename has changed.
         """
         path = Path(filename)
         if path.exists():
