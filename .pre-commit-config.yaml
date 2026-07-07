@@ -11,7 +11,7 @@ ci:
     - check-added-large-files
     - check-merge-conflict
     - insert-license
-    - ruff
+    - ruff-check
     - ruff-format
     - pyright
     - pylint
@@ -172,7 +172,6 @@ repos:
           - 'referencing>=0.35.0'
           - 'ruff==0.16.8'
           - 'setuptools>=82.0.1'
-          - 'pytest-codspeed==3.1.0'
 
   - repo: https://github.com/pycqa/pylint
     rev: "233ae8862a1a94c1797ec664813e1aeef3142622"  # frozen: v4.1.3
