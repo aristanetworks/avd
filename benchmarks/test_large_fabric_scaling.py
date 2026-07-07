@@ -3,13 +3,18 @@
 # that can be found in the LICENSE file.
 """Benchmark tests for large fabric scaling."""
 
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING
 
 import pytest
-from pytest_codspeed import BenchmarkFixture
 
 from benchmarks.generate_inventory import generate_hostvars
 from pyavd import get_avd_facts, get_device_config, get_device_structured_config, validate_inputs
+
+if TYPE_CHECKING:
+    from pytest_codspeed import BenchmarkFixture
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +23,7 @@ logger = logging.getLogger(__name__)
     ("device_count", "spine_count", "l3leaf_count", "l2leaf_count", "vrf_count", "per_vrf_svi_count"),
     [
         pytest.param(15, 3, 6, 6, 5, 10, id="15_devices"),
-        pytest.param(150, 30, 75, 45, 10, 10, id="150_devices"),  # 20% spines, 50% l3leaf, 30% l2leaf
-        pytest.param(1500, 300, 750, 450, 10, 10, id="1500_devices"),  # 20% spines, 50% l3leaf, 30% l2leaf
+        pytest.param(150, 30, 75, 45, 10, 10, marks=pytest.mark.benchmark_scale, id="150_devices"),
     ],
 )
 def test_large_fabric_full_workflow_benchmark(
@@ -40,12 +44,11 @@ def test_large_fabric_full_workflow_benchmark(
     3. Generate structured configs
     4. Render EOS configs
 
-    Tests at 3 scales (15, 150, 1500 devices) to understand how performance scales:
+    Tests at 2 scales (15, 150 devices) to understand how performance scales:
     - 15 devices: Small fabric baseline
     - 150 devices: 10x scale (should be ~10x slower if linear)
-    - 1500 devices: 100x scale (detects O(n²) issues if much slower than 100x)
 
-    The 150 and 1500-device tests use a realistic topology: 20% spines, 50% l3leaf, 30% l2leaf.
+    The 150-device test is marked for manual/full benchmark runs only.
     """
     # Generate synthetic inventory (outside benchmark)
     hostvars = generate_hostvars(

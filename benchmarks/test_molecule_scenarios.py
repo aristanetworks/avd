@@ -4,8 +4,8 @@
 """
 Benchmark tests for complete molecule scenarios.
 
-These benchmarks test the full AVD workflow (validate → facts → structured_config → eos_config)
-across various real-world molecule scenarios.
+These benchmarks test per-host config generation and rendering with cached fabric facts
+across representative real-world molecule hosts.
 """
 
 from __future__ import annotations
@@ -49,21 +49,16 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
 
 
 @pytest.mark.molecule_scenarios("eos_designs_unit_tests", hosts=REPRESENTATIVE_BENCHMARK_HOSTS)
-def test_molecule_scenario_full_workflow_benchmark(
+def test_molecule_host_config_render_benchmark(
     benchmark: BenchmarkFixture,
-    # molecule_scenario: "MoleculeScenario",
     molecule_host: MoleculeHost,
 ) -> None:
     """
-    Benchmark complete AVD workflow for real molecule scenarios.
+    Benchmark per-host AVD config generation for real molecule scenario hosts.
 
-    Tests the full end-to-end workflow:
-    1. Validate inputs for all devices
-    2. Generate AVD facts
-    3. Generate structured configs for all devices
-    4. Render EOS configs for all devices
-
-    This simulates the real-world usage of AVD across various deployment patterns.
+    Fabric facts are prepared by the molecule scenario fixture outside the timed
+    path, so this benchmark tracks per-host validation, structured config
+    generation, and EOS config rendering.
     """
     logging.disable(logging.CRITICAL)
     init_store()
@@ -84,7 +79,6 @@ def test_molecule_scenario_full_workflow_benchmark(
                 molecule_host.name, design, avd_facts, hostvars=hostvars, digital_twin=molecule_host.scenario.digital_twin
             )
 
-            # Step 4: Render EOS configs for all devices
             get_device_config(structured_config)
 
     benchmark.pedantic(b, iterations=5, warmup_rounds=1)  # type: ignore[reportAttributeAccessIssue]
