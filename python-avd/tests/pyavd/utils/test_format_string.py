@@ -84,6 +84,42 @@ FORMAT_STRING_TESTS = [
     pytest.param(
         "{?< f o o > b a r !u}", ("Ethernet1",), {}, " f o o ETHERNET1 b a r ", id="positional_optional_field_with_prefix_and_suffix_existing_arg_and_upper"
     ),
+    # named fields with lower
+    pytest.param("{interface!l}", (), {"interface": "Ethernet1"}, "ethernet1", id="field_with_existing_arg_and_lower"),
+    pytest.param("{interface?!l}", (), {}, "", id="optional_field_with_missing_arg_and_lower"),
+    pytest.param("{interface?!l}", (), {"interface": None}, "", id="optional_field_with_none_arg_and_lower"),
+    pytest.param("{interface?!l}", (), {"interface": "Ethernet1"}, "ethernet1", id="optional_field_with_existing_arg_and_lower"),
+    # positional fields with lower
+    pytest.param("{!l}", ("ETHERNET1",), {}, "ethernet1", id="positional_field_with_existing_arg_and_lower"),
+    pytest.param("{?!l}", (), {}, "", id="positional_optional_field_with_missing_arg_and_lower"),
+    pytest.param("{?!l}", (None,), {}, "", id="positional_optional_field_with_none_arg_and_lower"),
+    pytest.param("{?!l}", ("ETHERNET1",), {}, "ethernet1", id="positional_optional_field_with_existing_arg_and_lower"),
+    # named fields with title
+    pytest.param("{interface!t}", (), {"interface": "ETHERNET1"}, "Ethernet1", id="field_with_existing_arg_and_title"),
+    pytest.param("{interface?!t}", (), {}, "", id="optional_field_with_missing_arg_and_title"),
+    pytest.param("{interface?!t}", (), {"interface": None}, "", id="optional_field_with_none_arg_and_title"),
+    pytest.param("{interface?!t}", (), {"interface": "ETHERNET1"}, "Ethernet1", id="optional_field_with_existing_arg_and_title"),
+    # positional fields with title
+    pytest.param("{!t}", ("ETHERNET1",), {}, "Ethernet1", id="positional_field_with_existing_arg_and_title"),
+    pytest.param("{?!t}", (), {}, "", id="positional_optional_field_with_missing_arg_and_title"),
+    pytest.param("{?!t}", (None,), {}, "", id="positional_optional_field_with_none_arg_and_title"),
+    pytest.param("{?!t}", ("ETHERNET1",), {}, "Ethernet1", id="positional_optional_field_with_existing_arg_and_title"),
+    # named fields with short interface name (!c conversion)
+    pytest.param("{interface!c}", (), {"interface": "Ethernet2"}, "Et2", id="field_with_ethernet_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Port-channel20"}, "Po20", id="field_with_portchannel_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Port-channel20.200"}, "Po20.200", id="field_with_portchannel_subinterface_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Vlan100"}, "Vl100", id="field_with_vlan_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Loopback0"}, "Lo0", id="field_with_loopback_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Tunnel1"}, "Tu1", id="field_with_tunnel_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "GigabitEthernet1"}, "GigabitEthernet1", id="field_with_non_matching_interface_and_compact"),
+    pytest.param("{interface?!c}", (), {}, "", id="optional_field_with_missing_arg_and_compact"),
+    pytest.param("{interface?!c}", (), {"interface": None}, "", id="optional_field_with_none_arg_and_compact"),
+    pytest.param("{interface?!c}", (), {"interface": "Ethernet1"}, "Et1", id="optional_field_with_existing_arg_and_compact"),
+    # positional fields with short interface name (!c conversion)
+    pytest.param("{!c}", ("Ethernet1",), {}, "Et1", id="positional_field_with_ethernet_and_compact"),
+    pytest.param("{?!c}", (), {}, "", id="positional_optional_field_with_missing_arg_and_compact"),
+    pytest.param("{?!c}", (None,), {}, "", id="positional_optional_field_with_none_arg_and_compact"),
+    pytest.param("{?!c}", ("Ethernet1",), {}, "Et1", id="positional_optional_field_with_existing_arg_and_compact"),
 ]
 
 
