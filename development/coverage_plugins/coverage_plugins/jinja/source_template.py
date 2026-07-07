@@ -23,6 +23,7 @@ def source_template(filename: Path) -> SourceTemplate:
             reportable_lines=frozenset(),
             arc_endpoint_lines=frozenset(),
             possible_arcs=frozenset(),
+            arc_aliases=MappingProxyType({}),
             no_branch_lines=frozenset(),
             tag_ranges=MappingProxyType({}),
         )
@@ -42,10 +43,12 @@ def _source_template_cached(filename: Path, stamp: FileStamp) -> SourceTemplate:
     reportable_lines = _find_reportable_jinja_lines_cached(filename, stamp)
     structural_control_label_lines = _find_structural_control_label_lines_cached(filename, stamp)
     arc_endpoint_lines = _arc_endpoint_lines(reportable_lines, structural_control_label_lines)
+    possible_arcs = _find_possible_jinja_arcs_cached(filename, stamp, reportable_lines, arc_endpoint_lines)
     return SourceTemplate(
         reportable_lines=reportable_lines,
         arc_endpoint_lines=arc_endpoint_lines,
-        possible_arcs=_find_possible_jinja_arcs_cached(filename, stamp, reportable_lines, arc_endpoint_lines),
+        possible_arcs=possible_arcs,
+        arc_aliases=MappingProxyType(_find_jinja_arc_aliases_cached(filename, stamp, possible_arcs, reportable_lines)),
         no_branch_lines=_find_no_branch_jinja_lines_cached(filename, stamp),
         tag_ranges=MappingProxyType(source_tag_ranges(filename)),
     )
@@ -637,6 +640,97 @@ def _add_for_arcs(
     _add_arc(arcs, node.lineno, body_line, arc_endpoint_lines)
     if node.else_:
         _add_arc(arcs, node.lineno, _first_reportable_line_in_nodes(reportable_lines, node.else_), arc_endpoint_lines)
+
+
+@lru_cache(maxsize=4096)
+def _find_jinja_arc_aliases_cached(
+    source_filename: Path,
+    stamp: FileStamp,  # noqa: ARG001
+    possible_arcs: frozenset[tuple[int, int]],
+    reportable_lines: frozenset[int],
+) -> dict[tuple[int, int], tuple[int, int]]:
+    """
+    Return observed runtime arcs that should be normalized to source arcs.
+
+    No-else ``if`` blocks use the source ``endif`` line as the canonical false
+    branch target. When such an ``if`` is the last executed statement in a loop
+    iteration, Jinja can record the false path as a jump back to the enclosing
+    ``for`` line instead.
+    """
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+
+    try:
+        from jinja2 import Environment, TemplateSyntaxError, nodes  # noqa: PLC0415
+    except ImportError:
+        return {}
+
+    environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    try:
+        parsed_template = environment.parse(source)
+    except TemplateSyntaxError:
+        return {}
+
+    possible_arc_set = set(possible_arcs)
+    reportable_line_set = set(reportable_lines)
+    endif_lines_by_conditional_line = if_endif_lines(source)
+    aliases: dict[tuple[int, int], tuple[int, int]] = {}
+
+    def visit_statements(statements: list[Any], enclosing_for_lines: tuple[int, ...] = ()) -> None:
+        for statement in statements:
+            if isinstance(statement, nodes.For):
+                visit_statements(statement.body, (*enclosing_for_lines, statement.lineno))
+                visit_statements(statement.else_, enclosing_for_lines)
+                continue
+
+            if isinstance(statement, nodes.Macro):
+                visit_statements(statement.body)
+                continue
+
+            if isinstance(statement, nodes.If):
+                _add_no_else_if_loop_backedge_aliases(
+                    aliases,
+                    statement,
+                    enclosing_for_lines,
+                    endif_lines_by_conditional_line,
+                    possible_arc_set,
+                    reportable_line_set,
+                )
+                for conditional_node in (statement, *statement.elif_):
+                    visit_statements(conditional_node.body, enclosing_for_lines)
+
+                visit_statements(statement.else_, enclosing_for_lines)
+                continue
+
+            if isinstance(statement, (nodes.Block, nodes.CallBlock, nodes.FilterBlock, nodes.With)):
+                visit_statements(statement.body, enclosing_for_lines)
+
+    visit_statements(parsed_template.body)
+    return aliases
+
+
+def _add_no_else_if_loop_backedge_aliases(
+    aliases: dict[tuple[int, int], tuple[int, int]],
+    node: Any,
+    enclosing_for_lines: tuple[int, ...],
+    endif_lines_by_conditional_line: Mapping[int, int],
+    possible_arcs: set[tuple[int, int]],
+    reportable_lines: set[int],
+) -> None:
+    """Add aliases from loop backedges to canonical no-else ``if`` false arcs."""
+    if not enclosing_for_lines or node.else_:
+        return
+
+    final_conditional_node = node.elif_[-1] if node.elif_ else node
+    endif_line = endif_lines_by_conditional_line.get(final_conditional_node.lineno)
+    if endif_line is None or endif_line in reportable_lines or (final_conditional_node.lineno, endif_line) not in possible_arcs:
+        return
+
+    canonical_arc = (final_conditional_node.lineno, endif_line)
+    for for_line in enclosing_for_lines:
+        aliases[(final_conditional_node.lineno, for_line)] = canonical_arc
 
 
 def _first_reportable_line_in_nodes(reportable_lines: Collection[int], nodes, after_line: int = 0) -> int | None:  # noqa: ANN001
