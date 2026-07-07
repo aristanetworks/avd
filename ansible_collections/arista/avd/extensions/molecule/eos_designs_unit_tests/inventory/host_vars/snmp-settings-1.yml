@@ -4,7 +4,7 @@
 # This tests the SNMP hosts ignoring inband management VRF.
 
 ipv4_standard_acls:
-  - name: onur
+  - name: acl1
     entries:
       - sequence: 10
         action: permit
@@ -14,6 +14,11 @@ ipv4_standard_acls:
       - sequence: 10
         action: permit
         source: 10.0.0.12
+  - name: unused-acl
+    entries:
+      - sequence: 10
+        action: deny
+        source: 10.0.0.13
 
 type: l2leaf
 
@@ -86,7 +91,7 @@ snmp_settings:
   communities:
     - name: SNMP-COMMUNITY-1
       access: ro
-      ipv4_standard_acl: onur
+      ipv4_standard_acl: acl1
     - name: SNMP-COMMUNITY-2
       access: rw
       ipv4_standard_acl: SNMP-MGMT

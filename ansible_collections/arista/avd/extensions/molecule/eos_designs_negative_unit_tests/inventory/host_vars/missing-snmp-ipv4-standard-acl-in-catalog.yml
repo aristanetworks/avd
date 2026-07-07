@@ -1,8 +1,4 @@
 ---
-
-avd_design_future:
-  enforce_presence_of_acl_in_ipv4_standard_acl_catalog: true
-
 ipv4_standard_acls:
   - name: onur
     entries:
@@ -19,7 +15,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: missing-access-list-ipv4-in-catalog
+    - name: missing-snmp-ipv4-standard-acl-in-catalog
       id: 43
       mgmt_ip: 10.10.10.43/26
 
@@ -30,11 +26,11 @@ mgmt_gateway: 10.10.10.1
 snmp_settings:
   contact: example@example.com
   location: false
+
   communities:
     - name: SNMP-COMMUNITY-1
       access: ro
-      access_list_ipv4:
-        name: acl-not-present-in-catalog
+      ipv4_standard_acl: acl-not-present-in-catalog
 
 expected_error_message: >-
-  'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found.
+  'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found for host 'missing-snmp-ipv4-standard-acl-in-catalog'.

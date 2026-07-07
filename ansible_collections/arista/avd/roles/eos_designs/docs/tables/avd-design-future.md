@@ -12,7 +12,6 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
-    | [<samp>&nbsp;&nbsp;enforce_presence_of_acl_in_ipv4_standard_acl_catalog</samp>](## "avd_design_future.enforce_presence_of_acl_in_ipv4_standard_acl_catalog") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>When true, this key enforces `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
@@ -44,10 +43,6 @@
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
       # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
       consistent_uplink_vlans: <bool; default=False>
-
-      # Available from AVD 6.4.0.
-      # When true, this key enforces `snmp_settings.communities[].access_list_ipv4` to be present in `ipv4_standard_acls` catalog.
-      enforce_presence_of_acl_in_ipv4_standard_acl_catalog: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
