@@ -88,6 +88,13 @@ self = [
   "pyavd==6.4.0.dev1"
 ]
 
+[tool.uv]
+environments = [
+    "sys_platform == 'darwin'",
+    "sys_platform == 'linux'",
+    "sys_platform == 'win32'",
+]
+
 [tool.black]
 # Black has been replaced with Ruff.
 # This section should be removed later, but kept here to avoid IDE extensions from messing up the code.
