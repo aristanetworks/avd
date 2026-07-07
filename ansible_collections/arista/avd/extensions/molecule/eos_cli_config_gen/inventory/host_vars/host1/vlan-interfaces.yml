@@ -22,7 +22,11 @@ vlan_interfaces:
     vrf: Tenant_B
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
+    logging:
+      event:
+        link_status: false
     isis_enable: "EVPN_UNDERLAY"
+    isis_passive: true
     dhcp_server_ipv4: true
     dhcp_server_ipv6: true
     isis_bfd: true
@@ -80,6 +84,8 @@ vlan_interfaces:
       - 10.11.84.254/24
     arp_gratuitous_accept: true
     arp_monitor_mac_address: true
+    bfd:
+      echo: false
     isis_enable: "EVPN_UNDERLAY"
     # Test isis auth both sha rx
     isis_authentication:
@@ -243,6 +249,7 @@ vlan_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        border_router: true
         neighbor_filter: Test_Filter_Vlan
         hello:
           count: 3.5
@@ -575,6 +582,8 @@ vlan_interfaces:
         boundaries:
           - boundary: ACL_MULTICAST
       ipv6:
+        source_route_export:
+          enabled: true
         static: true
         boundaries:
           - boundary: ACL_V6_MULTICAST_WITH_OUT
@@ -592,6 +601,9 @@ vlan_interfaces:
     multicast:
       ipv4:
         static: true
+        source_route_export:
+          enabled: true
+          administrative_distance: 42
         boundaries:
           - boundary: ACL_MULTICAST
             out: true
@@ -599,6 +611,12 @@ vlan_interfaces:
         source_route_export:
           enabled: true
           administrative_distance: 20
+
+  - name: Vlan112
+    description: Multicast IPv4 static without boundaries
+    multicast:
+      ipv4:
+        static: true
 
   - name: Vlan111
     metadata:
@@ -718,6 +736,11 @@ vlan_interfaces:
       enabled: true
       distance: 19
 
+  - name: Vlan332
+    description: IPv6 auto-config only
+    shutdown: false
+    ipv6_address_auto_config: true
+
   - name: Vlan335
     description: v6 attached host exports
     ipv6_enable: true
@@ -790,3 +813,57 @@ vlan_interfaces:
     arp_gratuitous_accept: true
     ip_verify_unicast_source_reachable_via: rx
     ip_directed_broadcast: true
+
+  - name: Vlan361
+    description: TCP MSS ceiling - IPv4
+    tcp_mss_ceiling:
+      ipv4: 1310
+
+  - name: Vlan362
+    description: TCP MSS ceiling - IPv6
+    tcp_mss_ceiling:
+      ipv6: 1320
+
+  - name: Vlan363
+    description: TCP MSS ceiling - IPv4 and IPv6
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+
+  - name: Vlan364
+    description: TCP MSS ceiling - IPv4 ingress
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: ingress
+
+  - name: Vlan365
+    description: TCP MSS ceiling - IPv6 ingress
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: ingress
+
+  - name: Vlan366
+    description: TCP MSS ceiling - IPv4 and IPv6 ingress
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: ingress
+
+  - name: Vlan367
+    description: TCP MSS ceiling - IPv4 egress
+    tcp_mss_ceiling:
+      ipv4: 1310
+      direction: egress
+
+  - name: Vlan368
+    description: TCP MSS ceiling - IPv6 egress
+    tcp_mss_ceiling:
+      ipv6: 1320
+      direction: egress
+
+  - name: Vlan369
+    description: TCP MSS ceiling - IPv4 and IPv6 egress
+    tcp_mss_ceiling:
+      ipv4: 1330
+      ipv6: 1340
+      direction: egress

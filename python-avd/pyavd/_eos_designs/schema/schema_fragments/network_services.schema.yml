@@ -177,6 +177,33 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: |-
+                  Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+                        note: `peer_filter` or `remote_as` is required.
+                      convert_types:
+                        - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: |
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -1741,6 +1768,13 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: "eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges"
+                      description: |-
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For other VRFs this is configured under
+                        respective VRF.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings

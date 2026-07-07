@@ -1,5 +1,7 @@
 ---
 # eos - extended access-lists - improved data model, ip-access-lists.j2
+# TODO: Open issue. eos/ip-access-lists.j2 has a mandatory-error branch when entries exceed
+# ip_access_lists_max_entries, which cannot be covered by passing molecule fixtures.
 ip_access_lists_max_entries: 10000
 ip_access_lists:
   - name: ACL_SEQUENCE_AND_COUNTERS

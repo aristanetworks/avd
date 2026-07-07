@@ -55,6 +55,14 @@ dhcp_servers:
             ipv4_address: 10.0.0.2
     ipv6_subnets:
       - subnet: 2001:db8:abcd:1234:c000::/66
+        name: TEST-IPV6
+        ranges:
+          - start: 2001:db8:abcd:1234:c000::10
+            end: 2001:db8:abcd:1234:c000::20
+        lease_time:
+          days: 1
+          hours: 2
+          minutes: 3
         reservations:
           - mac_address: 0003.0003.003
             ipv6_address: 2001:db8:abcd:1234:c000::1
@@ -109,6 +117,14 @@ dhcp_servers:
     ipv6_subnets:
       - subnet: 2a00:2::/64
       - subnet: 2001:db8:abcd:1234:c000::/66
+        name: TEST-IPV6
+        ranges:
+          - start: 2001:db8:abcd:1234:c000::10
+            end: 2001:db8:abcd:1234:c000::20
+        lease_time:
+          days: 1
+          hours: 2
+          minutes: 3
         reservations:
           - mac_address: 0003.0003.003
             ipv6_address: 2001:db8:abcd:1234:c000::1
