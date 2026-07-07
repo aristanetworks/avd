@@ -119,6 +119,9 @@ vlan_interfaces:
           key_id: 2
     mpls:
       ip: true
+      ldp:
+        igp_sync: true
+        interface: false
 
   - name: Vlan86
     description: SVI Description
