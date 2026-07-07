@@ -9434,6 +9434,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -9552,6 +9554,18 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
             static_routes: StaticRoutes
             """
             Configure IPv4 static routes pointing to `peer_ip`.
@@ -9630,6 +9644,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -9717,6 +9733,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -10126,6 +10150,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -10241,6 +10267,18 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
             static_routes: StaticRoutes
             """
             Configure IPv4 static routes pointing to `peer_ip`.
@@ -10304,6 +10342,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -10388,6 +10428,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -14716,6 +14764,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -14834,6 +14884,18 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
             static_routes: StaticRoutes
             """
             Configure IPv4 static routes pointing to `peer_ip`.
@@ -14912,6 +14974,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -14999,6 +15063,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -15408,6 +15480,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
                 "qos_profile": {"type": str},
                 "wan_carrier": {"type": str},
@@ -15523,6 +15597,18 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
             static_routes: StaticRoutes
             """
             Configure IPv4 static routes pointing to `peer_ip`.
@@ -15586,6 +15672,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -15670,6 +15758,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -22777,17 +22873,17 @@ class EosDesigns(EosDesignsRootModel):
             }
             source: str | None
             """
-            This field supports substitution of the field "interface_ip" for SVIs.
-            Alternatively it can be set
-            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            This field supports substitution of the fields "interface_ip" and "peer_ip".
+            Alternatively it can be
+            set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
             "<ipv6>" without a mask means host.
             Required except for remarks.
             """
             destination: str | None
             """
-            This field supports substitution of the field "interface_ip" for SVIs.
-            Alternatively it can be set
-            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            This field supports substitution of the fields "interface_ip" and "peer_ip".
+            Alternatively it can be
+            set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
             "<ipv6>" without a mask means host.
             Required except for remarks.
             """
@@ -22881,15 +22977,15 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         source:
-                           This field supports substitution of the field "interface_ip" for SVIs.
-                           Alternatively it can be set
-                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           This field supports substitution of the fields "interface_ip" and "peer_ip".
+                           Alternatively it can be
+                           set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
                            "<ipv6>" without a mask means host.
                            Required except for remarks.
                         destination:
-                           This field supports substitution of the field "interface_ip" for SVIs.
-                           Alternatively it can be set
-                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           This field supports substitution of the fields "interface_ip" and "peer_ip".
+                           Alternatively it can be
+                           set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
                            "<ipv6>" without a mask means host.
                            Required except for remarks.
                         protocol:
@@ -25617,6 +25713,8 @@ class EosDesigns(EosDesignsRootModel):
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
+            "ipv6_acl_in": {"type": str},
+            "ipv6_acl_out": {"type": str},
             "static_routes": {"type": StaticRoutes},
             "qos_profile": {"type": str},
             "wan_carrier": {"type": str},
@@ -25738,6 +25836,18 @@ class EosDesigns(EosDesignsRootModel):
         The access-list must be defined
         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
         """
+        ipv6_acl_in: str | None
+        """
+        Name of the IPv6 access-list to be assigned in the ingress direction.
+        The access-list must be
+        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        """
+        ipv6_acl_out: str | None
+        """
+        Name of the IPv6 Access-list to be assigned in the egress direction.
+        The access-list must be defined
+        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        """
         static_routes: StaticRoutes
         """
         Configure IPv4 static routes pointing to `peer_ip`.
@@ -25816,6 +25926,8 @@ class EosDesigns(EosDesignsRootModel):
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                ipv6_acl_out: str | None | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -25905,6 +26017,14 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                    ipv6_acl_in:
+                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                       The access-list must be
+                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                    ipv6_acl_out:
+                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                       The access-list must be defined
+                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                     static_routes:
                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -54593,6 +54713,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -54711,6 +54833,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -54789,6 +54923,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -54876,6 +55012,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -55285,6 +55429,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -55400,6 +55546,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -55463,6 +55621,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -55547,6 +55707,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -59863,6 +60031,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -59981,6 +60151,18 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
                             static_routes: StaticRoutes
                             """
                             Configure IPv4 static routes pointing to `peer_ip`.
@@ -60059,6 +60241,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -60146,6 +60330,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -60561,6 +60753,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -60676,6 +60870,18 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
                             static_routes: StaticRoutes
                             """
                             Configure IPv4 static routes pointing to `peer_ip`.
@@ -60739,6 +60945,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -60823,6 +61031,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -65074,6 +65290,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -65192,6 +65410,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -65270,6 +65500,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -65357,6 +65589,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -65766,6 +66006,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -65881,6 +66123,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -65944,6 +66198,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -66028,6 +66284,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -70359,6 +70623,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -70477,6 +70743,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -70555,6 +70833,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -70642,6 +70922,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -71051,6 +71339,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -71166,6 +71456,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -71229,6 +71531,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -71313,6 +71617,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -89911,6 +90223,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -90029,6 +90343,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -90107,6 +90433,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -90194,6 +90522,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -90603,6 +90939,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -90718,6 +91056,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -90781,6 +91131,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -90865,6 +91217,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -95181,6 +95541,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -95299,6 +95661,18 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
                             static_routes: StaticRoutes
                             """
                             Configure IPv4 static routes pointing to `peer_ip`.
@@ -95377,6 +95751,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -95464,6 +95840,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -95879,6 +96263,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
                                 "qos_profile": {"type": str},
                                 "wan_carrier": {"type": str},
@@ -95994,6 +96380,18 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            """
                             static_routes: StaticRoutes
                             """
                             Configure IPv4 static routes pointing to `peer_ip`.
@@ -96057,6 +96455,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     qos_profile: str | None | UndefinedType = Undefined,
                                     wan_carrier: str | None | UndefinedType = Undefined,
@@ -96141,6 +96541,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -100392,6 +100800,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -100510,6 +100920,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -100588,6 +101010,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -100675,6 +101099,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -101084,6 +101516,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -101199,6 +101633,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -101262,6 +101708,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -101346,6 +101794,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -105677,6 +106133,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -105795,6 +106253,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -105873,6 +106343,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -105960,6 +106432,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -106369,6 +106849,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "qos_profile": {"type": str},
                             "wan_carrier": {"type": str},
@@ -106484,6 +106966,18 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        """
                         static_routes: StaticRoutes
                         """
                         Configure IPv4 static routes pointing to `peer_ip`.
@@ -106547,6 +107041,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 qos_profile: str | None | UndefinedType = Undefined,
                                 wan_carrier: str | None | UndefinedType = Undefined,
@@ -106631,6 +107127,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -111141,7 +111645,10 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv6 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+    referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`,
+    or under node type
+    `l3_interfaces` and `l3_port_channels` using `ipv6_acl_in` / `ipv6_acl_out`,
+    and will only be
     configured on devices where they are in use.
 
     The substitution is useful when assigning the same
@@ -111150,13 +111657,16 @@ class EosDesigns(EosDesignsRootModel):
     substitution, the interface name will be appended to the ACL name.
 
     The "interface_ip" substitution
-    field is resolved from `ipv6_address` set on the SVI.
-    If `ipv6_address` is not set, the first entry
-    of `ipv6_address_virtuals` is used as a fallback.
-    If neither is set, the substitution will fail with
-    an error.
+    field is resolved differently per interface type:
+    - For SVIs: resolved from `ipv6_address`. If not
+    set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+    - For L3 interfaces and L3
+    port-channels: resolved from the first entry of `ipv6_addresses`.
+    If the required field is not set,
+    the substitution will fail with an error.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv6AclsItem` items.
+    Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -113242,7 +113752,10 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+                   referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`,
+                   or under node type
+                   `l3_interfaces` and `l3_port_channels` using `ipv6_acl_in` / `ipv6_acl_out`,
+                   and will only be
                    configured on devices where they are in use.
 
                    The substitution is useful when assigning the same
@@ -113251,13 +113764,16 @@ class EosDesigns(EosDesignsRootModel):
                    substitution, the interface name will be appended to the ACL name.
 
                    The "interface_ip" substitution
-                   field is resolved from `ipv6_address` set on the SVI.
-                   If `ipv6_address` is not set, the first entry
-                   of `ipv6_address_virtuals` is used as a fallback.
-                   If neither is set, the substitution will fail with
-                   an error.
+                   field is resolved differently per interface type:
+                   - For SVIs: resolved from `ipv6_address`. If not
+                   set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                   - For L3 interfaces and L3
+                   port-channels: resolved from the first entry of `ipv6_addresses`.
+                   If the required field is not set,
+                   the substitution will fail with an error.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv6AclsItem` items.
+                   Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.

@@ -315,6 +315,54 @@ class UtilsMixin(Protocol):
             peer_ip=interface.peer_ip,
         )
 
+    def _get_ipv6_acl_for_l3_generic_interface(
+        self: AvdStructuredConfigUnderlayProtocol,
+        acl_name: str,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+    ) -> EosDesigns.Ipv6AclsItem:
+        interface_ip = next(iter(interface.ipv6_addresses), None)
+        if interface_ip is not None and "/" in interface_ip:
+            interface_ip = get_ip_from_ip_prefix(interface_ip)
+
+        return self.shared_utils.get_ipv6_acl(
+            name=acl_name,
+            interface_name=interface.name,
+            interface_ip=interface_ip,
+            peer_ip=interface.peer_ip,
+        )
+
+    def set_acls(
+        self: AvdStructuredConfigUnderlayProtocol,
+        l3_interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        """Apply IPv4 and IPv6 ACLs to an L3 interface or L3 port-channel."""
+        if l3_interface.ipv4_acl_in:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
+            interface.access_group_in = acl.name
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        if l3_interface.ipv4_acl_out:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
+            interface.access_group_out = acl.name
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        if l3_interface.ipv6_acl_in:
+            acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_in, l3_interface)
+            interface.ipv6_access_group_in = acl.name
+            self.structured_config_utils._set_ipv6_acl(acl)
+
+        if l3_interface.ipv6_acl_out:
+            acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_out, l3_interface)
+            interface.ipv6_access_group_out = acl.name
+            self.structured_config_utils._set_ipv6_acl(acl)
+
     @cached_property
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return a list of P2P underlay links."""

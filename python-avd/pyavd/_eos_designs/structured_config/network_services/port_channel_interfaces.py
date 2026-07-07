@@ -109,7 +109,7 @@ class PortChannelInterfacesMixin(Protocol):
                         interface_ip=interface_ip,
                     )
                     port_channel_interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
+                    self.structured_config_utils._set_ipv4_acl(acl)
 
                 if l3_port_channel.ipv4_acl_out:
                     acl = self.shared_utils.get_ipv4_acl(
@@ -118,7 +118,7 @@ class PortChannelInterfacesMixin(Protocol):
                         interface_ip=interface_ip,
                     )
                     port_channel_interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
+                    self.structured_config_utils._set_ipv4_acl(acl)
 
                 if not is_subinterface:
                     port_channel_interface.switchport.enabled = False

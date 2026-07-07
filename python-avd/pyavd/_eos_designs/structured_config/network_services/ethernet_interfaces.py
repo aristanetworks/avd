@@ -157,7 +157,7 @@ class EthernetInterfacesMixin(Protocol):
                         interface_ip=interface_ip,
                     )
                     interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
+                    self.structured_config_utils._set_ipv4_acl(acl)
 
                 if l3_interface.ipv4_acl_out:
                     acl = self.shared_utils.get_ipv4_acl(
@@ -166,7 +166,7 @@ class EthernetInterfacesMixin(Protocol):
                         interface_ip=interface_ip,
                     )
                     interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
+                    self.structured_config_utils._set_ipv4_acl(acl)
 
                 if "." in interface_name:
                     # This is a subinterface

@@ -142,6 +142,20 @@ $defs:
           type: str
           convert_types:
             - int
+        ipv6_acl_in:
+          description: |-
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+          type: str
+          convert_types:
+            - int
+        ipv6_acl_out:
+          description: |-
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+          type: str
+          convert_types:
+            - int
         static_routes:
           description: Configure IPv4 static routes pointing to `peer_ip`.
           type: list
