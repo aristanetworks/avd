@@ -12,4 +12,5 @@ ntp_settings:
       source_address: use_mgmt_interface_ipv4
 
 expected_error_message: >-
-  'ntp_settings.servers[name=pool.ntp.com].source_address' is set to 'use_mgmt_interface_ipv4' but mgmt_ip is set to 'dhcp'. A static IP is required to resolve this source_address keyword.
+  'ntp_settings.servers[name=pool.ntp.com].source_address' is set to 'use_mgmt_interface_ipv4' but mgmt_ip is set to 'dhcp'.
+  A static IP is required to resolve this source_address keyword.
