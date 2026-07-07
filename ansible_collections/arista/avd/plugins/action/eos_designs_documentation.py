@@ -12,7 +12,7 @@ import yaml
 from ansible.parsing.yaml.dumper import AnsibleDumper
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import YamlLoader, get_eos_designs_facts_path, write_file
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
