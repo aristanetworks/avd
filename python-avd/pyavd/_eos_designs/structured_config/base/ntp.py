@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils import get_ip_from_ip_prefix
 from pyavd._utils.password_utils import ntp_encrypt
 
 if TYPE_CHECKING:
@@ -69,7 +70,67 @@ class NtpMixin(Protocol):
         first = True
         for server in ntp_settings.servers:
             ntp_server = server._cast_as(EosCliConfigGen.Ntp.ServersItem)
+            if server.source_address is not None:
+                ntp_server.source_address = self._get_ntp_server_source_address(server.name, server.source_address, server_vrf)
             if first:
                 ntp_server.preferred = True
                 first = False
+
             self.structured_config.ntp.servers.append(ntp_server)
+
+    def _get_ntp_server_source_address(
+        self: AvdStructuredConfigBaseProtocol,
+        server_name: str | None,
+        source_address: str,
+        server_vrf: str,
+    ) -> str:
+        """Resolve the source address for an NTP server."""
+        if not source_address.startswith("use_"):
+            return source_address
+
+        context = f"ntp_settings.servers[name={server_name}].source_address"
+
+        match source_address:
+            case "use_mgmt_interface_ipv4":
+                required_vrf = self.shared_utils.mgmt_interface_vrf
+                ip_prefix = self.shared_utils.node_config.mgmt_ip
+                missing_variable = "mgmt_ip"
+            case "use_mgmt_interface_ipv6":
+                required_vrf = self.shared_utils.mgmt_interface_vrf
+                ip_prefix = self.shared_utils.node_config.ipv6_mgmt_ip
+                missing_variable = "ipv6_mgmt_ip"
+            case "use_inband_mgmt_interface_ipv4":
+                required_vrf = self.shared_utils.inband_mgmt_vrf
+                ip_prefix = self.shared_utils.inband_mgmt_ip
+                missing_variable = "inband_mgmt_ip"
+            case "use_inband_mgmt_interface_ipv6":
+                required_vrf = self.shared_utils.inband_mgmt_vrf
+                ip_prefix = self.shared_utils.inband_mgmt_ipv6_address
+                missing_variable = "inband_mgmt_ipv6_address"
+            case _:
+                msg = (
+                    f"'{context}' is set to '{source_address}', which is not supported. "
+                    "Supported values are 'use_mgmt_interface_ipv4', 'use_mgmt_interface_ipv6', "
+                    "'use_inband_mgmt_interface_ipv4', and 'use_inband_mgmt_interface_ipv6'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
+        if server_vrf != required_vrf:
+            msg = (
+                f"'{context}' is set to '{source_address}', but 'ntp_settings.server_vrf' resolves to '{server_vrf}'. "
+                f"This source_address keyword requires VRF '{required_vrf}'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if ip_prefix is None:
+            msg = f"'{context}' is set to '{source_address}' but this node is missing '{missing_variable}'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if ip_prefix == "dhcp":
+            msg = (
+                f"'{context}' is set to '{source_address}' but {missing_variable} is set to 'dhcp'. "
+                "A static IP is required to resolve this source_address keyword."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        return get_ip_from_ip_prefix(ip_prefix)

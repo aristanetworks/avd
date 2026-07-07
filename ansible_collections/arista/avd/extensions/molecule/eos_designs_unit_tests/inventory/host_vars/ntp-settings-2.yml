@@ -11,4 +11,6 @@ ntp_settings:
   server_vrf: use_inband_mgmt_vrf
   servers:
     - name: 10.10.10.1
+      source_address: use_inband_mgmt_interface_ipv4
     - name: 10.10.10.2
+      source_address: 198.51.100.10

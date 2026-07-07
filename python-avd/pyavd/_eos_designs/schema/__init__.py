@@ -39873,6 +39873,7 @@ class EosDesigns(EosDesignsRootModel):
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "version": {"type": int},
+                "source_address": {"type": str},
             }
             name: str | None
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
@@ -39884,6 +39885,19 @@ class EosDesigns(EosDesignsRootModel):
             minpoll: int | None
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             version: int | None
+            source_address: str | None
+            """
+            - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+            interface.
+            - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+            management interface.
+            - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+            address of the inband management interface.
+            - `use_inband_mgmt_interface_ipv6` configures the source
+            address as the IPv6 address of the inband management interface.
+            - Any other string is used directly
+            as the source address (for example, an IPv4 or IPv6 address).
+            """
 
             if TYPE_CHECKING:
 
@@ -39897,6 +39911,7 @@ class EosDesigns(EosDesignsRootModel):
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -39912,6 +39927,17 @@ class EosDesigns(EosDesignsRootModel):
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         version: version
+                        source_address:
+                           - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+                           interface.
+                           - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+                           management interface.
+                           - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+                           address of the inband management interface.
+                           - `use_inband_mgmt_interface_ipv6` configures the source
+                           address as the IPv6 address of the inband management interface.
+                           - Any other string is used directly
+                           as the source address (for example, an IPv4 or IPv6 address).
 
                     """
 

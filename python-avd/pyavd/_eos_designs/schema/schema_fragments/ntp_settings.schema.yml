@@ -50,6 +50,14 @@ keys:
             version:
               type: int
               $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
+            source_address:
+              type: str
+              description: |-
+                - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management interface.
+                - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the management interface.
+                - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4 address of the inband management interface.
+                - `use_inband_mgmt_interface_ipv6` configures the source address as the IPv6 address of the inband management interface.
+                - Any other string is used directly as the source address (for example, an IPv4 or IPv6 address).
       authenticate:
         type: bool
       authenticate_servers_only:

@@ -15,8 +15,10 @@ ntp:
     vrf: INBAND_MGMT
   servers:
   - name: 10.10.10.1
+    source_address: 192.168.1.2
     preferred: true
   - name: 10.10.10.2
+    source_address: 198.51.100.10
   vrf: INBAND_MGMT
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
