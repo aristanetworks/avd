@@ -189,7 +189,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
     module = action_module(ActionModule)
-    module.ansible_name = "arista.avd.eos_cli_config_gen"  # pyright: ignore[reportAttributeAccessIssue]
+    module.ansible_name = "arista.avd.eos_cli_config_gen"
     shared_display = MagicMock(verbosity=0)
 
     with (
