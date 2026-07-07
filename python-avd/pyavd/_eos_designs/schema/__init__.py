@@ -3090,14 +3090,16 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4: bool | None
                 """
                 Enable address locking for IPv4.
-                Key `ipv4` can only be set to false.
-                For EOS version 4.31 and
-                higher.
+                For Port-Channels, only `ipv4: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
                 ipv6: bool | None
                 """
                 Enable address locking for IPv6.
-                For EOS version 4.31 and higher.
+                For Port-Channels, only `ipv6: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
 
                 if TYPE_CHECKING:
@@ -3112,12 +3114,14 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             ipv4:
                                Enable address locking for IPv4.
-                               Key `ipv4` can only be set to false.
-                               For EOS version 4.31 and
-                               higher.
+                               For Port-Channels, only `ipv4: false` is supported.
+                               For EOS version
+                               4.31 and higher.
                             ipv6:
                                Enable address locking for IPv6.
-                               For EOS version 4.31 and higher.
+                               For Port-Channels, only `ipv6: false` is supported.
+                               For EOS version
+                               4.31 and higher.
 
                         """
 
@@ -11318,7 +11322,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -12254,7 +12258,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -16611,7 +16615,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -17556,7 +17560,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -22626,6 +22630,158 @@ class EosDesigns(EosDesignsRootModel):
 
     Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
 
+    class Ipv4StandardAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "vlan": {"type": int},
+                "vlan_mask": {"type": str},
+                "inner_vlan": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "log": {"type": bool},
+                "mirror_session": {"type": str},
+            }
+            sequence: int | None
+            """Sequence ID."""
+            action: Action | None
+            """Action as string."""
+            remark: str | None
+            """Specify a comment. If remark is specified other keys of the entry are ignored."""
+            source: str | None
+            """
+            Required for non-remark entries.
+            The value can be:
+            1. A single source address.
+            2. Source address
+            with mask. e.g. '10.0.0.1/8'.
+            3. 'any' source address.
+            """
+            vlan: int | None
+            """Match packets by VLAN value."""
+            vlan_mask: str | None
+            """
+            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+            To ensure that a value like 0x001
+            is treated strictly as a string
+            and not converted to a decimal (like 1), use single or double
+            quotes.
+            """
+            inner_vlan: int | None
+            """Match packets by inner VLAN value."""
+            inner_vlan_mask: str | None
+            """
+            Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+            To ensure that a value
+            like 0x001 is treated strictly as a string
+            and not converted to a decimal (like 1), use single or
+            double quotes.
+            """
+            log: bool | None
+            """Enable logging when a packet matches the ACL rule."""
+            mirror_session: str | None
+            """Mirror session to mirror matches against this rule."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    mirror_session: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action: Action as string.
+                        remark: Specify a comment. If remark is specified other keys of the entry are ignored.
+                        source:
+                           Required for non-remark entries.
+                           The value can be:
+                           1. A single source address.
+                           2. Source address
+                           with mask. e.g. '10.0.0.1/8'.
+                           3. 'any' source address.
+                        vlan: Match packets by VLAN value.
+                        vlan_mask:
+                           VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+                           To ensure that a value like 0x001
+                           is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or double
+                           quotes.
+                        inner_vlan: Match packets by inner VLAN value.
+                        inner_vlan_mask:
+                           Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                           To ensure that a value
+                           like 0x001 is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or
+                           double quotes.
+                        log: Enable logging when a packet matches the ACL rule.
+                        mirror_session: Mirror session to mirror matches against this rule.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """Access-list Name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Ipv4StandardAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Access-list Name.
+                    counters_per_entry: counters_per_entry
+                    entries: Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class Ipv4StandardAcls(AvdIndexedList[str, Ipv4StandardAclsItem]):
+        """Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv4StandardAcls._item_type = Ipv4StandardAclsItem
+
     class Ipv6AclsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -27193,14 +27349,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -27215,12 +27373,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -28725,6 +28885,69 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ListenRangesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "remote_as": {"type": str},
+                    "peer_id_include_router_id": {"type": bool},
+                    "peer_filter": {"type": str},
+                }
+                prefix: str
+                """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                remote_as: str | None
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                note: `peer_filter` or `remote_as` is required.
+                """
+                peer_id_include_router_id: bool | None
+                """Include router ID as part of peer filter."""
+                peer_filter: str | None
+                """
+                Peer-filter name.
+                note: `peer_filter` or `remote_as` is required.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
+                        peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                        peer_filter: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ListenRangesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                            remote_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                               note: `peer_filter` or `remote_as` is required.
+                            peer_id_include_router_id: Include router ID as part of peer filter.
+                            peer_filter:
+                               Peer-filter name.
+                               note: `peer_filter` or `remote_as` is required.
+
+                        """
+
+            class ListenRanges(AvdList[ListenRangesItem]):
+                """Subclass of AvdList with `ListenRangesItem` items."""
+
+            ListenRanges._item_type = ListenRangesItem
+
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -29111,6 +29334,7 @@ class EosDesigns(EosDesignsRootModel):
                 "nodes": {"type": Nodes},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "listen_ranges": {"type": ListenRanges},
                 "metadata": {"type": Metadata},
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
@@ -29176,6 +29400,13 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             address_family_ipv6: AddressFamilyIpv6
             """Subclass of AvdModel."""
+            listen_ranges: ListenRanges
+            """
+            Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+            listen ranges.
+
+            Subclass of AvdList with `ListenRangesItem` items.
+            """
             metadata: Metadata
             """Subclass of AvdModel."""
             remote_as: str | None
@@ -29280,6 +29511,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    listen_ranges: ListenRanges | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
@@ -29343,6 +29575,11 @@ class EosDesigns(EosDesignsRootModel):
                            of AvdList with `str` items.
                         address_family_ipv4: Subclass of AvdModel.
                         address_family_ipv6: Subclass of AvdModel.
+                        listen_ranges:
+                           Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                           listen ranges.
+
+                           Subclass of AvdList with `ListenRangesItem` items.
                         metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -35714,6 +35951,69 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class ListenRangesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "prefix": {"type": str},
+                        "remote_as": {"type": str},
+                        "peer_id_include_router_id": {"type": bool},
+                        "peer_filter": {"type": str},
+                    }
+                    prefix: str
+                    """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                    remote_as: str | None
+                    """
+                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                    For asdot notation in
+                    YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                    number.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+                    peer_id_include_router_id: bool | None
+                    """Include router ID as part of peer filter."""
+                    peer_filter: str | None
+                    """
+                    Peer-filter name.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            remote_as: str | None | UndefinedType = Undefined,
+                            peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                            peer_filter: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ListenRangesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                remote_as:
+                                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                   For asdot notation in
+                                   YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                   number.
+                                   note: `peer_filter` or `remote_as` is required.
+                                peer_id_include_router_id: Include router ID as part of peer filter.
+                                peer_filter:
+                                   Peer-filter name.
+                                   note: `peer_filter` or `remote_as` is required.
+
+                            """
+
+                class ListenRanges(AvdList[ListenRangesItem]):
+                    """Subclass of AvdList with `ListenRangesItem` items."""
+
+                ListenRanges._item_type = ListenRangesItem
+
                 class Metadata(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -36107,6 +36407,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_password": {"type": str},
                     "address_family_ipv4": {"type": AddressFamilyIpv4},
                     "address_family_ipv6": {"type": AddressFamilyIpv6},
+                    "listen_ranges": {"type": ListenRanges},
                     "metadata": {"type": Metadata},
                     "remote_as": {"type": str},
                     "local_as": {"type": str},
@@ -36172,6 +36473,17 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 address_family_ipv6: AddressFamilyIpv6
                 """Subclass of AvdModel."""
+                listen_ranges: ListenRanges
+                """
+                Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                bgp listen ranges.
+                When set for VRF default, this is configured under root `router bgp <as>`. For
+                other VRFs this is configured under
+                respective VRF.
+
+                Subclass of AvdList with `ListenRangesItem`
+                items.
+                """
                 metadata: Metadata
                 """Subclass of AvdModel."""
                 remote_as: str | None
@@ -36276,6 +36588,7 @@ class EosDesigns(EosDesignsRootModel):
                         cleartext_password: str | None | UndefinedType = Undefined,
                         address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                         address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                        listen_ranges: ListenRanges | UndefinedType = Undefined,
                         metadata: Metadata | UndefinedType = Undefined,
                         remote_as: str | None | UndefinedType = Undefined,
                         local_as: str | None | UndefinedType = Undefined,
@@ -36339,6 +36652,15 @@ class EosDesigns(EosDesignsRootModel):
                                make use of a vault or similar.
                             address_family_ipv4: Subclass of AvdModel.
                             address_family_ipv6: Subclass of AvdModel.
+                            listen_ranges:
+                               Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                               bgp listen ranges.
+                               When set for VRF default, this is configured under root `router bgp <as>`. For
+                               other VRFs this is configured under
+                               respective VRF.
+
+                               Subclass of AvdList with `ListenRangesItem`
+                               items.
                             metadata: Subclass of AvdModel.
                             remote_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -44380,14 +44702,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -44402,12 +44726,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -56130,7 +56456,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -57049,7 +57375,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -61418,7 +61744,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -62346,7 +62672,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -66626,7 +66952,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -67556,7 +67882,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -71908,7 +72234,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -72836,7 +73162,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -74121,14 +74447,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -74143,12 +74471,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -76173,14 +76503,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -76195,12 +76527,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -77516,6 +77850,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class ListenRangesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "prefix": {"type": str},
+                            "remote_as": {"type": str},
+                            "peer_id_include_router_id": {"type": bool},
+                            "peer_filter": {"type": str},
+                        }
+                        prefix: str
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        remote_as: str | None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in
+                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                        number.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+                        peer_id_include_router_id: bool | None
+                        """Include router ID as part of peer filter."""
+                        peer_filter: str | None
+                        """
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                prefix: str | UndefinedType = Undefined,
+                                remote_as: str | None | UndefinedType = Undefined,
+                                peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                peer_filter: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                ListenRangesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    remote_as:
+                                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                       For asdot notation in
+                                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                       number.
+                                       note: `peer_filter` or `remote_as` is required.
+                                    peer_id_include_router_id: Include router ID as part of peer filter.
+                                    peer_filter:
+                                       Peer-filter name.
+                                       note: `peer_filter` or `remote_as` is required.
+
+                                """
+
+                    class ListenRanges(AvdList[ListenRangesItem]):
+                        """Subclass of AvdList with `ListenRangesItem` items."""
+
+                    ListenRanges._item_type = ListenRangesItem
+
                     class Metadata(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -77911,6 +78308,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
+                        "listen_ranges": {"type": ListenRanges},
                         "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
@@ -77976,6 +78374,13 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
+                    listen_ranges: ListenRanges
+                    """
+                    Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                    listen ranges.
+
+                    Subclass of AvdList with `ListenRangesItem` items.
+                    """
                     metadata: Metadata
                     """Subclass of AvdModel."""
                     remote_as: str | None
@@ -78080,6 +78485,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                            listen_ranges: ListenRanges | UndefinedType = Undefined,
                             metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
@@ -78143,6 +78549,11 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
+                                listen_ranges:
+                                   Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                                   listen ranges.
+
+                                   Subclass of AvdList with `ListenRangesItem` items.
                                 metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -84545,6 +84956,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class ListenRangesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "remote_as": {"type": str},
+                                "peer_id_include_router_id": {"type": bool},
+                                "peer_filter": {"type": str},
+                            }
+                            prefix: str
+                            """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                            remote_as: str | None
+                            """
+                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                            For asdot notation in
+                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                            number.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+                            peer_id_include_router_id: bool | None
+                            """Include router ID as part of peer filter."""
+                            peer_filter: str | None
+                            """
+                            Peer-filter name.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | UndefinedType = Undefined,
+                                    remote_as: str | None | UndefinedType = Undefined,
+                                    peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                    peer_filter: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    ListenRangesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                        remote_as:
+                                           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                           For asdot notation in
+                                           YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                           number.
+                                           note: `peer_filter` or `remote_as` is required.
+                                        peer_id_include_router_id: Include router ID as part of peer filter.
+                                        peer_filter:
+                                           Peer-filter name.
+                                           note: `peer_filter` or `remote_as` is required.
+
+                                    """
+
+                        class ListenRanges(AvdList[ListenRangesItem]):
+                            """Subclass of AvdList with `ListenRangesItem` items."""
+
+                        ListenRanges._item_type = ListenRangesItem
+
                         class Metadata(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -84944,6 +85418,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
+                            "listen_ranges": {"type": ListenRanges},
                             "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
@@ -85009,6 +85484,17 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
+                        listen_ranges: ListenRanges
+                        """
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                        bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For
+                        other VRFs this is configured under
+                        respective VRF.
+
+                        Subclass of AvdList with `ListenRangesItem`
+                        items.
+                        """
                         metadata: Metadata
                         """Subclass of AvdModel."""
                         remote_as: str | None
@@ -85113,6 +85599,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                listen_ranges: ListenRanges | UndefinedType = Undefined,
                                 metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
@@ -85176,6 +85663,15 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
+                                    listen_ranges:
+                                       Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                                       bgp listen ranges.
+                                       When set for VRF default, this is configured under root `router bgp <as>`. For
+                                       other VRFs this is configured under
+                                       respective VRF.
+
+                                       Subclass of AvdList with `ListenRangesItem`
+                                       items.
                                     metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -91278,7 +91774,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -92197,7 +92693,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -96566,7 +97062,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -97494,7 +97990,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -101774,7 +102270,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -102704,7 +103200,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -107056,7 +107552,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -107984,7 +108480,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -108478,6 +108974,7 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_graceful_restart": {"type": BgpGracefulRestart},
         "bgp_maximum_paths": {"type": int},
         "bgp_mesh_pes": {"type": bool, "default": False},
+        "bgp_peer_filters_catalog": {"type": EosCliConfigGen.PeerFilters},
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
@@ -108580,6 +109077,7 @@ class EosDesigns(EosDesignsRootModel):
         "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
+        "ipv4_standard_acls": {"type": Ipv4StandardAcls},
         "ipv6_acls": {"type": Ipv6Acls},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
         "ipv6_mgmt_gateway": {"type": str},
@@ -109860,6 +110358,13 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters
+    """
+    BGP peer filter catalog.
+    Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+    the configuration when
+    they are explicitly referenced in listen ranges.
+    """
     bgp_peer_groups: BgpPeerGroups
     """
     Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
@@ -110682,6 +111187,15 @@ class EosDesigns(EosDesignsRootModel):
     `l3_port_channels.[].bgp.ipv4_prefix_list_in`
     - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
+    """
+    ipv4_standard_acls: Ipv4StandardAcls
+    """
+    IPv4 standard access-lists catalog.
+    These access-lists will only be configured on devices where they
+    are in use.
+
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+    (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -111866,6 +112380,7 @@ class EosDesigns(EosDesignsRootModel):
             bgp_graceful_restart: BgpGracefulRestart | UndefinedType = Undefined,
             bgp_maximum_paths: int | None | UndefinedType = Undefined,
             bgp_mesh_pes: bool | UndefinedType = Undefined,
+            bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters | UndefinedType = Undefined,
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -111943,6 +112458,7 @@ class EosDesigns(EosDesignsRootModel):
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
+            ipv4_standard_acls: Ipv4StandardAcls | UndefinedType = Undefined,
             ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
             ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -112153,6 +112669,11 @@ class EosDesigns(EosDesignsRootModel):
                    Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
                    Only
                    supported in combination with MPLS overlay.
+                bgp_peer_filters_catalog:
+                   BGP peer filter catalog.
+                   Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+                   the configuration when
+                   they are explicitly referenced in listen ranges.
                 bgp_peer_groups:
                    Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                    Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
@@ -112771,6 +113292,13 @@ class EosDesigns(EosDesignsRootModel):
                    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
+                ipv4_standard_acls:
+                   IPv4 standard access-lists catalog.
+                   These access-lists will only be configured on devices where they
+                   are in use.
+
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
