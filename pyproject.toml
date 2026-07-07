@@ -9,7 +9,6 @@ dev = [
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "benchmark"},
     {include-group = "molecule"},
     {include-group = "pytest"},
     "ansible-doc-extractor>=0.1.11",
@@ -69,7 +68,6 @@ schema-tools = [
 ]
 benchmark = [
     "pytest-codspeed>=3.1.0",
-    "pytest-test-groups>=1.2.1",
 ]
 
 [tool.ruff]
@@ -199,6 +197,7 @@ exclude = [
   "python-avd/schema_tools/generate_docs",                               # TODO
   "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
+  "benchmarks",                                                          # Benchmarks are type-checked by pytest collection.
   # Excluded
   "python-avd/pyavd/_cv/api",
   "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
@@ -227,6 +226,7 @@ pythonpath = [
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios. Pass hosts=(...) to limit molecule_host parametrization.",
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode. Pass hosts=(...) to limit molecule_host parametrization.",
+    "benchmark_scale: Benchmarks excluded from the default CodSpeed PR suite.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 # log_file = "pytest.log"
