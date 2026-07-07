@@ -116,11 +116,13 @@
 {%         for tx_queue in profile.tx_queues | arista.avd.default([]) %}
 {%             if tx_queue.random_detect.drop.threshold is arista.avd.defined() %}
 {%                 set ns.wred_table = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
-{%         for tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
-{%             if tx_queue.random_detect.drop.threshold is arista.avd.defined() %}
+{%         for uc_tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
+{%             if uc_tx_queue.random_detect.drop.threshold is arista.avd.defined() %}
 {%                 set ns.wred_table = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%         if ns.wred_table %}
