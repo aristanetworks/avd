@@ -10,8 +10,6 @@ from pyavd._errors import AristaAvdError
 from pyavd._utils import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import AvdStructuredConfigNetworkServicesProtocol
 
 
