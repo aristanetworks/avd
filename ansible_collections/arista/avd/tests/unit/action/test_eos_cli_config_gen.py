@@ -161,7 +161,7 @@ def test_load_structured_config_raises_when_file_missing(action_module: Callable
 def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
     """Test that any exception during execution is wrapped with the 'Error during plugin execution:' prefix and chained."""
     module = action_module(ActionModule)
-    module.ansible_name = "arista.avd.eos_cli_config_gen"  # pyright: ignore[reportAttributeAccessIssue]
+    module.ansible_name = "arista.avd.eos_cli_config_gen"
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
         "generate_device_config": True,
