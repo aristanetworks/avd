@@ -93,7 +93,7 @@ def test_run_routes_missing_device_warning_to_display(action_module: Callable[..
     ):
         result = module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 
-    expected_message = "<spine1> Could not find structured config files for 'leaf1'. The documentation may be incomplete."
+    expected_message = "Could not find structured config files for 'leaf1'. The documentation may be incomplete."
     warning_messages = [call.args[0] for call in shared_display.warning.call_args_list]
     assert warning_messages == [expected_message]
     assert result.get("failed") is not True
