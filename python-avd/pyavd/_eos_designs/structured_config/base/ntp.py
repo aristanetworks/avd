@@ -115,13 +115,6 @@ class NtpMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-        if server_vrf != required_vrf:
-            msg = (
-                f"'{context}' is set to '{source_address}', but 'ntp_settings.server_vrf' resolves to '{server_vrf}'. "
-                f"This source_address keyword requires VRF '{required_vrf}'."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
         if ip_prefix is None:
             msg = f"'{context}' is set to '{source_address}' but this node is missing '{missing_variable}'."
             raise AristaAvdInvalidInputsError(msg)
@@ -130,6 +123,13 @@ class NtpMixin(Protocol):
             msg = (
                 f"'{context}' is set to '{source_address}' but {missing_variable} is set to 'dhcp'. "
                 "A static IP is required to resolve this source_address keyword."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if required_vrf is not None and server_vrf != required_vrf:
+            msg = (
+                f"'{context}' is set to '{source_address}', but 'ntp_settings.server_vrf' resolves to '{server_vrf}'. "
+                f"This source_address keyword requires VRF '{required_vrf}'."
             )
             raise AristaAvdInvalidInputsError(msg)
 

@@ -20,6 +20,7 @@ l2leaf:
     - name: flow-tracking-tests-l2-leaf4
       id: 3
       mgmt_ip: 192.168.0.204/24
+      ipv6_mgmt_ip: 2001:db8:100::2/64
       uplink_switch_interfaces:
         - Ethernet34
         - Ethernet34
@@ -34,6 +35,8 @@ ntp_settings:
   servers:
     - name: 192.168.200.5
       source_address: use_mgmt_interface_ipv4
+    - name: 192.168.100.6
+      source_address: use_mgmt_interface_ipv6
 
 dns_settings:
   servers:

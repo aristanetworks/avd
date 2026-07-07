@@ -58,6 +58,8 @@ keys:
                 - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4 address of the inband management interface.
                 - `use_inband_mgmt_interface_ipv6` configures the source address as the IPv6 address of the inband management interface.
                 - Any other string is used directly as the source address (for example, an IPv4 or IPv6 address).
+                For `use_*` values, an error is raised if the referenced management address is not configured (or is set to `dhcp`),
+                if `ntp_settings.server_vrf` does not resolve to the expected management VRF, or if an unsupported `use_*` keyword is used.
       authenticate:
         type: bool
       authenticate_servers_only:

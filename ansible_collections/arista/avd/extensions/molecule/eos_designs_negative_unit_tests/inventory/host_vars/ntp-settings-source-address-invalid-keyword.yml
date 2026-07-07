@@ -1,0 +1,16 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ntp-settings-source-address-invalid-keyword
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: pool.ntp.com
+      source_address: use_not_supported
+
+expected_error_message: >-
+  'ntp_settings.servers[name=pool.ntp.com].source_address' is set to 'use_not_supported', which is not supported.
+  Supported values are 'use_mgmt_interface_ipv4', 'use_mgmt_interface_ipv6', 'use_inband_mgmt_interface_ipv4', and 'use_inband_mgmt_interface_ipv6'.

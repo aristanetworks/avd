@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxpoll</samp>](## "ntp_settings.servers.[].maxpoll") | Integer |  |  | Min: 3<br>Max: 17 | Value of maxpoll between 3 - 17 (Logarithmic). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minpoll</samp>](## "ntp_settings.servers.[].minpoll") | Integer |  |  | Min: 3<br>Max: 17 | Value of minpoll between 3 - 17 (Logarithmic). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ntp_settings.servers.[].version") | Integer |  |  | Min: 1<br>Max: 4 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "ntp_settings.servers.[].source_address") | String |  |  |  | - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management interface.<br>- `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the management interface.<br>- `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4 address of the inband management interface.<br>- `use_inband_mgmt_interface_ipv6` configures the source address as the IPv6 address of the inband management interface.<br>- Any other string is used directly as the source address (for example, an IPv4 or IPv6 address). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "ntp_settings.servers.[].source_address") | String |  |  |  | - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management interface.<br>- `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the management interface.<br>- `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4 address of the inband management interface.<br>- `use_inband_mgmt_interface_ipv6` configures the source address as the IPv6 address of the inband management interface.<br>- Any other string is used directly as the source address (for example, an IPv4 or IPv6 address).<br>For `use_*` values, an error is raised if the referenced management address is not configured (or is set to `dhcp`),<br>if `ntp_settings.server_vrf` does not resolve to the expected management VRF, or if an unsupported `use_*` keyword is used. |
     | [<samp>&nbsp;&nbsp;authenticate</samp>](## "ntp_settings.authenticate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;authenticate_servers_only</samp>](## "ntp_settings.authenticate_servers_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;authentication_keys</samp>](## "ntp_settings.authentication_keys") | List, items: Dictionary |  |  |  |  |
@@ -65,6 +65,8 @@
           # - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4 address of the inband management interface.
           # - `use_inband_mgmt_interface_ipv6` configures the source address as the IPv6 address of the inband management interface.
           # - Any other string is used directly as the source address (for example, an IPv4 or IPv6 address).
+          # For `use_*` values, an error is raised if the referenced management address is not configured (or is set to `dhcp`),
+          # if `ntp_settings.server_vrf` does not resolve to the expected management VRF, or if an unsupported `use_*` keyword is used.
           source_address: <str>
       authenticate: <bool>
       authenticate_servers_only: <bool>
