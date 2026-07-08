@@ -34,6 +34,7 @@ keys:
             name:
               type: str
               description: Schedule job name.
+              pattern: "(?!config)(?!summary$)[a-z0-9_-]+"
             interval:
               type: int
               min: 2
