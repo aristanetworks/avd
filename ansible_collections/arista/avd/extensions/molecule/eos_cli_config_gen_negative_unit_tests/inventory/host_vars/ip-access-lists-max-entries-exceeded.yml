@@ -1,0 +1,23 @@
+# Negative test to catch when the number of ACL entries exceeds the defined maximum
+# and ensure the error message is clear to the user
+ip_access_lists_max_entries: 2
+ip_access_lists:
+  - name: TEST_ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: tcp
+        source: 10.0.0.0/8
+        destination: 192.168.0.0/16
+      - sequence: 20
+        action: permit
+        protocol: udp
+        source: 172.16.0.0/12
+        destination: 192.168.0.0/16
+      - sequence: 30
+        action: deny
+        protocol: ip
+        source: any
+        destination: any
+
+expected_error_message: "Error during plugin execution: The number of ACL entries is above defined maximum!"
