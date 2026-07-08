@@ -61,6 +61,7 @@ ANTA_VARS = [
     "anta_enable_password",
     "anta_port",
     "anta_use_ssl",
+    "anta_use_session_auth",
     "anta_tags",
 ]
 
@@ -553,6 +554,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     enable_mode = default(get(device_vars, "anta_enable"), get(device_vars, "ansible_become", default=False))
     enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
     proto = "https" if default(get(device_vars, "anta_use_ssl"), get(device_vars, "ansible_httpapi_use_ssl", default=True)) else "http"
+    use_session = get(device_vars, "anta_use_session_auth", default=False)
 
     device_settings = {
         "name": device,
@@ -565,6 +567,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         "proto": proto,
         "timeout": get(PLUGIN_ARGS, "runner.timeout"),
         "tags": set(get(device_vars, "anta_tags", default=[])),
+        "use_session": use_session,
     }
 
     # Make sure we found all required connection settings. Other settings have defaults in the ANTA device object
