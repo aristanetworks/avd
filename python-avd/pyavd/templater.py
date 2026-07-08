@@ -134,6 +134,7 @@ class Templar:
             snmp_hash,
             status_render,
         )
+        from .j2filters._mandatory import _mandatory  # noqa: PLC0415
         from .j2tests.contains import contains  # noqa: PLC0415
         from .j2tests.defined import defined  # noqa: PLC0415
 
@@ -146,6 +147,10 @@ class Templar:
                 "arista.avd.hide_passwords": hide_passwords,
                 "arista.avd.is_in_filter": is_in_filter,
                 "arista.avd.list_compress": list_compress,
+                # Hidden compatibility shim for legacy templates that relied on
+                # Ansible's mandatory filter before PyAVD owned rendering.
+                # Do not document or use for new validation.
+                "arista.avd._mandatory": _mandatory,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
