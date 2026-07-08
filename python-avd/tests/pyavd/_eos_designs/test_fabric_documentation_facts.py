@@ -76,8 +76,8 @@ class TestFabricDocumentationFacts:
                 },
                 "mpls": {"ldp": {"router_id": "10.255.0.1", "shutdown": False}},
                 "router_bgp": {
-                    "as": "65001",  # This should NOT be used (we use avd_facts instead)
-                    "router_id": "10.255.0.1",  # This should NOT be used (we use avd_facts instead)
+                    "as": "99901",  # Deliberately different from avd_facts to prove we use the right source
+                    "router_id": "99.99.0.1",  # Deliberately different from avd_facts to prove we use the right source
                     "address_family_vpn_ipv4": {"peer_groups": [{"name": "MPLS-OVERLAY-PEERS", "activate": True}]},
                 },
             },
@@ -98,8 +98,8 @@ class TestFabricDocumentationFacts:
                 },
                 "mpls": {"ldp": {"router_id": "10.255.0.2", "shutdown": False}},
                 "router_bgp": {
-                    "as": "65000",
-                    "router_id": "10.255.0.2",
+                    "as": "99900",  # Deliberately different from avd_facts to prove we use the right source
+                    "router_id": "99.99.0.2",  # Deliberately different from avd_facts to prove we use the right source
                     "bgp_cluster_id": "10.255.0.2",  # Testing correct field path
                     "peer_groups": [
                         {
