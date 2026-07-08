@@ -173,6 +173,39 @@ def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa:
     return config
 
 
+EXPECTED_BUILD_FILES = ("index.html",)
+EXPECTED_BUILD_DIRS = ("css", "js", "vendor")
+EXPECTED_DATA_FILES = ("schema.sqlite",)
+
+
+def _copy_expected_build_artifacts(dest: Path) -> None:
+    """Copy only the expected Schema Explorer build artifacts."""
+    dest.mkdir(parents=True, exist_ok=True)
+    for filename in EXPECTED_BUILD_FILES:
+        source = BUILD_DIR / filename
+        if not source.is_file():
+            msg = f"Required Schema Explorer build file missing: {source}"
+            raise FileNotFoundError(msg)
+        shutil.copy2(source, dest / filename)
+
+    for dirname in EXPECTED_BUILD_DIRS:
+        source = BUILD_DIR / dirname
+        if not source.is_dir():
+            msg = f"Required Schema Explorer build directory missing: {source}"
+            raise FileNotFoundError(msg)
+        shutil.copytree(source, dest / dirname)
+
+    data_source = BUILD_DIR / "data"
+    data_dest = dest / "data"
+    data_dest.mkdir(parents=True, exist_ok=True)
+    for filename in EXPECTED_DATA_FILES:
+        source = data_source / filename
+        if not source.is_file():
+            msg = f"Required Schema Explorer data file missing: {source}"
+            raise FileNotFoundError(msg)
+        shutil.copy2(source, data_dest / filename)
+
+
 def on_post_build(config: dict[str, Any], **kwargs: Any) -> None:  # noqa: ARG001
     """Copy the built Schema Explorer into the generated site."""
     if not BUILD_DIR.is_dir():
@@ -180,4 +213,4 @@ def on_post_build(config: dict[str, Any], **kwargs: Any) -> None:  # noqa: ARG00
     dest = Path(config["site_dir"]) / ASSET_SUBPATH
     if dest.exists():
         shutil.rmtree(dest)
-    shutil.copytree(BUILD_DIR, dest)
+    _copy_expected_build_artifacts(dest)

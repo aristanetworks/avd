@@ -13,18 +13,17 @@ git config --global --add safe.directory /site
 echo "Installing Documentation python requirements"
 pip install --group doc --upgrade
 
-# Build the Schema Explorer (static assets + per-release SQLite) into
+# Build the Schema Explorer (static assets + SQLite) into
 # tools/schema-explorer/build/. Source lives at tools/schema-explorer/.
 # mkdocs_hook.py copies the built tree into site/_assets/schema-explorer/ on each
 # `mkdocs build`. Skipped when the SQLite is already present and newer than the
 # generator, classifier, static assets, and source schema YAMLs. Keeps container
 # restarts fast during iteration without serving stale generated data.
-SCHEMA_OUT=/data/tools/schema-explorer/build/data/devel/schema.sqlite
+SCHEMA_OUT=/data/tools/schema-explorer/build/data/schema.sqlite
 SCHEMA_INPUTS="
 /data/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml
 /data/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml
 /data/tools/schema-explorer/generate.py
-/data/tools/schema-explorer/categories.py
 /data/tools/schema-explorer/static/index.html
 /data/tools/schema-explorer/static/css/style.css
 /data/tools/schema-explorer/static/js/app.js
@@ -43,7 +42,7 @@ fi
 if [ "$SCHEMA_REBUILD" = true ]; then
     echo "Building Schema Explorer"
     python /data/tools/schema-explorer/generate.py \
-        --avd-root /data --release devel --site-dir /data/tools/schema-explorer/build
+        --avd-root /data --site-dir /data/tools/schema-explorer/build
 else
     echo "Schema Explorer is up to date — skipping rebuild"
 fi

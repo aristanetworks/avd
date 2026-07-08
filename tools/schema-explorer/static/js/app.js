@@ -233,6 +233,13 @@ function inferSchemaBase() {
   return "data";
 }
 const SCHEMA_BASE = inferSchemaBase();
+function inferSchemaAssetBase() {
+  if (SCHEMA_BASE === "data") return ".";
+  if (SCHEMA_BASE.endsWith("/data")) return SCHEMA_BASE.slice(0, -5);
+  return SCHEMA_BASE;
+}
+const SCHEMA_ASSET_BASE = inferSchemaAssetBase();
+const SCHEMA_VENDOR_BASE = `${SCHEMA_ASSET_BASE}/vendor`;
 // SCHEMA_MODULES keys are the canonical module IDs stored in SQLite and used
 // in URL hashes; `name` is the user-visible label rendered in the UI.
 const SCHEMA_MODULES = {
@@ -266,33 +273,33 @@ const app = document.getElementById("app");
 //
 // Both modes can coexist — embeds work even when `#app` is also present.
 
-// CDN dependencies are lazy-loaded so docs pages that never host an embed
-// do not pay for the extra script/font requests. Do not inject Bootstrap CSS
+// Runtime dependencies are lazy-loaded from same-origin vendored assets so docs
+// pages that never host an embed do not pay for the extra script/font requests. Do not inject Bootstrap CSS
 // here: it contains global element rules for headings, links, body line-height,
 // etc. that leak into Material chrome. The standalone SPA owns the whole page
 // and loads Bootstrap CSS directly from static/index.html.
-const CDN_DEPS = {
+const RUNTIME_DEPS = {
   css: [
     {
-      href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+      href: `${SCHEMA_VENDOR_BASE}/bootstrap-icons/font/bootstrap-icons.min.css`,
       integrity: "sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+",
     },
   ],
   js: [
     {
-      src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+      src: `${SCHEMA_VENDOR_BASE}/bootstrap/bootstrap.bundle.min.js`,
       global: "bootstrap",
       integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
     },
     {
-      src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js",
+      src: `${SCHEMA_VENDOR_BASE}/sql.js/dist/sql-wasm.js`,
       global: "initSqlJs",
       integrity: "sha384-8D3Rsfo535FqoC1pHCCQMrNf75UgzyoG/HQm9zOzITRrz3QKzecc2E7JXKGCXoWu",
     },
   ],
 };
 const SQL_WASM = {
-  src: "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.wasm",
+  src: `${SCHEMA_VENDOR_BASE}/sql.js/dist/sql-wasm.wasm`,
   integrity: "sha384-kSm0AH9ho89napVfNFf/kCRTH6xBoCS3qf/ATGJeYFQFKiegBMLhQ3aUIZBlYLpa",
 };
 
@@ -348,7 +355,7 @@ function _loadScript(dep) {
       if (_globalExists(globalName)) {
         resolve();
       } else {
-        reject(new Error("Loaded " + src + ", but " + globalName + " is not defined. Check browser access to the CDN asset."));
+        reject(new Error("Loaded " + src + ", but " + globalName + " is not defined. Check browser access to the Schema Explorer asset."));
       }
     };
 
@@ -369,10 +376,10 @@ function _loadScript(dep) {
 }
 
 async function ensureDeps() {
-  await Promise.all(CDN_DEPS.css.map(_loadCss));
+  await Promise.all(RUNTIME_DEPS.css.map(_loadCss));
   // Scripts must load in order — Bootstrap before sql.js doesn't strictly
   // matter, but doing them sequentially makes ordering predictable.
-  for (const dep of CDN_DEPS.js) await _loadScript(dep);
+  for (const dep of RUNTIME_DEPS.js) await _loadScript(dep);
 }
 
 async function _verifiedWasmBinary(dep) {
@@ -870,6 +877,7 @@ function renderVarDetail(db, module, key_path) {
 function renderCrossRefRow(ref) {
   const [target, jsonPointer] = String(ref).split("#", 2);
   if (!target || !jsonPointer) return "";
+  if (!Object.prototype.hasOwnProperty.call(SCHEMA_MODULES, target)) return "";
   const segments = jsonPointer.split("/").filter(Boolean);
   const parts = [];
   for (let i = 0; i < segments.length; i++) {
@@ -883,10 +891,12 @@ function renderCrossRefRow(ref) {
     }
   }
   const keyPath = parts.join(".");
+  const encodedTarget = encodeURIComponent(target);
+  const encodedKeyPath = keyPath.split("/").map(encodeURIComponent).join("/");
   const link = keyPath
-    ? `#/${target}/${encodeURI(keyPath)}`
-    : `#/${target}`;
-  return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${link}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
+    ? `#/${encodedTarget}/${encodedKeyPath}`
+    : `#/${encodedTarget}`;
+  return `<tr><td class="px-3 fw-semibold small text-muted">Cross-schema</td><td><a href="${escapeAttr(link)}" class="link-brand"><code>${escapeHtml(target)}</code> → <code>${escapeHtml(keyPath || "(root)")}</code></a></td></tr>`;
 }
 
 // ── utils ────────────────────────────────────────────────────────────────────
