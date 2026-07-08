@@ -136,3 +136,10 @@ tunnel_interfaces:
     tunnel_mode: gre
     source: 1.1.1.1
     destination: 2.2.2.2
+  # Validates that tunnel interface documentation skips the IPv6 table when no IPv6-relevant fields are set.
+  - name: Tunnel7
+    description: TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS
+    ip_address: 10.99.99.5/30
+    tunnel_mode: gre
+    source: 1.1.1.1
+    destination: 2.2.2.6
