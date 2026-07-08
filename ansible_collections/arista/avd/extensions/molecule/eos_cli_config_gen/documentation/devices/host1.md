@@ -7653,6 +7653,7 @@ interface Loopback100
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 | Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
 | Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
+| Tunnel7 | TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.6 | - | - |
 
 ##### IPv4
 
@@ -7662,6 +7663,7 @@ interface Loopback100
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 | Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
+| Tunnel7 | default | 10.99.99.5/30 | - | - | - | - |
 
 ##### IPv6
 
@@ -7773,6 +7775,13 @@ interface Tunnel6
    tunnel mode gre
    tunnel source 1.1.1.1
    tunnel destination 2.2.2.2
+!
+interface Tunnel7
+   description TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS
+   ip address 10.99.99.5/30
+   tunnel mode gre
+   tunnel source 1.1.1.1
+   tunnel destination 2.2.2.6
 ```
 
 ### VLAN Interfaces
