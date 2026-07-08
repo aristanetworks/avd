@@ -2,9 +2,9 @@
 custom_structured_configuration_standard_access_lists:
   - name: acl1
     entries:
-    - sequence: 10
-      action: permit
-      source: 10.0.0.1
+      - sequence: 10
+        action: permit
+        source: 10.0.0.1
 
 snmp_settings:
   contact: example@example.com
