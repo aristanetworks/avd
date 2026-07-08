@@ -99,7 +99,7 @@ class TestAVDActionPlugin:
 
         plugin = self._plugin_factory(ActionModule)
 
-        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: 'Something went wrong'"):
+        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: Something went wrong"):
             plugin.run()
 
     @pytest.mark.parametrize(
