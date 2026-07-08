@@ -46677,7 +46677,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}}
                 name: str | None
-                """IPv4 access list name. This ACL is configured if it is defined under `ipv4_standard_acls`."""
+                """IPv4 access list name."""
 
                 if TYPE_CHECKING:
 
@@ -46689,7 +46689,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: IPv4 access list name. This ACL is configured if it is defined under `ipv4_standard_acls`.
+                            name: IPv4 access list name.
 
                         """
 

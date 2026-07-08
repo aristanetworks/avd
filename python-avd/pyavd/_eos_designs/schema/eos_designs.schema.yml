@@ -10226,8 +10226,7 @@ keys:
               keys:
                 name:
                   type: str
-                  description: IPv4 access list name. This ACL is configured if it
-                    is defined under `ipv4_standard_acls`.
+                  description: IPv4 access list name.
             ipv4_standard_acl:
               type: str
               description: IPv4 standard access list name. The access-list must be
