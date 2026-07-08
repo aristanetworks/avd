@@ -12,7 +12,7 @@ keys:
     description: |
       List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
       Replaces the default route.
-      Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+      Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
       'ipv6_mgmt_ip' under node config is set to 'auto-config', since router
       advertisements are expected to provide the gateway and default route.
     type: list

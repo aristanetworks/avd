@@ -8,9 +8,9 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_mgmt_method</samp>](## "default_mgmt_method") | String |  | `oob` | Valid Values:<br>- <code>oob</code><br>- <code>inband</code><br>- <code>none</code> | `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with AVD Design:<br>  - `aaa_settings`<br>  - `cv_settings`<br>  - `logging_settings`<br>  - `management_eapi`<br>  - `ntp_settings`<br>  - `sflow_settings`<br>  - `snmp_settings`<br>  - `ssh_settings`<br><br>`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.<br>`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.<br>`none` means the VRF and or interface must be manually set for each protocol.<br>This can be overridden under the settings for each protocol.<br> |
-    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br>Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
+    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br>Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
-    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br>Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
+    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br>Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
     | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  | List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.<br>Replaces the default route.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the default route. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mgmt_destination_networks.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  | OOB Management interface gateway in IPv4 format.<br>Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.<br> |
@@ -49,7 +49,7 @@
 
     # List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
     # Replaces the default route.
-    # Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    # Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
     # 'ipv6_mgmt_ip' under node config is set to 'auto-config', since router
     # advertisements are expected to provide the gateway and default route.
     ipv6_mgmt_destination_networks:
@@ -59,7 +59,7 @@
 
     # OOB Management interface gateway in IPv6 format.
     # Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.
-    # Ignored when both 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    # Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
     # 'ipv6_mgmt_ip' under node config is set to 'auto-config', since router
     # advertisements are expected to provide the gateway and default route.
     ipv6_mgmt_gateway: <str>
