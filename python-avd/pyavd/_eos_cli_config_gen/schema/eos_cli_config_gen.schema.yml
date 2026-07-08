@@ -24736,6 +24736,7 @@ keys:
             name:
               type: str
               description: Schedule job name.
+              pattern: (?!config)(?!summary$)[a-z0-9_-]+
             interval:
               type: int
               min: 2
@@ -24816,7 +24817,8 @@ keys:
               type: str
               description: 'Maximum total size of log files (e.g. 110m, 1g).
 
-                Supported suffixes: k (kilobytes), m (megabytes), g (gigabytes).'
+                Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes),
+                g (gigabytes).'
             command:
               type: str
               required: true

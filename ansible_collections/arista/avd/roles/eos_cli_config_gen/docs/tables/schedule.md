@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_concurrent_jobs</samp>](## "schedule.config.max_concurrent_jobs") | Integer |  |  | Min: 1<br>Max: 4 | Maximum number of concurrent scheduled jobs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prepend_hostname_logfile</samp>](## "schedule.config.prepend_hostname_logfile") | Boolean |  |  |  | Prepend hostname to the log file name. |
     | [<samp>&nbsp;&nbsp;jobs</samp>](## "schedule.jobs") | List, items: Dictionary |  |  |  | List of schedule jobs. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "schedule.jobs.[].name") | String | Required, Unique |  |  | Schedule job name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "schedule.jobs.[].name") | String | Required, Unique |  | Pattern: `(?!config)(?!summary$)[a-z0-9_-]+` | Schedule job name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "schedule.jobs.[].interval") | Integer |  |  | Min: 2<br>Max: 1440 | Run the command every N minutes (standalone, no start time).<br>Mutually exclusive with `at` and `now_interval`. Takes precedence over both if multiple are set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at</samp>](## "schedule.jobs.[].at") | Dictionary |  |  |  | Schedule job at a specific time, optionally on a specific date.<br>Mutually exclusive with `interval` (standalone) and `now_interval`.<br>Takes precedence over `now_interval` if both are set. Ignored if `interval` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "schedule.jobs.[].at.time") | String | Required |  |  | Start time in HH:MM:SS format. |
@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_log_files</samp>](## "schedule.jobs.[].max_log_files") | Integer | Required |  | Min: 0<br>Max: 10000 | Maximum number of log files to retain. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging_verbose</samp>](## "schedule.jobs.[].logging_verbose") | Boolean |  |  |  | Enable verbose logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loglocation</samp>](## "schedule.jobs.[].loglocation") | String |  |  |  | Log file location path (e.g. flash:/schedule/logs). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_total_size</samp>](## "schedule.jobs.[].max_total_size") | String |  |  |  | Maximum total size of log files (e.g. 110m, 1g).<br>Supported suffixes: k (kilobytes), m (megabytes), g (gigabytes). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_total_size</samp>](## "schedule.jobs.[].max_total_size") | String |  |  |  | Maximum total size of log files (e.g. 110m, 1g).<br>Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command</samp>](## "schedule.jobs.[].command") | String | Required |  |  | EOS CLI command to execute. |
 
 === "YAML"
@@ -88,7 +88,7 @@
           loglocation: <str>
 
           # Maximum total size of log files (e.g. 110m, 1g).
-          # Supported suffixes: k (kilobytes), m (megabytes), g (gigabytes).
+          # Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes).
           max_total_size: <str>
 
           # EOS CLI command to execute.

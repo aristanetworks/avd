@@ -67792,8 +67792,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             max_total_size: str | None
             """
             Maximum total size of log files (e.g. 110m, 1g).
-            Supported suffixes: k (kilobytes), m (megabytes), g
-            (gigabytes).
+            Supported suffixes: b (bytes, default), k
+            (kilobytes), m (megabytes), g (gigabytes).
             """
             command: str
             """EOS CLI command to execute."""
@@ -67844,8 +67844,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         loglocation: Log file location path (e.g. flash:/schedule/logs).
                         max_total_size:
                            Maximum total size of log files (e.g. 110m, 1g).
-                           Supported suffixes: k (kilobytes), m (megabytes), g
-                           (gigabytes).
+                           Supported suffixes: b (bytes, default), k
+                           (kilobytes), m (megabytes), g (gigabytes).
                         command: EOS CLI command to execute.
 
                     """
