@@ -200,7 +200,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "SITE1_LEAFS"
-    In an L2LS Campus design, we have one type of leaf node: `l2leaf`. Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
+    In an L2LS Campus design, we have one type of leaf node: `l2leaf`. Variables applied under the node key type (l3spine/l2leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
 
     The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that LEAF2A is connected to SPINE1's Ethernet49/1 and SPINE2's Ethernet49/1, respectively.
 
@@ -242,12 +242,12 @@ The Network Services data model is stored in the **NETWORK_SERVICES** group_vars
 
 ## Port Profiles and Network Ports
 
-AVD provides a way to standardize and reuse port profiles through a compact data model you can utilize across the network. The Network Ports data model is stored in the **NETWORK_PORTS** group_vars tab above. Each port is configured to support NAC and dynamically assigns the proper VLAN based on 802.1x authentication. Multiple device types (IP Phones, Workstations, Printers, Access Points, etc.) can share the same port configuration below.
+AVD provides a way to standardize and reuse port profiles through a compact data model you can utilize across the network. The Network Ports data model is stored in the **CONNECTED_ENDPOINTS** group_vars tab above. Each port is configured to support NAC and dynamically assigns the proper VLAN based on 802.1x authentication. Multiple device types (IP Phones, Workstations, Printers, Access Points, etc.) can share the same port configuration below.
 
 ![Figure: 3](images/dot1x_ports.svg#only-light)
 ![Figure: 3](images/dot1x_ports_dark.svg#only-dark)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/data-models.md#network-ports-settings).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and a `range_expand` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/data-models.md#network-ports-settings).
 
 ## WAN/Core Edge
 
