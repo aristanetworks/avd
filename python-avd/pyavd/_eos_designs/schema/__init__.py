@@ -992,7 +992,6 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
-            "disable_first_ntp_server_preferred": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1095,14 +1094,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        disable_first_ntp_server_preferred: bool
-        """
-        Available from AVD 6.4.0.
-        Disable setting the first NTP server as `preferred` when using
-        `ntp_settings.servers[]`.
-
-        Default value: `False`
-        """
 
         if TYPE_CHECKING:
 
@@ -1121,7 +1112,6 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
-                disable_first_ntp_server_preferred: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1183,10 +1173,6 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
-                    disable_first_ntp_server_preferred:
-                       Available from AVD 6.4.0.
-                       Disable setting the first NTP server as `preferred` when using
-                       `ntp_settings.servers[]`.
 
                 """
 
@@ -40016,6 +40002,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+            "set_first_ntp_server_as_preferred": {"type": bool, "default": True},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
@@ -40043,21 +40030,36 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_vrf"`
         """
+        set_first_ntp_server_as_preferred: bool
+        """
+        If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+        Set to 'false' to
+        avoid automatically setting any server as 'preferred'.
+
+        Default value: `True`
+        """
         servers: Servers
         """
-        By default, AVD sets the first NTP server as `preferred`.
+        By default, AVD marks the first server as `preferred`.
         Set
-        `avd_design_future.disable_first_ntp_server_preferred: true` to disable this behavior.
+        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
         Subclass of
         AvdList with `ServersItem` items.
         """
         authenticate: bool | None
+        """Enable NTP authentication."""
         authenticate_servers_only: bool | None
+        """Require authentication for NTP server messages only."""
         authentication_keys: AuthenticationKeys
-        """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
+        """
+        List of NTP authentication keys.
+
+        Subclass of AvdIndexedList with `AuthenticationKeysItem` items.
+        Primary key is `id` (`int`).
+        """
         trusted_keys: str | None
-        """List of trusted-keys as string ex. 10-12,15."""
+        """List or range of trusted NTP authentication key IDs."""
 
         if TYPE_CHECKING:
 
@@ -40065,6 +40067,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 server_vrf: str | UndefinedType = Undefined,
+                set_first_ntp_server_as_preferred: bool | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -40095,17 +40098,25 @@ class EosDesigns(EosDesignsRootModel):
                        - Any other
                        string will be used directly as the VRF name but local interface must be set with
                        `custom_structured_configuration_ntp` if needed.
+                    set_first_ntp_server_as_preferred:
+                       If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+                       Set to 'false' to
+                       avoid automatically setting any server as 'preferred'.
                     servers:
-                       By default, AVD sets the first NTP server as `preferred`.
+                       By default, AVD marks the first server as `preferred`.
                        Set
-                       `avd_design_future.disable_first_ntp_server_preferred: true` to disable this behavior.
+                       'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
                        Subclass of
                        AvdList with `ServersItem` items.
-                    authenticate: authenticate
-                    authenticate_servers_only: authenticate_servers_only
-                    authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
-                    trusted_keys: List of trusted-keys as string ex. 10-12,15.
+                    authenticate: Enable NTP authentication.
+                    authenticate_servers_only: Require authentication for NTP server messages only.
+                    authentication_keys:
+                       List of NTP authentication keys.
+
+                       Subclass of AvdIndexedList with `AuthenticationKeysItem` items.
+                       Primary key is `id` (`int`).
+                    trusted_keys: List or range of trusted NTP authentication key IDs.
 
                 """
 

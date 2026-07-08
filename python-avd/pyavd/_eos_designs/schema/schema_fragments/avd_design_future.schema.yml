@@ -88,9 +88,3 @@ keys:
           Available from AVD 6.1.0.
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
         default: false
-      disable_first_ntp_server_preferred:
-        type: bool
-        description: |-
-          Available from AVD 6.4.0.
-          Disable setting the first NTP server as `preferred` when using `ntp_settings.servers[]`.
-        default: false
