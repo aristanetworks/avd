@@ -282,14 +282,14 @@ const RUNTIME_DEPS = {
   css: [
     {
       href: `${SCHEMA_VENDOR_BASE}/bootstrap-icons/font/bootstrap-icons.min.css`,
-      integrity: "sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+",
+      integrity: "sha384-L8JisW7yet65STBdXyiV6LpfJHTE34WQ6uNxndBGg1lcc3tseozYGsBw6W6KzXVv",
     },
   ],
   js: [
     {
       src: `${SCHEMA_VENDOR_BASE}/bootstrap/bootstrap.bundle.min.js`,
       global: "bootstrap",
-      integrity: "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
+      integrity: "sha384-WfVzX9hAUBOBjMptWY54rUnWRI1Tn/ZCUAT52D/05VTiszOwsM+TM5o0sB4Kv44M",
     },
     {
       src: `${SCHEMA_VENDOR_BASE}/sql.js/dist/sql-wasm.js`,
