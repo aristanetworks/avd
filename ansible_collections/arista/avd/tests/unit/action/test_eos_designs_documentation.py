@@ -18,6 +18,8 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_designs_documentation"
+LOG_HANDLERS_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers"
+LOG_CONFIG_PATH = "ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 FABRIC_NAME = "DC1_FABRIC"
 
@@ -65,10 +67,8 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
     assert record.getMessage() == "Could not find structured config files for 'leaf1,leaf2'. The documentation may be incomplete."
 
 
-def test_run_routes_missing_device_warning_to_result_warnings(
-    action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture
-) -> None:
-    """End-to-end: a WARNING logged in read_structured_configs ends up in result['warnings'] with the missing device name visible."""
+def test_run_routes_missing_device_warning_to_display(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """End-to-end: a WARNING logged in read_structured_configs is routed to display.warning with the missing device name visible."""
     module = action_module(ActionModule)
     facts_path = tmp_path / "eos_designs_facts.json"
     facts_path.write_text(json.dumps({"spine1": {}, "leaf1": {}}), encoding="UTF-8")
@@ -78,19 +78,24 @@ def test_run_routes_missing_device_warning_to_result_warnings(
 
     validated_args = {**BASE_VALIDATED_ARGS, "structured_config_dir": str(structured_dir), "fabric_documentation": False}
 
+    # verbosity=3 makes the base class configure the AVD logger at DEBUG, routing WARNING to display.warning
+    shared_display = MagicMock(verbosity=3)
+
     with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=facts_path),
         patch(f"{MODULE_PATH}.EosDesignsFacts"),
         patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=_empty_output()),
-        caplog.at_level(logging.WARNING, logger="ansible_collections.arista.avd"),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
     ):
-        result = module.run(task_vars={"fabric_name": FABRIC_NAME})
+        result = module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 
     expected_message = "Could not find structured config files for 'leaf1'. The documentation may be incomplete."
-    assert caplog.messages == [expected_message]
-    assert result["warnings"] == [expected_message]
+    warning_messages = [call.args[0] for call in shared_display.warning.call_args_list]
+    assert warning_messages == [expected_message]
     assert result.get("failed") is not True
 
 
@@ -108,8 +113,50 @@ def test_load_facts_raises_with_path_and_upstream_task_when_file_missing(action_
     with (
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=missing_path),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=r"Missing AVD eos_designs facts to generate documentation .*Ensure the 'arista.avd.eos_designs_facts' task ran successfully.",
         ),
     ):
         module.load_facts()
+
+
+def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Test that any exception during execution is wrapped with the 'Error during plugin ... execution:' prefix and chained."""
+    module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.eos_designs_documentation"  # pyright: ignore[reportAttributeAccessIssue]
+    facts_path = tmp_path / "eos_designs_facts.json"
+    facts_path.write_text(json.dumps({"spine1": {}}), encoding="UTF-8")
+    validated_args = {**BASE_VALIDATED_ARGS, "structured_config_dir": str(tmp_path)}
+    original_error = RuntimeError("pyavd exploded")
+    shared_display = MagicMock(verbosity=0)
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=facts_path),
+        patch(f"{MODULE_PATH}.EosDesignsFacts"),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", side_effect=original_error),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: 'pyavd exploded'") as exc_info,
+    ):
+        module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
+
+    assert exc_info.value.__cause__ is original_error
+
+
+def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
+    """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
+    module = action_module(ActionModule)
+    module.ansible_name = "arista.avd.eos_designs_documentation"  # pyright: ignore[reportAttributeAccessIssue]
+    shared_display = MagicMock(verbosity=0)
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
+        patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
+        pytest.raises(AnsibleActionFail, match=r"The 'arista.avd.eos_designs_documentation' plugin requires the 'pyavd' Python library. Got import error."),
+    ):
+        module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
