@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 from collections import ChainMap
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
@@ -17,13 +17,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
-if TYPE_CHECKING:
-    from pyavd import get_device_config, get_device_doc
-    from pyavd._utils import strip_empties_from_dict, template
-    from pyavd.j2filters import add_md_toc
-
 try:
-    from pyavd import get_device_config, get_device_doc
+    from pyavd import ConfigRenderConfiguration, DocRenderConfiguration, get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
@@ -41,6 +36,8 @@ ARGUMENT_SPEC = {
     "documentation_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
+    "configuration_hide_passwords": {"type": "bool"},
+    "documentation_hide_passwords": {"type": "bool"},
     "device_doc_toc": {"type": "bool", "default": True},
     "cprofile_file": {"type": "str"},
 }
@@ -77,7 +74,9 @@ class ActionModule(AVDActionPlugin):
 
         if validated_args["generate_device_config"]:
             self.logger.debug("Rendering configuration...")
-            device_config = get_device_config(structured_config)
+            device_config = get_device_config(
+                structured_config, configuration=ConfigRenderConfiguration(hide_passwords=validated_args.get("configuration_hide_passwords"))
+            )
 
             if has_custom_templates:
                 self.logger.debug("Rendering config custom templates...")
@@ -94,7 +93,11 @@ class ActionModule(AVDActionPlugin):
 
         if validated_args["generate_device_doc"]:
             self.logger.debug("Rendering documentation...")
-            device_doc = get_device_doc(structured_config, add_md_toc=False)
+            device_doc = get_device_doc(
+                structured_config,
+                add_md_toc=False,
+                configuration=DocRenderConfiguration(hide_passwords=validated_args.get("documentation_hide_passwords")),
+            )
 
             if has_custom_templates:
                 self.logger.debug("Rendering documentation custom templates...")
