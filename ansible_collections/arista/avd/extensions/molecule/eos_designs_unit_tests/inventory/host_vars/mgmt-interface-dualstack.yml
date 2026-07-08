@@ -3,7 +3,11 @@ mgmt_interface_settings:
   vrf: MGMT
 type: l2leaf
 ipv6_mgmt_gateway: 0200::1
-mgmt_gateway: 192.168.200.5
+mgmt_ipv4:
+  gateway: 192.168.200.5
+  static_routes:
+    - prefix: 10.0.10.0/24
+    - prefix: 172.16.254.0/23
 l2leaf:
   defaults:
   nodes:
@@ -15,7 +19,3 @@ l2leaf:
 ipv6_mgmt_destination_networks:
   - 0200:1::/64
   - 0200:2::/64
-
-mgmt_destination_networks:
-  - 10.0.10.0/24
-  - 172.16.254.0/23

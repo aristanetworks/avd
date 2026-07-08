@@ -17,3 +17,8 @@ keys:
     items:
       type: str
       description: IPv4_address/Mask.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_ipv4.static_routes
+      remove_in_version: 7.0.0

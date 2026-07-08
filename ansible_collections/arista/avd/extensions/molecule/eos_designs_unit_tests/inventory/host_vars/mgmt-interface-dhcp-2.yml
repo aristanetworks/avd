@@ -1,0 +1,15 @@
+# Minimum config to test mgmt_ipv4.dhcp: true feature.
+type: l2leaf
+mgmt_interface_settings:
+  vrf: MGMT
+  description: "Management Interface - DHCP"
+mgmt_ipv4:
+  gateway: 10.1.1.1 # mgmt_ipv4.gateway will be suppressed as dhcp is set to true
+  static_routes:
+    - prefix: 10.1.1.1/24 # mgmt_ipv4.static_routes will be suppressed as dhcp is set to true
+  dhcp: true
+l2leaf:
+  defaults:
+  nodes:
+    - name: mgmt-interface-dhcp-2
+      id: 201

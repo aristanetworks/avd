@@ -22,21 +22,20 @@ class ManagementInterfaceMixin(Protocol):
     @structured_config_contributor
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
-        if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
-            # Check if mgmt_ip is set to "dhcp"
-            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
-
+        if self.shared_utils.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.shared_utils.mgmt_interface_vrf,
-                ip_address=self.shared_utils.node_config.mgmt_ip,
+                ip_address=self.shared_utils.mgmt_ip,
                 type="oob",
             )
 
             # For DHCP, automatically accept default route instead of using gateway
-            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            if (self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp) or (
+                self.shared_utils.node_config.mgmt_ip is None and self.inputs.mgmt_ipv4.dhcp
+            ):
                 interface_settings.dhcp_client_accept_default_route = True
             else:
                 # For static IP, set gateway (metadata field, actual routing done via static_routes)

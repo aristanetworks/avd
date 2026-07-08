@@ -46,7 +46,7 @@ class DigitalTwinMixin(Protocol):
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
                     )
                     raise AristaAvdError(msg)
-                ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
+                ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.mgmt_ip)
                 if not ip_addr and digital_twin_node_type not in ["cloudeos", "veos"]:
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."

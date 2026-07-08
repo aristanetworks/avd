@@ -88,7 +88,8 @@ bgp_peer_groups:
     structured_config:
       description: Description for ipvpn_gateway_peers via structured_config
 type: l3leaf
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 overlay_routing_protocol: ibgp
 bgp_as: 65001
 

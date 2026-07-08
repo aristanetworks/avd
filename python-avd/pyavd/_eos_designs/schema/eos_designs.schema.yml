@@ -4435,6 +4435,11 @@ keys:
     items:
       type: str
       description: IPv4_address/Mask.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_ipv4.static_routes
+      remove_in_version: 7.0.0
   mgmt_gateway:
     documentation_options:
       table: management-interface-settings
@@ -4447,6 +4452,11 @@ keys:
       true'', since the DHCP server will provide the gateway.
 
       '
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_ipv4.gateway
+      remove_in_version: 7.0.0
   mgmt_interface:
     documentation_options:
       table: management-interface-settings
@@ -4525,6 +4535,51 @@ keys:
       removed: false
       new_key: mgmt_interface_settings.vrf
       remove_in_version: 7.0.0
+  mgmt_ipv4:
+    documentation_options:
+      table: management-interface-settings
+    type: dict
+    description: IPv4 OOB Management settings.
+    keys:
+      dhcp:
+        type: bool
+        description: 'Use DHCP for IP addressing on the management interface.
+
+          Per-device override: ''mgmt_ip'' (takes precedence).'
+      gateway:
+        type: str
+        description: 'OOB Management gateway in IPv4 format applied to all devices.
+
+          Used as next-hop for the default route or static routes defined under `mgmt_ipv4.static_routes`.
+
+          Per-device override: `mgmt_gateway` (takes precedence).
+
+          This setting is ignored when using DHCP for the management IP and
+
+          ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true'',
+          since the DHCP server
+
+          will provide the gateway.'
+      static_routes:
+        type: list
+        description: 'List of IPv4 prefixes to configure as static routes towards
+          the OOB Management gateway.
+
+          When set, these specific prefixes replace the default route (0.0.0.0/0).
+
+          This setting is ignored when using DHCP for the management IP and
+
+          ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true'',
+          since the DHCP server
+
+          will provide the default route.'
+        items:
+          type: dict
+          keys:
+            prefix:
+              type: str
+              required: true
+              description: IPv4_address/Mask.
   mgmt_vrf_routing:
     documentation_options:
       table: management-interface-settings

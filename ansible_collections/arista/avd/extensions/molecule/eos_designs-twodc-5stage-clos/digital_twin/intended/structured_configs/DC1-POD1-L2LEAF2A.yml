@@ -115,7 +115,7 @@ spanning_tree:
   no_spanning_tree_vlan: '4094'
 static_routes:
 - vrf: MGMT
-  prefix: 0.0.0.0/0
+  prefix: 10.0.0.0/8
   next_hop: 192.168.1.254
 - prefix: 0.0.0.0/0
   next_hop: 172.21.110.1

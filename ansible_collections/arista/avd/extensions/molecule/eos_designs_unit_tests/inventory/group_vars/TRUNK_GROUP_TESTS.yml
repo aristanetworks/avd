@@ -1,7 +1,8 @@
 ---
 pod_name: TRUNK_GROUP_TESTS
 enable_trunk_groups: true
-mgmt_gateway: 1.1.1.1
+mgmt_ipv4:
+  gateway: 1.1.1.1
 
 tenants:
   - name: TRUNK_GROUP_TESTS

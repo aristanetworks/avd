@@ -1,6 +1,7 @@
 ---
 type: l3leaf
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 overlay_routing_protocol: ebgp
 evpn_prevent_readvertise_to_server: true
 l3leaf:

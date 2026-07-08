@@ -6,7 +6,8 @@ default_node_types:
     match_hostnames:
       - "test-mgmt-gateway-in-node-group"
 
-mgmt_gateway: 192.168.201.250
+mgmt_ipv4:
+  gateway: 192.168.201.250
 ipv6_mgmt_gateway: 2000::1
 
 l2leaf:

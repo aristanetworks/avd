@@ -1,0 +1,18 @@
+---
+# Test for missing "inband_mgmt_interface", when "default_mgmt_method" is "inband".
+# `address_locking_settings` triggers `get_local_interface` which resolves
+# `default_mgmt_protocol_interface` and surfaces the error from `default_mgmt_method`.
+default_mgmt_method: inband
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: missing-inband-mgmt-default-mgmt-method-inband
+
+address_locking_settings:
+  dhcp_servers_ipv4:
+    - 10.10.10.10
+
+expected_error_message: >-
+  'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set.

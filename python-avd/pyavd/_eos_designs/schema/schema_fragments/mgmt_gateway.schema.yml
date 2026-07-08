@@ -14,3 +14,8 @@ keys:
       OOB Management interface gateway in IPv4 format.
       Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.
       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_ipv4.gateway
+      remove_in_version: 7.0.0

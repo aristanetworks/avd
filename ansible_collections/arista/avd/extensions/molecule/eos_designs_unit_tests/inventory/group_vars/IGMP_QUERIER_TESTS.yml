@@ -2,7 +2,8 @@
 
 # IGMP_QUERIER_TESTS
 
-mgmt_gateway: 192.168.200.5
+mgmt_ipv4:
+  gateway: 192.168.200.5
 
 svi_profiles:
   - profile: IGMP_QUERIER_PARENT

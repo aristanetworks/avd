@@ -305,7 +305,7 @@ standard_access_lists:
     source: 10.0.0.1
 static_routes:
 - vrf: default
-  prefix: 0.0.0.0/0
+  prefix: 10.0.0.0/24
   next_hop: 192.168.200.1
 tacacs_servers:
   hosts:

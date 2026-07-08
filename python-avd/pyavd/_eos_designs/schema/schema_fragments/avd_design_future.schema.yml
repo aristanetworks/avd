@@ -11,6 +11,9 @@ keys:
     description: |-
       Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     keys:
+      # TODO AVD7.0: When this knob becomes the default: true, update the descriptions of
+      # `mgmt_ipv4.gateway` and `mgmt_ipv4.static_routes` in mgmt_ipv4.schema.yml which
+      # reference this flag by name.
       accept_dhcp_default_route_for_mgmt_ip_dhcp:
         type: bool
         default: false

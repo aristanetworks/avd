@@ -3,7 +3,8 @@
 # svi profiles, parent profiles and svis.
 
 type: l3leaf
-mgmt_gateway: 10.0.0.1
+mgmt_ipv4:
+  gateway: 10.0.0.1
 
 l3leaf:
   defaults:
