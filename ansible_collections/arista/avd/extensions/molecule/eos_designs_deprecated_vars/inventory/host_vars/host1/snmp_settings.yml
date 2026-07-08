@@ -1,6 +1,6 @@
 ---
 ipv4_standard_acls:
-  - name: onur
+  - name: acl1
     entries:
       - sequence: 10
         action: permit
@@ -14,7 +14,7 @@ snmp_settings:
     - name: SNMP-COMMUNITY-1
       access: ro
       access_list_ipv4:
-        name: onur
+        name: acl1
     - name: SNMP-COMMUNITY-2
       access: rw
       access_list_ipv4:
