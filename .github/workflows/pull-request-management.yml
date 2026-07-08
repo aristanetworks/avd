@@ -78,6 +78,9 @@ jobs:
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
+              - 'ansible_collections/arista/avd/plugins/action/eos_cli_config_gen.py'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/*'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/**/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
