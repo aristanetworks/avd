@@ -26,7 +26,7 @@ class AvdStringFormatter(Formatter):
                    Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
         conversion ::= "!u" for "upper()", "!l" for "lower()", "!t" for "title()" and
                        "!c" for short name of the network interfaces. e.g Portchannel2.2 > Po2.2, Ethernet1 > Et1.
-                       Using "!c" for other strings may have unexpected results. (The regular Python conversions "!r", "!s", "!a" have been removed).
+                       Using "!c" for other strings gives no result (The regular Python conversions "!r", "!s", "!a" have been removed).
 
     Note the order of syntax field matters!
     """
@@ -156,7 +156,7 @@ class AvdStringFormatter(Formatter):
             return str(value).upper()
         if conversion == "c":
             # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2, Ethernet1/1/1 > Et1/1/1
-            interface = re.match(r"(port-channel|ethernet|vlan|loopback|tunnel)\s?(\d+((\.\d+)?|(/\d+)*)?)", str(value).lower())
+            interface = re.match(r"(port-channel|ethernet|vlan|loopback|tunnel)\s?(\d+(/\d+)*(\.\d+)?)", str(value).lower())
             interface_type = str(value).title()[:2]
             if interface:
                 return interface_type + interface.group(2)
