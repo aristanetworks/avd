@@ -8467,6 +8467,9 @@ interface Vlan4092
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    ip address 10.255.251.0/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable EVPN_UNDERLAY
    isis metric 50
    isis network point-to-point
