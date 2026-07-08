@@ -11,6 +11,9 @@
   - [Management API gNMI](#management-api-gnmi)
   - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Device Configuration](#cvx-device-configuration)
 - [Authentication](#authentication)
@@ -318,6 +321,23 @@ management api http-commands
    no shutdown
 ```
 
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      search username cn=ldap-admin,dc=example,dc=com password <removed>
+```
+
 ## CVX
 
 CVX is disabled
@@ -502,9 +522,9 @@ aaa accounting commands 0 default none
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
-| ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
-| cipher-v1.0-v1.3 | - | - | - | v1.0 to v1.2: SHA256:SHA384<br>v1.3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256 | - | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Auto-Certificate Profile | Ciphers | CRLs | FIPS restrictions enabled |
+| ---------------- | --------------------- | -------------------- | ------------ | ------------------------ | ------- | ---- | ------------------------- |
+| cipher-v1.0-v1.3 | - | - | - | - | v1.0 to v1.2: SHA256:SHA384<br>v1.3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256 | - | - |
 
 ### Management Security Device Configuration
 
@@ -577,7 +597,7 @@ dhcp relay
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
+   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false -flowdns
    no shutdown
 ```
 
@@ -1897,14 +1917,11 @@ errdisable recovery cause uplink-failure-detection
 
 License is not installed.
 
-FIPS restrictions enabled.
-
 ### MACsec Device Configuration
 
 ```eos
 !
 mac security
-   fips restrictions
 ```
 
 ### Traffic Policies information

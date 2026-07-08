@@ -51,10 +51,14 @@ Line coverage is based on generated Python execution, Jinja `debug_info`, and ex
 
 The plugin reports these template lines as executable:
 
-- Static output lines.
+- Static output lines, including intentional blank lines rendered as Markdown structure.
 - Output expression lines, including mixed text and expressions.
 - Jinja control statement lines such as `if`, `elif`, `for`, and `set`.
 - Static output inside conditionals and loops.
+
+Jinja `debug_info` does not map every rendered static line back to source. The plugin supplements `debug_info` by parsing generated `yield` statements and matching rendered static output back to static source-template tokens. This includes blank-only rendered output when the source line is intentionally blank.
+
+Blank-only static output is credited only when the generated Python gives enough runtime evidence. For example, if Jinja compiles a conditional body as a generated `yield "\n"` before a `for` loop, the plugin maps that generated yield to the blank source line inside the `if` body. Jinja may insert generated `pass` statements before the yield; those are ignored while looking for the first real generated body statement.
 
 Generated Python lines are credited to template lines only when the mapping is explicit enough to be useful. Runtime scaffolding that cannot be tied confidently to a source line is ignored instead of being assigned to the nearest previous template line.
 
@@ -81,6 +85,8 @@ The plugin also reports source-level branch arcs for common Jinja control flow:
 Normal `for` loops without an explicit `{% else %}` do not report the empty-iteration path as a missing branch. In AVD templates, an empty loop without an `else` usually means there was no optional input to render, not that an important source branch was untested.
 
 Top-level optional guards without `elif` or `else` are marked as no-branch lines. These are commonly used to wrap optional EOS feature sections and would otherwise add noisy `line->exit` misses across many templates.
+
+Some Jinja body statements, especially `set`, `do`, and static output, execute through generated Python scaffolding instead of clean source-to-source arcs. When coverage records generated code entering a reportable body line, the plugin credits the corresponding source branch arc. This prevents false partial branches for conditionals whose body was executed but whose body statement did not produce a normal Python frame mapped directly from the source `if` line.
 
 ## Expected Noise
 
