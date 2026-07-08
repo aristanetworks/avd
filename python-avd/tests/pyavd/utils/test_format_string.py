@@ -106,6 +106,8 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?!t}", ("ETHERNET1",), {}, "Ethernet1", id="positional_optional_field_with_existing_arg_and_title"),
     # named fields with short interface name (!c conversion)
     pytest.param("{interface!c}", (), {"interface": "Ethernet2"}, "Et2", id="field_with_ethernet_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Ethernet 2"}, "Et2", id="field_with_ethernet_and_compact"),
+    pytest.param("{interface!c}", (), {"interface": "Ethernet 2/2/2"}, "Et2", id="field_with_ethernet_and_compact"),
     pytest.param("{interface!c}", (), {"interface": "Port-channel20"}, "Po20", id="field_with_portchannel_and_compact"),
     pytest.param("{interface!c}", (), {"interface": "Port-channel20.200"}, "Po20.200", id="field_with_portchannel_subinterface_and_compact"),
     pytest.param("{interface!c}", (), {"interface": "Vlan100"}, "Vl100", id="field_with_vlan_and_compact"),
