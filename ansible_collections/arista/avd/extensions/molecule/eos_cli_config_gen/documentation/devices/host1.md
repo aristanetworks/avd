@@ -9466,9 +9466,9 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | default | bgp | True | map1 |
 | default | connected | True | map1 |
 | default | isis level-1 | True | map1 |
-| default | ospfv3 | True | map1 |
-| default | ospfv3 match external | True | map1 |
-| default | ospfv3 match nssa-external | True | map1 |
+| default | ospfv3 leaked | - | map1 |
+| default | ospfv3 match external leaked | - | map1 |
+| default | ospfv3 match nssa-external leaked | - | map1 |
 | default | static | True | map1 |
 
 #### Router OSPFv3 Address Family IPv6
@@ -9486,17 +9486,17 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | default | connected | True | map1 |
 | default | dhcp | - | map1 |
 | default | isis level-1 | True | map1 |
-| default | ospfv3 | True | map1 |
-| default | ospfv3 match external | True | map1 |
-| default | ospfv3 match nssa-external | True | map1 |
+| default | ospfv3 leaked | - | map1 |
+| default | ospfv3 match external leaked | - | map1 |
+| default | ospfv3 match nssa-external leaked | - | map1 |
 | default | static | True | map1 |
 | MGMT | bgp | True | map1 |
 | MGMT | connected | True | map1 |
 | MGMT | dhcp | - | map1 |
 | MGMT | isis level-1 | True | map1 |
-| MGMT | ospfv3 | True | map1 |
-| MGMT | ospfv3 match external | True | map1 |
-| MGMT | ospfv3 match nssa-external | True | map1 |
+| MGMT | ospfv3 leaked | - | map1 |
+| MGMT | ospfv3 match external leaked | - | map1 |
+| MGMT | ospfv3 match nssa-external leaked | - | map1 |
 | MGMT | static | True | map1 |
 
 #### Router OSPFv3 Device Configuration
@@ -9524,6 +9524,8 @@ router ospfv3 vrf data
       router-id 1.1.1.1
       auto-cost reference-bandwidth 1000
       passive-interface default
+   !
+   bfd default
 !
 router ospfv3
    router-id 1.1.1.1

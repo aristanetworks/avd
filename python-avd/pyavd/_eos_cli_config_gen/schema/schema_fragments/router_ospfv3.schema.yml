@@ -12,16 +12,13 @@ keys:
     keys:
       router_id:
         type: str
-        description: IPv4 Address.
+        description: 32-bit OSPF router ID or an IP address.
       passive_interface_default:
         type: bool
-        description: Set all interfaces to passive by default.
       auto_cost_reference_bandwidth:
         type: int
         min: 1
         max: 4294967
-        convert_types:
-          - str
         description: Reference bandwidth in Mbps.
       address_family_ipv4:
         type: dict
@@ -36,16 +33,13 @@ keys:
             description: Activate the address family.
           router_id:
             type: str
-            description: IPv4 Address.
+            description: 32-bit OSPF router ID or an IP address.
           passive_interface_default:
             type: bool
-            description: Set all interfaces to passive by default.
           auto_cost_reference_bandwidth:
             type: int
             min: 1
             max: 4294967
-            convert_types:
-              - str
             description: Reference bandwidth in Mbps.
           redistribute:
             type: dict
@@ -59,10 +53,8 @@ keys:
                     required: true
                   route_map:
                     type: str
-                    description: Specify route map to use.
                   include_leaked:
                     type: bool
-                    description: Include leaked routes.
               connected:
                 type: dict
                 keys:
@@ -71,10 +63,8 @@ keys:
                     required: true
                   route_map:
                     type: str
-                    description: Specify route map to use.
                   include_leaked:
                     type: bool
-                    description: Include leaked routes.
               static:
                 type: dict
                 keys:
@@ -83,10 +73,8 @@ keys:
                     required: true
                   route_map:
                     type: str
-                    description: Specify route map to use.
                   include_leaked:
                     type: bool
-                    description: Include leaked routes.
               isis:
                 type: dict
                 keys:
@@ -101,34 +89,28 @@ keys:
                       - level-1-2
                   route_map:
                     type: str
-                    description: Specify route map to use.
                   include_leaked:
                     type: bool
-                    description: Include leaked routes.
               ospfv3:
                 type: dict
                 keys:
-                  enabled:
-                    type: bool
-                    description: |-
-                      Redistribute all OSPFv3 leaked routes.
-                      Mutually exclusive with match_internal.
-                  route_map:
-                    type: str
-                    description: Specify route map to use.
-                  match_internal:
+                  leaked:
                     type: dict
-                    description: |-
-                      Redistribute only internal OSPFv3 leaked routes.
-                      Mutually exclusive with `enabled`.
                     keys:
                       enabled:
                         type: bool
                         required: true
+                        description: |-
+                          Redistribute all OSPFv3 leaked routes.
+                          Mutually exclusive with match_internal.
+                      match_internal:
+                        type: bool
+                        description: |-
+                          Redistribute only internal OSPFv3 leaked routes.
+                          Mutually exclusive with `enabled`.
                       route_map:
                         type: str
-                        description: Specify route map to use.
-                  match_external:
+                  leaked_match_external:
                     type: dict
                     description: Redistribute external OSPFv3 leaked routes.
                     keys:
@@ -137,8 +119,7 @@ keys:
                         required: true
                       route_map:
                         type: str
-                        description: Specify route map to use.
-                  match_nssa_external:
+                  leaked_match_nssa_external:
                     type: dict
                     description: Redistribute NSSA external OSPFv3 leaked routes.
                     keys:
@@ -147,7 +128,6 @@ keys:
                         required: true
                       route_map:
                         type: str
-                        description: Specify route map to use.
       address_family_ipv6:
         type: dict
         description: |-
@@ -168,7 +148,6 @@ keys:
                     required: true
                   route_map:
                     type: str
-                    description: Specify route map to use.
       vrfs:
         type: list
         primary_key: name
@@ -179,16 +158,13 @@ keys:
               type: str
             router_id:
               type: str
-              description: IPv4 Address.
+              description: 32-bit OSPF router ID or an IP address.
             passive_interface_default:
               type: bool
-              description: Set all interfaces to passive by default.
             auto_cost_reference_bandwidth:
               type: int
               min: 1
               max: 4294967
-              convert_types:
-                - str
               description: Reference bandwidth in Mbps.
             address_family_ipv4:
               type: dict
@@ -196,6 +172,9 @@ keys:
             address_family_ipv6:
               type: dict
               $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv6"
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
       eos_cli:
         type: str
         description: Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance.

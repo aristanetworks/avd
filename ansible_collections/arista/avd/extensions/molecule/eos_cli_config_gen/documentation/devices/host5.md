@@ -103,9 +103,9 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal | True | - |
-| default | ospfv3 match external | True | - |
-| default | ospfv3 match nssa-external | True | - |
+| default | ospfv3 match internal leaked | - | - |
+| default | ospfv3 match external leaked | - | - |
+| default | ospfv3 match nssa-external leaked | - | - |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -117,9 +117,9 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal | True | - |
-| default | ospfv3 match external | True | - |
-| default | ospfv3 match nssa-external | True | - |
+| default | ospfv3 match internal leaked | - | - |
+| default | ospfv3 match external leaked | - | - |
+| default | ospfv3 match nssa-external leaked | - | - |
 
 #### Router OSPFv3 Device Configuration
 

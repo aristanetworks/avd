@@ -376,9 +376,9 @@ router ospf 702
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal | True | map1 |
-| default | ospfv3 match external | True | map1 |
-| default | ospfv3 match nssa-external | True | map1 |
+| default | ospfv3 match internal leaked | - | map1 |
+| default | ospfv3 match external leaked | - | map1 |
+| default | ospfv3 match nssa-external leaked | - | map1 |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -390,9 +390,9 @@ router ospf 702
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal | True | map1 |
-| default | ospfv3 match external | True | map1 |
-| default | ospfv3 match nssa-external | True | map1 |
+| default | ospfv3 match internal leaked | - | map1 |
+| default | ospfv3 match external leaked | - | map1 |
+| default | ospfv3 match nssa-external leaked | - | map1 |
 
 #### Router OSPFv3 Device Configuration
 

@@ -190,8 +190,7 @@ ip routing ipv6 interfaces vrf TENANT_B
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 | True | - |
-| default | ospfv3 match internal | True | - |
+| default | ospfv3 leaked | - | - |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -203,8 +202,7 @@ ip routing ipv6 interfaces vrf TENANT_B
 
 | VRF | Source Protocol | Include Leaked | Route Map |
 | --- | --------------- | -------------- | --------- |
-| default | ospfv3 | True | - |
-| default | ospfv3 match internal | True | - |
+| default | ospfv3 leaked | - | - |
 
 #### Router OSPFv3 Device Configuration
 

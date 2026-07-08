@@ -11,7 +11,8 @@ router_ospfv3:
       isis:
         enabled: true
       ospfv3:
-        enabled: true
+        leaked:
+          enabled: true
       static:
         enabled: true
   address_family_ipv6:
@@ -26,7 +27,8 @@ router_ospfv3:
       isis:
         enabled: true
       ospfv3:
-        enabled: true
+        leaked:
+          enabled: true
       static:
         enabled: true
   vrfs:
@@ -48,13 +50,14 @@ router_ospfv3:
             include_leaked: true
             level: level-2
           ospfv3:
-            match_internal:
+            leaked:
+              enabled: true
+              match_internal: true
+              route_map: map2
+            leaked_match_external:
               enabled: true
               route_map: map2
-            match_external:
-              enabled: true
-              route_map: map2
-            match_nssa_external:
+            leaked_match_nssa_external:
               enabled: true
               route_map: map2
       address_family_ipv6:
@@ -74,13 +77,14 @@ router_ospfv3:
             include_leaked: true
             level: level-2
           ospfv3:
-            match_internal:
+            leaked:
+              enabled: true
+              match_internal: true
+              route_map: map2
+            leaked_match_external:
               enabled: true
               route_map: map2
-            match_external:
-              enabled: true
-              route_map: map2
-            match_nssa_external:
+            leaked_match_nssa_external:
               enabled: true
               route_map: map2
     - name: data
@@ -102,8 +106,9 @@ router_ospfv3:
             enabled: true
             route_map: map1
           ospfv3:
-            enabled: true
-            route_map: map1
+            leaked:
+              enabled: true
+              route_map: map1
           static:
             enabled: true
             include_leaked: true
@@ -122,8 +127,9 @@ router_ospfv3:
             enabled: true
             route_map: map1
           ospfv3:
-            enabled: true
-            route_map: map1
+            leaked:
+              enabled: true
+              route_map: map1
           static:
             enabled: true
             route_map: map1
@@ -145,7 +151,8 @@ router_ospfv3:
           isis:
             enabled: true
           ospfv3:
-            enabled: true
+            leaked:
+              enabled: true
           static:
             enabled: true
       address_family_ipv6:
@@ -159,7 +166,8 @@ router_ospfv3:
           isis:
             enabled: true
           ospfv3:
-            enabled: true
+            leaked:
+              enabled: true
           static:
             enabled: true
           dhcp:
@@ -170,24 +178,22 @@ router_ospfv3:
         router_id: 1.1.1.1
         redistribute:
           ospfv3:
-            enabled: true
-            match_internal:
+            leaked:
               enabled: true
-            match_external:
+            leaked_match_external:
               enabled: true
-            match_nssa_external:
+            leaked_match_nssa_external:
               enabled: true
       address_family_ipv6:
         enabled: true
         passive_interface_default: true
         redistribute:
           ospfv3:
-            enabled: true
-            match_internal:
+            leaked:
               enabled: true
-            match_external:
+            leaked_match_external:
               enabled: true
-            match_nssa_external:
+            leaked_match_nssa_external:
               enabled: true
     - name: Test_VRF
       router_id: 1.1.1.1

@@ -163,7 +163,7 @@ router ospf 703
 | default | bgp | True | - |
 | default | connected | True | - |
 | default | isis level-1 | True | - |
-| default | ospfv3 | True | map1 |
+| default | ospfv3 leaked | - | map1 |
 | default | static | - | map1 |
 
 #### Router OSPFv3 Address Family IPv6
@@ -180,7 +180,7 @@ router ospf 703
 | default | connected | True | - |
 | default | dhcp | - | map1 |
 | default | isis level-1 | True | - |
-| default | ospfv3 | True | map1 |
+| default | ospfv3 leaked | - | map1 |
 | default | static | - | map1 |
 
 #### Router OSPFv3 Device Configuration
@@ -209,6 +209,7 @@ router ospfv3
       redistribute isis include leaked level-1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
+   !
    bfd default
 ```
 

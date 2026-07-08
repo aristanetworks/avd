@@ -65469,9 +65469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65490,8 +65488,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65501,9 +65499,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65522,8 +65518,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65533,9 +65529,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65554,8 +65548,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65567,9 +65561,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool
                     level: Level | None
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65590,112 +65582,114 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 enabled: enabled
                                 level: level
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
                 class Ospfv3(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class MatchInternal(AvdModel):
+                    class Leaked(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """
+                        Redistribute all OSPFv3 leaked routes.
+                        Mutually exclusive with match_internal.
+                        """
+                        match_internal: bool | None
+                        """
+                        Redistribute only internal OSPFv3 leaked routes.
+                        Mutually exclusive with `enabled`.
+                        """
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                match_internal: bool | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Leaked.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Redistribute all OSPFv3 leaked routes.
+                                       Mutually exclusive with match_internal.
+                                    match_internal:
+                                       Redistribute only internal OSPFv3 leaked routes.
+                                       Mutually exclusive with `enabled`.
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchExternal(AvdModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
 
                         if TYPE_CHECKING:
 
                             def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
-                                MatchInternal.
+                                LeakedMatchExternal.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
+                                    route_map: route_map
 
                                 """
 
-                    class MatchExternal(AvdModel):
+                    class LeakedMatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
 
                         if TYPE_CHECKING:
 
                             def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
-                                MatchExternal.
+                                LeakedMatchNssaExternal.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-
-                                """
-
-                    class MatchNssaExternal(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                        enabled: bool
-                        route_map: str | None
-                        """Specify route map to use."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                MatchNssaExternal.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    route_map: Specify route map to use.
+                                    route_map: route_map
 
                                 """
 
                     _fields: ClassVar[dict] = {
-                        "enabled": {"type": bool},
-                        "route_map": {"type": str},
-                        "match_internal": {"type": MatchInternal},
-                        "match_external": {"type": MatchExternal},
-                        "match_nssa_external": {"type": MatchNssaExternal},
+                        "leaked": {"type": Leaked},
+                        "leaked_match_external": {"type": LeakedMatchExternal},
+                        "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
                     }
-                    enabled: bool | None
-                    """
-                    Redistribute all OSPFv3 leaked routes.
-                    Mutually exclusive with match_internal.
-                    """
-                    route_map: str | None
-                    """Specify route map to use."""
-                    match_internal: MatchInternal
-                    """
-                    Redistribute only internal OSPFv3 leaked routes.
-                    Mutually exclusive with `enabled`.
-
-                    Subclass of
-                    AvdModel.
-                    """
-                    match_external: MatchExternal
+                    leaked: Leaked
+                    """Subclass of AvdModel."""
+                    leaked_match_external: LeakedMatchExternal
                     """
                     Redistribute external OSPFv3 leaked routes.
 
                     Subclass of AvdModel.
                     """
-                    match_nssa_external: MatchNssaExternal
+                    leaked_match_nssa_external: LeakedMatchNssaExternal
                     """
                     Redistribute NSSA external OSPFv3 leaked routes.
 
@@ -65707,11 +65701,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            match_internal: MatchInternal | UndefinedType = Undefined,
-                            match_external: MatchExternal | UndefinedType = Undefined,
-                            match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
+                            leaked: Leaked | UndefinedType = Undefined,
+                            leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                            leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -65720,21 +65712,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled:
-                                   Redistribute all OSPFv3 leaked routes.
-                                   Mutually exclusive with match_internal.
-                                route_map: Specify route map to use.
-                                match_internal:
-                                   Redistribute only internal OSPFv3 leaked routes.
-                                   Mutually exclusive with `enabled`.
-
-                                   Subclass of
-                                   AvdModel.
-                                match_external:
+                                leaked: Subclass of AvdModel.
+                                leaked_match_external:
                                    Redistribute external OSPFv3 leaked routes.
 
                                    Subclass of AvdModel.
-                                match_nssa_external:
+                                leaked_match_nssa_external:
                                    Redistribute NSSA external OSPFv3 leaked routes.
 
                                    Subclass of AvdModel.
@@ -65795,9 +65778,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool
             """Activate the address family."""
             router_id: str | None
-            """IPv4 Address."""
+            """32-bit OSPF router ID or an IP address."""
             passive_interface_default: bool | None
-            """Set all interfaces to passive by default."""
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
             redistribute: Redistribute
@@ -65826,8 +65808,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         enabled: Activate the address family.
-                        router_id: IPv4 Address.
-                        passive_interface_default: Set all interfaces to passive by default.
+                        router_id: 32-bit OSPF router ID or an IP address.
+                        passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         redistribute:
                            Redistribute routes with OSPFv3.
@@ -65848,7 +65830,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
 
                     if TYPE_CHECKING:
 
@@ -65861,7 +65842,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
+                                route_map: route_map
 
                             """
 
@@ -65871,9 +65852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65892,8 +65871,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65903,9 +65882,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65924,8 +65901,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65935,9 +65912,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                     enabled: bool
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65956,8 +65931,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
@@ -65969,9 +65944,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool
                     level: Level | None
                     route_map: str | None
-                    """Specify route map to use."""
                     include_leaked: bool | None
-                    """Include leaked routes."""
 
                     if TYPE_CHECKING:
 
@@ -65992,112 +65965,114 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 enabled: enabled
                                 level: level
-                                route_map: Specify route map to use.
-                                include_leaked: Include leaked routes.
+                                route_map: route_map
+                                include_leaked: include_leaked
 
                             """
 
                 class Ospfv3(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class MatchInternal(AvdModel):
+                    class Leaked(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """
+                        Redistribute all OSPFv3 leaked routes.
+                        Mutually exclusive with match_internal.
+                        """
+                        match_internal: bool | None
+                        """
+                        Redistribute only internal OSPFv3 leaked routes.
+                        Mutually exclusive with `enabled`.
+                        """
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                match_internal: bool | None | UndefinedType = Undefined,
+                                route_map: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Leaked.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Redistribute all OSPFv3 leaked routes.
+                                       Mutually exclusive with match_internal.
+                                    match_internal:
+                                       Redistribute only internal OSPFv3 leaked routes.
+                                       Mutually exclusive with `enabled`.
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchExternal(AvdModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
 
                         if TYPE_CHECKING:
 
                             def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
-                                MatchInternal.
+                                LeakedMatchExternal.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
+                                    route_map: route_map
 
                                 """
 
-                    class MatchExternal(AvdModel):
+                    class LeakedMatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
 
                         if TYPE_CHECKING:
 
                             def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
-                                MatchExternal.
+                                LeakedMatchNssaExternal.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-
-                                """
-
-                    class MatchNssaExternal(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                        enabled: bool
-                        route_map: str | None
-                        """Specify route map to use."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                MatchNssaExternal.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    route_map: Specify route map to use.
+                                    route_map: route_map
 
                                 """
 
                     _fields: ClassVar[dict] = {
-                        "enabled": {"type": bool},
-                        "route_map": {"type": str},
-                        "match_internal": {"type": MatchInternal},
-                        "match_external": {"type": MatchExternal},
-                        "match_nssa_external": {"type": MatchNssaExternal},
+                        "leaked": {"type": Leaked},
+                        "leaked_match_external": {"type": LeakedMatchExternal},
+                        "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
                     }
-                    enabled: bool | None
-                    """
-                    Redistribute all OSPFv3 leaked routes.
-                    Mutually exclusive with match_internal.
-                    """
-                    route_map: str | None
-                    """Specify route map to use."""
-                    match_internal: MatchInternal
-                    """
-                    Redistribute only internal OSPFv3 leaked routes.
-                    Mutually exclusive with `enabled`.
-
-                    Subclass of
-                    AvdModel.
-                    """
-                    match_external: MatchExternal
+                    leaked: Leaked
+                    """Subclass of AvdModel."""
+                    leaked_match_external: LeakedMatchExternal
                     """
                     Redistribute external OSPFv3 leaked routes.
 
                     Subclass of AvdModel.
                     """
-                    match_nssa_external: MatchNssaExternal
+                    leaked_match_nssa_external: LeakedMatchNssaExternal
                     """
                     Redistribute NSSA external OSPFv3 leaked routes.
 
@@ -66109,11 +66084,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            match_internal: MatchInternal | UndefinedType = Undefined,
-                            match_external: MatchExternal | UndefinedType = Undefined,
-                            match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
+                            leaked: Leaked | UndefinedType = Undefined,
+                            leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                            leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Ospfv3.
@@ -66122,21 +66095,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled:
-                                   Redistribute all OSPFv3 leaked routes.
-                                   Mutually exclusive with match_internal.
-                                route_map: Specify route map to use.
-                                match_internal:
-                                   Redistribute only internal OSPFv3 leaked routes.
-                                   Mutually exclusive with `enabled`.
-
-                                   Subclass of
-                                   AvdModel.
-                                match_external:
+                                leaked: Subclass of AvdModel.
+                                leaked_match_external:
                                    Redistribute external OSPFv3 leaked routes.
 
                                    Subclass of AvdModel.
-                                match_nssa_external:
+                                leaked_match_nssa_external:
                                    Redistribute NSSA external OSPFv3 leaked routes.
 
                                    Subclass of AvdModel.
@@ -66208,9 +66172,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool
             """Activate the address family."""
             router_id: str | None
-            """IPv4 Address."""
+            """32-bit OSPF router ID or an IP address."""
             passive_interface_default: bool | None
-            """Set all interfaces to passive by default."""
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
 
@@ -66237,8 +66200,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdModel.
                         enabled: Activate the address family.
-                        router_id: IPv4 Address.
-                        passive_interface_default: Set all interfaces to passive by default.
+                        router_id: 32-bit OSPF router ID or an IP address.
+                        passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
                     """
@@ -66258,9 +66221,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66279,8 +66240,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66290,9 +66251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66311,8 +66270,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66322,9 +66281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66343,8 +66300,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66361,9 +66318,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         level: Level | None
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66384,112 +66339,114 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     enabled: enabled
                                     level: level
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
                     class Ospfv3(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class MatchInternal(AvdModel):
+                        class Leaked(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            """
+                            Redistribute all OSPFv3 leaked routes.
+                            Mutually exclusive with match_internal.
+                            """
+                            match_internal: bool | None
+                            """
+                            Redistribute only internal OSPFv3 leaked routes.
+                            Mutually exclusive with `enabled`.
+                            """
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    match_internal: bool | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Leaked.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Redistribute all OSPFv3 leaked routes.
+                                           Mutually exclusive with match_internal.
+                                        match_internal:
+                                           Redistribute only internal OSPFv3 leaked routes.
+                                           Mutually exclusive with `enabled`.
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchExternal(AvdModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
                             route_map: str | None
-                            """Specify route map to use."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
-                                    MatchInternal.
+                                    LeakedMatchExternal.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        route_map: Specify route map to use.
+                                        route_map: route_map
 
                                     """
 
-                        class MatchExternal(AvdModel):
+                        class LeakedMatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
                             route_map: str | None
-                            """Specify route map to use."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
-                                    MatchExternal.
+                                    LeakedMatchNssaExternal.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        route_map: Specify route map to use.
-
-                                    """
-
-                        class MatchNssaExternal(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                            enabled: bool
-                            route_map: str | None
-                            """Specify route map to use."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                    """
-                                    MatchNssaExternal.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        route_map: Specify route map to use.
+                                        route_map: route_map
 
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool},
-                            "route_map": {"type": str},
-                            "match_internal": {"type": MatchInternal},
-                            "match_external": {"type": MatchExternal},
-                            "match_nssa_external": {"type": MatchNssaExternal},
+                            "leaked": {"type": Leaked},
+                            "leaked_match_external": {"type": LeakedMatchExternal},
+                            "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
                         }
-                        enabled: bool | None
-                        """
-                        Redistribute all OSPFv3 leaked routes.
-                        Mutually exclusive with match_internal.
-                        """
-                        route_map: str | None
-                        """Specify route map to use."""
-                        match_internal: MatchInternal
-                        """
-                        Redistribute only internal OSPFv3 leaked routes.
-                        Mutually exclusive with `enabled`.
-
-                        Subclass of
-                        AvdModel.
-                        """
-                        match_external: MatchExternal
+                        leaked: Leaked
+                        """Subclass of AvdModel."""
+                        leaked_match_external: LeakedMatchExternal
                         """
                         Redistribute external OSPFv3 leaked routes.
 
                         Subclass of AvdModel.
                         """
-                        match_nssa_external: MatchNssaExternal
+                        leaked_match_nssa_external: LeakedMatchNssaExternal
                         """
                         Redistribute NSSA external OSPFv3 leaked routes.
 
@@ -66501,11 +66458,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                match_internal: MatchInternal | UndefinedType = Undefined,
-                                match_external: MatchExternal | UndefinedType = Undefined,
-                                match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
+                                leaked: Leaked | UndefinedType = Undefined,
+                                leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                                leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -66514,21 +66469,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled:
-                                       Redistribute all OSPFv3 leaked routes.
-                                       Mutually exclusive with match_internal.
-                                    route_map: Specify route map to use.
-                                    match_internal:
-                                       Redistribute only internal OSPFv3 leaked routes.
-                                       Mutually exclusive with `enabled`.
-
-                                       Subclass of
-                                       AvdModel.
-                                    match_external:
+                                    leaked: Subclass of AvdModel.
+                                    leaked_match_external:
                                        Redistribute external OSPFv3 leaked routes.
 
                                        Subclass of AvdModel.
-                                    match_nssa_external:
+                                    leaked_match_nssa_external:
                                        Redistribute NSSA external OSPFv3 leaked routes.
 
                                        Subclass of AvdModel.
@@ -66589,9 +66535,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool
                 """Activate the address family."""
                 router_id: str | None
-                """IPv4 Address."""
+                """32-bit OSPF router ID or an IP address."""
                 passive_interface_default: bool | None
-                """Set all interfaces to passive by default."""
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
                 redistribute: Redistribute
@@ -66620,8 +66565,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             enabled: Activate the address family.
-                            router_id: IPv4 Address.
-                            passive_interface_default: Set all interfaces to passive by default.
+                            router_id: 32-bit OSPF router ID or an IP address.
+                            passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             redistribute:
                                Redistribute routes with OSPFv3.
@@ -66642,7 +66587,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
 
                         if TYPE_CHECKING:
 
@@ -66655,7 +66599,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
+                                    route_map: route_map
 
                                 """
 
@@ -66665,9 +66609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66686,8 +66628,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66697,9 +66639,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66718,8 +66658,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66729,9 +66669,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                         enabled: bool
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66750,8 +66688,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
@@ -66768,9 +66706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         level: Level | None
                         route_map: str | None
-                        """Specify route map to use."""
                         include_leaked: bool | None
-                        """Include leaked routes."""
 
                         if TYPE_CHECKING:
 
@@ -66791,112 +66727,114 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     enabled: enabled
                                     level: level
-                                    route_map: Specify route map to use.
-                                    include_leaked: Include leaked routes.
+                                    route_map: route_map
+                                    include_leaked: include_leaked
 
                                 """
 
                     class Ospfv3(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class MatchInternal(AvdModel):
+                        class Leaked(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            """
+                            Redistribute all OSPFv3 leaked routes.
+                            Mutually exclusive with match_internal.
+                            """
+                            match_internal: bool | None
+                            """
+                            Redistribute only internal OSPFv3 leaked routes.
+                            Mutually exclusive with `enabled`.
+                            """
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    match_internal: bool | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Leaked.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Redistribute all OSPFv3 leaked routes.
+                                           Mutually exclusive with match_internal.
+                                        match_internal:
+                                           Redistribute only internal OSPFv3 leaked routes.
+                                           Mutually exclusive with `enabled`.
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchExternal(AvdModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
                             route_map: str | None
-                            """Specify route map to use."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
-                                    MatchInternal.
+                                    LeakedMatchExternal.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        route_map: Specify route map to use.
+                                        route_map: route_map
 
                                     """
 
-                        class MatchExternal(AvdModel):
+                        class LeakedMatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
                             route_map: str | None
-                            """Specify route map to use."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                     """
-                                    MatchExternal.
+                                    LeakedMatchNssaExternal.
 
 
                                     Subclass of AvdModel.
 
                                     Args:
                                         enabled: enabled
-                                        route_map: Specify route map to use.
-
-                                    """
-
-                        class MatchNssaExternal(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                            enabled: bool
-                            route_map: str | None
-                            """Specify route map to use."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                    """
-                                    MatchNssaExternal.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        route_map: Specify route map to use.
+                                        route_map: route_map
 
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool},
-                            "route_map": {"type": str},
-                            "match_internal": {"type": MatchInternal},
-                            "match_external": {"type": MatchExternal},
-                            "match_nssa_external": {"type": MatchNssaExternal},
+                            "leaked": {"type": Leaked},
+                            "leaked_match_external": {"type": LeakedMatchExternal},
+                            "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
                         }
-                        enabled: bool | None
-                        """
-                        Redistribute all OSPFv3 leaked routes.
-                        Mutually exclusive with match_internal.
-                        """
-                        route_map: str | None
-                        """Specify route map to use."""
-                        match_internal: MatchInternal
-                        """
-                        Redistribute only internal OSPFv3 leaked routes.
-                        Mutually exclusive with `enabled`.
-
-                        Subclass of
-                        AvdModel.
-                        """
-                        match_external: MatchExternal
+                        leaked: Leaked
+                        """Subclass of AvdModel."""
+                        leaked_match_external: LeakedMatchExternal
                         """
                         Redistribute external OSPFv3 leaked routes.
 
                         Subclass of AvdModel.
                         """
-                        match_nssa_external: MatchNssaExternal
+                        leaked_match_nssa_external: LeakedMatchNssaExternal
                         """
                         Redistribute NSSA external OSPFv3 leaked routes.
 
@@ -66908,11 +66846,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                match_internal: MatchInternal | UndefinedType = Undefined,
-                                match_external: MatchExternal | UndefinedType = Undefined,
-                                match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
+                                leaked: Leaked | UndefinedType = Undefined,
+                                leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                                leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospfv3.
@@ -66921,21 +66857,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled:
-                                       Redistribute all OSPFv3 leaked routes.
-                                       Mutually exclusive with match_internal.
-                                    route_map: Specify route map to use.
-                                    match_internal:
-                                       Redistribute only internal OSPFv3 leaked routes.
-                                       Mutually exclusive with `enabled`.
-
-                                       Subclass of
-                                       AvdModel.
-                                    match_external:
+                                    leaked: Subclass of AvdModel.
+                                    leaked_match_external:
                                        Redistribute external OSPFv3 leaked routes.
 
                                        Subclass of AvdModel.
-                                    match_nssa_external:
+                                    leaked_match_nssa_external:
                                        Redistribute NSSA external OSPFv3 leaked routes.
 
                                        Subclass of AvdModel.
@@ -67007,9 +66934,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool
                 """Activate the address family."""
                 router_id: str | None
-                """IPv4 Address."""
+                """32-bit OSPF router ID or an IP address."""
                 passive_interface_default: bool | None
-                """Set all interfaces to passive by default."""
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
 
@@ -67036,8 +66962,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                Subclass of AvdModel.
                             enabled: Activate the address family.
-                            router_id: IPv4 Address.
-                            passive_interface_default: Set all interfaces to passive by default.
+                            router_id: 32-bit OSPF router ID or an IP address.
+                            passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
                         """
@@ -67049,12 +66975,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "auto_cost_reference_bandwidth": {"type": int},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "eos_cli": {"type": str},
             }
             name: str
             router_id: str | None
-            """IPv4 Address."""
+            """32-bit OSPF router ID or an IP address."""
             passive_interface_default: bool | None
-            """Set all interfaces to passive by default."""
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
             address_family_ipv4: AddressFamilyIpv4
@@ -67077,6 +67003,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            eos_cli: str | None
+            """Multiline EOS CLI rendered directly on this VRF OSPFv3 instance."""
 
             if TYPE_CHECKING:
 
@@ -67089,6 +67017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -67098,8 +67027,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: name
-                        router_id: IPv4 Address.
-                        passive_interface_default: Set all interfaces to passive by default.
+                        router_id: 32-bit OSPF router ID or an IP address.
+                        passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         address_family_ipv4:
                            Address family IPv4 configuration.
@@ -67117,6 +67046,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            takes precedence.
 
                            Subclass of AvdModel.
+                        eos_cli: Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
 
                     """
 
@@ -67137,9 +67067,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "eos_cli": {"type": str},
         }
         router_id: str | None
-        """IPv4 Address."""
+        """32-bit OSPF router ID or an IP address."""
         passive_interface_default: bool | None
-        """Set all interfaces to passive by default."""
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
         address_family_ipv4: AddressFamilyIpv4
@@ -67187,8 +67116,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    router_id: IPv4 Address.
-                    passive_interface_default: Set all interfaces to passive by default.
+                    router_id: 32-bit OSPF router ID or an IP address.
+                    passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                     address_family_ipv4:
                        Address family IPv4 configuration.

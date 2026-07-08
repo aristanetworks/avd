@@ -15,8 +15,9 @@ router_ospfv3:
         level: level-1
         include_leaked: true
       ospfv3:
-        enabled: true
-        route_map: map1
+        leaked:
+          enabled: true
+          route_map: map1
       static:
         enabled: true
         route_map: map1
@@ -34,8 +35,9 @@ router_ospfv3:
         level: level-1
         include_leaked: true
       ospfv3:
-        enabled: true
-        route_map: map1
+        leaked:
+          enabled: true
+          route_map: map1
       static:
         enabled: true
         route_map: map1

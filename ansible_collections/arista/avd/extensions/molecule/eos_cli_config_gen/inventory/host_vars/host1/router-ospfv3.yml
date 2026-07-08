@@ -18,12 +18,13 @@ router_ospfv3:
         include_leaked: true
         route_map: map1
       ospfv3:
-        enabled: true
-        route_map: map1
-        match_external:
+        leaked:
           enabled: true
           route_map: map1
-        match_nssa_external:
+        leaked_match_external:
+          enabled: true
+          route_map: map1
+        leaked_match_nssa_external:
           enabled: true
           route_map: map1
       static:
@@ -47,12 +48,13 @@ router_ospfv3:
         include_leaked: true
         route_map: map1
       ospfv3:
-        enabled: true
-        route_map: map1
-        match_external:
+        leaked:
           enabled: true
           route_map: map1
-        match_nssa_external:
+        leaked_match_external:
+          enabled: true
+          route_map: map1
+        leaked_match_nssa_external:
           enabled: true
           route_map: map1
       static:
@@ -73,6 +75,8 @@ router_ospfv3:
         router_id: 1.1.1.1
         passive_interface_default: true
         auto_cost_reference_bandwidth: 1000
+      eos_cli: |-
+        bfd default
     # Test with IPv4 Address family
     - name: MGMT
       auto_cost_reference_bandwidth: 100
@@ -93,12 +97,13 @@ router_ospfv3:
             include_leaked: true
             route_map: map1
           ospfv3:
-            enabled: true
-            route_map: map1
-            match_external:
+            leaked:
               enabled: true
               route_map: map1
-            match_nssa_external:
+            leaked_match_external:
+              enabled: true
+              route_map: map1
+            leaked_match_nssa_external:
               enabled: true
               route_map: map1
           static:

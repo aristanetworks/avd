@@ -1178,28 +1178,27 @@ router ospf 701
 | default | bgp | - | - |
 | default | connected | - | - |
 | default | isis | - | - |
-| default | ospfv3 | True | - |
+| default | ospfv3 leaked | - | - |
 | default | static | - | - |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | isis | - | map1 |
-| data | ospfv3 | True | map1 |
+| data | ospfv3 leaked | - | map1 |
 | data | static | True | map1 |
 | FULL | bgp | True | - |
 | FULL | connected | True | - |
 | FULL | isis level-2 | True | - |
-| FULL | ospfv3 match internal | True | map2 |
-| FULL | ospfv3 match external | True | map2 |
-| FULL | ospfv3 match nssa-external | True | map2 |
+| FULL | ospfv3 match internal leaked | - | map2 |
+| FULL | ospfv3 match external leaked | - | map2 |
+| FULL | ospfv3 match nssa-external leaked | - | map2 |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | isis | - | - |
-| MGMT | ospfv3 | True | - |
+| MGMT | ospfv3 leaked | - | - |
 | MGMT | static | - | - |
-| Test | ospfv3 | True | - |
-| Test | ospfv3 match internal | True | - |
-| Test | ospfv3 match external | True | - |
-| Test | ospfv3 match nssa-external | True | - |
+| Test | ospfv3 leaked | - | - |
+| Test | ospfv3 match external leaked | - | - |
+| Test | ospfv3 match nssa-external leaked | - | - |
 
 #### Router OSPFv3 Address Family IPv6
 
@@ -1219,30 +1218,29 @@ router ospf 701
 | default | connected | - | - |
 | default | dhcp | - | - |
 | default | isis | - | - |
-| default | ospfv3 | True | - |
+| default | ospfv3 leaked | - | - |
 | default | static | - | - |
 | data | bgp | - | map1 |
 | data | connected | - | map1 |
 | data | dhcp | - | map1 |
 | data | isis | - | map1 |
-| data | ospfv3 | True | map1 |
+| data | ospfv3 leaked | - | map1 |
 | data | static | - | map1 |
 | FULL | bgp | True | - |
 | FULL | connected | True | - |
 | FULL | isis level-2 | True | - |
-| FULL | ospfv3 match internal | True | map2 |
-| FULL | ospfv3 match external | True | map2 |
-| FULL | ospfv3 match nssa-external | True | map2 |
+| FULL | ospfv3 match internal leaked | - | map2 |
+| FULL | ospfv3 match external leaked | - | map2 |
+| FULL | ospfv3 match nssa-external leaked | - | map2 |
 | MGMT | bgp | - | - |
 | MGMT | connected | - | - |
 | MGMT | dhcp | - | - |
 | MGMT | isis | - | - |
-| MGMT | ospfv3 | True | - |
+| MGMT | ospfv3 leaked | - | - |
 | MGMT | static | - | - |
-| Test | ospfv3 | True | - |
-| Test | ospfv3 match internal | True | - |
-| Test | ospfv3 match external | True | - |
-| Test | ospfv3 match nssa-external | True | - |
+| Test | ospfv3 leaked | - | - |
+| Test | ospfv3 match external leaked | - | - |
+| Test | ospfv3 match nssa-external leaked | - | - |
 
 #### Router OSPFv3 Device Configuration
 

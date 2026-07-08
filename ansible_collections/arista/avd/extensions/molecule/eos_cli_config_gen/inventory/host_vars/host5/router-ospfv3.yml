@@ -1,5 +1,5 @@
 ---
-# Test for ospfv3 and ospfv3 internal are mutually exclusive
+# Tests with minimum configs for ospfv3 redistribution
 router_ospfv3:
   router_id: 1.1.1.1
   passive_interface_default: true
@@ -11,8 +11,12 @@ router_ospfv3:
     passive_interface_default: true
     redistribute:
       ospfv3:
-        enabled: true
-        match_internal:
+        leaked:
+          enabled: true
+          match_internal: true
+        leaked_match_external:
+          enabled: true
+        leaked_match_nssa_external:
           enabled: true
   address_family_ipv6:
     enabled: true
@@ -21,6 +25,10 @@ router_ospfv3:
     passive_interface_default: true
     redistribute:
       ospfv3:
-        enabled: true
-        match_internal:
+        leaked:
+          enabled: true
+          match_internal: true
+        leaked_match_external:
+          enabled: true
+        leaked_match_nssa_external:
           enabled: true

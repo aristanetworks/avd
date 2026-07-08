@@ -74,30 +74,27 @@ router ospfv3 vrf {{ vrf.name }}
 {%             endif %}
       {{ redistribute_isis_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv4.redistribute.ospfv3.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_cli = "redistribute ospfv3 leaked" %}
-{%             if vrf.address_family_ipv4.redistribute.ospfv3.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.route_map %}
+{%             if vrf.address_family_ipv4.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " match internal" %}
+{%             endif %}
+{%             if vrf.address_family_ipv4.redistribute.ospfv3.leaked.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.leaked.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_cli }}
-{%         elif vrf.address_family_ipv4.redistribute.ospfv3.match_internal.enabled is arista.avd.defined(true) %}
-{%             set redistribute_ospfv3_match_internal_cli = "redistribute ospfv3 leaked match internal" %}
-{%             if vrf.address_family_ipv4.redistribute.ospfv3.match_internal.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_internal_cli = redistribute_ospfv3_match_internal_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.match_internal.route_map %}
-{%             endif %}
-      {{ redistribute_ospfv3_match_internal_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv4.redistribute.ospfv3.match_external.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_external_cli = "redistribute ospfv3 leaked match external" %}
-{%             if vrf.address_family_ipv4.redistribute.ospfv3.match_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.match_external.route_map %}
+{%             if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_external_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv4.redistribute.ospfv3.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_nssa_external_cli = "redistribute ospfv3 leaked match nssa-external" %}
-{%             if vrf.address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map %}
+{%             if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_nssa_external_cli }}
 {%         endif %}
@@ -166,30 +163,27 @@ router ospfv3 vrf {{ vrf.name }}
 {%             endif %}
       {{ redistribute_isis_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv6.redistribute.ospfv3.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_cli = "redistribute ospfv3 leaked" %}
-{%             if vrf.address_family_ipv6.redistribute.ospfv3.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.route_map %}
+{%             if vrf.address_family_ipv6.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " match internal" %}
+{%             endif %}
+{%             if vrf.address_family_ipv6.redistribute.ospfv3.leaked.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.leaked.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_cli }}
-{%         elif vrf.address_family_ipv6.redistribute.ospfv3.match_internal.enabled is arista.avd.defined(true) %}
-{%             set redistribute_ospfv3_match_internal_cli = "redistribute ospfv3 leaked match internal" %}
-{%             if vrf.address_family_ipv6.redistribute.ospfv3.match_internal.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_internal_cli = redistribute_ospfv3_match_internal_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.match_internal.route_map %}
-{%             endif %}
-      {{ redistribute_ospfv3_match_internal_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv6.redistribute.ospfv3.match_external.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_external_cli = "redistribute ospfv3 leaked match external" %}
-{%             if vrf.address_family_ipv6.redistribute.ospfv3.match_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.match_external.route_map %}
+{%             if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_external_cli }}
 {%         endif %}
-{%         if vrf.address_family_ipv6.redistribute.ospfv3.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_nssa_external_cli = "redistribute ospfv3 leaked match nssa-external" %}
-{%             if vrf.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map %}
+{%             if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_nssa_external_cli }}
 {%         endif %}
@@ -203,6 +197,10 @@ router ospfv3 vrf {{ vrf.name }}
 {%             endif %}
       {{ redistribute_static_cli }}
 {%         endif %}
+{%     endif %}
+{%     if vrf.eos_cli is arista.avd.defined %}
+   !
+   {{ vrf.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
@@ -279,30 +277,27 @@ router ospfv3
 {%             endif %}
       {{ redistribute_isis_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_cli = "redistribute ospfv3 leaked" %}
-{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.route_map %}
+{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " match internal" %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_cli }}
-{%         elif router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_internal.enabled is arista.avd.defined(true) %}
-{%             set redistribute_ospfv3_match_internal_cli = "redistribute ospfv3 leaked match internal" %}
-{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_internal.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_internal_cli = redistribute_ospfv3_match_internal_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_internal.route_map %}
-{%             endif %}
-      {{ redistribute_ospfv3_match_internal_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_external.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_external_cli = "redistribute ospfv3 leaked match external" %}
-{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_external.route_map %}
+{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_external_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_nssa_external_cli = "redistribute ospfv3 leaked match nssa-external" %}
-{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.match_nssa_external.route_map %}
+{%             if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_nssa_external_cli }}
 {%         endif %}
@@ -371,30 +366,27 @@ router ospfv3
 {%             endif %}
       {{ redistribute_isis_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_cli = "redistribute ospfv3 leaked" %}
-{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.route_map %}
+{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " match internal" %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_cli = redistribute_ospfv3_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_cli }}
-{%         elif router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_internal.enabled is arista.avd.defined(true) %}
-{%             set redistribute_ospfv3_match_internal_cli = "redistribute ospfv3 leaked match internal" %}
-{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_internal.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_internal_cli = redistribute_ospfv3_match_internal_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_internal.route_map %}
-{%             endif %}
-      {{ redistribute_ospfv3_match_internal_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_external.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_external_cli = "redistribute ospfv3 leaked match external" %}
-{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_external.route_map %}
+{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_external_cli = redistribute_ospfv3_match_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_external_cli }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
 {%             set redistribute_ospfv3_match_nssa_external_cli = "redistribute ospfv3 leaked match nssa-external" %}
-{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
-{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map %}
+{%             if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospfv3_match_nssa_external_cli = redistribute_ospfv3_match_nssa_external_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map %}
 {%             endif %}
       {{ redistribute_ospfv3_match_nssa_external_cli }}
 {%         endif %}
@@ -410,6 +402,7 @@ router ospfv3
 {%         endif %}
 {%     endif %}
 {%     if router_ospfv3.eos_cli is arista.avd.defined %}
+   !
    {{ router_ospfv3.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endif %}
