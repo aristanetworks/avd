@@ -56411,6 +56411,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "maximum_routes_warning_only": {"type": bool},
                     "allowas_in": {"type": AllowasIn},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "update_source": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
@@ -56488,6 +56489,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
                 update_source: str | None
                 route_map_in: str | None
                 """Inbound route-map name."""
@@ -56534,6 +56536,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         update_source: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
@@ -56596,6 +56599,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             maximum_routes_warning_only: maximum_routes_warning_only
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: enforce_first_as
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.

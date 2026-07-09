@@ -1711,6 +1711,7 @@ router_bgp:
             additional_paths:
               receive: true
               send: any
+
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
@@ -1949,6 +1950,9 @@ router_bgp:
             receive: true
             send: ecmp
             send_limit: 24
+          enforce_first_as: true
+        - ip_address: 1.2.3.5
+          enforce_first_as: false
       bgp:
         additional_paths:
           send: limit

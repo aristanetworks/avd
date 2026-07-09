@@ -4137,6 +4137,8 @@ keys:
                         type: bool
                       route_map:
                         type: str
+                  enforce_first_as:
+                    type: bool
                   update_source:
                     type: str
                   route_map_in:
