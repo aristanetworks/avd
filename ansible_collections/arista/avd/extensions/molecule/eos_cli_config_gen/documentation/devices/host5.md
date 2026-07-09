@@ -104,12 +104,6 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
-#### BGP Neighbors
-
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 192.0.2.1 | 65001 | default | - | - | - | - | - | - | - | - | - |
-
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
@@ -122,7 +116,6 @@ ASN Notation: asplain
 router bgp 65005
    router-id 192.0.2.5
    bgp additional-paths send backup
-   neighbor 192.0.2.1 remote-as 65001
    !
    address-family evpn
       bgp next-hop-unchanged
