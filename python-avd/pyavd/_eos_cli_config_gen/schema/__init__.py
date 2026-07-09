@@ -56490,6 +56490,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
                 enforce_first_as: bool | None
+                """Enforce the first AS for eBGP routes (default)."""
                 update_source: str | None
                 route_map_in: str | None
                 """Inbound route-map name."""
@@ -56599,7 +56600,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             maximum_routes_warning_only: maximum_routes_warning_only
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
-                            enforce_first_as: enforce_first_as
+                            enforce_first_as: Enforce the first AS for eBGP routes (default).
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.

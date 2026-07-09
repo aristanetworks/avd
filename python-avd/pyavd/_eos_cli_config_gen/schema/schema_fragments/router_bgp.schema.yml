@@ -4139,6 +4139,7 @@ keys:
                         type: str
                   enforce_first_as:
                     type: bool
+                    description: Enforce the first AS for eBGP routes (default).
                   update_source:
                     type: str
                   route_map_in:
