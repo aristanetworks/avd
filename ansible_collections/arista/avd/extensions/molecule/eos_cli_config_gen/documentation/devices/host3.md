@@ -366,33 +366,39 @@ router ospf 702
 
 ### Router OSPFv3
 
-#### Router OSPFv3 Address Family IPv4
+#### VRF: default
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | 2.2.2.2 | True | 2000 |
+##### Address Family IPv4
 
-#### Router OSPFv3 IPv4 Address Family Redistribution
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
 
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal leaked | - | map1 |
-| default | ospfv3 match external leaked | - | map1 |
-| default | ospfv3 match nssa-external leaked | - | map1 |
+###### Redistribution
 
-#### Router OSPFv3 Address Family IPv6
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 match internal leaked | - | map1 |
+| ospfv3 match external leaked | - | map1 |
+| ospfv3 match nssa-external leaked | - | map1 |
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | 3.3.3.3 | True | 2000 |
+##### Address Family IPv6
 
-#### Router OSPFv3 IPv6 Address Family Redistribution
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 3.3.3.3 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
 
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-| default | ospfv3 match internal leaked | - | map1 |
-| default | ospfv3 match external leaked | - | map1 |
-| default | ospfv3 match nssa-external leaked | - | map1 |
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 match internal leaked | - | map1 |
+| ospfv3 match external leaked | - | map1 |
+| ospfv3 match nssa-external leaked | - | map1 |
 
 #### Router OSPFv3 Device Configuration
 

@@ -7,8 +7,8 @@
 {% if router_ospfv3 is arista.avd.defined %}
 
 ### Router OSPFv3
-{#     Build rows for Router OSPFv3 Summary #}
-{%     set summary_rows = [] %}
+
+{#     Build rows for default VRF #}
 {%     if (router_ospfv3.router_id is arista.avd.defined
                and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
                and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined)
@@ -17,276 +17,317 @@
                and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined(true))
            or (router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
                and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-               and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
+               and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined)
+           or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
+           or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
+#### VRF: default
+
+{%         set extra_line = false %}
 {%         if router_ospfv3.router_id is arista.avd.defined
                and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
                and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined %}
-{%             set router_id = router_ospfv3.router_id %}
-{%         else %}
-{%             set router_id = '-' %}
+- Router ID: {{ router_ospfv3.router_id }}
+{%             set extra_line = true %}
 {%         endif %}
 {%         if router_ospfv3.passive_interface_default is arista.avd.defined(true)
                and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
                and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
-{%             set passive_interface_default = router_ospfv3.passive_interface_default %}
-{%         else %}
-{%             set passive_interface_default = '-' %}
+- Passive Interface Default: {{ router_ospfv3.passive_interface_default }}
+{%             set extra_line = true %}
 {%         endif %}
 {%         if router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
                and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
                and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
-{%             set auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth %}
-{%         else %}
-{%             set auto_cost_reference_bandwidth = '-' %}
+- Auto Cost Reference Bandwidth: {{ router_ospfv3.auto_cost_reference_bandwidth }}
+{%             set extra_line = true %}
 {%         endif %}
-{%         do summary_rows.append(('default', router_id, passive_interface_default, auto_cost_reference_bandwidth)) %}
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
-{%         if (vrf.router_id is arista.avd.defined
-                   and vrf.address_family_ipv4.router_id is not arista.avd.defined
-                   and vrf.address_family_ipv6.router_id is not arista.avd.defined)
-               or (vrf.passive_interface_default is arista.avd.defined(true)
-                   and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-                   and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true))
-               or (vrf.auto_cost_reference_bandwidth is arista.avd.defined
-                   and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-                   and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%             if vrf.router_id is arista.avd.defined
-                   and vrf.address_family_ipv4.router_id is not arista.avd.defined
-                   and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
-{%                 set router_id = vrf.router_id %}
-{%             else %}
-{%                 set router_id = '-' %}
-{%             endif %}
-{%             if vrf.passive_interface_default is arista.avd.defined(true)
-                   and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-                   and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
-{%                 set passive_interface_default = vrf.passive_interface_default %}
-{%             else %}
-{%                 set passive_interface_default = '-' %}
-{%             endif %}
-{%             if vrf.auto_cost_reference_bandwidth is arista.avd.defined
-                   and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
-                   and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
-{%                 set auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth %}
-{%             else %}
-{%                 set auto_cost_reference_bandwidth = '-' %}
-{%             endif %}
-{%             do summary_rows.append((vrf.name, router_id, passive_interface_default, auto_cost_reference_bandwidth)) %}
+{%         if extra_line %}
+
 {%         endif %}
-{%     endfor %}
-{%     if summary_rows %}
+{%         if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
+##### Address Family IPv4
+{%             if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
+{%                 set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
+{%                 set af_passive_interface_default = router_ospfv3.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
+{%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
-#### Router OSPFv3 Summary
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | {{ af_router_id }} |
+| Passive Interface Default | {{ af_passive_interface_default }} |
+| Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
+{%                 set has_redist = false %}
+{%                 if router_ospfv3.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.connected.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.isis.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv4.redistribute.static.enabled is arista.avd.defined(true) %}
+{%                     set has_redist = true %}
+{%                 endif %}
+{%                 if has_redist %}
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-{%         for row in summary_rows %}
-| {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
-{%         endfor %}
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+{%                     if router_ospfv3.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
+| bgp | {{ router_ospfv3.address_family_ipv4.redistribute.bgp.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv4.redistribute.bgp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.connected.enabled is arista.avd.defined(true) %}
+| connected | {{ router_ospfv3.address_family_ipv4.redistribute.connected.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv4.redistribute.connected.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.isis.enabled is arista.avd.defined(true) %}
+{%                         set isis_label = 'isis ' ~ router_ospfv3.address_family_ipv4.redistribute.isis.level if router_ospfv3.address_family_ipv4.redistribute.isis.level is arista.avd.defined else 'isis' %}
+| {{ isis_label }} | {{ router_ospfv3.address_family_ipv4.redistribute.isis.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv4.redistribute.isis.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
+{%                         set row_protocol = "ospfv3 leaked" %}
+{%                         if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                             set row_protocol = "ospfv3 match internal leaked" %}
+{%                         endif %}
+| {{ row_protocol }} | - | {{ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match external leaked | - | {{ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match nssa-external leaked | - | {{ router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv4.redistribute.static.enabled is arista.avd.defined(true) %}
+| static | {{ router_ospfv3.address_family_ipv4.redistribute.static.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv4.redistribute.static.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
+##### Address Family IPv6
+{%             if router_ospfv3.address_family_ipv6.router_id is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
+{%                 set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
+{%                 set af_passive_interface_default = router_ospfv3.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
+{%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | {{ af_router_id }} |
+| Passive Interface Default | {{ af_passive_interface_default }} |
+| Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
+{%                 set has_redist = false %}
+{%                 if router_ospfv3.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.connected.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.dhcp.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.isis.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true)
+                       or router_ospfv3.address_family_ipv6.redistribute.static.enabled is arista.avd.defined(true) %}
+{%                     set has_redist = true %}
+{%                 endif %}
+{%                 if has_redist %}
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+{%                     if router_ospfv3.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
+| bgp | {{ router_ospfv3.address_family_ipv6.redistribute.bgp.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv6.redistribute.bgp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.connected.enabled is arista.avd.defined(true) %}
+| connected | {{ router_ospfv3.address_family_ipv6.redistribute.connected.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv6.redistribute.connected.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.dhcp.enabled is arista.avd.defined(true) %}
+| dhcp | - | {{ router_ospfv3.address_family_ipv6.redistribute.dhcp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.isis.enabled is arista.avd.defined(true) %}
+{%                         set isis_label = 'isis ' ~ router_ospfv3.address_family_ipv6.redistribute.isis.level if router_ospfv3.address_family_ipv6.redistribute.isis.level is arista.avd.defined else 'isis' %}
+| {{ isis_label }} | {{ router_ospfv3.address_family_ipv6.redistribute.isis.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv6.redistribute.isis.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
+{%                         set row_protocol = "ospfv3 leaked" %}
+{%                         if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                             set row_protocol = "ospfv3 match internal leaked" %}
+{%                         endif %}
+| {{ row_protocol }} | - | {{ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match external leaked | - | {{ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match nssa-external leaked | - | {{ router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if router_ospfv3.address_family_ipv6.redistribute.static.enabled is arista.avd.defined(true) %}
+| static | {{ router_ospfv3.address_family_ipv6.redistribute.static.include_leaked | arista.avd.default('-') }} | {{ router_ospfv3.address_family_ipv6.redistribute.static.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+
 {%     endif %}
-{#     Build rows for Router OSPFv3 Address Family IPv4 #}
-{%     set ipv4_af_rows = [] %}
-{%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
-{%         set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
-{%         set af_passive_interface_default = router_ospfv3.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
-{%         set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
-{%         do ipv4_af_rows.append(('default', af_router_id, af_passive_interface_default, af_auto_cost_reference_bandwidth)) %}
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
+{#     Build rows for each VRF #}
+{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+#### VRF: {{ vrf.name }}
+
+{%         set extra_line = false %}
+{%         if vrf.router_id is arista.avd.defined
+               and vrf.address_family_ipv4.router_id is not arista.avd.defined
+               and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
+- Router ID: {{ vrf.router_id }}
+{%             set extra_line = true %}
+{%         endif %}
+{%         if vrf.passive_interface_default is arista.avd.defined(true)
+               and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
+               and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
+- Passive Interface Default: {{ vrf.passive_interface_default }}
+{%             set extra_line = true %}
+{%         endif %}
+{%         if vrf.auto_cost_reference_bandwidth is arista.avd.defined
+               and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
+               and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
+- Auto Cost Reference Bandwidth: {{ vrf.auto_cost_reference_bandwidth }}
+{%             set extra_line = true %}
+{%         endif %}
+{%         if extra_line %}
+
+{%         endif %}
 {%         if vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
-{%             set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
-{%             set af_passive_interface_default = vrf.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
-{%             set af_auto_cost_reference_bandwidth = vrf.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
-{%             do ipv4_af_rows.append((vrf.name, af_router_id, af_passive_interface_default, af_auto_cost_reference_bandwidth)) %}
-{%         endif %}
-{%     endfor %}
-{%     if ipv4_af_rows %}
+##### Address Family IPv4
+{%             if vrf.address_family_ipv4.router_id is arista.avd.defined
+                   or vrf.address_family_ipv4.passive_interface_default is arista.avd.defined
+                   or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
+{%                 set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
+{%                 set af_passive_interface_default = vrf.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
+{%                 set af_auto_cost_reference_bandwidth = vrf.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
-#### Router OSPFv3 Address Family IPv4
-
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-{%         for row in ipv4_af_rows %}
-| {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
-{%         endfor %}
-{%     endif %}
-{#     Build rows for Router OSPFv3 IPv4 Address Family Redistribution #}
-{%     set ipv4_redist_rows = [] %}
-{%     if router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) and router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
-{%         set redistribute = router_ospfv3.address_family_ipv4.redistribute %}
-{%         if redistribute.bgp.enabled is arista.avd.defined(true) %}
-{%             do ipv4_redist_rows.append(('default', 'bgp', redistribute.bgp.include_leaked | arista.avd.default('-'), redistribute.bgp.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.connected.enabled is arista.avd.defined(true) %}
-{%             do ipv4_redist_rows.append(('default', 'connected', redistribute.connected.include_leaked | arista.avd.default('-'), redistribute.connected.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.isis.enabled is arista.avd.defined(true) %}
-{%             set isis_label = 'isis ' ~ redistribute.isis.level if redistribute.isis.level is arista.avd.defined else 'isis' %}
-{%             do ipv4_redist_rows.append(('default', isis_label, redistribute.isis.include_leaked | arista.avd.default('-'), redistribute.isis.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
-{%             set row_protocol = "ospfv3 leaked" %}
-{%             if redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
-{%                 set row_protocol = "ospfv3 match internal leaked" %}
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | {{ af_router_id }} |
+| Passive Interface Default | {{ af_passive_interface_default }} |
+| Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%             endif %}
-{%             do ipv4_redist_rows.append(('default', row_protocol, '-', redistribute.ospfv3.leaked.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
-{%             do ipv4_redist_rows.append(('default', 'ospfv3 match external leaked', '-', redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
-{%             do ipv4_redist_rows.append(('default', 'ospfv3 match nssa-external leaked', '-', redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.static.enabled is arista.avd.defined(true) %}
-{%             do ipv4_redist_rows.append(('default', 'static', redistribute.static.include_leaked | arista.avd.default('-'), redistribute.static.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.address_family_ipv4.enabled is arista.avd.defined(true) and vrf.address_family_ipv4.redistribute is arista.avd.defined %}
-{%             set redistribute = vrf.address_family_ipv4.redistribute %}
-{%             if redistribute.bgp.enabled is arista.avd.defined(true) %}
-{%                 do ipv4_redist_rows.append((vrf.name, 'bgp', redistribute.bgp.include_leaked | arista.avd.default('-'), redistribute.bgp.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.connected.enabled is arista.avd.defined(true) %}
-{%                 do ipv4_redist_rows.append((vrf.name, 'connected', redistribute.connected.include_leaked | arista.avd.default('-'), redistribute.connected.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.isis.enabled is arista.avd.defined(true) %}
-{%                 set isis_label = 'isis ' ~ redistribute.isis.level if redistribute.isis.level is arista.avd.defined else 'isis' %}
-{%                 do ipv4_redist_rows.append((vrf.name, isis_label, redistribute.isis.include_leaked | arista.avd.default('-'), redistribute.isis.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
-{%                 set row_protocol = "ospfv3 leaked" %}
-{%                 if redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
-{%                     set row_protocol = "ospfv3 match internal leaked" %}
+{%             if vrf.address_family_ipv4.redistribute is arista.avd.defined %}
+{%                 set has_redist = false %}
+{%                 if vrf.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.connected.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.isis.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv4.redistribute.static.enabled is arista.avd.defined(true) %}
+{%                     set has_redist = true %}
 {%                 endif %}
-{%                 do ipv4_redist_rows.append((vrf.name, row_protocol, '-', redistribute.ospfv3.leaked.route_map | arista.avd.default('-'))) %}
+{%                 if has_redist %}
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+{%                     if vrf.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
+| bgp | {{ vrf.address_family_ipv4.redistribute.bgp.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv4.redistribute.bgp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.connected.enabled is arista.avd.defined(true) %}
+| connected | {{ vrf.address_family_ipv4.redistribute.connected.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv4.redistribute.connected.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.isis.enabled is arista.avd.defined(true) %}
+{%                         set isis_label = 'isis ' ~ vrf.address_family_ipv4.redistribute.isis.level if vrf.address_family_ipv4.redistribute.isis.level is arista.avd.defined else 'isis' %}
+| {{ isis_label }} | {{ vrf.address_family_ipv4.redistribute.isis.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv4.redistribute.isis.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
+{%                         set row_protocol = "ospfv3 leaked" %}
+{%                         if vrf.address_family_ipv4.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                             set row_protocol = "ospfv3 match internal leaked" %}
+{%                         endif %}
+| {{ row_protocol }} | - | {{ vrf.address_family_ipv4.redistribute.ospfv3.leaked.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match external leaked | - | {{ vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match nssa-external leaked | - | {{ vrf.address_family_ipv4.redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv4.redistribute.static.enabled is arista.avd.defined(true) %}
+| static | {{ vrf.address_family_ipv4.redistribute.static.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv4.redistribute.static.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                 endif %}
 {%             endif %}
-{%             if redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
-{%                 do ipv4_redist_rows.append((vrf.name, 'ospfv3 match external leaked', '-', redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                 do ipv4_redist_rows.append((vrf.name, 'ospfv3 match nssa-external leaked', '-', redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.static.enabled is arista.avd.defined(true) %}
-{%                 do ipv4_redist_rows.append((vrf.name, 'static', redistribute.static.include_leaked | arista.avd.default('-'), redistribute.static.route_map | arista.avd.default('-'))) %}
-{%             endif %}
+
 {%         endif %}
-{%     endfor %}
-{%     if ipv4_redist_rows %}
-
-#### Router OSPFv3 IPv4 Address Family Redistribution
-
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-{%         for row in ipv4_redist_rows %}
-| {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
-{%         endfor %}
-{%     endif %}
-{#     Build rows for Router OSPFv3 Address Family IPv6 #}
-{%     set ipv6_af_rows = [] %}
-{%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
-{%         set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
-{%         set af_passive_interface_default = router_ospfv3.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
-{%         set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
-{%         do ipv6_af_rows.append(('default', af_router_id, af_passive_interface_default, af_auto_cost_reference_bandwidth)) %}
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
 {%         if vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
-{%             set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
-{%             set af_passive_interface_default = vrf.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
-{%             set af_auto_cost_reference_bandwidth = vrf.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
-{%             do ipv6_af_rows.append((vrf.name, af_router_id, af_passive_interface_default, af_auto_cost_reference_bandwidth)) %}
-{%         endif %}
-{%     endfor %}
-{%     if ipv6_af_rows %}
+##### Address Family IPv6
+{%             if vrf.address_family_ipv6.router_id is arista.avd.defined
+                   or vrf.address_family_ipv6.passive_interface_default is arista.avd.defined
+                   or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
+{%                 set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
+{%                 set af_passive_interface_default = vrf.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
+{%                 set af_auto_cost_reference_bandwidth = vrf.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
-#### Router OSPFv3 Address Family IPv6
-
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-{%         for row in ipv6_af_rows %}
-| {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
-{%         endfor %}
-{%     endif %}
-{#     Build rows for Router OSPFv3 IPv6 Address Family Redistribution #}
-{%     set ipv6_redist_rows = [] %}
-{%     if router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) and router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
-{%         set redistribute = router_ospfv3.address_family_ipv6.redistribute %}
-{%         if redistribute.bgp.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'bgp', redistribute.bgp.include_leaked | arista.avd.default('-'), redistribute.bgp.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.connected.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'connected', redistribute.connected.include_leaked | arista.avd.default('-'), redistribute.connected.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.dhcp.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'dhcp', '-', redistribute.dhcp.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.isis.enabled is arista.avd.defined(true) %}
-{%             set isis_label = 'isis ' ~ redistribute.isis.level if redistribute.isis.level is arista.avd.defined else 'isis' %}
-{%             do ipv6_redist_rows.append(('default', isis_label, redistribute.isis.include_leaked | arista.avd.default('-'), redistribute.isis.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
-{%             set row_protocol = "ospfv3 leaked" %}
-{%             if redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
-{%                 set row_protocol = "ospfv3 match internal leaked" %}
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | {{ af_router_id }} |
+| Passive Interface Default | {{ af_passive_interface_default }} |
+| Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%             endif %}
-{%             do ipv6_redist_rows.append(('default', row_protocol, '-', redistribute.ospfv3.leaked.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'ospfv3 match external leaked', '-', redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'ospfv3 match nssa-external leaked', '-', redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%         if redistribute.static.enabled is arista.avd.defined(true) %}
-{%             do ipv6_redist_rows.append(('default', 'static', redistribute.static.include_leaked | arista.avd.default('-'), redistribute.static.route_map | arista.avd.default('-'))) %}
-{%         endif %}
-{%     endif %}
-{%     for vrf in router_ospfv3.vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.address_family_ipv6.enabled is arista.avd.defined(true) and vrf.address_family_ipv6.redistribute is arista.avd.defined %}
-{%             set redistribute = vrf.address_family_ipv6.redistribute %}
-{%             if redistribute.bgp.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'bgp', redistribute.bgp.include_leaked | arista.avd.default('-'), redistribute.bgp.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.connected.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'connected', redistribute.connected.include_leaked | arista.avd.default('-'), redistribute.connected.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.dhcp.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'dhcp', '-', redistribute.dhcp.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.isis.enabled is arista.avd.defined(true) %}
-{%                 set isis_label = 'isis ' ~ redistribute.isis.level if redistribute.isis.level is arista.avd.defined else 'isis' %}
-{%                 do ipv6_redist_rows.append((vrf.name, isis_label, redistribute.isis.include_leaked | arista.avd.default('-'), redistribute.isis.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
-{%                 set row_protocol = "ospfv3 leaked" %}
-{%                 if redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
-{%                     set row_protocol = "ospfv3 match internal leaked" %}
+{%             if vrf.address_family_ipv6.redistribute is arista.avd.defined %}
+{%                 set has_redist = false %}
+{%                 if vrf.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.connected.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.dhcp.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.isis.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true)
+                       or vrf.address_family_ipv6.redistribute.static.enabled is arista.avd.defined(true) %}
+{%                     set has_redist = true %}
 {%                 endif %}
-{%                 do ipv6_redist_rows.append((vrf.name, row_protocol, '-', redistribute.ospfv3.leaked.route_map | arista.avd.default('-'))) %}
+{%                 if has_redist %}
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+{%                     if vrf.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
+| bgp | {{ vrf.address_family_ipv6.redistribute.bgp.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv6.redistribute.bgp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.connected.enabled is arista.avd.defined(true) %}
+| connected | {{ vrf.address_family_ipv6.redistribute.connected.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv6.redistribute.connected.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.dhcp.enabled is arista.avd.defined(true) %}
+| dhcp | - | {{ vrf.address_family_ipv6.redistribute.dhcp.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.isis.enabled is arista.avd.defined(true) %}
+{%                         set isis_label = 'isis ' ~ vrf.address_family_ipv6.redistribute.isis.level if vrf.address_family_ipv6.redistribute.isis.level is arista.avd.defined else 'isis' %}
+| {{ isis_label }} | {{ vrf.address_family_ipv6.redistribute.isis.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv6.redistribute.isis.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.ospfv3.leaked.enabled is arista.avd.defined(true) %}
+{%                         set row_protocol = "ospfv3 leaked" %}
+{%                         if vrf.address_family_ipv6.redistribute.ospfv3.leaked.match_internal is arista.avd.defined(true) %}
+{%                             set row_protocol = "ospfv3 match internal leaked" %}
+{%                         endif %}
+| {{ row_protocol }} | - | {{ vrf.address_family_ipv6.redistribute.ospfv3.leaked.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match external leaked | - | {{ vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
+| ospfv3 match nssa-external leaked | - | {{ vrf.address_family_ipv6.redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                     if vrf.address_family_ipv6.redistribute.static.enabled is arista.avd.defined(true) %}
+| static | {{ vrf.address_family_ipv6.redistribute.static.include_leaked | arista.avd.default('-') }} | {{ vrf.address_family_ipv6.redistribute.static.route_map | arista.avd.default('-') }} |
+{%                     endif %}
+{%                 endif %}
 {%             endif %}
-{%             if redistribute.ospfv3.leaked_match_external.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'ospfv3 match external leaked', '-', redistribute.ospfv3.leaked_match_external.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.ospfv3.leaked_match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'ospfv3 match nssa-external leaked', '-', redistribute.ospfv3.leaked_match_nssa_external.route_map | arista.avd.default('-'))) %}
-{%             endif %}
-{%             if redistribute.static.enabled is arista.avd.defined(true) %}
-{%                 do ipv6_redist_rows.append((vrf.name, 'static', redistribute.static.include_leaked | arista.avd.default('-'), redistribute.static.route_map | arista.avd.default('-'))) %}
-{%             endif %}
+
 {%         endif %}
 {%     endfor %}
-{%     if ipv6_redist_rows %}
-
-#### Router OSPFv3 IPv6 Address Family Redistribution
-
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-{%         for row in ipv6_redist_rows %}
-| {{ row[0] }} | {{ row[1] }} | {{ row[2] }} | {{ row[3] }} |
-{%         endfor %}
-{%     endif %}
 
 #### Router OSPFv3 Device Configuration
 

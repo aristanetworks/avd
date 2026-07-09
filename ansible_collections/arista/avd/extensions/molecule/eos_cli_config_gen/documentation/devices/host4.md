@@ -143,45 +143,40 @@ router ospf 703
 
 ### Router OSPFv3
 
-#### Router OSPFv3 Summary
+#### VRF: default
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | - | - | 100 |
-| Test | 2.2.2.2 | True | 100 |
+- Auto Cost Reference Bandwidth: 100
 
-#### Router OSPFv3 Address Family IPv4
+##### Address Family IPv4
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | - | - | - |
+###### Redistribution
 
-#### Router OSPFv3 IPv4 Address Family Redistribution
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| isis level-1 | True | - |
+| ospfv3 leaked | - | map1 |
+| static | - | map1 |
 
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-| default | bgp | True | - |
-| default | connected | True | - |
-| default | isis level-1 | True | - |
-| default | ospfv3 leaked | - | map1 |
-| default | static | - | map1 |
+##### Address Family IPv6
 
-#### Router OSPFv3 Address Family IPv6
+###### Redistribution
 
-| VRF | Router ID | Passive Interface Default | Auto Cost Reference Bandwidth |
-| --- | --------- | ------------------------- | ----------------------------- |
-| default | - | - | - |
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | - |
+| connected | True | - |
+| dhcp | - | map1 |
+| isis level-1 | True | - |
+| ospfv3 leaked | - | map1 |
+| static | - | map1 |
 
-#### Router OSPFv3 IPv6 Address Family Redistribution
+#### VRF: Test
 
-| VRF | Source Protocol | Include Leaked | Route Map |
-| --- | --------------- | -------------- | --------- |
-| default | bgp | True | - |
-| default | connected | True | - |
-| default | dhcp | - | map1 |
-| default | isis level-1 | True | - |
-| default | ospfv3 leaked | - | map1 |
-| default | static | - | map1 |
+- Router ID: 2.2.2.2
+- Passive Interface Default: True
+- Auto Cost Reference Bandwidth: 100
 
 #### Router OSPFv3 Device Configuration
 
