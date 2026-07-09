@@ -5,5 +5,4 @@ router_bfd:
   session_snapshot_interval_dangerous: false
 
 expected_error_message: >-
-  Error during plugin 'arista.avd.eos_cli_config_gen' execution:
-  'router_bfd.session_snapshot_interval_dangerous was set to False but we expected True!'
+  Error during plugin 'arista.avd.eos_cli_config_gen' execution: router_bfd.session_snapshot_interval_dangerous was set to False but we expected True!
