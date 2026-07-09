@@ -21,5 +21,4 @@ ip_access_lists:
         destination: any
 
 expected_error_message: >-
-  Error during plugin 'arista.avd.eos_cli_config_gen' execution:
-  'The number of ACL entries is above defined maximum!'
+  Error during plugin 'arista.avd.eos_cli_config_gen' execution: The number of ACL entries is above defined maximum!
