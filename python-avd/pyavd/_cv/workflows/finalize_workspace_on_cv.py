@@ -13,7 +13,6 @@ from pyavd._cv.client.exceptions import (
     CVWorkspaceBuildFailed,
     CVWorkspaceSubmitFailed,
     CVWorkspaceSubmitFailedInactiveDevices,
-    CVWorkspaceSynchronizationAttemptsExhausted,
     CVWorkspaceSynchronizationFailed,
 )
 from pyavd._utils import get_v2
@@ -394,38 +393,19 @@ async def _process_workspace_build_details(
     )
 
 
-async def synchronize_workspace_if_needed(workspace: CVWorkspace, cv_client: CVClient, workspace_sync_attempt: int) -> bool:
-    """
-    Synchronize/rebase CloudVision Workspace if this is required based on its runtime state.
-
-    Returns:
-        True: If Workspace has been synchronized/rebased and therefore replay of all changes is needed.
-        False: If Workspace has not been synchronized/rebased and all populated states are up-to-date.
-    """
-    if workspace.synchronization_required:
-        LOGGER.info("synchronize_workspace_if_needed: Workspace %s (%s) requires synchronization/rebase.", workspace.name, workspace.id)
-        if workspace_sync_attempt < workspace.max_sync_retries:
-            LOGGER.info(
-                "synchronize_workspace_if_needed: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
-                workspace_sync_attempt + 1,
-                workspace.max_sync_retries,
-                workspace.name,
-                workspace.id,
-            )
-            workspace_config = await cv_client.rebase_workspace(workspace_id=workspace.id)
-            sync_result, _ = await cv_client.wait_for_workspace_response(
-                workspace_id=workspace.id,
-                request_id=cast("str", workspace_config.request_params.request_id),
-            )
-            if sync_result.status != ResponseStatus.SUCCESS:
-                workspace.state = "synchronization failed"
-                LOGGER.info("synchronize_workspace_if_needed: %s", workspace)
-                msg = (
-                    f"Failed to synchronize/rebase workspace {workspace.name} ({workspace.id}): {sync_result}. "
-                    f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
-                )
-                raise CVWorkspaceSynchronizationFailed(msg)
-            workspace.synchronization_required = False
-            return True
-        raise CVWorkspaceSynchronizationAttemptsExhausted(workspace.max_sync_retries, workspace.name, workspace.id)
-    return False
+async def rebase_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
+    """Synchronize/rebase CloudVision Workspace against the current mainline."""
+    workspace_config = await cv_client.rebase_workspace(workspace_id=workspace.id)
+    sync_result, _ = await cv_client.wait_for_workspace_response(
+        workspace_id=workspace.id,
+        request_id=cast("str", workspace_config.request_params.request_id),
+    )
+    if sync_result.status != ResponseStatus.SUCCESS:
+        workspace.state = "synchronization failed"
+        LOGGER.info("rebase_workspace_on_cv: %s", workspace)
+        msg = (
+            f"Failed to synchronize/rebase workspace {workspace.name} ({workspace.id}): {sync_result}. "
+            f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
+        )
+        raise CVWorkspaceSynchronizationFailed(msg)
+    workspace.synchronization_required = False

@@ -5,7 +5,7 @@
 import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG, INFO
+from logging import DEBUG
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
@@ -813,7 +813,7 @@ class TestDeployToCvResult:
             removed_configs=["old.cfg"],
         )
 
-        with caplog.at_level(INFO):
+        with caplog.at_level(DEBUG):
             new_result = original.rebuild_for_workspace_synchronization()
 
         assert new_result is not original
@@ -826,6 +826,8 @@ class TestDeployToCvResult:
         assert not new_result.skipped_device_tags
         assert not new_result.removed_configs
         assert any(re.search(r"rebuild_for_workspace_synchronization.*ws-name.*ws-id", str(r.message)) for r in caplog.records)
+        assert ws.state == "pending"
+        assert ws.build_id is None
 
     def test_rebuild_for_workspace_synchronization_clears_device_build_results(self) -> None:
         """Tests that workspace.device_build_results is cleared in-place so the next build starts fresh."""
@@ -839,6 +841,20 @@ class TestDeployToCvResult:
         result.rebuild_for_workspace_synchronization()
 
         assert not ws.device_build_results
+
+    def test_rebuild_for_workspace_synchronization_resets_workspace_state_and_build_id(self) -> None:
+        """Tests that workspace.state is reset to 'pending' and build_id to None after rebuild."""
+        ws = CVWorkspace(
+            avd_workspace=AvdWorkspace(name="ws", id="ws-id"),
+            state="build failed",
+            build_id="build-id",
+        )
+        result = DeployToCvResult(workspace=ws, errors=[], warnings=[])
+
+        result.rebuild_for_workspace_synchronization()
+
+        assert ws.state == "pending"
+        assert ws.build_id is None
 
     def test_rebuild_for_workspace_synchronization_none_change_control(self) -> None:
         """Tests that rebuild works when change_control is None and the new result also has change_control=None."""

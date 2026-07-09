@@ -63,7 +63,7 @@ def is_zscaler_tunnel_endpoint_supported(studio_schema: InputSchema) -> bool:
     return bool(get_v2(studio_schema, "fields.values.serviceNodeEndpoint"))
 
 
-async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
+async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient, warnings: list) -> InputSchema | None:
     """
     Download and return the input schema for the cv pathfinder metadata studio.
 
@@ -74,7 +74,7 @@ async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClie
     except CVResourceNotFound:
         warning = "deploy_cv_pathfinder_metadata_to_cv: Did not find metadata studio."
         LOGGER.info(warning)
-        result.warnings.append(warning)
+        warnings.append(warning)
         return None
 
     studio_schema: InputSchema = studio.input_schema
@@ -268,7 +268,9 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_sc
     return warnings
 
 
-async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPathfinderMetadata], result: DeployToCvResult, cv_client: CVClient) -> None:
+async def deploy_cv_pathfinder_metadata_to_cv(
+    cv_pathfinder_metadata: list[CVPathfinderMetadata], result: DeployToCvResult, cv_client: CVClient, warnings: list
+) -> None:
     """
     Deploy given CV Pathfinder metadata.
 
@@ -345,7 +347,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     if not cv_pathfinder_metadata:
         return
 
-    if (studio_schema := await get_metadata_studio_schema(result, cv_client)) is None:
+    if (studio_schema := await get_metadata_studio_schema(result, cv_client, warnings)) is None:
         return
 
     # Get existing studio inputs
@@ -399,15 +401,15 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     if pathfinders:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        result.warnings.extend(update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs, studio_schema=studio_schema))
+        warnings.extend(update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
     for pathfinder in pathfinders:
-        result.warnings.extend(
+        warnings.extend(
             upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
     for edge in edges:
-        result.warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_schema=studio_schema))
+        warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
     if studio_inputs != existing_studio_inputs:
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)

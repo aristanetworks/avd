@@ -7,7 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client import CVClient
-from pyavd._cv.client.exceptions import CVClientException
+from pyavd._cv.client.exceptions import CVClientException, CVWorkspaceSynchronizationAttemptsExhausted
 
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import delete_configs_from_cv, deploy_configs_to_cv
@@ -16,7 +16,7 @@ from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_stu
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
-from .finalize_workspace_on_cv import finalize_workspace_on_cv, synchronize_workspace_if_needed
+from .finalize_workspace_on_cv import finalize_workspace_on_cv, rebase_workspace_on_cv
 from .models import (
     CloudVision,
     CVChangeControl,
@@ -47,6 +47,7 @@ async def _execute_deployment_steps(
     device_deployments: list[CVDeviceDeployment],
     strict_tags: bool,
     cv_client: CVClient,
+    loop_warnings: list,
 ) -> None:
     """Execute all deployment sub-workflows which rely on the state of the CloudVision mainline."""
     try:
@@ -102,6 +103,7 @@ async def _execute_deployment_steps(
             cv_pathfinder_metadata=cv_pathfinder_metadata,
             result=result,
             cv_client=cv_client,
+            warnings=loop_warnings,
         )
 
         # Delete any leftover device configs for devices managed by the static config manifest
@@ -288,6 +290,7 @@ async def deploy_to_cv(
                     device_deployments=device_deployments,
                     strict_tags=strict_tags,
                     cv_client=cv_client,
+                    loop_warnings=loop_warnings,
                 )
 
                 # Build, submit or abandon Workspace. If failed, we always abandon.
@@ -297,13 +300,26 @@ async def deploy_to_cv(
                     result.workspace.state = "abandoned"
                     return result
 
-                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
+                # Preserve warnings collected during the finalize_workspace_on_cv call if it raises.
+                try:
+                    await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
+                except CVClientException:
+                    result.warnings.extend(loop_warnings)
+                    raise
 
-                if await synchronize_workspace_if_needed(
-                    workspace=result.workspace,
-                    cv_client=cv_client,
-                    workspace_sync_attempt=workspace_sync_attempt,
-                ):
+                if result.workspace.synchronization_required:
+                    LOGGER.info("deploy_to_cv: Workspace %s (%s) requires synchronization/rebase.", result.workspace.name, result.workspace.id)
+                    if workspace_sync_attempt >= result.workspace.max_sync_retries:
+                        result.warnings.extend(loop_warnings)
+                        raise CVWorkspaceSynchronizationAttemptsExhausted(result.workspace.max_sync_retries, result.workspace.name, result.workspace.id)
+                    LOGGER.info(
+                        "deploy_to_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
+                        workspace_sync_attempt + 1,
+                        result.workspace.max_sync_retries,
+                        result.workspace.name,
+                        result.workspace.id,
+                    )
+                    await rebase_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
                     # Workspace has been synchronized on CloudVision. We need to replay all changes.
                     continue
                 # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.

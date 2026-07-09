@@ -296,13 +296,7 @@ class AvdWorkspace:
     build_warnings: AvdWorkspaceBuildWarningsConfig = field(default_factory=AvdWorkspaceBuildWarningsConfig)
     """Configuration settings to control fetching and exposing Workspace build warnings."""
     max_sync_retries: int = 5
-    """
-    Maximum number of retry attempts to synchronize Workspace.
-    Synchronization attempts are made when:
-    - Workspace.needs_rebase == True after building a Workspace
-    - Workspace.responses.values[<request_id>].status == ResponseStatus.FAIL
-        and Workspace.responses.values[<request_id>].code == ResponseCode.SYNCHRONIZATION_REQUIRED
-    """
+    """Maximum number of retry attempts to synchronize Workspace."""
 
     def __post_init__(self) -> None:
         if self.max_sync_retries < 0:
@@ -321,7 +315,14 @@ class CVWorkspace:
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
     synchronization_required: bool = False
-    """CloudVision Workspace requires synchronize/rebase before submission."""
+    """
+    CloudVision Workspace requires synchronize/rebase before submission.
+
+    Is set to True if any of the following conditions are met:
+    - Workspace.needs_rebase == True after building a Workspace
+    - Workspace.responses.values[<request_id>].status == ResponseStatus.FAIL
+        and Workspace.responses.values[<request_id>].code == ResponseCode.SYNCHRONIZATION_REQUIRED
+    """
 
     @property
     def name(self) -> str:
@@ -402,17 +403,20 @@ class DeployToCvResult:
 
         Warnings of the parent instance are kept to persist items populated outside of the retry loop (device validation, etc.).
         Errors are not retained as any error sets `result.failed=True` and causes immediate Workspace abandonment.
-        device_build_results attribute of the CVWorkspace is cleared to flush build results collected during the last build attempt.
+        workspace.device_build_results is cleared, workspace.state is reset to "pending" and workspace.build_id is to None to flush the state collected during
+        the last build or submit attempt.
 
         Returns: New instance of the DeployToCvResult.
         """
-        LOGGER.info(
+        LOGGER.debug(
             "rebuild_for_workspace_synchronization: Resetting all mutable state computed for Workspace %s (%s) against an outdated CloudVision mainline.",
             self.workspace.name,
             self.workspace.id,
         )
         # clear <instance>.workspace.device_build_results to not carry over details of last Workspace build
         self.workspace.device_build_results.clear()
+        self.workspace.state = "pending"
+        self.workspace.build_id = None
         return DeployToCvResult(
             warnings=self.warnings,
             workspace=self.workspace,
