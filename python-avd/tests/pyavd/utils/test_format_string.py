@@ -148,3 +148,7 @@ class TestAvdStringFormatter:
     def test_avd_formatter_safety(self, format_string: str, args: tuple, kwargs: dict) -> None:
         with pytest.raises(ValueError, match=r"Unsupported field name '.+'. Avoid (attributes|keys) starting with underscore."):
             AvdStringFormatter().format(format_string, *args, **kwargs)
+
+    def test_avd_formatter_unknown_conversion(self) -> None:
+        with pytest.raises(ValueError, match="Unknown conversion specifier z"):
+            AvdStringFormatter().format("{interface!z}", interface="Ethernet1")
