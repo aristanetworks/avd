@@ -65,8 +65,8 @@ class NtpMixin(Protocol):
             self.structured_config.ntp.local_interface.name = local_interface
             self.structured_config.ntp.local_interface.vrf = server_vrf
 
-        # First server is set with preferred
-        first = True
+        # First server is set as preferred if ntp_settings.set_first_ntp_server_as_preferred set to true
+        first = self.inputs.ntp_settings.set_first_ntp_server_as_preferred
         for server in ntp_settings.servers:
             ntp_server = server._cast_as(EosCliConfigGen.Ntp.ServersItem)
             if first:

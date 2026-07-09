@@ -122,8 +122,7 @@ def test_load_facts_raises_with_path_and_upstream_task_when_file_missing(action_
 
 def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """Test that any exception during execution is wrapped with the 'Error during plugin ... execution:' prefix and chained."""
-    module = action_module(ActionModule)
-    module.ansible_name = "arista.avd.eos_designs_documentation"  # pyright: ignore[reportAttributeAccessIssue]
+    module = action_module(ActionModule, ansible_name="arista.avd.eos_designs_documentation")
     facts_path = tmp_path / "eos_designs_facts.json"
     facts_path.write_text(json.dumps({"spine1": {}}), encoding="UTF-8")
     validated_args = {**BASE_VALIDATED_ARGS, "structured_config_dir": str(tmp_path)}
@@ -139,7 +138,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
         patch(f"{MODULE_PATH}.get_fabric_documentation", side_effect=original_error),
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
-        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: 'pyavd exploded'") as exc_info,
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: pyavd exploded") as exc_info,
     ):
         module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 
@@ -148,8 +147,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
-    module = action_module(ActionModule)
-    module.ansible_name = "arista.avd.eos_designs_documentation"  # pyright: ignore[reportAttributeAccessIssue]
+    module = action_module(ActionModule, ansible_name="arista.avd.eos_designs_documentation")
     shared_display = MagicMock(verbosity=0)
 
     with (
