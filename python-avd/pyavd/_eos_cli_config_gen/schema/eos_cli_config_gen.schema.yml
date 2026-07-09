@@ -27220,13 +27220,17 @@ keys:
           keys:
             ip:
               type: bool
+              description: Enable MPLS traffic on interface if MPLS enabled globally.
             ldp:
               type: dict
               keys:
                 interface:
                   type: bool
+                  description: Enable LDP on this interface.
                 igp_sync:
                   type: bool
+                  description: Tell the IGP to keep a link at max metric until LDP
+                    labels are ready.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.

@@ -298,10 +298,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output</samp>](## "vlan_interfaces.[].traffic_policy.output") | String |  |  |  | Egress traffic policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "vlan_interfaces.[].mpls") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "vlan_interfaces.[].mpls.ip") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "vlan_interfaces.[].mpls.ip") | Boolean |  |  |  | Enable MPLS traffic on interface if MPLS enabled globally. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldp</samp>](## "vlan_interfaces.[].mpls.ldp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "vlan_interfaces.[].mpls.ldp.interface") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igp_sync</samp>](## "vlan_interfaces.[].mpls.ldp.igp_sync") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "vlan_interfaces.[].mpls.ldp.interface") | Boolean |  |  |  | Enable LDP on this interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igp_sync</samp>](## "vlan_interfaces.[].mpls.ldp.igp_sync") | Boolean |  |  |  | Tell the IGP to keep a link at max metric until LDP labels are ready. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ntp_serve</samp>](## "vlan_interfaces.[].ntp_serve") | Boolean |  |  |  | Enable/disable serving NTP to clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "vlan_interfaces.[].pvlan_mapping") | String |  |  |  | List of VLANs as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vlan_interfaces.[].metadata") | Dictionary |  |  |  |  |
@@ -947,9 +947,15 @@
           # Egress traffic policy.
           output: <str>
         mpls:
+
+          # Enable MPLS traffic on interface if MPLS enabled globally.
           ip: <bool>
           ldp:
+
+            # Enable LDP on this interface.
             interface: <bool>
+
+            # Tell the IGP to keep a link at max metric until LDP labels are ready.
             igp_sync: <bool>
 
         # Enable/disable serving NTP to clients.

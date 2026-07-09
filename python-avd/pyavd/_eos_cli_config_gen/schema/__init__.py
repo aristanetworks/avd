@@ -74607,7 +74607,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"interface": {"type": bool}, "igp_sync": {"type": bool}}
                 interface: bool | None
+                """Enable LDP on this interface."""
                 igp_sync: bool | None
+                """Tell the IGP to keep a link at max metric until LDP labels are ready."""
 
                 if TYPE_CHECKING:
 
@@ -74619,13 +74621,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            interface: interface
-                            igp_sync: igp_sync
+                            interface: Enable LDP on this interface.
+                            igp_sync: Tell the IGP to keep a link at max metric until LDP labels are ready.
 
                         """
 
             _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}}
             ip: bool | None
+            """Enable MPLS traffic on interface if MPLS enabled globally."""
             ldp: Ldp
             """Subclass of AvdModel."""
 
@@ -74639,7 +74642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ip: ip
+                        ip: Enable MPLS traffic on interface if MPLS enabled globally.
                         ldp: Subclass of AvdModel.
 
                     """
