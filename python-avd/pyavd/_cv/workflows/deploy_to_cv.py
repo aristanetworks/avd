@@ -31,7 +31,7 @@ from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .models import AvdManifest, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
+    from .models import AvdManifest, CVDevice, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 LOGGER = getLogger(__name__)
 
@@ -116,6 +116,41 @@ async def _execute_deployment_steps(
     except CVClientException as e:
         result.errors.append(e)
         result.failed = True
+
+
+async def _finalize_workspace_preserving_warnings(
+    result: DeployToCvResult,
+    cv_client: CVClient,
+    devices: list[CVDevice],
+    loop_warnings: list,
+) -> None:
+    """Finalize the Workspace and preserve warnings collected during the finalize_workspace_on_cv call if it raises."""
+    try:
+        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
+    except CVClientException:
+        result.warnings.extend(loop_warnings)
+        raise
+
+
+async def _rebase_workspace_on_cv_or_raise(
+    result: DeployToCvResult,
+    cv_client: CVClient,
+    workspace_sync_attempt: int,
+    loop_warnings: list,
+) -> None:
+    """Rebase the Workspace unless synchronization attempts are exhausted."""
+    LOGGER.info("deploy_to_cv: Workspace %s (%s) requires synchronization/rebase.", result.workspace.name, result.workspace.id)
+    if workspace_sync_attempt >= result.workspace.max_sync_retries:
+        result.warnings.extend(loop_warnings)
+        raise CVWorkspaceSynchronizationAttemptsExhausted(result.workspace.max_sync_retries, result.workspace.name, result.workspace.id)
+    LOGGER.info(
+        "deploy_to_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
+        workspace_sync_attempt + 1,
+        result.workspace.max_sync_retries,
+        result.workspace.name,
+        result.workspace.id,
+    )
+    await rebase_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
 
 async def _finalize_change_control(result: DeployToCvResult, cv_client: CVClient) -> None:
@@ -300,26 +335,15 @@ async def deploy_to_cv(
                     result.workspace.state = "abandoned"
                     return result
 
-                # Preserve warnings collected during the finalize_workspace_on_cv call if it raises.
-                try:
-                    await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
-                except CVClientException:
-                    result.warnings.extend(loop_warnings)
-                    raise
+                await _finalize_workspace_preserving_warnings(result=result, cv_client=cv_client, devices=devices, loop_warnings=loop_warnings)
 
                 if result.workspace.synchronization_required:
-                    LOGGER.info("deploy_to_cv: Workspace %s (%s) requires synchronization/rebase.", result.workspace.name, result.workspace.id)
-                    if workspace_sync_attempt >= result.workspace.max_sync_retries:
-                        result.warnings.extend(loop_warnings)
-                        raise CVWorkspaceSynchronizationAttemptsExhausted(result.workspace.max_sync_retries, result.workspace.name, result.workspace.id)
-                    LOGGER.info(
-                        "deploy_to_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
-                        workspace_sync_attempt + 1,
-                        result.workspace.max_sync_retries,
-                        result.workspace.name,
-                        result.workspace.id,
+                    await _rebase_workspace_on_cv_or_raise(
+                        result=result,
+                        cv_client=cv_client,
+                        workspace_sync_attempt=workspace_sync_attempt,
+                        loop_warnings=loop_warnings,
                     )
-                    await rebase_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
                     # Workspace has been synchronized on CloudVision. We need to replay all changes.
                     continue
                 # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.
