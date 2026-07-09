@@ -61,6 +61,7 @@ jobs:
       pyavd: ${{ steps.filter.outputs.pyavd }}
       requirements: ${{ steps.filter.outputs.requirements }}
       lock_files: ${{ steps.filter.outputs.lock_files }}
+      lock_check: ${{ steps.filter.outputs.lock_check }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -107,12 +108,15 @@ jobs:
               - '.sonarcloud.properties'
               - '.pre-commit-config.yaml'
             lock_files:
+              - 'uv.lock'
+              - 'python-avd/uv.lock'
+              - 'Makefile'
+              - '.github/workflows/pull-request-management.yml'
+            lock_check:
               - 'pyproject.toml'
               - 'uv.lock'
               - 'python-avd/pyproject.toml'
               - 'python-avd/uv.lock'
-              - 'Makefile'
-              - '.github/workflows/pull-request-management.yml'
             pyavd:
               - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
@@ -132,7 +136,7 @@ jobs:
     name: Check uv lock files
     runs-on: ubuntu-latest
     needs: [file-changes]
-    if: needs.file-changes.outputs.lock_files == 'true'
+    if: needs.file-changes.outputs.lock_files == 'true' || needs.file-changes.outputs.lock_check == 'true'
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
@@ -141,8 +145,13 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install uv
-        run: pip install uv==0.10.9
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --group lock
       - name: Check uv lock files
+        run: make lock-check-exists
+      - name: Check uv lock files are fresh
+        if: needs.file-changes.outputs.lock_check == 'true'
         run: make lock-check
 
   # -------------------------------------- #

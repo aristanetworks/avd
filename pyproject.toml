@@ -8,6 +8,7 @@ requires-python = ">=3.10"
 # anta is set to latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
 dev = [
+    {include-group = "lock"},
     "anta==1.9.0",
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.6",
@@ -29,6 +30,9 @@ dev = [
     "setuptools>=82.0.1", # for pyright check in CI
     "tox>=4.52.1",
     "yamllint>=1.38.0",
+]
+lock = [
+    "uv==0.10.9",
 ]
 coverage = [
     "coverage[toml]==7.15.2",

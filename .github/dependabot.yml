@@ -22,6 +22,27 @@ updates:
       prefix-development: "CI(requirements):"
     cooldown:
       default-days: 7
+  # Maintain uv lock files
+  - package-ecosystem: "uv"
+    directories:
+      - "/"
+      - "/python-avd/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      prod:
+        dependency-type: "production"
+      dev:
+        dependency-type: "development"
+    pull-request-branch-name:
+      separator: "/"
+    commit-message:
+      prefix: "Bump(requirements): "
+      prefix-development: "CI(requirements):"
+    cooldown:
+      default-days: 7
+
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"

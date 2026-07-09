@@ -64,6 +64,11 @@ lock: ## Update uv lock files.
 	uv lock --project . --python 3.10 --fork-strategy requires-python
 	uv lock --project python-avd --python 3.10 --fork-strategy requires-python
 
+.PHONY: lock-check-exists
+lock-check-exists: ## Check uv lock files exist.
+	uv lock --project . --python 3.10 --fork-strategy requires-python --check-exists
+	uv lock --project python-avd --python 3.10 --fork-strategy requires-python --check-exists
+
 .PHONY: lock-check
 lock-check: ## Check uv lock files are fresh.
 	uv lock --project . --python 3.10 --fork-strategy requires-python --check
