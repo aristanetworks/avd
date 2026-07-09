@@ -105,6 +105,7 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?!t}", (None,), {}, "", id="positional_optional_field_with_none_arg_and_title"),
     pytest.param("{?!t}", ("ETHERNET1",), {}, "Ethernet1", id="positional_optional_field_with_existing_arg_and_title"),
     # named fields with short interface name (!c conversion)
+    pytest.param("{interface!c}", (), {"interface": "Ethernet2description"}, "Ethernet2description", id="field_with_ethernet_description_compact"),
     pytest.param("{interface!c}", (), {"interface": "Ethernet2"}, "Et2", id="field_with_ethernet_and_compact"),
     pytest.param("{interface!c}", (), {"interface": "Ethernet 2"}, "Et2", id="field_with_ethernet_and_compact_with_space"),
     pytest.param("{interface!c}", (), {"interface": "Ethernet 2/2"}, "Et2/2", id="field_with_modular_ethernet_and_compact1"),
