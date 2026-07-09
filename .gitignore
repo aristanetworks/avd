@@ -86,3 +86,6 @@ Cargo.lock
 .claude/*
 !.claude/skills
 !.agents/skills
+
+# Git
+.worktrees

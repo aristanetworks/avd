@@ -16,7 +16,6 @@ ntp:
   servers:
   - name: 10.10.10.1
     source_address: 192.168.1.2
-    preferred: true
   - name: 10.10.10.2
     source_address: 198.51.100.10
   - name: 10.10.10.3

@@ -58,6 +58,8 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/custom-templ
 
 The following settings can be leveraged to control generation of device configuration and documentation.
 
+The `eos_cli_config_gen_configuration.hide_passwords` and `eos_cli_config_gen_documentation.hide_passwords` settings are role render settings and can be set as inventory variables or directly under `vars` on the `import_role` task. When `read_structured_config_from_file` is enabled, they do not need to be present in the structured configuration files.
+
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-settings.md
 --8<--
