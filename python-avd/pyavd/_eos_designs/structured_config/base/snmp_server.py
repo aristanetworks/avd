@@ -50,11 +50,24 @@ class SnmpServerMixin(Protocol):
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
-            communities=snmp_settings.communities,
             views=snmp_settings.views._cast_as(EosCliConfigGen.SnmpServer.Views),
             groups=snmp_settings.groups._cast_as(EosCliConfigGen.SnmpServer.Groups),
             traps=snmp_settings.traps,
         )
+        for community in snmp_settings.communities:
+            community_item = EosCliConfigGen.SnmpServer.CommunitiesItem(
+                name=community.name,
+                access=community.access,
+                access_list_ipv6=community.access_list_ipv6._cast_as(EosCliConfigGen.SnmpServer.CommunitiesItem.AccessListIpv6),
+                view=community.view,
+            )
+            if acl_name := community.ipv4_standard_acl:
+                community_item.access_list_ipv4.name = acl_name
+                self.structured_config_utils._set_ipv4_standard_acl(acl_name)
+            # Deprecated key snmp_settings.communities[].access_list_ipv4.name.
+            elif acl_name := community.access_list_ipv4.name:
+                community_item.access_list_ipv4.name = acl_name
+            self.structured_config.snmp_server.communities.append(community_item)
 
     def _get_snmp_engine_id_ip(self: AvdStructuredConfigBaseProtocol) -> str | None:
         """

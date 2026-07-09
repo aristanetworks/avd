@@ -46667,6 +46667,107 @@ class EosDesigns(EosDesignsRootModel):
 
         Hosts._item_type = HostsItem
 
+        class CommunitiesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Access: TypeAlias = Literal["ro", "rw"]
+
+            class AccessListIpv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}}
+                name: str | None
+                """IPv4 access list name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        AccessListIpv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: IPv4 access list name.
+
+                        """
+
+            class AccessListIpv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}}
+                name: str | None
+                """IPv6 access list name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        AccessListIpv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: IPv6 access list name.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "access": {"type": str},
+                "access_list_ipv4": {"type": AccessListIpv4},
+                "ipv4_standard_acl": {"type": str},
+                "access_list_ipv6": {"type": AccessListIpv6},
+                "view": {"type": str},
+            }
+            name: str
+            """Community name."""
+            access: Access | None
+            access_list_ipv4: AccessListIpv4
+            """Subclass of AvdModel."""
+            ipv4_standard_acl: str | None
+            """IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`."""
+            access_list_ipv6: AccessListIpv6
+            """Subclass of AvdModel."""
+            view: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    access: Access | None | UndefinedType = Undefined,
+                    access_list_ipv4: AccessListIpv4 | UndefinedType = Undefined,
+                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
+                    access_list_ipv6: AccessListIpv6 | UndefinedType = Undefined,
+                    view: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CommunitiesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Community name.
+                        access: access
+                        access_list_ipv4: Subclass of AvdModel.
+                        ipv4_standard_acl: IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+                        access_list_ipv6: Subclass of AvdModel.
+                        view: view
+
+                    """
+
+        class Communities(AvdIndexedList[str, CommunitiesItem]):
+            """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Communities._item_type = CommunitiesItem
+
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -46771,7 +46872,7 @@ class EosDesigns(EosDesignsRootModel):
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
-            "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
+            "communities": {"type": Communities},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "traps": {"type": EosCliConfigGen.SnmpServer.Traps},
@@ -46873,7 +46974,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
-        communities: EosCliConfigGen.SnmpServer.Communities
+        communities: Communities
+        """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -46895,7 +46997,7 @@ class EosDesigns(EosDesignsRootModel):
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
-                communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
+                communities: Communities | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 traps: EosCliConfigGen.SnmpServer.Traps | UndefinedType = Undefined,
@@ -46973,7 +47075,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `UsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
-                    communities: communities
+                    communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     traps: traps
