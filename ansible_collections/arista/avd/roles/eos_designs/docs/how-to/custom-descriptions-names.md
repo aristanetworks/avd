@@ -30,7 +30,7 @@ The following syntax is supported: `"{" [field_name] ["?"] ["<" prefix] [">" suf
   - `"!u"`: convert all characters to upper case. Symbols and numbers are ignored.
   - `"!l"`: convert all characters to lower case. Symbols and numbers are ignored.
   - `"!t"`: convert a string to title case. e.g server to Server.
-  - `"!c"`: convert network interfaces to shorter names. e.g. Port-channel20 to Po20. The interface types ethernet, port-channel, loopback, tunnel, vlan are supported for this conversion. For the other strings, this conversion gives no result.
+  - `"!c"`: convert network interfaces to shorter names. e.g. Port-channel20 to Po20. The interface types ethernet, port-channel, loopback, tunnel, vlan are supported for this conversion. For the other strings, returns the same string.
 - `[":" format_spec]`: Format specifications are used within replacement fields contained within a format string to define how individual values are presented. Please consult [Format Specification Mini-Language](https://docs.python.org/3/library/string.html#grammar-token-format-spec-format_spec) for usage details.
 
 Example:
