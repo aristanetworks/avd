@@ -139,7 +139,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
         patch(f"{MODULE_PATH}.get_fabric_documentation", side_effect=original_error),
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
-        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: 'pyavd exploded'") as exc_info,
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_documentation' execution: pyavd exploded") as exc_info,
     ):
         module.run(task_vars={"fabric_name": FABRIC_NAME, "inventory_hostname": "spine1"})
 

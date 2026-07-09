@@ -981,6 +981,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
@@ -998,6 +999,14 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.2.0.
         Configure management interface to accept DHCP default route when the
         management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
+        accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool
+        """
+        Available from AVD 6.4.0.
+        Configure management interface to accept Router Advertisement default
+        route when the IPv6 management IP is set to 'auto-config'.
 
         Default value: `False`
         """
@@ -1101,6 +1110,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
@@ -1124,6 +1134,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
                        management IP is set to 'dhcp'.
+                    accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+                       Available from AVD 6.4.0.
+                       Configure management interface to accept Router Advertisement default
+                       route when the IPv6 management IP is set to 'auto-config'.
                     accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
                        Available from AVD 6.3.0.
                        Configure inband management interface to accept DHCP default route when
@@ -10875,11 +10889,25 @@ class EosDesigns(EosDesignsRootModel):
         provide the gateway.
         """
         ipv6_mgmt_ip: str | None
-        """Node management interface IPv6 address."""
+        """
+        Node management interface IPv6 address with prefix length or 'auto-config'.
+        Set 'auto-config' to use
+        SLAAC to automatically configure the IPv6 address.
+        When set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+        advertisements are expected to provide the gateway and the default route.
+        In this case, AVD also
+        configures the management interface to accept the default route and honor route preferences from
+        Router Advertisements.
+        """
         ipv6_mgmt_gateway: str | None
         """
         This key sets the ipv6 management gateway for the device. It takes precedence over the global
         `ipv6_mgmt_gateway`.
+        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+        advertisements are expected to provide the gateway and the default route.
         """
         mgmt_interface: str | None
         """
@@ -11928,10 +11956,23 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                        provide the gateway.
-                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_ip:
+                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                       Set 'auto-config' to use
+                       SLAAC to automatically configure the IPv6 address.
+                       When set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                       advertisements are expected to provide the gateway and the default route.
+                       In this case, AVD also
+                       configures the management interface to accept the default route and honor route preferences from
+                       Router Advertisements.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                        `ipv6_mgmt_gateway`.
+                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                       advertisements are expected to provide the gateway and the default route.
                     mgmt_interface:
                        Management Interface Name.
                        Default -> platform_management_interface -> mgmt_interface ->
@@ -16168,11 +16209,25 @@ class EosDesigns(EosDesignsRootModel):
         provide the gateway.
         """
         ipv6_mgmt_ip: str | None
-        """Node management interface IPv6 address."""
+        """
+        Node management interface IPv6 address with prefix length or 'auto-config'.
+        Set 'auto-config' to use
+        SLAAC to automatically configure the IPv6 address.
+        When set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+        advertisements are expected to provide the gateway and the default route.
+        In this case, AVD also
+        configures the management interface to accept the default route and honor route preferences from
+        Router Advertisements.
+        """
         ipv6_mgmt_gateway: str | None
         """
         This key sets the ipv6 management gateway for the device. It takes precedence over the global
         `ipv6_mgmt_gateway`.
+        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+        advertisements are expected to provide the gateway and the default route.
         """
         mgmt_interface: str | None
         """
@@ -17230,10 +17285,23 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                        provide the gateway.
-                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_ip:
+                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                       Set 'auto-config' to use
+                       SLAAC to automatically configure the IPv6 address.
+                       When set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                       advertisements are expected to provide the gateway and the default route.
+                       In this case, AVD also
+                       configures the management interface to accept the default route and honor route preferences from
+                       Router Advertisements.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                        `ipv6_mgmt_gateway`.
+                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                       advertisements are expected to provide the gateway and the default route.
                     mgmt_interface:
                        Management Interface Name.
                        Default -> platform_management_interface -> mgmt_interface ->
@@ -40017,6 +40085,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+            "set_first_ntp_server_as_preferred": {"type": bool, "default": True},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
@@ -40044,11 +40113,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_vrf"`
         """
+        set_first_ntp_server_as_preferred: bool
+        """
+        If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+        Set to 'false' to
+        avoid automatically setting any server as 'preferred'.
+
+        Default value: `True`
+        """
         servers: Servers
         """
-        The first server is always set as "preferred".
+        By default, AVD marks the first server as `preferred`.
+        Set
+        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-        Subclass of AvdList with `ServersItem` items.
+        Subclass of
+        AvdList with `ServersItem` items.
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -40063,6 +40143,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 server_vrf: str | UndefinedType = Undefined,
+                set_first_ntp_server_as_preferred: bool | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -40093,10 +40174,17 @@ class EosDesigns(EosDesignsRootModel):
                        - Any other
                        string will be used directly as the VRF name but local interface must be set with
                        `custom_structured_configuration_ntp` if needed.
+                    set_first_ntp_server_as_preferred:
+                       If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+                       Set to 'false' to
+                       avoid automatically setting any server as 'preferred'.
                     servers:
-                       The first server is always set as "preferred".
+                       By default, AVD marks the first server as `preferred`.
+                       Set
+                       'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-                       Subclass of AvdList with `ServersItem` items.
+                       Subclass of
+                       AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
@@ -56126,11 +56214,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -57162,10 +57264,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -61414,11 +61529,25 @@ class EosDesigns(EosDesignsRootModel):
                         provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
-                        """Node management interface IPv6 address."""
+                        """
+                        Node management interface IPv6 address with prefix length or 'auto-config'.
+                        Set 'auto-config' to use
+                        SLAAC to automatically configure the IPv6 address.
+                        When set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                        advertisements are expected to provide the gateway and the default route.
+                        In this case, AVD also
+                        configures the management interface to accept the default route and honor route preferences from
+                        Router Advertisements.
+                        """
                         ipv6_mgmt_gateway: str | None
                         """
                         This key sets the ipv6 management gateway for the device. It takes precedence over the global
                         `ipv6_mgmt_gateway`.
+                        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                        advertisements are expected to provide the gateway and the default route.
                         """
                         mgmt_interface: str | None
                         """
@@ -62459,10 +62588,23 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                        provide the gateway.
-                                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                                    ipv6_mgmt_ip:
+                                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                                       Set 'auto-config' to use
+                                       SLAAC to automatically configure the IPv6 address.
+                                       When set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                       advertisements are expected to provide the gateway and the default route.
+                                       In this case, AVD also
+                                       configures the management interface to accept the default route and honor route preferences from
+                                       Router Advertisements.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                        `ipv6_mgmt_gateway`.
+                                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                       advertisements are expected to provide the gateway and the default route.
                                     mgmt_interface:
                                        Management Interface Name.
                                        Default -> platform_management_interface -> mgmt_interface ->
@@ -66622,11 +66764,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -67669,10 +67825,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -71904,11 +72073,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -72949,10 +73132,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -91444,11 +91640,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -92480,10 +92690,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -96732,11 +96955,25 @@ class EosDesigns(EosDesignsRootModel):
                         provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
-                        """Node management interface IPv6 address."""
+                        """
+                        Node management interface IPv6 address with prefix length or 'auto-config'.
+                        Set 'auto-config' to use
+                        SLAAC to automatically configure the IPv6 address.
+                        When set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                        advertisements are expected to provide the gateway and the default route.
+                        In this case, AVD also
+                        configures the management interface to accept the default route and honor route preferences from
+                        Router Advertisements.
+                        """
                         ipv6_mgmt_gateway: str | None
                         """
                         This key sets the ipv6 management gateway for the device. It takes precedence over the global
                         `ipv6_mgmt_gateway`.
+                        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                        advertisements are expected to provide the gateway and the default route.
                         """
                         mgmt_interface: str | None
                         """
@@ -97777,10 +98014,23 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                        provide the gateway.
-                                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                                    ipv6_mgmt_ip:
+                                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                                       Set 'auto-config' to use
+                                       SLAAC to automatically configure the IPv6 address.
+                                       When set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                       advertisements are expected to provide the gateway and the default route.
+                                       In this case, AVD also
+                                       configures the management interface to accept the default route and honor route preferences from
+                                       Router Advertisements.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                        `ipv6_mgmt_gateway`.
+                                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                       advertisements are expected to provide the gateway and the default route.
                                     mgmt_interface:
                                        Management Interface Name.
                                        Default -> platform_management_interface -> mgmt_interface ->
@@ -101940,11 +102190,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -102987,10 +103251,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -107222,11 +107499,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -108267,10 +108558,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -111280,6 +111584,12 @@ class EosDesigns(EosDesignsRootModel):
     List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
     gateway.
     Replaces the default route.
+    Ignored when
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', since router
+    advertisements are expected to provide the
+    gateway and default route.
 
 
     Subclass of AvdList with `str` items.
@@ -111289,6 +111599,12 @@ class EosDesigns(EosDesignsRootModel):
     OOB Management interface gateway in IPv6 format.
     Used as next-hop for default gateway or static
     routes defined under 'ipv6_mgmt_destination_networks'.
+    Ignored when
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', since router
+    advertisements are expected to provide the
+    gateway and default route.
     """
     is_deployed: bool
     """
@@ -113379,6 +113695,12 @@ class EosDesigns(EosDesignsRootModel):
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
                    Replaces the default route.
+                   Ignored when
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', since router
+                   advertisements are expected to provide the
+                   gateway and default route.
 
 
                    Subclass of AvdList with `str` items.
@@ -113386,6 +113708,12 @@ class EosDesigns(EosDesignsRootModel):
                    OOB Management interface gateway in IPv6 format.
                    Used as next-hop for default gateway or static
                    routes defined under 'ipv6_mgmt_destination_networks'.
+                   Ignored when
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', since router
+                   advertisements are expected to provide the
+                   gateway and default route.
                 is_deployed:
                    If the device is already deployed in the fabric.
                    When set to false:
