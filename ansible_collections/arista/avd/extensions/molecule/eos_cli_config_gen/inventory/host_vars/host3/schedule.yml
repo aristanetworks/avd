@@ -3,20 +3,22 @@ schedule:
   config:
     max_concurrent_jobs: 3
   jobs:
-    # at <time> interval <N> — no date (covers doc template line 34 True with date absent)
+    # at <time> <date> interval <N> (covers at-with-interval branch)
     - name: at_interval_nodate
       at:
         time: "10:00:00"
-        interval: 60
+        date: "2028-03-10"
+      interval: 60
       max_log_files: 1
       command: show clock
+    # at <time> <date> — no once, no interval (covers at-without-period-suffix branch)
     - name: at_time_only
       at:
         time: "12:00:00"
-        once: true
+        date: "2028-06-15"
       max_log_files: 1
       command: show interfaces
-# adding test only for coverage
+    # no period type — covers doc template period="-" (else branch)
     - name: no_at
       max_log_files: 1
       command: show interfaces

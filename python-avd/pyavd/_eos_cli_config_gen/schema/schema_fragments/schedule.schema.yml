@@ -42,20 +42,18 @@ keys:
               convert_types:
                 - str
               description: |-
-                Run the command every N minutes (standalone, no start time).
-                Mutually exclusive with `at` and `now_interval`. Takes precedence over both if multiple are set.
+                Interval in minutes. Used as the standalone interval when `at` is not set,
+                or as the recurring interval when combined with `at` and `at.once` is not True.
             at:
               type: dict
-              description: |-
-                Schedule job at a specific time, optionally on a specific date.
-                Mutually exclusive with `interval` (standalone) and `now_interval`.
-                Takes precedence over `now_interval` if both are set. Ignored if `interval` is set.
+              description: Schedule job at a specific time on a specific date.
               keys:
                 time:
                   required: true
                   type: str
                   description: Start time in HH:MM:SS format.
                 date:
+                  required: true
                   type: str
                   description: |-
                     Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
@@ -63,25 +61,7 @@ keys:
                   type: bool
                   description: |-
                     Run the command a single time at the given time/date.
-                    Mutually exclusive with `at.interval`. Takes precedence over `at.interval` if both are set.
-                interval:
-                  type: int
-                  min: 2
-                  max: 1440
-                  convert_types:
-                    - str
-                  description: |-
-                    Set interval.
-                    Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
-            now_interval:
-              type: int
-              min: 2
-              max: 1440
-              convert_types:
-                - str
-              description: |-
-                Start the schedule immediately and repeat every N minutes.
-                Mutually exclusive with `interval` and `at`. `interval` or `at` take precedence if they are set.
+                    Mutually exclusive with `interval`. `once` takes precedence if both are set.
             timeout:
               type: int
               min: 1

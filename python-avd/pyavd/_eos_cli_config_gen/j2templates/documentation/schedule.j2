@@ -23,20 +23,15 @@
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
 {%         for job in schedule.jobs | arista.avd.natural_sort('name') %}
 {%             set period = "-" %}
-{%             if job.interval is arista.avd.defined %}
-{%                 set period = "interval " ~ job.interval ~ " minutes" %}
-{%             elif job.at is arista.avd.defined %}
-{%                 set period = "at " ~ job.at.time %}
-{%                 if job.at.date is arista.avd.defined %}
-{%                     set period = period ~ " " ~ job.at.date %}
-{%                 endif %}
+{%             if job.at is arista.avd.defined %}
+{%                 set period = "at " ~ job.at.time ~ " " ~ job.at.date %}
 {%                 if job.at.once is arista.avd.defined(true) %}
 {%                     set period = period ~ " once" %}
-{%                 elif job.at.interval is arista.avd.defined %}
-{%                     set period = period ~ " interval " ~ job.at.interval ~ " minutes" %}
+{%                 elif job.interval is arista.avd.defined %}
+{%                     set period = period ~ " interval " ~ job.interval ~ " minutes" %}
 {%                 endif %}
-{%             elif job.now_interval is arista.avd.defined %}
-{%                 set period = "now interval " ~ job.now_interval ~ " minutes" %}
+{%             elif job.interval is arista.avd.defined %}
+{%                 set period = "interval " ~ job.interval ~ " minutes" %}
 {%             endif %}
 | {{ job.name }} | {{ period }} | {{ job.command }} | {{ job.max_log_files }} | {{ job.timeout | arista.avd.default("-") }} | {{ job.logging_verbose | arista.avd.default("-") }} | {{ job.loglocation | arista.avd.default("-") }} | {{ job.max_total_size | arista.avd.default("-") }} |
 {%         endfor %}

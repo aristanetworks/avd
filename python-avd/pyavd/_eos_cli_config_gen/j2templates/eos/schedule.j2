@@ -18,21 +18,16 @@ no schedule config prepend-hostname-logfile
 {%     endif %}
 {%     for job in schedule.jobs | arista.avd.natural_sort('name') %}
 {%         set schedule_cli = "schedule " ~ job.name %}
-{%         if job.interval is arista.avd.defined or job.at.date is arista.avd.defined or job.at.once is arista.avd.defined or job.at.interval is arista.avd.defined or job.now_interval is arista.avd.defined %}
-{%             if job.interval is arista.avd.defined %}
-{%                 set schedule_cli = schedule_cli ~ " interval " ~ job.interval %}
-{%             elif job.at is arista.avd.defined %}
-{%                 set schedule_cli = schedule_cli ~ " at " ~ job.at.time %}
-{%                 if job.at.date is arista.avd.defined %}
-{%                     set schedule_cli = schedule_cli ~ " " ~ job.at.date %}
-{%                 endif %}
+{%         if job.interval is arista.avd.defined or job.at is arista.avd.defined %}
+{%             if job.at is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " at " ~ job.at.time ~ " " ~ job.at.date %}
 {%                 if job.at.once is arista.avd.defined(true) %}
 {%                     set schedule_cli = schedule_cli ~ " once" %}
-{%                 elif job.at.interval is arista.avd.defined %}
-{%                     set schedule_cli = schedule_cli ~ " interval " ~ job.at.interval %}
+{%                 elif job.interval is arista.avd.defined %}
+{%                     set schedule_cli = schedule_cli ~ " interval " ~ job.interval %}
 {%                 endif %}
-{%             elif job.now_interval is arista.avd.defined %}
-{%                 set schedule_cli = schedule_cli ~ " now interval " ~ job.now_interval %}
+{%             elif job.interval is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " interval " ~ job.interval %}
 {%             endif %}
 {%             if job.timeout is arista.avd.defined %}
 {%                 set schedule_cli = schedule_cli ~ " timeout " ~ job.timeout %}

@@ -624,8 +624,8 @@ stun
 
 | Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
-| at_interval_nodate | at 10:00:00 interval 60 minutes | show clock | 1 | - | - | - | - |
-| at_time_only | at 12:00:00 once | show interfaces | 1 | - | - | - | - |
+| at_interval_nodate | at 10:00:00 2028-03-10 interval 60 minutes | show clock | 1 | - | - | - | - |
+| at_time_only | at 12:00:00 2028-06-15 | show interfaces | 1 | - | - | - | - |
 | no_at | - | show interfaces | 1 | - | - | - | - |
 
 ### Schedule Device Configuration
@@ -633,6 +633,6 @@ stun
 ```eos
 !
 schedule config max-concurrent-jobs 3
-schedule at_interval_nodate at 10:00:00 interval 60 max-log-files 1 command show clock
-schedule at_time_only at 12:00:00 once max-log-files 1 command show interfaces
+schedule at_interval_nodate at 10:00:00 2028-03-10 interval 60 max-log-files 1 command show clock
+schedule at_time_only at 12:00:00 2028-06-15 max-log-files 1 command show interfaces
 ```

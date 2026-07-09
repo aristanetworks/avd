@@ -67699,32 +67699,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class At(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"time": {"type": str}, "date": {"type": str}, "once": {"type": bool}, "interval": {"type": int}}
+                _fields: ClassVar[dict] = {"time": {"type": str}, "date": {"type": str}, "once": {"type": bool}}
                 time: str
                 """Start time in HH:MM:SS format."""
-                date: str | None
+                date: str
                 """Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd."""
                 once: bool | None
                 """
                 Run the command a single time at the given time/date.
-                Mutually exclusive with `at.interval`. Takes
-                precedence over `at.interval` if both are set.
-                """
-                interval: int | None
-                """
-                Set interval.
-                Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
+                Mutually exclusive with `interval`. `once`
+                takes precedence if both are set.
                 """
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        time: str | UndefinedType = Undefined,
-                        date: str | None | UndefinedType = Undefined,
-                        once: bool | None | UndefinedType = Undefined,
-                        interval: int | None | UndefinedType = Undefined,
+                        self, *, time: str | UndefinedType = Undefined, date: str | UndefinedType = Undefined, once: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         At.
@@ -67737,11 +67727,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             date: Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.
                             once:
                                Run the command a single time at the given time/date.
-                               Mutually exclusive with `at.interval`. Takes
-                               precedence over `at.interval` if both are set.
-                            interval:
-                               Set interval.
-                               Mutually exclusive with `at.once`. `at.once` takes precedence if both are set.
+                               Mutually exclusive with `interval`. `once`
+                               takes precedence if both are set.
 
                         """
 
@@ -67749,7 +67736,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "name": {"type": str},
                 "interval": {"type": int},
                 "at": {"type": At},
-                "now_interval": {"type": int},
                 "timeout": {"type": int},
                 "max_log_files": {"type": int},
                 "logging_verbose": {"type": bool},
@@ -67761,25 +67747,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Schedule job name."""
             interval: int | None
             """
-            Run the command every N minutes (standalone, no start time).
-            Mutually exclusive with `at` and
-            `now_interval`. Takes precedence over both if multiple are set.
+            Interval in minutes. Used as the standalone interval when `at` is not set,
+            or as the recurring
+            interval when combined with `at` and `at.once` is not True.
             """
             at: At
             """
-            Schedule job at a specific time, optionally on a specific date.
-            Mutually exclusive with `interval`
-            (standalone) and `now_interval`.
-            Takes precedence over `now_interval` if both are set. Ignored if
-            `interval` is set.
+            Schedule job at a specific time on a specific date.
 
             Subclass of AvdModel.
-            """
-            now_interval: int | None
-            """
-            Start the schedule immediately and repeat every N minutes.
-            Mutually exclusive with `interval` and
-            `at`. `interval` or `at` take precedence if they are set.
             """
             timeout: int | None
             """Job timeout in minutes for CLI command execution. Must be less than the job interval."""
@@ -67806,7 +67782,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     interval: int | None | UndefinedType = Undefined,
                     at: At | UndefinedType = Undefined,
-                    now_interval: int | None | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
                     max_log_files: int | UndefinedType = Undefined,
                     logging_verbose: bool | None | UndefinedType = Undefined,
@@ -67823,21 +67798,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Schedule job name.
                         interval:
-                           Run the command every N minutes (standalone, no start time).
-                           Mutually exclusive with `at` and
-                           `now_interval`. Takes precedence over both if multiple are set.
+                           Interval in minutes. Used as the standalone interval when `at` is not set,
+                           or as the recurring
+                           interval when combined with `at` and `at.once` is not True.
                         at:
-                           Schedule job at a specific time, optionally on a specific date.
-                           Mutually exclusive with `interval`
-                           (standalone) and `now_interval`.
-                           Takes precedence over `now_interval` if both are set. Ignored if
-                           `interval` is set.
+                           Schedule job at a specific time on a specific date.
 
                            Subclass of AvdModel.
-                        now_interval:
-                           Start the schedule immediately and repeat every N minutes.
-                           Mutually exclusive with `interval` and
-                           `at`. `interval` or `at` take precedence if they are set.
                         timeout: Job timeout in minutes for CLI command execution. Must be less than the job interval.
                         max_log_files: Maximum number of log files to retain.
                         logging_verbose: Enable verbose logging.

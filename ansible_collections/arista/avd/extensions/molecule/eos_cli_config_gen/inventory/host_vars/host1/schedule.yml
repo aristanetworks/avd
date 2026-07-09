@@ -9,7 +9,7 @@ schedule:
       at:
         time: "06:00:00"
         date: "2027-12-22"
-        interval: 60
+      interval: 60
       timeout: 30
       max_log_files: 10
       command: show logging
@@ -22,10 +22,11 @@ schedule:
       timeout: 3
       max_log_files: 3
       command: show tech-support
-    # at <time> once  (no date — runs at next occurrence of that time)
+    # at <time> <date> once
     - name: at_time_once
       at:
         time: "08:00:00"
+        date: "2028-01-15"
         once: true
       max_log_files: 5
       command: show ip route
@@ -50,14 +51,6 @@ schedule:
       timeout: 30
       max_log_files: 4
       command: show interfaces
-    # now interval <N> — start immediately and repeat every N minutes (interval must be > timeout)
-    - name: now_interval_full
-      now_interval: 5
-      timeout: 4
-      max_log_files: 3
-      logging_verbose: true
-      loglocation: "flash:/logs"
-      command: show bgp summary
     # standalone interval — simple
     - name: interval_simple
       interval: 31
