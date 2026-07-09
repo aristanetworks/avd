@@ -115,7 +115,7 @@ def resolve_target(site_dir: Path, source: Path, target: str) -> tuple[Path, str
 
     if relative_target.as_posix() in {"", "."}:
         relative_target = PurePosixPath("index.html")
-    elif target.endswith("/"):
+    elif path.endswith("/"):
         relative_target /= "index.html"
 
     return site_dir / Path(relative_target), fragment
