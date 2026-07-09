@@ -1328,6 +1328,11 @@ management api models
 | ldap1.example.com | 636 | MGMT | 10 | dc=host1,dc=example,dc=com | uid | LDAP_HOST_SSL_PROFILE | HOST_GROUP_POLICY | cn=host-admin,dc=example,dc=com |
 | ldap2.example.com | - | default | - | - | - | - | - | cn=admin2,dc=example,dc=com |
 | 10.1.1.1 | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+| 10.1.1.1 | 101 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 201 | - | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf1 | - | - | - | - | - | - |
+| 10.1.1.1 | 101 | vrf2 | - | - | - | - | - | - |
+| 10.1.1.1 | - | vrf3 | - | - | - | - | - | - |
 
 ### LDAP Group Policies
 
@@ -1380,6 +1385,16 @@ management ldap
    !
    server host 10.1.1.1
       ssl-profile LDAP_HOST_SSL_PROFILE
+   !
+   server host 10.1.1.1 port 101
+   !
+   server host 10.1.1.1 port 201
+   !
+   server host 10.1.1.1 port 101 vrf vrf1
+   !
+   server host 10.1.1.1 port 101 vrf vrf2
+   !
+   server host 10.1.1.1 vrf vrf3
    !
    group policy HOST_GROUP_POLICY
       group "Network Operator" role network-operator
@@ -2893,6 +2908,15 @@ mcs client
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
+#### SNMP Extensions
+
+| OID | Script/File Path | One-shot |
+| --- | ---------------- | -------- |
+| .1.3.6.1.4.1.30065.4.101.100.1.1 | flash:/monitorConnectivity.py | False |
+| .1.3.6.1.4.1.30065.4.101.100.2.33 | flash:/test.py | False |
+| .111.3.6.1.4.1.99999.2.1.0 | flash:/test1.py | True |
+| .2.3.6.1.4.1.99999.2.1.0 | flash:/test2.py | False |
+
 #### SNMP Device Configuration
 
 ```eos
@@ -2948,6 +2972,10 @@ snmp-server enable traps msdp backward-transition
 snmp-server enable traps msdp established
 snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.1.1 flash:/monitorConnectivity.py
+snmp-server extension .1.3.6.1.4.1.30065.4.101.100.2.33 flash:/test.py
+snmp-server extension .111.3.6.1.4.1.99999.2.1.0 flash:/test1.py one-shot
+snmp-server extension .2.3.6.1.4.1.99999.2.1.0 flash:/test2.py
 no snmp-server vrf default
 snmp-server vrf MGMT
 snmp-server vrf lower_case
@@ -7621,6 +7649,7 @@ interface Loopback100
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 | Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
 | Tunnel6 | TEST-IPV6-ND-WITHOUT-ADDR | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.2 | - | - |
+| Tunnel7 | TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS | default | default | - | - | - | gre | 1.1.1.1 | 2.2.2.6 | - | - |
 
 ##### IPv4
 
@@ -7630,6 +7659,7 @@ interface Loopback100
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 | Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
+| Tunnel7 | default | 10.99.99.5/30 | - | - | - | - |
 
 ##### IPv6
 
@@ -7741,6 +7771,13 @@ interface Tunnel6
    tunnel mode gre
    tunnel source 1.1.1.1
    tunnel destination 2.2.2.2
+!
+interface Tunnel7
+   description TEST-IPV4-ONLY-WITHOUT-IPV6-FIELDS
+   ip address 10.99.99.5/30
+   tunnel mode gre
+   tunnel source 1.1.1.1
+   tunnel destination 2.2.2.6
 ```
 
 ### VLAN Interfaces
@@ -8608,6 +8645,8 @@ ip virtual-router mac-address mlag-peer
 | TENANT_A_PROJECT02 | True |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
+| TEST3 | True |
+| TEST4 | - |
 
 #### IP Routing Device Configuration
 
@@ -8622,6 +8661,7 @@ ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ip routing vrf TEST1
 ip routing ipv6 interfaces vrf TEST2
+ip routing vrf TEST3
 ```
 
 ### IPv6 Routing
@@ -8640,6 +8680,8 @@ ip routing ipv6 interfaces vrf TEST2
 | TENANT_A_PROJECT02 | false |
 | TEST1 | true |
 | TEST2 | false |
+| TEST3 | false |
+| TEST4 | false |
 
 #### IPv6 Routing Device Configuration
 
@@ -11955,6 +11997,8 @@ router multicast
 
 BFD enabled: True
 
+Secondary IPv6 address in PIM IPv4 hello messages: Enabled
+
 Make-before-break: False
 Register Local Interface: Ethernet1
 
@@ -12003,6 +12047,7 @@ router pim sparse-mode
    ipv4
       ssm range standard
       bfd
+      message hello address secondary ipv6
       make-before-break disabled
       rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30
@@ -13026,6 +13071,8 @@ mac access-list TEST5
 | TENANT_A_PROJECT02 | enabled |
 | TEST1 | enabled |
 | TEST2 | enabled (ipv6 interface) |
+| TEST3 | enabled |
+| TEST4 | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -13042,6 +13089,12 @@ vrf instance TENANT_A_PROJECT02
 vrf instance TEST1
 !
 vrf instance TEST2
+!
+vrf instance TEST3
+   rd 100:100
+!
+vrf instance TEST4
+   rd 10.20.30.40:102
 !
 vrf instance defauls
 !

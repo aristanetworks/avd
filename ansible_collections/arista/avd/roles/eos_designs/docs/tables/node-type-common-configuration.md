@@ -17,8 +17,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.defaults.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.defaults.mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.defaults.mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "<node_type_keys.key>.defaults.lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -46,8 +46,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -71,8 +71,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "<node_type_keys.key>.node_groups.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -98,8 +98,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.nodes.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "<node_type_keys.key>.nodes.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -125,8 +125,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "device_profiles.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "device_profiles.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "device_profiles.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "device_profiles.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "device_profiles.[].ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "device_profiles.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "device_profiles.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "device_profiles.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -152,8 +152,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "devices.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'.<br>When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "devices.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "devices.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "devices.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "devices.[].ipv6_mgmt_ip") | String |  |  |  | Node management interface IPv6 address with prefix length or 'auto-config'.<br>Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.<br>When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.<br>In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "devices.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.<br>This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "devices.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "devices.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
@@ -210,10 +210,14 @@
         # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
-        # Node management interface IPv6 address.
+        # Node management interface IPv6 address with prefix length or 'auto-config'.
+        # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+        # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+        # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
         ipv6_mgmt_ip: <str>
 
         # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+        # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
         ipv6_mgmt_gateway: <str>
 
         # Management Interface Name.
@@ -318,10 +322,14 @@
               # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
               mgmt_gateway: <str>
 
-              # Node management interface IPv6 address.
+              # Node management interface IPv6 address with prefix length or 'auto-config'.
+              # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+              # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+              # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
               ipv6_mgmt_ip: <str>
 
               # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+              # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
               ipv6_mgmt_gateway: <str>
 
               # Management Interface Name.
@@ -413,10 +421,14 @@
           # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
           mgmt_gateway: <str>
 
-          # Node management interface IPv6 address.
+          # Node management interface IPv6 address with prefix length or 'auto-config'.
+          # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+          # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+          # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
           ipv6_mgmt_ip: <str>
 
           # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+          # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
           ipv6_mgmt_gateway: <str>
 
           # Management Interface Name.
@@ -514,10 +526,14 @@
           # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
           mgmt_gateway: <str>
 
-          # Node management interface IPv6 address.
+          # Node management interface IPv6 address with prefix length or 'auto-config'.
+          # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+          # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+          # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
           ipv6_mgmt_ip: <str>
 
           # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+          # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
           ipv6_mgmt_gateway: <str>
 
           # Management Interface Name.
@@ -615,10 +631,14 @@
         # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
-        # Node management interface IPv6 address.
+        # Node management interface IPv6 address with prefix length or 'auto-config'.
+        # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+        # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+        # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
         ipv6_mgmt_ip: <str>
 
         # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+        # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
         ipv6_mgmt_gateway: <str>
 
         # Management Interface Name.
@@ -716,10 +736,14 @@
         # This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
-        # Node management interface IPv6 address.
+        # Node management interface IPv6 address with prefix length or 'auto-config'.
+        # Set 'auto-config' to use SLAAC to automatically configure the IPv6 address.
+        # When set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the 'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router advertisements are expected to provide the gateway and the default route.
+        # In this case, AVD also configures the management interface to accept the default route and honor route preferences from Router Advertisements.
         ipv6_mgmt_ip: <str>
 
         # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+        # This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router advertisements are expected to provide the gateway and the default route.
         ipv6_mgmt_gateway: <str>
 
         # Management Interface Name.
