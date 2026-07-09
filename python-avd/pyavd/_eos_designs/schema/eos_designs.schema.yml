@@ -3877,6 +3877,87 @@ keys:
                 description: 'Action as string.
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  ipv4_standard_acls:
+    type: list
+    primary_key: name
+    description: 'IPv4 standard access-lists catalog.
+
+      These access-lists will only be configured on devices where they are in use.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list Name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
   ipv6_acls:
     type: list
     primary_key: name
@@ -10123,7 +10204,41 @@ keys:
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name.
+            access:
+              type: str
+              valid_values:
+              - ro
+              - rw
+            access_list_ipv4:
+              type: dict
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: ipv4_standard_acl
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access list name. The access-list must be
+                defined under `ipv4_standard_acls`.
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name.
+            view:
+              type: str
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
