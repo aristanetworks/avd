@@ -157,7 +157,7 @@ class AvdStringFormatter(Formatter):
         if conversion == "c":
             # Port-channel20.200 --> Po20.200, Ethernet2 --> Et2, Ethernet1/1/1 > Et1/1/1
             interface = re.match(r"^(port-channel|ethernet|vlan|loopback|tunnel)\s?(\d+((/\d+){1,2})?(\.\d+)?)$", str(value).lower())
-            interface_type = str(value).title()[:2]
+            interface_type = str(value).lower().title()[:2]
             if interface:
                 return interface_type + interface.group(2)
             return str(value)
