@@ -321,7 +321,7 @@ class CVWorkspace:
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
     synchronization_required: bool = False
-    """Flag reflecting runtime requirement of the CloudVision Workspace to be synchronized/rebased."""
+    """CloudVision Workspace requires synchronize/rebase before submission."""
 
     @property
     def name(self) -> str:
