@@ -17,6 +17,8 @@ dot1x:
   protocol_lldp_bypass: true
   protocol_bpdu_bypass: true
   dynamic_authorization: true
+  captive_portal:
+    enabled: true
 enable_password:
   disabled: true
 hostname: dot1x-settings-1

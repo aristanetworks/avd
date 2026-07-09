@@ -7,8 +7,11 @@ l2leaf:
     - name: dot1x-settings-1
       mgmt_ip: 192.168.0.2/24
 
+# Added for coverage
 dot1x_settings:
   enabled: true
+  web_authentication:
+    enabled: true
 
 aaa_settings:
   radius:
