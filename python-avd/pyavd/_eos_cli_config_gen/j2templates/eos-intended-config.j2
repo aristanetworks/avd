@@ -5,7 +5,7 @@
 #}
 {# Device Configuration #}
 {# context used to hide password and keys #}
-{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
+{% set hide_passwords = _eos_cli_config_gen_hide_passwords | arista.avd.default(eos_cli_config_gen_configuration.hide_passwords, false) %}
 {% include 'eos/config-comment.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
