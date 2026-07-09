@@ -7556,13 +7556,10 @@ keys:
               $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
       authenticate:
         type: bool
-        description: Enable NTP authentication.
       authenticate_servers_only:
         type: bool
-        description: Require authentication for NTP server messages only.
       authentication_keys:
         type: list
-        description: List of NTP authentication keys.
         primary_key: id
         items:
           type: dict
@@ -7592,7 +7589,6 @@ keys:
                 Does not have any influence on `cleartext_key`.'
       trusted_keys:
         type: str
-        description: List or range of trusted NTP authentication key IDs.
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
   only_local_vlan_trunk_groups:
     documentation_options:

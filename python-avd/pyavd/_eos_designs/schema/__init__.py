@@ -40048,18 +40048,11 @@ class EosDesigns(EosDesignsRootModel):
         AvdList with `ServersItem` items.
         """
         authenticate: bool | None
-        """Enable NTP authentication."""
         authenticate_servers_only: bool | None
-        """Require authentication for NTP server messages only."""
         authentication_keys: AuthenticationKeys
-        """
-        List of NTP authentication keys.
-
-        Subclass of AvdIndexedList with `AuthenticationKeysItem` items.
-        Primary key is `id` (`int`).
-        """
+        """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
         trusted_keys: str | None
-        """List or range of trusted NTP authentication key IDs."""
+        """List of trusted-keys as string ex. 10-12,15."""
 
         if TYPE_CHECKING:
 
@@ -40109,14 +40102,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of
                        AvdList with `ServersItem` items.
-                    authenticate: Enable NTP authentication.
-                    authenticate_servers_only: Require authentication for NTP server messages only.
-                    authentication_keys:
-                       List of NTP authentication keys.
-
-                       Subclass of AvdIndexedList with `AuthenticationKeysItem` items.
-                       Primary key is `id` (`int`).
-                    trusted_keys: List or range of trusted NTP authentication key IDs.
+                    authenticate: authenticate
+                    authenticate_servers_only: authenticate_servers_only
+                    authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
+                    trusted_keys: List of trusted-keys as string ex. 10-12,15.
 
                 """
 
