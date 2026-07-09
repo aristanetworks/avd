@@ -25546,6 +25546,15 @@ keys:
             max: 65535
             convert_types:
             - str
+  switchport:
+    type: dict
+    keys:
+      ethernet_llc_validation:
+        type: bool
+        description: Enable Ethernet LLC header validation.
+      vlan_tag_validation:
+        type: bool
+        description: Enable VLAN tag validation.
   switchport_default:
     type: dict
     keys:

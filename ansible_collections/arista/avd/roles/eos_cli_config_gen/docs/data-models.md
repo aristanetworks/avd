@@ -386,6 +386,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-d
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
 --8<--
 
+### Switchport Validation
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport.md
+--8<--
+
 ### Sync-e
 
 --8<--
