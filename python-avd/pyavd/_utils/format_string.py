@@ -26,7 +26,7 @@ class AvdStringFormatter(Formatter):
                    Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
         conversion ::= "!u" for "upper()", "!l" for "lower()", "!t" for "title()" and
                        "!c" for short name of the network interfaces. e.g Port-channel2.2 > Po2.2, Ethernet1 > Et1.
-                       Using "!c" for other strings gives no result (The regular Python conversions "!r", "!s", "!a" have been removed).
+                       Using "!c" for other strings gives no result. The regular Python conversions "!r", "!s", "!a" have been removed.
 
     Note the order of syntax field matters!
     """
