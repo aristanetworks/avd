@@ -387,7 +387,7 @@ This is caused by AVD pushing the configuration line `service routing protocols 
 
 ### VPN-IPv4 Overlay in Arista Cloud Test (ACT)
 
-Suppose you are running this lab in the Arista Cloud Test service, and the overlay services are not working (no connectivity from CPE to CPE) after performing the above mentioned steps. In that case, you may need to change the default forwarding engine of the vEOS nodes.
+Suppose you are running this lab in the Arista Cloud Test service, and the overlay services are not working (no connectivity from CPE to CPE) after performing the above-mentioned steps. In that case, you may need to change the default forwarding engine of the vEOS nodes.
 
 Add the following line to the starting configurations for each node:
 
