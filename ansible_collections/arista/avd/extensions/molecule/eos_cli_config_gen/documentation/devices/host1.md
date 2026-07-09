@@ -15155,6 +15155,7 @@ Priority Flow Control is **enabled**.
 | -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
 | 1 | All | - | 1 kbytes | 10 kbytes | 100 | - |
 | 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
+| 3 | All | - | - | - | - | - |
 | 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
 | 1 | Multicast | - | - | - | - | - |
 | 2 | Multicast | - | - | - | - | - |
