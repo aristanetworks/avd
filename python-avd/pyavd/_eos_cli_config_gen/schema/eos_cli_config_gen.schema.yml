@@ -222,6 +222,8 @@ keys:
 
               - "group radius group MYGROUP local"
 
+              - "group ldap"
+
               '
           command_api:
             type: str
@@ -336,6 +338,8 @@ keys:
               - "group MYGROUP none"
 
               - "group radius group MYGROUP local"
+
+              - "group ldap"
 
               '
       config_commands:
@@ -2525,6 +2529,17 @@ keys:
           on an EOS device.
 
           '
+  environment_fan_speed:
+    type: dict
+    description: Environment fan-speed settings.
+    keys:
+      minimum:
+        type: int
+        convert_types:
+        - str
+        min: 30
+        max: 100
+        description: Set the minimum fan speed in percent.
   eos_cli:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
@@ -9818,6 +9833,137 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
             in the final EOS configuration.
+  management_ldap:
+    type: dict
+    keys:
+      server_defaults:
+        type: dict
+        description: Default LDAP options applied to all servers unless overridden
+          per host.
+        keys:
+          base_dn:
+            type: str
+            description: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+          rdn_attribute_user:
+            type: str
+            description: Relative Distinguished Name attribute(s) for user lookup
+              (e.g., cn).
+          ssl_profile:
+            type: str
+            description: SSL profile name to secure LDAP connections.
+          authorization_group_policy:
+            type: str
+            description: LDAP group policy name to use for user authorization.
+          timeout:
+            type: int
+            min: 1
+            max: 1000
+            description: Time in seconds (EOS default 30 seconds) to wait for a response
+              from this LDAP server.
+            convert_types:
+            - str
+          search:
+            type: dict
+            description: Credentials used by the switch to perform LDAP search bind
+              operations.
+            keys:
+              username:
+                type: str
+                required: true
+                description: LDAP username (full DN) for search bind operations (e.g.,
+                  cn=ldap-admin,dc=example,dc=com).
+              password:
+                type: str
+                required: true
+                description: Password for the search bind user.
+                convert_types:
+                - int
+              password_type:
+                type: str
+                valid_values:
+                - '0'
+                - '7'
+                - 8a
+                description: 'Password encryption type.
+
+                  - 0 = clear text
+
+                  - 7 = obfuscated
+
+                  - 8a = AES-256-GCM encrypted.
+
+                  Omit to provide an unobfuscated string (EOS will store it obfuscated).'
+                convert_types:
+                - int
+      server_hosts:
+        type: list
+        description: 'List of LDAP server hosts.
+
+          Combination of ''host'', ''port'' and ''vrf'' should be unique.'
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/management_ldap/keys/server_defaults
+          keys:
+            host:
+              type: str
+              required: true
+              description: Hostname or IP address of the LDAP server.
+            port:
+              type: int
+              description: Port of LDAP server (EOS default 389).
+              min: 0
+              max: 65535
+              convert_types:
+              - str
+            vrf:
+              type: str
+              convert_types:
+              - int
+      group_policies:
+        type: list
+        primary_key: policy
+        description: Named LDAP group policies that map LDAP groups to EOS roles and
+          privilege levels.
+        items:
+          type: dict
+          keys:
+            policy:
+              type: str
+              description: Group policy name. Referenced by server authorization_group_policy.
+            search_filter:
+              type: dict
+              description: LDAP search filter used to enumerate group membership.
+              keys:
+                objectclass:
+                  type: str
+                  required: true
+                  description: LDAP objectclass value to match (e.g., group).
+                attribute:
+                  type: str
+                  required: true
+                  description: LDAP attribute that holds group member DNs (e.g., member).
+            groups:
+              type: list
+              primary_key: name
+              description: List of LDAP group-to-role mappings within this policy.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: LDAP group name.
+                  role:
+                    type: str
+                    required: true
+                    description: EOS role assigned to members of this LDAP group.
+                  privilege:
+                    type: int
+                    min: 0
+                    max: 15
+                    description: Optional privilege level (0-15) assigned alongside
+                      the role.
+                    convert_types:
+                    - str
   management_security:
     type: dict
     keys:
@@ -13468,6 +13614,9 @@ keys:
                 ipv4:
                   type: bool
                   description: Enable/disable address locking for IPv4.
+                ipv6:
+                  type: bool
+                  description: Enable/disable address locking for IPv6.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -24049,6 +24198,10 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over
+              IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
@@ -24751,6 +24904,23 @@ keys:
                   type: int
                   convert_types:
                   - str
+      extensions:
+        type: list
+        primary_key: oid
+        items:
+          type: dict
+          keys:
+            oid:
+              type: str
+              description: Object Identifier (OID) for the SNMP extension.
+              pattern: \.[0-9]+(\.[0-9]+)*
+            path:
+              type: str
+              required: true
+              description: Path to the script or MIB file on the device (e.g., flash:/script.py).
+            one_shot:
+              type: bool
+              description: Enable one-shot mode for the extension script.
       contact:
         type: str
         description: SNMP contact.
@@ -27208,6 +27378,15 @@ keys:
           - int
         description:
           type: str
+        rd:
+          type: str
+          description: 'Renders Route Distinguisher under ''vrf instance''.
+
+            This is deprecated in EOS; configure the Route Distinguisher under ''router
+            bgp'' VRF submode instead using `router_bgp.vrfs[].rd`.
+
+            This key is kept only to support existing/legacy device configurations
+            and is intentionally not shown in the generated device documentation.'
         ip_routing:
           type: bool
         ipv6_routing:

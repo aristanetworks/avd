@@ -354,6 +354,13 @@ keys:
 
           Configure management interface to accept DHCP default route when the management
           IP is set to ''dhcp''.'
+      accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Configure management interface to accept Router Advertisement default route
+          when the IPv6 management IP is set to ''auto-config''.'
       accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
         type: bool
         default: false
@@ -643,6 +650,15 @@ keys:
       Only supported in combination with MPLS overlay.
 
       '
+  bgp_peer_filters_catalog:
+    type: list
+    description: 'BGP peer filter catalog.
+
+      Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in listen ranges.'
+    $ref: eos_cli_config_gen#/keys/peer_filters
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -3868,6 +3884,87 @@ keys:
                 description: 'Action as string.
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  ipv4_standard_acls:
+    type: list
+    primary_key: name
+    description: 'IPv4 standard access-lists catalog.
+
+      These access-lists will only be configured on devices where they are in use.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list Name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
   ipv6_acls:
     type: list
     primary_key: name
@@ -3936,6 +4033,13 @@ keys:
 
       Replaces the default route.
 
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
+
       '
     type: list
     items:
@@ -3949,6 +4053,13 @@ keys:
     description: 'OOB Management interface gateway in IPv6 format.
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.
+
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
 
       '
   is_deployed:
@@ -5057,6 +5168,38 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                  with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.
+
+                        note: `peer_filter` or `remote_as` is required.'
+                      convert_types:
+                      - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: 'Peer-filter name.
+
+                        note: `peer_filter` or `remote_as` is required.
+
+                        '
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -6944,6 +7087,17 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges
+                      description: 'Note - vrfs[].bgp_peer_groups[].nodes[] must have
+                        a node matching with the hostname to configure the bgp listen
+                        ranges.
+
+                        When set for VRF default, this is configured under root `router
+                        bgp <as>`. For other VRFs this is configured under
+
+                        respective VRF.'
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -7386,9 +7540,19 @@ keys:
           server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.\n-
           Any other string will be used directly as the VRF name but local interface
           must be set with `custom_structured_configuration_ntp` if needed."
+      set_first_ntp_server_as_preferred:
+        type: bool
+        description: 'If ''true'', AVD marks the first entry under ''ntp_settings.servers''
+          as ''preferred''.
+
+          Set to ''false'' to avoid automatically setting any server as ''preferred''.'
+        default: true
       servers:
         type: list
-        description: The first server is always set as "preferred".
+        description: 'By default, AVD marks the first server as `preferred`.
+
+          Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
+          this behavior.'
         items:
           type: dict
           keys:
@@ -10071,7 +10235,41 @@ keys:
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name.
+            access:
+              type: str
+              valid_values:
+              - ro
+              - rw
+            access_list_ipv4:
+              type: dict
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: ipv4_standard_acl
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access list name. The access-list must be
+                defined under `ipv4_standard_acls`.
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name.
+            view:
+              type: str
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -11756,12 +11954,14 @@ $defs:
             type: bool
             description: 'Enable address locking for IPv4.
 
-              Key `ipv4` can only be set to false.
+              For Port-Channels, only `ipv4: false` is supported.
 
               For EOS version 4.31 and higher.'
           ipv6:
             type: bool
             description: 'Enable address locking for IPv6.
+
+              For Port-Channels, only `ipv6: false` is supported.
 
               For EOS version 4.31 and higher.'
       poe:
@@ -12590,15 +12790,31 @@ $defs:
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv6 address.
+            description: 'Node management interface IPv6 address with prefix length
+              or ''auto-config''.
+
+              Set ''auto-config'' to use SLAAC to automatically configure the IPv6
+              address.
+
+              When set to ''auto-config'' and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', the ''ipv6_mgmt_gateway'' and ''ipv6_mgmt_destination_networks''
+              settings are ignored since the router advertisements are expected to
+              provide the gateway and the default route.
+
+              In this case, AVD also configures the management interface to accept
+              the default route and honor route preferences from Router Advertisements.'
             type: str
-            format: cidr
           ipv6_mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the ipv6 management gateway for the device.
+            description: 'This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
+
+              This setting is ignored when ''ipv6_mgmt_ip'' is set to ''auto-config''
+              and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', since the router advertisements are expected to provide the
+              gateway and the default route.'
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -13545,8 +13761,8 @@ $defs:
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
-            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
-              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+            description: 'Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN
+              interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
 
               L3 Reachability is required for this to work, the preferred method to
               establish underlay connectivity is to use core_interfaces.
