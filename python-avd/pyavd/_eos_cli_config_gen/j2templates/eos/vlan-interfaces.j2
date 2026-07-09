@@ -273,6 +273,8 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
+{%     elif vlan_interface.mpls.ldp.igp_sync is arista.avd.defined(false) %}
+   no mpls ldp igp sync
 {%     endif %}
 {%     if vlan_interface.mpls.ldp.interface is arista.avd.defined(true) %}
    mpls ldp interface
