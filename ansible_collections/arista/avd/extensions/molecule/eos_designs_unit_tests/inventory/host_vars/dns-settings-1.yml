@@ -8,6 +8,11 @@ l2leaf:
     - name: dns-settings-1
       mgmt_ip: 192.168.0.2/24
 
+#Added for coverage
+dot1x_settings:
+  web_authentication:
+    enabled: true
+
 dns_settings:
   domain: testfabric.local
   domain_list:
