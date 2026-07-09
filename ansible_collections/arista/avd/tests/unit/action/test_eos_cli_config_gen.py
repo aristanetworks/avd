@@ -194,7 +194,7 @@ def test_run_wraps_exceptions_as_action_fail(action_module: Callable[..., Action
         patch(f"{MODULE_PATH}.get_device_config", side_effect=original_error, create=True),
         patch(f"{LOG_HANDLERS_PATH}.Display", return_value=shared_display),
         patch(f"{LOG_CONFIG_PATH}.Display", return_value=shared_display),
-        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_cli_config_gen' execution: 'pyavd exploded'") as exc_info,
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_cli_config_gen' execution: pyavd exploded") as exc_info,
     ):
         module.run(task_vars={"inventory_hostname": "test-device"})
 
