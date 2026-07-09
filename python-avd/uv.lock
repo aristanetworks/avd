@@ -874,7 +874,7 @@ requires-dist = [
 provides-extras = ["ansible", "ansible-collection"]
 
 [package.metadata.requires-dev]
-self = [{ name = "pyavd", specifier = "==6.3.0.dev1" }]
+self = [{ name = "pyavd", specifier = "==6.4.0.dev0" }]
 
 [[package]]
 name = "pyavd-utils"

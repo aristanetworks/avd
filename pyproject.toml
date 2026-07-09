@@ -6,6 +6,7 @@ requires-python = ">=3.10"
 [dependency-groups]
 # pyavd minimal requirements when running from source
 dev = [
+    {include-group = "lock"},
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.14",
     "python-socks[asyncio]>=2.7.2",
@@ -26,6 +27,9 @@ dev = [
     "yamllint>=1.38.0",
     # TODO: avoid the next line down the line if possible
     "gitpython>=3.1.57",  # for pyright check in CI for e2e script
+]
+lock = [
+    "uv==0.10.9",
 ]
 prek = [
     "prek==0.5.11",
