@@ -35,7 +35,9 @@ tags: ["arista", "network", "networking", "eos", "avd", "cloudvision", "cvp"]
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  "arista.eos": ">=7.0.0"
+# Test with main branch
+  "git+https://github.com/ansible-collections/arista.eos.git": main
+#  "arista.eos": ">=12.1.3"
 
 # The URL of the originating SCM repository
 repository: https://github.com/aristanetworks/avd
