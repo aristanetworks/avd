@@ -17,6 +17,18 @@ keys:
         description: |-
           Available from AVD 6.2.0.
           Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+      accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.4.0.
+          Configure management interface to accept Router Advertisement default route when the IPv6 management IP is set to 'auto-config'.
+      accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.3.0.
+          Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'.
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: |-
@@ -47,6 +59,13 @@ keys:
         description: |-
           Available from AVD 6.2.0.
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+        default: false
+      only_configure_pvst_border_when_mode_is_mstp:
+        type: bool
+        description: |-
+          Available from AVD 6.3.0.
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+          When enabled, AVD renders PVST border configuration only when the spanning-tree mode is set to 'mstp'.
         default: false
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool

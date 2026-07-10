@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get_v2
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -21,6 +21,7 @@ from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
 from .dns_settings import DnsSettingsMixin
 from .dot1x import Dot1xMixin
+from .errdisable import ErrDisableMixin
 from .logging import LoggingMixin
 from .management_interface import ManagementInterfaceMixin
 from .management_ssh import ManagementSshMixin
@@ -41,6 +42,7 @@ class AvdStructuredConfigBaseProtocol(
     DaemonTerminattrMixin,
     DnsSettingsMixin,
     Dot1xMixin,
+    ErrDisableMixin,
     ManagementInterfaceMixin,
     LoggingMixin,
     ManagementSshMixin,
@@ -98,6 +100,9 @@ class AvdStructuredConfigBaseProtocol(
     def ipv6_static_routes(self) -> None:
         """ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf."""
         if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.node_config.ipv6_mgmt_ip is None:
+            return
+
+        if self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config" and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
             return
 
         if self.inputs.ipv6_mgmt_destination_networks:
@@ -285,20 +290,34 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.spanning_tree.mode = "none"
             return
 
-        spanning_tree_mode = self.shared_utils.node_config.spanning_tree_mode
+        # If both set, settings from node configs get precedence
+        node_config = self.shared_utils.node_config
+        stp_settings = self.inputs.spanning_tree_settings
 
-        if self.shared_utils.node_config.spanning_tree_root_super is True:
+        spanning_tree_mode = node_config.spanning_tree_mode or stp_settings.mode
+        # Added None here as default returns empty PortIdAllocationPortChannelRange object
+        stp_po_range = default(
+            node_config.spanning_tree_port_id_allocation_port_channel_range or None, stp_settings.port_id_allocation_port_channel_range or None
+        )
+        priority = node_config._get("spanning_tree_priority", stp_settings.priority)
+
+        if node_config.spanning_tree_root_super is True:
             self.structured_config.spanning_tree.root_super = True
 
-        if self.shared_utils.node_config.spanning_tree_mst_pvst_boundary:
+        # pvst_border is set regardless of mode, unless the future flag enables rendering it only in mstp mode.
+        if node_config.spanning_tree_mst_pvst_boundary and (
+            not self.inputs.avd_design_future.only_configure_pvst_border_when_mode_is_mstp or spanning_tree_mode == "mstp"
+        ):
             self.structured_config.spanning_tree.mst.pvst_border = True
 
-        if stp_po_range := self.shared_utils.node_config.spanning_tree_port_id_allocation_port_channel_range:
+        if stp_po_range:
             self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
+
+        if stp_settings.loop_guard_default:
+            self.structured_config.spanning_tree.loop_guard_default = True
 
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
-            priority = self.shared_utils.node_config.spanning_tree_priority
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
             if spanning_tree_mode == "mstp":
                 self.structured_config.spanning_tree.mst_instances.append_new(id="0", priority=priority)

@@ -19,8 +19,11 @@ from coverage.exceptions import ConfigError
 
 from .compiled_parser import parse_compiled_template
 from .source_template import (
+    covered_adjacent_static_branch_arcs,
     covered_else_branch_arcs,
+    covered_generated_body_branch_arcs,
     covered_multiline_tag_branch_arcs,
+    covered_structural_control_branch_arcs,
     source_template,
     translate_recorded_arc_endpoint,
 )
@@ -129,13 +132,23 @@ class JinjaTemplateFileReporter(FileReporter):
             if translated_from_line is not None and translated_to_line is not None:
                 translated_arcs.add((translated_from_line, translated_to_line))
 
+        translated_arcs.update(template.arc_aliases[arc] for arc in tuple(translated_arcs) if arc in template.arc_aliases)
         possible_arcs = template.possible_arcs
         source_filename = Path(self.filename)
         translated_arcs.update(
             covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, template.tag_ranges, template.reportable_lines),
         )
         translated_arcs.update(
+            covered_structural_control_branch_arcs(recorded_arcs, possible_arcs, template.tag_ranges, template.reportable_lines),
+        )
+        translated_arcs.update(
+            covered_generated_body_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, template.reportable_lines),
+        )
+        translated_arcs.update(
             covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, template.reportable_lines),
+        )
+        translated_arcs.update(
+            covered_adjacent_static_branch_arcs(recorded_arcs, possible_arcs, template.reportable_lines),
         )
         return translated_arcs
 
