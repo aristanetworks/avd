@@ -1711,7 +1711,6 @@ router_bgp:
             additional_paths:
               receive: true
               send: any
-
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
