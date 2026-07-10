@@ -1,4 +1,8 @@
 # collection requirements leveraged by molecule etc
 collections:
   - name: arista.eos
-    version: ">=7.0.0"
+    # Test with main branch
+    type: git
+    source: https://github.com/ansible-collections/arista.eos
+    version: main
+    # version: ">=12.1.3"
