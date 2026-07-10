@@ -89,26 +89,22 @@
 | -------- | ---- | ------------- | ------------- | -------------------- |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort(sort_key='id') %}
-{%                     if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
-{%                         set type = "All" %}
-{%                         set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                         set units = tx_queue.random_detect.ecn.threshold.units %}
-{%                         set min = tx_queue.random_detect.ecn.threshold.min ~ " " ~ units %}
-{%                         set max = tx_queue.random_detect.ecn.threshold.max ~ " " ~ units %}
+{%                     set type = "All" %}
+{%                     set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                     set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+{%                     set min = (tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
+{%                     set max = (tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
 | {{ tx_queue.id }} | {{ type }} | {{ min }} | {{ max }} | {{ prob }} |
-{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
 {%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort(sort_key='id') %}
-{%                     if uc_tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
-{%                         set type = "Unicast" %}
-{%                         set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                         set units = uc_tx_queue.random_detect.ecn.threshold.units %}
-{%                         set min = uc_tx_queue.random_detect.ecn.threshold.min ~ " " ~ units %}
-{%                         set max = uc_tx_queue.random_detect.ecn.threshold.max ~ " " ~ units %}
+{%                     set type = "Unicast" %}
+{%                     set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                     set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+{%                     set min = (uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
+{%                     set max = (uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-")) ~ (" " ~ units if units != "" else "") %}
 | {{ uc_tx_queue.id }} | {{ type }} | {{ min }} | {{ max }} | {{ prob }} |
-{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
