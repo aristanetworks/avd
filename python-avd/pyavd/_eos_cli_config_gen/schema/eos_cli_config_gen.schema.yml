@@ -993,6 +993,7 @@ keys:
           key:
             description: Hashed Password.
             type: str
+            required: true
   cfm:
     description: 'Configure connectivity fault management (CFM).
 

@@ -2617,12 +2617,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
             hash_algorithm: HashAlgorithm
             """Default value: `"sha512"`"""
-            key: str | None
+            key: str
             """Hashed Password."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
