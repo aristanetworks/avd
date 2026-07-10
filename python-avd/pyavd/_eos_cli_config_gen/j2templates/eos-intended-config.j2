@@ -295,12 +295,8 @@
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
-{# IPv6 Unicast Routing #}
-{% include 'eos/ipv6-unicast-routing.j2' %}
-{# eos - IPv6 Hardware #}
-{% include 'eos/ipv6-hardware.j2' %}
-{# eos - IPv6 Unicast Routing VRFs #}
-{% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{# IPv6 Unicast Routing/IPv6 Hardware/IPv6 Unicast Routing VRFs #}
+{% include 'eos/ipv6-hardware-and-unicast-routing.j2' %}
 {# IPv6 Neighbors #}
 {% include 'eos/ipv6-neighbors.j2' %}
 {# MAC Access-lists #}

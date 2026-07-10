@@ -73,6 +73,7 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
+| IPv6_ROUTING_ENABLED_VRF | - |
 
 #### IP Routing Device Configuration
 
@@ -87,8 +88,18 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | True |
 | FUTURE_IPV6_INTERFACES | false |
+| IPv6_ROUTING_ENABLED_VRF | true |
+
+#### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing
+ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
+ipv6 hardware fib optimize prefixes profile internet
+```
 
 ### Router BGP
 
@@ -147,10 +158,13 @@ router multicast
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
+| IPv6_ROUTING_ENABLED_VRF | disabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance FUTURE_IPV6_INTERFACES
+!
+vrf instance IPv6_ROUTING_ENABLED_VRF
 ```
