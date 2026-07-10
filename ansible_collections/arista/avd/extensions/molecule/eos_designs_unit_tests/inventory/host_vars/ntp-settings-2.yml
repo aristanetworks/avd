@@ -16,5 +16,5 @@ ntp_settings:
       source_address: use_inband_mgmt_interface_ipv4
     - name: 10.10.10.2
       source_address: 198.51.100.10
-    - name: 10.10.10.3
+    - name: 2001:db8:200::10
       source_address: use_inband_mgmt_interface_ipv6

@@ -18,7 +18,7 @@ ntp:
     source_address: 192.168.1.2
   - name: 10.10.10.2
     source_address: 198.51.100.10
-  - name: 10.10.10.3
+  - name: 2001:db8:200::10
     source_address: 2001:db8:200::2
   vrf: INBAND_MGMT
 service_routing_protocols_model: multi-agent

@@ -113,24 +113,24 @@ class NtpMixin(Protocol):
                     "Supported values are 'use_mgmt_interface_ipv4', 'use_mgmt_interface_ipv6', "
                     "'use_inband_mgmt_interface_ipv4', and 'use_inband_mgmt_interface_ipv6'."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if ip_prefix is None:
             msg = f"'{context}' is set to '{source_address}' but this node is missing '{missing_variable}'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if ip_prefix == "dhcp":
             msg = (
                 f"'{context}' is set to '{source_address}' but {missing_variable} is set to 'dhcp'. "
                 "A static IP is required to resolve this source_address keyword."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if required_vrf is not None and server_vrf != required_vrf:
             msg = (
                 f"'{context}' is set to '{source_address}', but 'ntp_settings.server_vrf' resolves to '{server_vrf}'. "
                 f"This source_address keyword requires VRF '{required_vrf}'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return get_ip_from_ip_prefix(ip_prefix)

@@ -35,7 +35,7 @@ ntp_settings:
   servers:
     - name: 192.168.200.5
       source_address: use_mgmt_interface_ipv4
-    - name: 192.168.100.6
+    - name: 2001:db8:200::2
       source_address: use_mgmt_interface_ipv6
 
 dns_settings:

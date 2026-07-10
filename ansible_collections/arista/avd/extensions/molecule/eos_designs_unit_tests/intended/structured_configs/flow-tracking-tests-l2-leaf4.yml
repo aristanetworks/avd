@@ -89,7 +89,7 @@ ntp:
   - name: 192.168.200.5
     source_address: 192.168.0.204
     preferred: true
-  - name: 192.168.100.6
+  - name: 2001:db8:200::2
     source_address: 2001:db8:100::2
   vrf: MGMT
 port_channel_interfaces:
