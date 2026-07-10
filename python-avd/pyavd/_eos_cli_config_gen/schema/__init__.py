@@ -6618,8 +6618,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         render_combined_separator_for_ipv6_hardware_and_unicast_routing: bool
         """
-        Render a single `!` separator after the combined IPv6 routing block when any of these are rendered:
-        - `ipv6 unicast-routing`
+        Render a single `!` separator for the combined IPv6 routing block when any of these are rendered:
+        -
+        `ipv6 unicast-routing`
         - `ipv6 unicast-routing vrf <vrf_name>`
         - `ipv6 hardware fib optimize
         prefixes profile <profile_name>`
@@ -6713,8 +6714,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Without this the '!' is missing when the first VRF (once VRFs are sorted) is not configured
                        for IPv6 routing.
                     render_combined_separator_for_ipv6_hardware_and_unicast_routing:
-                       Render a single `!` separator after the combined IPv6 routing block when any of these are rendered:
-                       - `ipv6 unicast-routing`
+                       Render a single `!` separator for the combined IPv6 routing block when any of these are rendered:
+                       -
+                       `ipv6 unicast-routing`
                        - `ipv6 unicast-routing vrf <vrf_name>`
                        - `ipv6 hardware fib optimize
                        prefixes profile <profile_name>`

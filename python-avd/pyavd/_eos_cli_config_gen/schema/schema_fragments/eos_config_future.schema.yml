@@ -29,7 +29,7 @@ keys:
         type: bool
         default: false
         description: |-
-          Render a single `!` separator after the combined IPv6 routing block when any of these are rendered:
+          Render a single `!` separator for the combined IPv6 routing block when any of these are rendered:
           - `ipv6 unicast-routing`
           - `ipv6 unicast-routing vrf <vrf_name>`
           - `ipv6 hardware fib optimize prefixes profile <profile_name>`

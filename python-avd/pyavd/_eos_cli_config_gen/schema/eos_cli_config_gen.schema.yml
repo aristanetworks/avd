@@ -2643,7 +2643,7 @@ keys:
       render_combined_separator_for_ipv6_hardware_and_unicast_routing:
         type: bool
         default: false
-        description: 'Render a single `!` separator after the combined IPv6 routing
+        description: 'Render a single `!` separator for the combined IPv6 routing
           block when any of these are rendered:
 
           - `ipv6 unicast-routing`
