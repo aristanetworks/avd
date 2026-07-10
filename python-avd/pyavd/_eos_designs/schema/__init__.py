@@ -40070,6 +40070,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+            "set_first_ntp_server_as_preferred": {"type": bool, "default": True},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
@@ -40097,11 +40098,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_vrf"`
         """
+        set_first_ntp_server_as_preferred: bool
+        """
+        If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+        Set to 'false' to
+        avoid automatically setting any server as 'preferred'.
+
+        Default value: `True`
+        """
         servers: Servers
         """
-        The first server is always set as "preferred".
+        By default, AVD marks the first server as `preferred`.
+        Set
+        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-        Subclass of AvdList with `ServersItem` items.
+        Subclass of
+        AvdList with `ServersItem` items.
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -40116,6 +40128,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 server_vrf: str | UndefinedType = Undefined,
+                set_first_ntp_server_as_preferred: bool | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -40146,10 +40159,17 @@ class EosDesigns(EosDesignsRootModel):
                        - Any other
                        string will be used directly as the VRF name but local interface must be set with
                        `custom_structured_configuration_ntp` if needed.
+                    set_first_ntp_server_as_preferred:
+                       If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+                       Set to 'false' to
+                       avoid automatically setting any server as 'preferred'.
                     servers:
-                       The first server is always set as "preferred".
+                       By default, AVD marks the first server as `preferred`.
+                       Set
+                       'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-                       Subclass of AvdList with `ServersItem` items.
+                       Subclass of
+                       AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).

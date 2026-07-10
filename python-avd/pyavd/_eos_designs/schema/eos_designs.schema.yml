@@ -7540,9 +7540,19 @@ keys:
           server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.\n-
           Any other string will be used directly as the VRF name but local interface
           must be set with `custom_structured_configuration_ntp` if needed."
+      set_first_ntp_server_as_preferred:
+        type: bool
+        description: 'If ''true'', AVD marks the first entry under ''ntp_settings.servers''
+          as ''preferred''.
+
+          Set to ''false'' to avoid automatically setting any server as ''preferred''.'
+        default: true
       servers:
         type: list
-        description: The first server is always set as "preferred".
+        description: 'By default, AVD marks the first server as `preferred`.
+
+          Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
+          this behavior.'
         items:
           type: dict
           keys:
