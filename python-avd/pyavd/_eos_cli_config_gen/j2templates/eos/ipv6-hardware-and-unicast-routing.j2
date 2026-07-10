@@ -4,7 +4,11 @@
  that can be found in the LICENSE file.
 #}
 {% if eos_config_future.render_combined_separator_for_ipv6_hardware_and_unicast_routing is arista.avd.defined(true) %}
-{%     set ipv6_unicast_routing_vrfs = vrfs | arista.avd.natural_sort('name', ignore_case=false) | selectattr('ipv6_routing', 'defined') | selectattr('ipv6_routing', 'equalto', true) | rejectattr('name', 'equalto', 'default') %}
+{%     set ipv6_unicast_routing_vrfs = vrfs | arista.avd.natural_sort('name', ignore_case=false) |
+        selectattr('ipv6_routing', 'defined') |
+        selectattr('ipv6_routing', 'equalto', true) |
+        rejectattr('name', 'equalto', 'default') |
+        list %}
 {%     if ipv6_hardware.fib.optimize.prefixes.profile is arista.avd.defined or
           ipv6_unicast_routing is arista.avd.defined(true) or
           (ipv6_unicast_routing_vrfs | length) > 0 %}

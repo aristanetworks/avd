@@ -1,0 +1,2 @@
+eos_config_future:
+  render_combined_separator_for_ipv6_hardware_and_unicast_routing: true
