@@ -14,7 +14,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd.j2filters import natural_sort, range_expand
+from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
 from .address_locking import AddressLockingMixin
