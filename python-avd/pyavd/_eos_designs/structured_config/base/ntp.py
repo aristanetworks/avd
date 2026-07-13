@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import ip_address
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -86,6 +87,7 @@ class NtpMixin(Protocol):
     ) -> str:
         """Resolve the source address for an NTP server."""
         if not source_address.startswith("use_"):
+            self._validate_ntp_server_source_address_type(server_name, source_address)
             return source_address
 
         context = f"ntp_settings.servers[name={server_name}].source_address"
@@ -119,9 +121,9 @@ class NtpMixin(Protocol):
             msg = f"'{context}' is set to '{source_address}' but this node is missing '{missing_variable}'."
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-        if ip_prefix == "dhcp":
+        if ip_prefix in {"dhcp", "auto-config"}:
             msg = (
-                f"'{context}' is set to '{source_address}' but {missing_variable} is set to 'dhcp'. "
+                f"'{context}' is set to '{source_address}' but {missing_variable} is set to '{ip_prefix}'. "
                 "A static IP is required to resolve this source_address keyword."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
@@ -133,4 +135,31 @@ class NtpMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-        return get_ip_from_ip_prefix(ip_prefix)
+        resolved_source_address = get_ip_from_ip_prefix(ip_prefix)
+        self._validate_ntp_server_source_address_type(server_name, resolved_source_address)
+        return resolved_source_address
+
+    def _validate_ntp_server_source_address_type(self: AvdStructuredConfigBaseProtocol, server_name: str | None, source_address: str) -> None:
+        """Validate that source address type matches server address type for IP-address-based servers."""
+        if server_name is None:
+            return
+
+        try:
+            server_ip = ip_address(server_name)
+        except ValueError:
+            return
+
+        try:
+            source_ip = ip_address(source_address)
+        except ValueError:
+            return
+
+        if server_ip.version == source_ip.version:
+            return
+
+        msg = (
+            f"'ntp_settings.servers[name={server_name}].source_address' resolves to '{source_address}', "
+            f"but NTP server '{server_name}' is IPv{server_ip.version}. "
+            f"Set a matching IPv{server_ip.version} source address or use an FQDN server name."
+        )
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
