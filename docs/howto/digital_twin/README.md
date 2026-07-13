@@ -8,7 +8,7 @@
 
 !!! warning "PREVIEW"
 
-    The AVD Digital Twin functionality is in preview mode. Everything is subject to change, is not supported and may not be complete.
+    The AVD Digital Twin functionality is in preview mode. That means it's not feature complete, breaking changes can happen and there is no TAC support for AVD digital twin.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
