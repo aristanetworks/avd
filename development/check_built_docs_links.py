@@ -28,6 +28,7 @@ LINK_ATTRS = {
     "video": ("poster", "src"),
 }
 
+
 @dataclass(frozen=True)
 class Link:
     source: Path
