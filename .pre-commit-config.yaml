@@ -3,7 +3,33 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip: [pyright, codespell, j2lint, markdownlint-cli2, check-schema-tables-in-docs]
+  autofix_prs: false
+  # Keep pre-commit.ci for autoupdate only. Run hooks through autofix.ci.
+  skip:
+    - trailing-whitespace
+    - end-of-file-fixer
+    - check-added-large-files
+    - check-merge-conflict
+    - insert-license
+    - ruff
+    - ruff-format
+    - pyright
+    - pylint
+    - yamllint
+    - j2lint
+    - codespell
+    - zizmor
+    - pdm-export
+    - docs-plugin-modules
+    - docs-plugin-filter
+    - docs-plugin-lookup
+    - docs-plugin-test
+    - docs-plugin-vars
+    - schemas
+    - check-schema-tables-in-docs
+    - sort-hosts-yml
+    - templates
+    - markdownlint-cli2
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -302,7 +328,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 996abf60411a8d954288ac9856aae7602b80cbda  # frozen: v0.22.1
+    rev: 534166213006ec869b773b7ed8c6ebeaad1165d0  # frozen: v0.23.0
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.

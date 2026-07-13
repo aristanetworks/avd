@@ -2,6 +2,24 @@
 # Minimum config to only test the specific feature.
 # This tests the general snmp_settings, excluding the tests for location, localize, engine id since that is tested in other files.
 # This tests the SNMP hosts ignoring inband management VRF.
+
+ipv4_standard_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.1
+  - name: SNMP-MGMT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.12
+  - name: unused-acl
+    entries:
+      - sequence: 10
+        action: deny
+        source: 10.0.0.13
+
 type: l2leaf
 
 l2leaf:
@@ -70,15 +88,13 @@ snmp_settings:
       version: 3
       community: SNMP-COMMUNITY-2
 
-  communities: # Copied from eos_cli_config_gen, since we pass this through 1:1
+  communities:
     - name: SNMP-COMMUNITY-1
       access: ro
-      access_list_ipv4:
-        name: onur
+      ipv4_standard_acl: acl1
     - name: SNMP-COMMUNITY-2
       access: rw
-      access_list_ipv4:
-        name: SNMP-MGMT
+      ipv4_standard_acl: SNMP-MGMT
       access_list_ipv6:
         name: SNMP-MGMT
       view: VW-READ
