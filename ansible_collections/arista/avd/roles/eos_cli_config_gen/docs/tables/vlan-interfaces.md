@@ -21,7 +21,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_monitor_mac_address</samp>](## "vlan_interfaces.[].arp_monitor_mac_address") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "vlan_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_directed_broadcast</samp>](## "vlan_interfaces.[].ip_directed_broadcast") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "vlan_interfaces.[].ip_address") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "vlan_interfaces.[].ip_address") | String |  |  |  | IPv4_address/Mask or dhcp. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "vlan_interfaces.[].dhcp_client_accept_default_route") | Boolean |  |  |  | Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "vlan_interfaces.[].ip_address_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ip_address_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "vlan_interfaces.[].ip_virtual_router_addresses") | List, items: String |  |  |  |  |
@@ -89,31 +90,55 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_ipv4</samp>](## "vlan_interfaces.[].dhcp_server_ipv4") | Boolean |  |  |  | Enable IPv4 DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_ipv6</samp>](## "vlan_interfaces.[].dhcp_server_ipv6") | Boolean |  |  |  | Enable IPv6 DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "vlan_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "vlan_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "vlan_interfaces.[].ipv6_address") <span style="color:red">deprecated</span> | String |  |  |  | IPv6_address/Mask.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "vlan_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length.<br>This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "vlan_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address.<br>This option is mutually exclusive with `ipv6_addresses`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtuals</samp>](## "vlan_interfaces.[].ipv6_address_virtuals") | List, items: String |  |  |  | The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_address_virtuals.[]") | String |  |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_link_local</samp>](## "vlan_interfaces.[].ipv6_address_link_local") | String |  |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_addresses</samp>](## "vlan_interfaces.[].ipv6_virtual_router_addresses") | List, items: String |  |  |  | Improved "VARPv6" data model to support multiple VARPv6 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6 address or IPv6_address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_ra_disabled</samp>](## "vlan_interfaces.[].ipv6_nd_ra_disabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_managed_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_managed_config_flag") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_other_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_other_config_flag") | Boolean |  |  |  | Set the "other stateful configuration" flag in IPv6 router advertisements. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_cache</samp>](## "vlan_interfaces.[].ipv6_nd_cache") | Dictionary |  |  |  | IPv6 neighbor cache options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_ra_disabled</samp>](## "vlan_interfaces.[].ipv6_nd_ra_disabled") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_nd.ra.disabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_managed_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_managed_config_flag") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_nd.managed_config_flag</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_other_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd_other_config_flag") <span style="color:red">deprecated</span> | Boolean |  |  |  | Set the "other stateful configuration" flag in IPv6 router advertisements.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_nd.other_config_flag</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_cache</samp>](## "vlan_interfaces.[].ipv6_nd_cache") <span style="color:red">deprecated</span> | Dictionary |  |  |  | IPv6 neighbor cache options.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_nd.cache</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_capacity</samp>](## "vlan_interfaces.[].ipv6_nd_cache.dynamic_capacity") | Integer |  |  | Min: 0<br>Max: 4294967295 | Capacity of dynamic cache entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expire</samp>](## "vlan_interfaces.[].ipv6_nd_cache.expire") | Integer |  |  | Min: 1<br>Max: 65535 | Cache entries expirery in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_always</samp>](## "vlan_interfaces.[].ipv6_nd_cache.refresh_always") | Boolean |  |  |  | Force refresh on cache expiry. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_prefixes</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd_prefixes</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_nd.prefixes</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_prefix</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].ipv6_prefix") | String | Required, Unique |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_autoconfig_flag</samp>](## "vlan_interfaces.[].ipv6_nd_prefixes.[].no_autoconfig_flag") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay_destinations</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server - mutually exclusive to source_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay_all_subnets</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_all_subnets") | Boolean |  |  |  | Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "vlan_interfaces.[].ipv6_nd") | Dictionary |  |  |  | IPv6 Neighbor Discovery protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache</samp>](## "vlan_interfaces.[].ipv6_nd.cache") | Dictionary |  |  |  | Neighbor cache options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_capacity</samp>](## "vlan_interfaces.[].ipv6_nd.cache.dynamic_capacity") | Integer |  |  | Min: 0<br>Max: 4294967295 | Capacity of dynamic cache entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expire</samp>](## "vlan_interfaces.[].ipv6_nd.cache.expire") | Integer |  |  | Min: 1<br>Max: 65535 | Cache entries expiry in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_always</samp>](## "vlan_interfaces.[].ipv6_nd.cache.refresh_always") | Boolean |  |  |  | Force refresh on cache expiry. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "vlan_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "vlan_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Router Advertisement messages on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  | Accept default route from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  | Accept route preference from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;managed_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd.managed_config_flag") | Boolean |  |  |  | Set the "Managed Address Configuration" (M) flag in Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes") | List, items: Dictionary |  |  |  | IPv6 prefixes to include in Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_prefix</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes.[].ipv6_prefix") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes.[].valid_lifetime") | String |  |  |  | Valid lifetime in seconds '<0-4294967295>' or 'infinite'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes.[].preferred_lifetime") | String |  |  |  | Preferred lifetime in seconds '<0-4294967295>' or 'infinite'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_autoconfig_flag</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes.[].no_autoconfig_flag") | Boolean |  |  |  | Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd.other_config_flag") | Boolean |  |  |  | Set the "Other Stateful Configuration" (O) flag in Router Advertisements. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_in</samp>](## "vlan_interfaces.[].access_group_in") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_out</samp>](## "vlan_interfaces.[].access_group_out") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group_in</samp>](## "vlan_interfaces.[].ipv6_access_group_in") | String |  |  |  | IPv6 access-list name. |
@@ -263,6 +288,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_policy</samp>](## "vlan_interfaces.[].service_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "vlan_interfaces.[].service_policy.pbr") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].service_policy.pbr.input") | String |  |  |  | Name of policy-map used for policy based routing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "vlan_interfaces.[].tcp_mss_ceiling") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vlan_interfaces.[].tcp_mss_ceiling.ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].tcp_mss_ceiling.ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "vlan_interfaces.[].tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>ingress</code><br>- <code>egress</code> | Optional direction ('ingress', 'egress')  for tcp mss ceiling.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "vlan_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output</samp>](## "vlan_interfaces.[].traffic_policy.output") | String |  |  |  | Egress traffic policy. |
@@ -300,8 +329,11 @@
         ip_proxy_arp: <bool>
         ip_directed_broadcast: <bool>
 
-        # IPv4_address/Mask.
+        # IPv4_address/Mask or dhcp.
         ip_address: <str>
+
+        # Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as 'dhcp'.
+        dhcp_client_accept_default_route: <bool>
         ip_address_secondaries:
 
             # IPv4_address/Mask.
@@ -438,7 +470,19 @@
         ipv6_enable: <bool>
 
         # IPv6_address/Mask.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_addresses` instead.
         ipv6_address: <str>
+        ipv6_addresses:
+
+            # IPv6 address with prefix length.
+            # This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+          - <str>
+
+        # Use SLAAC to automatically configure the IPv6 address.
+        # This option is mutually exclusive with `ipv6_addresses`.
+        ipv6_address_auto_config: <bool>
 
         # The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
         ipv6_address_virtuals:
@@ -454,13 +498,25 @@
 
             # IPv6 address or IPv6_address/Mask.
           - <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_nd.ra.disabled` instead.
         ipv6_nd_ra_disabled: <bool>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_nd.managed_config_flag` instead.
         ipv6_nd_managed_config_flag: <bool>
 
         # Set the "other stateful configuration" flag in IPv6 router advertisements.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_nd.other_config_flag` instead.
         ipv6_nd_other_config_flag: <bool>
 
         # IPv6 neighbor cache options.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_nd.cache` instead.
         ipv6_nd_cache:
 
           # Capacity of dynamic cache entries.
@@ -471,6 +527,9 @@
 
           # Force refresh on cache expiry.
           refresh_always: <bool>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_nd.prefixes` instead.
         ipv6_nd_prefixes:
 
             # IPv6_address/Mask.
@@ -486,6 +545,10 @@
 
             # DHCP server's IPv6 address.
           - address: <str; required; unique>
+
+            # VRF used to reach the DHCP server.
+            # If not set, the VRF of the destination matches the VRF of this interface.
+            # Use the `default` to reach the DHCP server through the default VRF.
             vrf: <str>
 
             # Local interface to communicate with DHCP server - mutually exclusive to source_address.
@@ -499,6 +562,64 @@
 
         # Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
         ipv6_dhcp_relay_all_subnets: <bool>
+
+        # IPv6 Neighbor Discovery protocol.
+        ipv6_nd:
+
+          # Neighbor cache options.
+          cache:
+
+            # Capacity of dynamic cache entries.
+            dynamic_capacity: <int; 0-4294967295>
+
+            # Cache entries expiry in seconds.
+            expire: <int; 1-65535>
+
+            # Force refresh on cache expiry.
+            refresh_always: <bool>
+
+          # Router Advertisement.
+          ra:
+
+            # Disable Router Advertisement messages on the interface.
+            disabled: <bool>
+            rx_accept:
+
+              # Accept default route from received Router Advertisements.
+              default_route: <bool>
+
+              # Accept route preference from received Router Advertisements.
+              route_preference: <bool>
+            dns_servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
+
+          # Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+          managed_config_flag: <bool>
+
+          # IPv6 prefixes to include in Router Advertisements.
+          prefixes:
+            - ipv6_prefix: <str; required; unique>
+
+              # Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+              valid_lifetime: <str>
+
+              # Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+              preferred_lifetime: <str>
+
+              # Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+              no_autoconfig_flag: <bool>
+
+          # Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+          other_config_flag: <bool>
 
         # IPv4 access-list name.
         access_group_in: <str>
@@ -799,6 +920,16 @@
 
             # Name of policy-map used for policy based routing.
             input: <str>
+        tcp_mss_ceiling:
+
+          # Segment Size for IPv4.
+          ipv4: <int; 64-65495>
+
+          # Segment Size for IPv6.
+          ipv6: <int; 64-65475>
+
+          # Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+          direction: <str; "ingress" | "egress">
         traffic_policy:
 
           # Ingress traffic policy.

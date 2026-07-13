@@ -61,9 +61,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -276,8 +276,8 @@ interface Port-Channel3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | - |

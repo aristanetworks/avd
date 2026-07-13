@@ -16,12 +16,18 @@ from .hardware import (
     VerifyTransceiversManufacturersInputFactory,
     VerifyTransceiversTemperatureInputFactory,
 )
-from .interfaces import VerifyIllegalLACPInputFactory, VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
+from .interfaces import (
+    VerifyIllegalLACPInputFactory,
+    VerifyInterfaceErrDisabledInputFactory,
+    VerifyInterfacesStatusInputFactory,
+    VerifyPortChannelsInputFactory,
+    VerifyStormControlDropsInputFactory,
+)
 from .logging import VerifyLoggingErrorsInputFactory
 from .mlag import VerifyMlagConfigSanityInputFactory, VerifyMlagInterfacesInputFactory, VerifyMlagStatusInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
-from .routing_generic import VerifyRoutingProtocolModelInputFactory, VerifyRoutingTableEntryInputFactory
+from .routing_generic import VerifyIPv4RoutePresencePerVRFInputFactory, VerifyRoutingProtocolModelInputFactory
 from .routing_ospf import VerifyOSPFMaxLSAInputFactory, VerifyOSPFNeighborStateInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .system import VerifyReloadCauseInputFactory
@@ -34,7 +40,9 @@ __all__ = [
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyEnvironmentSystemCoolingInputFactory",
+    "VerifyIPv4RoutePresencePerVRFInputFactory",
     "VerifyIllegalLACPInputFactory",
+    "VerifyInterfaceErrDisabledInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
@@ -48,7 +56,6 @@ __all__ = [
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
-    "VerifyRoutingTableEntryInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStormControlDropsInputFactory",

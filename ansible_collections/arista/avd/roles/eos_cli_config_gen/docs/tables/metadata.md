@@ -25,6 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.validate_hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.validate_hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.validate_hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ignore_no_transceivers</samp>](## "metadata.validate_hardware.ignore_no_transceivers") | Boolean |  | `True` |  | Accept ports with no transceiver as valid when checking the approved manufacturers. |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -34,6 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "metadata.cv_tags.interface_tags.[].tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].value") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;cv_use_static_config_manifest</samp>](## "metadata.cv_use_static_config_manifest") | Boolean |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br><br>The device configuration is expected to be deployed via the<br>`static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the<br>flat "AVD Configurations" layout in the Static Configlet Studio.<br>The device will still be verified and onboarded in the Inventory & Topology Studio. |
     | [<samp>&nbsp;&nbsp;cv_pathfinder</samp>](## "metadata.cv_pathfinder") | Dictionary |  |  |  | Metadata used for CV Pathfinder visualization on CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "metadata.cv_pathfinder.role") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "metadata.cv_pathfinder.region") | String |  |  |  |  |
@@ -143,6 +145,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
     | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "metadata.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
+    | [<samp>&nbsp;&nbsp;interfaces</samp>](## "metadata.interfaces") | Dictionary |  |  |  | Interface validation settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "metadata.interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "metadata.interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
 
 === "YAML"
 
@@ -195,6 +200,9 @@
         # List of approved transceiver manufacturers for the device.
         transceiver_manufacturers: # (1)!
           - <str>
+
+        # Accept ports with no transceiver as valid when checking the approved manufacturers.
+        ignore_no_transceivers: <bool; default=True>
       cv_tags:
         device_tags:
           - name: <str; required>
@@ -204,6 +212,14 @@
             tags:
               - name: <str; required>
                 value: <str; required>
+
+      # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      #
+      # The device configuration is expected to be deployed via the
+      # `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+      # flat "AVD Configurations" layout in the Static Configlet Studio.
+      # The device will still be verified and onboarded in the Inventory & Topology Studio.
+      cv_use_static_config_manifest: <bool>
 
       # Metadata used for CV Pathfinder visualization on CloudVision.
       cv_pathfinder:
@@ -338,6 +354,15 @@
 
       # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
       exclude_as_extra_fabric_validation_target: <bool>
+
+      # Interface validation settings.
+      interfaces:
+
+        # Settings for the VerifyInterfaceErrDisabled test.
+        errdisable:
+
+          # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+          only_avd_interfaces: <bool; default=False>
     ```
 
     1. Default Value

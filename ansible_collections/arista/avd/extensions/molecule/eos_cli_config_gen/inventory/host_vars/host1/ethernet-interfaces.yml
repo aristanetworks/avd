@@ -2,6 +2,7 @@
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   - name: Ethernet1
+    profile: test-interface-profile
     metadata:
       peer: DC1-SPINE1
       peer_interface: Ethernet1
@@ -138,6 +139,8 @@ ethernet_interfaces:
       ipv4: true
     l2_protocol:
       forwarding_profile: TEST1
+    flowcontrol:
+      received: "on"
     service_profile: test
     service_policy:
       qos:
@@ -145,6 +148,7 @@ ethernet_interfaces:
     qos:
       trust: dscp
       dscp: 48
+    cpu_traffic_policy_fallback_vrf: CPU_TRAFFIC_POLICY
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
@@ -240,19 +244,21 @@ ethernet_interfaces:
       - name: EVPN_MH_ES2
         direction: downstream
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 2345:ABCD:3FE0::1/96
-        valid_lifetime: infinite
-        preferred_lifetime: 50
-        no_autoconfig_flag: true
-      - ipv6_prefix: 2345:ABCD:3FE0::2/96
-        valid_lifetime: 50
-        preferred_lifetime: infinite
-        no_autoconfig_flag: false
-      - ipv6_prefix: 2345:ABCD:3FE0::3/96
-        valid_lifetime: 100000
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - 2002:ABDC::1/64
+    ipv6_nd:
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
@@ -293,6 +299,8 @@ ethernet_interfaces:
     ptp:
       enable: true
       delay_mechanism: e2e
+      region:
+        domain_number: 25
       sync_message:
         interval: 1
       role: dynamic
@@ -307,10 +315,23 @@ ethernet_interfaces:
     shutdown: true
     mtu: 9100
     ipv6_enable: true
-    ipv6_address: 2020::2020/64
+    ipv6_address_auto_config: true
     ipv6_address_link_local: FE80:FEA::AB65/64
-    ipv6_nd_ra_disabled: true
-    ipv6_nd_managed_config_flag: true
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+        dns_servers:
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
+      managed_config_flag: true
+    ipv6_dhcp_relay_destinations:
+      - address: cafe::101
+        source_address: cafe::1
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
     snmp_trap_link_change: true
@@ -380,6 +401,8 @@ ethernet_interfaces:
     isis_circuit_type: level-2
     isis_hello_padding: false
     spanning_tree_guard: loop
+    bfd:
+      echo: false
     # test for switchport access vlan
     switchport:
       enabled: false
@@ -463,6 +486,8 @@ ethernet_interfaces:
         timeout: 30
       delay_req: 20
       delay_mechanism: p2p
+      region:
+        domain_number: 56
       sync_message:
         interval: 5
       role: master
@@ -475,6 +500,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: true
     spanning_tree_bpduguard: true
     spanning_tree_portfast: edge
+    spanning_tree_link_type: shared
     vmtracer: true
     storm_control:
       all:
@@ -504,6 +530,8 @@ ethernet_interfaces:
     description: to WAN-ISP1-01 Ethernet2
     switchport:
       enabled: false
+    isis_enable: ISIS_PASSIVE_TEST
+    isis_passive: true
     lldp:
       transmit: false
       receive: false
@@ -537,7 +565,8 @@ ethernet_interfaces:
       vlan: 101
     ip_address: 172.31.128.1/31
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
+    ipv6_addresses:
+      - 2002:ABDC::1/64
     # Test isis auth both md5
     isis_authentication:
       both:
@@ -580,6 +609,7 @@ ethernet_interfaces:
     switchport:
       enabled: false
     ip_address: 172.31.128.10/31
+    isis_enable: ISIS_DEFAULT_MODE_TEST
     mpls:
       ip: false
       ldp:
@@ -903,6 +933,29 @@ ethernet_interfaces:
     error_correction_encoding:
       enabled: false
 
+  - name: Ethernet24/1
+    switchport:
+      enabled: true
+    description: Explicit no error-correction encoding
+    error_correction_encoding:
+      fire_code: false
+      reed_solomon: false
+
+  - name: Ethernet24/2
+    switchport:
+      enabled: true
+      mode: trunk
+      trunk:
+        allowed_vlan: none
+    description: Trunk with no allowed VLANs
+
+  - name: Ethernet24/3
+    switchport:
+      enabled: true
+    description: Explicit no reed-solomon error-correction encoding
+    error_correction_encoding:
+      reed_solomon: false
+
   - name: Ethernet25
     switchport:
       enabled: true
@@ -913,6 +966,9 @@ ethernet_interfaces:
   - name: Ethernet26
     switchport:
       enabled: false
+    multicast:
+      ipv4:
+        static: true
 
   - name: Ethernet26.1
     description: TENANT_A pseudowire 1 interface
@@ -982,6 +1038,7 @@ ethernet_interfaces:
         preference_value: 100
         dont_preempt: true
         hold_time: 10
+        subsequent_hold_time: 20
         candidate_reachability_required: true
 
   - name: Ethernet28
@@ -994,6 +1051,8 @@ ethernet_interfaces:
       mpls:
         shared_index: 100
         tunnel_flood_filter_time: 100
+      designated_forwarder_election:
+        candidate_reachability_required: false
 
   - name: Ethernet29
     switchport:
@@ -1251,7 +1310,8 @@ ethernet_interfaces:
     switchport:
       enabled: false
     shutdown: false
-    ipv6_address: a0::1/64
+    ipv6_addresses:
+      - a0::1/64
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         link_address: a0::3
@@ -1523,7 +1583,8 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     mac_timestamp: header
     vrrp_ids:
@@ -1564,7 +1625,8 @@ ethernet_interfaces:
       enabled: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -1766,6 +1828,7 @@ ethernet_interfaces:
           action:
             traffic_allow_vlan: 10
             traffic_allow_access_list: acl1
+            apply_alternate: true
           phone_action:
             apply_cached_results: true
             cached_results_timeout:
@@ -1790,6 +1853,7 @@ ethernet_interfaces:
             cached_results_timeout:
               time_duration: 10
               time_duration_unit: hours
+            traffic_allow: true
       mac_based_access_list: true
 
   - name: Ethernet72
@@ -1803,6 +1867,44 @@ ethernet_interfaces:
             traffic_allow_vlan: 10
             traffic_allow_access_list: acl1
       mac_based_access_list: true
+
+  - name: Ethernet72/1
+    description: dot1x_aaa_unresponsive_vlan_alternate
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_vlan: 20
+            apply_alternate: true
+
+  - name: Ethernet72/2
+    description: dot1x_aaa_unresponsive_vlan
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_vlan: 30
+
+  - name: Ethernet72/3
+    description: dot1x_aaa_unresponsive_acl_alternate
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: acl2
+            apply_alternate: true
+
+  - name: Ethernet72/4
+    description: dot1x_aaa_unresponsive_acl
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: acl3
 
   - name: Ethernet73
     metadata:
@@ -1956,6 +2058,24 @@ ethernet_interfaces:
     lldp:
       ztp_vlan: 112
 
+  - name: Ethernet81/301
+    description: LAG Member IPv6 ND coverage
+    channel_group:
+      id: 301
+      mode: active
+
+  - name: Ethernet81/302
+    description: LAG Member legacy IPv6 coverage
+    channel_group:
+      id: 302
+      mode: active
+
+  - name: Ethernet81/138
+    description: LAG Member IPv6 enable only coverage
+    channel_group:
+      id: 138
+      mode: active
+
   - name: Ethernet81/3
     description: Traffic Engineering Interface
     shutdown: false
@@ -2003,6 +2123,22 @@ ethernet_interfaces:
     monitor_link_flap_profiles:
       - lfp2
       - LFP1
+
+  - name: Ethernet81/5
+    description: Traffic Engineering Interface Defaults
+    shutdown: false
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.6/31
+    traffic_engineering:
+      enabled: true
+
+  - name: Ethernet81/6
+    description: IPv6 enable only coverage
+    shutdown: false
+    switchport:
+      enabled: false
+    ipv6_enable: true
 
   - name: Ethernet82
     description: Switchport_tap_tool
@@ -2160,3 +2296,27 @@ ethernet_interfaces:
   - name: Ethernet89
     description: Loop protection disable
     loop_protection: false
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Ethernet90
+    description: IPv6 ND new structure test
+    shutdown: false
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:90::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 2000
+        expire: 400
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:90::/64
+          valid_lifetime: 200
+          preferred_lifetime: 100
+          no_autoconfig_flag: true

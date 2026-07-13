@@ -56,6 +56,12 @@ class VlansMixin(Protocol):
                 vlan.metadata.tenants.append(tenant.name)
                 self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
 
+                # If the VLAN already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vlan = self.structured_config.vlans.obtain(vlan_id)
+                if tenant.name not in existing_vlan.metadata.tenants:
+                    existing_vlan.metadata.tenants.append(tenant.name)
+
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
                 vlan = self._get_vlan_config(l2vlan, tenant)
@@ -122,7 +128,7 @@ class VlansMixin(Protocol):
                 trunk_groups = self._local_endpoint_trunk_groups.intersection(trunk_groups)
             if self.shared_utils.mlag:
                 trunk_groups.add(self.inputs.trunk_groups.mlag.name)
-            if self.shared_utils.uplink_type == "port-channel":
+            if self.shared_utils.uplink_type in ["port-channel", "l2-ethernet"]:
                 trunk_groups.add(self.inputs.trunk_groups.uplink.name)
             # Add trunk groups required for underlay
             if vlans_vlan.id in self.shared_utils.underlay_vlan_trunk_groups:

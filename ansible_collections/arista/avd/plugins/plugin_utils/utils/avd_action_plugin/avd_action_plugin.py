@@ -12,15 +12,15 @@ from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.raise_action_fail import raise_action_fail
 
-from .log_config import AvdLoggingConfig, LoggerState, get_avd_log_level
+from .log_config import AVDLoggingConfig, LoggerState, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
 
 
-class AvdActionPlugin(ActionBase):
+class AVDActionPlugin(ActionBase):
     """Base class for AVD Ansible action plugins to provide common functionality."""
 
     _primary_logger_name: ClassVar[str] = "ansible_collections.arista.avd"
-    _logging_config: ClassVar[AvdLoggingConfig] = AvdLoggingConfig()
+    _logging_config: ClassVar[AVDLoggingConfig] = AVDLoggingConfig()
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the action plugin."""
@@ -106,8 +106,7 @@ class AvdActionPlugin(ActionBase):
 
         except Exception as exc:
             # Recast errors as AnsibleActionFail
-            # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
-            msg = f"Error during plugin '{self.ansible_name}' execution: '{exc}'"  # pyright: ignore[reportAttributeAccessIssue]
+            msg = f"Error during plugin '{self.ansible_name}' execution: {exc}"
             raise_action_fail(msg, exc)
 
         return self.result

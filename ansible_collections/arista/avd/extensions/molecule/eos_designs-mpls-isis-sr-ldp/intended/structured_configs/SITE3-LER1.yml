@@ -15,7 +15,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.10/32
-  ipv6_address: 2000:1234:ffff:ffff::a/128
+  ipv6_addresses:
+  - 2001:db8:200:ffff::a/128
   mpls:
     ldp:
       interface: true
@@ -23,7 +24,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 210
-    ipv6_index: 210
+    ipv6_index: 1210
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -68,6 +69,7 @@ router_isis:
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: link-protection
   segment_routing_mpls:

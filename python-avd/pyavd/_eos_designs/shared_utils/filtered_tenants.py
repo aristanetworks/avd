@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, unique
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -42,6 +42,17 @@ class FilteredTenantsMixin(Protocol):
 
         filtered_tenants = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
         filter_tenants = self.node_config.filter.tenants
+
+        if self.inputs.network_services:
+            for original_tenant in self.inputs.network_services:
+                if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
+                    continue
+                tenant = original_tenant._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem)
+                tenant._internal_data.context = "network_services"
+                tenant.l2vlans = self.filtered_l2vlans(tenant)
+                tenant.vrfs = self.filtered_vrfs(tenant)
+                filtered_tenants.append(tenant)
+
         for network_services_key in self.inputs._dynamic_keys.network_services:
             for original_tenant in network_services_key.value:
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
@@ -108,7 +119,8 @@ class FilteredTenantsMixin(Protocol):
         return filtered_l2vlans._natural_sorted(sort_key="id")
 
     def get_merged_l2vlan_config(
-        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+        self: SharedUtilsProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
         """
         Return structured config for one l2vlan after inheritance.
@@ -196,25 +208,12 @@ class FilteredTenantsMixin(Protocol):
         """
         The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
 
-        For l2 switches return intersection of vlans from this switch and vlans from uplink switches.
-        For anything else return the expanded vlans from this switch.
+        Return the expanded vlans from this switch after facts have resolved local filtering and VLAN availability.
         """
         switch_vlans = self.switch_facts.vlans
         if not switch_vlans:
             return set()
-        switch_vlans_list = range_expand(switch_vlans)
-        accepted_vlans = {int(vlan) for vlan in switch_vlans_list}
-        if self.uplink_type != "port-channel":
-            return accepted_vlans
-
-        uplink_switches = unique(self.uplink_switches)
-        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.all_fabric_devices]
-        for uplink_switch in uplink_switches:
-            uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
-            uplink_switch_vlans_set = {int(vlan) for vlan in range_expand(uplink_switch_facts.vlans)}
-            accepted_vlans = accepted_vlans.intersection(uplink_switch_vlans_set)
-
-        return accepted_vlans
+        return {int(vlan) for vlan in range_expand(switch_vlans)}
 
     def is_accepted_vrf(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> bool:
         """
@@ -264,6 +263,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.match_regexes(bgp_peer.nodes, self.hostname))._natural_sorted(sort_key="ip_address")
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
+            vrf.static_arp_entries = vrf.static_arp_entries._filtered(lambda entry: not entry.nodes or self.hostname in entry.nodes)
             vrf.svis = self.filtered_svis(vrf, tenant)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
@@ -508,10 +508,24 @@ class FilteredTenantsMixin(Protocol):
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
             for svi_ip_helper in ip_helpers:
+                ip_helper = svi_ip_helper.ip_helper
+                # Not enforcing default_mgmt_method_vrf or interface when it is not defined in inputs.
+                source_interface = self.get_local_interface(svi_ip_helper.source_interface) if svi_ip_helper.source_interface else None
+                source_vrf = (
+                    self.get_vrf(
+                        svi_ip_helper.source_vrf,
+                        context=(
+                            f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[name={svi.name}].ip_helpers[ip_helper={ip_helper}].source_vrf or"
+                            f" tenants[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[ip_helper={ip_helper}].source_vrf"
+                        ),
+                    )
+                    if svi_ip_helper.source_vrf
+                    else None
+                )
                 config.ip_helpers.append_new(
                     ip_helper=svi_ip_helper.ip_helper,
-                    source_interface=svi_ip_helper.source_interface,
-                    vrf=svi_ip_helper.source_vrf,
+                    source_interface=source_interface,
+                    vrf=source_vrf,
                 )
 
         if svi.ospf.enabled:

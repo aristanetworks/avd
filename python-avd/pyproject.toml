@@ -22,14 +22,13 @@ classifiers = [
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
-    "anta>=1.7.0",
+    "anta>=1.8.0",
     "aristaproto>=0.1.1",
-    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.2",
+    "pyavd-utils==0.0.6",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -41,7 +40,7 @@ repository = "https://github.com/aristanetworks/avd"
 
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.21.0",
+    "ansible-core>=2.16.0,<2.22.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
@@ -52,14 +51,14 @@ ansible-collection = [
 
 [build-system]
 requires = [
-    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
+    "pyavd-utils==0.0.6",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.15.2",
+    "ruff==0.15.20",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -71,6 +70,7 @@ include-package-data = true
 [tool.setuptools.package-data]
 "*" = [
     "avd_meta_schema.pickle",
+    "cv_deploy.schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
     "schemas.json.gz",
@@ -85,7 +85,7 @@ version = {attr = "pyavd.__version__"}
 [dependency-groups]
 # helping pdm generate the flat list of requirements in pre-commit
 self = [
-  "pyavd==6.0.0"
+  "pyavd==6.4.0.dev0"
 ]
 
 [tool.black]

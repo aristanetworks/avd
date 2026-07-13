@@ -7,6 +7,37 @@
 {% if traffic_policies is arista.avd.defined %}
 
 ### Traffic Policies information
+{%     if traffic_policies.cpu_traffic_policy is arista.avd.defined %}
+
+#### CPU Traffic Policy
+
+| Setting | Value |
+| ------- | ----- |
+{%         if traffic_policies.cpu_traffic_policy.vrf_all is arista.avd.defined %}
+| Traffic-policy for all VRFs | {{ traffic_policies.cpu_traffic_policy.vrf_all.name }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management is arista.avd.defined %}
+| Enforcement on management ports | {{ traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled is arista.avd.defined %}
+| Implicit permit-fragment rules disabled | {{ traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired is arista.avd.defined %}
+| Enforcement on IP TTL expired packets | {{ traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired }} |
+{%         endif %}
+{%     endif %}
+{%     if traffic_policies.vrfs is arista.avd.defined %}
+
+#### Traffic Policies VRF Interfaces
+
+| VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
+| --- | ------------------ | ---------------- | ---------------------------------- |
+{%         for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%             if vrf.cpu is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.cpu.traffic_policy.name | arista.avd.default("-") }} | {{ vrf.cpu.traffic_policy.enforcement_management | arista.avd.default("-") }} | {{ vrf.traffic_policy_input_physical | arista.avd.default("-") }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if traffic_policies.field_sets is arista.avd.defined %}
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 
@@ -203,12 +234,14 @@ Counters: {{ policy.counters | join(", ") }}
 {# Traffic-Policy Interfaces #}
 {%     set traffic_policy_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.traffic_policy.input is arista.avd.defined or ethernet_interface.traffic_policy.output is arista.avd.defined %}
+{%         if ethernet_interface.traffic_policy.input is arista.avd.defined or ethernet_interface.traffic_policy.output is arista.avd.defined
+            or ethernet_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
 {%             do traffic_policy_interfaces.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.traffic_policy.input is arista.avd.defined or port_channel_interface.traffic_policy.output is arista.avd.defined %}
+{%         if port_channel_interface.traffic_policy.input is arista.avd.defined or port_channel_interface.traffic_policy.output is arista.avd.defined
+            or port_channel_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
 {%             do traffic_policy_interfaces.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -221,12 +254,13 @@ Counters: {{ policy.counters | join(", ") }}
 
 ##### Traffic-Policy Interfaces
 
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
+| Interface | Input Traffic-Policy | Output Traffic-Policy | CPU Traffic-Policy Fallback VRF |
+| --------- | -------------------- | --------------------- | ------------------------------- |
 {%         for interface in traffic_policy_interfaces %}
 {%             set row_in_policy = interface.traffic_policy.input | arista.avd.default("-") %}
 {%             set row_out_policy = interface.traffic_policy.output | arista.avd.default("-") %}
-| {{ interface.name }} | {{ row_in_policy }} | {{ row_out_policy }} |
+{%             set row_cpu_fallback_vrf = interface.cpu_traffic_policy_fallback_vrf | arista.avd.default("-") %}
+| {{ interface.name }} | {{ row_in_policy }} | {{ row_out_policy }} | {{ row_cpu_fallback_vrf }} |
 {%         endfor %}
 {%     endif %}
 

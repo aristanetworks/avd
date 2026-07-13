@@ -34,6 +34,8 @@ monitor connectivity
 {%         if host.description is arista.avd.defined %}
       description
       {{ host.description }}
+{%         elif host.single_line_description is arista.avd.defined %}
+      description {{ host.single_line_description }}
 {%         endif %}
 {%         if host.local_interfaces is arista.avd.defined %}
 {%             set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
@@ -61,6 +63,8 @@ monitor connectivity
 {%         if vrf.description is arista.avd.defined %}
       description
       {{ vrf.description }}
+{%         elif vrf.single_line_description is arista.avd.defined %}
+      description {{ vrf.single_line_description }}
 {%         endif %}
 {%         if vrf.local_interfaces is arista.avd.defined %}
 {%             set local_interfaces_cli = "local-interfaces " ~ vrf.local_interfaces %}
@@ -75,6 +79,8 @@ monitor connectivity
 {%             if host.description is arista.avd.defined %}
          description
          {{ host.description }}
+{%             elif host.single_line_description is arista.avd.defined %}
+         description {{ host.single_line_description }}
 {%             endif %}
 {%             if host.local_interfaces is arista.avd.defined %}
 {%                 set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}

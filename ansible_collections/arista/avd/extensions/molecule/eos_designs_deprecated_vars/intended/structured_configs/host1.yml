@@ -10,6 +10,28 @@ aaa_server_groups:
     vrf: MGMT1
   - server: 11.10.10.3
     vrf: MGMT
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.1
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT
+  - server: 10.10.10.3
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT1
+  - server: nodomain.co
+    vrf: default
+  - server: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+- name: TACACS2
+  type: tacacs+
+  servers:
+  - server: 10.10.10.1
+    vrf: default
 config_end: true
 enable_password:
   disabled: true
@@ -19,6 +41,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.200/31
+  pim:
+    ipv4:
+      sparse_mode: true
   metadata:
     peer: host1
     peer_interface: Ethernet42
@@ -30,15 +55,49 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
+  pim:
+    ipv4:
+      sparse_mode: true
   metadata:
     peer: host1
     peer_interface: Ethernet41
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet1
+  shutdown: false
+  ip_address: 172.16.0.2/30
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: host1
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  entries:
+  - action: permit
+    protocol: ip
+    source: 172.16.0.1/30
+    destination: 172.16.0.2
+    vlan_inner: true
+    vlan_number: 123
+    vlan_mask: '0x000'
 ip_igmp_snooping:
   globally_enabled: true
+  vlans:
+  - id: 301
+    querier:
+      enabled: true
+      address: 192.168.255.101
+      version: 3
+  - id: 302
+    querier:
+      enabled: true
+      address: 2.2.2.2
+      version: 2
+  - id: 401
+    enabled: false
 ip_radius:
   source_interface: Vlan123
   vrfs:
@@ -47,6 +106,14 @@ ip_radius:
   - name: MGMT
     source_interface: Vlan125
 ip_routing: true
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Vlan125
+  - name: MGMT1
+    source_interface: Vlan125
+ip_virtual_router_mac_address: 00:1c:73:00:00:01
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -63,9 +130,13 @@ management_interfaces:
   vrf: default
   ip_address: 192.168.0.103/24
   type: oob
+  gateway: 192.168.200.1
 metadata:
   is_deployed: true
+  platform: vEOS
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -106,11 +177,11 @@ router_bgp:
   router_id: 192.168.255.101
   maximum_paths:
     paths: 4
-  updates:
-    wait_install: true
   bgp:
     default:
       ipv4_unicast: false
+    bestpath:
+      d_path: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     metadata:
@@ -134,23 +205,197 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 301
+    metadata:
+      tenants:
+      - Tenant_G
+    rd: 192.168.255.101:30301
+    route_targets:
+      both:
+      - 30301:30301
+    redistribute_routes:
+    - learned
+  - id: 302
+    metadata:
+      tenants:
+      - Tenant_G
+    rd: 192.168.255.101:30302
+    route_targets:
+      both:
+      - 30302:30302
+    redistribute_routes:
+    - learned
+  - id: 22
+    metadata:
+      tenants:
+      - Tenant_H
+    rd: 192.168.255.101:40022
+    route_targets:
+      both:
+      - 40022:40022
+    redistribute_routes:
+    - learned
+  - id: 401
+    metadata:
+      tenants:
+      - Tenant_H
+    rd: 192.168.255.101:40401
+    route_targets:
+      both:
+      - 40401:40401
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    domain_identifier: '65200:2'
+    domain_identifier_remote: '65100:1'
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    evpn_ethernet_segment:
+    - domain: all
+      identifier: 0000:0001:0001:0000:0509
+      route_target_import: 00:00:00:00:07:09
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+  vrfs:
+  - name: IGMP_QUERIER_TEST_3
+    rd: 192.168.255.101:41
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+    router_id: 192.168.255.101
+    redistribute:
+      connected:
+        enabled: true
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
 service_routing_protocols_model: multi-agent
+snmp_server:
+  contact: example@example.com
+  communities:
+  - name: SNMP-COMMUNITY-1
+    access: ro
+    access_list_ipv4:
+      name: acl1
+  - name: SNMP-COMMUNITY-2
+    access: rw
+    access_list_ipv4:
+      name: SNMP-MGMT
+    access_list_ipv6:
+      name: SNMP-MGMT
+    view: VW-READ
+  - name: SNMP-COMMUNITY-3
+standard_access_lists:
+- name: acl1
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.1
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.1
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.1
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.3
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT1
+    key: 15131905173E2A
+  - host: nodomain.co
+    vrf: default
+    key: 071B245F5A
+  - host: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.42
+    vrf: default
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan22
+  description: VLAN_22
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_3
+  ip_address_virtual: 10.0.22.1/24
+  metadata:
+    tenants:
+    - Tenant_H
+    tags:
+    - test_l3
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 301
+  name: VLAN_301
+  metadata:
+    tenants:
+    - Tenant_G
+- id: 302
+  name: VLAN_302
+  metadata:
+    tenants:
+    - Tenant_G
+- id: 22
+  name: VLAN_22
+  metadata:
+    tenants:
+    - Tenant_H
+- id: 401
+  name: VLAN_401
+  metadata:
+    tenants:
+    - Tenant_H
 vrfs:
 - name: default
   ip_routing: false
+- name: IGMP_QUERIER_TEST_3
+  description: IGMP_QUERIER_TEST
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_H
 vxlan_interface:
   vxlan1:
     description: host1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
+      vlans:
+      - id: 301
+        vni: 30301
+      - id: 302
+        vni: 30302
+      - id: 22
+        vni: 40022
+      - id: 401
+        vni: 40401
+      vrfs:
+      - name: IGMP_QUERIER_TEST_3
+        vni: 41

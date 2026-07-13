@@ -49,8 +49,10 @@ keys:
                     - us-central1-a
                     - us-central1-b
                     - us-central1-c
+                    - us-4
                     - apnortheast-1
                     - euwest-2
+                    - eu-3
                     - ausoutheast-1
                     - na-northeast1-b
                     - uk-1
@@ -109,7 +111,9 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Server FQDN or IP address.
+                    description: |-
+                      Server IP address or FQDN.
+                      Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.
                   port:
                     type: int
                     convert_types:
@@ -156,6 +160,14 @@ keys:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
             default: false
+          cvtargetconfigs:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/cvtargetconfigs
+            items:
+              type: str
+          flowdns:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
       set_source_interfaces:
         type: bool
         # TODO: AVD7.0 remove mention of `cv_instances` in description

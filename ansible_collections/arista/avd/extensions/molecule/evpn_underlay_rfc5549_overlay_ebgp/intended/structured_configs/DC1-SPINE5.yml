@@ -88,7 +88,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.5/32
-  ipv6_address: 2001:1::5/128
+  ipv6_addresses:
+  - 2001:1::5/128
 management_api_http:
   enable_https: true
   enable_vrfs:

@@ -1,16 +1,16 @@
 ---
 default_node_types:
   - match_hostnames:
-      - OVERLAY_ROUTING_PROTOCOL_CVX_SERVER.*
+      - overlay-routing-protocol-cvx-server.*
     node_type: cvxserver
   - match_hostnames:
-      - OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF.*
+      - overlay-routing-protocol-cvx-l3leaf.*
     node_type: l3leaf
 
 dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
 
 overlay_routing_protocol: CVX
-overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER3]
+overlay_cvx_servers: [overlay-routing-protocol-cvx-server1, overlay-routing-protocol-cvx-server2, overlay-routing-protocol-cvx-server3]
 
 node_type_keys:
   - key: cvxserver
@@ -29,13 +29,13 @@ node_type_keys:
 
 cvxserver:
   nodes:
-    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
+    - name: overlay-routing-protocol-cvx-server1
       id: 1
       mgmt_ip: 192.168.254.254/23
-    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2
+    - name: overlay-routing-protocol-cvx-server2
       id: 2
       mgmt_ip: 192.168.254.255/23
-    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER3
+    - name: overlay-routing-protocol-cvx-server3
       id: 3
       mgmt_ip: 192.168.254.253/23
 l3leaf:
@@ -43,10 +43,10 @@ l3leaf:
     loopback_ipv4_pool: 192.168.254.0/24
     vtep_loopback_ipv4_pool: 192.168.253.0/24
   nodes:
-    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
+    - name: overlay-routing-protocol-cvx-l3leaf1
       bgp_as: 65001
       id: 1
-    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2
+    - name: overlay-routing-protocol-cvx-l3leaf2
       bgp_as: 65002
       id: 2
 

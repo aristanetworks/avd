@@ -11,9 +11,11 @@
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.defaults.l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -25,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -57,9 +59,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -71,7 +75,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -99,9 +103,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -113,7 +119,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -143,9 +149,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -157,7 +165,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -187,9 +195,11 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "device_profiles.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "device_profiles.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "device_profiles.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "device_profiles.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "device_profiles.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_profiles.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "device_profiles.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "device_profiles.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "device_profiles.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -201,7 +211,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "device_profiles.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "device_profiles.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "device_profiles.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "device_profiles.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "device_profiles.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "device_profiles.[].l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "device_profiles.[].l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "device_profiles.[].l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -231,9 +241,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "devices.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "devices.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "devices.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "devices.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "devices.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "devices.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "devices.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -245,7 +257,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "devices.[].l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "devices.[].l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "devices.[].l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "devices.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "devices.[].l3_interfaces.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "devices.[].l3_interfaces.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "devices.[].l3_interfaces.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "devices.[].l3_interfaces.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -273,9 +285,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "devices.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>l3_interface_profiles</samp>](## "l3_interface_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l3_interfaces defined under the node type key.<br>These profiles will *not* work for `l3_interfaces` defined under `vrfs`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l3_interface_profiles.[].profile") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "l3_interface_profiles.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_interface_profiles.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "l3_interface_profiles.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "l3_interface_profiles.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "l3_interface_profiles.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -287,7 +301,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_interface_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_interface_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_interface_profiles.[].peer_ip") | String |  |  |  | The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "l3_interface_profiles.[].bgp") | Dictionary |  |  |  | Enforce IPv4 BGP peering for the peer |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "l3_interface_profiles.[].bgp") | Dictionary |  |  |  | Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).<br>IPv6 BGP peering on L3 interfaces is not yet supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_as</samp>](## "l3_interface_profiles.[].bgp.peer_as") | String | Required |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_in</samp>](## "l3_interface_profiles.[].bgp.ipv4_prefix_list_in") | String |  |  |  | Prefix List Name. Accept routes for only these prefixes from the peer.<br>Required for wan interfaces.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_prefix_list_out</samp>](## "l3_interface_profiles.[].bgp.ipv4_prefix_list_out") | String |  |  |  | Prefix List Name. Advertise routes for only these prefixes.<br>If not specified, nothing would be advertised.<br>The specified prefix list name must exist in `ipv4_prefix_list_catalog`. |
@@ -329,7 +343,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -338,6 +352,10 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
+            ipv6_addresses:
+
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+              - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
             # IPv4 address (without mask) to be allocated on the interface if known.
@@ -386,7 +404,8 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # Enforce IPv4 BGP peering for the peer
+            # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            # IPv6 BGP peering on L3 interfaces is not yet supported.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -495,7 +514,7 @@
                 - profile: <str>
 
                   # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-                  # For a subinterface, the parent physical interface is automatically created.
+                  # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
                   name: <str; required; unique>
 
                   # Interface description.
@@ -504,6 +523,10 @@
 
                   # Node IPv4 address/Mask or 'dhcp'.
                   ip_address: <str>
+                  ipv6_addresses:
+
+                      # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+                    - <str>
 
                   # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                   # IPv4 address (without mask) to be allocated on the interface if known.
@@ -552,7 +575,8 @@
                   # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
                   peer_ip: <str>
 
-                  # Enforce IPv4 BGP peering for the peer
+                  # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                  # IPv6 BGP peering on L3 interfaces is not yet supported.
                   bgp:
 
                     # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -648,7 +672,7 @@
             - profile: <str>
 
               # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-              # For a subinterface, the parent physical interface is automatically created.
+              # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
               name: <str; required; unique>
 
               # Interface description.
@@ -657,6 +681,10 @@
 
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
+              ipv6_addresses:
+
+                  # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+                - <str>
 
               # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
               # IPv4 address (without mask) to be allocated on the interface if known.
@@ -705,7 +733,8 @@
               # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
               peer_ip: <str>
 
-              # Enforce IPv4 BGP peering for the peer
+              # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+              # IPv6 BGP peering on L3 interfaces is not yet supported.
               bgp:
 
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -807,7 +836,7 @@
             - profile: <str>
 
               # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-              # For a subinterface, the parent physical interface is automatically created.
+              # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
               name: <str; required; unique>
 
               # Interface description.
@@ -816,6 +845,10 @@
 
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
+              ipv6_addresses:
+
+                  # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+                - <str>
 
               # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
               # IPv4 address (without mask) to be allocated on the interface if known.
@@ -864,7 +897,8 @@
               # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
               peer_ip: <str>
 
-              # Enforce IPv4 BGP peering for the peer
+              # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+              # IPv6 BGP peering on L3 interfaces is not yet supported.
               bgp:
 
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -966,7 +1000,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -975,6 +1009,10 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
+            ipv6_addresses:
+
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+              - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
             # IPv4 address (without mask) to be allocated on the interface if known.
@@ -1023,7 +1061,8 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # Enforce IPv4 BGP peering for the peer
+            # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            # IPv6 BGP peering on L3 interfaces is not yet supported.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -1125,7 +1164,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -1134,6 +1173,10 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
+            ipv6_addresses:
+
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+              - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
             # IPv4 address (without mask) to be allocated on the interface if known.
@@ -1182,7 +1225,8 @@
             # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
             peer_ip: <str>
 
-            # Enforce IPv4 BGP peering for the peer
+            # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            # IPv6 BGP peering on L3 interfaces is not yet supported.
             bgp:
 
               # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -1279,7 +1323,7 @@
       - profile: <str; required; unique>
 
         # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-        # For a subinterface, the parent physical interface is automatically created.
+        # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
         name: <str>
 
         # Interface description.
@@ -1288,6 +1332,10 @@
 
         # Node IPv4 address/Mask or 'dhcp'.
         ip_address: <str>
+        ipv6_addresses:
+
+            # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
+          - <str>
 
         # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
         # IPv4 address (without mask) to be allocated on the interface if known.
@@ -1336,7 +1384,8 @@
         # The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
         peer_ip: <str>
 
-        # Enforce IPv4 BGP peering for the peer
+        # Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+        # IPv6 BGP peering on L3 interfaces is not yet supported.
         bgp:
 
           # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".

@@ -8,7 +8,7 @@ import pytest
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControlStatus
 from pyavd._cv.client.exceptions import CVChangeControlFailed
 from pyavd._cv.workflows.finalize_change_control_on_cv import finalize_change_control_on_cv
-from pyavd._cv.workflows.models import CVChangeControl
+from pyavd._cv.workflows.models import AvdChangeControl, CVChangeControl
 
 from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
 
@@ -17,7 +17,7 @@ from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
 async def test_finalize_pending_approval(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='pending approval' is finalized correctly."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="pending approval")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="pending approval"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control()
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
@@ -37,7 +37,7 @@ async def test_finalize_pending_approval(mock_cv_client: MagicMock) -> None:
 async def test_finalize_approved(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='approved' is approved and finalized."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="approved")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="approved"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control()
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
@@ -60,7 +60,7 @@ async def test_finalize_approved(mock_cv_client: MagicMock) -> None:
 async def test_finalize_running(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='running' is approved, started, and finalized."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="running")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="running"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control()
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
@@ -84,7 +84,7 @@ async def test_finalize_running(mock_cv_client: MagicMock) -> None:
 async def test_finalize_completed_success(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='completed' runs to successful completion."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="completed")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="completed"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control()
     cv_cc_completed = create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True)
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
@@ -107,7 +107,7 @@ async def test_finalize_completed_success(mock_cv_client: MagicMock) -> None:
 async def test_finalize_completed_failure(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control which fails during execution raises an exception."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="completed")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(requested_state="completed"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control()
     cv_cc_failed = create_grpc_change_control(status=ChangeControlStatus.COMPLETED, approved=True, error="Something went wrong")
 
@@ -128,7 +128,7 @@ async def test_finalize_completed_failure(mock_cv_client: MagicMock) -> None:
 async def test_finalize_updates_local_cc_from_cv(mock_cv_client: MagicMock) -> None:
     """Test that local CC name and description are updated from CloudVision if they are None."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", name=None, description=None, requested_state="pending approval")
+    local_cc = CVChangeControl(avd_change_control=AvdChangeControl(name=None, description=None, requested_state="pending approval"), id="cc_id_1")
     cv_cc_not_started = create_grpc_change_control(name="CV Name", notes="CV Notes")
     mock_cv_client.get_change_control.return_value = cv_cc_not_started
 
@@ -146,7 +146,9 @@ async def test_finalize_updates_local_cc_from_cv(mock_cv_client: MagicMock) -> N
 async def test_finalize_updates_cv_from_local_cc(mock_cv_client: MagicMock) -> None:
     """Test that the remote CC on CloudVision is updated if local name and description differ."""
     # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", name="Local Name", description="Local Desc", requested_state="pending approval")
+    local_cc = CVChangeControl(
+        avd_change_control=AvdChangeControl(name="Local Name", description="Local Desc", requested_state="pending approval"), id="cc_id_1"
+    )
     cv_cc_initial = create_grpc_change_control(name="CV Name Initial", notes="CV Notes Initial")
     cv_cc_updated = create_grpc_change_control(name="Local Name", notes="Local Desc")
     # Configure get_change_control to be called twice, returning the updated object the second time

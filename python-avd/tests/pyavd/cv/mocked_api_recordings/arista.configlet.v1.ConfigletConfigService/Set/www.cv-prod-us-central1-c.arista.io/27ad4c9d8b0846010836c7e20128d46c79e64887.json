@@ -1,0 +1,7 @@
+{
+	"raise": {
+		"type": "GRPCError",
+		"status": "NOT_FOUND",
+		"message": "workspace does not exist: ws-missing-workspace-id"
+	}
+}

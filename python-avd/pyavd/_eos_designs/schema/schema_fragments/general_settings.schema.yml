@@ -18,3 +18,35 @@ keys:
             type: bool
             default: false
             description: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+      arp:
+        type: dict
+        keys:
+          persistent:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/arp/keys/persistent"
+          aging:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/arp/keys/aging"
+      ip_icmp_redirect:
+        type: bool
+        $ref: "eos_cli_config_gen#/keys/ip_icmp_redirect"
+      # TODO: Revisit for default values in AVD 7.0
+      dhcp_relay:
+        type: dict
+        keys:
+          information_option:
+            type: bool
+            description: Enables the insertion of DHCP Relay Agent Information (Option 82).
+            default: false
+          tunnel_requests_disabled:
+            type: bool
+            description: |-
+              Blocks DHCP relay for packets received over VXLAN tunnels.
+              This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs.
+            default: false
+          mlag_peerlink_requests_disabled:
+            type: bool
+            description: |-
+              Blocks DHCP relay for packets arriving via the MLAG peer-link.
+              This will only be configured on VXLAN VTEPs which are also MLAG devices.
+            default: false

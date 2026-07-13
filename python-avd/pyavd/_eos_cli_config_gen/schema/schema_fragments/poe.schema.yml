@@ -16,8 +16,8 @@ keys:
           action:
             type: str
             valid_values:
-            - power-off
-            - maintain
+              - power-off
+              - maintain
             description: PoE action for interface. By default in EOS, reboot action is set to power-off.
       interface_shutdown:
         type: dict
@@ -26,6 +26,6 @@ keys:
           action:
             type: str
             valid_values:
-            - power-off
-            - maintain
+              - power-off
+              - maintain
             description: PoE action for interface. By default in EOS, interface shutdown action is set to maintain.

@@ -4,6 +4,7 @@
 router_pim_sparse_mode:
   ipv4:
     bfd: true
+    message_hello_address_secondary_ipv6: true
     make_before_break: false
     register_local_interface: Ethernet1
     rp_addresses:
@@ -19,6 +20,7 @@ router_pim_sparse_mode:
           - RP_ACL
           - RP_ACL2
         priority: 20
+        hashmask: 30
       - address: 10.238.1.161
         groups:
           - 239.12.12.17/32
@@ -43,6 +45,18 @@ router_pim_sparse_mode:
               - 239.12.22.12/32
               - 239.12.22.13/32
               - 239.12.22.14/32
+        anycast_rps:
+          - address: 12.48.2.164
+            other_anycast_rp_addresses:
+              - address: 12.58.5.165
+                register_count: infinity
+              - address: 11.58.5.166
+                register_count: 15
+          - address: 10.48.2.164
+            other_anycast_rp_addresses:
+              - address: 10.58.5.165
+              - address: 10.58.5.166
+                register_count: 15
     - name: MCAST_VRF2_ALL_GROUPS
       ipv4:
         rp_addresses:

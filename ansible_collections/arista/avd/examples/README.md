@@ -25,7 +25,7 @@ AVD playground is an interactive, Cloud-based lab environment sponsored by Arist
 
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
-Once the playground is ready to use, use the interactive menu at the bottom of the [code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select 6.0.0 releases or newer.
+Once the playground is ready to use, use the interactive menu at the bottom of the [code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select 6.1 releases or newer.
 
 !!! tip
 
@@ -42,6 +42,10 @@ Once you select an example supported by a lab definition, it will be extracted t
 For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
 
 AVD playground lab files are available for [download on aclabs.arista.com](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz). The download option is for skilled users only that can manage the environment without extra support.
+
+Check the AVD Playground video on Arista YouTube for details:
+
+<iframe width="1120" height="630" src="https://www.youtube.com/embed/KmOd50MpkUA?si=zeP7VYJ4OxqVm8E7" title="AVD Playground" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## AVD as Reference Inventory
 

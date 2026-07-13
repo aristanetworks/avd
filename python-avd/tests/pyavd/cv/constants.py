@@ -4,6 +4,13 @@
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
 
+MOCKED_EMPTY_CONFIGLET_ID = ""
+MOCKED_CONFIGLET_ID = "avd-B51AA89B6E51E89E1422107EDE3A9438"
+MOCKED_CONFIGLET_NAME = "TEST_CONFIGLET_NAME"
+MOCKED_CONFIGLET_DESCRIPTION = "Configuration created and uploaded by AVD for avd-ci-leaf2"
+MOCKED_CONFIGLET_BODY = "alias test test"
+
+MOCKED_MISSING_WORKSPACE_ID = "ws-missing-workspace-id"
 MOCKED_WORKSPACE_ID = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
 MOCKED_WORKSPACE_NAME = "MOCKED_WS_NAME"
 MOCKED_WORKSPACE_DESCRIPTION = "MOCKED_WS_DESCRIPTION"
@@ -18,6 +25,18 @@ MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS = {
     "id": "req-914310f3-08dd-4239-bd42-6d78bf781229",
     "status": ResponseStatus.SUCCESS,
     "message": "Build req-914310f3-08dd-4239-bd42-6d78bf781229 finished successfully",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""
+recorded mocked api Set responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  3e5f35a5e74c704bd5ab2489162a937d7205b1da.json
+"""
+MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL_CONFIG_VALIDATION = {
+    "id": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+    "status": ResponseStatus.FAIL,
+    "message": "device build error",
     "code": ResponseCode.UNSPECIFIED,
 }
 
@@ -93,5 +112,25 @@ MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS = {
     "id": "req-b8f4e511-58de-4afe-99f0-b75abf980131",
     "status": ResponseStatus.SUCCESS,
     "message": "Submitted successfully. No change control was created because no config or software changes were created.",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""Workspace 'B' used to test rebasing of the Workspace."""
+MOCKED_WORKSPACE_B_ID = "ws-833a9e6b-9cc0-484b-a5bb-a57f7fa1438f"
+MOCKED_WORKSPACE_B_NAME = "MOCKED_REBASE_WS_NAME"
+MOCKED_WORKSPACE_B_DESCRIPTION = "MOCKED_REBASE_WS_DESCRIPTION"
+MOCKED_WORKSPACE_B_REQUESTED_STATE_SUBMITTED = "submitted"
+
+"""
+Successful synchronization/rebase request made when both Workspace.needs_build and Workspace.needs_rebase are False.
+
+recorded mocked api arista.workspace.v1.WorkspaceConfigService/Set response:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  6343b1d9dd797d90a6b6544c468eeb02d3c5daf7.json
+"""
+MOCKED_WORKSPACE_B_REQUEST_ID_REBASE_1_SUCCESS = {
+    "id": "req-73d17f5a-3db7-4527-ae9a-e43ca99d983c",
+    "status": ResponseStatus.SUCCESS,
+    "message": "Workspace is already up to date",
     "code": ResponseCode.UNSPECIFIED,
 }

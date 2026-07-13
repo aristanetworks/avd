@@ -6,7 +6,6 @@ l2leaf:
   nodes:
     - name: dot1x-settings-2
       mgmt_ip: 192.168.0.2/24
-
 dot1x_settings:
   enabled: true
   authentication:
@@ -22,8 +21,26 @@ dot1x_settings:
     username_format:
       delimiter: colon
       letter_case: uppercase
+    delay: 200
+    hold_period: 100
   radius_av_pairs:
     service_type: true
+    framed_mtu: 1500
+  # `device_profiling.enabled` is omitted so it takes its default (false). The early-return
+  # fires before the accounting validation, so the sub-keys below are ignored and it is safe
+  # to combine with `accounting.mode: stop-only`.
+  device_profiling:
+    lldp:
+      system_name:
+        enabled: true
+        auth_only: true
+      system_description:
+        enabled: true
+  web_authentication:
+    enabled: true
+    ssl_profile: captive-portal-ssl-profile
+    url: https://captive.arista.com
+    start_limit_infinite: true
 
 aaa_settings:
   radius:

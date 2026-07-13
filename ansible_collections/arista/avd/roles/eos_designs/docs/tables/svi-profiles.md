@@ -28,6 +28,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].nodes.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].nodes.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].nodes.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
@@ -36,10 +48,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].nodes.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].nodes.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].nodes.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -63,6 +77,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "svi_profiles.[].nodes.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br><br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "svi_profiles.[].nodes.[].trunk_groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires "enable_trunk_groups: true".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_redistribute_router_mac_system</samp>](## "svi_profiles.[].nodes.[].evpn_redistribute_router_mac_system") | Boolean |  | `False` |  | Configure 'redistribute router-mac system' under BGP for this L3 VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "svi_profiles.[].nodes.[].vxlan") | Boolean |  | `True` |  | Extend this SVI over VXLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "svi_profiles.[].nodes.[].spanning_tree_priority") | Integer |  |  |  | Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.<br>The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "svi_profiles.[].nodes.[].mtu") | Integer |  |  |  | Interface MTU. |
@@ -88,6 +103,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "svi_profiles.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "svi_profiles.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "svi_profiles.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers") | Dictionary |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "svi_profiles.[].ipv6_nd.ra_dns_servers.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "svi_profiles.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].vrf") | String |  |  |  | VRF used to reach the DHCP server.<br>If not set, the VRF of the destination matches the VRF of this interface.<br>Use the `default` to reach the DHCP server through the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server.<br>Mutually exclusive with `source_address` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server.<br>Mutually exclusive with `local_interface`, which takes precedence if both are set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "svi_profiles.[].ipv6_dhcp_relay.destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_virtual_secondaries</samp>](## "svi_profiles.[].ip_address_virtual_secondaries") | List, items: String |  |  |  | Secondary IPv4 VXLAN Anycast IP addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_address_virtual_secondaries.[]") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_virtual_router_addresses</samp>](## "svi_profiles.[].ip_virtual_router_addresses") | List, items: String |  |  |  | IPv4 VARP addresses.<br>Requires an IP address to be configured on the SVI.<br>If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence<br>_if_ there is an ip_address configured for the node.<br> |
@@ -96,10 +123,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will configure the OOB management interface as the source interface.<br>- `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.<br>- `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_vrf</samp>](## "svi_profiles.[].ip_helpers.[].source_vrf") | String |  |  |  | VRF to originate DHCP relay packets to DHCP server.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the source VRF name.<br>- If not set, EOS uses the VRF on the SVI. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "svi_profiles.[].static_routes") | List, items: Dictionary |  |  |  | Static routes to be configured on every device where the SVI is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "svi_profiles.[].static_routes.[].prefix") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "svi_profiles.[].static_routes.[].next_hop") | String |  |  |  |  |
@@ -123,6 +152,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "svi_profiles.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br><br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "svi_profiles.[].trunk_groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires "enable_trunk_groups: true".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_redistribute_router_mac_system</samp>](## "svi_profiles.[].evpn_redistribute_router_mac_system") | Boolean |  | `False` |  | Configure 'redistribute router-mac system' under BGP for this L3 VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "svi_profiles.[].vxlan") | Boolean |  | `True` |  | Extend this SVI over VXLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "svi_profiles.[].spanning_tree_priority") | Integer |  |  |  | Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.<br>The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "svi_profiles.[].mtu") | Integer |  |  |  | Interface MTU. |
@@ -208,6 +238,45 @@
               # In seconds <0-4294967295> or infinite.
               preferred_lifetime: <str>
 
+              # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+              ra_dns_servers:
+                servers: # >=1 items
+
+                    # IPv6 address of DNS server.
+                  - address: <str; required; unique>
+
+                    # Specifies the lifetime period for this server in seconds.
+                    # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                    lifetime: <int; 0-4294967295>
+
+                # Router Advertisement DNS server lifetime value in seconds.
+                dns_servers_lifetime: <int; 0-4294967295>
+
+            # IPv6 DHCP relay settings.
+            ipv6_dhcp_relay:
+
+              # List of IPv6 DHCP relay destinations.
+              destinations:
+
+                  # DHCP server's IPv6 address.
+                - address: <str; required; unique>
+
+                  # VRF used to reach the DHCP server.
+                  # If not set, the VRF of the destination matches the VRF of this interface.
+                  # Use the `default` to reach the DHCP server through the default VRF.
+                  vrf: <str>
+
+                  # Local interface to communicate with DHCP server.
+                  # Mutually exclusive with `source_address` and takes precedence over it.
+                  local_interface: <str>
+
+                  # Source IPv6 address to communicate with DHCP server.
+                  # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+                  source_address: <str>
+
+                  # Override the default link address specified in the relayed DHCP packet.
+                  link_address: <str>
+
             # Secondary IPv4 VXLAN Anycast IP addresses.
             ip_address_virtual_secondaries:
 
@@ -241,6 +310,14 @@
             # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
             ipv4_acl_out: <str>
 
+            # Name of the IPv6 access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_in: <str>
+
+            # Name of the IPv6 access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_out: <str>
+
             # IP helper for DHCP relay.
             ip_helpers:
 
@@ -248,9 +325,22 @@
               - ip_helper: <str; required; unique>
 
                 # Interface name to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+                # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+                # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source interface.
                 source_interface: <str>
 
-                # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+                # VRF to originate DHCP relay packets to DHCP server.
+                # The value will be interpreted according to these rules:
+                # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                #   An error will be raised if inband management is not configured for the device.
+                # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                # - Any other string will be used directly as the source VRF name.
+                # - If not set, EOS uses the VRF on the SVI.
                 source_vrf: <str>
 
             # Static routes to be configured on every device where the SVI is configured.
@@ -309,6 +399,9 @@
                 # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
                 # Requires "enable_trunk_groups: true".
               - <str>
+
+            # Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+            evpn_redistribute_router_mac_system: <bool; default=False>
 
             # Extend this SVI over VXLAN.
             vxlan: <bool; default=True>
@@ -386,6 +479,45 @@
           # In seconds <0-4294967295> or infinite.
           preferred_lifetime: <str>
 
+          # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+          ra_dns_servers:
+            servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
+
+        # IPv6 DHCP relay settings.
+        ipv6_dhcp_relay:
+
+          # List of IPv6 DHCP relay destinations.
+          destinations:
+
+              # DHCP server's IPv6 address.
+            - address: <str; required; unique>
+
+              # VRF used to reach the DHCP server.
+              # If not set, the VRF of the destination matches the VRF of this interface.
+              # Use the `default` to reach the DHCP server through the default VRF.
+              vrf: <str>
+
+              # Local interface to communicate with DHCP server.
+              # Mutually exclusive with `source_address` and takes precedence over it.
+              local_interface: <str>
+
+              # Source IPv6 address to communicate with DHCP server.
+              # Mutually exclusive with `local_interface`, which takes precedence if both are set.
+              source_address: <str>
+
+              # Override the default link address specified in the relayed DHCP packet.
+              link_address: <str>
+
         # Secondary IPv4 VXLAN Anycast IP addresses.
         ip_address_virtual_secondaries:
 
@@ -419,6 +551,14 @@
         # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         ipv4_acl_out: <str>
 
+        # Name of the IPv6 access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_in: <str>
+
+        # Name of the IPv6 access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_out: <str>
+
         # IP helper for DHCP relay.
         ip_helpers:
 
@@ -426,9 +566,22 @@
           - ip_helper: <str; required; unique>
 
             # Interface name to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface` will configure the OOB management interface as the source interface.
+            # - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the source interface.
+            # - `use_default_mgmt_method_interface` will configure the source interface for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source interface.
             source_interface: <str>
 
-            # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+            # VRF to originate DHCP relay packets to DHCP server.
+            # The value will be interpreted according to these rules:
+            # - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+            #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            # - `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+            #   An error will be raised if inband management is not configured for the device.
+            # - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            # - Any other string will be used directly as the source VRF name.
+            # - If not set, EOS uses the VRF on the SVI.
             source_vrf: <str>
 
         # Static routes to be configured on every device where the SVI is configured.
@@ -487,6 +640,9 @@
             # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
             # Requires "enable_trunk_groups: true".
           - <str>
+
+        # Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+        evpn_redistribute_router_mac_system: <bool; default=False>
 
         # Extend this SVI over VXLAN.
         vxlan: <bool; default=True>

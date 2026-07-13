@@ -89,11 +89,45 @@ from typing import Any
 from ansible.errors import AnsibleParserError
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
-from ansible.module_utils.basic import to_native
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
+
+if ANSIBLE_ABOVE_2_19:
+    from ansible.module_utils.common.text.converters import to_native
+else:
+    from ansible.module_utils.basic import to_native
+
+if ANSIBLE_ABOVE_2_19:
+    from ansible.template import trust_as_template
+
 FOUND: list = []
+
+
+def _mark_strings_as_trusted(data: Any) -> Any:
+    """
+    Recursively mark all strings in a data structure as trusted templates.
+
+    This is required for ansible-core >= 2.19 where the template trust model was inverted.
+    Only strings marked as trusted can be rendered as Jinja2 templates.
+
+    Should only be called when ANSIBLE_ABOVE_2_19 is True.
+
+    Args:
+        data: The data structure to process (can be dict, list, str, or any other type)
+
+    Returns:
+        The same data structure with all strings marked as trusted templates
+    """
+    if isinstance(data, str):
+        return trust_as_template(data)
+    if isinstance(data, dict):
+        return {key: _mark_strings_as_trusted(value) for key, value in data.items()}
+    if isinstance(data, list):
+        return [_mark_strings_as_trusted(item) for item in data]
+
+    return data
 
 
 class VarsModule(BaseVarsPlugin):
@@ -144,8 +178,13 @@ class VarsModule(BaseVarsPlugin):
                 continue
 
             for found_path in FOUND:
+                # Load the file. In ansible-core < 2.19, unsafe=True allows Jinja2 templates to be rendered.
+                # In ansible-core >= 2.19, we need to explicitly mark strings as trusted templates.
                 new_data = loader.load_from_file(found_path, cache=True, unsafe=True)
                 if new_data:
+                    if ANSIBLE_ABOVE_2_19:
+                        # Mark all strings in the loaded data as trusted templates for ansible-core >= 2.19
+                        new_data = _mark_strings_as_trusted(new_data)
                     variables = combine_vars(variables, new_data)
 
         return variables

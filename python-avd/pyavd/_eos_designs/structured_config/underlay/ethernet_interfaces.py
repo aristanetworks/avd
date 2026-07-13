@@ -11,7 +11,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import str
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -70,7 +69,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
+                ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
 
                 # PTP
                 if link.ptp.enable:
@@ -92,7 +91,7 @@ class EthernetInterfacesMixin(Protocol):
                 # IP address
                 if link.ip_address:
                     if self.shared_utils.underlay_ipv6_numbered:
-                        ethernet_interface.ipv6_address = f"{link.ip_address}/{link.prefix_length}"
+                        ethernet_interface.ipv6_addresses.append(f"{link.ip_address}/{link.prefix_length}")
                     elif "unnumbered" in link.ip_address.lower():
                         ethernet_interface.ip_address = link.ip_address
                     else:
@@ -137,6 +136,8 @@ class EthernetInterfacesMixin(Protocol):
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
 
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(link.interface)
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # L2 interface
@@ -171,6 +172,8 @@ class EthernetInterfacesMixin(Protocol):
                             direction=link_tracking_group.direction,
                         )
 
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(link.interface)
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Adding subinterfaces for each VRF after the main interface.
@@ -200,35 +203,21 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_subinterface.metadata._update(peer_interface=subinterface.peer_interface, peer=link.peer, peer_type=link.peer_type)
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
+                    ethernet_subinterface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
 
                     if subinterface.ipv6_address:
-                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
+                        ethernet_subinterface.ipv6_addresses.append(f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}")
+
+                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(subinterface.interface)
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
         # Support l3_interface as sub interfaces
-        subif_parent_interface_names = set()
         for l3_interface in self.shared_utils.l3_interfaces:
-            if "." in l3_interface.name:
-                # This is a subinterface so we need to ensure that the parent is created
-                parent_interface_name, _ = l3_interface.name.split(".", maxsplit=1)
-                subif_parent_interface_names.add(parent_interface_name)
-
             self._set_l3_interface(l3_interface)
-
-        subif_parent_interface_names = subif_parent_interface_names.difference(self.structured_config.ethernet_interfaces.keys())
-        if subif_parent_interface_names:
-            for interface_name in natural_sort(subif_parent_interface_names):
-                self.structured_config.ethernet_interfaces.append_new(
-                    name=interface_name,
-                    switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
-                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(peer_type="l3_interface"),
-                    shutdown=False,
-                )
 
         # WAN HA interface(s) for direct connection
         self._set_direct_ha_ethernet_interfaces()
@@ -271,6 +260,10 @@ class EthernetInterfacesMixin(Protocol):
             speed=l3_interface.speed,
         )
         interface.metadata._update(peer_interface=l3_interface.peer_interface, peer_type="l3_interface")
+        if l3_interface.ipv6_addresses:
+            self.structured_config.ipv6_unicast_routing = True
+            interface.ipv6_addresses.extend(l3_interface.ipv6_addresses)
+
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name
@@ -285,7 +278,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
+        interface.sflow.enable = self.structured_config_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
         if (
             self.shared_utils.is_wan_router
@@ -310,6 +303,11 @@ class EthernetInterfacesMixin(Protocol):
                 if self.inputs.cv_pathfinder_internet_exit_policies[policy.name].type == "direct":
                     interface.ip_nat.service_profile = INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
                     break
+
+        if "." in l3_interface.name:
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(l3_interface.name)
+        else:
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(l3_interface.name)
 
         self.structured_config.ethernet_interfaces.append(interface)
 
@@ -341,8 +339,16 @@ class EthernetInterfacesMixin(Protocol):
                 shutdown=not l3_port_channel.enabled,
                 speed=member_intf.speed or None,
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
+                metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                    peer_interface=member_intf.peer_interface,
+                    peer_type="l3_port_channel_member",
+                    peer=peer,
+                    validate_state=self.structured_config_utils.get_interface_validate_state(),
+                ),
             )
-            ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
+
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
+
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
             if member_intf.structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(member_intf.name)._deepmerge(
@@ -375,6 +381,8 @@ class EthernetInterfacesMixin(Protocol):
                     peer_interface=interface,
                 ),
             )
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(interface)
+
             if self.shared_utils.use_port_channel_for_direct_ha:
                 self.structured_config.ethernet_interfaces.append_new(
                     name=interface,

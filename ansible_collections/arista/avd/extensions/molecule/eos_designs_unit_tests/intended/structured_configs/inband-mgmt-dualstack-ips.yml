@@ -77,7 +77,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 192.168.105.22/24
   ipv6_enable: true
-  ipv6_address: 2a00:105::123/64
+  ipv6_addresses:
+  - 2a00:105::123/64
   mtu: 1500
   metadata:
     type: inband_mgmt

@@ -4,6 +4,9 @@ name: "CV integration testing"
 # "on": pull_request
 "on": workflow_dispatch
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
 
@@ -25,8 +28,10 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.12
@@ -39,7 +44,7 @@ jobs:
           WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
           echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pyavd
           path: ./python-avd/dist/*.whl
@@ -57,17 +62,21 @@ jobs:
         avd_scenario:
           - "cv_workflow"
         ansible_version:
-          - "ansible-core<2.21.0 --upgrade"
+          - "ansible-core<2.22.0 --upgrade"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: pyavd
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
+        env:
+          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
           ansible-galaxy install -r "ansible_collections/arista/avd/collections.yml"
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
@@ -90,17 +99,21 @@ jobs:
         avd_scenario:
           - "cv_deploy"
         ansible_version:
-          - "ansible-core<2.21.0 --upgrade"
+          - "ansible-core<2.22.0 --upgrade"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: pyavd
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
+        env:
+          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
           ansible-galaxy install -r "ansible_collections/arista/avd/collections.yml"
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd

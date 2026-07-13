@@ -55,9 +55,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -74,9 +74,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -187,8 +187,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_p1_Ethernet1 | - | 10.255.3.0/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_p2_Ethernet2 | - | 10.255.3.2/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_p1_Ethernet1 | - | 10.255.3.0/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_p2_Ethernet2 | - | 10.255.3.2/31 | default | 9214 | False | - | - |
 | Ethernet3.10 | C1_L3_SERVICE | - | 10.0.1.1/29 | C1_VRF1 | - | False | - | - |
 | Ethernet3.20 | C2_L3_SERVICE | - | 10.1.1.1/29 | C2_VRF1 | - | False | - | - |
 
@@ -206,7 +206,7 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_p1_Ethernet1
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.0/31
    mpls ldp igp sync
@@ -223,7 +223,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_p2_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.2/31
    mpls ldp igp sync
@@ -269,8 +269,8 @@ interface Ethernet3.20
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 ##### ISIS

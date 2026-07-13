@@ -11,7 +11,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 10.0.0.3/32
-  ipv6_address: 2000:1234:ffff:ffff::3/128
+  ipv6_addresses:
+  - 2000:1234:ffff:ffff::3/128
   mpls:
     ldp:
       interface: true
@@ -19,7 +20,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 203
-    ipv6_index: 203
+    ipv6_index: 1003
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -51,6 +52,7 @@ router_isis:
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: node-protection
   segment_routing_mpls:

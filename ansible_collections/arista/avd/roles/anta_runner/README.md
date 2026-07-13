@@ -389,7 +389,7 @@ The following tests are only generated when `avd_catalogs_extra_fabric_validatio
 | **VerifyReachability** (WAN DPS) | Verifies reachability between DPS interfaces (VXLAN source interfaces) of WAN routers. |
 | **VerifyReachability** (Inband Management) | Verifies reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses. |
 | **VerifyReachability** (BGP Neighbors) | Verifies reachability to BGP neighbors across all VRFs. |
-| **VerifyRoutingTableEntry** | Verifies that Loopback0 and VTEP IPs from all fabric devices are present in the routing table of VTEP devices. WAN routers are excluded from this test. |
+| **VerifyIPv4RoutePresencePerVRF** | Verifies that Loopback0 and VTEP IPs from all fabric devices are present in the routing table of VTEP devices. WAN routers are excluded from this test. |
 
 #### Excluding Devices from Extra Fabric Validation
 
@@ -474,6 +474,7 @@ validation_profiles:
       min_line_cards: 8
       min_fabric_cards: 6
       transceiver_manufacturers: [ "Arista Networks", "Arastra, Inc." ]
+      ignore_no_transceivers: true
 ```
 
 #### Logging Validation
@@ -489,7 +490,7 @@ validation_profiles:
 
 #### Excluding Devices from Extra Fabric Validation
 
-The `exclude_as_extra_fabric_validation_target` setting prevents a device from being used as a destination in `VerifyReachability` and `VerifyRoutingTableEntry` tests from other devices.
+The `exclude_as_extra_fabric_validation_target` setting prevents a device from being used as a destination in `VerifyReachability` and `VerifyIPv4RoutePresencePerVRF` tests from other devices.
 
 ```yaml
 validation_profiles:
@@ -603,10 +604,10 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyOSPFMaxLSA**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFMaxLSA){:target="_blank"} | Verifies that all OSPF instances did not cross the maximum LSA threshold. | `router_ospf` |
 | [**VerifyOSPFNeighborState**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFNeighborState){:target="_blank"} | Verifies that all OSPF neighbors are in the *full* state; the *2Ways* state is **not** accepted. Use `VerifyOSPFSpecificNeighbors` in a user-defined catalog instead for any device with a neighbor that is expected to be in the *2Ways* state. | `router_ospf` |
 | [**VerifyPortChannels**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyPortChannels){:target="_blank"} | Verifies the status of Port-Channel interfaces and their members. | `port_channel_interfaces` |
-| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | <ul><li>Verifies point-to-point reachability between Ethernet interfaces.</li><li>Verifies VTEP fabric-wide underlay reachability. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies inband management reachability. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies DPS-to-DPS reachability between WAN routers. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies reachability to BGP neighbors.</li></ul> | <ul><li>`ethernet_interfaces`</li><li>`loopback_interfaces`</li><li>`vlan_interfaces`</li><li>`dps_interfaces`</li><li>`router_bgp`</li></ul> |
+| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | <ul><li>Verifies point-to-point reachability between Ethernet interfaces.</li><li>Verifies VTEP fabric-wide underlay reachability. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies inband management reachability within default VRF only. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies DPS-to-DPS reachability between WAN routers. **Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable)</li><li>Verifies reachability to BGP neighbors.</li></ul> | <ul><li>`ethernet_interfaces`</li><li>`loopback_interfaces`</li><li>`vlan_interfaces`</li><li>`dps_interfaces`</li><li>`router_bgp`</li></ul> |
 | [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | *Allowed causes:*<ul><li>**USER** - Reload requested by the user.</li><li>**USER_HITLESS** - Hitless reload requested by the user.</li><li>**FPGA** - Reload requested after FPGA upgrade</li><li>**ZTP** - System reloaded due to Zero Touch Provisioning</li></ul> |
 | [**VerifyRoutingProtocolModel**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingProtocolModel){:target="_blank"} | Verifies the configured routing protocol model. | `service_routing_protocols_model` |
-| [**VerifyRoutingTableEntry**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingTableEntry){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → `loopback_interfaces[name=<source_interface>].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → `loopback_interfaces[name=<mlag_source_interface>].ip_address`</li></ul><br>**Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable) |
+| [**VerifyIPv4RoutePresencePerVRF**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyIPv4RoutePresencePerVRF){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → `loopback_interfaces[name=<source_interface>].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → `loopback_interfaces[name=<mlag_source_interface>].ip_address`</li></ul><br>**Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable) |
 | [**VerifyRunningConfigDiffs**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyRunningConfigDiffs){:target="_blank"} | Verifies there are no differences between the running and startup configs. | *None* |
 | [**VerifySpecificIPSecConn**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifySpecificIPSecConn){:target="_blank"} | Verifies the status of specific IPSec tunnels. | `router_path_selection` |
 | [**VerifySpecificPath**](https://anta.arista.com/stable/api/tests/path_selection/#anta.tests.path_selection.VerifySpecificPath){:target="_blank"} | Verifies the DPS path and telemetry state of an IPv4 peer. | `router_path_selection` |

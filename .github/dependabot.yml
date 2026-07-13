@@ -3,10 +3,10 @@ version: 2
 updates:
   # Maintain dependencies for Python
   - package-ecosystem: "pip"
+    versioning-strategy: increase-if-necessary
     directories:
       - "/"
       - "/python-avd/"
-      - "/ansible_collections/arista/avd/"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -20,6 +20,8 @@ updates:
     commit-message:
       prefix: "Bump(requirements): "
       prefix-development: "CI(requirements):"
+    cooldown:
+      default-days: 7
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -28,3 +30,5 @@ updates:
       day: "monday"
     commit-message:
       prefix: "CI: "
+    cooldown:
+      default-days: 7

@@ -70,9 +70,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -115,9 +115,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 192.168.200.5 | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 192.168.200.5 | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -131,9 +131,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -399,12 +399,12 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE1_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_DC1-SPINE2_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_DC1-SPINE3_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_DC1-SPINE4_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet3 | - | - | default | 1500 | False | - | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -541,8 +541,8 @@ interface Port-Channel12
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |

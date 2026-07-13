@@ -1,5 +1,7 @@
 ---
 # eos - extended access-lists - improved data model, ip-access-lists.j2
+# TODO: Open issue. eos/ip-access-lists.j2 has a mandatory-error branch when entries exceed
+# ip_access_lists_max_entries, which cannot be covered by passing molecule fixtures.
 ip_access_lists_max_entries: 10000
 ip_access_lists:
   - name: ACL_SEQUENCE_AND_COUNTERS
@@ -87,10 +89,17 @@ ip_access_lists:
         destination: any
         nexthop_group: NH_TEST
       - action: permit
-        vlan_number: 123
-        vlan_inner: true
-        vlan_mask: "0x000"
+        inner_vlan_number: 123
+        inner_vlan_mask: "0x000"
         protocol: ip
+        source: any
+        destination: any
+      - action: permit
+        inner_vlan_number: 124
+        inner_vlan_mask: "0x001"
+        vlan_number: 235
+        vlan_mask: "0x1FF"
+        protocol: tcp
         source: any
         destination: any
       - action: permit

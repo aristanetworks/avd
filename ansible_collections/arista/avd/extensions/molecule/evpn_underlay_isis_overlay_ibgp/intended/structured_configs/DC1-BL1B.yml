@@ -210,6 +210,14 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: EVPN-OVERLAY-CORE
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
   - name: OVERLAY-PEERS
     metadata:
       type: evpn
@@ -220,6 +228,12 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
+  - ip_address: 172.30.22.22
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65200'
+    metadata:
+      peer: dc2-leaf2b
+    description: dc2-leaf2b
   - ip_address: 192.168.255.1
     peer_group: OVERLAY-PEERS
     metadata:
@@ -231,13 +245,22 @@ router_bgp:
       peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
     - name: OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
     peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: false
     - name: OVERLAY-PEERS
       activate: false
 router_isis:

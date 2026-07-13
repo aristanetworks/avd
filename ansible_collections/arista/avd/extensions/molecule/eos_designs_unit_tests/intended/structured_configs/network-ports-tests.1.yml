@@ -29,6 +29,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
+  spanning_tree_link_type: shared
   metadata:
     peer: PCs
     peer_type: network_port
@@ -43,6 +44,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
+  spanning_tree_link_type: shared
   metadata:
     peer: PCs
     peer_type: network_port
@@ -755,6 +757,8 @@ ethernet_interfaces:
 - name: Ethernet5
   description: 'N: blah'
   shutdown: false
+  mac_access_group_in: acl-on-network-port
+  mac_access_group_out: acl-on-network-port
   metadata:
     peer: blah
     peer_type: network_port
@@ -764,6 +768,8 @@ ethernet_interfaces:
 - name: Ethernet6
   description: 'N: blah'
   shutdown: false
+  mac_access_group_in: acl-on-network-port
+  mac_access_group_out: acl-on-network-port
   metadata:
     peer: blah
     peer_type: network_port
@@ -875,9 +881,94 @@ ethernet_interfaces:
     peer_key: network_ports
   switchport:
     enabled: true
+- name: Ethernet26
+  description: PO trunk with all VLANs explicitly allowed
+  shutdown: false
+  channel_group:
+    id: 226
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet27
+  description: PO trunk with all defined VLANs explicitly allowed
+  shutdown: false
+  channel_group:
+    id: 227
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet28
+  description: network-ports-tests_vlans="100,300"
+  shutdown: false
+  channel_group:
+    id: 228
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet29
+  description: PO trunk with all VLANs explicitly disallowed
+  shutdown: false
+  channel_group:
+    id: 229
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet30
+  description: network-ports-tests_vlans="all" is an alias of EOS's default/implicit "1-4094".""
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet31
+  description: network-ports-tests_vlans="defined_vlans"
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,200,300,400
+- name: Ethernet32
+  description: network-ports-tests_vlans="100,300"
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,300
+- name: Ethernet33
+  description: network-ports-tests_vlans="none"
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true
+mac_access_lists:
+- name: acl-on-network-port
+  entries:
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
 metadata:
   is_deployed: true
   platform: 720XPM-48Y6
@@ -906,6 +997,39 @@ port_channel_interfaces:
   switchport:
     enabled: true
     access_vlan: 666
+- name: Port-Channel226
+  description: network-ports-tests_vlans="all-> alias of EOS's default/implicit '1-4094'"
+  shutdown: false
+  mlag: 226
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Port-Channel227
+  description: network-ports-tests_vlans="defined_vlans->100,200,300,400"
+  shutdown: false
+  mlag: 227
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,200,300,400
+- name: Port-Channel228
+  shutdown: false
+  mlag: 228
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,300
+- name: Port-Channel229
+  description: network-ports-tests_vlans="none"
+  shutdown: false
+  mlag: 229
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'

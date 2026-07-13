@@ -17,6 +17,7 @@ port_channel_interfaces:
       mode: trunk
       trunk:
         allowed_vlan: 110,201
+        native_vlan_tag: true
     mlag: 5
     ntp_serve: true
     storm_control:
@@ -64,6 +65,8 @@ port_channel_interfaces:
       enable: true
       mpass: true
       delay_mechanism: e2e
+      region:
+        domain_number: 25
       sync_message:
         interval: 1
       role: dynamic
@@ -78,6 +81,27 @@ port_channel_interfaces:
     address_locking:
       address_family:
         ipv4: false
+
+  - name: Port-Channel6
+    description: TEST_ADDRESS_LOCKING_IPV6_DISABLED
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 100
+    address_locking:
+      address_family:
+        ipv6: false
+
+  - name: Port-Channel7
+    description: TEST_ADDRESS_LOCKING_BOTH_DISABLED
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 100
+    address_locking:
+      address_family:
+        ipv4: false
+        ipv6: false
 
   - name: Port-Channel15
     comment: |
@@ -97,6 +121,7 @@ port_channel_interfaces:
     mlag: 15
     ntp_serve: false
     spanning_tree_guard: loop
+    spanning_tree_link_type: point-to-point
     # Test isis authentication both md5 rx
     isis_authentication:
       both:
@@ -121,6 +146,7 @@ port_channel_interfaces:
     qos:
       trust: cos
       cos: 2
+    cpu_traffic_policy_fallback_vrf: CPU_TRAFFIC_POLICY
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
@@ -245,11 +271,12 @@ port_channel_interfaces:
             mac_address_maximum: 3
           - range: 4-5
             mac_address_maximum: 4
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a1::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      prefixes:
+        - ipv6_prefix: a1::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     # Test isis auth both shared secret
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
@@ -351,8 +378,20 @@ port_channel_interfaces:
         link_status: true
     description: IFL for TENANT01
     mtu: 1500
-    ipv6_address: "cafe::b4"
-    ipv6_nd_managed_config_flag: true
+    ipv6_addresses:
+      - "cafe::b4"
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+        dns_servers:
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
+      managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101
 
@@ -374,6 +413,7 @@ port_channel_interfaces:
 
   - name: Port-Channel8
     description: to Dev02 Port-channel 8
+    ipv6_address_auto_config: true
     switchport:
       enabled: false
       port_security:
@@ -393,7 +433,8 @@ port_channel_interfaces:
 
   - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
-    ipv6_address: "cafe::b4"
+    ipv6_addresses:
+      - "cafe::b4"
     encapsulation_dot1q:
       vlan: 101
 
@@ -458,6 +499,10 @@ port_channel_interfaces:
         mode: sha
         sha:
           key_id: 5
+      level_2:
+        mode: sha
+        sha:
+          key_id: 6
 
   - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
@@ -471,6 +516,7 @@ port_channel_interfaces:
         preference_value: 100
         dont_preempt: true
         hold_time: 10
+        subsequent_hold_time: 20
         candidate_reachability_required: true
       route_target: "00:00:01:02:03:04"
     isis_authentication:
@@ -549,6 +595,10 @@ port_channel_interfaces:
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
         key_type: "8a"
+    bfd:
+      echo: false
+      per_link:
+        enabled: true
 
   - name: Port-Channel17
     description: PBR Description
@@ -558,6 +608,14 @@ port_channel_interfaces:
     service_policy:
       pbr:
         input: MyPolicy
+
+  - name: Port-Channel21
+    description: Loop protection enable
+    loop_protection: true
+
+  - name: Port-Channel22
+    description: Loop protection disable
+    loop_protection: false
 
   - name: Port-Channel99
     description: MCAST
@@ -570,10 +628,16 @@ port_channel_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        border_router: true
         neighbor_filter: Test_Filter_PortChannel
         hello:
           count: 4.5
           interval: 15
+    ip_proxy_arp: true
+    logging:
+      event:
+        storm_control_discards: false
+    vmtracer: true
 
   - name: Port-Channel101
     description: PVLAN Promiscuous Access - only one secondary
@@ -1116,6 +1180,15 @@ port_channel_interfaces:
         number: 2
         unit: milliseconds
 
+  - name: Port-Channel138
+    description: Traffic Engineering Interface Defaults
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.8/31
+    ipv6_enable: true
+    traffic_engineering:
+      enabled: true
+
   # VRRP
   - name: Port-Channel667
     description: Multiple VRIDs
@@ -1201,3 +1274,67 @@ port_channel_interfaces:
         ipv4:
           address: 100.64.0.1
           version: 3
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Port-Channel301
+    description: IPv6 ND new structure test
+    shutdown: false
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:300::1/64
+    ipv6_address_link_local: fe80::301/64
+    isis_enable: ISIS_TEST
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 2500
+        expire: 450
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:300::/64
+          valid_lifetime: 400
+          preferred_lifetime: 200
+          no_autoconfig_flag: true
+
+  - name: Port-Channel302
+    description: Legacy IPv6 address and managed config flag
+    shutdown: false
+    ipv6_addresses:
+      - 2001:db8:302::1/64
+    ipv6_nd:
+      managed_config_flag: true
+
+  # Validates that ipv6_nd / ipv6_access_group trigger IPv6 table inclusion without an IPv6 address.
+  - name: Port-Channel400
+    description: TEST-IPV6-ND-WITHOUT-ADDR
+    ipv6_nd:
+      ra:
+        disabled: true
+      managed_config_flag: true
+      other_config_flag: true
+    ipv6_access_group_in: TEST-V6-IN
+    ipv6_access_group_out: TEST-V6-OUT
+
+  - name: Port-Channel303
+    description: Traffic Engineering Static Delay Coverage
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.10/31
+    traffic_engineering:
+      enabled: true
+      bandwidth:
+        number: 42
+        unit: percent
+      min_delay_static:
+        number: 7
+        unit: microseconds

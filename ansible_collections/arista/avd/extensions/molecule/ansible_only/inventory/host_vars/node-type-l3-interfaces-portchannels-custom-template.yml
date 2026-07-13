@@ -7,10 +7,11 @@ node_type_keys:
     network_services:
       l3: true
     interface_descriptions:
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-deprecated.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-deprecated.j2'
 
 type: l3spine
+
 l3spine:
   defaults:
     bgp_as: 65001

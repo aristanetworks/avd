@@ -40,6 +40,8 @@ class PortChannelInterfacesMixin(Protocol):
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
 
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
+
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
     def _p2p_link_port_channel_description(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link_data: dict) -> str:

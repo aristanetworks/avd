@@ -172,12 +172,6 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
-- name: Ethernet1/49
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet6
   description: peerDevice1_PeerDevIntf1
   shutdown: false
@@ -238,6 +232,12 @@ ethernet_interfaces:
   metadata:
     peer: peerDevice11
     peer_type: l3_port_channel_member
+- name: Ethernet1/49
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 flow_tracking:
   hardware:
     trackers:

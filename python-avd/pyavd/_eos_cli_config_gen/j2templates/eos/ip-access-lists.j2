@@ -35,10 +35,16 @@ ip access-list {{ acl.name }}
 {#                 * add vlan #}
 {%                 if (acle.vlan_number is arista.avd.defined) and (acle.vlan_mask is arista.avd.defined) %}
 {%                     set acl_entry.string = acl_entry.string ~ ' vlan' %}
-{%                     if acle.vlan_inner is arista.avd.defined(true) %}
-{%                         set acl_entry.string = acl_entry.string ~ ' inner' %}
+{%                     if (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask ~ ' inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
+{#                     TODO: AVD 7.0.0 Remove the elif and else block (lines 41-45) once "vlan_inner" key is removed and update the logic for inner vlans #}
+{%                     elif acle.vlan_inner is arista.avd.defined(true) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' inner ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                     else %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
 {%                     endif %}
-{%                     set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                 elif (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' vlan inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
 {%                 endif %}
 {#                 * add protocol #}
 {%                 set acl_entry.string = acl_entry.string ~ ' ' ~ acle.protocol %}
@@ -117,7 +123,7 @@ ip access-list {{ acl.name }}
 {%                     set counter.acle_number = counter.acle_number + 1 %}
 {%                     if counter.acle_number > ip_access_lists_max_entries %}
 {#                     j2lint: disable=V1 #}
-   {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
+   {{ a_non_existing_var | arista.avd._mandatory('The number of ACL entries is above defined maximum!') }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

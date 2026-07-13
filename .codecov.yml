@@ -1,0 +1,60 @@
+---
+# CodeCov Configuration for AVD
+# Reference: https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0.5%
+        paths:
+          - "python-avd"
+          - "ansible_collections/arista/avd/plugins/"
+    patch:
+      default:
+        target: 80%
+        threshold: 0%
+
+comment:
+  layout: "reach,diff,components,files"
+  behavior: default
+  require_changes: true
+
+component_management:
+  individual_components:
+    - component_id: pyavd
+      name: pyavd
+      paths:
+        - "python-avd/pyavd/"
+    - component_id: schema_tools
+      name: schema_tools
+      paths:
+        - "python-avd/schema_tools/"
+    - component_id: ansible_plugins
+      name: Ansible plugins
+      paths:
+        - "ansible_collections/arista/avd/plugins/"
+
+ignore:
+  # Test directories
+  - "python-avd/tests/**/*"
+  - "ansible_collections/arista/avd/tests/**/*"
+  - "ansible_collections/arista/avd/extensions/molecule/**/*"
+
+  # Documentation
+  - "docs/**/*"
+  - "ansible_collections/arista/avd/docs/**/*"
+
+  # Examples
+  - "ansible_collections/arista/avd/examples/**/*"
+
+  # Ignore checked-in generated code
+  # Unchecked files are not supported by codecov
+  - "python-avd/pyavd/_eos_cli_config_gen/schema/__init__.py"
+  - "python-avd/pyavd/_eos_designs/schema/__init__.py"
+  - "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py"
+  - "python-avd/pyavd/_cv/api/**/*"
+
+  # Coverage report files
+  - "python-avd/**/coverage.xml"

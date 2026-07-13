@@ -18,6 +18,9 @@ keys:
           make_before_break:
             type: bool
             description: Enable/Disable Make-Before-Break.
+          message_hello_address_secondary_ipv6:
+            type: bool
+            description: Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
@@ -55,6 +58,7 @@ keys:
                   type: bool
           anycast_rps:
             type: list
+            # TODO AVD7.0: min_length: 1
             primary_key: address
             items:
               type: dict
@@ -64,6 +68,7 @@ keys:
                   description: Anycast RP Address.
                 other_anycast_rp_addresses:
                   type: list
+                  # TODO AVD7.0: min_length: 1
                   primary_key: address
                   items:
                     type: dict
@@ -72,9 +77,12 @@ keys:
                         type: str
                         description: Other Anycast RP Address.
                       register_count:
-                        type: int
+                        type: str
+                        description: |-
+                          Number of registers to forward before pausing in range of 0 to 4294967295.
+                          Use 'infinity' to forward all registers.
                         convert_types:
-                          - str
+                          - int
       vrfs:
         type: list
         primary_key: name
@@ -126,6 +134,9 @@ keys:
                         max: 32
                       override:
                         type: bool
+                anycast_rps:
+                  type: list
+                  $ref: "eos_cli_config_gen#/keys/router_pim_sparse_mode/keys/ipv4/keys/anycast_rps"
                 ssm_range:
                   type: str
                   description: |-

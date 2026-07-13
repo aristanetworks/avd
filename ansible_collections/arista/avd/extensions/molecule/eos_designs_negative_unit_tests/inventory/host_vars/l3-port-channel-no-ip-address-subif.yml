@@ -16,4 +16,5 @@ l3leaf:
           encapsulation_dot1q_vlan: 108
 
 expected_error_message: >-
-  'l3leaf.nodes[name=l3-port-channel-no-ip-address-subif].l3_port_channels[name=Port-Channel5.108].ip_address' is required but was not found.
+  'l3leaf.nodes[name=l3-port-channel-no-ip-address-subif].l3_port_channels[name=Port-Channel5.108].ip_address or [name=Port-Channel5.108].ipv6_addresses'
+  is required but was not found.

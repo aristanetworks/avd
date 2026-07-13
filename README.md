@@ -30,32 +30,32 @@ AVD Documentation:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS](https://avd.arista.com/stable/roles/eos_designs/index.html)
+- [L3LS VXLAN-EVPN, L2LS, MPLS and WAN](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/index.html#reference-designs)
 
 ## AVD Ansible Collection
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through its **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
 ### Examples
 
-- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started](https://avd.arista.com/stable/docs/user-manual/intro-to-ansible-and-avd.html)
 - [Examples](https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html)
 
 ## Additional resources
 
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
-- Ansible [CloudVision modules](https://aristanetworks.github.io/ansible-cvp)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
+- [Arista Tech Library](https://tech-library.arista.com/)
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](docs/contribution/overview.md) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
 ## License
 
-Copyright (c) 2019-2024 Arista Networks, Inc.
+Copyright (c) 2019-2026 Arista Networks, Inc.
 
 The project is published under [Apache 2.0 License](LICENSE)

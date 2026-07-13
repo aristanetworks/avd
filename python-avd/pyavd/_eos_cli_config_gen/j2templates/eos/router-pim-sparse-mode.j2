@@ -15,6 +15,9 @@ router pim sparse-mode
 {%         if router_pim_sparse_mode.ipv4.bfd is arista.avd.defined(true) %}
       bfd
 {%         endif %}
+{%         if router_pim_sparse_mode.ipv4.message_hello_address_secondary_ipv6 is arista.avd.defined(true) %}
+      message hello address secondary ipv6
+{%         endif %}
 {%         if router_pim_sparse_mode.ipv4.make_before_break is arista.avd.defined %}
 {%             if router_pim_sparse_mode.ipv4.make_before_break %}
       make-before-break
@@ -104,6 +107,15 @@ router pim sparse-mode
 {%                 else %}
          rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
+{%             endfor %}
+{%             for anycast_rp in vrf.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
+{%                 for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.natural_sort('address') %}
+{%                     set other_anycast_rp_addresses_cli = "anycast-rp " ~ anycast_rp.address ~ " " ~ other_anycast_rp_address.address %}
+{%                     if other_anycast_rp_address.register_count is arista.avd.defined %}
+{%                         set other_anycast_rp_addresses_cli = other_anycast_rp_addresses_cli ~ " register-count " ~ other_anycast_rp_address.register_count %}
+{%                     endif %}
+         {{ other_anycast_rp_addresses_cli }}
+{%                 endfor %}
 {%             endfor %}
 {%             if vrf.ipv4.register_local_interface is arista.avd.defined %}
          register local-interface {{ vrf.ipv4.register_local_interface }}

@@ -8,7 +8,7 @@ name: Manual container build
         type: choice
         required: true
         description: "select image type to build"
-        options: [universal, dev]
+        options: [universal, dev, base]
         default: "universal"
       container_tags:
         type: string
@@ -28,6 +28,9 @@ name: Manual container build
 
 jobs:
   manual_container_build:
+    permissions:
+      contents: read
+      packages: write
     uses: ./.github/workflows/container_build_template.yml
     with:
       container_name: ${{ inputs.container_name }}

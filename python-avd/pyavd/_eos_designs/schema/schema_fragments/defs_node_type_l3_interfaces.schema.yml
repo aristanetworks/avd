@@ -16,7 +16,7 @@ $defs:
           type: str
           description: |-
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            For a subinterface, the parent physical interface is automatically created.
+            For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
           pattern: "Ethernet[\\d/]+(\\.[\\d]+)?"
         description:
           type: str
@@ -26,6 +26,11 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         dhcp_ip:
           type: str
           description: |-
@@ -97,7 +102,8 @@ $defs:
         bgp:
           type: dict
           description: |-
-            Enforce IPv4 BGP peering for the peer
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP peering on L3 interfaces is not yet supported.
           keys:
             peer_as:
               type: str

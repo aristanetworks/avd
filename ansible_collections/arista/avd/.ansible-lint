@@ -1,16 +1,14 @@
 ---
 profile: production
 
-skip_list:
-  - name[template] # Remove warnings on task names where Jinja template is not at the end
-  - run-once[task] # Remove warnings on using run_once with other strategies
-  - var-naming[no-role-prefix] # TODO: Fix internal variable names as a breaking change for AVD 6.0.0
+mock_modules:
+  # The following task files depend on other collections and ansible-lint is running in offline mode on galaxy/automation hub
+  # so need to mock the modules or ignore the files.
+  # mocking the module is better as we can catch other issues in them.
+  # - roles/eos_config_deploy_eapi/tasks/main.yml
+  - arista.eos.eos_config
+  # - roles/eos_snapshot/tasks/main.yml
+  - arista.eos.eos_command
 kinds:
-  - yaml: "**/extensions/molecule/**/inventory/host_vars/host1/roles.yml"
-exclude_paths:
-  - .cache/
-  # Excluding task files depending on other collections since ansible-lint is running in offline mode on galaxy/automation hub
-  - roles/eos_config_deploy_eapi/tasks/main.yml
-  - roles/eos_snapshot/tasks/main.yml
-  # Excluding Molecule artifacts configuration file (not a playbook)
-  - extensions/molecule/howto/artifacts.yml
+  - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
+  - yaml: "**/extensions/molecule/howto/artifacts.yml"

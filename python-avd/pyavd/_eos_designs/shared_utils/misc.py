@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -11,15 +10,14 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import as_path_list_match_from_bgp_asns, default
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
-from pyavd._utils.run_once import run_once_method
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
+    from collections.abc import Callable
 
     from . import SharedUtilsProtocol
 
@@ -33,8 +31,8 @@ class MiscMixin(Protocol):
     """
 
     @cached_property
-    def all_fabric_devices(self: SharedUtilsProtocol) -> list[str]:
-        return list(self.peer_facts.keys())
+    def all_fabric_devices(self: SharedUtilsProtocol) -> frozenset[str]:
+        return frozenset(self.peer_facts.keys())
 
     @cached_property
     def id(self: SharedUtilsProtocol) -> int | None:
@@ -195,21 +193,6 @@ class MiscMixin(Protocol):
             return None
         return configured_mtu
 
-    def get_interface_sflow(self: SharedUtilsProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
-        """
-        Get the configured sFlow state if the interface supports it based on platform settings.
-
-        Considers global sFlow support and specific support for subinterfaces.
-
-        Returns:
-            The configured_sflow value if supported, otherwise None.
-        """
-        sflow_supported_on_interface = self.platform_settings.feature_support.sflow and (
-            "." not in interface or self.platform_settings.feature_support.sflow_subinterfaces
-        )
-
-        return configured_sflow if sflow_supported_on_interface else None
-
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
     ) -> EosDesigns.Ipv4AclsItem:
@@ -241,8 +224,8 @@ class MiscMixin(Protocol):
                 msg = f"{err_context}.destination"
                 raise AristaAvdMissingVariableError(msg)
 
-            entry.source = self._get_ipv4_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
-            entry.destination = self._get_ipv4_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
             if entry.source != org_ipv4_acl.entries[index].source or entry.destination != org_ipv4_acl.entries[index].destination:
                 changed = True
 
@@ -250,8 +233,45 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
+    def get_ipv6_acl(self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None) -> EosDesigns.Ipv6AclsItem:
+        """
+        Get one IPv6 ACL from "ipv6_acls" where fields have been substituted.
+
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        """
+        if name not in self.inputs.ipv6_acls:
+            msg = f"ipv6_acls[name={name}]"
+            raise AristaAvdMissingVariableError(msg)
+        org_ipv6_acl = self.inputs.ipv6_acls[name]
+        # deepcopy to avoid inplace updates below from modifying the original.
+        ipv6_acl = org_ipv6_acl._deepcopy()
+        ip_replacements = {
+            "interface_ip": interface_ip,
+        }
+        changed = False
+        for index, entry in enumerate(ipv6_acl.entries):
+            if entry._get("remark"):
+                continue
+
+            err_context = f"ipv6_acls[name={name}].entries[{index}]"
+            if not entry.source:
+                msg = f"{err_context}.source"
+                raise AristaAvdMissingVariableError(msg)
+            if not entry.destination:
+                msg = f"{err_context}.destination"
+                raise AristaAvdMissingVariableError(msg)
+
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            if entry.source != org_ipv6_acl.entries[index].source or entry.destination != org_ipv6_acl.entries[index].destination:
+                changed = True
+
+        if changed:
+            ipv6_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
+        return ipv6_acl
+
     @staticmethod
-    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
+    def _get_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
         """
         Checks one field if the value can be substituted.
 
@@ -322,38 +342,17 @@ class MiscMixin(Protocol):
             )
         return route_map
 
-    def update_l3_generic_interface_bgp_objects(
+    def _get_l3_generic_interface_bgp_description(
         self: SharedUtilsProtocol,
         interface: (
             EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
             | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
         ),
-        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
-        prefix_lists: EosCliConfigGen.PrefixLists,
-        route_maps: EosCliConfigGen.RouteMaps,
-    ) -> None:
-        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            schema_key = "l3_interfaces"
-            description_function = self.interface_descriptions.underlay_ethernet_interface
-            peer_interface = interface.peer_interface
-        else:
-            schema_key = "l3_port_channels"
-            description_function = self.interface_descriptions.underlay_port_channel_interface
-            peer_interface = interface.peer_port_channel
-
-        context = f"{schema_key}[{interface.name}]"
-
-        if not (interface.peer_ip and interface.bgp):
-            return
-
-        is_wan_interface = bool(interface.wan_carrier)
-
-        if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
-            # TODO: Use source here when available.
-            msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
-            raise AristaAvdInvalidInputsError(msg)
-
-        description = (
+        peer_interface: str | None,
+        description_function: Callable[[InterfaceDescriptionData], str | None],
+    ) -> str | None:
+        """Returns the BGP neighbor description for an L3 interface or L3 Port-Channel."""
+        return (
             interface.description
             or description_function(
                 InterfaceDescriptionData(
@@ -367,6 +366,29 @@ class MiscMixin(Protocol):
             )
             or None
         )
+
+    def _update_l3_generic_interface_ipv4_bgp(
+        self: SharedUtilsProtocol,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        description: str | None,
+        context: str,
+        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+        prefix_lists: EosCliConfigGen.PrefixLists,
+        route_maps: EosCliConfigGen.RouteMaps,
+    ) -> None:
+        """Creates an IPv4 BGP neighbor entry for an L3 interface or L3 Port-Channel if peer_ip and bgp are configured."""
+        if not (interface.peer_ip and interface.bgp):
+            return
+
+        is_wan_interface = bool(interface.wan_carrier)
+
+        if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
+            # TODO: Use source here when available.
+            msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
+            raise AristaAvdInvalidInputsError(msg)
 
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
             ip_address=interface.peer_ip,
@@ -391,16 +413,33 @@ class MiscMixin(Protocol):
         neighbors.append(neighbor)
 
     @cached_property
-    def l3_bgp_objects(self: SharedUtilsProtocol) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps]:
+    def l3_bgp_objects(
+        self: SharedUtilsProtocol,
+    ) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps]:
         """Generates the EosCliConfigGen Router BGP Neighbors and their associated PrefixListsItem and RouteMapsItem."""
         neighbors = EosCliConfigGen.RouterBgp.Neighbors()
         prefix_lists = EosCliConfigGen.PrefixLists()
         route_maps = EosCliConfigGen.RouteMaps()
 
         for interface in self.l3_interfaces:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+            has_bgp = bool(interface.bgp and interface.peer_ip)
+            description = (
+                self._get_l3_generic_interface_bgp_description(interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface)
+                if has_bgp
+                else None
+            )
+            self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
+
         for interface in self.node_config.l3_port_channels:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+            has_bgp = bool(interface.bgp and interface.peer_ip)
+            description = (
+                self._get_l3_generic_interface_bgp_description(
+                    interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
+                )
+                if has_bgp
+                else None
+            )
+            self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
 
         return neighbors, prefix_lists, route_maps
 
@@ -481,120 +520,3 @@ class MiscMixin(Protocol):
     def is_campus_device(self: SharedUtilsProtocol) -> bool:
         """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
         return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))
-
-    @run_once_method
-    def set_once_ip_extcommunity_list_evpn_soo(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
-        """Set ip extcommunity-list ECL-EVPN-SOO."""
-        ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
-        ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.evpn_soo}")
-        structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
-
-    @run_once_method
-    def set_once_peer_group_ipv4_underlay_peers(self: SharedUtilsProtocol, structured_config: EosCliConfigGen, custom_structured_configs: StructCfgs) -> None:
-        """
-        Add IPv4 underlay peer group to structured_config.
-
-        Also adds required route-maps and prefix-lists.
-        """
-        af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
-
-        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            password=self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
-            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-            maximum_routes=self.inputs.bgp_peer_groups.ipv4_underlay_peers.maximum_routes,
-            send_community="all",
-        )
-        peer_group.metadata.type = af_type
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-            custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=custom_structured_configs.list_merge_strategy
-            )
-
-        if self.is_cv_pathfinder_router:
-            peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            self.set_once_route_map_bgp_underlay_peers_in(structured_config)
-            if self.wan_ha:
-                peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                self.set_once_route_map_bgp_underlay_peers_out(structured_config)
-                if self.use_uplinks_for_wan_ha:
-                    # For HA need to add allowas_in 1
-                    peer_group.allowas_in._update(enabled=True, times=1)
-
-        structured_config.router_bgp.peer_groups.append(peer_group)
-
-        # Address Families
-        # TODO: - see if it makes sense to extract logic in method
-        if not self.underlay_ipv6_numbered:
-            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
-            if self.inputs.underlay_rfc5549 is True:
-                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
-            structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
-
-        if self.underlay_ipv6:
-            structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
-
-    @run_once_method
-    def set_once_route_map_bgp_underlay_peers_in(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
-        """Set route-map RM-BGP-UNDERLAY-PEERS-IN."""
-        # RM-BGP-UNDERLAY-PEERS-IN
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        sequence_numbers.append_new(
-            sequence=40,
-            type="permit",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set([f"extcommunity soo {self.evpn_soo} additive"]),
-            description="Mark prefixes originated from the LAN",
-        )
-        if self.wan_ha and self.use_uplinks_for_wan_ha:
-            sequence_numbers.append_new(
-                sequence=10,
-                type="permit",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-WAN-HA-PEER-PREFIXES"]),
-                description="Allow WAN HA peer interface prefixes",
-            )
-            # Create the prefix-list.
-            self.set_once_prefix_list_wan_ha_peer_prefixes(structured_config)
-
-            sequence_numbers.append_new(
-                sequence=20,
-                type="deny",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["as-path ASPATH-WAN"]),
-                description="Deny other routes from the HA peer",
-            )
-            # Create AS Path ACL
-            self.set_once_as_path_acl_aspath_wan(structured_config)
-
-        structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-IN", sequence_numbers=sequence_numbers)
-
-    @run_once_method
-    def set_once_route_map_bgp_underlay_peers_out(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
-        """Set route-map RM-BGP-UNDERLAY-PEERS-OUT."""
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        sequence_numbers.append_new(
-            sequence=10,
-            type="permit",
-            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["tag 50", "route-type internal"]),
-            description="Make routes learned from WAN HA peer less preferred on LAN routers",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set(["metric 50"]),
-        )
-        sequence_numbers.append_new(sequence=20, type="permit")
-
-        structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
-
-    @run_once_method
-    def set_once_prefix_list_wan_ha_peer_prefixes(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
-        """Set prefix-list PL-WAN-HA-PEER-PREFIXES."""
-        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        for index, ip_address in enumerate(self.wan_ha_peer_ip_addresses, start=1):
-            sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
-        structured_config.prefix_lists.append_new(name="PL-WAN-HA-PEER-PREFIXES", sequence_numbers=sequence_numbers)
-
-    @run_once_method
-    def set_once_as_path_acl_aspath_wan(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
-        """Set as-path access-list ASPATH-WAN."""
-        entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
-        entries.append_new(type="permit", match=as_path_list_match_from_bgp_asns((self.bgp_as,)))  # pyright: ignore[reportArgumentType]
-        structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)

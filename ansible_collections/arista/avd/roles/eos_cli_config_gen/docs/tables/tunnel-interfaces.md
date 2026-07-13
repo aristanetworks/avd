@@ -16,7 +16,31 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_vrf</samp>](## "tunnel_interfaces.[].underlay_vrf") | String |  |  |  | Underlay VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "tunnel_interfaces.[].ip_address") | String |  |  | Format: ipv4_cidr | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "tunnel_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "tunnel_interfaces.[].ipv6_address") | String |  |  | Format: ipv6_cidr | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "tunnel_interfaces.[].ipv6_address") <span style="color:red">deprecated</span> | String |  |  | Format: ipv6_cidr | IPv6_address/Mask.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "tunnel_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "tunnel_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length.<br>This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "tunnel_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address.<br>This option is mutually exclusive with `ipv6_addresses`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "tunnel_interfaces.[].ipv6_nd") | Dictionary |  |  |  | IPv6 Neighbor Discovery protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache</samp>](## "tunnel_interfaces.[].ipv6_nd.cache") | Dictionary |  |  |  | Neighbor cache options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_capacity</samp>](## "tunnel_interfaces.[].ipv6_nd.cache.dynamic_capacity") | Integer |  |  | Min: 0<br>Max: 4294967295 | Capacity of dynamic cache entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expire</samp>](## "tunnel_interfaces.[].ipv6_nd.cache.expire") | Integer |  |  | Min: 1<br>Max: 65535 | Cache entries expiry in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_always</samp>](## "tunnel_interfaces.[].ipv6_nd.cache.refresh_always") | Boolean |  |  |  | Force refresh on cache expiry. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "tunnel_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Router Advertisement messages on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  | Accept default route from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  | Accept route preference from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.dns_servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.dns_servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.dns_servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "tunnel_interfaces.[].ipv6_nd.ra.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;managed_config_flag</samp>](## "tunnel_interfaces.[].ipv6_nd.managed_config_flag") | Boolean |  |  |  | Set the "Managed Address Configuration" (M) flag in Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "tunnel_interfaces.[].ipv6_nd.prefixes") | List, items: Dictionary |  |  |  | IPv6 prefixes to include in Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_prefix</samp>](## "tunnel_interfaces.[].ipv6_nd.prefixes.[].ipv6_prefix") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "tunnel_interfaces.[].ipv6_nd.prefixes.[].valid_lifetime") | String |  |  |  | Valid lifetime in seconds '<0-4294967295>' or 'infinite'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "tunnel_interfaces.[].ipv6_nd.prefixes.[].preferred_lifetime") | String |  |  |  | Preferred lifetime in seconds '<0-4294967295>' or 'infinite'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_autoconfig_flag</samp>](## "tunnel_interfaces.[].ipv6_nd.prefixes.[].no_autoconfig_flag") | Boolean |  |  |  | Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other_config_flag</samp>](## "tunnel_interfaces.[].ipv6_nd.other_config_flag") | Boolean |  |  |  | Set the "Other Stateful Configuration" (O) flag in Router Advertisements. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_in</samp>](## "tunnel_interfaces.[].access_group_in") | String |  |  |  | IPv4 ACL Name for ingress. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group_out</samp>](## "tunnel_interfaces.[].access_group_out") | String |  |  |  | IPv4 ACL Name for egress. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group_in</samp>](## "tunnel_interfaces.[].ipv6_access_group_in") | String |  |  |  | IPv6 ACL Name for ingress. |
@@ -56,7 +80,77 @@
         ipv6_enable: <bool>
 
         # IPv6_address/Mask.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_addresses` instead.
         ipv6_address: <str>
+        ipv6_addresses:
+
+            # IPv6 address with prefix length.
+            # This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+          - <str>
+
+        # Use SLAAC to automatically configure the IPv6 address.
+        # This option is mutually exclusive with `ipv6_addresses`.
+        ipv6_address_auto_config: <bool>
+
+        # IPv6 Neighbor Discovery protocol.
+        ipv6_nd:
+
+          # Neighbor cache options.
+          cache:
+
+            # Capacity of dynamic cache entries.
+            dynamic_capacity: <int; 0-4294967295>
+
+            # Cache entries expiry in seconds.
+            expire: <int; 1-65535>
+
+            # Force refresh on cache expiry.
+            refresh_always: <bool>
+
+          # Router Advertisement.
+          ra:
+
+            # Disable Router Advertisement messages on the interface.
+            disabled: <bool>
+            rx_accept:
+
+              # Accept default route from received Router Advertisements.
+              default_route: <bool>
+
+              # Accept route preference from received Router Advertisements.
+              route_preference: <bool>
+            dns_servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
+
+          # Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+          managed_config_flag: <bool>
+
+          # IPv6 prefixes to include in Router Advertisements.
+          prefixes:
+            - ipv6_prefix: <str; required; unique>
+
+              # Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+              valid_lifetime: <str>
+
+              # Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+              preferred_lifetime: <str>
+
+              # Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+              no_autoconfig_flag: <bool>
+
+          # Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+          other_config_flag: <bool>
 
         # IPv4 ACL Name for ingress.
         access_group_in: <str>

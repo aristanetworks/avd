@@ -12,6 +12,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.0/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::/127
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: true
@@ -43,6 +45,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.4/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::4/127
   isis_enable: CORE
   isis_metric: 500
   isis_network_point_to_point: true
@@ -124,12 +128,6 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer_type: point_to_point_service
-- name: Ethernet9
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet8
   description: CPE_CPE_TENANT_A_SITE1_Ethernet1
   shutdown: false
@@ -142,6 +140,54 @@ ethernet_interfaces:
     peer_type: cpe
     peer_key: cpes
     port_profile: TENANT_A_WAN_SERVICE_10
+- name: Ethernet10
+  description: CPE_CPE2_TENANT_A_SITE1_SUBINTERFACES_Ethernet1
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0201
+    redundancy: single-active
+    designated_forwarder_election:
+      algorithm: preference
+      preference_value: 100
+    route_target: 03:03:02:02:02:01
+  metadata:
+    peer: CPE2_TENANT_A_SITE1_SUBINTERFACES
+    peer_interface: Ethernet1
+    peer_type: cpe
+    peer_key: cpes
+  switchport:
+    enabled: false
+- name: Ethernet10.11
+  comment: Testing structured config on subinterface.
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0211
+    route_target: 03:03:02:02:02:11
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 11
+    network:
+      encapsulation: client
+  vlan_id: 11
+  eos_cli: storm-control broadcast level 12
+- name: Ethernet10.12
+  description: Ethernet10.12-12-112-211-cpe-CPE2_TENANT_A_SITE1_SUBINTERFACES
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0212
+    route_target: 03:03:02:02:02:12
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 211
+    network:
+      encapsulation: client
+  vlan_id: 112
+- name: Ethernet9
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: SITE1-LER1
 ip_igmp_snooping:
   globally_enabled: true
@@ -153,7 +199,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.5/32
-  ipv6_address: 2000:1234:ffff:ffff::5/128
+  ipv6_addresses:
+  - 2001:db8:200:ffff::5/128
   mpls:
     ldp:
       interface: true
@@ -161,7 +208,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 205
-    ipv6_index: 205
+    ipv6_index: 1205
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -260,6 +307,16 @@ patch_panel:
       type: pseudowire
       endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004
 port_channel_interfaces:
+- name: Port-Channel3
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:0000:0034
+    route_target: 01:02:00:00:00:34
+  lacp_id: 0102.0000.0034
+  metadata:
+    peer_type: system
+  switchport:
+    enabled: false
 - name: Port-Channel3.1000
   shutdown: false
   encapsulation_vlan:
@@ -312,16 +369,6 @@ port_channel_interfaces:
       encapsulation: client
   metadata:
     peer_type: point_to_point_service
-- name: Port-Channel3
-  shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0102:0000:0034
-    route_target: 01:02:00:00:00:34
-  lacp_id: 0102.0000.0034
-  metadata:
-    peer_type: system
-  switchport:
-    enabled: false
 - name: Port-Channel8
   description: CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
   shutdown: false
@@ -433,11 +480,34 @@ router_bgp:
       - 65000:22020
     redistribute_routes:
     - learned
+  - id: 110
+    metadata:
+      tenants:
+      - TENANT_C
+    rd: 100.70.0.5:10110
+    route_targets:
+      both:
+      - 65000:10110
+    redistribute_routes:
+    - learned
+  - id: 210
+    metadata:
+      tenants:
+      - TENANT_C
+    rd: 100.70.0.5:123456
+    route_targets:
+      both:
+      - 65000:123456
+    redistribute_routes:
+    - learned
   vpws:
   - name: TENANT_A
     rd: 100.70.0.5:1000
     route_targets:
       import_export: 65000:1000
+    mpls_control_word: true
+    label_flow: true
+    mtu: 1500
     pseudowires:
     - name: TEN_A_site1_site2_eline_port_based
       id_local: 16
@@ -518,6 +588,7 @@ router_isis:
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: link-protection
   segment_routing_mpls:
@@ -577,6 +648,16 @@ vlans:
   metadata:
     tenants:
     - TENANT_B
+- id: 110
+  name: TENANT_C_L2_SERVICE
+  metadata:
+    tenants:
+    - TENANT_C
+- id: 210
+  name: TENANT_C_L2_SERVICE
+  metadata:
+    tenants:
+    - TENANT_C
 vrfs:
 - name: MGMT
   ip_routing: false

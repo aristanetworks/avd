@@ -456,20 +456,47 @@ To help format the custom interface descriptions, the following contextual varia
 
 underlay_ethernet_interfaces:
 
+- `{{ interface }}`
+- `{{ link_type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
+- `{{ peer }}`
+- `{{ peer_interface }}`
+- `{{ wan_carrier }}`
+- `{{ wan_circuit_id }}`
+- `{{ main_interface_wan_carrier }}`
+- `{{ link.interface }}`
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
+- `{{ link.wan_carrier }}`
+- `{{ link.wan_circuit_id }}`
+- `{{ link.main_interface_wan_carrier }}`
 - All group/hostvars
+
+Note: Variables like `link.*` are deprecated and will be removed in AVD 7.0.
 
 underlay_port_channel_interfaces:
 
+- `{{ interface }}`
+- `{{ channel_description }}`
+- `{{ channel_group_id }}`
+- `{{ peer }}`
+- `{{ peer_channel_group_id }}`
+- `{{ peer_node_group }}`
+- `{{ wan_carrier }}`
+- `{{ wan_circuit_id }}` for `l3_port_channels` defined under the node config.
+- `{{ main_interface_wan_carrier }}`
+- `{{ link.interface }}`
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
+- `{{ link.peer_node_group }}`
+- `{{ link.wan_circuit_id }}` for `l3_port_channels` defined under the node config.
 - `{{ link.wan_carrier }}` for `l3_port_channels` defined under the node config.
 - `{{ link.main_interface_wan_carrier }}` for `l3_port_channels` subintefaces defined under the node config.
 - All group/hostvars
+
+Note: Variables like `link.*` are deprecated and will be removed in AVD 7.0.
 
 mlag_ethernet_interfaces:
 
@@ -479,6 +506,7 @@ mlag_ethernet_interfaces:
 
 mlag_port_channel_interfaces:
 
+- `{{ interface }}`
 - `{{ mlag_interfaces }}` (list of strings)
 - `{{ mlag_peer }}`
 - `{{ mlag_port_channel_id }}`
@@ -486,6 +514,7 @@ mlag_port_channel_interfaces:
 
 connected_endpoints_ethernet_interfaces:
 
+- `{{ interface }}`
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - `{{ adapter_description }}`
@@ -493,6 +522,7 @@ connected_endpoints_ethernet_interfaces:
 
 connected_endpoints_port_channel_interfaces:
 
+- `{{ interface }}`
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - `{{ adapter_port_channel_id }}`
@@ -502,11 +532,13 @@ connected_endpoints_port_channel_interfaces:
 
 router_id_loopback_interfaces:
 
+- `{{ interface }}`
 - `{{ router_id_loopback_description }}`
 - All group/hostvars
 
 vtep_loopback_interface:
 
+- `{{ interface }}`
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
 
@@ -653,7 +685,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
 --8<--
 
-### Node type EVPN gateway configuration
+### Node type EVPN to MPLS IP-VPN gateway configuration
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
@@ -835,16 +867,40 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 
 ## Catalogs
 
+### BGP Peer Filters Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-peer-filters-catalog.md
+--8<--
+
 ### IPv4 extended ACLs Catalog
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
+### IPv6 extended ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md
+--8<--
+
+### IPv4 Standard ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-standard-acls.md
+--8<--
+
 ### IPv4 Prefix-List Catalog
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-prefix-list-catalog.md
+--8<--
+
+### MAC ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/mac-acls.md
 --8<--
 
 ## OSPF settings
@@ -1039,10 +1095,22 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstrap-file.md
 --8<--
 
+### Other management settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings.md
+--8<--
+
 ## 802.1X Settings
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
+--8<--
+
+## Spanning Tree settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-settings.md
 --8<--
 
 ## Monitoring
@@ -1059,12 +1127,16 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-monitor.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/load-interval.md
 --8<--
 
-## Quality of Service
-
-### Queue monitor-streaming
+### Latency Analyzer (LANZ)
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/queue-monitor-streaming.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/latency-analyzer.md
+--8<--
+
+### Monitor Connectivity
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/monitor-connectivity.md
 --8<--
 
 ## System settings
@@ -1769,4 +1841,12 @@ See the [Node type settings](#node-type-settings) section for available keys.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
+--8<--
+
+## Future AVD Design Behaviors
+
+Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/avd-design-future.md
 --8<--

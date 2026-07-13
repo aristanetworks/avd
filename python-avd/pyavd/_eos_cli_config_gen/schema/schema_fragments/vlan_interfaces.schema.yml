@@ -56,7 +56,11 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4_address/Mask.
+          description: IPv4_address/Mask or dhcp.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: |-
+            Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as 'dhcp'.
         ip_address_secondaries:
           type: list
           items:
@@ -180,6 +184,23 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -197,13 +218,33 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -225,6 +266,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -257,6 +303,10 @@ keys:
                 description: DHCP server's IPv6 address.
               vrf:
                 type: str
+                description: |-
+                  VRF used to reach the DHCP server.
+                  If not set, the VRF of the destination matches the VRF of this interface.
+                  Use the `default` to reach the DHCP server through the default VRF.
                 convert_types:
                   - int
               local_interface:
@@ -271,6 +321,9 @@ keys:
         ipv6_dhcp_relay_all_subnets:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -680,6 +733,28 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+                - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+                - str
+            direction:
+              type: str
+              valid_values: ["ingress", "egress"]
+              description: |
+                Optional direction ('ingress', 'egress')  for tcp mss ceiling.
         traffic_policy:
           type: dict
           keys:

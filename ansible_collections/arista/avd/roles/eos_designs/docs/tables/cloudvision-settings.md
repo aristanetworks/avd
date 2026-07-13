@@ -12,14 +12,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "cv_settings.cvaas.enabled") | Boolean | Required |  |  | Enable streaming to CVaaS.<br>When enabled it will stream to 'apiserver.arista.io:443' using the VRF obtained from `default_mgmt_method` unless overridden under `clusters`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clusters</samp>](## "cv_settings.cvaas.clusters") | List, items: Dictionary |  | `[{'name': 'cvaas'}]` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.cvaas.clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "cv_settings.cvaas.clusters.[].region") | String |  | `auto` | Valid Values:<br>- <code>auto</code><br>- <code>us-central1-a</code><br>- <code>us-central1-b</code><br>- <code>us-central1-c</code><br>- <code>apnortheast-1</code><br>- <code>euwest-2</code><br>- <code>ausoutheast-1</code><br>- <code>na-northeast1-b</code><br>- <code>uk-1</code><br>- <code>india-1</code><br>- <code>staging</code><br>- <code>dev</code><br>- <code>play</code> | Optionally set the region to stream to.<br>The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.<br>"staging", "dev" and "play" are for internal Arista use. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "cv_settings.cvaas.clusters.[].region") | String |  | `auto` | Valid Values:<br>- <code>auto</code><br>- <code>us-central1-a</code><br>- <code>us-central1-b</code><br>- <code>us-central1-c</code><br>- <code>us-4</code><br>- <code>apnortheast-1</code><br>- <code>euwest-2</code><br>- <code>eu-3</code><br>- <code>ausoutheast-1</code><br>- <code>na-northeast1-b</code><br>- <code>uk-1</code><br>- <code>india-1</code><br>- <code>staging</code><br>- <code>dev</code><br>- <code>play</code> | Optionally set the region to stream to.<br>The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.<br>"staging", "dev" and "play" are for internal Arista use. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.cvaas.clusters.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp>](## "cv_settings.cvaas.clusters.[].token_file") | String |  | `/tmp/cv-onboarding-token` |  | Path to the onboarding token used for certificate based authentication.<br>The path is on the EOS device and the token file must be copied to the device first. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "cv_settings.cvaas.clusters.[].source_interface") | String |  |  |  | Source-interface used to connect to CloudVision.<br>If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`. |
     | [<samp>&nbsp;&nbsp;onprem_clusters</samp>](## "cv_settings.onprem_clusters") | List, items: Dictionary |  |  |  | On-premise CloudVision clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the cluster. Required here, but only used when configuring multiple clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "cv_settings.onprem_clusters.[].servers") | List, items: Dictionary | Required |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that makes up one cluster. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server FQDN or IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server IP address or FQDN.<br>Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "cv_settings.onprem_clusters.[].servers.[].port") | Integer |  | `9910` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.onprem_clusters.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp>](## "cv_settings.onprem_clusters.[].token_file") | String |  | `/tmp/token` |  | Path to the onboarding token used for certificate based authentication.<br>The path is on the EOS device and the token file must be copied to the device first. |
@@ -28,6 +28,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ingestexclude</samp>](## "cv_settings.terminattr.ingestexclude") | String |  |  |  | Exclude paths from Sysdb on the ingest side.<br>e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;smashexcludes</samp>](## "cv_settings.terminattr.smashexcludes") | String |  | `ale,flexCounter,hardware,kni,pulse,strata` |  | Exclude paths from the shared memory table.<br>e.g. "ale,flexCounter,hardware,kni,pulse,strata"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable_aaa</samp>](## "cv_settings.terminattr.disable_aaa") | Boolean |  | `False` |  | Disable AAA authorization and accounting.<br>When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cvtargetconfigs</samp>](## "cv_settings.terminattr.cvtargetconfigs") | List, items: String |  |  | Min Length: 1 | Set the target configuration path(s) for dynamic device configuration from CloudVision.<br>Used for MSS (Multi-Domain Segmentation Service) integrations.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "cv_settings.terminattr.cvtargetconfigs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowdns</samp>](## "cv_settings.terminattr.flowdns") | Boolean |  |  |  | Enable DNS resolution for flow records (TerminAttr default is true).<br>Set to false to disable DNS lookups on sFlow/IPFIX flow records.<br> |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "cv_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>Can be set to `false` to avoid changes when migrating from the old `cv_instances` model. |
     | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
@@ -57,7 +60,7 @@
             # Optionally set the region to stream to.
             # The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.
             # "staging", "dev" and "play" are for internal Arista use.
-            region: <str; "auto" | "us-central1-a" | "us-central1-b" | "us-central1-c" | "apnortheast-1" | "euwest-2" | "ausoutheast-1" | "na-northeast1-b" | "uk-1" | "india-1" | "staging" | "dev" | "play"; default="auto">
+            region: <str; "auto" | "us-central1-a" | "us-central1-b" | "us-central1-c" | "us-4" | "apnortheast-1" | "euwest-2" | "eu-3" | "ausoutheast-1" | "na-northeast1-b" | "uk-1" | "india-1" | "staging" | "dev" | "play"; default="auto">
 
             # The VRF used to connect to CloudVision.
             # The value will be interpreted according to these rules:
@@ -86,7 +89,8 @@
           # CloudVision servers that makes up one cluster.
           servers: # 1-3 items; required
 
-              # Server FQDN or IP address.
+              # Server IP address or FQDN.
+              # Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.
             - name: <str; required; unique>
               port: <int; default=9910>
 
@@ -122,6 +126,15 @@
         # Disable AAA authorization and accounting.
         # When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.
         disable_aaa: <bool; default=False>
+
+        # Set the target configuration path(s) for dynamic device configuration from CloudVision.
+        # Used for MSS (Multi-Domain Segmentation Service) integrations.
+        cvtargetconfigs: # >=1 items
+          - <str>
+
+        # Enable DNS resolution for flow records (TerminAttr default is true).
+        # Set to false to disable DNS lookups on sFlow/IPFIX flow records.
+        flowdns: <bool>
 
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.

@@ -33,6 +33,16 @@ ethernet_interfaces:
     peer: inband-mgmt-parent-ipv6-2
     peer_interface: Ethernet27
     peer_type: l3leaf
+- name: Ethernet3
+  description: INBAND-MGMT-PARENT-IPV6-3_Ethernet27
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: inband-mgmt-parent-ipv6-3
+    peer_interface: Ethernet27
+    peer_type: l3leaf
 hostname: inband-mgmt-ipv6-only-vrf
 ip_igmp_snooping:
   globally_enabled: true
@@ -75,7 +85,8 @@ vlan_interfaces:
   shutdown: false
   vrf: INBANDMGMT
   ipv6_enable: true
-  ipv6_address: 2a00:107::a/64
+  ipv6_addresses:
+  - 2a00:107::a/64
   mtu: 1500
   metadata:
     type: inband_mgmt

@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -34,9 +34,9 @@ interface Management1
 
 ##### NTP Servers
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -81,7 +81,8 @@ no ptp free-running
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | - | - | - |
-| default | True | - | - |
+| PROD | True | - | - |
+| default | False | - | - |
 
 #### Other SSH Settings
 
@@ -95,7 +96,49 @@ no ptp free-running
 !
 management ssh
    !
+   vrf PROD
+      no shutdown
+   !
    vrf mgt
+```
+
+### Management Accounts
+
+#### Password Policy
+
+No specific password policy is set for management accounts.
+
+#### Management Accounts Device Configuration
+
+```eos
+!
+management accounts
+```
+
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      authorization group policy LDAP_GROUP_POLICY
+   !
+   server host ldap1.example.com
+      ssl-profile LDAP_HOST_SSL_PROFILE
 ```
 
 ## CVX
@@ -107,6 +150,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | - | Redis Password Set |
+| OpenStack | True | - |
 | VXLAN | - | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -118,6 +162,12 @@ cvx
    !
    service mcs
       redis password 7 <removed>
+   !
+   service openstack
+      ip access-group ACL-OS
+      ipv6 access-group ACL-V6-IN
+      no shutdown
+      network type-driver vlan default
    !
    service vxlan
       vtep mac-learning control-plane
@@ -131,16 +181,22 @@ cvx
 
 | Type | Commands | Record type | Groups | Logging |
 | ---- | -------- | ----------- | ------ | ------- |
+| Exec - Console | - | start-stop | - | True |
 | Commands - Console | all | none | - | - |
 | Commands - Console | 0 | none | - | - |
+| Commands - Console | 1 | start-stop | - | True |
+| System - Default | - | start-stop | - | True |
 | Commands - Default | all | none | - | - |
 | Commands - Default | 0 | none | - | - |
 
 #### AAA Accounting Device Configuration
 
 ```eos
+aaa accounting exec console start-stop logging
 aaa accounting commands all console none
 aaa accounting commands 0 console none
+aaa accounting commands 1 console start-stop logging
+aaa accounting system default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```
@@ -219,6 +275,25 @@ mcs client
    cvx secondary default
 ```
 
+### SFlow
+
+#### SFlow Summary
+
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
+| default | - | 192.0.2.10 | 6343 |
+| default | 192.0.2.3 | - | - |
+
+sFlow is disabled.
+
+#### SFlow Device Configuration
+
+```eos
+!
+sflow destination 192.0.2.10
+sflow source 192.0.2.3
+```
+
 ## Spanning Tree
 
 ### Spanning Tree Summary
@@ -265,6 +340,30 @@ spanning-tree mst configuration
 
 ## Routing
 
+### Router OSPF
+
+#### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 702 | 10.255.0.3 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 702 | none | - |
+
+#### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 702
+   router-id 10.255.0.3
+   segment-routing mpls
+      adjacency-segment allocation none
+```
+
 ### Router ISIS
 
 #### Router ISIS Summary
@@ -300,72 +399,19 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101.0001 | 192.168.255.3 |
+| 65003 | 192.0.2.3 |
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
-| update wait-install |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| maximum-paths 2 ecmp 2 |
-| graceful-restart-helper long-lived |
-| bgp additional-paths send limit 5 |
-
-#### Router BGP EVPN Address Family
-
-#### Router BGP IPv4 Labeled Unicast
-
-##### General Settings
-
-| Settings | Value |
-| -------- | ----- |
-
-#### Router BGP Path-Selection Address Family
+| bgp additional-paths send ecmp |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65101.0001
-   router-id 192.168.255.3
-   graceful-restart-helper long-lived
-   no bgp default ipv4-unicast
-   update wait-install
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   maximum-paths 2 ecmp 2
-   bgp additional-paths send limit 5
-   redistribute ospf include leaked route-map RM-OSPF-TO-BGP
-   redistribute static
-   !
-   address-family evpn
-      bgp additional-paths send ecmp limit 10
-   !
-   address-family ipv4
-      bgp additional-paths send limit 10
-   !
-   address-family ipv4 labeled-unicast
-      no bgp additional-paths send
-   !
-   address-family ipv4 multicast
-      redistribute attached-host
-      redistribute connected
-      redistribute isis rcf Router_BGP_Isis()
-      redistribute ospf match internal
-      redistribute ospfv3 match internal
-      redistribute ospfv3 match external
-      redistribute ospfv3 match nssa-external 2
-      redistribute ospf match external
-      redistribute ospf match nssa-external 2
-   !
-   address-family ipv6
-      no bgp additional-paths send
-      redistribute ospfv3 include leaked route-map RM-REDISTRIBUTE-OSPFV3
-      redistribute ospfv3 match external include leaked route-map RM-REDISTRIBUTE-OSPFV3-EXTERNAL
-   !
-   address-family path-selection
-      bgp additional-paths send limit 20
+router bgp 65003
+   router-id 192.0.2.3
+   bgp additional-paths send ecmp
 ```
 
 ## MPLS
@@ -381,13 +427,6 @@ router bgp 65101.0001
 | LDP Router ID | 192.168.1.2 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | - |
-
-### MPLS RSVP
-
-#### MPLS RSVP Summary
-
-| Setting | Value |
-| ------- | ----- |
 
 ### MPLS Device Configuration
 
@@ -419,6 +458,17 @@ router multicast
       multipath deterministic
 ```
 
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
+
+MSS-G is disabled.
+
+### Router MSS-G Device Configuration
+
+```eos
+!
+router segment-security
+```
+
 ## IPv6 DHCP Relay
 
 ### IPv6 DHCP Relay Summary
@@ -447,8 +497,77 @@ ipv6 dhcp relay option remote-id format %m:%h:%p
 
 Errdisable recovery timer interval: 300 seconds
 
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
+| acl | - | False | - |
+| arp-inspection | - | True | - |
+| bpduguard | - | False | - |
+| dot1x | - | False | 500 |
+| dot1x-coa | - | False | - |
+| dot1x-phone-classification | - | False | - |
+| dot1x-session-replace | - | False | - |
+| error-correction-encoding | - | False | - |
+| fabric-capacity-low | - | False | - |
+| hardware-speed-group | - | False | - |
+| hitless-reload-down | - | True | - |
+| interface-speed | - | False | - |
+| internal-error | - | False | - |
+| lacp-rate-limit | - | False | - |
+| link-flap | - | False | - |
+| no-internal-vlan | - | True | - |
+| port-breakout | - | False | - |
+| portchannelguard | - | False | 600 |
+| portsec | - | False | - |
+| speed-misconfigured | - | False | - |
+| storm-control | - | False | - |
+| stuck-queue | - | False | - |
+| switchcard-unreachable | - | False | - |
+| tap-port-init | - | False | - |
+| tapagg | - | True | - |
+| tpid | - | False | - |
+| transceiver-adapter | - | False | - |
+| uplink-failure-detection | - | False | - |
+| xcvr-misconfigured | - | False | - |
+| xcvr-overheat | - | False | - |
+| xcvr-power-unsupported | - | False | - |
+| xcvr-unsupported | - | False | - |
+
 ```eos
 !
+no errdisable recovery cause acl
+errdisable recovery cause arp-inspection
+no errdisable recovery cause bpduguard
+no errdisable recovery cause dot1x
+no errdisable recovery cause dot1x-coa
+no errdisable recovery cause dot1x-phone-classification
+no errdisable recovery cause dot1x-session-replace
+no errdisable recovery cause error-correction-encoding
+no errdisable recovery cause fabric-capacity-low
+no errdisable recovery cause hardware-speed-group
+errdisable recovery cause hitless-reload-down
+no errdisable recovery cause interface-speed
+no errdisable recovery cause internal-error
+no errdisable recovery cause lacp-rate-limit
+no errdisable recovery cause link-flap
+errdisable recovery cause no-internal-vlan
+no errdisable recovery cause port-breakout
+no errdisable recovery cause portchannelguard
+no errdisable recovery cause portsec
+no errdisable recovery cause speed-misconfigured
+no errdisable recovery cause storm-control
+no errdisable recovery cause stuck-queue
+no errdisable recovery cause switchcard-unreachable
+no errdisable recovery cause tap-port-init
+errdisable recovery cause tapagg
+no errdisable recovery cause tpid
+no errdisable recovery cause transceiver-adapter
+no errdisable recovery cause uplink-failure-detection
+no errdisable recovery cause xcvr-misconfigured
+no errdisable recovery cause xcvr-overheat
+no errdisable recovery cause xcvr-power-unsupported
+no errdisable recovery cause xcvr-unsupported
+errdisable recovery cause dot1x interval 500
+errdisable recovery cause portchannelguard interval 600
 errdisable recovery interval 300
 ```
 
@@ -459,4 +578,36 @@ errdisable recovery interval 300
 ```eos
 !
 traffic-policies
+```
+
+### Priority Flow Control
+
+#### Global Settings
+
+##### Priority Flow Control Watchdog Settings
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| errdisable | - | - | - | True |
+
+```eos
+!
+priority-flow-control pause watchdog override action drop
+```
+
+## STUN
+
+### STUN Server
+
+| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Ethernet2 | - | - | - | 3478 |
+
+### STUN Device Configuration
+
+```eos
+!
+stun
+   server
+      local-interface Ethernet2
 ```

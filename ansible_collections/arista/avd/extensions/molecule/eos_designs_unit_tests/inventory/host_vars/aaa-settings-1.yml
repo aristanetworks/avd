@@ -7,6 +7,11 @@ l2leaf:
     - name: aaa-settings-1
       mgmt_ip: 192.168.0.2/24
 
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
+
 aaa_settings:
   # adding test for enable_password.password
   enable_password:
@@ -17,6 +22,7 @@ aaa_settings:
     servers:
       - host: 10.10.10.11
         vrf: default
+        timeout: 30
         key: 071B245F5A
         # key take precedence over cleartext_key
         cleartext_key: arista
@@ -25,6 +31,7 @@ aaa_settings:
 
       - host: 10.10.10.1
         vrf: use_mgmt_interface_vrf
+        timeout: 60
         key: 071B245F5A
         groups:
           - TACACS1
@@ -91,6 +98,8 @@ aaa_settings:
     servers:
       - host: 11.10.10.11
         vrf: default
+        timeout: 10
+        retransmit: 3
         key: 071B245F5A
         # key take precedence over cleartext_key
         cleartext_key: arista
@@ -100,6 +109,7 @@ aaa_settings:
       # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
       - host: 11.10.10.1
         vrf: use_mgmt_interface_vrf
+        timeout: 20
         key: 071B245F5A
         groups:
           - RADIUS1

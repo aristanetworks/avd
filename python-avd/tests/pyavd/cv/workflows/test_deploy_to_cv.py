@@ -5,14 +5,23 @@ from __future__ import annotations
 
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import INFO
+from logging import DEBUG
 from typing import TYPE_CHECKING
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVEosConfig, CVWorkspace
+from pyavd._cv.workflows.models import (
+    AvdWorkspace,
+    CloudVision,
+    CVDeployFuture,
+    CVDeviceDeployment,
+    CVEosConfig,
+    CVGRPCChannelConfiguration,
+    CVGRPCKeepalives,
+    CVWorkspace,
+)
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -39,7 +48,7 @@ async def test_deploy_to_cv(
     Test full functionality of the deploy_to_cv by building and submitting (both forced and unforced) Workspace with a single streaming device.
 
     Exact test steps:
-    -   description: Fethc Workspace status
+    -   description: Fetch Workspace status
         request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
         targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
 
@@ -47,6 +56,10 @@ async def test_deploy_to_cv(
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
             display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
         targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
+
+    -   description: Wait for Workspace to become ready (PENDING)
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
 
     -   description: Fetch device status
         request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
@@ -69,6 +82,21 @@ async def test_deploy_to_cv(
             'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
         targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
 
+    -   description: Fetch Configlet assignments
+        request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
+            path=RepeatedString(values=['configletAssignmentRoots'])), time=None)'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/218b79449463543915f8e63e66bdbbbd249333d3.json'
+
+    -   description: Fetch Configlet assignments
+        request: 'InputsConfigStreamRequest(partial_eq_filter=InputsConfig(key=InputsKey(studio_id='studio-static-configlet',
+            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', path=RepeatedString(values=['configletAssignmentRoots'])), remove=True), time=None)'
+        targeted_file: 'arista.studio.v1.InputsConfigService/GetAll/www.cv-prod-us-central1-c.arista.io/1fbe2ebb45ada87974e6a6228efcce717950d89d.json'
+
+    -   description: Fetch Configlet assignments
+        request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='', path=RepeatedString(values=['configletAssignmentRoots'])),
+            time=None)'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/b45e9b96ea9c215914828995f6c62354ae80296f.json'
+
     -   description: Fetch configlets assignments
         request: Too long. Please consult JSON file for details.
         targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/15b2c867c1abf9b0d425ca76fa4327294c18c376.json'
@@ -81,6 +109,12 @@ async def test_deploy_to_cv(
     -   description: Fetch build results
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Fetch Workspace build results
+        request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
+            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78bf781229'))], time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
+            f451562f4f8c0dc37965a23121bb11dd6efc0f6a.json'
 
     -   description: Submit Workspace (UNFORCED use case)
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
@@ -97,7 +131,7 @@ async def test_deploy_to_cv(
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
     """
     with (
-        caplog.at_level(INFO),
+        caplog.at_level(DEBUG),
         does_not_raise(),
         patch(
             "pyavd._cv.client.workspace.uuid4",
@@ -112,6 +146,7 @@ async def test_deploy_to_cv(
         temp_configlet_file.write("alias test test")
         temp_configlet_file.flush()
 
+        device = next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"])))
         result = await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="",
@@ -125,15 +160,18 @@ async def test_deploy_to_cv(
                 proxy_password=None,
             ),
             workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
+                avd_workspace=AvdWorkspace(
+                    name=MOCKED_WORKSPACE_NAME,
+                    description=MOCKED_WORKSPACE_DESCRIPTION,
+                    id=MOCKED_WORKSPACE_ID,
+                    requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                    force=workspace_force_submission,
+                )
             ),
-            configs=[
-                CVEosConfig(
-                    file=temp_configlet_file.name, device=next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"]))), configlet_name="TEST_CONFIGLET_NAME"
+            device_deployments=[
+                CVDeviceDeployment(
+                    device=device,
+                    eos_config=CVEosConfig(file=temp_configlet_file.name, device=device, configlet_name="TEST_CONFIGLET_NAME"),
                 )
             ],
         )
@@ -154,3 +192,80 @@ async def test_deploy_to_cv(
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("grpc_channel_configuration"),
+    [
+        pytest.param(CVGRPCChannelConfiguration(), id="KEEPALIVES_DISABLED_DEFAULTS"),
+        pytest.param(CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True)), id="KEEPALIVES_ENABLED_DEFAULTS"),
+        pytest.param(
+            CVGRPCChannelConfiguration(
+                grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+            ),
+            id="KEEPALIVES_ENABLED_CUSTOM",
+        ),
+    ],
+)
+async def test_deploy_to_cv_grpc_channel_configuration(
+    grpc_channel_configuration: CVGRPCChannelConfiguration,
+) -> None:
+    """Tests that deploy_to_cv passes cloudvision.grpc_channel_configuration to CVClient unchanged."""
+    mock_cv_client = AsyncMock()
+
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                grpc_channel_configuration=grpc_channel_configuration,
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert kwargs.get("grpc_channel_configuration") is grpc_channel_configuration
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("deploy_future", "expected_use_system_certs"),
+    [
+        pytest.param(CVDeployFuture(), False, id="DEPLOY_FUTURE_DEFAULTS"),
+        pytest.param(CVDeployFuture(use_system_certs=False), False, id="USE_SYSTEM_CERTS_FALSE_EXPLICIT"),
+        pytest.param(CVDeployFuture(use_system_certs=True), True, id="USE_SYSTEM_CERTS_TRUE"),
+    ],
+)
+async def test_deploy_to_cv_deploy_future_use_system_certs(
+    deploy_future: CVDeployFuture,
+    expected_use_system_certs: bool,
+) -> None:
+    """Tests that `cloudvision.deploy_future.use_system_certs` is unpacked and passed to `CVClient(use_system_certs=...)`."""
+    mock_cv_client = AsyncMock()
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                deploy_future=deploy_future,
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert kwargs.get("use_system_certs") == expected_use_system_certs

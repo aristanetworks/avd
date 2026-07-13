@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import warnings
 from importlib import import_module
@@ -19,7 +20,7 @@ from ansible.utils.collection_loader._collection_finder import _get_collection_m
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 if TYPE_CHECKING:
     # Relying on packaging installed by ansible
@@ -40,6 +41,7 @@ DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
 # TODO: Consider moving the following helpers inside the plugin class as methods to use `self.logger`.
@@ -320,7 +322,27 @@ def _get_collection_version(collection_path: str) -> str:
         with manifest_file.open("rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    return metadata["version"]
+    version = metadata["version"]
+    if not isinstance(version, str) or not COLLECTION_VERSION_PATTERN.fullmatch(version):
+        msg = f"Invalid collection version found in collection metadata: {version}"
+        raise ValueError(msg)
+
+    return version
+
+
+def _get_git_command_output(command: list[str], collection_path: str) -> str | None:
+    """Return the output of a git command or None if git is unavailable or the command failed."""
+    try:
+        with Popen(command, stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S603
+            output, err = process.communicate()
+    except FileNotFoundError:
+        LOGGER.debug("Could not find 'git' executable, returning collection version")
+        return None
+
+    if process.returncode or err:
+        return None
+
+    return output.decode("UTF-8").strip()
 
 
 def _get_running_collection_version(running_collection_name: str, result: dict[str, Any]) -> None:
@@ -328,21 +350,13 @@ def _get_running_collection_version(running_collection_name: str, result: dict[s
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
-    try:
-        # Try to detect a git tag
-        # Using subprocess for now
-        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S607
-            output, err = process.communicate()
-            if err:
-                # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
-                # so only the latest tag is being returned
-                LOGGER.debug("Not a git repository")
-            else:
-                LOGGER.debug("This is a git repository, overwriting version with 'git describe --tags output'")
-                version = output.decode("UTF-8").strip()
-    except FileNotFoundError:
-        # Handle the case where `git` is not installed or not in the PATH
-        LOGGER.debug("Could not find 'git' executable, returning collection version")
+    if Path(collection_path, "MANIFEST.json").exists():
+        LOGGER.debug("Published collection detected, returning collection version")
+    elif not RUNNING_FROM_SOURCE:
+        LOGGER.debug("AVD is not running from source, returning collection version")
+    elif git_version := _get_git_command_output(["git", "describe", "--tags"], collection_path):
+        LOGGER.debug("Overwriting version with 'git describe --tags output'")
+        version = git_version
 
     result["collection"] = {
         "name": running_collection_name,
@@ -379,8 +393,8 @@ def check_running_from_source() -> bool:
     return schemas_recompiled or templates_recompiled
 
 
-class ActionModule(AvdActionPlugin):
-    _logging_config = AvdLoggingConfig(add_role_context=True)
+class ActionModule(AVDActionPlugin):
+    _logging_config = AVDLoggingConfig(add_role_context=True)
 
     def main(self, task_vars: dict[str, Any]) -> None:
         if not HAS_PACKAGING:

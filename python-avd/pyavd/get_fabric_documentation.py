@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
 from pyavd._utils import get
@@ -205,6 +206,23 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
+    verified_topology_links: list[dict] = [
+        topology_link
+        for topology_link in fabric_documentation_facts.topology_links
+        # Skip connections where at least one of the contributing sources is not a non-empty string
+        if (
+            isinstance(topology_link["node"], str)
+            and topology_link["node"]
+            and isinstance(topology_link["node_interface"], str)
+            and "." not in topology_link["node_interface"]
+            and topology_link["node_interface"]
+            and isinstance(topology_link["peer"], str)
+            and topology_link["peer"]
+            and isinstance(topology_link["peer_interface"], str)
+            and "." not in topology_link["peer_interface"]
+            and topology_link["peer_interface"]
+        )
+    ]
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -214,7 +232,8 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         digital_twin_devices.append(
             {
                 device: ActNodeSettings(
-                    # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
+                    # node_type and version are enforced as non-empty strings during the generation of the metadata part of the structured_config
+                    # ip_addr may be None for cloudeos/veos node types
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
@@ -229,6 +248,25 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                         and digital_twin_node_type in ["cloudeos", "veos"]
                     )
                     else None,
+                    # Render Ethernet ports for veos node type devices (excluding subinterfaces).
+                    ports=tuple(
+                        sorted(
+                            (
+                                ethernet_interface["name"]
+                                for ethernet_interface in get(
+                                    fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator=".."
+                                )
+                                if "." not in ethernet_interface["name"]
+                            ),
+                            # Extract digits from the interface names and use them to sort interfaces using the natural order
+                            # Can not use natural_sort utility here directly due to the triggered CI deps import failure
+                            # TODO: Make natural_sort importable without breaking CI
+                            key=lambda interface_name: list(map(int, re_findall(r"\d+", interface_name))),
+                        )
+                    )
+                    or None
+                    if digital_twin_node_type == "veos"
+                    else None,
                 )
             }
         )
@@ -239,20 +277,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             ActLinkSettings(
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
             )
-            for topology_link in fabric_documentation_facts.topology_links
-            # Skip connections where at least one of the contributing sources is not a non-empty string
-            if (
-                isinstance(topology_link["node"], str)
-                and topology_link["node"]
-                and isinstance(topology_link["node_interface"], str)
-                and "." not in topology_link["node_interface"]
-                and topology_link["node_interface"]
-                and isinstance(topology_link["peer"], str)
-                and topology_link["peer"]
-                and isinstance(topology_link["peer_interface"], str)
-                and "." not in topology_link["peer_interface"]
-                and topology_link["peer_interface"]
-            )
+            for topology_link in verified_topology_links
         ),
         cloudeos=digital_twin_node_types["cloudeos"],
         cvp=digital_twin_node_types["cvp"],

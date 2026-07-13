@@ -54,9 +54,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -113,10 +113,10 @@ ip domain lookup vrf MGMT source-interface Management1
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| pool.ntp.org | - | - | - | - | - | - | - | - |
-| time.google.com | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| pool.ntp.org | - | - | - | - | - | - | - | - | - |
+| time.google.com | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -131,9 +131,9 @@ ntp server vrf MGMT time.google.com prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -416,7 +416,7 @@ interface Port-Channel47
 
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -431,7 +431,7 @@ interface Port-Channel47
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ip address 192.168.0.1/31
 ```

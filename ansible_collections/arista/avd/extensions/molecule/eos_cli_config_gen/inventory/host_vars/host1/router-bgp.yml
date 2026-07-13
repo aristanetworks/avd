@@ -3,6 +3,14 @@ router_bgp:
   as: 65101
   router_id: 192.168.255.3
   as_notation: asdot
+  route_distinguisher:
+    assignment_auto:
+      range:
+        start: 2
+        end: 45
+      address_families:
+        - l3-vrf
+        - l2-evpn
   updates:
     wait_for_convergence: true
     wait_install: true
@@ -42,6 +50,11 @@ router_bgp:
       receive: true
       send: ecmp
       send_limit: 30
+    labeled_unicast:
+      rib:
+        ip:
+          enabled: true
+          route_map: RM-rib1
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
@@ -505,6 +518,9 @@ router_bgp:
       - prefix: 172.16.0.0/12
       - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
+        rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
+      - prefix: 1.1.1.0/24 # GH Issue 6500: Validate RCF config
+        rcf: RCF-TEST()
     bgp:
       redistribute_internal: false
       additional_paths:
@@ -666,6 +682,9 @@ router_bgp:
       - prefix: 2001:db8:100::/40
       - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
+        rcf: RCF-IPV6-TEST() # GH Issue 6500: Validate RM takes precedence
+      - prefix: 2001:db8:300::/40 # GH Issue 6500: Validate RCF config
+        rcf: RCF-IPV6-TEST()
     bgp:
       redistribute_internal: true
       additional_paths:
@@ -699,8 +718,26 @@ router_bgp:
           send: ecmp
           send_limit: 20
           prefix_list: PL2
+        default_originate:
+          enabled: true
+          route_map: RM-FOO
+          always: true
       - name: FOOBAR
         activate: false
+      - name: FOOBAR1
+        activate: true
+        default_originate:
+          enabled: true
+      - name: FOOBAR2
+        activate: true
+        default_originate:
+          enabled: true
+          route_map: RM-FOO
+      - name: FOOBAR3
+        activate: true
+        default_originate:
+          enabled: true
+          always: true
     neighbors:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
@@ -709,6 +746,10 @@ router_bgp:
         route_map_out: Address_Family_IPV6_Out
         peer_tag_in: PEER_TAG_IN_IPV6
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
+        default_originate:
+          enabled: true
+          route_map: RM-FOO-MATCH3
+          always: true
         additional_paths:
           receive: true
           send: ecmp
@@ -719,14 +760,22 @@ router_bgp:
           send: any
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
+        default_originate:
+          enabled: true
+          always: true
       - ip_address: 2001:db8::21
         activate: false
         additional_paths:
           send: disabled
+        default_originate:
+          enabled: true
       - ip_address: 2001:db8::22
         additional_paths:
           send: limit
           send_limit: 5
+        default_originate:
+          enabled: true
+          route_map: RM-FOO-MATCH3
     redistribute:
       ospfv3:
         enabled: true
@@ -860,7 +909,10 @@ router_bgp:
     networks:
       - prefix: 203.0.113.0/25
         route_map: RM-TEST
+        rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 203.0.113.128/25
+      - prefix: 205.0.0.0/24
+        rcf: RCF-TEST() # GH Issue 6500: Validate RCF config
     tunnel_source_protocols:
       - protocol: isis segment-routing
       - protocol: ldp
@@ -1140,6 +1192,8 @@ router_bgp:
     domain_identifier: "65000:0"
     route:
       import_match_failure_action: discard
+    next_hop:
+      resolution_disabled: true
     peer_groups:
       - name: MPLS-IBGP-PEERS
         activate: true
@@ -1660,6 +1714,9 @@ router_bgp:
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
+            rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
+          - prefix: 1.2.3.0/24 # GH Issue 6500: Validate RCF config
+            rcf: RCF-TEST()
         redistribute:
           user:
             enabled: true
@@ -1741,6 +1798,11 @@ router_bgp:
             rcf_out: VRF_AFIPV6_RCF_OUT()
         networks:
           - prefix: aa::/64
+          - prefix: 2001:db9:200::/40 # GH Issue 6500: Validate RM takes precedence
+            route_map: RM-IPV6-TEST
+            rcf: RCF-IPV6-TEST()
+          - prefix: 2001:db9:300::/40 # GH Issue 6500: Validate RCF config
+            rcf: RCF-IPV6-TEST()
         redistribute:
           ospfv3:
             match_external:
@@ -2093,6 +2155,9 @@ router_bgp:
             enabled: false
     - name: Tenant_A
       rd: "10.50.64.15:30001"
+      rd_evpn_domain:
+        domain: remote
+        rd: "10.50.64.15:30002"
       route_targets:
         import:
           - address_family: evpn
@@ -2121,6 +2186,20 @@ router_bgp:
             rcf: RT_IMPORT_AF_RCF()
             route_map: RT_IMPORT_AF_RM
             vrf_route_filter_rcf: RT_IMPORT_AF_RCF_FILTER()
+        import_evpn_domains:
+          - route_target: 2:30005
+            domain: remote
+          - route_target: 2:30006
+            domain: all
+          - route_target: 2:30007
+            domain: all
+        export_evpn_domains:
+          - route_target: 2:40006
+            domain: remote
+          - route_target: 2:40005
+            domain: remote
+          - route_target: 2:40002
+            domain: all
       redistribute:
         ospf:
           match_external:
@@ -2294,6 +2373,7 @@ router_bgp:
     - name: TENANT_A_PROJECT03
       router_id: 192.168.255.3
       rd: "192.168.255.3:13"
+      no_graceful_restart: true
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:

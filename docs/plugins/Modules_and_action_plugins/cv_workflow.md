@@ -37,6 +37,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_username</samp> | str | False | None | - | Username to use if `cv_token` is missing. Not supported for CVaaS. |
 | <samp>cv_password</samp> | str | False | None | - | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True | - | Verifies CloudVison server certificates. |
+| <samp>cv_deploy_future</samp> | dict | optional | None | - | Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;use_system_certs</samp> | bool | optional | False | - | Use system certificates instead of Python&#39;s bundled certificate store.<br>Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables. |
 | <samp>proxy_host</samp> | str | False | None | - | FQDN/IP of the HTTP CONNECT proxy server. |
 | <samp>proxy_port</samp> | int | optional | 8080 | - | TCP port of the HTTP CONNECT proxy server. |
 | <samp>proxy_username</samp> | str | False | None | - | Authentication username for the HTTP CONNECT proxy server. |
@@ -50,14 +52,19 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>strict_system_mac_address</samp> | bool | optional | False | - | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} | - | Python String Template to use for creating the configlet name for each device configuration. |
 | <samp>static_config_manifest</samp> | dict | optional | None | - | Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;preserve_existing_containers</samp> | bool | optional | False | - | Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.<br>This enables partial manifests managing separate root-level branches.<br>Existing manifest-managed container order is preserved, and newly declared containers are appended.<br>Manually created root containers are always preserved and ordered after the manifest-managed containers. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;configlets</samp> | list | optional | None | - | A list of dictionaries defining configlets to be pushed to the Configlet Library.<br><br>Each dictionary in the list must follow this data model:<br>- **name** (`str`, required): Unique name for the configlet.<br>- **file** (`str`, required): Filesystem path to the text file containing the configlet body. Relative to the current working directory. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None | - | A list of dictionaries defining the root containers in the hierarchy.<br><br>Each dictionary in the list must follow this data model:<br>- **name** (`str`, required): Name for the container. Sibling containers must have unique names.<br>- **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.<br>- **description** (`str`, optional): An optional description for the container.<br>- **match_policy** (`str`, optional, default: &#34;match_all&#34;): The match policy to determine how devices with a matching tag inherit<br>    a child container configlets. Valid choices are `match_all` or `match_first`.<br>- **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.<br>- **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,<br>    allowing for a full hierarchy. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None | - | A list of dictionaries defining the root containers in the hierarchy.<br><br>Each dictionary in the list must follow this data model:<br>- **name** (`str`, required): Name for the container. Sibling containers must have unique names.<br>- **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.<br>- **description** (`str`, optional): An optional description for the container.<br>- **match_policy** (`str`, optional, default: &#34;match_all&#34;): The match policy to determine how devices with a matching tag inherit<br>    a child container configlets. Valid choices are `match_all` or `match_first`.<br>- **preserve_existing_sub_containers** (`bool`, optional, default: `false`): Preserve existing manifest-managed child containers under this container<br>    when they are not declared in the current manifest. This enables partial manifests managing sibling branches under a shared parent.<br>    Existing manifest-managed child container order is preserved, and newly declared child containers are appended.<br>- **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.<br>- **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,<br>    allowing for a full hierarchy. |
 | <samp>workspace</samp> | dict | optional | None | - | CloudVision Workspace to create or use for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None | - | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None | - | Optional description to use for the created Workspace. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp> | str | optional | None | - | Optional ID to use for the created Workspace. If there is already a workspace with the same ID, it must be in the &#39;pending&#39; state. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | built | Valid values:<br>- <code>pending</code><br>- <code>built</code><br>- <code>submitted</code><br>- <code>abandoned</code><br>- <code>deleted</code> | The requested state for the Workspace.<br><br>- `pending`: Leave the Workspace in pending state.<br>- `built`: Build the Workspace but do not submit.<br>- `submitted` (default): Build and submit the Workspace.<br>- `abandoned`: Build and then abandon the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision.<br>- `deleted`: Build, abort and then delete the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid &#34;clutter&#34;. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;force</samp> | bool | optional | False | - | Force submit the workspace even if some devices are not actively streaming to CloudVision. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;build_warnings</samp> | dict | optional | None | - | Configuration for Workspace build warnings handling. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp> | bool | optional | True | - | Fetch and expose Workspace build warnings. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppress_patterns</samp> | list | optional | [] | - | Arbitrary list of regex patterns used with fullmatch to suppress EOS CLI warnings. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppress_portfast</samp> | bool | optional | False | - | Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports. |
 | <samp>change_control</samp> | dict | optional | None | - | CloudVision Change Control to create for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None | - | Optional name to use for the created Change Control. By default the name generated by CloudVision will be kept. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None | - | Optional description to use for the created Change Control. |
@@ -66,11 +73,14 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 | - | Time to wait for Workspace build before failing. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 | - | Time to wait for Change Control creation before failing. |
 | <samp>return_details</samp> | bool | optional | False | - | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>preview_features</samp> | dict | optional | None | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;read_from_validated_inputs</samp> | bool | optional | False | - | When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.<br>This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files. |
+| <samp>tmp_dir</samp> | str | False | None | - | Path to the AVD temporary directory containing validated input files.<br>Must be the same path as used for the `arista.avd.validate_inputs` plugin.<br>Required when `preview_features.read_from_validated_inputs` is `true`. |
 
 ## Notes
 
 - When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
-  `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+  `cv_servers: [www.cv-prod-euwest-2.arista.io]`
   To see the full list of regional URLs, please visit the
   [cv_deploy](../../../ansible_collections/arista/avd/roles/cv_deploy/README.md#overview)
   role documentation.
@@ -91,9 +101,11 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "www.arista.io" ]
+        cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # cv_deploy_future:
+        #   use_system_certs: false
         # proxy_host: "proxy.local.domain"
         # proxy_port: "8080"
         # proxy_username: "avd_user"
@@ -129,6 +141,10 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         #   id: <uuid or similar>
           requested_state: submitted
           force: true
+          build_warnings:
+            # enabled: true
+            suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
+            # suppress_portfast: false
         change_control:
         #   name:
         #   description:

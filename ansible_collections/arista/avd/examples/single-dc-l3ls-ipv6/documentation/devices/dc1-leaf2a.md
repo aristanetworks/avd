@@ -66,9 +66,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -123,9 +123,9 @@ ip domain lookup vrf MGMT source-interface Management1
 
 NTP servers VRF: MGMT
 
-| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Source Address | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | -------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -139,9 +139,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -354,10 +354,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -366,14 +366,14 @@ vlan 4094
 interface Ethernet1
    description P2P_dc1-spine1_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:4::2/64
 !
 interface Ethernet2
    description P2P_dc1-spine2_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:5::2/64
 !
@@ -456,8 +456,8 @@ interface Port-Channel8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:db8:1:3::1/64 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 2001:db8:5:3::1/64 |
 | Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |
@@ -509,11 +509,11 @@ interface Loopback12
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
 | Vlan31 | VRF12_VLAN31 | VRF12 | - | False |
 | Vlan32 | VRF12_VLAN32 | VRF12 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 9214 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 9214 | False |
+| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -533,16 +533,16 @@ interface Loopback12
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - |
-| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - |
-| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - |
-| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -590,34 +590,34 @@ interface Vlan32
 interface Vlan3009
    description MLAG_L3_VRF_VRF10
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF10
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan3010
    description MLAG_L3_VRF_VRF11
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF11
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan3011
    description MLAG_L3_VRF_VRF12
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF12
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan4093
    description MLAG_L3
    no shutdown
-   mtu 1500
+   mtu 9214
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ipv6 address 2001:db8:3:2::1/64
 ```
