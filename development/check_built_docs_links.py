@@ -27,8 +27,6 @@ LINK_ATTRS = {
     "track": ("src",),
     "video": ("poster", "src"),
 }
-IGNORED_SCHEMES = {"data", "http", "https", "javascript", "mailto", "tel"}
-
 
 @dataclass(frozen=True)
 class Link:
@@ -96,7 +94,7 @@ def srcset_urls(srcset: str) -> list[str]:
 
 def is_internal_url(url: str) -> bool:
     parsed = urlsplit(url)
-    return not parsed.scheme and not parsed.netloc and parsed.scheme not in IGNORED_SCHEMES
+    return not parsed.scheme and not parsed.netloc
 
 
 def resolve_target(site_dir: Path, source: Path, target: str) -> tuple[Path, str]:
