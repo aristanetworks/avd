@@ -328,7 +328,7 @@ spine:
 
 #### ACT OS Version Configuration
 
-Each ACT node type has a default OS version that will be used if not explicitly configured (please see [AT Default Values](#act-default-values) for details).
+Each ACT node type has a default OS version that will be used if not explicitly configured (please see [ACT Default Values](#act-default-values) for details).
 
 You can override the OS version at different levels (shown below from lowest to highest priority):
 
