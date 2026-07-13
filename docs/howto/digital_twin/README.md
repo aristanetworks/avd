@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Configuring Digital Twin
+# Configuring ACT Digital Twin
 
 !!! warning "PREVIEW"
 
