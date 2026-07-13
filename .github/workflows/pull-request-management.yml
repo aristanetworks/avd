@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+      - uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4.0.2
         id: filter
         with:
           filters: |
@@ -78,6 +78,9 @@ jobs:
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
+              - 'ansible_collections/arista/avd/plugins/action/eos_cli_config_gen.py'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/*'
+              - 'ansible_collections/arista/avd/plugins/plugin_utils/utils/avd_action_plugin/**/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
@@ -118,7 +121,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.12
@@ -146,7 +149,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Install pyavd and Ansible requirements
@@ -178,7 +181,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
@@ -229,7 +232,7 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
@@ -328,7 +331,7 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
@@ -363,7 +366,7 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Use Python 3.10 for minimum requirements
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.10
@@ -424,7 +427,7 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
@@ -474,7 +477,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             ${{ matrix.python_version }}
@@ -502,7 +505,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.12
@@ -537,7 +540,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           # Testing 3.10 to ensure ansible-core < 2.19 still works.
           python-version: |
@@ -567,7 +570,7 @@ jobs:
     name: Build Ansible collection
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.12
@@ -595,7 +598,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_collection]
     steps:
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.11
@@ -637,7 +640,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: |
             3.10
@@ -706,7 +709,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
@@ -735,7 +738,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python 3.11
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.11"
       - name: Install coverage
