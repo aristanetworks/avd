@@ -52,11 +52,14 @@ keys:
             default: false
       suspended_vlans:
         type: list
+        description: List of VLANs to create in a suspended state.
         primary_key: id
         items:
           type: dict
           keys:
             id:
               type: int
+              min: 1
+              max: 4094
             name:
               type: str

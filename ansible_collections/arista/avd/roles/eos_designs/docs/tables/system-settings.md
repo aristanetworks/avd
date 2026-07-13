@@ -144,8 +144,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;information_option</samp>](## "general_settings.dhcp_relay.information_option") | Boolean |  | `False` |  | Enables the insertion of DHCP Relay Agent Information (Option 82). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_requests_disabled</samp>](## "general_settings.dhcp_relay.tunnel_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets received over VXLAN tunnels.<br>This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peerlink_requests_disabled</samp>](## "general_settings.dhcp_relay.mlag_peerlink_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets arriving via the MLAG peer-link.<br>This will only be configured on VXLAN VTEPs which are also MLAG devices. |
-    | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | List of VLANs to create in a suspended state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
@@ -411,8 +411,10 @@
         # Blocks DHCP relay for packets arriving via the MLAG peer-link.
         # This will only be configured on VXLAN VTEPs which are also MLAG devices.
         mlag_peerlink_requests_disabled: <bool; default=False>
+
+      # List of VLANs to create in a suspended state.
       suspended_vlans:
-        - id: <int; required; unique>
+        - id: <int; 1-4094; required; unique>
           name: <str>
     hardware_counters:
 

@@ -21928,7 +21928,12 @@ class EosDesigns(EosDesignsRootModel):
         dhcp_relay: DhcpRelay
         """Subclass of AvdModel."""
         suspended_vlans: SuspendedVlans
-        """Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary key is `id` (`int`)."""
+        """
+        List of VLANs to create in a suspended state.
+
+        Subclass of AvdIndexedList with `SuspendedVlansItem`
+        items. Primary key is `id` (`int`).
+        """
 
         if TYPE_CHECKING:
 
@@ -21952,7 +21957,11 @@ class EosDesigns(EosDesignsRootModel):
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
                     dhcp_relay: Subclass of AvdModel.
-                    suspended_vlans: Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary key is `id` (`int`).
+                    suspended_vlans:
+                       List of VLANs to create in a suspended state.
+
+                       Subclass of AvdIndexedList with `SuspendedVlansItem`
+                       items. Primary key is `id` (`int`).
 
                 """
 

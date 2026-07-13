@@ -27,3 +27,5 @@ general_settings:
       name: unused
     - id: 101
       name: suspend
+    # Test with no name
+    - id: 10

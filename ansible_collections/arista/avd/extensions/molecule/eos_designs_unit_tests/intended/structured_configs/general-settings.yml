@@ -37,6 +37,8 @@ vlans:
 - id: 101
   name: suspend
   state: suspend
+- id: 10
+  state: suspend
 vrfs:
 - name: MGMT
   ip_routing: false
