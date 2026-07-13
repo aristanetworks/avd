@@ -184,6 +184,18 @@ class EthernetInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_out, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_out = acl.name
             self._set_ipv4_acl(acl)
+        self._update_ethernet_interface_ospf(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant)
+        self._update_ethernet_interface_pim(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant)
+
+    def _update_ethernet_interface_ospf(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem,
+        *,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """Set the OSPF configuration on an EthernetInterface from the matching l3_interface entry."""
         if l3_interface.ospf.enabled and vrf.ospf.enabled:
             interface._update(
                 ospf_area=l3_interface.ospf.area,
@@ -191,6 +203,16 @@ class EthernetInterfacesMixin(Protocol):
                 ospf_cost=l3_interface.ospf.cost,
             )
             self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
+
+    def _update_ethernet_interface_pim(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem,
+        *,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """Set the PIM configuration on an EthernetInterface from the matching l3_interface entry."""
         if l3_interface.pim.enabled:
             if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
                 if not self.shared_utils.evpn_multicast:
