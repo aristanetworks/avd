@@ -39,6 +39,9 @@ no schedule config prepend-hostname-logfile
 {%             if job.logging_verbose is arista.avd.defined(true) %}
 {%                 set schedule_cli = schedule_cli ~ " logging verbose" %}
 {%             endif %}
+{%             if job.compression is arista.avd.defined %}
+{%                 set schedule_cli = schedule_cli ~ " compression " ~ job.compression %}
+{%             endif %}
 {%             if job.loglocation is arista.avd.defined %}
 {%                 set schedule_cli = schedule_cli ~ " loglocation " ~ job.loglocation %}
 {%             endif %}

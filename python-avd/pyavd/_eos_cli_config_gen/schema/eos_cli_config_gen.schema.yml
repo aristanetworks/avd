@@ -24794,6 +24794,13 @@ keys:
 
                 Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes),
                 g (gigabytes).'
+            compression:
+              type: str
+              valid_values:
+              - gzip
+              - bzip2
+              - xz
+              description: Compression algorithm for log files.
             command:
               type: str
               required: true

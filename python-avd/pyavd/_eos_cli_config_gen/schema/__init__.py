@@ -67732,6 +67732,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Compression: TypeAlias = Literal["gzip", "bzip2", "xz"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "interval": {"type": int},
@@ -67741,6 +67742,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "logging_verbose": {"type": bool},
                 "loglocation": {"type": str},
                 "max_total_size": {"type": str},
+                "compression": {"type": str},
                 "command": {"type": str},
             }
             name: str
@@ -67771,6 +67773,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Supported suffixes: b (bytes, default), k
             (kilobytes), m (megabytes), g (gigabytes).
             """
+            compression: Compression | None
+            """Compression algorithm for log files."""
             command: str
             """EOS CLI command to execute."""
 
@@ -67787,6 +67791,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     logging_verbose: bool | None | UndefinedType = Undefined,
                     loglocation: str | None | UndefinedType = Undefined,
                     max_total_size: str | None | UndefinedType = Undefined,
+                    compression: Compression | None | UndefinedType = Undefined,
                     command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -67813,6 +67818,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Maximum total size of log files (e.g. 110m, 1g).
                            Supported suffixes: b (bytes, default), k
                            (kilobytes), m (megabytes), g (gigabytes).
+                        compression: Compression algorithm for log files.
                         command: EOS CLI command to execute.
 
                     """

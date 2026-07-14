@@ -486,9 +486,9 @@ vrf instance FUTURE_IPV4
 
 ### Schedule Jobs Summary
 
-| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
-| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
-| interval_basic | interval 10 minutes | show version | 1 | 5 | - | - | - |
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| interval_basic | interval 10 minutes | show version | 1 | 5 | - | - | - | - |
 
 ### Schedule Device Configuration
 

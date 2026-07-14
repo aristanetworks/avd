@@ -12,6 +12,7 @@ schedule:
       interval: 60
       timeout: 30
       max_log_files: 10
+      compression: gzip
       command: show logging
     # at <time> <date> once  (date in mm/dd/yyyy format)
     - name: at_date_once
@@ -21,6 +22,7 @@ schedule:
         once: true
       timeout: 3
       max_log_files: 3
+      compression: bzip2
       command: show tech-support
     # at <time> <date> once
     - name: at_time_once
@@ -29,6 +31,7 @@ schedule:
         date: "2028-01-15"
         once: true
       max_log_files: 5
+      compression: xz
       command: show ip route
     # standalone interval with all optional fields
     - name: interval_full_options

@@ -622,11 +622,10 @@ stun
 
 ### Schedule Jobs Summary
 
-| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size |
-| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- |
-| at_interval_nodate | at 10:00:00 2028-03-10 interval 60 minutes | show clock | 1 | - | - | - | - |
-| at_time_only | at 12:00:00 2028-06-15 | show interfaces | 1 | - | - | - | - |
-| no_at | - | show interfaces | 1 | - | - | - | - |
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| at_interval_nodate | at 10:00:00 2028-03-10 interval 60 minutes | show clock | 1 | - | - | - | - | - |
+| at_time_only | at 12:00:00 2028-06-15 | show interfaces | 1 | - | - | - | - | - |
 
 ### Schedule Device Configuration
 

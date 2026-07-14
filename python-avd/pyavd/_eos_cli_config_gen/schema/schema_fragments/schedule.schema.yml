@@ -89,6 +89,10 @@ keys:
               description: |-
                 Maximum total size of log files (e.g. 110m, 1g).
                 Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes).
+            compression:
+              type: str
+              valid_values: [gzip, bzip2, xz]
+              description: Compression algorithm for log files.
             command:
               type: str
               required: true

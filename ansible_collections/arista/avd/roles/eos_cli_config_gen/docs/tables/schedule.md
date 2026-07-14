@@ -23,6 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging_verbose</samp>](## "schedule.jobs.[].logging_verbose") | Boolean |  |  |  | Enable verbose logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loglocation</samp>](## "schedule.jobs.[].loglocation") | String |  |  |  | Log file location path (e.g. flash:/schedule/logs). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_total_size</samp>](## "schedule.jobs.[].max_total_size") | String |  |  |  | Maximum total size of log files (e.g. 110m, 1g).<br>Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compression</samp>](## "schedule.jobs.[].compression") | String |  |  | Valid Values:<br>- <code>gzip</code><br>- <code>bzip2</code><br>- <code>xz</code> | Compression algorithm for log files. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command</samp>](## "schedule.jobs.[].command") | String | Required |  |  | EOS CLI command to execute. |
 
 === "YAML"
@@ -78,6 +79,9 @@
           # Maximum total size of log files (e.g. 110m, 1g).
           # Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes), g (gigabytes).
           max_total_size: <str>
+
+          # Compression algorithm for log files.
+          compression: <str; "gzip" | "bzip2" | "xz">
 
           # EOS CLI command to execute.
           command: <str; required>
