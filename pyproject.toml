@@ -30,7 +30,7 @@ dev = [
     "yamllint>=1.38.0",
 ]
 coverage = [
-    "coverage[toml]==7.14.3",
+    "coverage[toml]==7.15.0",
 ]
 doc = [
     "mkdocs<2",
