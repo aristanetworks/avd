@@ -2643,16 +2643,20 @@ keys:
       render_combined_separator_for_ipv6_hardware_and_unicast_routing:
         type: bool
         default: false
-        description: 'Render a single `!` separator for the combined IPv6 routing
-          block when any of these are rendered:
+        description: 'Available from AVD 6.4.0.
 
-          - `ipv6 unicast-routing`
+          Render a single ''!'' separator for the combined IPv6 routing block when
+          any of these are rendered:
 
-          - `ipv6 unicast-routing vrf <vrf_name>`
+          - ''ipv6 unicast-routing''
 
-          - `ipv6 hardware fib optimize prefixes profile <profile_name>`
+          - ''ipv6 unicast-routing vrf <vrf_name>''
 
-          When `false`, separators are handled by each individual section.'
+          - ''ipv6 hardware fib optimize prefixes profile <profile_name>''
+
+          When ''false'', separators are handled by each individual section.
+
+          When ''true'', it overrides ''always_render_ipv6_unicast_routing_vrfs_separator''.'
       new_ip_radius_cli_order:
         type: bool
         default: false
