@@ -13,10 +13,10 @@ This document outlines the steps and checklist for contributing to the `eos_cli_
 1. Prepare development environment.
 2. Create the schema.
 3. Develop Jinja2 templates (eos and documentation).
-4. Run pre-commit to build schema and templates
+4. Run prek to build schema and templates
 5. Validate with molecule tests.
 6. Update documentation as needed.
-7. Run pre-commit checks to ensure compliance.
+7. Run prek checks to ensure compliance.
 8. Review all changes before submission.
 9. Raise a PR to the Arista AVD GitHub repository.
 
@@ -82,11 +82,11 @@ When adding a top-level feature, add a new Jinja2 template following the naming 
     ```
 
     An empty `default_originate:` block must not trigger configuration generation. The template should check `default_originate.enabled` rather than just the presence of `default_originate`.
-12. Validate the template using j2lint tool, run `pre-commit run j2lint --all`.
+12. Validate the template using j2lint tool, run `prek run j2lint --all`.
 
-### Run pre-commit to build schemas and documentation
+### Run prek to build schemas and documentation
 
-Run `pre-commit run --all`, this will trigger recompiling the schemas and the templates you have created.
+Run `prek run --all`, this will trigger recompiling the schemas and the templates you have created.
 
 !!! Note
 
@@ -94,8 +94,8 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
     However, if you are using pyavd or need to manually recompile the schemas and templates for any other reason, you can run the following commands:
 
-    `pre-commit run schemas --all` to regenerate the eos_cli_config_gen schema.
-    `pre-commit run templates --all` to regenerate the templates.
+    `prek run schemas --all` to regenerate the eos_cli_config_gen schema.
+    `prek run templates --all` to regenerate the templates.
 
     These commands should be executed whenever the schema or templates are modified, even if only a description is updated.
 
@@ -124,9 +124,9 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 1. If the proposed feature requires any changes to the documentation, update the documentation accordingly.
 2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md` file.
 
-### Run Pre-commit Checks
+### Run Prek Checks
 
-Run all pre-commit checks `pre-commit run --all` to ensure that all files added or modified are correctly following the coding standards and formatting rules. Running these checks also ensures that the changes pass CI checks.
+Run all prek checks `prek run --all` to ensure that all files added or modified are correctly following the coding standards and formatting rules. Running these checks also ensures that the changes pass CI checks.
 
 !!! Note
 

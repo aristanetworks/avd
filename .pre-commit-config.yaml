@@ -1,39 +1,9 @@
 ---
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
-ci:
-  autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  autofix_prs: false
-  # Keep pre-commit.ci for autoupdate only. Run hooks through autofix.ci.
-  skip:
-    - trailing-whitespace
-    - end-of-file-fixer
-    - check-added-large-files
-    - check-merge-conflict
-    - insert-license
-    - ruff
-    - ruff-format
-    - pyright
-    - pylint
-    - yamllint
-    - j2lint
-    - codespell
-    - zizmor
-    - pdm-export
-    - docs-plugin-modules
-    - docs-plugin-filter
-    - docs-plugin-lookup
-    - docs-plugin-test
-    - docs-plugin-vars
-    - schemas
-    - check-schema-tables-in-docs
-    - sort-hosts-yml
-    - templates
-    - markdownlint-cli2
+# See https://prek.j178.dev/ for more information.
+# This configuration is executed with prek.
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+  - repo: builtin
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.

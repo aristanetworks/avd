@@ -90,7 +90,7 @@ When you update a template in `eos_cli_config_gen`, you should report a test cas
 git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
 ```
 
-> If you have `pre-commit` enabled, use `--no-verify` trigger to avoid any content change in your commit
+> If you have `prek` enabled, use `--no-verify` trigger to avoid any content change in your commit
 
 #### If you are updating `eos_designs`
 
