@@ -219,13 +219,11 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     default_kind = "arista_ceos"
 
     # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
-    unique_mgmt_networks = set(
-        [
-            ip_network(mgmt_ip, strict=False)
-            for device in sorted(fabric_documentation_facts.avd_facts)
-            if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
-        ]
-    )
+    unique_mgmt_networks = {
+        ip_network(mgmt_ip, strict=False)
+        for device in sorted(fabric_documentation_facts.avd_facts)
+        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
+    }
 
     if len(unique_mgmt_networks) > 1:
         mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
