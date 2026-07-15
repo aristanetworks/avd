@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -82,6 +81,8 @@ class ActionModule(ActionBase):
         # Get task arguments and validate them
         _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
+
+
 class ActionModule(AVDActionPlugin):
     """Action Module for eos_designs_documentation."""
 

@@ -1904,7 +1904,6 @@ Produced artifacts (ACT Digital Twin):
 │           └── ...
 ```
 
-
 If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
 
 | Attribute | Description | Default value | Source of information |
