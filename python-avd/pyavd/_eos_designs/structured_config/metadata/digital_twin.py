@@ -88,4 +88,3 @@ class DigitalTwinMixin(Protocol):
                 return
             case "containerlab":
                 self.structured_config.metadata.digital_twin._update(environment=environment)
-                return
