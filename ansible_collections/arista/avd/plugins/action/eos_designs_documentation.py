@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import fields, is_dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -61,26 +62,6 @@ def _normalize_yaml_data(data: Any) -> Any:
     if isinstance(data, tuple | list):
         return [_normalize_yaml_data(value) for value in data]
     return data
-
-
-class ActionModule(ActionBase):
-    tmp_dir: str
-
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        self._supports_check_mode = False
-
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
-
-        # Setup module logging
-        setup_module_logging(result)
-
-        # Get task arguments and validate them
-        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
-        validated_args = strip_empties_from_dict(validated_args)
 
 
 class ActionModule(AVDActionPlugin):
