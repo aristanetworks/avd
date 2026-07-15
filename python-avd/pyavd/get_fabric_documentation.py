@@ -209,7 +209,8 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
         )
         raise AristaAvdError(msg)
 
-    nodes = {device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(facts.mgmt_ip)) for device, facts in sorted_avd_facts}
+    mgmt_ips = [(device, cast(str, facts.mgmt_ip)) for device, facts in sorted_avd_facts]
+    nodes = {device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip)) for device, mgmt_ip in mgmt_ips}
 
     links = [
         ContainerlabLinkSettings(
@@ -224,8 +225,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     default_kind = "arista_ceos"
 
     # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
-    mgmt_ips = [facts.mgmt_ip for _, facts in sorted_avd_facts]
-    unique_mgmt_networks = {ip_network(mgmt_ip, strict=False) for mgmt_ip in mgmt_ips}
+    unique_mgmt_networks = {ip_network(mgmt_ip, strict=False) for _, mgmt_ip in mgmt_ips}
 
     if len(unique_mgmt_networks) > 1:
         mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
