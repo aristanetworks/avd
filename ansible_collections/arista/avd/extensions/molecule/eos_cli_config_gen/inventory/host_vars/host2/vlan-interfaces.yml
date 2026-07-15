@@ -21,3 +21,5 @@ vlan_interfaces:
           key_id: 2
     mpls:
       ip: false
+      ldp:
+        igp_sync: false
