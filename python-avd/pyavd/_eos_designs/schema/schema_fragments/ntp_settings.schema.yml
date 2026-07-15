@@ -38,6 +38,7 @@ keys:
         items:
           type: dict
           keys:
+            # TODO: 7.0 to make name a primary_key.
             name:
               type: str
               $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/name
