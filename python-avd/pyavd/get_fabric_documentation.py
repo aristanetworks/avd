@@ -199,12 +199,17 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     """
     from pyavd._errors import AristaAvdError  # noqa: PLC0415
 
-    nodes = {
-        device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip))
-        for device in sorted(fabric_documentation_facts.avd_facts)
-        # TODO: add some error messages later to fail with "unsupported" on no mgmt_ip or dhcp
-        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
-    }
+    sorted_avd_facts = sorted(fabric_documentation_facts.avd_facts.items())
+
+    unsupported_devices = [device for device, facts in sorted_avd_facts if not facts.mgmt_ip or facts.mgmt_ip == "dhcp"]
+    if unsupported_devices:
+        msg = (
+            "Containerlab Digital Twin is unsupported for nodes without a static management IPv4 address. "
+            f"Found missing or DHCP management IPv4 address for nodes: {', '.join(unsupported_devices)}."
+        )
+        raise AristaAvdError(msg)
+
+    nodes = {device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(facts.mgmt_ip)) for device, facts in sorted_avd_facts}
 
     links = [
         ContainerlabLinkSettings(
@@ -219,11 +224,8 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     default_kind = "arista_ceos"
 
     # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
-    unique_mgmt_networks = {
-        ip_network(mgmt_ip, strict=False)
-        for device in sorted(fabric_documentation_facts.avd_facts)
-        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
-    }
+    mgmt_ips = [facts.mgmt_ip for _, facts in sorted_avd_facts]
+    unique_mgmt_networks = {ip_network(mgmt_ip, strict=False) for mgmt_ip in mgmt_ips}
 
     if len(unique_mgmt_networks) > 1:
         mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
