@@ -480,6 +480,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dns-domain.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Environment
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/environment-fan-speed.md
+--8<--
+
 ### Hostname
 
 --8<--
@@ -550,6 +556,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-c
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-defaults.md
+--8<--
+
+### Management LDAP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-ldap.md
 --8<--
 
 ### Management security

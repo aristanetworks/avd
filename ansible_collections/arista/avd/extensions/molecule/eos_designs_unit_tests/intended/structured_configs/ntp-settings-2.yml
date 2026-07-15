@@ -15,7 +15,6 @@ ntp:
     vrf: INBAND_MGMT
   servers:
   - name: 10.10.10.1
-    preferred: true
   - name: 10.10.10.2
   vrf: INBAND_MGMT
 service_routing_protocols_model: multi-agent

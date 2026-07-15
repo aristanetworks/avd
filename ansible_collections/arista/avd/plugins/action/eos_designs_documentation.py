@@ -4,36 +4,33 @@
 from __future__ import annotations
 
 import json
-import logging
-from dataclasses import fields, is_dataclass
+from dataclasses import asdict
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
-from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_eos_designs_facts_path, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import YamlLoader, get_eos_designs_facts_path, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin
 
-PLUGIN_NAME = "arista.avd.eos_designs_documentation"
+if TYPE_CHECKING:
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+    from pyavd._utils import get, strip_empties_from_dict
+    from pyavd.get_fabric_documentation import get_fabric_documentation
+    from pyavd.j2filters import natural_sort
+
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils import get, strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
     from pyavd.j2filters import natural_sort
-except ImportError as e:
-    EosDesignsFacts = get = strip_empties_from_dict = get_fabric_documentation = natural_sort = RaiseOnUse(
-        AnsibleActionFail(
-            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
-            orig_exc=e,
-        ),
-    )
 
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
-LOGGER = logging.getLogger("ansible_collections.arista.avd")
-LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
+PLUGIN_NAME = "arista.avd.eos_designs_documentation"
 
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
@@ -85,15 +82,20 @@ class ActionModule(ActionBase):
         # Get task arguments and validate them
         _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
+class ActionModule(AVDActionPlugin):
+    """Action Module for eos_designs_documentation."""
 
-        # Converting to json and back to remove any AnsibeUnsafe types
-        validated_args = json.loads(json.dumps(validated_args))
+    tmp_dir: str
 
-        self.tmp_dir = validated_args.get("tmp_dir")
+    def main(self, task_vars: dict[str, Any]) -> None:
+        """Load facts and structured configs, and render fabric documentation artifacts."""
+        if not HAS_PYAVD:
+            msg = f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error."
+            raise ImportError(msg)
 
-        return self.main(validated_args, task_vars, result)
+        validated_args = self._validate_args()
+        self.tmp_dir = validated_args["tmp_dir"]
 
-    def main(self, validated_args: dict, task_vars: dict, result: dict) -> dict:
         avd_switch_facts = self.load_facts()
         device_list = list(avd_switch_facts.keys())
 
@@ -117,8 +119,11 @@ class ActionModule(ActionBase):
             toc=validated_args["toc"],
             digital_twin=validated_args["digital_twin"],
         )
+
+        self.result["changed"] = False
+
         if output.fabric_documentation:
-            result["changed"] = write_file(
+            self.result["changed"] = write_file(
                 content=output.fabric_documentation,
                 filename=validated_args["fabric_documentation_file"],
                 file_mode=validated_args["mode"],
@@ -129,7 +134,7 @@ class ActionModule(ActionBase):
                 filename=validated_args["topology_csv_file"],
                 file_mode=validated_args["mode"],
             )
-            result["changed"] = result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
         if output.p2p_links_csv:
             changed = write_file(
@@ -137,7 +142,7 @@ class ActionModule(ActionBase):
                 filename=validated_args["p2p_links_csv_file"],
                 file_mode=validated_args["mode"],
             )
-            result["changed"] = result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
         if output.digital_twin:
             content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
@@ -157,9 +162,15 @@ class ActionModule(ActionBase):
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
-            result["changed"] = result.get("changed") or changed
+            self.result["changed"] = self.result["changed"] or changed
 
-        return result
+    def _validate_args(self) -> dict:
+        """Get task arguments and validate them."""
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        validated_args = strip_empties_from_dict(validated_args)
+
+        # Converting to json and back to remove any AnsibeUnsafe types
+        return json.loads(json.dumps(validated_args))
 
     def read_structured_configs(self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str) -> dict[str, dict]:
         missing = set()
@@ -170,7 +181,7 @@ class ActionModule(ActionBase):
             else:
                 missing.add(device)
         if missing:
-            LOGGER.warning("Could not find structured config files for '%s'. The documentation may be incomplete.", ",".join(natural_sort(missing)))
+            self.logger.warning("Could not find structured config files for '%s'. The documentation may be incomplete.", ",".join(natural_sort(missing)))
 
         return structured_configs
 
@@ -197,21 +208,7 @@ class ActionModule(ActionBase):
 
         if not file_path.exists():
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
-            raise AnsibleActionFail(message=msg)
+            raise FileNotFoundError(msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
             return json.load(f)
-
-
-def setup_module_logging(result: dict) -> None:
-    """
-    Add a Handler to copy the logs from the plugin into Ansible output based on their level.
-
-    Parameters:
-        result: The dictionary used for the ansible module results
-    """
-    python_to_ansible_handler = PythonToAnsibleHandler(result, display)
-    LOGGER.addHandler(python_to_ansible_handler)
-    # TODO: mechanism to manipulate the logger globally for pyavd
-    # Keep debug to be able to see logs with `-v` and `-vvv`
-    LOGGER.setLevel(logging.DEBUG)

@@ -757,7 +757,11 @@
 {%     endif %}
 {%     set err_cor_enc_intfs = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.error_correction_encoding is arista.avd.defined %}
+{%         set error_correction_encoding = ethernet_interface.error_correction_encoding %}
+{%         set enabled_is_disabled = error_correction_encoding.enabled is arista.avd.defined(false) %}
+{%         set fire_code_is_set = error_correction_encoding.fire_code is arista.avd.defined %}
+{%         set reed_solomon_is_set = error_correction_encoding.reed_solomon is arista.avd.defined %}
+{%         if enabled_is_disabled or fire_code_is_set or reed_solomon_is_set %}
 {%             do err_cor_enc_intfs.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -777,6 +781,9 @@
 {%                 endif %}
 {%                 if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
 {%                     do enabled.append('reed-solomon') %}
+{%                 endif %}
+{%                 if enabled | length == 0 %}
+{%                     set enabled = ['-'] %}
 {%                 endif %}
 {%             endif %}
 | {{ ethernet_interface.name }} | {{ enabled | join('<br>') }} |
