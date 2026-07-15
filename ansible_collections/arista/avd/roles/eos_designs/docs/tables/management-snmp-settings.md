@@ -42,8 +42,9 @@
     | [<samp>&nbsp;&nbsp;communities</samp>](## "snmp_settings.communities") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.communities.[].name") | String | Required, Unique |  |  | Community name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access</samp>](## "snmp_settings.communities.[].access") | String |  |  | Valid Values:<br>- <code>ro</code><br>- <code>rw</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "snmp_settings.communities.[].access_list_ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "snmp_settings.communities.[].access_list_ipv4") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_settings.communities.[].access_list_ipv4.name") | String |  |  |  | IPv4 access list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "snmp_settings.communities.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_settings.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_settings.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_settings.communities.[].view") | String |  |  |  |  |
@@ -192,10 +193,16 @@
           # Community name.
         - name: <str; required; unique>
           access: <str; "ro" | "rw">
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `ipv4_standard_acl` instead.
           access_list_ipv4:
 
             # IPv4 access list name.
             name: <str>
+
+          # IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+          ipv4_standard_acl: <str>
           access_list_ipv6:
 
             # IPv6 access list name.

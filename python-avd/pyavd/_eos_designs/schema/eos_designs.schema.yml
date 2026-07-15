@@ -354,6 +354,20 @@ keys:
 
           Configure management interface to accept DHCP default route when the management
           IP is set to ''dhcp''.'
+      accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Configure management interface to accept Router Advertisement default route
+          when the IPv6 management IP is set to ''auto-config''.'
+      accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.3.0.
+
+          Configure inband management interface to accept DHCP default route when
+          the inband management IP is set to ''dhcp''.'
       configure_inband_mgmt_ipv6_vrf:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -388,6 +402,15 @@ keys:
         description: 'Available from AVD 6.2.0.
 
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.'
+        default: false
+      only_configure_pvst_border_when_mode_is_mstp:
+        type: bool
+        description: 'Available from AVD 6.3.0.
+
+          PVST border parameters have no effect unless the spanning-tree mode is MSTP.
+
+          When enabled, AVD renders PVST border configuration only when the spanning-tree
+          mode is set to ''mstp''.'
         default: false
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool
@@ -627,6 +650,15 @@ keys:
       Only supported in combination with MPLS overlay.
 
       '
+  bgp_peer_filters_catalog:
+    type: list
+    description: 'BGP peer filter catalog.
+
+      Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in listen ranges.'
+    $ref: eos_cli_config_gen#/keys/peer_filters
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings
@@ -1268,6 +1300,91 @@ keys:
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+              port_channel:
+                type: dict
+                keys:
+                  subinterfaces:
+                    type: list
+                    primary_key: number
+                    description: 'Port-Channel L2 Subinterfaces.
+
+                      Subinterfaces are only supported on routed port-channels, which
+                      means they cannot be configured on MLAG port-channels.
+
+                      Setting `short_esi: auto` generates the short_esi automatically
+                      using a hash of configuration elements.
+
+                      Please see the notes under "EVPN A/A ESI dual-attached endpoint
+                      scenario" before setting `short_esi: auto`.
+
+                      '
+                    items:
+                      type: dict
+                      keys:
+                        number:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Subinterface number.
+                          min: 1
+                          max: 1048575
+                        description:
+                          type: str
+                          description: "Description for subinterface.\nThis can be
+                            a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                            available template fields are:\n  - `subinterface` - The
+                            full subinterface name.\n  - `subinterface_number` - The
+                            number for the subinterface.\n  - `vlan_id` - The VLAN
+                            ID bridged to this subinterface.\n  - `dot1q_client_vlan`
+                            - The Client VLAN ID encapsulation.\n  - `endpoint_type`
+                            - The `type` of the connected endpoint either set on the
+                            endpoint or taken from `connected_endpoints_keys.type`
+                            like `server`, `router` etc.\n  - `endpoint` - The name
+                            of the connected endpoint"
+                        short_esi:
+                          type: str
+                          description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                            Required for multihomed port-channels with subinterfaces.
+
+                            '
+                        vlan_id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 4094
+                          description: 'VLAN ID to bridge.
+
+                            Default is the subinterface number.
+
+                            '
+                        encapsulation_vlan:
+                          type: dict
+                          keys:
+                            client_dot1q:
+                              type: int
+                              description: 'Client VLAN ID encapsulation.
+
+                                Default is the subinterface number.
+
+                                '
+                              convert_types:
+                              - str
+                              min: 1
+                              max: 4094
+                        raw_eos_cli:
+                          type: str
+                          description: EOS CLI rendered directly on the port-channel
+                            subinterface in the final EOS configuration.
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                            for the EOS Config schema.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   custom_connected_endpoints_keys:
     $ref: eos_designs#/$defs/connected_endpoints_keys
     type: list
@@ -1727,6 +1844,14 @@ keys:
             type: bool
             $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
             default: false
+          cvtargetconfigs:
+            type: list
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/cvtargetconfigs
+            items:
+              type: str
+          flowdns:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/flowdns
       set_source_interfaces:
         type: bool
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
@@ -2529,6 +2654,41 @@ keys:
         default: true
         description: Globally enable the redistribution of static 802.1X-learned MAC
           addresses into EVPN under all configured MAC-VRFs.
+      web_authentication:
+        type: dict
+        description: 'The Web Authentication feature authenticates a supplicant via
+          a web page, generally referred to as a captive portal.
+
+          Requires `dot1x_settings.dynamic_authorization.enabled: true`.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Enable the Web Authentication feature.
+          url:
+            type: str
+            pattern: https?://[^\s/:]+(:\d+)?
+            description: 'Static captive portal URL used when the RADIUS server does
+              not provide one during the authentication workflow.
+
+              If both are configured, the RADIUS-provided URL takes precedence.
+
+              Supported format: http[s]://<hostname>[:<port>]'
+          ssl_profile:
+            type: str
+            description: 'SSL profile name, enabling HTTPS redirection on port 443.
+
+              Without this, only HTTP redirection is supported.
+
+              Can be used alone (when RADIUS provides the URL dynamically) or together
+              with `url`.'
+          start_limit_infinite:
+            type: bool
+            description: 'Disable the loop-protection mechanism that limits captive
+              portal authentication retries.
+
+              By default, EOS limits a supplicant to 16 consecutive attempts before
+              logging it off.'
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -2646,6 +2806,129 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  errdisable_settings:
+    type: dict
+    documentation_options:
+      table: system-settings
+    description: 'Errdisable settings for the device.
+
+      Causes are filtered based on platform feature support defined in
+
+      `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
+
+      `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.'
+    keys:
+      recovery_interval:
+        type: int
+        description: Interval for all recovery causes in seconds.
+        min: 30
+        max: 86400
+        convert_types:
+        - str
+      causes:
+        type: dict
+        keys:
+          acl:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          arp_inspection:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          bpduguard:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          dot1x:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          dot1x_coa:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          dot1x_phone_classification:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          dot1x_session_replace:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          error_correction_encoding:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          fabric_capacity_low:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          hardware_speed_group:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          hitless_reload_down:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          interface_speed:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          internal_error:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          lacp_rate_limit:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          link_change:
+            type: dict
+            keys:
+              detection:
+                type: bool
+          link_flap:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          no_internal_vlan:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          port_breakout:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          portchannelguard:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          portsec:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          speed_misconfigured:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          storm_control:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          stuck_queue:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          switchcard_unreachable:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          tap_port_init:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          tapagg:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          tpid:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          transceiver_adapter:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          uplink_failure_detection:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
+          xcvr_misconfigured:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          xcvr_overheat:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          xcvr_power_unsupported:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery
+          xcvr_unsupported:
+            type: dict
+            $ref: eos_designs#/$defs/errdisable_settings/keys/recovery_only
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     type: list
@@ -3602,6 +3885,87 @@ keys:
                 description: 'Action as string.
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  ipv4_standard_acls:
+    type: list
+    primary_key: name
+    description: 'IPv4 standard access-lists catalog.
+
+      These access-lists will only be configured on devices where they are in use.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list Name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
   ipv6_acls:
     type: list
     primary_key: name
@@ -3670,6 +4034,13 @@ keys:
 
       Replaces the default route.
 
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
+
       '
     type: list
     items:
@@ -3683,6 +4054,13 @@ keys:
     description: 'OOB Management interface gateway in IPv6 format.
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.
+
+      Ignored when ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+      true'' and
+
+      ''ipv6_mgmt_ip'' under node config is set to ''auto-config'', since router
+
+      advertisements are expected to provide the gateway and default route.
 
       '
   is_deployed:
@@ -4791,6 +5169,38 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+              listen_ranges:
+                type: list
+                description: Note - bgp_peer_groups[].nodes[] must have a node matching
+                  with the hostname to configure the bgp listen ranges.
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                      required: true
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    remote_as:
+                      type: str
+                      description: 'BGP AS <1-4294967295> or AS number in asdot notation
+                        "<1-65535>.<0-65535>".
+
+                        For asdot notation in YAML inputs, the value must be put in
+                        quotes, to prevent it from being interpreted as a float number.
+
+                        note: `peer_filter` or `remote_as` is required.'
+                      convert_types:
+                      - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: 'Peer-filter name.
+
+                        note: `peer_filter` or `remote_as` is required.
+
+                        '
         igmp_snooping:
           documentation_options:
             table: network-services-multicast-settings
@@ -6678,6 +7088,17 @@ keys:
                         prefix_list_out:
                           type: str
                           description: Outbound prefix-list name.
+                    listen_ranges:
+                      type: list
+                      $ref: eos_designs#/keys/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges
+                      description: 'Note - vrfs[].bgp_peer_groups[].nodes[] must have
+                        a node matching with the hostname to configure the bgp listen
+                        ranges.
+
+                        When set for VRF default, this is configured under root `router
+                        bgp <as>`. For other VRFs this is configured under
+
+                        respective VRF.'
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -7120,9 +7541,19 @@ keys:
           server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.\n-
           Any other string will be used directly as the VRF name but local interface
           must be set with `custom_structured_configuration_ntp` if needed."
+      set_first_ntp_server_as_preferred:
+        type: bool
+        description: 'If ''true'', AVD marks the first entry under ''ntp_settings.servers''
+          as ''preferred''.
+
+          Set to ''false'' to avoid automatically setting any server as ''preferred''.'
+        default: true
       servers:
         type: list
-        description: The first server is always set as "preferred".
+        description: 'By default, AVD marks the first server as `preferred`.
+
+          Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
+          this behavior.'
         items:
           type: dict
           keys:
@@ -7616,7 +8047,10 @@ keys:
       If you need to add custom platforms, create them under `custom_platform_settings`.
 
       Entries under `custom_platform_settings` will be matched before the equivalent
-      entries from `platform_settings`.'
+      entries from `platform_settings`.
+
+      Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT`
+      (use `720DT-24S` or `720DT-48S`).'
     default:
     - platforms:
       - default
@@ -7634,6 +8068,48 @@ keys:
         sflow_subinterfaces: false
         subinterface_mtu: false
         per_interface_l2_mru: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7649,6 +8125,48 @@ keys:
         sflow_subinterfaces: false
         subinterface_mtu: false
         per_interface_l2_mru: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7668,6 +8186,29 @@ keys:
         per_interface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7675,7 +8216,126 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 720DP
+      - 720DP-24S
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 720DP-48S
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 722XP
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 710P
       feature_support:
         poe: true
@@ -7684,6 +8344,26 @@ keys:
         per_interface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7698,6 +8378,26 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7710,6 +8410,26 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7717,6 +8437,7 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 720DT
+      - 720DT-48S
       - 7010TX
       feature_support:
         queue_monitor_length_notify: false
@@ -7724,6 +8445,56 @@ keys:
         per_interface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 720DT-24S
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7760,6 +8531,23 @@ keys:
           traffic_policy: false
           vlan: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -7767,7 +8555,100 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 7280R
+      lag_hardware_only: true
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7280R2
+      lag_hardware_only: true
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7020R
       lag_hardware_only: true
       reload_delay:
@@ -7779,6 +8660,49 @@ keys:
         subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7792,6 +8716,42 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
         subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
@@ -7826,6 +8786,23 @@ keys:
           traffic_policy: false
           vlan: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
       management_interface: Management0
       reload_delay:
         mlag: 300
@@ -7834,6 +8811,62 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 7500R
+      lag_hardware_only: true
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7500R2
       lag_hardware_only: true
       management_interface: Management0
@@ -7846,6 +8879,50 @@ keys:
         subinterface_monitor_session: false
         per_interface_l2_mtu: false
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7860,6 +8937,47 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
         subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
@@ -7875,6 +8993,30 @@ keys:
         evpn_gateway_all_active_multihoming: true
         evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
         subinterface_monitor_session: false
       digital_twin:
         platform: vEOS-lab
@@ -7892,6 +9034,38 @@ keys:
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: true
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7904,6 +9078,38 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -7916,6 +9122,60 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mru: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+          xcvr_misconfigured:
+            detection: false
+            recovery: false
+          xcvr_overheat:
+            detection: false
+            recovery: false
+          xcvr_power_unsupported:
+            detection: false
+            recovery: false
+          xcvr_unsupported:
+            recovery: false
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
       digital_twin:
@@ -7937,6 +9197,65 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+          xcvr_misconfigured:
+            detection: false
+            recovery: false
+          xcvr_overheat:
+            detection: false
+            recovery: false
+          xcvr_power_unsupported:
+            detection: false
+            recovery: false
+          xcvr_unsupported:
+            recovery: false
         subinterface_monitor_session: false
       reload_delay:
         mlag: 300
@@ -7960,6 +9279,65 @@ keys:
         evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+          xcvr_misconfigured:
+            detection: false
+            recovery: false
+          xcvr_overheat:
+            detection: false
+            recovery: false
+          xcvr_power_unsupported:
+            detection: false
+            recovery: false
+          xcvr_unsupported:
+            recovery: false
         subinterface_monitor_session: false
       management_interface: Management1
       reload_delay:
@@ -7976,6 +9354,60 @@ keys:
         queue_monitor_length_notify: false
         sflow: false
         hardware_validation: false
+        errdisable_causes:
+          acl:
+            detection: false
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          speed_misconfigured:
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+          xcvr_misconfigured:
+            detection: false
+            recovery: false
+          xcvr_overheat:
+            detection: false
+            recovery: false
+          xcvr_power_unsupported:
+            detection: false
+            recovery: false
+          xcvr_unsupported:
+            recovery: false
         subinterface_monitor_session: false
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -7995,6 +9427,47 @@ keys:
           supported: true
           max_rx_queues: 6
         sflow: false
+        errdisable_causes:
+          acl:
+            detection: false
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -8014,6 +9487,50 @@ keys:
           supported: true
           max_rx_queues: 16
         sflow: false
+        errdisable_causes:
+          acl:
+            detection: false
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -8028,6 +9545,49 @@ keys:
         poe: true
         per_interface_l2_mru: false
         sflow: false
+        errdisable_causes:
+          acl:
+            detection: false
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          fabric_capacity_low:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
+          tpid:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
         subinterface_monitor_session: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
@@ -8101,6 +9661,93 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
+        port_channel:
+          type: dict
+          keys:
+            subinterfaces:
+              type: list
+              primary_key: number
+              description: 'Port-Channel L2 Subinterfaces.
+
+                Only applicable for connected-endpoints. `Subinterfaces` key cannot
+                be used with `network_ports`
+
+                Subinterfaces are only supported on routed port-channels, which means
+                they cannot be configured on MLAG port-channels.
+
+                Setting `short_esi: auto` generates the short_esi automatically using
+                a hash of configuration elements.
+
+                Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
+                before setting `short_esi: auto`.
+
+                '
+              items:
+                type: dict
+                keys:
+                  number:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Subinterface number.
+                    min: 1
+                    max: 1048575
+                  description:
+                    type: str
+                    description: "Description for subinterface.\nThis can be a template
+                      using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                      available template fields are:\n  - `subinterface` - The full
+                      subinterface name.\n  - `subinterface_number` - The number for
+                      the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
+                      subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID
+                      encapsulation.\n  - `endpoint_type` - The `type` of the connected
+                      endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
+                      like `server`, `router` etc.\n  - `endpoint` - The name of the
+                      connected endpoint"
+                  short_esi:
+                    type: str
+                    description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                      Required for multihomed port-channels with subinterfaces.
+
+                      '
+                  vlan_id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 4094
+                    description: 'VLAN ID to bridge.
+
+                      Default is the subinterface number.
+
+                      '
+                  encapsulation_vlan:
+                    type: dict
+                    keys:
+                      client_dot1q:
+                        type: int
+                        description: 'Client VLAN ID encapsulation.
+
+                          Default is the subinterface number.
+
+                          '
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                  raw_eos_cli:
+                    type: str
+                    description: EOS CLI rendered directly on the port-channel subinterface
+                      in the final EOS configuration.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -8589,7 +10236,41 @@ keys:
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name.
+            access:
+              type: str
+              valid_values:
+              - ro
+              - rw
+            access_list_ipv4:
+              type: dict
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: ipv4_standard_acl
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access list name. The access-list must be
+                defined under `ipv4_standard_acls`.
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name.
+            view:
+              type: str
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -8715,6 +10396,46 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: dns_settings
+  spanning_tree_settings:
+    type: dict
+    keys:
+      mode:
+        type: str
+        description: 'Spanning tree operating mode.
+
+          ''spanning_tree_mode'' can also be set under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+        valid_values:
+        - mstp
+        - rstp
+        - rapid-pvst
+        - none
+      priority:
+        type: int
+        convert_types:
+        - str
+        default: 32768
+        description: 'Spanning-tree priority configured for the selected mode.
+
+          For ''rapid-pvst'' the priority can also be set per VLAN under network services.
+
+          ''spanning_tree_priority'' can also be set under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+      port_id_allocation_port_channel_range:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range
+        description: 'Specify range of port-ids to reserve for port-channels.
+
+          ''spanning_tree_port_id_allocation_port_channel_range'' can also be set
+          under node type settings.
+
+          If both are set, the setting under node type settings takes precedence.'
+      loop_guard_default:
+        type: bool
+        description: Enable loopguard by default on all ports.
+        default: false
   ssh_settings:
     type: dict
     keys:
@@ -10234,12 +11955,14 @@ $defs:
             type: bool
             description: 'Enable address locking for IPv4.
 
-              Key `ipv4` can only be set to false.
+              For Port-Channels, only `ipv4: false` is supported.
 
               For EOS version 4.31 and higher.'
           ipv6:
             type: bool
             description: 'Enable address locking for IPv6.
+
+              For Port-Channels, only `ipv6: false` is supported.
 
               For EOS version 4.31 and higher.'
       poe:
@@ -10459,87 +12182,6 @@ $defs:
                 - str
                 description: Number of LACP BPDUs lost before deeming the peer down.
                   EOS default is 3.
-          subinterfaces:
-            type: list
-            primary_key: number
-            description: 'Port-Channel L2 Subinterfaces.
-
-              Subinterfaces are only supported on routed port-channels, which means
-              they cannot be configured on MLAG port-channels.
-
-              Setting short_esi: auto generates the short_esi automatically using
-              a hash of configuration elements.
-
-              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
-              before setting short_esi: auto.
-
-              '
-            items:
-              type: dict
-              keys:
-                number:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Subinterface number.
-                  min: 1
-                  max: 1048575
-                description:
-                  type: str
-                  description: "Description for subinterface.\nThis can be a template
-                    using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-                    available template fields are:\n  - `subinterface` - The full
-                    subinterface name.\n  - `subinterface_number` - The number for
-                    the subinterface.\n  - `vlan_id` - The VLAN ID bridged to this
-                    subinterface.\n  - `dot1q_client_vlan` - The Client VLAN ID encapsulation.\n
-                    \ - `endpoint_type` - The `type` of the connected endpoint either
-                    set on the endpoint or taken from `connected_endpoints_keys.type`
-                    like `server`, `router` etc.\n  - `endpoint` - The name of the
-                    connected endpoint"
-                short_esi:
-                  type: str
-                  description: 'In format xxxx:xxxx:xxxx or "auto".
-
-                    Required for multihomed port-channels with subinterfaces.
-
-                    '
-                vlan_id:
-                  type: int
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 4094
-                  description: 'VLAN ID to bridge.
-
-                    Default is the subinterface number.
-
-                    '
-                encapsulation_vlan:
-                  type: dict
-                  keys:
-                    client_dot1q:
-                      type: int
-                      description: 'Client VLAN ID encapsulation.
-
-                        Default is the subinterface number.
-
-                        '
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                raw_eos_cli:
-                  type: str
-                  description: EOS CLI rendered directly on the port-channel subinterface
-                    in the final EOS configuration.
-                structured_config:
-                  type: dict
-                  relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
-                    for the EOS Config schema.
-                  documentation_options:
-                    hide_keys: true
-                  $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in
@@ -10621,6 +12263,31 @@ $defs:
         description:
           type: str
           description: Description used for documentation.
+  errdisable_settings:
+    type: dict
+    keys:
+      detect_and_recovery:
+        type: dict
+        keys:
+          detection:
+            type: bool
+          recovery:
+            type: bool
+          recovery_interval:
+            type: int
+            description: Interval for each recovery cause in seconds.
+            min: 30
+            max: 86400
+            convert_types:
+            - str
+      recovery_only:
+        type: dict
+        keys:
+          recovery:
+            type: bool
+          recovery_interval:
+            type: int
+            $ref: eos_designs#/$defs/errdisable_settings/keys/detect_and_recovery/keys/recovery_interval
   flow_tracking_link:
     type: dict
     keys:
@@ -11124,15 +12791,31 @@ $defs:
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv6 address.
+            description: 'Node management interface IPv6 address with prefix length
+              or ''auto-config''.
+
+              Set ''auto-config'' to use SLAAC to automatically configure the IPv6
+              address.
+
+              When set to ''auto-config'' and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', the ''ipv6_mgmt_gateway'' and ''ipv6_mgmt_destination_networks''
+              settings are ignored since the router advertisements are expected to
+              provide the gateway and the default route.
+
+              In this case, AVD also configures the management interface to accept
+              the default route and honor route preferences from Router Advertisements.'
             type: str
-            format: cidr
           ipv6_mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the ipv6 management gateway for the device.
+            description: 'This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
+
+              This setting is ignored when ''ipv6_mgmt_ip'' is set to ''auto-config''
+              and ''avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+              true'', since the router advertisements are expected to provide the
+              gateway and the default route.'
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -12079,8 +13762,8 @@ $defs:
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
-            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
-              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+            description: 'Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN
+              interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
 
               L3 Reachability is required for this to work, the preferred method to
               establish underlay connectivity is to use core_interfaces.
@@ -12345,7 +14028,13 @@ $defs:
             documentation_options:
               table: node-type-l2-mlag-configuration
             type: bool
-            description: Enable MST PVST border ports.
+            description: 'Enable MST PVST border ports.
+
+              By default this is configured regardless of the spanning-tree mode.
+
+              When ''avd_design_future.only_configure_pvst_border_when_mode_is_mstp''
+              is set to ''true'', this will only take effect when the spanning-tree
+              mode is ''mstp''.'
           spanning_tree_port_id_allocation_port_channel_range:
             type: dict
             documentation_options:
@@ -12458,9 +14147,13 @@ $defs:
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
 
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', the `inband_mgmt_gateway` setting is ignored since the DHCP
+              server is expected to provide the gateway and the default route.
+
               '
             type: str
-            format: ipv4_cidr
           inband_mgmt_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -12471,6 +14164,11 @@ $defs:
 
               This setting is applicable to L2 switches (switches using L2 trunks
               as uplinks).
+
+
+              This setting is ignored when ''inband_mgmt_ip'' is set to ''dhcp'' and
+              ''avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.
 
               '
             type: str
@@ -14721,6 +16419,276 @@ $defs:
                 keys defined for the validation profile applied to the device are
                 ignored.'
               default: true
+            errdisable_causes:
+              type: dict
+              description: 'Per-cause support for errdisable detection and recovery.
+
+                Causes with `detection: false` will suppress detection for that cause
+                even if enabled in `errdisable_settings.causes.<cause>.detection`.
+
+                Causes with `recovery: false` will suppress recovery for that cause
+                even if enabled in `errdisable_settings.causes.<cause>.recovery`.
+
+                The supported causes depends on the EOS version and the hardware platform.'
+              keys:
+                acl:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                arp_inspection:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                bpduguard:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_coa:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_phone_classification:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                dot1x_session_replace:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                error_correction_encoding:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                fabric_capacity_low:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                hardware_speed_group:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                hitless_reload_down:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                interface_speed:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                internal_error:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                lacp_rate_limit:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                link_change:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                link_flap:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                no_internal_vlan:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                port_breakout:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                portchannelguard:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                portsec:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                speed_misconfigured:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                storm_control:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                stuck_queue:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                switchcard_unreachable:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                tap_port_init:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                tapagg:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                tpid:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                transceiver_adapter:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                uplink_failure_detection:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_misconfigured:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_overheat:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_power_unsupported:
+                  type: dict
+                  keys:
+                    detection:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
+                xcvr_unsupported:
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
         management_interface:
           type: str
           default: Management1
@@ -14939,6 +16907,58 @@ $defs:
             description: In seconds <0-4294967295> or infinite.
             convert_types:
             - int
+          ra_dns_servers:
+            type: dict
+            description: List of IPv6 addresses of DNS servers to be advertised in
+              Router Advertisements (RA).
+            keys:
+              servers:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers
+              dns_servers_lifetime:
+                type: int
+                $ref: eos_cli_config_gen#/$defs/ipv6_nd/keys/ra/keys/dns_servers_lifetime
+      ipv6_dhcp_relay:
+        type: dict
+        description: IPv6 DHCP relay settings.
+        keys:
+          destinations:
+            type: list
+            description: List of IPv6 DHCP relay destinations.
+            primary_key: address
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: DHCP server's IPv6 address.
+                vrf:
+                  type: str
+                  description: 'VRF used to reach the DHCP server.
+
+                    If not set, the VRF of the destination matches the VRF of this
+                    interface.
+
+                    Use the `default` to reach the DHCP server through the default
+                    VRF.'
+                  convert_types:
+                  - int
+                local_interface:
+                  type: str
+                  description: 'Local interface to communicate with DHCP server.
+
+                    Mutually exclusive with `source_address` and takes precedence
+                    over it.'
+                source_address:
+                  type: str
+                  description: 'Source IPv6 address to communicate with DHCP server.
+
+                    Mutually exclusive with `local_interface`, which takes precedence
+                    if both are set.'
+                link_address:
+                  type: str
+                  description: Override the default link address specified in the
+                    relayed DHCP packet.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.

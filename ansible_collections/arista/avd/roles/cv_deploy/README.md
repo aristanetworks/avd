@@ -58,6 +58,24 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
     ![Figure 1: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/studios_end_to_end_provisioning.png)
 
+- **CloudVision device replacement** is not fully supported when using the default flat-layout configuration deployment.
+  When CloudVision replaces a device using the
+  [Replace](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-replacing-devices)
+  workflow in the [Inventory & Topology Studio](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#inventory-and-topology-studio), it updates the serial number reference inside the existing Static Configuration Studio container.
+  On the next `cv_deploy` run, AVD creates a **new** container and configlet keyed to the new serial number. While the original container and
+  configlet become orphaned (from `cv_deploy` point of view), they are still associated with the replacement device through the updated query.
+
+  Choose one of the following approaches to avoid duplicate configlet assignment:
+
+  - **After replacement**: Manually delete (using CloudVision UI) the orphaned container and configlet from the Static Configuration Studio in CloudVision after
+    the replacement is complete but before running `cv_deploy` again.
+  - **Instead of replacement**: Use the CloudVision
+    [Decommission](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-decommissioning-devices-from-cloud-vision)
+    workflow to remove the old device first, then run `cv_deploy` again to onboard and apply the configuration to the replacement device.
+
+  The manifest-based deployment is **not affected** by this limitation, as it automatically removes unused/orphaned manifest-created containers and
+  configlets on each run.
+
 ## Roadmap
 
 This feature is still under development, so several planned features are not implemented yet.
@@ -262,6 +280,11 @@ cv_workspace_build_timeout: 300
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
 # See the "Static Configuration Studio" section below for more details.
 # cv_static_config_manifest:
+#   Preserve existing manifest-managed root containers and their children when they are not declared in the current manifest.
+#   This enables partial manifests managing separate root-level branches.
+#   Existing manifest-managed container order is preserved, and newly declared containers are appended.
+#   Manually created root containers are always preserved and ordered after the manifest-managed containers.
+#   preserve_existing_containers: <bool, default=false>
 #
 #   # A list of dictionaries defining configlets to be created in the Configlet Library.
 #   # Configlet names must be unique across all defined configlets.
@@ -456,10 +479,14 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
 !!! note "Partial Manifest Deployments"
-    By default, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
+    By default, the manifest owns the root-level `containers` list, so existing manifest-managed root containers not declared in the manifest are removed.
+    Set `preserve_existing_containers: true` on the manifest to preserve existing root containers that are not declared in the current manifest. This enables workflows where separate manifests manage root-level branches.
+    Existing manifest-managed container order is preserved, and newly declared containers are appended.
+    Manually created root containers are always preserved and ordered after the manifest-managed containers.
+
+    Additionally, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
     Set `preserve_existing_sub_containers: true` on a container to preserve existing manifest-managed child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
     Existing manifest-managed child container order is preserved, and any newly declared child containers are appended.
-    This is not yet supported for the root-level `containers`, so all managed root containers must be specified to avoid them getting removed. For a partial manifest deployment, other root-level containers can have `preserve_existing_sub_containers: true` set in the manifest, to not require the full tree to be defined for all of them.
 
 !!! warning "Manual configlet assignments"
     Before you remove a configlet created by a cv_deploy manifest, ensure it is not manually assigned to any non-manifest containers. Otherwise you must manually unassign the configlet from such containers first.

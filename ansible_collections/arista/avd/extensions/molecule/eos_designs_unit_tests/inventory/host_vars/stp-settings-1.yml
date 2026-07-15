@@ -1,0 +1,17 @@
+---
+# Minimum config to only test the spanning tree settings
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: stp-settings-1
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+spanning_tree_settings:
+  mode: mstp
+  priority: 8192
+  port_id_allocation_port_channel_range:
+    minimum: 201
+    maximum: 2001
+  loop_guard_default: true

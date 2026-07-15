@@ -319,7 +319,8 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         digital_twin_devices.append(
             {
                 device: ActNodeSettings(
-                    # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
+                    # node_type and version are enforced as non-empty strings during the generation of the metadata part of the structured_config
+                    # ip_addr may be None for cloudeos/veos node types
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),

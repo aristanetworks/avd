@@ -47,6 +47,8 @@
           }}
         generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
         generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
+        configuration_hide_passwords: "{{ eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(omit) }}"
+        documentation_hide_passwords: "{{ eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(omit) }}"
         device_doc_toc: "{{ eos_cli_config_gen_documentation.toc | arista.avd.default(true) }}"
         cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
       delegate_to: localhost

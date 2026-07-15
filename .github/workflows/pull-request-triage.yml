@@ -1,7 +1,7 @@
 ---
 name: "Pull Request Triage"
 
-"on":
+"on": # zizmor: ignore[dangerous-triggers] Uses pull_request_target only for PR metadata assignment and title validation, not to check out or execute PR code.
   pull_request_target:
     types:
       - opened
@@ -21,7 +21,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/labeler@v6
+      - uses: actions/labeler@b8dd2d9be0f68b860e7dae5dae7d772984eacd6d # v6.2.0
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: '.github/labeler.yml'
@@ -30,8 +30,11 @@ jobs:
     name: "Assign Author to PR"
     # https://github.com/marketplace/actions/auto-author-assign
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-      - uses: toshimaru/auto-author-assign@v3.0.3
+      - uses: toshimaru/auto-author-assign@3e19bfc990cb1cf0589dce95e9f75289bb1e22de # v3.0.3
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -40,10 +43,12 @@ jobs:
   ###################################################
   Check_PR_semantic:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases
-      - uses: amannn/action-semantic-pull-request@v6
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

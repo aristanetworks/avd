@@ -685,7 +685,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
 --8<--
 
-### Node type EVPN gateway configuration
+### Node type EVPN to MPLS IP-VPN gateway configuration
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
@@ -867,6 +867,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 
 ## Catalogs
 
+### BGP Peer Filters Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-peer-filters-catalog.md
+--8<--
+
 ### IPv4 extended ACLs Catalog
 
 --8<--
@@ -877,6 +883,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md
+--8<--
+
+### IPv4 Standard ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-standard-acls.md
 --8<--
 
 ### IPv4 Prefix-List Catalog
@@ -1093,6 +1105,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
+--8<--
+
+## Spanning Tree settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-settings.md
 --8<--
 
 ## Monitoring
@@ -1885,7 +1903,6 @@ Produced artifacts (ACT Digital Twin):
 │           ├── <DEVICE_NAME>.yml
 │           └── ...
 ```
-
 
 If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
 
