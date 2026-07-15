@@ -209,7 +209,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
         )
         raise AristaAvdError(msg)
 
-    mgmt_ips = [(device, cast(str, facts.mgmt_ip)) for device, facts in sorted_avd_facts]
+    mgmt_ips = [(device, cast("str", facts.mgmt_ip)) for device, facts in sorted_avd_facts]
     nodes = {device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip)) for device, mgmt_ip in mgmt_ips}
 
     links = [
