@@ -170,11 +170,9 @@ Serial Number: DEADBEEFC0FFEW
   - [Tunnel Interfaces](#tunnel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
-- [Switchport Port-security](#switchport-port-security)
-  - [Switchport Port-security Summary](#switchport-port-security-summary)
-  - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
-- [Switchport Validation](#switchport-validation)
-  - [Switchport Validation Summary](#switchport-validation-summary)
+- [Switchport](#switchport)
+  - [Switchport Port-security](#switchport-port-security)
+  - [Switchport Validation](#switchport-validation)
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -8581,9 +8579,11 @@ interface Vxlan1
 
 ```
 
-## Switchport Port-security
+## Switchport
 
-### Switchport Port-security Summary
+### Switchport Port-security
+
+#### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -8592,7 +8592,7 @@ interface Vxlan1
 | Disable Persistence | True |
 | Violation Protect Chip-based | True |
 
-### Switchport Port-security Device Configuration
+#### Switchport Port-security Device Configuration
 
 ```eos
 !
@@ -8602,9 +8602,9 @@ switchport port-security persistence disabled
 switchport port-security violation protect chip-based
 ```
 
-## Switchport Validation
+### Switchport Validation
 
-### Switchport Validation Summary
+#### Switchport Validation Summary
 
 - Switchport Ethernet LLC header validation: True
 - Switchport VLAN tag validation: True

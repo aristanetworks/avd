@@ -79,10 +79,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/ip-security.j2' %}
 {# Interfaces #}
 {% include 'documentation/interfaces.j2' %}
-{## Switchport Port-security #}
-{% include 'documentation/switchport-port-security.j2' %}
-{## Switchport Validation #}
-{% include 'documentation/switchport.j2' %}
+{# Switchport #}
+{% include 'documentation/switchport' %}
 {# Routing #}
 {% include 'documentation/routing.j2' %}
 {# BFD #}
