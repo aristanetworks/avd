@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
 import pytest
-from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.eos_designs_structured_config import ActionModule
 
@@ -115,14 +114,14 @@ def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModul
 
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
-    """AnsibleActionFail is raised with the documented message when pyavd is missing."""
+    """FileNotFoundError is raised with the documented message when pyavd is missing."""
     module = action_module(ActionModule)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=r"The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' Python library. Got import error",
         ),
     ):
@@ -145,7 +144,7 @@ def test_run_wraps_get_structured_config_exception_with_no_logs(
         patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, side_effect=original_error),
-        pytest.raises(AnsibleActionFail, match=r"^pyavd exploded$") as exc_info,
+        pytest.raises(FileNotFoundError, match=r"^pyavd exploded$") as exc_info,
     ):
         module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
 
@@ -167,7 +166,7 @@ def test_run_wraps_get_structured_config_exception_with_no_warnings(action_modul
             patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
             patch.object(ActionModule, "load_facts", return_value=MagicMock()),
             patch(f"{MODULE_PATH}.get_structured_config", create=True, side_effect=RuntimeError("boom")),
-            pytest.raises(AnsibleActionFail),
+            pytest.raises(FileNotFoundError),
         ):
             module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
 
@@ -176,7 +175,7 @@ def test_run_wraps_get_structured_config_exception_with_no_warnings(action_modul
 
 
 def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., ActionModule]) -> None:
-    """A failure inside merge() during custom-template processing surfaces as AnsibleActionFail with the original chained."""
+    """A failure inside merge() during custom-template processing surfaces as FileNotFoundError with the original chained."""
     module = action_module(
         ActionModule,
         {
@@ -197,7 +196,7 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
         patch(f"{MODULE_PATH}.templater", return_value="key: value\n"),
         patch(f"{MODULE_PATH}.strip_null_from_data", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.merge", side_effect=original_error),
-        pytest.raises(AnsibleActionFail, match=r"^merge failed$") as exc_info,
+        pytest.raises(FileNotFoundError, match=r"^merge failed$") as exc_info,
     ):
         module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
 
@@ -205,7 +204,7 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
 
 
 def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
-    """load_validated_inputs raises AnsibleActionFail with the documented message when the file is missing."""
+    """load_validated_inputs raises FileNotFoundError with the documented message when the file is missing."""
     module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
@@ -219,7 +218,7 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=(
                 r"Missing validated inputs for host 'my-spine-1'. "
                 r"Ensure the 'arista.avd.validate_inputs' task ran successfully for this host "
@@ -231,7 +230,7 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
 
 
 def test_load_facts_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
-    """load_facts raises AnsibleActionFail naming both the host and the missing file path."""
+    """load_facts raises FileNotFoundError naming both the host and the missing file path."""
     module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
@@ -247,7 +246,7 @@ def test_load_facts_raises_when_file_missing(action_module: Callable[..., Action
     with (
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=_MissingFactsPath()),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=(
                 r"Missing AVD eos_designs facts for host 'my-spine-1' "
                 rf"\({facts_path_str}\). "
