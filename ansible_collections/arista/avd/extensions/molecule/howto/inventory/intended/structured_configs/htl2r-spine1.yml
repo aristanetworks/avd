@@ -70,10 +70,8 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOS-lab
   fabric_name: FABRIC
-  validate_hardware:
-    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -104,6 +102,8 @@ router_bgp:
   router_id: 10.255.8.1
   maximum_paths:
     paths: 4
+  updates:
+    wait_install: true
   bgp:
     default:
       ipv4_unicast: false

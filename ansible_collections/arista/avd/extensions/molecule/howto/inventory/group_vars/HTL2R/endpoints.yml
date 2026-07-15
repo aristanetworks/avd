@@ -2,7 +2,7 @@
 # --8<-- [start:endpoints]
 # Servers connected to the L2 ring. With `filter.only_vlans_in_use: true` on a
 # ring node, AVD only configures VLANs that have an endpoint on this node *or*
-# are needed by a downstream ring member declared via `uplink_switches`.
+# are needed by another ring member reachable through the declared neighbors.
 servers:
   - name: server-leaf2
     adapters:
@@ -11,9 +11,9 @@ servers:
         endpoint_ports: [nic1]
         vlans: 100,200
         mode: trunk
-  - name: server-leaf3
+  - name: server-leaf5
     adapters:
-      - switches: [htl2r-l2leaf3]
+      - switches: [htl2r-l2leaf5]
         switch_ports: [Ethernet10]
         endpoint_ports: [nic1]
         vlans: 101,200

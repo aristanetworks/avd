@@ -15,10 +15,10 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_htl2r-l2leaf1_Ethernet2
+  description: L2_htl2r-l2leaf4_Ethernet2
   shutdown: false
   metadata:
-    peer: htl2r-l2leaf1
+    peer: htl2r-l2leaf4
     peer_interface: Ethernet2
     peer_type: l2leaf
   switchport:
@@ -27,22 +27,22 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: 100-101,200
 - name: Ethernet2
-  description: L2_htl2r-l2leaf3_Ethernet1
+  description: L2_htl2r-leaf1b_Ethernet10
   shutdown: false
   metadata:
-    peer: htl2r-l2leaf3
-    peer_interface: Ethernet1
-    peer_type: l2leaf
+    peer: htl2r-leaf1b
+    peer_interface: Ethernet10
+    peer_type: l3leaf
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: 100-101,200
 - name: Ethernet10
-  description: SERVER_server-leaf2_nic1
+  description: SERVER_server-leaf5_nic1
   shutdown: false
   metadata:
-    peer: server-leaf2
+    peer: server-leaf5
     peer_interface: nic1
     peer_type: server
     peer_key: servers
@@ -50,8 +50,8 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100,200
-hostname: htl2r-l2leaf2
+      allowed_vlan: 101,200
+hostname: htl2r-l2leaf5
 ip_domain_lookup:
   source_interfaces:
   - name: Management1
@@ -77,7 +77,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.4.112/24
+  ip_address: 172.16.4.115/24
   type: oob
 metadata:
   is_deployed: true

@@ -25,32 +25,19 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100-101,110,200
+      allowed_vlan: 100-101,200
 - name: Ethernet2
-  description: L2_htl2r-leaf1b_Ethernet10
+  description: L2_htl2r-l2leaf4_Ethernet1
   shutdown: false
   metadata:
-    peer: htl2r-leaf1b
-    peer_interface: Ethernet10
-    peer_type: l3leaf
+    peer: htl2r-l2leaf4
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100-101,110,200
-- name: Ethernet10
-  description: SERVER_server-leaf3_nic1
-  shutdown: false
-  metadata:
-    peer: server-leaf3
-    peer_interface: nic1
-    peer_type: server
-    peer_key: servers
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 101,200
+      allowed_vlan: 100-101,200
 hostname: htl2r-l2leaf3
 ip_domain_lookup:
   source_interfaces:
@@ -81,10 +68,8 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOS-lab
   fabric_name: FABRIC
-  validate_hardware:
-    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -100,14 +85,6 @@ spanning_tree:
   - id: '0'
     priority: 16384
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan110
-  description: Inband Management
-  shutdown: false
-  ip_address: 10.10.10.13/24
-  mtu: 1500
-  metadata:
-    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -124,12 +101,6 @@ vlans:
   metadata:
     tenants:
     - TENANT1
-- id: 110
-  name: INBAND_MGMT
-  metadata:
-    tenants:
-    - TENANT1
-    - system
 - id: 200
   name: L2_VLAN200
   metadata:

@@ -3,7 +3,7 @@ type: l3leaf
 
 l3leaf:
   defaults:
-    platform: vEOS-lab
+    platform: cEOS-lab
     loopback_ipv4_pool: 10.255.8.0/27
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.255.9.0/27
@@ -16,6 +16,7 @@ l3leaf:
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
 
+  # --8<-- [start:l3leafs]
   node_groups:
     - group: HTL2R_L3_LEAF1
       bgp_as: 65101
@@ -28,3 +29,4 @@ l3leaf:
           id: 2
           mgmt_ip: 172.16.4.102/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
+  # --8<-- [end:l3leafs]

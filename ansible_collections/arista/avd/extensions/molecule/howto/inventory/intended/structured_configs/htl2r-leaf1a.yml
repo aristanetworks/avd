@@ -67,7 +67,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100-101,110,200
+      allowed_vlan: 100-101,200
 hostname: htl2r-leaf1a
 ip_domain_lookup:
   source_interfaces:
@@ -109,10 +109,8 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOS-lab
   fabric_name: FABRIC
-  validate_hardware:
-    enabled: false
 mlag_configuration:
   domain_id: HTL2R_L3_LEAF1
   local_interface: Vlan4094
@@ -181,6 +179,8 @@ router_bgp:
   router_id: 10.255.8.3
   maximum_paths:
     paths: 4
+  updates:
+    wait_install: true
   bgp:
     default:
       ipv4_unicast: false
@@ -265,16 +265,6 @@ router_bgp:
       - 18101:18101
     redistribute_routes:
     - learned
-  - id: 110
-    metadata:
-      tenants:
-      - TENANT1
-    rd: 10.255.8.3:18110
-    route_targets:
-      both:
-      - 18110:18110
-    redistribute_routes:
-    - learned
   - id: 200
     metadata:
       tenants:
@@ -310,6 +300,8 @@ router_bgp:
         route_targets:
         - 180:180
     router_id: 10.255.8.3
+    updates:
+      wait_install: true
     neighbors:
     - ip_address: 10.255.9.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -354,14 +346,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - TENANT1
-- name: Vlan110
-  description: INBAND_MGMT
-  shutdown: false
-  vrf: VRF_PROD
-  ip_address_virtual: 10.10.10.1/24
-  metadata:
-    tenants:
-    - TENANT1
 - name: Vlan3179
   description: MLAG_L3_VRF_VRF_PROD
   shutdown: false
@@ -402,11 +386,6 @@ vlans:
   metadata:
     tenants:
     - TENANT1
-- id: 110
-  name: INBAND_MGMT
-  metadata:
-    tenants:
-    - TENANT1
 - id: 3179
   name: MLAG_L3_VRF_VRF_PROD
   trunk_groups:
@@ -439,8 +418,6 @@ vxlan_interface:
         vni: 18100
       - id: 101
         vni: 18101
-      - id: 110
-        vni: 18110
       - id: 200
         vni: 18200
       vrfs:

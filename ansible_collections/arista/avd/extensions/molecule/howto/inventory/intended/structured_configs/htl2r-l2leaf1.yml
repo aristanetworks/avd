@@ -25,7 +25,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100-101,110,200
+      allowed_vlan: 100-101,200
 - name: Ethernet2
   description: L2_htl2r-l2leaf2_Ethernet1
   shutdown: false
@@ -37,7 +37,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 100-101,110,200
+      allowed_vlan: 100-101,200
 hostname: htl2r-l2leaf1
 ip_domain_lookup:
   source_interfaces:
@@ -68,10 +68,8 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOS-lab
   fabric_name: FABRIC
-  validate_hardware:
-    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -100,11 +98,6 @@ vlans:
     - TENANT1
 - id: 101
   name: PROD_VLAN101
-  metadata:
-    tenants:
-    - TENANT1
-- id: 110
-  name: INBAND_MGMT
   metadata:
     tenants:
     - TENANT1
