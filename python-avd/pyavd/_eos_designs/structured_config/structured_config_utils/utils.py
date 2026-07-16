@@ -11,8 +11,6 @@ from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import StructuredConfigUtilsProtocol
 
 
