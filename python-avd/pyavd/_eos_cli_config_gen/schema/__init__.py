@@ -45150,7 +45150,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
             enforce_first_as: bool | None
-            """Enforce the first AS for eBGP routes (default)."""
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -45281,7 +45281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
-                        enforce_first_as: Enforce the first AS for eBGP routes (default).
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -45799,7 +45799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
             enforce_first_as: bool | None
-            """Enforce the first AS for eBGP routes (default)."""
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -45929,7 +45929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_tag_in: Inbound peer tag name.
                         peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
-                        enforce_first_as: Enforce the first AS for eBGP routes (default).
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -56500,7 +56500,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
                 enforce_first_as: bool | None
-                """Enforce the first AS for eBGP routes (default)."""
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 update_source: str | None
                 route_map_in: str | None
                 """Inbound route-map name."""
@@ -56610,7 +56610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             maximum_routes_warning_only: maximum_routes_warning_only
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
-                            enforce_first_as: Enforce the first AS for eBGP routes (default).
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.

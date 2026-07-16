@@ -29470,7 +29470,7 @@ class EosDesigns(EosDesignsRootModel):
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
             enforce_first_as: bool | None
-            """Enforce the first AS for eBGP routes (default)."""
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -29628,7 +29628,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
-                        enforce_first_as: Enforce the first AS for eBGP routes (default).
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -36552,7 +36552,7 @@ class EosDesigns(EosDesignsRootModel):
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
                 enforce_first_as: bool | None
-                """Enforce the first AS for eBGP routes (default)."""
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 send_community: str | None
                 """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                 maximum_routes: int | None
@@ -36714,7 +36714,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: password_type
                             passive: passive
                             default_originate: Subclass of AvdModel.
-                            enforce_first_as: Enforce the first AS for eBGP routes (default).
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                             maximum_routes: Maximum number of routes (0 means unlimited).
                             maximum_routes_warning_limit:
@@ -78684,7 +78684,7 @@ class EosDesigns(EosDesignsRootModel):
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
                     enforce_first_as: bool | None
-                    """Enforce the first AS for eBGP routes (default)."""
+                    """Enforce the first AS in eBGP updates. EOS default is true."""
                     send_community: str | None
                     """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                     maximum_routes: int | None
@@ -78842,7 +78842,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
-                                enforce_first_as: Enforce the first AS for eBGP routes (default).
+                                enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                 maximum_routes: Maximum number of routes (0 means unlimited).
                                 maximum_routes_warning_limit:
@@ -85803,7 +85803,7 @@ class EosDesigns(EosDesignsRootModel):
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
                         enforce_first_as: bool | None
-                        """Enforce the first AS for eBGP routes (default)."""
+                        """Enforce the first AS in eBGP updates. EOS default is true."""
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                         maximum_routes: int | None
@@ -85965,7 +85965,7 @@ class EosDesigns(EosDesignsRootModel):
                                     password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
-                                    enforce_first_as: Enforce the first AS for eBGP routes (default).
+                                    enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     maximum_routes: Maximum number of routes (0 means unlimited).
                                     maximum_routes_warning_limit:

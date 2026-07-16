@@ -17152,7 +17152,7 @@ keys:
                   description: Route-map name.
             enforce_first_as:
               type: bool
-              description: Enforce the first AS for eBGP routes (default).
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17434,7 +17434,7 @@ keys:
                   type: str
             enforce_first_as:
               type: bool
-              description: Enforce the first AS for eBGP routes (default).
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -21030,7 +21030,8 @@ keys:
                         type: str
                   enforce_first_as:
                     type: bool
-                    description: Enforce the first AS for eBGP routes (default).
+                    description: Enforce the first AS in eBGP updates. EOS default
+                      is true.
                   update_source:
                     type: str
                   route_map_in:
