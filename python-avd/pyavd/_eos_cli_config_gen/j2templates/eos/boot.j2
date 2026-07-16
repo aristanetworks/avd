@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - boot #}
-{% if boot.secret is arista.avd.defined %}
+{% if boot is arista.avd.defined %}
 {%     if eos_config_future.only_render_separator_with_boot_secret_key is arista.avd.defined(true) %}
 {#- New behavior: Only render '!' if key is provided #}
 {%         if boot.secret.key is arista.avd.defined %}
