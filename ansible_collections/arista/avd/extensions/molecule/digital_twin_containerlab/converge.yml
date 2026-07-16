@@ -69,3 +69,31 @@
   connection: local
   vars: *unsupported_mgmt_ip_vars
   tasks: *unsupported_mgmt_ip_tasks
+
+- name: Converge expected failure for Containerlab Digital Twin with multiple management subnets
+  hosts: DIGITAL_TWIN_CONTAINERLAB_MULTIPLE_MGMT_SUBNETS
+  gather_facts: false
+  connection: local
+  vars: *unsupported_mgmt_ip_vars
+  tasks:
+    - name: Run expected failure scenario
+      block:
+        - name: Generate intended variables in Containerlab Digital Twin mode
+          delegate_to: 127.0.0.1
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+
+        - name: Fail if multiple management subnets did not fail
+          ansible.builtin.fail:
+            msg: "Expected Containerlab Digital Twin generation to fail for multiple management subnets."
+
+      rescue:
+        - name: Assert Containerlab Digital Twin failed with the expected multiple subnet error message
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - expected_error_message in ansible_failed_result.msg
+              - "'Found multiple subnets:' in ansible_failed_result.msg"
+              - expected_mgmt_subnets[0] in ansible_failed_result.msg
+              - expected_mgmt_subnets[1] in ansible_failed_result.msg
