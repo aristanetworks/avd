@@ -128,7 +128,7 @@ class ActionModule(AVDActionPlugin):
 
         if output.digital_twin:
             content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
-            # for cLab we want empty `prefix` at all times in the topology to avoid modifiying hostnames
+            # for cLab we want empty `prefix` at all times in the topology to avoid modifying hostnames
             if get(task_vars, "digital_twin.environment") == "containerlab" and hasattr(output.digital_twin, "prefix"):
                 interface_mapping = content.pop("interface_mapping", None)
                 if interface_mapping:
