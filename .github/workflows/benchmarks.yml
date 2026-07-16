@@ -12,10 +12,7 @@ name: "Benchmarks"
       - "python-avd/tests/models.py"
       - "ansible_collections/arista/avd/extensions/molecule/**"
   pull_request:
-    types: [reopened, synchronize]
-    branches: [devel]
-  pull_request_target:
-    types: [labeled]
+    types: [reopened, synchronize, labeled]
     branches: [devel]
   schedule:
     # GitHub Actions schedules are UTC.
@@ -28,10 +25,6 @@ name: "Benchmarks"
         default: false
         type: boolean
 
-permissions:
-  contents: read
-  pull-requests: read
-
 env:
   PY_COLORS: 1
   ANSIBLE_FORCE_COLOR: 1
@@ -41,42 +34,13 @@ jobs:
     name: CodSpeed benchmarks
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write
     if: >-
-      (
-        github.event_name != 'pull_request' &&
-        github.event_name != 'pull_request_target'
-      ) ||
-      (
-        contains(github.event.pull_request.labels.*.name, 'benchmark') &&
-        (
-          github.event.pull_request.head.repo.full_name == github.repository ||
-          (
-            github.event_name == 'pull_request_target' &&
-            github.event.action == 'labeled' &&
-            github.event.label.name == 'benchmark'
-          )
-        )
-      )
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.labels.*.name, 'benchmark')
     steps:
-      - name: Check benchmark authorization
-        if: github.event_name == 'pull_request_target'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
-          TRIGGERING_ACTOR: ${{ github.actor }}
-        run: |
-          permission="$(gh api "repos/${REPOSITORY}/collaborators/${TRIGGERING_ACTOR}/permission" --jq .permission)"
-          case "${permission}" in
-            admin|maintain|write)
-              echo "${TRIGGERING_ACTOR} is authorized to trigger benchmarks with ${permission} permission."
-              ;;
-            *)
-              echo "::error::${TRIGGERING_ACTOR} is not authorized to trigger benchmarks."
-              echo "::error::Required permission: write, maintain, or admin. Actual permission: ${permission}."
-              exit 1
-              ;;
-          esac
-
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
@@ -96,7 +60,6 @@ jobs:
         if: github.event_name != 'schedule' && (github.event_name != 'workflow_dispatch' || !inputs.full_suite)
         uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
         with:
-          token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
             python -m pytest --codspeed \
@@ -109,7 +72,6 @@ jobs:
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.full_suite)
         uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
         with:
-          token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
             python -m pytest --codspeed benchmarks -q
