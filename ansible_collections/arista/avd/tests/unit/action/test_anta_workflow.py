@@ -447,12 +447,24 @@ def test_validate_argument_spec_materializes_runner_defaults(action_module: Call
     assert validated_args["runner"]["dry_run"] is False
 
 
-def test_validate_argument_spec_materializes_report_sorting_defaults(action_module: Callable[..., ActionModule]) -> None:
-    """`apply_defaults` materializes report.sorting defaults when report is provided without sorting."""
+@pytest.mark.parametrize(
+    "task_args_extra",
+    [
+        pytest.param({"report": {}}, id="with_report"),
+        pytest.param({}, id="without_report"),
+    ],
+)
+def test_validate_argument_spec_materializes_report_sorting_defaults(
+    action_module: Callable[..., ActionModule],
+    *,
+    task_args_extra: dict,
+) -> None:
+    """`apply_defaults` materializes report.sorting defaults whether report is omitted or provided without sorting."""
     module = action_module(
         ActionModule,
         task_args={
             "device_list": ["leaf1"],
+            **task_args_extra,
         },
     )
 
