@@ -6589,7 +6589,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "always_render_ip_routing_separator": {"type": bool, "default": False},
-            "always_render_ipv6_unicast_routing_vrfs_separator": {"type": bool, "default": False},
             "render_combined_separator_for_ipv6_hardware_and_unicast_routing": {"type": bool, "default": False},
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
@@ -6606,16 +6605,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
-        always_render_ipv6_unicast_routing_vrfs_separator: bool
-        """
-        Available from AVD 6.4.0.
-        Always render a '!' before the '(no) ipv6 unicast-routing vrf' command
-        section.
-        Without this the '!' is missing when the first VRF (once VRFs are sorted) is not configured
-        for IPv6 routing.
-
-        Default value: `False`
-        """
         render_combined_separator_for_ipv6_hardware_and_unicast_routing: bool
         """
         Available from AVD 6.4.0.
@@ -6625,9 +6614,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         - 'ipv6 unicast-routing vrf <vrf_name>'
         - 'ipv6
         hardware fib optimize prefixes profile <profile_name>'
-        When 'false', separators are handled by each
-        individual section.
-        When 'true', it overrides 'always_render_ipv6_unicast_routing_vrfs_separator'.
+        Also render the '!' separator before the VRF
+        IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize
+        prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
+        When
+        'false', separators are handled by each individual section.
 
         Default value: `False`
         """
@@ -6690,7 +6681,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
-                always_render_ipv6_unicast_routing_vrfs_separator: bool | UndefinedType = Undefined,
                 render_combined_separator_for_ipv6_hardware_and_unicast_routing: bool | UndefinedType = Undefined,
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
@@ -6710,12 +6700,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without
                        this the '!' is missing when only configuring routing for VRFs.
-                    always_render_ipv6_unicast_routing_vrfs_separator:
-                       Available from AVD 6.4.0.
-                       Always render a '!' before the '(no) ipv6 unicast-routing vrf' command
-                       section.
-                       Without this the '!' is missing when the first VRF (once VRFs are sorted) is not configured
-                       for IPv6 routing.
                     render_combined_separator_for_ipv6_hardware_and_unicast_routing:
                        Available from AVD 6.4.0.
                        Render a single '!' separator for the combined IPv6 routing block when any
@@ -6724,9 +6708,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        - 'ipv6 unicast-routing vrf <vrf_name>'
                        - 'ipv6
                        hardware fib optimize prefixes profile <profile_name>'
-                       When 'false', separators are handled by each
-                       individual section.
-                       When 'true', it overrides 'always_render_ipv6_unicast_routing_vrfs_separator'.
+                       Also render the '!' separator before the VRF
+                       IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize
+                       prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
+                       When
+                       'false', separators are handled by each individual section.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by

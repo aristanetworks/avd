@@ -1,4 +1,3 @@
 ---
 eos_config_future:
   always_render_ip_routing_separator: true
-  always_render_ipv6_unicast_routing_vrfs_separator: true

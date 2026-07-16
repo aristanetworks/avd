@@ -18,13 +18,6 @@ keys:
           Available from AVD 6.2.0.
           Always render a '!' before the '(no) ip routing' command section.
           Without this the '!' is missing when only configuring routing for VRFs.
-      always_render_ipv6_unicast_routing_vrfs_separator:
-        type: bool
-        default: false
-        description: |-
-          Available from AVD 6.4.0.
-          Always render a '!' before the '(no) ipv6 unicast-routing vrf' command section.
-          Without this the '!' is missing when the first VRF (once VRFs are sorted) is not configured for IPv6 routing.
       render_combined_separator_for_ipv6_hardware_and_unicast_routing:
         type: bool
         default: false
@@ -34,8 +27,8 @@ keys:
           - 'ipv6 unicast-routing'
           - 'ipv6 unicast-routing vrf <vrf_name>'
           - 'ipv6 hardware fib optimize prefixes profile <profile_name>'
+          Also render the '!' separator before the VRF IPv6 unicast-routing section even when 'ipv6 unicast-routing' and 'ipv6 hardware fib optimize prefixes' are not present globally, as long as at least one VRF is configured for IPv6 routing.
           When 'false', separators are handled by each individual section.
-          When 'true', it overrides 'always_render_ipv6_unicast_routing_vrfs_separator'.
       new_ip_radius_cli_order:
         type: bool
         default: false
