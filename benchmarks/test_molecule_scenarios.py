@@ -18,7 +18,6 @@ from unittest.mock import patch
 import pytest
 
 from pyavd import get_device_config, get_device_structured_config, validate_inputs
-from pyavd._schema.store import init_store
 from pyavd.api.schemas import AVDDesign
 
 if TYPE_CHECKING:
@@ -61,7 +60,6 @@ def test_molecule_host_config_render_benchmark(
     generation, and EOS config rendering.
     """
     logging.disable(logging.CRITICAL)
-    init_store()
 
     def b() -> None:
         hostvars = molecule_host.hostvars

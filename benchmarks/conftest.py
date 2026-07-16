@@ -27,6 +27,20 @@ logger = logging.getLogger(__name__)
 MOLECULE_SCENARIOS: dict[str, MoleculeScenario] = {}
 
 
+@pytest.fixture(scope="session", autouse=True)
+def benchmark_schema_store() -> None:
+    """Prepare and load the schema store once for the benchmark process."""
+    from pyavd._schema.store import init_store
+    from pyavd.constants import SCHEMA_STORE_GZ_FILE
+
+    if not SCHEMA_STORE_GZ_FILE.exists():
+        from schema_tools.build_schemas import combine_schemas
+
+        combine_schemas()
+
+    init_store()
+
+
 @pytest.fixture(scope="session")
 def benchmark_cache() -> dict:
     """Cache for expensive operations across benchmark tests."""
