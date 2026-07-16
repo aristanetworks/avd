@@ -24,10 +24,10 @@
         name: arista.avd.eos_cli_config_gen
 
 - name: Converge expected failure for Containerlab Digital Twin without static management IP
-  hosts: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP
+  hosts: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_DHCP
   gather_facts: false
   connection: local
-  vars:
+  vars: &unsupported_mgmt_ip_vars
     output_dir_name: "digital_twin/intended"
     documentation_dir_name: "digital_twin/documentation"
     avd_digital_twin_mode: true
@@ -36,7 +36,7 @@
       enable: false
       topology_csv: false
       p2p_links_csv: false
-  tasks:
+  tasks: &unsupported_mgmt_ip_tasks
     - name: Run expected failure scenario
       block:
         - name: Generate intended variables in Containerlab Digital Twin mode
@@ -50,7 +50,22 @@
 
       rescue:
         - name: Assert Containerlab Digital Twin failed with the expected error message
+          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - expected_error_message in ansible_failed_result.msg
+
+- name: Converge expected failure for Containerlab Digital Twin with empty management IP
+  hosts: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_EMPTY
+  gather_facts: false
+  connection: local
+  vars: *unsupported_mgmt_ip_vars
+  tasks: *unsupported_mgmt_ip_tasks
+
+- name: Converge expected failure for Containerlab Digital Twin with null management IP
+  hosts: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_NULL
+  gather_facts: false
+  connection: local
+  vars: *unsupported_mgmt_ip_vars
+  tasks: *unsupported_mgmt_ip_tasks
