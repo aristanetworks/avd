@@ -572,7 +572,6 @@ dhcp relay
 ### System Boot Device Configuration
 
 ```eos
-!
 ```
 
 ## Monitoring
