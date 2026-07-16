@@ -53,3 +53,10 @@ keys:
           Available from AVD 6.3.0.
           When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`, matching the running-config preserved by EOS 4.33.2F and later.
           When `false` (default), renders the legacy `spanning-tree portfast` without the `edge` keyword.
+      only_render_separator_with_boot_secret_key:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.4.0.
+          When `true`, the '!' separator before 'boot secret' is only rendered when the key is provided.
+          When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.

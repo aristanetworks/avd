@@ -10,7 +10,7 @@
     | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  | Set the Aboot password.<br> |
     | [<samp>&nbsp;&nbsp;secret</samp>](## "boot.secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "boot.secret.hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String | Required |  |  | Hashed Password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String |  |  |  | Hashed Password. |
 
 === "YAML"
 
@@ -21,5 +21,5 @@
         hash_algorithm: <str; "md5" | "sha512"; default="sha512">
 
         # Hashed Password.
-        key: <str; required>
+        key: <str>
     ```

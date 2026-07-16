@@ -22,4 +22,3 @@ keys:
           key:
             description: Hashed Password.
             type: str
-            required: true

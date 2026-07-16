@@ -2617,12 +2617,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
             hash_algorithm: HashAlgorithm
             """Default value: `"sha512"`"""
-            key: str
+            key: str | None
             """Hashed Password."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -6594,6 +6594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
+            "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6656,6 +6657,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_separator_with_boot_secret_key: bool
+        """
+        Available from AVD 6.4.0.
+        When `true`, the '!' separator before 'boot secret' is only rendered when
+        the key is provided.
+        When `false` (default), the '!' separator is always rendered when `boot.secret`
+        is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6668,6 +6679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
+                only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6713,6 +6725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        matching the running-config preserved by EOS 4.33.2F and later.
                        When `false` (default), renders the
                        legacy `spanning-tree portfast` without the `edge` keyword.
+                    only_render_separator_with_boot_secret_key:
+                       Available from AVD 6.4.0.
+                       When `true`, the '!' separator before 'boot secret' is only rendered when
+                       the key is provided.
+                       When `false` (default), the '!' separator is always rendered when `boot.secret`
+                       is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.
 
                 """
 

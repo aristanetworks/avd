@@ -34,7 +34,6 @@
   - [DHCP Relay Summary](#dhcp-relay-summary)
   - [DHCP Relay Device Configuration](#dhcp-relay-device-configuration)
 - [System Boot Settings](#system-boot-settings)
-  - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Device Configuration](#system-boot-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -570,15 +569,10 @@ dhcp relay
 
 ## System Boot Settings
 
-### Boot Secret Summary
-
-- The md5 hashed Aboot password is configured
-
 ### System Boot Device Configuration
 
 ```eos
 !
-boot secret 5 <removed>
 ```
 
 ## Monitoring
