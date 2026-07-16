@@ -29362,6 +29362,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -29468,6 +29469,8 @@ class EosDesigns(EosDesignsRootModel):
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS for eBGP routes (default)."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -29539,6 +29542,7 @@ class EosDesigns(EosDesignsRootModel):
                     password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -29624,6 +29628,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS for eBGP routes (default).
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -36435,6 +36440,7 @@ class EosDesigns(EosDesignsRootModel):
                     "password_type": {"type": str, "default": "7"},
                     "passive": {"type": bool},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "send_community": {"type": str},
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
@@ -36545,6 +36551,8 @@ class EosDesigns(EosDesignsRootModel):
                 passive: bool | None
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
+                """Enforce the first AS for eBGP routes (default)."""
                 send_community: str | None
                 """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                 maximum_routes: int | None
@@ -36616,6 +36624,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: PasswordType | UndefinedType = Undefined,
                         passive: bool | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         send_community: str | None | UndefinedType = Undefined,
                         maximum_routes: int | None | UndefinedType = Undefined,
                         maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -36705,6 +36714,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: password_type
                             passive: passive
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: Enforce the first AS for eBGP routes (default).
                             send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                             maximum_routes: Maximum number of routes (0 means unlimited).
                             maximum_routes_warning_limit:
@@ -78566,6 +78576,7 @@ class EosDesigns(EosDesignsRootModel):
                         "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
+                        "enforce_first_as": {"type": bool},
                         "send_community": {"type": str},
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
@@ -78672,6 +78683,8 @@ class EosDesigns(EosDesignsRootModel):
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
+                    enforce_first_as: bool | None
+                    """Enforce the first AS for eBGP routes (default)."""
                     send_community: str | None
                     """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                     maximum_routes: int | None
@@ -78743,6 +78756,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
+                            enforce_first_as: bool | None | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
                             maximum_routes: int | None | UndefinedType = Undefined,
                             maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -78828,6 +78842,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
+                                enforce_first_as: Enforce the first AS for eBGP routes (default).
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                 maximum_routes: Maximum number of routes (0 means unlimited).
                                 maximum_routes_warning_limit:
@@ -85676,6 +85691,7 @@ class EosDesigns(EosDesignsRootModel):
                             "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
+                            "enforce_first_as": {"type": bool},
                             "send_community": {"type": str},
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
@@ -85786,6 +85802,8 @@ class EosDesigns(EosDesignsRootModel):
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
+                        enforce_first_as: bool | None
+                        """Enforce the first AS for eBGP routes (default)."""
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                         maximum_routes: int | None
@@ -85857,6 +85875,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
+                                enforce_first_as: bool | None | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
                                 maximum_routes: int | None | UndefinedType = Undefined,
                                 maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -85946,6 +85965,7 @@ class EosDesigns(EosDesignsRootModel):
                                     password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
+                                    enforce_first_as: Enforce the first AS for eBGP routes (default).
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     maximum_routes: Maximum number of routes (0 means unlimited).
                                     maximum_routes_warning_limit:

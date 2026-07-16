@@ -17150,6 +17150,9 @@ keys:
                 route_map:
                   type: str
                   description: Route-map name.
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS for eBGP routes (default).
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17429,6 +17432,9 @@ keys:
                   type: bool
                 route_map:
                   type: str
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS for eBGP routes (default).
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
