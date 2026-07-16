@@ -435,6 +435,34 @@ def test_build_anta_device_raises_when_required_settings_missing(monkeypatch: py
         build_anta_device("leaf1")
 
 
+def test_validate_argument_spec_materializes_runner_defaults(action_module: Callable[..., ActionModule]) -> None:
+    """`apply_defaults` materializes runner defaults even when the runner block is omitted."""
+    module = action_module(ActionModule, task_args={"device_list": ["leaf1"]})
+
+    _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
+    validated_args = anta_module.strip_empties_from_dict(validated_args)
+
+    assert validated_args["runner"]["timeout"] == 30.0
+    assert validated_args["runner"]["batch_size"] == 5
+    assert validated_args["runner"]["dry_run"] is False
+
+
+def test_validate_argument_spec_materializes_report_sorting_defaults(action_module: Callable[..., ActionModule]) -> None:
+    """`apply_defaults` materializes report.sorting defaults when report is provided without sorting."""
+    module = action_module(
+        ActionModule,
+        task_args={
+            "device_list": ["leaf1"],
+        },
+    )
+
+    _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
+    validated_args = anta_module.strip_empties_from_dict(validated_args)
+
+    assert validated_args["report"]["sorting"]["status_priority"] == ["error", "failure", "skipped", "success", "unset"]
+    assert validated_args["report"]["sorting"]["sort_fields"] == ["device", "categories", "test", "description", "custom_field"]
+
+
 def test_load_one_structured_config_raises_for_missing_file(tmp_path: Path) -> None:
     """FileNotFoundError is raised when the structured config file does not exist."""
     with pytest.raises(FileNotFoundError, match=r"Structured configuration file for device 'leaf1' not found"):
