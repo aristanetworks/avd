@@ -134,3 +134,129 @@ links:
 - connection:
   - digital-twin-ethernet-ports-1:Ethernet14
   - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet3
+  - digital.twin.ethernet.ports.2:Ethernet3
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet4
+  - digital.twin.ethernet.ports.2:Ethernet4
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet5
+  - digital.twin.ethernet.ports.2:Ethernet5
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet6
+  - digital-twin-ethernet-ports-3:Ethernet6
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet11
+  - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14
