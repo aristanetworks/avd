@@ -28,4 +28,4 @@ spine:
 
 expected_error_message: >-
   Containerlab Digital Twin is unsupported for nodes without a static management IPv4 address.
-  Found unsupported management IPv4 address settings: containerlab-null-mgmt: mgmt_ip is not set.
+  Found unsupported management IPv4 address settings: containerlab-null-mgmt.

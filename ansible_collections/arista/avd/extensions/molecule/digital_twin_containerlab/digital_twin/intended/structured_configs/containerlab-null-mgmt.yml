@@ -3,28 +3,17 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: containerlab-dhcp-mgmt
+hostname: containerlab-null-mgmt
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: dhcp
-  type: oob
 metadata:
   is_deployed: true
   platform: cEOSLab
-  fabric_name: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_DHCP
+  fabric_name: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_NULL
   validate_hardware:
     enabled: false
   digital_twin:
