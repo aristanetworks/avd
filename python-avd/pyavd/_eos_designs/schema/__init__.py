@@ -18838,7 +18838,6 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl": {"type": str},
                 "url": {"type": str},
                 "ssl_profile": {"type": str},
-                "ipv4_standard_acl": {"type": str},
                 "start_limit_infinite": {"type": bool},
             }
             enabled: bool
@@ -18863,11 +18862,6 @@ class EosDesigns(EosDesignsRootModel):
             supported.
             Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
             """
-            ipv4_standard_acl: str | None
-            """
-            Standard IPv4 ACL name.
-            This ACL must be present in `ipv4_standard_acls` catalog.
-            """
             start_limit_infinite: bool | None
             """
             Disable the loop-protection mechanism that limits captive portal authentication retries.
@@ -18884,7 +18878,6 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl: str | None | UndefinedType = Undefined,
                     url: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
-                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
                     start_limit_infinite: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18909,9 +18902,6 @@ class EosDesigns(EosDesignsRootModel):
                            Without this, only HTTP redirection is
                            supported.
                            Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
-                        ipv4_standard_acl:
-                           Standard IPv4 ACL name.
-                           This ACL must be present in `ipv4_standard_acls` catalog.
                         start_limit_infinite:
                            Disable the loop-protection mechanism that limits captive portal authentication retries.
                            By default,

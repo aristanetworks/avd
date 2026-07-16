@@ -252,11 +252,6 @@ keys:
               SSL profile name, enabling HTTPS redirection on port 443.
               Without this, only HTTP redirection is supported.
               Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
-          ipv4_standard_acl:
-            type: str
-            description: |-
-              Standard IPv4 ACL name.
-              This ACL must be present in `ipv4_standard_acls` catalog.
           start_limit_infinite:
             type: bool
             description: |-
