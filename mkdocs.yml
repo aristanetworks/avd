@@ -221,6 +221,8 @@ nav:
       - Versioning: docs/versioning/semantic-versioning.md
 # Indicates which files should be added to the build site but not present in nav.
 not_in_nav: |-
+  # These generated example docs are linked from docs/user-manual/intro-to-ansible-and-avd.md
+  # and must be built, but they should not appear in the navigation.
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/fabric/FABRIC-documentation.md
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/devices/dc1-leaf1a.md
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
