@@ -2349,7 +2349,7 @@ keys:
             description: Set captive-portal start limit to infinite.
           access_list_ipv4:
             type: str
-            description: Standard access-list name.
+            description: Standard/Extended access-list name.
       supplicant:
         type: dict
         keys:
@@ -6707,6 +6707,9 @@ keys:
                 - lt
                 - neq
                 default: eq
+              copy_captive_portal:
+                type: bool
+                description: Copy packet to CPU queue for dot1x captive-portal.
               vlan_inner:
                 type: bool
                 default: false

@@ -57,6 +57,7 @@ ip_access_lists:
         source: any
         destination: any
         log: true
+        copy_captive_portal: true
       - action: permit
         protocol: icmp
         source: any
@@ -64,6 +65,7 @@ ip_access_lists:
         icmp_type: 3
         icmp_code: 4
         ttl: 40
+        copy_captive_portal: true
       - action: permit
         protocol: icmp
         source: any
