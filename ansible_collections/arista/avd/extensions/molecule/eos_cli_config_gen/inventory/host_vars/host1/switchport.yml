@@ -1,3 +1,0 @@
-switchport:
-  ethernet_llc_validation: true
-  vlan_tag_validation: true

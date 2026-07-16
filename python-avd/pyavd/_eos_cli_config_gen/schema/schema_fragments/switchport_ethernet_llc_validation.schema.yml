@@ -6,12 +6,6 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  switchport:
-    type: dict
-    keys:
-      ethernet_llc_validation:
-        type: bool
-        description: Enable Ethernet LLC header validation.
-      vlan_tag_validation:
-        type: bool
-        description: Enable VLAN tag validation.
+  switchport_ethernet_llc_validation:
+    type: bool
+    description: Enable Ethernet LLC header validation.

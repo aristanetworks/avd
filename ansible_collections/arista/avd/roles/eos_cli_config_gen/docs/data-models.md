@@ -389,7 +389,8 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-p
 ### Switchport Validation
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-ethernet-llc-validation.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-vlan-tag-validation.md
 --8<--
 
 ### Sync-e
