@@ -229,7 +229,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
 
     if len(unique_mgmt_networks) > 1:
         mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
-        msg = f"Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet.Found multiple subnets: {mgmt_networks}."
+        msg = f"Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet. Found multiple subnets: {mgmt_networks}."
         raise AristaAvdError(msg)
 
     return ContainerlabDigitalTwin(
