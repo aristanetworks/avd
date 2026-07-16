@@ -18835,6 +18835,7 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
                 "url": {"type": str},
                 "ssl_profile": {"type": str},
                 "ipv4_standard_acl": {"type": str},
@@ -18842,6 +18843,11 @@ class EosDesigns(EosDesignsRootModel):
             }
             enabled: bool
             """Enable the Web Authentication feature."""
+            ipv4_acl: str | None
+            """
+            Extended IPv4 ACL name.
+            This ACL must be present in `ipv4_acls` catalog.
+            """
             url: str | None
             """
             Static captive portal URL used when the RADIUS server does not provide one during the authentication
@@ -18875,6 +18881,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
+                    ipv4_acl: str | None | UndefinedType = Undefined,
                     url: str | None | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
                     ipv4_standard_acl: str | None | UndefinedType = Undefined,
@@ -18888,6 +18895,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: Enable the Web Authentication feature.
+                        ipv4_acl:
+                           Extended IPv4 ACL name.
+                           This ACL must be present in `ipv4_acls` catalog.
                         url:
                            Static captive portal URL used when the RADIUS server does not provide one during the authentication
                            workflow.

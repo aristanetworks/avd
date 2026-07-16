@@ -11,6 +11,8 @@ from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import StructuredConfigUtilsProtocol
 
 
@@ -49,3 +51,18 @@ class UtilsMixin(Protocol):
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+
+    def _set_ipv4_acl(self: StructuredConfigUtilsProtocol, ipv4_acl: EosDesigns.Ipv4AclsItem) -> None:
+        """
+        Set structured config for ip_access_lists.
+
+        Called for each interface in l3_interfaces and l3_port_channels when applying ipv4_acls
+        """
+        self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
+
+    def _get_dot1x_ipv4_acl(self: StructuredConfigUtilsProtocol, ipv4_acl: str) -> EosDesigns.Ipv4AclsItem:
+        """Validates if an IPv4 ACL is present in the inputs catalog and returns the corresponding EosDesigns.Ipv4AclsItem."""
+        if ipv4_acl not in self.inputs.ipv4_acls:
+            msg = f"ipv4_acls[name={ipv4_acl}]"
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+        return self.inputs.ipv4_acls[ipv4_acl]

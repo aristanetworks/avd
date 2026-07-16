@@ -2664,6 +2664,11 @@ keys:
             type: bool
             required: true
             description: Enable the Web Authentication feature.
+          ipv4_acl:
+            type: str
+            description: 'Extended IPv4 ACL name.
+
+              This ACL must be present in `ipv4_acls` catalog.'
           url:
             type: str
             pattern: https?://[^\s/:]+(:\d+)?
