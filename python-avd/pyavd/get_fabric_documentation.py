@@ -215,13 +215,19 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     links = [
         ContainerlabLinkSettings(
             endpoints=(
-                f"{topology_link['node']}:{topology_link['node_interface'].replace('/', '_')}",
-                f"{topology_link['peer']}:{topology_link['peer_interface'].replace('/', '_')}",
+                f"{topology_link['node']}:{topology_link['node_interface'].replace('Ethernet', 'eth').replace('/', '_')}",
+                f"{topology_link['peer']}:{topology_link['peer_interface'].replace('Ethernet', 'eth').replace('/', '_')}",
             )
         )
         for topology_link in fabric_documentation_facts.topology_links
         if _is_p2p_link(topology_link)
     ]
+    ethernet_interface_mapping = {
+        endpoint_interface: endpoint_interface.replace("eth", "Ethernet", 1).replace("_", "/")
+        for link in links
+        for endpoint in link.endpoints
+        for endpoint_interface in [endpoint.rsplit(":", maxsplit=1)[1]]
+    }
     default_kind = "arista_ceos"
 
     # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
@@ -242,11 +248,16 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
                 default_kind: ContainerlabKind(
                     enforce_startup_config=True,
                     image="arista/ceos:latest",
+                    binds=("interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro",),
                 )
             },
             nodes=nodes,
             links=tuple(links),
         ),
+        interface_mapping={
+            "ManagementIntf": {"eth0": "Management1"},
+            "EthernetIntf": dict(sorted(ethernet_interface_mapping.items())),
+        },
     )
 
 

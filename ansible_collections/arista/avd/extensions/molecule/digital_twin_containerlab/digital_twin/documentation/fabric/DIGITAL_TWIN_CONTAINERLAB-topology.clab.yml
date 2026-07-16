@@ -11,6 +11,8 @@ topology:
     arista_ceos:
       enforce-startup-config: true
       image: arista/ceos:latest
+      binds:
+      - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
   nodes:
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
@@ -26,14 +28,14 @@ topology:
       startup-config: init-configs/dc1-spine2.cfg
   links:
   - endpoints:
-    - dc1-leaf1a:Ethernet1
-    - dc1-spine1:Ethernet1
+    - dc1-leaf1a:eth1
+    - dc1-spine1:eth1
   - endpoints:
-    - dc1-leaf1a:Ethernet1_2
-    - dc1-spine2:Ethernet1_2
+    - dc1-leaf1a:eth1_2
+    - dc1-spine2:eth1_2
   - endpoints:
-    - dc1-leaf2a:Ethernet1_1
-    - dc1-spine1:Ethernet1_3
+    - dc1-leaf2a:eth1_1
+    - dc1-spine1:eth1_3
   - endpoints:
-    - dc1-leaf2a:Ethernet2
-    - dc1-spine2:Ethernet2
+    - dc1-leaf2a:eth2
+    - dc1-spine2:eth2
