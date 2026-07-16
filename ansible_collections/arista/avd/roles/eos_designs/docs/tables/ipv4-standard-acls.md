@@ -19,6 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "ipv4_standard_acls.[].entries.[].vlan_mask") | String |  |  |  | VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.<br>To ensure that a value like 0x001 is treated strictly as a string<br>and not converted to a decimal (like 1), use single or double quotes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ipv4_standard_acls.[].entries.[].inner_vlan") | Integer |  |  |  | Match packets by inner VLAN value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "ipv4_standard_acls.[].entries.[].inner_vlan_mask") | String |  |  |  | Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.<br>To ensure that a value like 0x001 is treated strictly as a string<br>and not converted to a decimal (like 1), use single or double quotes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy_captive_portal</samp>](## "ipv4_standard_acls.[].entries.[].copy_captive_portal") | Boolean |  |  |  | Copy packet to CPU queue for dot1x captive-portal. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv4_standard_acls.[].entries.[].log") | Boolean |  |  |  | Enable logging when a packet matches the ACL rule. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mirror_session</samp>](## "ipv4_standard_acls.[].entries.[].mirror_session") | String |  |  |  | Mirror session to mirror matches against this rule. |
 
@@ -65,6 +66,9 @@
             # To ensure that a value like 0x001 is treated strictly as a string
             # and not converted to a decimal (like 1), use single or double quotes.
             inner_vlan_mask: <str>
+
+            # Copy packet to CPU queue for dot1x captive-portal.
+            copy_captive_portal: <bool>
 
             # Enable logging when a packet matches the ACL rule.
             log: <bool>

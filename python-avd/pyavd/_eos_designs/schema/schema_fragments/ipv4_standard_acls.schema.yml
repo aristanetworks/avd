@@ -70,6 +70,9 @@ keys:
                   Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
                   To ensure that a value like 0x001 is treated strictly as a string
                   and not converted to a decimal (like 1), use single or double quotes.
+              copy_captive_portal:
+                type: bool
+                description: Copy packet to CPU queue for dot1x captive-portal.
               log:
                 type: bool
                 description: Enable logging when a packet matches the ACL rule.

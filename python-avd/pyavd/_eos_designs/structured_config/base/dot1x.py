@@ -130,7 +130,7 @@ class Dot1xMixin(Protocol):
         )
         if web_authentication.ipv4_acl is not None:
             if web_authentication.ipv4_acl in self.inputs.ipv4_acls:
-                self.structured_config_utils._set_ipv4_acl(web_authentication.ipv4_acl)
+                self.structured_config.ip_access_lists.append(self.inputs.ipv4_acls[web_authentication.ipv4_acl]._cast_as(EosCliConfigGen.IpAccessListsItem))
             self.structured_config.dot1x.captive_portal.access_list_ipv4 = web_authentication.ipv4_acl
 
     def _configure_dot1x_device_profiling(

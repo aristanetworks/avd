@@ -31,6 +31,7 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.0.0.1
+    copy_captive_portal: true
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius:

@@ -22674,6 +22674,7 @@ class EosDesigns(EosDesignsRootModel):
                 "vlan_mask": {"type": str},
                 "inner_vlan": {"type": int},
                 "inner_vlan_mask": {"type": str},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "mirror_session": {"type": str},
             }
@@ -22712,6 +22713,8 @@ class EosDesigns(EosDesignsRootModel):
             and not converted to a decimal (like 1), use single or
             double quotes.
             """
+            copy_captive_portal: bool | None
+            """Copy packet to CPU queue for dot1x captive-portal."""
             log: bool | None
             """Enable logging when a packet matches the ACL rule."""
             mirror_session: str | None
@@ -22730,6 +22733,7 @@ class EosDesigns(EosDesignsRootModel):
                     vlan_mask: str | None | UndefinedType = Undefined,
                     inner_vlan: int | None | UndefinedType = Undefined,
                     inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    copy_captive_portal: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     mirror_session: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -22764,6 +22768,7 @@ class EosDesigns(EosDesignsRootModel):
                            like 0x001 is treated strictly as a string
                            and not converted to a decimal (like 1), use single or
                            double quotes.
+                        copy_captive_portal: Copy packet to CPU queue for dot1x captive-portal.
                         log: Enable logging when a packet matches the ACL rule.
                         mirror_session: Mirror session to mirror matches against this rule.
 
