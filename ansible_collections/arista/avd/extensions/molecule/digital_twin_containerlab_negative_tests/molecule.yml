@@ -1,0 +1,24 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=inventory/hosts.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      gathering: explicit
+scenario:
+  converge_sequence:
+    - syntax
+    - converge
+  test_sequence:
+    - syntax
+    - converge
+dependency:
+  name: galaxy
+  enabled: false
+verifier:
+  name: ansible
