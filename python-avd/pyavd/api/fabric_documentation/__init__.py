@@ -29,6 +29,7 @@ class ContainerlabDefaults:
 class ContainerlabKind:
     enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
     image: str
+    binds: tuple[str, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -83,6 +84,7 @@ class ContainerlabDigitalTwin:
     prefix: str
     mgmt: ContainerlabMgmt
     topology: ContainerlabTopology
+    interface_mapping: dict[str, dict[str, str]] | None = None
 
 
 class FabricDocumentation:
