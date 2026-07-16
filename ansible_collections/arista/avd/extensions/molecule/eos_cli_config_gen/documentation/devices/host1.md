@@ -15727,8 +15727,8 @@ maintenance
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
 | at_date_interval | at 06:00:00 2027-12-22 interval 60 minutes | show logging | 10 | 30 | - | - | - | gzip |
 | at_date_once | at 11:11:11 02/12/2029 once | show tech-support | 3 | 3 | - | - | - | bzip2 |
-| at_time_once | at 08:00:00 2028-01-15 once | show ip route | 5 | - | - | - | - | xz |
-| interval_full_options | interval 44 minutes | show running-config | 3 | 30 | True | flash:/schedule | 1024m | - |
+| at_time_once | at 08:00:00 2028-01-15 once | show ip route | 5 | - | - | - | - | - |
+| interval_full_options | interval 44 minutes | show running-config | 3 | 30 | True | flash:/schedule | 1024m | xz |
 | interval_minimal | interval 5 minutes | show version | 44 | 4 | - | - | - | - |
 | interval_simple | interval 31 minutes | show lldp neighbors | 2 | 30 | - | - | - | - |
 | interval_standard | interval 33 minutes | show interfaces | 4 | 30 | - | - | - | - |
@@ -15741,8 +15741,8 @@ schedule config max-concurrent-jobs 2
 schedule config prepend-hostname-logfile
 schedule at_date_interval at 06:00:00 2027-12-22 interval 60 timeout 30 max-log-files 10 compression gzip command show logging
 schedule at_date_once at 11:11:11 02/12/2029 once timeout 3 max-log-files 3 compression bzip2 command show tech-support
-schedule at_time_once at 08:00:00 2028-01-15 once max-log-files 5 compression xz command show ip route
-schedule interval_full_options interval 44 timeout 30 max-log-files 3 max-total-size 1024m logging verbose loglocation flash:/schedule command show running-config
+schedule at_time_once at 08:00:00 2028-01-15 once max-log-files 5 command show ip route
+schedule interval_full_options interval 44 timeout 30 max-log-files 3 max-total-size 1024m logging verbose loglocation flash:/schedule compression xz command show running-config
 schedule interval_minimal interval 5 timeout 4 max-log-files 44 command show version
 schedule interval_simple interval 31 timeout 30 max-log-files 2 command show lldp neighbors
 schedule interval_standard interval 33 timeout 30 max-log-files 4 command show interfaces

@@ -31,7 +31,6 @@ schedule:
         date: "2028-01-15"
         once: true
       max_log_files: 5
-      compression: xz
       command: show ip route
     # standalone interval with all optional fields
     - name: interval_full_options
@@ -40,6 +39,7 @@ schedule:
       max_log_files: 3
       max_total_size: "1024m"
       logging_verbose: true
+      compression: xz
       loglocation: "flash:/schedule"
       command: show running-config
     # standalone interval — minimal options

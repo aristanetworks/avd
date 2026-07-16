@@ -11,7 +11,7 @@ schedule:
       interval: 60
       max_log_files: 1
       command: show clock
-    # at <time> <date> — no once, no interval (covers at-without-period-suffix branch)
+    # at <time> <date> — no once, no interval this will not generate cli command.
     - name: at_time_only
       at:
         time: "12:00:00"
