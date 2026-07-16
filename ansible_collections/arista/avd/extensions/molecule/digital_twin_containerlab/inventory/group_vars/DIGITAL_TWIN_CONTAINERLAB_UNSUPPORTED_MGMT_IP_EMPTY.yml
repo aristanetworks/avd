@@ -1,5 +1,5 @@
 ---
-fabric_name: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP
+fabric_name: DIGITAL_TWIN_CONTAINERLAB_UNSUPPORTED_MGMT_IP_EMPTY
 
 management_eapi:
   enabled: true
@@ -22,10 +22,10 @@ spine:
     loopback_ipv4_pool: 10.255.0.0/27
     bgp_as: 65100
   nodes:
-    - name: containerlab-dhcp-mgmt
+    - name: containerlab-empty-mgmt
       id: 1
-      mgmt_ip: dhcp
+      mgmt_ip: ""
 
 expected_error_message: >-
   Containerlab Digital Twin is unsupported for nodes without a static management IPv4 address.
-  Found missing or DHCP management IPv4 address for nodes: containerlab-dhcp-mgmt.
+  Found unsupported management IPv4 address settings: containerlab-empty-mgmt: mgmt_ip is an empty string.

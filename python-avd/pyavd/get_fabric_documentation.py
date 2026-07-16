@@ -205,7 +205,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     if unsupported_devices:
         msg = (
             "Containerlab Digital Twin is unsupported for nodes without a static management IPv4 address. "
-            f"Found missing or DHCP management IPv4 address for nodes: {', '.join(unsupported_devices)}."
+            f"Found unsupported management IPv4 address settings: {', '.join(unsupported_devices)}."
         )
         raise AristaAvdError(msg)
 
