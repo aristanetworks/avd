@@ -47,13 +47,13 @@ compile-templates:
 	$(SCRIPTS_DIR)/compile_templates.py
 
 .PHONY: benchmark
-benchmark: ## Run all performance benchmarks
+benchmark: dep ## Run all performance benchmarks
 	pytest --codspeed ../benchmarks
 
 .PHONY: benchmark-scaling
-benchmark-scaling: ## Run large fabric scaling benchmarks only
+benchmark-scaling: dep ## Run large fabric scaling benchmarks only
 	pytest --codspeed ../benchmarks/test_large_fabric_scaling.py
 
 .PHONY: benchmark-molecule
-benchmark-molecule: ## Run molecule scenario benchmarks only
+benchmark-molecule: dep ## Run molecule scenario benchmarks only
 	pytest --codspeed ../benchmarks/test_molecule_scenarios.py
