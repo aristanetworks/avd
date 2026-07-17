@@ -158,6 +158,22 @@ The SPA fetches the SQLite with `cache: "no-cache"` so newly published files
 are picked up via a conditional GET on the next page load — no hard reload
 required.
 
+## Troubleshooting
+
+### Local schema changes are not showing up
+
+Schema Explorer reads the compiled full schema files, not individual schema
+fragments. If you changed files under `schema_fragments/`, regenerate the full
+schemas before rebuilding the explorer:
+
+```bash
+pre-commit run schemas --all-files
+make schema-explorer-build
+```
+
+The MkDocs hook freshness check only sees the compiled schema files, so
+fragment-only edits can look stale until that regeneration step runs.
+
 ## Architecture decisions
 
 See `aristanetworks/avd-internal#503` for the full thread. Short version:

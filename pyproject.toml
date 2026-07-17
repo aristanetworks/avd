@@ -4,12 +4,11 @@
 # when generating molecule artifacts.
 dev = [
     "anta==1.8.0",
-    "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.6",
     "python-socks[asyncio]>=2.7.2",
-    "pyyaml>=6.0.0",
     # dev requirements"
+    {include-group = "schema-tools"},
     {include-group = "pytest"},
     {include-group = "molecule"},
     "ansible-doc-extractor>=0.1.11",
@@ -19,7 +18,6 @@ dev = [
     "codespell>=2.4.2",
     "docker>=7.1.0",
     "identify>=2.6.18",
-    "jsonschema-rs>=0.46.0",
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
@@ -44,26 +42,26 @@ doc = [
     "mkdocs-git-revision-date-plugin",
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
-    "mkdocs-autorefs",
     "mkdocstrings[python]",
-    # Schema Explorer build-time deps (tools/schema-explorer/generate.py)
+    {include-group = "schema-tools"},
+]
+molecule = [
+    "molecule>=26.4.0",
+    "molecule-plugins[docker]>=25.8.12",
+]
+schema-tools = [
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
     "deepmerge>=1.1.0",
     "pydantic>=2.11.10",
     "jsonschema-rs>=0.46.0",
 ]
-molecule = [
-    "molecule>=26.4.0",
-    "molecule-plugins[docker]>=25.8.12",
-]
 pytest = [
     "ansible-core>=2.16.0,<2.22.0",
     "anta==1.8.0",
     "pytest>=9.1.0",
     "pytest-asyncio>=1.3.0",
-    "pydantic>=2.11.10",
-    "referencing>=0.37.0",
+    {include-group = "schema-tools"},
 ]
 
 [tool.ruff]
