@@ -16,7 +16,8 @@ permissions:
 
 jobs:
   autofix:
-    name: Run pre-commit and commit back any changes
+    # Replaces the former PR and push hook execution done with pre-commit/action.
+    name: Run prek and commit back any changes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
@@ -29,18 +30,18 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run pre-commit autofix pass
-        id: pre_commit
-        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+      - name: Run prek autofix pass
+        id: prek
+        uses: j178/prek-action@e98a699c41eb69ab013a45817a0406469a748f8d # v2.0.5
         continue-on-error: true
         with:
-          extra_args: --all-files
+          extra-args: --all-files
 
-      - name: Fail if pre-commit failed without fixes
-        if: steps.pre_commit.outcome == 'failure'
+      - name: Fail if prek failed without fixes
+        if: steps.prek.outcome == 'failure'
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "pre-commit failed and did not produce changes for autofix.ci to commit."
+            echo "prek failed and did not produce changes for autofix.ci to commit."
             exit 1
           fi
 

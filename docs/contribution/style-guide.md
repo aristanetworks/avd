@@ -14,7 +14,7 @@ For the Ansible collection `arista.avd.`, we are required to follow guidelines f
 
 For PyAVD and other areas we follow common good practices as enforced by Ruff and Pylint.
 
-The CI Pipeline (& pre-commit) for AVD enforces the following:
+The CI Pipeline (& prek) for AVD enforces the following:
 
 - Maximum line length of 160
 - [Ruff](https://docs.astral.sh/ruff/) version >=0.5.6

@@ -8,7 +8,7 @@
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
   - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leveraged in the project: pre-commit, Molecule and ansible-test.
+- This guide provides additional information about the development tools leveraged in the project: prek, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
@@ -93,50 +93,52 @@ TODO: Add picture.
 
 When running from source, the `verify_requirements` action will check if any schema fragment or templates has changed locally and if so, will recompile on the fly either or both as
 required for `eos_cli_config_gen` and `eos_designs`, allowing a seamless development workflow while using Ansible.
-When using pyavd, it is required to run pre-commit to achieve the same.
+When using pyavd, it is required to run prek to achieve the same.
 
-## Pre-commit
+## Prek
 
-- [pre-commit](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements.
+- [prek](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements.
 - Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
-- Additionally, the AVD project leverages pre-commit hooks to build and update the AVD schemas, templates and documentation artifacts.
+- Additionally, the AVD project leverages prek hooks to build and update the AVD schemas, templates and documentation artifacts.
 
-### Install pre-commit hook
+The `.pre-commit-config.yaml` file name is retained because `prek` supports this configuration format.
 
-Configure pre-commit git hook, to automatically run pre-commit. This is optional, but highly recommended!
+### Install prek hook
+
+Configure the prek git hook to automatically run prek. This is optional, but highly recommended!
 
 ```shell
 # Change to directory to your cloned avd repository.
 cd avd
 
-# Install pre-commit hooks to run automatically.
-pre-commit install
+# Install prek hooks to run automatically.
+prek install
 ```
 
-### Run pre-commit manually
+### Run prek manually
 
-To run `pre-commit` manually before you commit, use this command:
+To run `prek` manually before you commit, use this command:
 
 ```shell
 # Change to directory to your cloned avd repository.
 cd avd
 
-# Run pre-commit hooks on all staged files.
+# Run prek hooks on all staged files.
 # The command will automatically detect changed files using `git status` and run tests according to their type.
-pre-commit run
+prek run
 
-# Run pre-commit hooks on all un-staged and staged files.
-pre-commit run --all
+# Run prek hooks on all un-staged and staged files.
+prek run --all
 
-# Run specific pre-commit schemas hook on all un-staged and staged files.
-pre-commit run schemas --all
+# Run specific prek schemas hook on all un-staged and staged files.
+prek run schemas --all
 ```
 
 !!! note
     This process is also implemented in the project CI to ensure code quality and compliance.
-    All pre-commit checks must pass, therefore we highly recommend running this workflow before committing changes!
+    All prek checks must pass, therefore we highly recommend running this workflow before committing changes!
 
-    Pre-commit will fail if any files are changed by the pre-commit hooks. Make sure to review the changes, commit them and rerun pre-commit.
+    Prek will fail if any files are changed by the prek hooks. Make sure to review the changes, commit them and rerun prek.
 
 ## Molecule
 
