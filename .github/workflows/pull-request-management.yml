@@ -266,6 +266,8 @@ jobs:
         avd_scenario:
           - "ansible_only"
           - "digital_twin"
+          - "digital_twin_containerlab"
+          - "digital_twin_containerlab_negative_tests"
           - "eos_designs_deprecated_vars"
           - "eos_designs-l2ls"
           - "eos_designs-mpls-isis-sr-ldp"
