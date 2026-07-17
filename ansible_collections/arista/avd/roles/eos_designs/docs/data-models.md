@@ -1990,7 +1990,8 @@ Important caveats for the current Containerlab implementation:
 - The generated topology sets `prefix: ""` intentionally to preserve the original AVD hostnames.
 - The generated topology currently defaults to `arista_ceos` with `image: arista/ceos:latest`. Please set up your lab environment accordingly, or update the generated topology file if needed.
 
-> WARNING: Make sure your lab environment is isolated from production. The management addresses are reused, so take the necessary precautions to avoid pushing configurations to the wrong environment.
+!!! warning
+    Make sure your lab environment is isolated from production. The management addresses are reused, so take the necessary precautions to avoid pushing configurations to the wrong environment.
 
 Containerlab startup configs are intentionally duplicated under `documentation/fabric/init-configs/`. These files are copies of the generated intended configs and make the topology self-contained and stable to launch without depending on repository-relative paths. Since the lab and production management IPs must currently match, AVD does not rewrite the management addressing in those configs for Containerlab.
 
