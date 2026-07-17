@@ -197,7 +197,6 @@ exclude = [
   "python-avd/schema_tools/generate_docs",                               # TODO
   "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
-  "benchmarks",                                                          # Benchmarks are type-checked by pytest collection.
   # Excluded
   "python-avd/pyavd/_cv/api",
   "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
