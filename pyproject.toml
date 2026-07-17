@@ -42,7 +42,6 @@ doc = [
     "mkdocs-git-revision-date-plugin",
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
-    "mkdocs-autorefs",
     "mkdocstrings[python]",
     {include-group = "schema-tools"},
 ]
