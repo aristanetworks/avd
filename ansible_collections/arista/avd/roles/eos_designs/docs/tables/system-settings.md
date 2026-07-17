@@ -144,7 +144,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;information_option</samp>](## "general_settings.dhcp_relay.information_option") | Boolean |  | `False` |  | Enables the insertion of DHCP Relay Agent Information (Option 82). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_requests_disabled</samp>](## "general_settings.dhcp_relay.tunnel_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets received over VXLAN tunnels.<br>This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peerlink_requests_disabled</samp>](## "general_settings.dhcp_relay.mlag_peerlink_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets arriving via the MLAG peer-link.<br>This will only be configured on VXLAN VTEPs which are also MLAG devices. |
-    | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | List of VLANs to create in a suspended state. |
+    | [<samp>&nbsp;&nbsp;suspended_vlans</samp>](## "general_settings.suspended_vlans") | List, items: Dictionary |  |  |  | Suspended VLANs are rendered only as local suspended VLAN definitions.<br>They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "general_settings.suspended_vlans.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "general_settings.suspended_vlans.[].name") | String |  |  |  |  |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
@@ -412,7 +412,8 @@
         # This will only be configured on VXLAN VTEPs which are also MLAG devices.
         mlag_peerlink_requests_disabled: <bool; default=False>
 
-      # List of VLANs to create in a suspended state.
+      # Suspended VLANs are rendered only as local suspended VLAN definitions.
+      # They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services.
       suspended_vlans:
         - id: <int; 1-4094; required; unique>
           name: <str>

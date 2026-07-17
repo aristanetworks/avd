@@ -21997,10 +21997,13 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         suspended_vlans: SuspendedVlans
         """
-        List of VLANs to create in a suspended state.
+        Suspended VLANs are rendered only as local suspended VLAN definitions.
+        They are not used for
+        endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+        defined by network services.
 
-        Subclass of AvdIndexedList with `SuspendedVlansItem`
-        items. Primary key is `id` (`int`).
+        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+        key is `id` (`int`).
         """
 
         if TYPE_CHECKING:
@@ -22026,10 +22029,13 @@ class EosDesigns(EosDesignsRootModel):
                     ip_icmp_redirect: ip_icmp_redirect
                     dhcp_relay: Subclass of AvdModel.
                     suspended_vlans:
-                       List of VLANs to create in a suspended state.
+                       Suspended VLANs are rendered only as local suspended VLAN definitions.
+                       They are not used for
+                       endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+                       defined by network services.
 
-                       Subclass of AvdIndexedList with `SuspendedVlansItem`
-                       items. Primary key is `id` (`int`).
+                       Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+                       key is `id` (`int`).
 
                 """
 

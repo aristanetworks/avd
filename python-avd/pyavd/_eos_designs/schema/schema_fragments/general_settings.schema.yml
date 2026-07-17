@@ -52,7 +52,9 @@ keys:
             default: false
       suspended_vlans:
         type: list
-        description: List of VLANs to create in a suspended state.
+        description: |-
+          Suspended VLANs are rendered only as local suspended VLAN definitions.
+          They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs defined by network services.
         primary_key: id
         items:
           type: dict
