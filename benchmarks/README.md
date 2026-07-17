@@ -58,6 +58,7 @@ Install the benchmark dependencies from the repository root:
 
 ```bash
 pip install --group dev --group benchmark --upgrade
+make -C python-avd dep
 ```
 
 Run benchmarks from the repository root:

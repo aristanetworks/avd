@@ -6,20 +6,15 @@
 from __future__ import annotations
 
 import logging
-import sys
 from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from tests.models import MoleculeHost, MoleculeScenario
 
 if TYPE_CHECKING:
     from _pytest.terminal import TerminalReporter
-
-# Add python-avd to path so we can import from tests.models
-sys.path.insert(0, str(Path(__file__).parent.parent / "python-avd"))
-
-from tests.models import MoleculeHost, MoleculeScenario
 
 logger = logging.getLogger(__name__)
 
@@ -29,20 +24,8 @@ MOLECULE_SCENARIOS: dict[str, MoleculeScenario] = {}
 
 @pytest.fixture(scope="session", autouse=True)
 def benchmark_schema_store() -> None:
-    """Prepare and load the schema store once for the benchmark process."""
-    from pyavd._schema.constants import PICKLED_SCHEMAS
+    """Load the PyAVD schema store once for the benchmark process."""
     from pyavd._schema.store import init_store
-    from pyavd.constants import SCHEMA_STORE_GZ_FILE
-
-    if not SCHEMA_STORE_GZ_FILE.exists():
-        from schema_tools.build_schemas import combine_schemas
-
-        combine_schemas()
-
-    if any(not path.exists() for path in PICKLED_SCHEMAS.values()):
-        from schema_tools.store import create_store
-
-        create_store(force_rebuild=True)
 
     init_store()
 
