@@ -13,6 +13,14 @@ import pytest
 from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule, _normalize_yaml_data
+from pyavd.api.fabric_documentation import (
+    ContainerlabDefaults,
+    ContainerlabDigitalTwin,
+    ContainerlabKind,
+    ContainerlabMgmt,
+    ContainerlabNode,
+    ContainerlabTopology,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -145,6 +153,51 @@ def test_run_routes_missing_device_warning_to_display(action_module: Callable[..
     warning_messages = [call.args[0] for call in shared_display.warning.call_args_list]
     assert warning_messages == [expected_message]
     assert result.get("failed") is not True
+
+
+def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover the cLab-only topology key ordering: name and prefix must be emitted first."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.clab.yml"
+    output = _empty_output()
+    output.digital_twin = ContainerlabDigitalTwin(
+        name="DC1",
+        prefix="",
+        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind="arista_ceos"),
+            kinds={"arista_ceos": ContainerlabKind(enforce_startup_config=True, image="ceos:latest")},
+            nodes={"leaf1": ContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            links=(),
+        ),
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        _ = file_mode
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
+
+    assert written_files[str(topology_file)].splitlines()[:3] == ["---", "name: DC1", "prefix: ''"]
 
 
 # ---------------------------------------------------------------------------
