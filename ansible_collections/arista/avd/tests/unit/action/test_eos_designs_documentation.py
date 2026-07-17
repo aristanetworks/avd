@@ -5,13 +5,14 @@ from __future__ import annotations
 
 import json
 import logging
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule
+from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule, _normalize_yaml_data
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -39,6 +40,53 @@ BASE_VALIDATED_ARGS = {
     "toc": True,
     "digital_twin": False,
 }
+
+
+def test_normalize_yaml_data_recursively_honors_dataclass_yaml_keys() -> None:
+    """Normalize nested cLab-shaped dataclasses into YAML-ready data while preserving explicit YAML key aliases."""
+
+    @dataclass(frozen=True)
+    class ContainerlabNode:
+        mgmt_ipv4: str = field(metadata={"yaml_key": "mgmt-ipv4"})
+
+    @dataclass(frozen=True)
+    class ContainerlabKind:
+        enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
+        image: str
+
+    @dataclass(frozen=True)
+    class ContainerlabMgmt:
+        network: str
+        ipv4_subnet: str = field(metadata={"yaml_key": "ipv4-subnet"})
+
+    @dataclass(frozen=True)
+    class ContainerlabTopology:
+        nodes: dict[object, ContainerlabNode]
+        kinds: tuple[ContainerlabKind, ...]
+        endpoint_lists: list[tuple[str, str]]
+
+    @dataclass(frozen=True)
+    class ContainerlabDigitalTwin:
+        mgmt: ContainerlabMgmt
+        topology: ContainerlabTopology
+
+    data = ContainerlabDigitalTwin(
+        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=ContainerlabTopology(
+            nodes={1: ContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            kinds=(ContainerlabKind(enforce_startup_config=True, image="ceos:latest"),),
+            endpoint_lists=[("leaf1:eth1", "spine1:eth1")],
+        ),
+    )
+
+    assert _normalize_yaml_data(data) == {
+        "mgmt": {"network": "clab-mgmt", "ipv4-subnet": "172.16.1.0/24"},
+        "topology": {
+            "nodes": {"1": {"mgmt-ipv4": "172.16.1.101"}},
+            "kinds": [{"enforce-startup-config": True, "image": "ceos:latest"}],
+            "endpoint_lists": [["leaf1:eth1", "spine1:eth1"]],
+        },
+    }
 
 
 def _empty_output() -> MagicMock:
