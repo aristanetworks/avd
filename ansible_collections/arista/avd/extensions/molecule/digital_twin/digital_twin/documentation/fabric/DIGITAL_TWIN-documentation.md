@@ -17,7 +17,7 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-1 | 192.168.0.1/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-1 | 192.168.10.1/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-2 | 192.168.1.2/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-4 | 192.168.1.4/32 | custom-platform | Provisioned | - |

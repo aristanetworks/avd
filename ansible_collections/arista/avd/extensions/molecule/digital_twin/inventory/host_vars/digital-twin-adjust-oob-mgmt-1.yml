@@ -8,4 +8,4 @@ l2leaf:
       id: 1
       mgmt_ip: 192.168.1.1/32
       digital_twin:
-        mgmt_ip: 192.168.0.1/32
+        mgmt_ip: 192.168.10.1/32
