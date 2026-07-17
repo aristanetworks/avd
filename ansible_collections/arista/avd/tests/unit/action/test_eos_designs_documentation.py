@@ -175,7 +175,7 @@ def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_m
     written_files: dict[str, str] = {}
 
     def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
-        _ = file_mode
+        assert file_mode == "0o664"
         written_files[filename] = content
         return True
 
