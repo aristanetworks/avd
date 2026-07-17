@@ -96,6 +96,18 @@ class MgmtMixin(Protocol):
         return default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
 
     @cached_property
+    def oob_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 gateway used for the generated OOB management interface.
+
+        In ACT Digital Twin mode, `digital_twin.mgmt_gateway` takes precedence over the regular management gateway.
+        """
+        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_gateway, self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+
+        return self.mgmt_gateway
+
+    @cached_property
     def ipv6_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
         return default(self.node_config.ipv6_mgmt_gateway, self.inputs.ipv6_mgmt_gateway)
 
