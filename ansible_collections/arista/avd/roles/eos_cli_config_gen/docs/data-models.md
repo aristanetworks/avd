@@ -374,22 +374,29 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/patch-panel.
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/port-channel-interfaces.md
 --8<--
 
-### Switchport default
+### Switchport
+
+#### Switchport default
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-default.md
 --8<--
 
-### Switchport port security
+#### Switchport port security
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
 --8<--
 
-### Switchport Validation
+#### Switchport Ethernet LLC Validation
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-ethernet-llc-validation.md
+--8<--
+
+#### Switchport VLAN Tag Validation
+
+--8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-vlan-tag-validation.md
 --8<--
 
