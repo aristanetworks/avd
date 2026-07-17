@@ -8,6 +8,7 @@ strict: true
 exclude_docs: |
   /README.md
   /tools/
+  /site/
   /.venv/
   /venv/
   /.tox/
@@ -82,6 +83,9 @@ plugins:
         # both live under tools/. mkdocs_hook.py copies the built tree into
         # site/_assets/schema-explorer/ on `mkdocs build`.
         - tools/*
+        # Local mkdocs build output. With `docs_dir: .`, serving after a build
+        # would otherwise ingest generated `site/` files as source media.
+        - site/*
         - README.md
         - contributing.md
         - pylintrc-ansible
@@ -135,6 +139,9 @@ plugins:
         - ".*.j2$"
   - include_dir_to_nav
   - git-revision-date-localized:
+      # Docker docs containers often mount a git worktree without the host
+      # absolute gitdir target, so disable this plugin there via env.
+      enabled: !ENV [AVD_ENABLE_GIT_REVISION_DATE, true]
       type: date
   - search:
       lang: en
@@ -187,8 +194,8 @@ markdown_extensions:
       permalink: true
 hooks:
   # Schema Explorer integration:
-  #   * Auto-builds tools/schema-explorer/build/ when the SQLite artifact is
-  #     missing, then copies the built SPA + SQLite into
+  #   * Auto-builds a cached Schema Explorer outside the repo tree when the
+  #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
   #     <site_dir>/_assets/schema-explorer/ on build.
   #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
   #     are lazy-loaded by app.js when a page hosts the explorer.

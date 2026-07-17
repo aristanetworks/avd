@@ -18,11 +18,11 @@ Two responsibilities:
    ``static/js/``) alongside the SQLite into ``--site-dir`` so MkDocs picks
    up a self-contained Schema Explorer page.
 
-Source lives at ``tools/schema-explorer/``; build output goes to
-``tools/schema-explorer/build/`` (gitignored). ``mkdocs_hook.py`` copies the
-built tree into ``<site_dir>/_assets/schema-explorer/`` on every
-``mkdocs build``, so nothing generated lives under the source-controlled
-``docs/`` tree. The standalone SPA is reachable at
+Source lives at ``tools/schema-explorer/``. The explicit
+``make schema-explorer-build`` target writes to ``tools/schema-explorer/build/``
+(gitignored), while ``mkdocs_hook.py`` uses a cache outside the repository tree
+and copies the built explorer into ``<site_dir>/_assets/schema-explorer/`` on
+every ``mkdocs build``. The standalone SPA is reachable at
 ``/_assets/schema-explorer/index.html``; embedded views are dropped into
 any docs page via the ``<schema-explorer>`` custom element.
 
