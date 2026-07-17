@@ -27,7 +27,7 @@
 
 - vars:
     error_msg: >-
-      merge: 'list_merge' argument can only be equal to one of ['replace', 'keep', 'append', 'prepend', 'append_rp', 'prepend_rp']
+      Error during plugin 'arista.avd.eos_designs_structured_config' execution: merge: 'list_merge' argument can only be equal to one of ['replace', 'keep', 'append', 'prepend', 'append_rp', 'prepend_rp']
   assert:
     that:
       - result.failed == true
