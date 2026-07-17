@@ -75,6 +75,8 @@ vlan_interfaces:
         key_type: 0
         key: password
         mode: md5
+    isis_hello_padding: true
+    isis_circuit_type: level-2
 
   - name: Vlan84
     description: SVI Description
@@ -115,6 +117,11 @@ vlan_interfaces:
         mode: sha
         sha:
           key_id: 2
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: false
 
   - name: Vlan86
     description: SVI Description
@@ -232,6 +239,11 @@ vlan_interfaces:
   - name: Vlan4093
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.0/31
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: true
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
