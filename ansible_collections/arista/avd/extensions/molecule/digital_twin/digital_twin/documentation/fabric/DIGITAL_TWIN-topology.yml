@@ -1,7 +1,7 @@
 nodes:
 - digital-twin-adjust-oob-mgmt-1:
     node_type: veos
-    ip_addr: 192.168.1.1/32
+    ip_addr: 192.168.0.1/32
     version: 4.33.1.1F
 - digital-twin-adjust-oob-mgmt-2:
     node_type: veos

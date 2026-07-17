@@ -10650,7 +10650,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -10681,7 +10687,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -15959,7 +15970,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -15990,7 +16007,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -55985,7 +56007,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -56016,7 +56044,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -61288,7 +61321,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -61319,7 +61358,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -66520,7 +66564,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -66551,7 +66601,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -71832,7 +71887,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -71863,7 +71924,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -91411,7 +91477,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -91442,7 +91514,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -96714,7 +96791,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -96745,7 +96828,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -101946,7 +102034,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -101977,7 +102071,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -107258,7 +107357,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -107289,7 +107394,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option

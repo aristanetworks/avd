@@ -15,7 +15,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.1.1/32
+  ip_address: 192.168.0.1/32
   type: oob
 metadata:
   is_deployed: true
@@ -26,7 +26,7 @@ metadata:
   digital_twin:
     environment: act
     node_type: veos
-    ip_addr: 192.168.1.1/32
+    ip_addr: 192.168.0.1/32
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!

@@ -7,3 +7,5 @@ l2leaf:
     - name: digital-twin-adjust-oob-mgmt-1
       id: 1
       mgmt_ip: 192.168.1.1/32
+      digital_twin:
+        mgmt_ip: 192.168.0.1/32
