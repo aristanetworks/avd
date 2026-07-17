@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from contextlib import contextmanager
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
@@ -22,6 +23,8 @@ from pyavd import get_avd_facts, get_device_config, get_device_structured_config
 from pyavd.api.schemas import AVDDesign
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from pytest_codspeed import BenchmarkFixture
     from tests.models import MoleculeHost, MoleculeScenario
 
@@ -46,6 +49,17 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
     "cv-pathfinder-edge1",
     "cv-pathfinder-transit1a",
 )
+
+
+@contextmanager
+def disabled_logging() -> Iterator[None]:
+    """Temporarily disable logging without discarding the runner's previous setting."""
+    previous_disable_level = logging.root.manager.disable
+    logging.disable(logging.CRITICAL)
+    try:
+        yield
+    finally:
+        logging.disable(previous_disable_level)
 
 
 def get_molecule_scenario_inputs(molecule_scenario: MoleculeScenario) -> tuple[dict[str, AVDDesign], dict[str, dict[str, Any]]]:
@@ -74,22 +88,21 @@ def test_molecule_scenario_avd_facts_benchmark(
     Input validation and model loading are prepared outside the timed path, so
     this benchmark tracks the facts generation pass itself.
     """
-    logging.disable(logging.CRITICAL)
-    all_inputs, all_hostvars = get_molecule_scenario_inputs(molecule_scenario)
+    with disabled_logging():
+        all_inputs, all_hostvars = get_molecule_scenario_inputs(molecule_scenario)
 
-    @benchmark
-    def _() -> None:
-        with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-            avd_facts = get_avd_facts(
-                all_inputs=all_inputs,
-                all_hostvars=all_hostvars,
-                pool_manager=molecule_scenario.pool_manager,
-                digital_twin=molecule_scenario.digital_twin,
-            )
+        def _() -> None:
+            with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
+                avd_facts = get_avd_facts(
+                    all_inputs=all_inputs,
+                    all_hostvars=all_hostvars,
+                    pool_manager=molecule_scenario.pool_manager,
+                    digital_twin=molecule_scenario.digital_twin,
+                )
 
-        assert len(avd_facts) == len(molecule_scenario.hosts)
+            assert len(avd_facts) == len(molecule_scenario.hosts)
 
-    logging.disable(logging.NOTSET)
+        benchmark(_)
 
 
 @pytest.mark.molecule_scenarios("eos_designs_unit_tests")
@@ -103,48 +116,47 @@ def test_molecule_scenario_all_hosts_config_render_benchmark(
     Fabric facts are prepared outside the timed path, so this benchmark tracks
     the batched per-host structured config and config rendering workflow.
     """
-    logging.disable(logging.CRITICAL)
-    all_inputs, all_hostvars = get_molecule_scenario_inputs(molecule_scenario)
-    with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-        avd_facts = get_avd_facts(
-            all_inputs=all_inputs,
-            all_hostvars=all_hostvars,
-            pool_manager=molecule_scenario.pool_manager,
-            digital_twin=molecule_scenario.digital_twin,
-        )
-
-    def render_all_hosts(
-        inputs_by_host: dict[str, AVDDesign],
-        facts_by_host: dict[str, Any],
-        hostvars_by_host: dict[str, dict[str, Any]],
-    ) -> None:
-        configs = {}
-
+    with disabled_logging():
+        all_inputs, all_hostvars = get_molecule_scenario_inputs(molecule_scenario)
         with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-            for hostname, inputs in inputs_by_host.items():
-                structured_config = get_device_structured_config(
-                    hostname=hostname,
-                    inputs=inputs,
-                    avd_facts=facts_by_host,
-                    hostvars=hostvars_by_host[hostname],
-                    digital_twin=molecule_scenario.digital_twin,
-                )
-                configs[hostname] = get_device_config(structured_config)
+            avd_facts = get_avd_facts(
+                all_inputs=all_inputs,
+                all_hostvars=all_hostvars,
+                pool_manager=molecule_scenario.pool_manager,
+                digital_twin=molecule_scenario.digital_twin,
+            )
 
-        assert len(configs) == len(molecule_scenario.hosts)
+        def render_all_hosts(
+            inputs_by_host: dict[str, AVDDesign],
+            facts_by_host: dict[str, Any],
+            hostvars_by_host: dict[str, dict[str, Any]],
+        ) -> None:
+            configs = {}
 
-    def setup_all_hosts_config_render_benchmark() -> tuple[tuple[dict[str, AVDDesign], dict[str, Any], dict[str, dict[str, Any]]], dict]:
-        return (
-            (
-                {hostname: inputs._deepcopy() for hostname, inputs in all_inputs.items()},
-                {hostname: facts._deepcopy() for hostname, facts in avd_facts.items()},
-                deepcopy(all_hostvars),
-            ),
-            {},
-        )
+            with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
+                for hostname, inputs in inputs_by_host.items():
+                    structured_config = get_device_structured_config(
+                        hostname=hostname,
+                        inputs=inputs,
+                        avd_facts=facts_by_host,
+                        hostvars=hostvars_by_host[hostname],
+                        digital_twin=molecule_scenario.digital_twin,
+                    )
+                    configs[hostname] = get_device_config(structured_config)
 
-    benchmark.pedantic(render_all_hosts, setup=setup_all_hosts_config_render_benchmark)
-    logging.disable(logging.NOTSET)
+            assert len(configs) == len(molecule_scenario.hosts)
+
+        def setup_all_hosts_config_render_benchmark() -> tuple[tuple[dict[str, AVDDesign], dict[str, Any], dict[str, dict[str, Any]]], dict]:
+            return (
+                (
+                    {hostname: inputs._deepcopy() for hostname, inputs in all_inputs.items()},
+                    {hostname: facts._deepcopy() for hostname, facts in avd_facts.items()},
+                    deepcopy(all_hostvars),
+                ),
+                {},
+            )
+
+        benchmark.pedantic(render_all_hosts, setup=setup_all_hosts_config_render_benchmark)
 
 
 @pytest.mark.molecule_scenarios("eos_designs_unit_tests", hosts=REPRESENTATIVE_BENCHMARK_HOSTS)
@@ -159,7 +171,6 @@ def test_molecule_host_config_render_benchmark(
     path, so this benchmark tracks per-host validation, structured config
     generation, and EOS config rendering.
     """
-    logging.disable(logging.CRITICAL)
 
     def b() -> None:
         hostvars = molecule_host.hostvars
@@ -179,5 +190,5 @@ def test_molecule_host_config_render_benchmark(
 
             get_device_config(structured_config)
 
-    benchmark.pedantic(b, iterations=5, warmup_rounds=1)  # type: ignore[reportAttributeAccessIssue]
-    logging.disable(logging.NOTSET)
+    with disabled_logging():
+        benchmark.pedantic(b, iterations=5, warmup_rounds=1)  # type: ignore[reportAttributeAccessIssue]
