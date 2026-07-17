@@ -9889,11 +9889,13 @@ ASN Notation: asdot
 
 | Settings | Value |
 | -------- | ----- |
+| Enforce first AS | False |
 
 ##### TEST-ENFORCE-FIRST-AS-TRUE
 
 | Settings | Value |
 | -------- | ----- |
+| Enforce first AS | True |
 
 ##### test-link-bandwidth1
 
