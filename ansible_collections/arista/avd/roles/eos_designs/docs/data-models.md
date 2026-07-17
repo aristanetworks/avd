@@ -2001,7 +2001,7 @@ Example generated topology:
 ```yaml
 ---
 name: FABRIC, Containerlab Digital Twin
-prefix: ""
+prefix: ''
 mgmt:
   network: custom_mgmt
   ipv4-subnet: 172.16.1.0/24
@@ -2012,6 +2012,8 @@ topology:
     arista_ceos:
       enforce-startup-config: true
       image: arista/ceos:latest
+      binds:
+      - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
   nodes:
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
@@ -2039,53 +2041,53 @@ topology:
       startup-config: init-configs/dc1-spine2.cfg
   links:
   - endpoints:
-    - dc1-leaf1a:Ethernet1
-    - dc1-spine1:Ethernet1
+    - dc1-leaf1a:eth1
+    - dc1-spine1:eth1
   - endpoints:
-    - dc1-leaf1a:Ethernet2
-    - dc1-spine2:Ethernet1
+    - dc1-leaf1a:eth2
+    - dc1-spine2:eth1
   - endpoints:
-    - dc1-leaf1a:Ethernet3
-    - dc1-leaf1b:Ethernet3
+    - dc1-leaf1a:eth3
+    - dc1-leaf1b:eth3
   - endpoints:
-    - dc1-leaf1a:Ethernet4
-    - dc1-leaf1b:Ethernet4
+    - dc1-leaf1a:eth4
+    - dc1-leaf1b:eth4
   - endpoints:
-    - dc1-leaf1a:Ethernet8
-    - dc1-leaf1c:Ethernet1
+    - dc1-leaf1a:eth8
+    - dc1-leaf1c:eth1
   - endpoints:
-    - dc1-leaf1b:Ethernet1
-    - dc1-spine1:Ethernet2
+    - dc1-leaf1b:eth1
+    - dc1-spine1:eth2
   - endpoints:
-    - dc1-leaf1b:Ethernet2
-    - dc1-spine2:Ethernet2
+    - dc1-leaf1b:eth2
+    - dc1-spine2:eth2
   - endpoints:
-    - dc1-leaf1b:Ethernet8
-    - dc1-leaf1c:Ethernet2
+    - dc1-leaf1b:eth8
+    - dc1-leaf1c:eth2
   - endpoints:
-    - dc1-leaf2a:Ethernet1
-    - dc1-spine1:Ethernet3
+    - dc1-leaf2a:eth1
+    - dc1-spine1:eth3
   - endpoints:
-    - dc1-leaf2a:Ethernet2
-    - dc1-spine2:Ethernet3
+    - dc1-leaf2a:eth2
+    - dc1-spine2:eth3
   - endpoints:
-    - dc1-leaf2a:Ethernet3
-    - dc1-leaf2b:Ethernet3
+    - dc1-leaf2a:eth3
+    - dc1-leaf2b:eth3
   - endpoints:
-    - dc1-leaf2a:Ethernet4
-    - dc1-leaf2b:Ethernet4
+    - dc1-leaf2a:eth4
+    - dc1-leaf2b:eth4
   - endpoints:
-    - dc1-leaf2a:Ethernet8
-    - dc1-leaf2c:Ethernet1
+    - dc1-leaf2a:eth8
+    - dc1-leaf2c:eth1
   - endpoints:
-    - dc1-leaf2b:Ethernet1
-    - dc1-spine1:Ethernet4
+    - dc1-leaf2b:eth1
+    - dc1-spine1:eth4
   - endpoints:
-    - dc1-leaf2b:Ethernet2
-    - dc1-spine2:Ethernet4
+    - dc1-leaf2b:eth2
+    - dc1-spine2:eth4
   - endpoints:
-    - dc1-leaf2b:Ethernet8
-    - dc1-leaf2c:Ethernet2
+    - dc1-leaf2b:eth8
+    - dc1-leaf2c:eth2
 ```
 
 To launch the generated topology use following command:
