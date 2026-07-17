@@ -30,6 +30,7 @@ MOLECULE_SCENARIOS: dict[str, MoleculeScenario] = {}
 @pytest.fixture(scope="session", autouse=True)
 def benchmark_schema_store() -> None:
     """Prepare and load the schema store once for the benchmark process."""
+    from pyavd._schema.constants import PICKLED_SCHEMAS
     from pyavd._schema.store import init_store
     from pyavd.constants import SCHEMA_STORE_GZ_FILE
 
@@ -37,6 +38,11 @@ def benchmark_schema_store() -> None:
         from schema_tools.build_schemas import combine_schemas
 
         combine_schemas()
+
+    if any(not path.exists() for path in PICKLED_SCHEMAS.values()):
+        from schema_tools.store import create_store
+
+        create_store(force_rebuild=True)
 
     init_store()
 
