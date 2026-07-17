@@ -11,6 +11,9 @@
   - [Management API gNMI](#management-api-gnmi)
   - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
+- [Management LDAP](#management-ldap)
+  - [LDAP Server Defaults](#ldap-server-defaults)
+  - [Management LDAP Device Configuration](#management-ldap-device-configuration)
 - [CVX](#cvx)
   - [CVX Device Configuration](#cvx-device-configuration)
 - [Authentication](#authentication)
@@ -70,6 +73,7 @@
   - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [DPS Interfaces](#dps-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Switchport Port-security](#switchport-port-security)
   - [Switchport Port-security Summary](#switchport-port-security-summary)
@@ -86,6 +90,7 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Monitor Loop Protection](#monitor-loop-protection)
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
@@ -316,6 +321,23 @@ management api http-commands
    no protocol unix-socket
    no default-services
    no shutdown
+```
+
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Search Username | cn=ldap-admin,dc=example,dc=com |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      search username cn=ldap-admin,dc=example,dc=com password <removed>
 ```
 
 ## CVX
@@ -984,6 +1006,43 @@ interface Dps1
    ip address 192.168.42.42/24
 ```
 
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
+| Vlan85 | SVI Description | default | - | - |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
+
+##### ISIS
+
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | - | False | sha |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan85
+   description SVI Description
+   ip address 10.10.84.1/24
+   bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
+   no mpls ldp igp sync
+   no mpls ip
+   isis enable EVPN_UNDERLAY
+   no isis hello padding
+   isis authentication mode sha key-id 2
+   isis authentication key 0 password
+```
+
 ### VXLAN Interface
 
 #### VXLAN Interface Summary
@@ -1153,6 +1212,7 @@ router ospf 701
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
+| Vlan85 | EVPN_UNDERLAY | - | - |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -1407,6 +1467,12 @@ policy-map type pbr POLICY_DROP_THEN_NEXTHOP
 router bfd
    session stats snapshot interval dangerous 8
 ```
+
+### BFD Interfaces
+
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+| Vlan85 | 500 | 500 | 5 | True |
 
 ## Monitor Loop Protection
 
@@ -1897,14 +1963,11 @@ errdisable recovery cause uplink-failure-detection
 
 License is not installed.
 
-FIPS restrictions enabled.
-
 ### MACsec Device Configuration
 
 ```eos
 !
 mac security
-   fips restrictions
 ```
 
 ### Traffic Policies information

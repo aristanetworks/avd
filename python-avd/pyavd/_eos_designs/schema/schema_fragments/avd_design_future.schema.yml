@@ -17,6 +17,12 @@ keys:
         description: |-
           Available from AVD 6.2.0.
           Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+      accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.4.0.
+          Configure management interface to accept Router Advertisement default route when the IPv6 management IP is set to 'auto-config'.
       accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
         type: bool
         default: false
