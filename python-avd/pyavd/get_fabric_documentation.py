@@ -304,23 +304,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
-    verified_topology_links: list[dict] = [
-        topology_link
-        for topology_link in fabric_documentation_facts.topology_links
-        # Skip connections where at least one of the contributing sources is not a non-empty string
-        if (
-            isinstance(topology_link["node"], str)
-            and topology_link["node"]
-            and isinstance(topology_link["node_interface"], str)
-            and "." not in topology_link["node_interface"]
-            and topology_link["node_interface"]
-            and isinstance(topology_link["peer"], str)
-            and topology_link["peer"]
-            and isinstance(topology_link["peer_interface"], str)
-            and "." not in topology_link["peer_interface"]
-            and topology_link["peer_interface"]
-        )
-    ]
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -377,7 +360,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             )
             for topology_link in fabric_documentation_facts.topology_links
             if _is_p2p_link(topology_link)
-            for topology_link in verified_topology_links
         ),
         cloudeos=digital_twin_node_types["cloudeos"],
         cvp=digital_twin_node_types["cvp"],
