@@ -77,16 +77,19 @@ class ActionModule(AVDActionPlugin):
         all_facts = self.load_facts(hostname)
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
-        structured_config = get_structured_config(
-            hostname=hostname,
-            inputs=avd_design,
-            all_facts=all_facts,
-            hostvars=host_hostvars,
-            templar=self.templar,
-            digital_twin=digital_twin,
-        )
+        try:
+            structured_config = get_structured_config(
+                hostname=hostname,
+                inputs=avd_design,
+                all_facts=all_facts,
+                hostvars=host_hostvars,
+                templar=self.templar,
+                digital_twin=digital_twin,
+            )
 
-        output = structured_config._as_dict()
+            output = structured_config._as_dict()
+        except Exception as error:
+            raise RuntimeError(str(error)) from error
 
         # We use ChainMap to avoid copying large amounts of data around, mapping in
         #  - output (containing structured_config at this point)
@@ -128,7 +131,10 @@ class ActionModule(AVDActionPlugin):
                 if not isinstance(template_result_data, list):
                     template_result_data = [template_result_data]
 
-                merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
+                try:
+                    merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
+                except Exception as error:
+                    raise RuntimeError(str(error)) from error
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
