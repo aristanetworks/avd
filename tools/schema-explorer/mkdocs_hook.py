@@ -10,8 +10,8 @@ Responsibilities:
    formatter so docs authors can embed scoped explorers with Markdown fenced
    blocks instead of raw HTML.
 
-2. **Asset publishing.** Copy the pre-built explorer (static assets + SQLite)
-   from ``tools/schema-explorer/build/`` into
+2. **Asset publishing.** Build or reuse a cached explorer (static assets +
+   SQLite) outside the repository tree, then copy it into
    ``<site_dir>/_assets/schema-explorer/``. The destination sits under
    ``_assets/`` because the explorer is embedded into arbitrary docs pages and
    the SPA assets are a shared site-wide resource.
@@ -27,20 +27,22 @@ Responsibilities:
 
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from types import ModuleType
 from typing import Any
 
 HERE = Path(__file__).resolve().parent
-BUILD_DIR = HERE / "build"
 STATIC_DIR = HERE / "static"
 GENERATE_SCRIPT = HERE / "generate.py"
 # Repo root is two levels up from tools/schema-explorer/.
 AVD_ROOT = HERE.parents[1]
+BUILD_DIR = Path(tempfile.gettempdir()) / "avd-schema-explorer" / hashlib.sha256(str(AVD_ROOT).encode()).hexdigest()[:16]
 SCHEMA_INPUTS = (
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_designs" / "schema" / "eos_designs.schema.yml",
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_cli_config_gen" / "schema" / "eos_cli_config_gen.schema.yml",
@@ -131,19 +133,20 @@ def _database_is_current(sqlite_marker: Path) -> bool:
 
 def _ensure_build() -> None:
     """
-    Build the Schema Explorer if ``build/`` is missing.
+    Build the Schema Explorer cache if it is missing or stale.
 
-    Hosts that do not run ``make schema-explorer-build`` first, such as the
-    ReadTheDocs build pipeline, would otherwise end up with missing
-    ``_assets/schema-explorer/*`` URLs. Running the generator on demand from the
-    hook makes the SPA self-publishing for any host that can run ``mkdocs build``.
+    The cache must live outside the repo tree. ``mkdocs serve`` watches the
+    whole repo because ``docs_dir`` is ``.``, so writing intermediate artifacts
+    under ``tools/schema-explorer/build`` during a rebuild can trigger another
+    rebuild. Running the generator on demand from the hook keeps the SPA
+    self-publishing for any host that can run ``mkdocs build``.
     """
     sqlite_marker = BUILD_DIR / "data" / "schema.sqlite"
     if _database_is_current(sqlite_marker):
         _copy_static_assets()
         return
     reason = "missing" if not sqlite_marker.is_file() else "stale"
-    print(f"[schema-explorer] build/ {reason} — running generate.py")
+    print(f"[schema-explorer] cache {reason} — running generate.py")
     subprocess.check_call(  # noqa: S603
         [
             sys.executable,
