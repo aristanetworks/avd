@@ -59,11 +59,7 @@ def test_large_fabric_full_workflow_benchmark(
         per_vrf_svi_count=per_vrf_svi_count,
     )
 
-    # Disable logging during benchmark
-    logging.disable(logging.CRITICAL)
-
-    @benchmark
-    def _() -> None:
+    def b() -> None:
         # Step 1: Validate inputs for all devices
         all_inputs = {}
         all_hostvars = {}
@@ -92,6 +88,11 @@ def test_large_fabric_full_workflow_benchmark(
 
         assert len(configs) == device_count
 
-    logging.disable(logging.NOTSET)
+    previous_disable_level = logging.root.manager.disable
+    logging.disable(logging.CRITICAL)
+    try:
+        benchmark(b)
+    finally:
+        logging.disable(previous_disable_level)
 
     logger.info("Benchmarked full workflow for %d devices", device_count)
