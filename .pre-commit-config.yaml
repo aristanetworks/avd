@@ -3,11 +3,37 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip: [pyright, codespell, j2lint, markdownlint-cli2, check-schema-tables-in-docs]
+  autofix_prs: false
+  # Keep pre-commit.ci for autoupdate only. Run hooks through autofix.ci.
+  skip:
+    - trailing-whitespace
+    - end-of-file-fixer
+    - check-added-large-files
+    - check-merge-conflict
+    - insert-license
+    - ruff
+    - ruff-format
+    - pyright
+    - pylint
+    - yamllint
+    - j2lint
+    - codespell
+    - zizmor
+    - pdm-export
+    - docs-plugin-modules
+    - docs-plugin-filter
+    - docs-plugin-lookup
+    - docs-plugin-test
+    - docs-plugin-vars
+    - schemas
+    - check-schema-tables-in-docs
+    - sort-hosts-yml
+    - templates
+    - markdownlint-cli2
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
@@ -30,7 +56,7 @@ repos:
         exclude: ansible_collections/arista/avd/extensions/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.6
+    rev: ad1b27d73581aa16cca06fc4a0761fc563ffe8e8  # frozen: v1.5.6
     hooks:
       - id: insert-license
         name: Check and insert license on Python files.
@@ -111,7 +137,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.15.15
+    rev: 01a675ea018f2fb714478a5ffb83fcea8374bb06  # frozen: v0.15.21
     hooks:
       # Run the linter.
       - id: ruff
@@ -121,7 +147,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.409
+    rev: 392b6ba8e54be6d603e02e9f8d601d27b7a48d12  # frozen: v1.1.411
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -132,7 +158,9 @@ repos:
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.22.0'
           - 'anta==1.8.0'
+          - 'coverage[toml]==7.14.0'
           - 'deepmerge>=1.1.0'
+          - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
           - 'pyavd-utils==0.0.5'
           - 'pydantic>=2.3.0'
@@ -142,7 +170,7 @@ repos:
           - 'ruff==0.11.11'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v4.0.5"
+    rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -157,7 +185,7 @@ repos:
           - --rcfile=pylintrc-ansible
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: "v1.38.0"
+    rev: "cba56bcde1fdd01c1deb3f945e69764c291a6530"  # frozen: v1.38.0
     hooks:
       - id: yamllint
         name: Check for Linting errors on YAML files with settings defined in `.github/yamllintrc`.
@@ -168,20 +196,29 @@ repos:
         args: [--strict, -c=.github/yamllintrc]
 
   - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "v1.2.0"
+    rev: "ba3ae401e723b8e359ea675274d6733340f96582"  # frozen: v1.2.0
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
+    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a  # frozen: v2.4.2
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
 
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: e3eebf65325ccc992422292cb7a4baee967cf815  # frozen: v1.26.1
+    hooks:
+      - id: zizmor
+        name: Check GitHub Actions with zizmor
+        files: ^\.github/
+        pass_filenames: false
+        args: [".github"]
+
   - repo: https://github.com/pdm-project/pdm
-    rev: "2.27.0"
+    rev: "feb66b6b753448b11d37d202f4cb88aba815ab30"  # frozen: 2.28.0
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -190,8 +227,8 @@ repos:
         files: python-avd/pyproject.toml
         pass_filenames: false
       - id: pdm-export
-        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
-        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
+        name: Extract requirements from pyavd/pyproject.toml to docs/avd-requirements.txt
+        entry: pdm export -p python-avd -o docs/avd-requirements.txt --without-hashes -G ansible -G self --pyproject
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
@@ -291,8 +328,8 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.1
+    rev: 534166213006ec869b773b7ed8c6ebeaad1165d0  # frozen: v0.23.0
     hooks:
       - id: markdownlint-cli2
-        name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
+        name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
         # Exclusions are configured in .markdownlint-cli2.yaml

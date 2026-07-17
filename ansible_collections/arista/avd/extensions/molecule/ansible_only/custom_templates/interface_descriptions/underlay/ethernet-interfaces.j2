@@ -1,13 +1,13 @@
 {# j2lint: disable=jinja-statements-delimiter #}
-{%- if link.main_interface_wan_carrier is arista.avd.defined -%}
-{{ link.get("main_interface_wan_carrier") }}
+{%- if main_interface_wan_carrier is arista.avd.defined -%}
+{{ main_interface_wan_carrier }}
 {%- endif -%}
-{%- if link.type is arista.avd.defined('underlay_p2p') -%}
-{{ description_prefix }}_{{ link.interface }}_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
-{%- elif link.type is arista.avd.defined('underlay_l2') -%}
-{{ description_prefix }}_{{ link.interface }}_{{ link.peer | upper }}_{{ link.peer_interface }}
-{%- elif link.type is arista.avd.defined('l3_edge') -%}
-{{ description_prefix }}_{{ link.interface }}_L3_EDGE_{{ link.peer | upper }}_{{ link.peer_interface }}
-{%- elif link.type is arista.avd.defined('core_interfaces') -%}
-{{ description_prefix }}_{{ link.interface }}_CORE_INTERFACES_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%- if link_type is arista.avd.defined('underlay_p2p') -%}
+{{ description_prefix }}_{{ interface }}_P2P_LINK_TO_{{ peer | upper }}_{{ peer_interface }}
+{%- elif link_type is arista.avd.defined('underlay_l2') -%}
+{{ description_prefix }}_{{ interface }}_{{ peer | upper }}_{{ peer_interface }}
+{%- elif link_type is arista.avd.defined('l3_edge') -%}
+{{ description_prefix }}_{{ interface }}_L3_EDGE_{{ peer | upper }}_{{ peer_interface }}
+{%- elif link_type is arista.avd.defined('core_interfaces') -%}
+{{ description_prefix }}_{{ interface }}_CORE_INTERFACES_{{ peer | upper }}_{{ peer_interface }}
 {%- endif -%}

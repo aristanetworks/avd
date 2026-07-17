@@ -41,7 +41,14 @@ keys:
                 - str
             local_interface:
               type: str
-              description: Source interface.
+              description: |-
+                Source interface.
+                Mutually exclusive with 'source_address'. Takes precedence if both are set.
+            source_address:
+              type: str
+              description: |-
+                Source IPv4 address.
+                Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             maxpoll:
               type: int
               min: 3

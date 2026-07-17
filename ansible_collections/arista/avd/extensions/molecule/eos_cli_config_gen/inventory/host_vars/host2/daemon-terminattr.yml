@@ -8,6 +8,7 @@ daemon_terminattr:
     key: ""
   ipfix: false
   sflow: false
+  flowdns: true
   clusters:
     - name: DC1
       cvaddrs:

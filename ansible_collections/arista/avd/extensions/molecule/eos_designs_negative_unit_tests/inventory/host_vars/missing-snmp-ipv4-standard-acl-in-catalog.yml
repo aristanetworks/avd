@@ -1,0 +1,36 @@
+---
+ipv4_standard_acls:
+  - name: onur
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.1
+  - name: SNMP-MGMT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.12
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-snmp-ipv4-standard-acl-in-catalog
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+snmp_settings:
+  contact: example@example.com
+  location: false
+
+  communities:
+    - name: SNMP-COMMUNITY-1
+      access: ro
+      ipv4_standard_acl: acl-not-present-in-catalog
+
+expected_error_message: >-
+  'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found for host 'missing-snmp-ipv4-standard-acl-in-catalog'.

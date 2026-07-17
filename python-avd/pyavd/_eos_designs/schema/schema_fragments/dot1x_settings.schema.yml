@@ -123,15 +123,132 @@ keys:
             type: bool
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
-          dhcp:
-            type: dict
-            description: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/dhcp
           framed_mtu:
             type: int
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
+      device_profiling:
+        type: dict
+        description: |-
+          Device profiling feature.
+          Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+          to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+          Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+        keys:
+          enabled:
+            type: bool
+            default: false
+            description: Enable all DHCP and LLDP TLV profiling options.
+          dhcp:
+            type: dict
+            description: |-
+              DHCP options profiling.
+              Enables profiling via DHCP Discover/Request packets.
+              Limitations:
+                - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+                - Not supported on VTEP devices.
+                - Not supported with IP Locking features.
+                - MLAG support requires EOS 4.34.3+.
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all DHCP profiling options collectively.
+              hostname:
+                type: dict
+                description: DHCP Option 12 (Hostname).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              parameter_request_list:
+                type: dict
+                description: DHCP Option 55 (Parameter Request List).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              vendor_class_id:
+                type: dict
+                description: DHCP Option 60 (Vendor Class ID).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+          lldp:
+            type: dict
+            description: |-
+              LLDP TLVs profiling.
+              Enables profiling via LLDP packets.
+              Requires LLDP to be globally enabled.
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all LLDP profiling options collectively.
+              system_name:
+                type: dict
+                description: LLDP system name (LLDP TLV 5).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
+              system_description:
+                type: dict
+                description: LLDP system description (LLDP TLV 6).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Send the attribute only once when first learned.
       redistribute_in_evpn:
         type: bool
         default: true
         description: |-
           Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
+      web_authentication:
+        type: dict
+        description: |-
+            The Web Authentication feature authenticates a supplicant via a web page, generally referred to as a captive portal.
+            Requires `dot1x_settings.dynamic_authorization.enabled: true`.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Enable the Web Authentication feature.
+          url:
+            type: str
+            pattern: "https?://[^\\s/:]+(:\\d+)?"
+            description: |-
+              Static captive portal URL used when the RADIUS server does not provide one during the authentication workflow.
+              If both are configured, the RADIUS-provided URL takes precedence.
+              Supported format: http[s]://<hostname>[:<port>]
+          ssl_profile:
+            type: str
+            description: |-
+              SSL profile name, enabling HTTPS redirection on port 443.
+              Without this, only HTTP redirection is supported.
+              Can be used alone (when RADIUS provides the URL dynamically) or together with `url`.
+          start_limit_infinite:
+            type: bool
+            description: |-
+              Disable the loop-protection mechanism that limits captive portal authentication retries.
+              By default, EOS limits a supplicant to 16 consecutive attempts before logging it off.

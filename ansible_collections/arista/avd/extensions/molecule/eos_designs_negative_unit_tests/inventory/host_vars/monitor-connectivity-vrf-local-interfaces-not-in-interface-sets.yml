@@ -16,7 +16,7 @@ monitor_connectivity:
     - name: MGMT
       interface_sets:
         - name: SET_MGMT
-          interfaces: [ Management1 ]
+          interfaces: [Management1]
       local_interfaces: Loopback0
 
 expected_error_message: >-
