@@ -374,5 +374,3 @@ def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Pa
     assert tracer is not None
     assert tracer.line_number_range(_frame(10)) == (1, 3)
     assert tracer.line_number_range(_frame(20)) == (4, 5)
-
-

@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 import pytest
 from coverage_plugins.jinja import JinjaTemplateCoveragePlugin, JinjaTemplateFileReporter
 from jinja2 import Environment, FileSystemLoader, ModuleLoader
-
 from jinja_helpers import _analyze_rendered_template, _analyze_rendered_template_contexts, _coverage_for_template
 
 if TYPE_CHECKING:

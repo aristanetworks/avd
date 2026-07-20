@@ -61,5 +61,3 @@ def _analyze_rendered_template_contexts(tmp_path: Path, source: str, contexts: l
     coverage.save()
 
     return cast("Analysis", coverage._analyze(str(source_file.resolve())))
-
-
