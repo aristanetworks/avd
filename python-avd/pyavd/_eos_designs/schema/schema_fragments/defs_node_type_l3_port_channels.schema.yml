@@ -133,6 +133,10 @@ $defs:
           type: str
           description: |-
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: |-
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ip" token.
         bgp:
           type: dict
           description: |-
@@ -179,14 +183,14 @@ $defs:
         ipv6_acl_in:
           description: |-
             Name of the IPv6 access-list to be assigned in the ingress direction.
-            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).
           type: str
           convert_types:
             - int
         ipv6_acl_out:
           description: |-
             Name of the IPv6 Access-list to be assigned in the egress direction.
-            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).
           type: str
           convert_types:
             - int

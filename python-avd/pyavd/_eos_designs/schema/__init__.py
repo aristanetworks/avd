@@ -9445,6 +9445,7 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -9545,6 +9546,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ip" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -9572,13 +9578,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+            from `peer_ipv6`).
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+            `peer_ipv6`).
             """
             static_routes: StaticRoutes
             """
@@ -9655,6 +9663,7 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -9730,6 +9739,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ip" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -9750,11 +9762,13 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                           from `peer_ipv6`).
                         ipv6_acl_out:
                            Name of the IPv6 Access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                           `peer_ipv6`).
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -10161,6 +10175,7 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -10258,6 +10273,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ip" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -10285,13 +10305,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+            from `peer_ipv6`).
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+            `peer_ipv6`).
             """
             static_routes: StaticRoutes
             """
@@ -10353,6 +10375,7 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -10425,6 +10448,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ip" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -10445,11 +10471,13 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                           from `peer_ipv6`).
                         ipv6_acl_out:
                            Name of the IPv6 Access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                           `peer_ipv6`).
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -14802,6 +14830,7 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -14902,6 +14931,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ip" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -14929,13 +14963,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+            from `peer_ipv6`).
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+            `peer_ipv6`).
             """
             static_routes: StaticRoutes
             """
@@ -15012,6 +15048,7 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -15087,6 +15124,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ip" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -15107,11 +15147,13 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                           from `peer_ipv6`).
                         ipv6_acl_out:
                            Name of the IPv6 Access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                           `peer_ipv6`).
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -15518,6 +15560,7 @@ class EosDesigns(EosDesignsRootModel):
                 "peer": {"type": str},
                 "peer_port_channel": {"type": str},
                 "peer_ip": {"type": str},
+                "peer_ipv6": {"type": str},
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
@@ -15615,6 +15658,11 @@ class EosDesigns(EosDesignsRootModel):
             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
             and `ip` is an IP address.
             """
+            peer_ipv6: str | None
+            """
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+            "peer_ip" token.
+            """
             bgp: Bgp
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -15642,13 +15690,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+            from `peer_ipv6`).
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+            `peer_ipv6`).
             """
             static_routes: StaticRoutes
             """
@@ -15710,6 +15760,7 @@ class EosDesigns(EosDesignsRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_port_channel: str | None | UndefinedType = Undefined,
                     peer_ip: str | None | UndefinedType = Undefined,
+                    peer_ipv6: str | None | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -15782,6 +15833,9 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ip:
                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                            and `ip` is an IP address.
+                        peer_ipv6:
+                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                           "peer_ip" token.
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
@@ -15802,11 +15856,13 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                           from `peer_ipv6`).
                         ipv6_acl_out:
                            Name of the IPv6 Access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                           `peer_ipv6`).
                         static_routes:
                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -25778,6 +25834,7 @@ class EosDesigns(EosDesignsRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_ip": {"type": str},
+            "peer_ipv6": {"type": str},
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
@@ -25881,6 +25938,11 @@ class EosDesigns(EosDesignsRootModel):
         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
         and `ip` is an IP address.
         """
+        peer_ipv6: str | None
+        """
+        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+        "peer_ip" token.
+        """
         bgp: Bgp
         """
         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -25908,13 +25970,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         Name of the IPv6 access-list to be assigned in the ingress direction.
         The access-list must be
-        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+        from `peer_ipv6`).
         """
         ipv6_acl_out: str | None
         """
         Name of the IPv6 Access-list to be assigned in the egress direction.
         The access-list must be defined
-        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+        `peer_ipv6`).
         """
         static_routes: StaticRoutes
         """
@@ -25991,6 +26055,7 @@ class EosDesigns(EosDesignsRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_ip: str | None | UndefinedType = Undefined,
+                peer_ipv6: str | None | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -26068,6 +26133,9 @@ class EosDesigns(EosDesignsRootModel):
                     peer_ip:
                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                        and `ip` is an IP address.
+                    peer_ipv6:
+                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                       "peer_ip" token.
                     bgp:
                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                        IPv6 BGP
@@ -26088,11 +26156,13 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
-                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                       from `peer_ipv6`).
                     ipv6_acl_out:
                        Name of the IPv6 Access-list to be assigned in the egress direction.
                        The access-list must be defined
-                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                       `peer_ipv6`).
                     static_routes:
                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -54910,6 +54980,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -55010,6 +55081,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -55037,13 +55113,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -55120,6 +55198,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -55195,6 +55274,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -55215,11 +55297,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -55626,6 +55710,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -55723,6 +55808,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -55750,13 +55840,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -55818,6 +55910,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -55890,6 +55983,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -55910,11 +56006,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -60255,6 +60353,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -60355,6 +60454,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ip" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -60382,13 +60486,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                            from `peer_ipv6`).
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 Access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                            `peer_ipv6`).
                             """
                             static_routes: StaticRoutes
                             """
@@ -60465,6 +60571,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -60540,6 +60647,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ip" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -60560,11 +60670,13 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                           from `peer_ipv6`).
                                         ipv6_acl_out:
                                            Name of the IPv6 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                           `peer_ipv6`).
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -60977,6 +61089,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -61074,6 +61187,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ip" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -61101,13 +61219,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                            from `peer_ipv6`).
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 Access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                            `peer_ipv6`).
                             """
                             static_routes: StaticRoutes
                             """
@@ -61169,6 +61289,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -61241,6 +61362,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ip" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -61261,11 +61385,13 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                           from `peer_ipv6`).
                                         ipv6_acl_out:
                                            Name of the IPv6 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                           `peer_ipv6`).
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -65541,6 +65667,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -65641,6 +65768,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -65668,13 +65800,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -65751,6 +65885,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -65826,6 +65961,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -65846,11 +65984,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -66257,6 +66397,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -66354,6 +66495,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -66381,13 +66527,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -66449,6 +66597,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -66521,6 +66670,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -66541,11 +66693,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -70901,6 +71055,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -71001,6 +71156,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -71028,13 +71188,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -71111,6 +71273,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -71186,6 +71349,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -71206,11 +71372,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -71617,6 +71785,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -71714,6 +71883,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -71741,13 +71915,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -71809,6 +71985,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -71881,6 +72058,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -71901,11 +72081,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -90538,6 +90720,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -90638,6 +90821,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -90665,13 +90853,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -90748,6 +90938,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -90823,6 +91014,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -90843,11 +91037,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -91254,6 +91450,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -91351,6 +91548,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -91378,13 +91580,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -91446,6 +91650,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -91518,6 +91723,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -91538,11 +91746,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -95883,6 +96093,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -95983,6 +96194,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ip" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -96010,13 +96226,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                            from `peer_ipv6`).
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 Access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                            `peer_ipv6`).
                             """
                             static_routes: StaticRoutes
                             """
@@ -96093,6 +96311,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -96168,6 +96387,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ip" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -96188,11 +96410,13 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                           from `peer_ipv6`).
                                         ipv6_acl_out:
                                            Name of the IPv6 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                           `peer_ipv6`).
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -96605,6 +96829,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "peer": {"type": str},
                                 "peer_port_channel": {"type": str},
                                 "peer_ip": {"type": str},
+                                "peer_ipv6": {"type": str},
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
@@ -96702,6 +96927,11 @@ class EosDesigns(EosDesignsRootModel):
                             The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                             and `ip` is an IP address.
                             """
+                            peer_ipv6: str | None
+                            """
+                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                            "peer_ip" token.
+                            """
                             bgp: Bgp
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -96729,13 +96959,15 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                            from `peer_ipv6`).
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 Access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                            `peer_ipv6`).
                             """
                             static_routes: StaticRoutes
                             """
@@ -96797,6 +97029,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_port_channel: str | None | UndefinedType = Undefined,
                                     peer_ip: str | None | UndefinedType = Undefined,
+                                    peer_ipv6: str | None | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -96869,6 +97102,9 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_ip:
                                            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                            and `ip` is an IP address.
+                                        peer_ipv6:
+                                           The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                           "peer_ip" token.
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
@@ -96889,11 +97125,13 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                           from `peer_ipv6`).
                                         ipv6_acl_out:
                                            Name of the IPv6 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                           `peer_ipv6`).
                                         static_routes:
                                            Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -101169,6 +101407,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -101269,6 +101508,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -101296,13 +101540,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -101379,6 +101625,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -101454,6 +101701,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -101474,11 +101724,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -101885,6 +102137,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -101982,6 +102235,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -102009,13 +102267,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -102077,6 +102337,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -102149,6 +102410,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -102169,11 +102433,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -106529,6 +106795,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_interface": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -106629,6 +106896,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -106656,13 +106928,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -106739,6 +107013,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_interface: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -106814,6 +107089,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -106834,11 +107112,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 
@@ -107245,6 +107525,7 @@ class EosDesigns(EosDesignsRootModel):
                             "peer": {"type": str},
                             "peer_port_channel": {"type": str},
                             "peer_ip": {"type": str},
+                            "peer_ipv6": {"type": str},
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
@@ -107342,6 +107623,11 @@ class EosDesigns(EosDesignsRootModel):
                         The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                         and `ip` is an IP address.
                         """
+                        peer_ipv6: str | None
+                        """
+                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                        "peer_ip" token.
+                        """
                         bgp: Bgp
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
@@ -107369,13 +107655,15 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                        from `peer_ipv6`).
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 Access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                        `peer_ipv6`).
                         """
                         static_routes: StaticRoutes
                         """
@@ -107437,6 +107725,7 @@ class EosDesigns(EosDesignsRootModel):
                                 peer: str | None | UndefinedType = Undefined,
                                 peer_port_channel: str | None | UndefinedType = Undefined,
                                 peer_ip: str | None | UndefinedType = Undefined,
+                                peer_ipv6: str | None | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
@@ -107509,6 +107798,9 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_ip:
                                        The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
                                        and `ip` is an IP address.
+                                    peer_ipv6:
+                                       The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
+                                       "peer_ip" token.
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
@@ -107529,11 +107821,13 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       defined under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved
+                                       from `peer_ipv6`).
                                     ipv6_acl_out:
                                        Name of the IPv6 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       under `ipv6_acls` and supports field substitution for "interface_ip" and "peer_ip" (resolved from
+                                       `peer_ipv6`).
                                     static_routes:
                                        Configure IPv4 static routes pointing to `peer_ip`.
 

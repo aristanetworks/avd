@@ -12,11 +12,12 @@ spine:
       l3_interfaces:
         - name: Ethernet1
           ip_address: 172.16.0.2/30
+          peer_ip: 172.16.0.1
           ipv6_addresses:
             - 2001:db8:1::2/64
+          peer_ipv6: 2001:db8:1::1
           ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
           ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
-          peer_ip: 172.16.0.1
         - name: Ethernet2
           ip_address: 172.17.0.2/30
           ipv6_acl_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
@@ -28,23 +29,23 @@ spine:
           ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
         - name: Ethernet4
           ip_address: 172.19.0.2/30
+          peer_ip: 172.19.0.1
           ipv6_addresses:
             - 2001:db8:4::2/64
+          peer_ipv6: 2001:db8:4::1
           # Only in direction
           ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
-          peer_ip: 172.19.0.1
         - name: Ethernet5/1
           ip_address: 172.20.0.2/30
           ipv6_addresses:
             - 2001:db8:5::2/64
-          # Only out direction, no peer_ip
+          # Only out direction
           ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
         - name: Ethernet6/6.6
           ip_address: 172.21.0.2/30
           ipv6_addresses:
             - 2001:db8:6::2/64
           ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
-          peer_ip: 172.21.0.1
       l3_port_channels:
         - name: Port-Channel1
           mode: active
@@ -53,11 +54,12 @@ spine:
               peer: peer1
               peer_interface: Ethernet1
           ip_address: 172.22.0.2/30
+          peer_ip: 172.22.0.1
           ipv6_addresses:
             - 2001:db8:10::2/64
+          peer_ipv6: 2001:db8:10::1
           ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
           ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
-          peer_ip: 172.22.0.1
           peer: peer1
           peer_port_channel: Port-Channel10
 

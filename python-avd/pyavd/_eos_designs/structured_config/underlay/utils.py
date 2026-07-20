@@ -331,7 +331,7 @@ class UtilsMixin(Protocol):
             name=acl_name,
             interface_name=interface.name,
             interface_ip=interface_ip,
-            peer_ip=interface.peer_ip,
+            peer_ipv6=interface.peer_ipv6,
         )
 
     def set_acls(

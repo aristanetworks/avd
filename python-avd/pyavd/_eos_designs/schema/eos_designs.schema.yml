@@ -15381,6 +15381,10 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ip" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15438,7 +15442,7 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15447,7 +15451,7 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15654,6 +15658,10 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ip" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15711,7 +15719,7 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15720,7 +15728,7 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int

@@ -90,7 +90,7 @@ ipv6_access_lists:
     sequence: 15
     action: deny
   - protocol: ipv6
-    source: 172.16.0.1
+    source: 2001:db8:1::1
     destination: 2001:db8:1::2
     action: permit
 - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet1
@@ -120,7 +120,7 @@ ipv6_access_lists:
     sequence: 15
     action: deny
   - protocol: ipv6
-    source: 172.19.0.1
+    source: 2001:db8:4::1
     destination: 2001:db8:4::2
     action: permit
 - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet5_1
@@ -145,7 +145,7 @@ ipv6_access_lists:
     sequence: 15
     action: deny
   - protocol: ipv6
-    source: 172.22.0.1
+    source: 2001:db8:10::1
     destination: 2001:db8:10::2
     action: permit
 - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Port-Channel1
