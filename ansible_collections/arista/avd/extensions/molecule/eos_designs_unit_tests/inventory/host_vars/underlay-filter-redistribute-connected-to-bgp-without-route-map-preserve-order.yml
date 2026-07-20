@@ -1,7 +1,11 @@
 ---
+# TODO: Rename this test case for AVD 7.0.0 when preserving `PL-SVI-VRF-DEFAULT` prefix order becomes the default behavior.
 type: l3leaf
 
 underlay_filter_redistribute_connected: false
+
+avd_design_future:
+  preserve_svi_vrf_default_prefix_list_order: true
 
 l3leaf:
   defaults:
@@ -10,8 +14,8 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: underlay-filter-redistribute-connected-to-bgp-without-route-map
-      id: 3
+    - name: underlay-filter-redistribute-connected-to-bgp-without-route-map-preserve-order
+      id: 4
       bgp_as: 65101
       filter:
         tags: [fabric, ipmi, storageProd, sit]
@@ -26,4 +30,12 @@ tenants: # dynamic_key: network_services
           - id: 111
             name: svi_with_default_vrf
             ip_address: 10.10.10.111/24
+            tags: [fabric]
+          - id: 112
+            name: svi_with_default_vrf_2
+            ip_address: 10.10.30.111/24
+            tags: [fabric]
+          - id: 113
+            name: svi_with_default_vrf_3
+            ip_address: 10.10.20.111/24
             tags: [fabric]
