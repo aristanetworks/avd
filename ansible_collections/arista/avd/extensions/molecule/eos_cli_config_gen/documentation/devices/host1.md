@@ -7981,21 +7981,21 @@ interface Tunnel7
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
-| Vlan42 | EVPN_UNDERLAY | - | - | - | Level-1: sha |
-| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 |
-| Vlan84 | EVPN_UNDERLAY | - | - | - | sha |
-| Vlan85 | EVPN_UNDERLAY | - | - | - | sha |
-| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret |
-| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret |
-| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
-| Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
-| Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan2002 | EVPN_UNDERLAY | True | - | passive | md5 |
-| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - |
-| Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Vlan42 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha |
+| Vlan83 | EVPN_UNDERLAY | - | - | - | level-2 | True | md5 |
+| Vlan84 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Vlan86 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Vlan87 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan90 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan92 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan2002 | EVPN_UNDERLAY | True | - | passive | - | - | md5 |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |
+| Vlan4094 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
 
 ##### Multicast Routing
 
@@ -8128,6 +8128,8 @@ interface Vlan83
    description SVI Description
    no shutdown
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
+   isis hello padding
    isis authentication mode md5
    isis authentication key 0 password
    ip address virtual 10.10.83.1/24
@@ -8152,6 +8154,9 @@ interface Vlan85
    arp cache dynamic capacity 50000
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
+   mpls ldp igp sync
+   no mpls ldp interface
+   mpls ip
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2
    isis authentication key 0 password
@@ -8463,6 +8468,9 @@ interface Vlan4092
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    ip address 10.255.251.0/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable EVPN_UNDERLAY
    isis metric 50
    isis network point-to-point
@@ -9997,6 +10005,18 @@ ASN Notation: asdot
 | -------- | ----- |
 | TTL Max Hops | 42 |
 
+##### TEST-ENFORCE-FIRST-AS-FALSE
+
+| Settings | Value |
+| -------- | ----- |
+| Enforce first AS | False |
+
+##### TEST-ENFORCE-FIRST-AS-TRUE
+
+| Settings | Value |
+| -------- | ----- |
+| Enforce first AS | True |
+
 ##### test-link-bandwidth1
 
 | Settings | Value |
@@ -10065,6 +10085,8 @@ ASN Notation: asdot
 | 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - | - |
 | 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST |
 | 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST |
+| 192.168.0.11 | - | default | - | - | - | - | - | - | - | - | - |
+| 192.168.0.12 | - | default | - | - | - | - | - | - | - | - | - |
 | 192.168.42.42 | 65004 | default | - | - | - | - | - | - | - | - | - |
 | 192.168.251.1 | - | default | True | - | - | - | - | - | - | - | - |
 | 192.168.251.2 | - | default | - | - | - | - | - | - | - | - | - |
@@ -10100,6 +10122,7 @@ ASN Notation: asdot
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | True | - | - | - | - |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - |
+| 192.168.0.10 | - | VRF02 | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 
 #### BGP Neighbor Interfaces
@@ -10537,6 +10560,10 @@ router bgp 65101
    neighbor STARDARD-COMMUNITY send-community standard
    neighbor TEST peer group
    neighbor TEST ttl maximum-hops 42
+   neighbor TEST-ENFORCE-FIRST-AS-FALSE peer group
+   no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
+   neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
+   neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10626,6 +10653,8 @@ router bgp 65101
    neighbor 192.0.3.9 peer group TEST
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
+   neighbor 192.168.0.11 enforce-first-as
+   no neighbor 192.168.0.12 enforce-first-as
    neighbor 192.168.42.42 remote-as 65004
    neighbor 192.168.42.42 next-hop-self
    neighbor 192.168.251.1 shutdown
@@ -11553,6 +11582,8 @@ router bgp 65101
       neighbor 1.1.1.1 additional-paths receive
       neighbor 1.1.1.1 additional-paths send ecmp limit 24
       neighbor 1.1.1.1 password 7 <removed>
+      neighbor 1.1.1.1 enforce-first-as
+      no neighbor 192.168.0.10 enforce-first-as
       redistribute connected include leaked route-map RM_VRF_CONNECTED
       redistribute isis level-2 include leaked route-map RM_VRF_ISIS
       redistribute ospf include leaked route-map RM_VRF_OSPF

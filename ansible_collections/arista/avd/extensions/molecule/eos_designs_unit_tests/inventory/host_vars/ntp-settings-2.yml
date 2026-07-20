@@ -9,6 +9,7 @@ l2leaf:
 
 ntp_settings:
   server_vrf: use_inband_mgmt_vrf
+  set_first_ntp_server_as_preferred: false
   servers:
     - name: 10.10.10.1
     - name: 10.10.10.2
