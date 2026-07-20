@@ -14,6 +14,8 @@ from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule, _normalize_yaml_data
 from pyavd.api.fabric_documentation import (
+    ACTDigitalTwin,
+    ActNodeSettings,
     ContainerlabDefaults,
     ContainerlabDigitalTwin,
     ContainerlabKind,
@@ -171,6 +173,10 @@ def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_m
             nodes={"leaf1": ContainerlabNode(mgmt_ipv4="172.16.1.101")},
             links=(),
         ),
+        interface_mapping={
+            "ManagementIntf": {"eth0": "Management1"},
+            "EthernetIntf": {"eth1": "Ethernet1"},
+        },
     )
     written_files: dict[str, str] = {}
 
@@ -198,6 +204,58 @@ def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_m
         module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
 
     assert written_files[str(topology_file)].splitlines()[:3] == ["---", "name: DC1", "prefix: ''"]
+    assert json.loads(written_files[str(tmp_path / "interface_mapping.json")]) == {
+        "ManagementIntf": {"eth0": "Management1"},
+        "EthernetIntf": {"eth1": "Ethernet1"},
+    }
+
+
+def test_main_writes_act_topology_without_containerlab_post_processing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover the generic Digital Twin serialization path for non-cLab topologies."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.yml"
+    output = _empty_output()
+    output.digital_twin = ACTDigitalTwin(
+        nodes=(
+            {
+                "leaf1": ActNodeSettings(
+                    node_type="veos",
+                    ip_addr="192.0.2.1",
+                    version="4.33.1.1F",
+                    internet_access=None,
+                    ports=None,
+                )
+            },
+        ),
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "act"}})
+
+    assert list(written_files) == [str(topology_file)]
+    assert written_files[str(topology_file)].splitlines()[:2] == ["---", "nodes:"]
 
 
 # ---------------------------------------------------------------------------
