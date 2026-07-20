@@ -4,24 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# eos - boot #}
-{% if boot is arista.avd.defined %}
-{%     if eos_config_future.only_render_separator_with_boot_secret_key is arista.avd.defined(true) %}
-{#- New behavior: Only render '!' if key is provided #}
-{%         if boot.secret.key is arista.avd.defined %}
+{% if boot.secret is arista.avd.defined %}
+{%     if boot.secret.key is arista.avd.defined or eos_config_future.only_render_separator_with_boot_secret_key is not arista.avd.defined(true) %}
 !
-{%             if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
-{%                 set hash_algorithm = 5 %}
-{%             endif %}
-boot secret {{ hash_algorithm | arista.avd.default('sha512') }} {{ boot.secret.key | arista.avd.hide_passwords(hide_passwords) }}
+{%     endif %}
+{%     if boot.secret.key is arista.avd.defined %}
+{%         if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
+{%             set hash_algorithm = 5 %}
 {%         endif %}
-{%     else %}
-{#- Backward compatible: Always render '!' when boot.secret is defined #}
-!
-{%         if boot.secret.key is arista.avd.defined %}
-{%             if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
-{%                 set hash_algorithm = 5 %}
-{%             endif %}
 boot secret {{ hash_algorithm | arista.avd.default('sha512') }} {{ boot.secret.key | arista.avd.hide_passwords(hide_passwords) }}
-{%         endif %}
 {%     endif %}
 {% endif %}

@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;only_render_mpls_rsvp_with_settings</samp>](## "eos_config_future.only_render_mpls_rsvp_with_settings") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is defined.<br>When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no sub-settings are set. |
     | [<samp>&nbsp;&nbsp;render_monitor_layer1_without_enabled</samp>](## "eos_config_future.render_monitor_layer1_without_enabled") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders the `monitor layer1` CLI block only if `monitor_layer1.logging_transceiver.*` / `monitor_layer1.logging_mac_fault` sub-setting is `true` no matter the value of `monitor_layer1.enabled` is `true` or `false`.<br>When `false` (default), renders the `monitor layer1` cli block only if `monitor_layer1.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;render_spanning_tree_portfast_edge</samp>](## "eos_config_future.render_spanning_tree_portfast_edge") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>When `true`, renders `spanning-tree portfast edge` on `ethernet_interfaces` and `port_channel_interfaces` when `spanning_tree_portfast` is set to `edge`, matching the running-config preserved by EOS 4.33.2F and later.<br>When `false` (default), renders the legacy `spanning-tree portfast` without the `edge` keyword. |
-    | [<samp>&nbsp;&nbsp;only_render_separator_with_boot_secret_key</samp>](## "eos_config_future.only_render_separator_with_boot_secret_key") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>When `true`, the '!' separator before 'boot secret' is only rendered when the key is provided.<br>When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;only_render_separator_with_boot_secret_key</samp>](## "eos_config_future.only_render_separator_with_boot_secret_key") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.<br>When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility. |
 
 === "YAML"
 
@@ -53,7 +53,7 @@
       render_spanning_tree_portfast_edge: <bool; default=False>
 
       # Available from AVD 6.4.0.
-      # When `true`, the '!' separator before 'boot secret' is only rendered when the key is provided.
-      # When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.
+      # When `true`, the '!' separator before 'boot secret' is only rendered when `boot.secret.key` is provided.
+      # When `false` (default), the '!' separator is always rendered when `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
       only_render_separator_with_boot_secret_key: <bool; default=False>
     ```

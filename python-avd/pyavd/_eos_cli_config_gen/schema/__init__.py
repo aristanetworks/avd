@@ -6661,9 +6661,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Available from AVD 6.4.0.
         When `true`, the '!' separator before 'boot secret' is only rendered when
-        the key is provided.
-        When `false` (default), the '!' separator is always rendered when `boot.secret`
-        is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.
+        `boot.secret.key` is provided.
+        When `false` (default), the '!' separator is always rendered when
+        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
 
         Default value: `False`
         """
@@ -6728,9 +6728,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     only_render_separator_with_boot_secret_key:
                        Available from AVD 6.4.0.
                        When `true`, the '!' separator before 'boot secret' is only rendered when
-                       the key is provided.
-                       When `false` (default), the '!' separator is always rendered when `boot.secret`
-                       is defined, even if key is missing, for backward compatibility. This will be changed in AVD 7.0.0.
+                       `boot.secret.key` is provided.
+                       When `false` (default), the '!' separator is always rendered when
+                       `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
 
                 """
 
