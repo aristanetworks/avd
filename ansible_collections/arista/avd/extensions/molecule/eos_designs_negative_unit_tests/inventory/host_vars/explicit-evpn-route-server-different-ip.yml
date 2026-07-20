@@ -1,0 +1,15 @@
+---
+# This host is present in the fabric only to provide peer facts for
+# overlapping-evpn-route-server-and-gateway-remote-peer-different-ip.
+# It is excluded from structured config testing via EOS_DESIGNS_FAILURES_EXCLUDED.
+type: spine
+
+spine:
+  defaults:
+    platform: 7050SX3
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: explicit-evpn-route-server-different-ip
+      id: 2
+      mgmt_ip: 192.168.200.101/24

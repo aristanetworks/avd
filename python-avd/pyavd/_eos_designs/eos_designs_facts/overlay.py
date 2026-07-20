@@ -44,7 +44,13 @@ class OverlayMixin(EosDesignsFactsProtocol, Protocol):
         """
         if self.shared_utils.underlay_router is True:
             if self.evpn_role == "client":
-                return EosDesignsFactsProtocol.EvpnRouteServers(self.shared_utils.node_config.evpn_route_servers or self.shared_utils.uplink_switches)
+                if self.shared_utils.node_config.evpn_route_servers:
+                    return EosDesignsFactsProtocol.EvpnRouteServers(self.shared_utils.node_config.evpn_route_servers)
+
+                evpn_gateway_remote_peer_hostnames = {remote_peer.hostname for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers}
+                return EosDesignsFactsProtocol.EvpnRouteServers(
+                    [uplink_switch for uplink_switch in self.shared_utils.uplink_switches if uplink_switch not in evpn_gateway_remote_peer_hostnames]
+                )
             return EosDesignsFactsProtocol.EvpnRouteServers(self.shared_utils.node_config.evpn_route_servers)
         return EosDesignsFactsProtocol.EvpnRouteServers()
 
