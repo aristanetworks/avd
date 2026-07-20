@@ -2682,6 +2682,16 @@ keys:
 
           When `false` (default), renders the legacy `spanning-tree portfast` without
           the `edge` keyword.'
+      only_render_separator_with_boot_secret_key:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          When `true`, the ''!'' separator before ''boot secret'' is only rendered
+          when `boot.secret.key` is provided.
+
+          When `false` (default), the ''!'' separator is always rendered when `boot.secret`
+          is defined, even if `boot.secret.key` is missing, for backward compatibility.'
   errdisable:
     type: dict
     keys:
@@ -17151,6 +17161,9 @@ keys:
                 route_map:
                   type: str
                   description: Route-map name.
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17430,6 +17443,9 @@ keys:
                   type: bool
                 route_map:
                   type: str
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -21023,6 +21039,10 @@ keys:
                         type: bool
                       route_map:
                         type: str
+                  enforce_first_as:
+                    type: bool
+                    description: Enforce the first AS in eBGP updates. EOS default
+                      is true.
                   update_source:
                     type: str
                   route_map_in:
