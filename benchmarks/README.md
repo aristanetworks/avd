@@ -16,7 +16,8 @@ The default CodSpeed suite is intentionally small and stable:
 - `test_molecule_scenarios.py` benchmarks per-host validation, structured config
   generation, and EOS config rendering for representative hosts from the
   `eos_designs_unit_tests` molecule scenario. Fabric facts are prepared outside
-  the timed path.
+  the timed path. It also benchmarks fabric-wide facts generation for the full
+  scenario.
 - `test_large_fabric_scaling.py` benchmarks a deterministic synthetic full
   workflow. The 15-device case runs in the default suite; the 150-device case is
   marked `benchmark_scale` and is only intended for full/manual runs.
@@ -30,7 +31,7 @@ The standalone `Benchmarks` workflow runs on:
 
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
-- Same-repository pull requests with the `benchmark` label.
+- Pull requests with the `benchmark` label.
 - Daily at 02:00 UTC.
 - Manual `workflow_dispatch` runs.
 
@@ -40,7 +41,7 @@ Default CI runs:
 python -m pytest --codspeed \
   benchmarks/test_molecule_scenarios.py \
   benchmarks/test_large_fabric_scaling.py \
-  -k "not 150_devices" \
+  -m "not benchmark_scale" \
   -q
 ```
 
@@ -66,7 +67,7 @@ Run benchmarks from the repository root:
 ```bash
 python -m pytest --codspeed benchmarks -q
 python -m pytest --codspeed benchmarks/test_molecule_scenarios.py -q
-python -m pytest --codspeed benchmarks/test_large_fabric_scaling.py -k "not 150_devices" -q
+python -m pytest --codspeed benchmarks/test_large_fabric_scaling.py -m "not benchmark_scale" -q
 ```
 
 Or use the `python-avd` Makefile targets:
