@@ -988,7 +988,6 @@ class EosDesigns(EosDesignsRootModel):
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
-            "preserve_svi_vrf_default_prefix_list_order": {"type": bool, "default": False},
             "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
@@ -1058,18 +1057,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        preserve_svi_vrf_default_prefix_list_order: bool
-        """
-        Available from AVD 6.4.0.
-        Preserve insertion order for SVI subnets in the generated `PL-SVI-VRF-
-        DEFAULT` prefix-list.
-        When disabled, AVD keeps the legacy behavior where prefixes are deduplicated
-        with a set and then converted back to a list without sorting.
-        Since set ordering is not stable, this
-        deduplication can lead to `PL-SVI-VRF-DEFAULT` changes across AVD runs.
-
-        Default value: `False`
-        """
         only_configure_pvst_border_when_mode_is_mstp: bool
         """
         Available from AVD 6.3.0.
@@ -1130,7 +1117,6 @@ class EosDesigns(EosDesignsRootModel):
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
-                preserve_svi_vrf_default_prefix_list_order: bool | UndefinedType = Undefined,
                 only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
@@ -1175,14 +1161,6 @@ class EosDesigns(EosDesignsRootModel):
                     only_configure_mlag_vrfs_peer_group_when_used:
                        Available from AVD 6.2.0.
                        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
-                    preserve_svi_vrf_default_prefix_list_order:
-                       Available from AVD 6.4.0.
-                       Preserve insertion order for SVI subnets in the generated `PL-SVI-VRF-
-                       DEFAULT` prefix-list.
-                       When disabled, AVD keeps the legacy behavior where prefixes are deduplicated
-                       with a set and then converted back to a list without sorting.
-                       Since set ordering is not stable, this
-                       deduplication can lead to `PL-SVI-VRF-DEFAULT` changes across AVD runs.
                     only_configure_pvst_border_when_mode_is_mstp:
                        Available from AVD 6.3.0.
                        PVST border parameters have no effect unless the spanning-tree mode is
