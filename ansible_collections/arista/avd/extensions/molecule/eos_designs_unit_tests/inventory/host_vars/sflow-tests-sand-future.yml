@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  disable_sflow_subinterfaces_on_sand_series: true

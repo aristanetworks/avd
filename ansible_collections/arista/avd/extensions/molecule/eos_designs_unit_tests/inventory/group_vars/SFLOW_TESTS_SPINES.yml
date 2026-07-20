@@ -15,3 +15,18 @@ spine:
     - name: sflow-tests-spine2
       id: 2
       mgmt_ip: 192.168.0.21/24
+
+    - name: sflow-tests-sand-no-future
+      id: 3
+      platform: 7280R
+      mgmt_ip: 192.168.0.31/24
+
+    - name: sflow-tests-sand-future
+      id: 4
+      platform: 7280R
+      mgmt_ip: 192.168.0.41/24
+
+    - name: sflow-tests-non-sand-future
+      id: 5
+      platform: default
+      mgmt_ip: 192.168.0.51/24

@@ -984,6 +984,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "disable_sflow_subinterfaces_on_sand_series": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
@@ -1022,6 +1023,23 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        disable_sflow_subinterfaces_on_sand_series: bool
+        """
+        Available from AVD 6.4.0.
+        Disable sFlow on subinterfaces for 7020R, 7280R, 7280R2, 7280R3, 7500R,
+        7500R2, 7500R3, and 7800R3 platform settings.
+        Ingress sFlow on subinterfaces of the Sand switches
+        requires a user-defined TCAM profile (with `feature sflow subintf`) to be created and applied as
+        the
+        system TCAM profile.
+        Applying a custom system TCAM profile may impact traffic and the functionality
+        of other features on a live/production switch and therefore
+        requires Customers to work with their
+        Arista Account team or TAC to define/test the new TCAM profile before deploying it on production
+        switches.
 
         Default value: `False`
         """
@@ -1113,6 +1131,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                disable_sflow_subinterfaces_on_sand_series: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
@@ -1145,6 +1164,19 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    disable_sflow_subinterfaces_on_sand_series:
+                       Available from AVD 6.4.0.
+                       Disable sFlow on subinterfaces for 7020R, 7280R, 7280R2, 7280R3, 7500R,
+                       7500R2, 7500R3, and 7800R3 platform settings.
+                       Ingress sFlow on subinterfaces of the Sand switches
+                       requires a user-defined TCAM profile (with `feature sflow subintf`) to be created and applied as
+                       the
+                       system TCAM profile.
+                       Applying a custom system TCAM profile may impact traffic and the functionality
+                       of other features on a live/production switch and therefore
+                       requires Customers to work with their
+                       Arista Account team or TAC to define/test the new TCAM profile before deploying it on production
+                       switches.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk

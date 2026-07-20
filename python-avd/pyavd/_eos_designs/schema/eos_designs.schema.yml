@@ -374,6 +374,24 @@ keys:
 
           Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
+      disable_sflow_subinterfaces_on_sand_series:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          Disable sFlow on subinterfaces for 7020R, 7280R, 7280R2, 7280R3, 7500R,
+          7500R2, 7500R3, and 7800R3 platform settings.
+
+          Ingress sFlow on subinterfaces of the Sand switches requires a user-defined
+          TCAM profile (with `feature sflow subintf`) to be created and applied as
+
+          the system TCAM profile.
+
+          Applying a custom system TCAM profile may impact traffic and the functionality
+          of other features on a live/production switch and therefore
+
+          requires Customers to work with their Arista Account team or TAC to define/test
+          the new TCAM profile before deploying it on production switches.'
       consistent_uplink_vlans:
         type: bool
         description: 'Available from AVD 6.2.0.
