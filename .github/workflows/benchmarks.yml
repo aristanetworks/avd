@@ -68,7 +68,7 @@ jobs:
             python -m pytest --codspeed \
               benchmarks/test_molecule_scenarios.py \
               benchmarks/test_large_fabric_scaling.py \
-              -k "not 150_devices" \
+              -m "not benchmark_scale" \
               -q
 
       - name: Run full benchmarks
