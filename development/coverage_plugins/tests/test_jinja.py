@@ -42,6 +42,10 @@ def _coverage_for_template(tmp_path: Path, template_root: Path, compiled_root: P
 
 
 def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, object]) -> Analysis:
+    return _analyze_rendered_template_contexts(tmp_path, source, [context])
+
+
+def _analyze_rendered_template_contexts(tmp_path: Path, source: str, contexts: list[dict[str, object]]) -> Analysis:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
     source_file = template_root / "template.j2"
@@ -55,7 +59,8 @@ def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, o
     coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
-    environment.get_template("template.j2").render(**context)
+    for context in contexts:
+        environment.get_template("template.j2").render(**context)
     coverage.stop()
     coverage.save()
 
@@ -904,6 +909,69 @@ def test_long_elif_chain_reports_unvisited_alternatives(tmp_path: Path) -> None:
     )
 
     assert analysis.missing_branch_arcs() == {1: [3], 3: [4, 5], 5: [6, 7]}
+
+
+def test_final_no_else_elif_false_fallthrough_to_following_block_is_covered(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template_contexts(
+        tmp_path,
+        "{% if wrapper %}\n"
+        "{% if mode == 'a' %}\n"
+        "alpha\n"
+        "{% elif mode == 'b' %}\n"
+        "bravo\n"
+        "{% endif %}\n"
+        "{% for item in items %}\n"
+        "{{ item }}\n"
+        "{% endfor %}\n"
+        "{% endif %}\n",
+        [
+            {"wrapper": True, "mode": "a", "items": ["leaf"]},
+            {"wrapper": True, "mode": "b", "items": ["leaf"]},
+            {"wrapper": True, "mode": "c", "items": ["leaf"]},
+        ],
+    )
+
+    assert not analysis.missing_branch_arcs()
+
+
+def test_no_else_loop_guard_false_fallthrough_to_structural_label_is_covered(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template_contexts(
+        tmp_path,
+        "{% if wrapper %}\n"
+        "{% if config %}\n"
+        "config\n"
+        "{% endif %}\n"
+        "{% for item in items %}\n"
+        "{% set value = item.name %}\n"
+        "{% if item.interval is defined or item.once is defined or item.interval is defined %}\n"
+        "{% if item.once is defined %}\n"
+        "{% set value = value ~ ' once' %}\n"
+        "{% elif item.interval is defined %}\n"
+        "{% set value = value ~ ' interval' %}\n"
+        "{% endif %}\n"
+        "{{ value }}\n"
+        "{% endif %}\n"
+        "{% endfor %}\n"
+        "{% endif %}\n",
+        [
+            {
+                "wrapper": True,
+                "config": True,
+                "items": [
+                    {"name": "once", "once": True},
+                    {"name": "interval", "interval": 10},
+                    {"name": "skipped"},
+                ],
+            },
+            {
+                "wrapper": True,
+                "config": False,
+                "items": [],
+            },
+        ],
+    )
+
+    assert 7 not in analysis.missing_branch_arcs()
 
 
 def test_variable_building_condition_reports_unvisited_assignment_branch(tmp_path: Path) -> None:
