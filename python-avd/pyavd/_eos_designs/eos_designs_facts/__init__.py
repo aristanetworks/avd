@@ -41,6 +41,7 @@ class EosDesignsFactsGeneratorProtocol(
     # Placeholders that are filled out by the peers' generators.
     _downlink_switches: EosDesignsFactsProtocol.DownlinkSwitches
     _evpn_route_server_clients: EosDesignsFactsProtocol.EvpnRouteServerClients
+    _evpn_gateway_remote_peer_clients: EosDesignsFactsProtocol.EvpnGatewayRemotePeerClients
     _mpls_route_reflector_clients: EosDesignsFactsProtocol.MplsRouteReflectorClients
 
     # Dict of mlag_groups shared between all devices.
@@ -345,6 +346,19 @@ class EosDesignsFactsGeneratorProtocol(
             if peer_facts.evpn_role == "server":
                 peer_facts._evpn_route_server_clients.append_unique(self.shared_utils.hostname)
 
+    def _populate_evpn_gateway_remote_peer_clients_on_peers(self) -> None:
+        """
+        Walk through EVPN gateway remote peers present in the inventory and update _their_ facts with the hostname of this device.
+
+        Remote peers with manual overrides are skipped, since the reverse side cannot infer the intended peering parameters from the inventory.
+        """
+        for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers:
+            if remote_peer.ip_address or remote_peer.bgp_as or remote_peer.hostname not in self.peer_generators:
+                continue
+
+            peer_facts = self.get_peer_facts_generator(remote_peer.hostname)
+            peer_facts._evpn_gateway_remote_peer_clients.append_unique(self.shared_utils.hostname)
+
     def _populate_mpls_route_reflector_clients_on_peers(self) -> None:
         """
         Walk through mpls_route_reflectors on this device and update _their_ facts with the hostname of this device.
@@ -372,6 +386,11 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def evpn_route_server_clients(self) -> EosDesignsFactsProtocol.EvpnRouteServerClients:
         return self._evpn_route_server_clients
+
+    @remove_cached_property_type
+    @cached_property
+    def evpn_gateway_remote_peer_clients(self) -> EosDesignsFactsProtocol.EvpnGatewayRemotePeerClients:
+        return self._evpn_gateway_remote_peer_clients
 
     @remove_cached_property_type
     @cached_property
@@ -405,6 +424,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         # Initialize placeholders that are filled out by the peers' generators.
         self._downlink_switches = EosDesignsFactsProtocol.DownlinkSwitches()
         self._evpn_route_server_clients = EosDesignsFactsProtocol.EvpnRouteServerClients()
+        self._evpn_gateway_remote_peer_clients = EosDesignsFactsProtocol.EvpnGatewayRemotePeerClients()
         self._mpls_route_reflector_clients = EosDesignsFactsProtocol.MplsRouteReflectorClients()
         self._mlag_groups = mlag_groups
 
@@ -421,6 +441,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         """
         self._populate_downlink_switches_on_peers()
         self._populate_evpn_route_server_clients_on_peers()
+        self._populate_evpn_gateway_remote_peer_clients_on_peers()
         self._populate_mpls_route_reflector_clients_on_peers()
 
     def render(self) -> EosDesignsFacts:

@@ -542,6 +542,8 @@ class RouterBgpMixin(Protocol):
                 # Create peer-group
                 self.set_once_peer_group_evpn_overlay_peers()
 
+            self._set_evpn_gateway_remote_peer_clients()
+
         self._set_evpn_gateway_remote_peers()
 
         if self.shared_utils.overlay_routing_protocol == "ibgp":
@@ -588,6 +590,8 @@ class RouterBgpMixin(Protocol):
 
                     # Create peer-group
                     self.set_once_peer_group_evpn_overlay_peers()
+
+                self._set_evpn_gateway_remote_peer_clients()
 
         if self.shared_utils.is_wan_client:
             if not self._ip_in_listen_ranges(self.shared_utils.vtep_ip, self.shared_utils.wan_listen_ranges):
@@ -679,6 +683,20 @@ class RouterBgpMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
+            self.structured_config.router_bgp.neighbors.append(neighbor)
+
+            # Create peer-group
+            self.set_once_peer_group_evpn_overlay_core()
+
+    def _set_evpn_gateway_remote_peer_clients(self: AvdStructuredConfigOverlayProtocol) -> None:
+        for remote_peer_client, data in natural_sort(self._evpn_gateway_remote_peer_clients.items()):
+            neighbor = self._create_neighbor(
+                data["ip_address"],
+                remote_peer_client,
+                self.inputs.bgp_peer_groups.evpn_overlay_core.name,
+                remote_as=data["bgp_as"],
+                overlay_peering_interface=data.get("overlay_peering_interface"),
+            )
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
             # Create peer-group

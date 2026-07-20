@@ -40,6 +40,9 @@ class UtilsMixin(Protocol):
         evpn_route_clients: dict[str, PeerInfo] = {}
 
         for avd_peer in self.facts.evpn_route_server_clients:
+            if avd_peer in self.facts.evpn_gateway_remote_peer_clients:
+                continue
+
             peer_facts = self.shared_utils.get_peer_facts(avd_peer)
             if (
                 self.shared_utils.hostname in peer_facts.evpn_route_servers
@@ -65,6 +68,27 @@ class UtilsMixin(Protocol):
             self._append_peer(evpn_route_servers, route_server, peer_facts)
 
         return evpn_route_servers
+
+    @cached_property
+    def _evpn_gateway_remote_peer_hostnames(self: AvdStructuredConfigOverlayProtocol) -> set[str]:
+        return {remote_peer.hostname for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers}
+
+    @cached_property
+    def _evpn_gateway_remote_peer_clients(self: AvdStructuredConfigOverlayProtocol) -> dict[str, PeerInfo]:
+        if not self.shared_utils.overlay_evpn:
+            return {}
+
+        evpn_gateway_remote_peer_clients: dict[str, PeerInfo] = {}
+
+        for avd_peer in self.facts.evpn_gateway_remote_peer_clients:
+            if avd_peer in self._evpn_gateway_remote_peer_hostnames:
+                continue
+
+            peer_facts = self.shared_utils.get_peer_facts(avd_peer)
+            if peer_facts.evpn_role in ["server", "client"]:
+                self._append_peer(evpn_gateway_remote_peer_clients, avd_peer, peer_facts)
+
+        return evpn_gateway_remote_peer_clients
 
     # The next three should probably be moved to facts
     @cached_property

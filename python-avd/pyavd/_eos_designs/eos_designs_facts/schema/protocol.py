@@ -1094,6 +1094,11 @@ class EosDesignsFactsProtocol(Protocol):
 
     EvpnRouteServerClients._item_type = str
 
+    class EvpnGatewayRemotePeerClients(AvdList[str]):
+        """Subclass of AvdList with `str` items."""
+
+    EvpnGatewayRemotePeerClients._item_type = str
+
     class MplsRouteReflectorClients(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -1158,6 +1163,7 @@ class EosDesignsFactsProtocol(Protocol):
         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
         "downlink_switches": {"type": DownlinkSwitches},
         "evpn_route_server_clients": {"type": EvpnRouteServerClients},
+        "evpn_gateway_remote_peer_clients": {"type": EvpnGatewayRemotePeerClients},
         "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients},
     }
     id: int | None
@@ -1324,6 +1330,8 @@ class EosDesignsFactsProtocol(Protocol):
     """Subclass of AvdList with `str` items."""
     evpn_route_server_clients: EvpnRouteServerClients
     """Subclass of AvdList with `str` items."""
+    evpn_gateway_remote_peer_clients: EvpnGatewayRemotePeerClients
+    """Subclass of AvdList with `str` items."""
     mpls_route_reflector_clients: MplsRouteReflectorClients
     """Subclass of AvdList with `str` items."""
 
@@ -1390,6 +1398,7 @@ class EosDesignsFactsProtocol(Protocol):
             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
             downlink_switches: DownlinkSwitches | UndefinedType = Undefined,
             evpn_route_server_clients: EvpnRouteServerClients | UndefinedType = Undefined,
+            evpn_gateway_remote_peer_clients: EvpnGatewayRemotePeerClients | UndefinedType = Undefined,
             mpls_route_reflector_clients: MplsRouteReflectorClients | UndefinedType = Undefined,
         ) -> None:
             """
@@ -1523,6 +1532,7 @@ class EosDesignsFactsProtocol(Protocol):
                 uplink_switch_interfaces: Subclass of AvdList with `str` items.
                 downlink_switches: Subclass of AvdList with `str` items.
                 evpn_route_server_clients: Subclass of AvdList with `str` items.
+                evpn_gateway_remote_peer_clients: Subclass of AvdList with `str` items.
                 mpls_route_reflector_clients: Subclass of AvdList with `str` items.
 
             """

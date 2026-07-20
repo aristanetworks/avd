@@ -421,6 +421,10 @@ keys:
     type: list
     items:
       type: str
+  evpn_gateway_remote_peer_clients:
+    type: list
+    items:
+      type: str
   mpls_route_reflector_clients:
     type: list
     items:

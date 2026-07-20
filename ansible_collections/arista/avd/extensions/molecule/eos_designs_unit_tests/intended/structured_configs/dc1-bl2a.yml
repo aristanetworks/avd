@@ -189,6 +189,14 @@ router_bgp:
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
+  - name: EVPN-OVERLAY-CORE
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
   - name: IPVPN-INTERWORKING-PEERS
     metadata:
       type: mpls
@@ -269,6 +277,12 @@ router_bgp:
     metadata:
       peer: dc1-spine4
     description: dc1-spine4
+  - ip_address: 192.168.255.14
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65104'
+    metadata:
+      peer: dc1-bl1a
+    description: dc1-bl1a
   - ip_address: 100.70.0.1
     peer_group: IPVPN-INTERWORKING-PEERS
     remote_as: '64512'
@@ -325,6 +339,9 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
     evpn_hostflap_detection:
       enabled: true
       window: 180
@@ -335,6 +352,8 @@ router_bgp:
     - name: UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
       activate: false
     - name: IPVPN-INTERWORKING-PEERS
       activate: false
