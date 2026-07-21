@@ -15833,22 +15833,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class RecordExport(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"mpls": {"type": bool}, "on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
-                    mpls: bool | None
-                    """Export MPLS forwarding information."""
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}, "mpls": {"type": bool}}
                     on_inactive_timeout: int | None
                     """Flow record inactive export timeout in milliseconds."""
                     on_interval: int | None
                     """Flow record export interval in milliseconds."""
+                    mpls: bool | None
+                    """Export MPLS forwarding information."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            mpls: bool | None | UndefinedType = Undefined,
                             on_inactive_timeout: int | None | UndefinedType = Undefined,
                             on_interval: int | None | UndefinedType = Undefined,
+                            mpls: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RecordExport.
@@ -15857,9 +15857,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                mpls: Export MPLS forwarding information.
                                 on_inactive_timeout: Flow record inactive export timeout in milliseconds.
                                 on_interval: Flow record export interval in milliseconds.
+                                mpls: Export MPLS forwarding information.
 
                             """
 
@@ -16093,16 +16093,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class RecordExport(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}, "mpls": {"type": bool}}
                     on_inactive_timeout: int | None
                     """Flow record inactive export timeout in milliseconds."""
                     on_interval: int | None
                     """Flow record export interval in milliseconds."""
+                    mpls: bool | None
+                    """Export MPLS forwarding information."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
+                            self,
+                            *,
+                            on_inactive_timeout: int | None | UndefinedType = Undefined,
+                            on_interval: int | None | UndefinedType = Undefined,
+                            mpls: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RecordExport.
@@ -16113,6 +16119,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 on_inactive_timeout: Flow record inactive export timeout in milliseconds.
                                 on_interval: Flow record export interval in milliseconds.
+                                mpls: Export MPLS forwarding information.
 
                             """
 
@@ -16331,16 +16338,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class RecordExport(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}, "mpls": {"type": bool}}
                     on_inactive_timeout: int | None
                     """Flow record inactive export timeout in milliseconds."""
                     on_interval: int | None
                     """Flow record export interval in milliseconds."""
+                    mpls: bool | None
+                    """Export MPLS forwarding information."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
+                            self,
+                            *,
+                            on_inactive_timeout: int | None | UndefinedType = Undefined,
+                            on_interval: int | None | UndefinedType = Undefined,
+                            mpls: bool | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             RecordExport.
@@ -16351,6 +16364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 on_inactive_timeout: Flow record inactive export timeout in milliseconds.
                                 on_interval: Flow record export interval in milliseconds.
+                                mpls: Export MPLS forwarding information.
 
                             """
 

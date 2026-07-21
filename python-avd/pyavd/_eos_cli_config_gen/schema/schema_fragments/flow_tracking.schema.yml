@@ -56,12 +56,6 @@ keys:
                   max: 614400
                   description: |
                     Maximum number of entries in flow table.
-                record_export:
-                  type: dict
-                  keys:
-                    mpls:
-                      type: bool
-                      description: Export MPLS forwarding information.
       hardware:
         type: dict
         $ref: "eos_cli_config_gen#/$defs/flow_tracking"

@@ -35,6 +35,9 @@ $defs:
                   min: 1000
                   max: 36000000
                   description: Flow record export interval in milliseconds.
+                mpls:
+                  type: bool
+                  description: Export MPLS forwarding information.
             exporters:
               type: list
               primary_key: name

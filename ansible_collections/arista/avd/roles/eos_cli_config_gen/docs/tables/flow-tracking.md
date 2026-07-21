@@ -19,11 +19,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold_minimum</samp>](## "flow_tracking.sampled.hardware_offload.threshold_minimum") | Integer |  |  | Min: 1<br>Max: 4294967295 | Minimum number of samples. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_tracking.sampled.trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;table_size</samp>](## "flow_tracking.sampled.trackers.[].table_size") | Integer |  |  | Min: 1<br>Max: 614400 | Maximum number of entries in flow table.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "flow_tracking.sampled.trackers.[].name") | String | Required, Unique |  |  | Tracker Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking.sampled.trackers.[].record_export") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.sampled.trackers.[].record_export.mpls") | Boolean |  |  |  | Export MPLS forwarding information. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking.sampled.trackers.[].record_export.on_inactive_timeout") | Integer |  |  | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_interval</samp>](## "flow_tracking.sampled.trackers.[].record_export.on_interval") | Integer |  |  | Min: 1000<br>Max: 36000000 | Flow record export interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "flow_tracking.sampled.trackers.[].name") | String | Required, Unique |  |  | Tracker Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.sampled.trackers.[].record_export.mpls") | Boolean |  |  |  | Export MPLS forwarding information. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking.sampled.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
@@ -43,6 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking.hardware.trackers.[].record_export") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking.hardware.trackers.[].record_export.on_inactive_timeout") | Integer |  |  | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_interval</samp>](## "flow_tracking.hardware.trackers.[].record_export.on_interval") | Integer |  |  | Min: 1000<br>Max: 36000000 | Flow record export interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.hardware.trackers.[].record_export.mpls") | Boolean |  |  |  | Export MPLS forwarding information. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking.hardware.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
@@ -64,6 +65,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking.mirror_on_drop.trackers.[].record_export") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking.mirror_on_drop.trackers.[].record_export.on_inactive_timeout") | Integer |  |  | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_interval</samp>](## "flow_tracking.mirror_on_drop.trackers.[].record_export.on_interval") | Integer |  |  | Min: 1000<br>Max: 36000000 | Flow record export interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.mirror_on_drop.trackers.[].record_export.mpls") | Boolean |  |  |  | Export MPLS forwarding information. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
@@ -98,10 +100,10 @@
 
             # Maximum number of entries in flow table.
           - table_size: <int; 1-614400>
-            record_export:
 
-              # Export MPLS forwarding information.
-              mpls: <bool>
+            # Tracker Name.
+            name: <str; required; unique>
+            record_export:
 
               # Flow record inactive export timeout in milliseconds.
               on_inactive_timeout: <int; 3000-900000>
@@ -109,8 +111,8 @@
               # Flow record export interval in milliseconds.
               on_interval: <int; 1000-36000000>
 
-            # Tracker Name.
-            name: <str; required; unique>
+              # Export MPLS forwarding information.
+              mpls: <bool>
             exporters:
 
                 # Exporter Name.
@@ -148,6 +150,9 @@
 
               # Flow record export interval in milliseconds.
               on_interval: <int; 1000-36000000>
+
+              # Export MPLS forwarding information.
+              mpls: <bool>
             exporters:
 
                 # Exporter Name.
@@ -190,6 +195,9 @@
 
               # Flow record export interval in milliseconds.
               on_interval: <int; 1000-36000000>
+
+              # Export MPLS forwarding information.
+              mpls: <bool>
             exporters:
 
                 # Exporter Name.
