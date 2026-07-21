@@ -42,17 +42,23 @@ core_interfaces:
     - nodes: [sflow-tests-spine1, sflow-tests-spine2]
       interfaces: [Ethernet11, Ethernet11]
       include_in_underlay_protocol: false
-    - nodes: [sflow-tests-sand-future, sflow-tests-sand-no-future]
+    - nodes: [sflow-tests-r-series-future, sflow-tests-r-series-no-future]
       interfaces: [Ethernet9, Ethernet9]
       include_in_underlay_protocol: false
-    - nodes: [sflow-tests-sand-future, sflow-tests-sand-no-future]
+    - nodes: [sflow-tests-r-series-future, sflow-tests-r-series-no-future]
       interfaces: [Ethernet9.100, Ethernet9.100]
       include_in_underlay_protocol: false
-    - nodes: [sflow-tests-non-sand-future, sflow-tests-sand-no-future]
+    - nodes: [sflow-tests-non-r-series-future, sflow-tests-r-series-no-future]
       interfaces: [Ethernet10, Ethernet10]
       include_in_underlay_protocol: false
-    - nodes: [sflow-tests-non-sand-future, sflow-tests-sand-no-future]
+    - nodes: [sflow-tests-non-r-series-future, sflow-tests-r-series-no-future]
       interfaces: [Ethernet10.100, Ethernet10.100]
+      include_in_underlay_protocol: false
+    - nodes: [sflow-tests-custom-r-series-future, sflow-tests-r-series-no-future]
+      interfaces: [Ethernet11, Ethernet11]
+      include_in_underlay_protocol: false
+    - nodes: [sflow-tests-custom-r-series-future, sflow-tests-r-series-no-future]
+      interfaces: [Ethernet11.100, Ethernet11.100]
       include_in_underlay_protocol: false
 
 # Testing the same as above with l3_edge

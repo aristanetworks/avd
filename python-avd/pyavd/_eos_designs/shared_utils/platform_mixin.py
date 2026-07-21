@@ -13,9 +13,6 @@ if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
 
-SAND_PLATFORMS = ("7020R", "7280R", "7280R2", "7280R3", "7500R", "7500R2", "7500R3", "7800R3")
-
-
 class PlatformMixin(Protocol):
     """
     Mixin Class providing a subset of SharedUtils.
@@ -42,10 +39,13 @@ class PlatformMixin(Protocol):
     def platform_settings(self: SharedUtilsProtocol) -> EosDesigns.PlatformSettingsItem | EosDesigns.CustomPlatformSettingsItem:
         platform_settings = self.get_platform_settings(self.platform)
 
-        # TODO: AVD 7.0.0 - Remove this future flag handling after setting `sflow_subinterfaces: false` in the default platform settings for the SAND platforms.
-        if self.inputs.avd_design_future.disable_sflow_subinterfaces_on_sand_series and self.platform in SAND_PLATFORMS:
+        # TODO: AVD 7.0.0 - Remove this after setting `sflow_subinterfaces: false` in the default platform settings for the R series platforms.
+        if (
+            self.inputs.avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms
+            and (sflow_subinterfaces_future := platform_settings.feature_support.sflow_subinterfaces_future) is not None
+        ):
             platform_settings = platform_settings._deepcopy()
-            platform_settings.feature_support.sflow_subinterfaces = False
+            platform_settings.feature_support.sflow_subinterfaces = sflow_subinterfaces_future
 
         return platform_settings
 

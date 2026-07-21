@@ -16,17 +16,22 @@ spine:
       id: 2
       mgmt_ip: 192.168.0.21/24
 
-    - name: sflow-tests-sand-no-future
+    - name: sflow-tests-r-series-no-future
       id: 3
       platform: 7280R
       mgmt_ip: 192.168.0.31/24
 
-    - name: sflow-tests-sand-future
+    - name: sflow-tests-r-series-future
       id: 4
       platform: 7280R
       mgmt_ip: 192.168.0.41/24
 
-    - name: sflow-tests-non-sand-future
+    - name: sflow-tests-non-r-series-future
       id: 5
       platform: default
       mgmt_ip: 192.168.0.51/24
+
+    - name: sflow-tests-custom-r-series-future
+      id: 6
+      platform: custom-r-series-platform
+      mgmt_ip: 192.168.0.61/24

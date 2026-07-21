@@ -4,50 +4,47 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet9
-  description: P2P_sflow-tests-sand-no-future_Ethernet9
+- name: Ethernet11
+  description: P2P_sflow-tests-r-series-no-future_Ethernet11
   shutdown: false
   mtu: 9214
   metadata:
-    peer: sflow-tests-sand-no-future
-    peer_interface: Ethernet9
+    peer: sflow-tests-r-series-no-future
+    peer_interface: Ethernet11
     peer_type: spine
   sflow:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet9.100
-  description: P2P_sflow-tests-sand-no-future_Ethernet9.100
+- name: Ethernet11.100
+  description: P2P_sflow-tests-r-series-no-future_Ethernet11.100
   shutdown: false
+  mtu: 9214
   metadata:
-    peer: sflow-tests-sand-no-future
-    peer_interface: Ethernet9.100
+    peer: sflow-tests-r-series-no-future
+    peer_interface: Ethernet11.100
     peer_type: spine
   switchport:
     enabled: false
-hostname: sflow-tests-sand-future
+hostname: sflow-tests-custom-r-series-future
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.255.0.4/32
+  ip_address: 10.255.0.6/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.41/24
+  ip_address: 192.168.0.61/24
   type: oob
   gateway: 192.168.0.1
 metadata:
   is_deployed: true
-  platform: 7280R
+  platform: custom-r-series-platform
   fabric_name: SFLOW_TESTS
-platform:
-  sand:
-    lag:
-      hardware_only: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -67,7 +64,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65200'
-  router_id: 10.255.0.4
+  router_id: 10.255.0.6
   maximum_paths:
     paths: 4
   updates:
@@ -99,8 +96,6 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.0.1
-tcam_profile:
-  system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

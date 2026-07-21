@@ -71,6 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "platform_settings.[].feature_support.private_vlan") | Boolean |  | `True` |  | Support for PVLAN feature.<br>On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "platform_settings.[].feature_support.sflow") | Boolean |  | `True` |  | Support for sFlow.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces</samp>](## "platform_settings.[].feature_support.sflow_subinterfaces") | Boolean |  | `True` |  | Support for sFlow on sub-interfaces.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces_future</samp>](## "platform_settings.[].feature_support.sflow_subinterfaces_future") | Boolean |  |  |  | Temporary future value for `sflow_subinterfaces`.<br>This setting has no effect unless `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.<br>When enabled, this value overrides `sflow_subinterfaces` for the matched platform setting.<br>This can be set under `custom_platform_settings` for custom R series platform definitions.<br>This setting will be removed in AVD 7.0. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
@@ -329,6 +330,13 @@
           # Support for sFlow on sub-interfaces.
           # The feature will be ignored on platforms where this is false.
           sflow_subinterfaces: <bool; default=True>
+
+          # Temporary future value for `sflow_subinterfaces`.
+          # This setting has no effect unless `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
+          # When enabled, this value overrides `sflow_subinterfaces` for the matched platform setting.
+          # This can be set under `custom_platform_settings` for custom R series platform definitions.
+          # This setting will be removed in AVD 7.0.
+          sflow_subinterfaces_future: <bool>
 
           # Support for Arista WAN features.
           # An error will be raised if the feature is enabled and this is false.
@@ -984,6 +992,7 @@
             subinterface_mtu: false
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1025,6 +1034,7 @@
             subinterface_mtu: false
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1080,6 +1090,7 @@
             subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1136,6 +1147,7 @@
             evpn_gateway_rd_rt_rewrite: true
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1241,6 +1253,7 @@
             subinterface_mtu: false
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1299,6 +1312,7 @@
             subinterface_monitor_session: false
             per_interface_l2_mtu: false
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1357,6 +1371,7 @@
             evpn_gateway_all_active_multihoming: true
             evpn_gateway_rd_rt_rewrite: true
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false
@@ -1413,6 +1428,7 @@
             evpn_gateway_all_active_multihoming: true
             evpn_gateway_rd_rt_rewrite: true
             private_vlan: false
+            sflow_subinterfaces_future: false
             errdisable_causes:
               acl:
                 recovery: false

@@ -5,11 +5,11 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet10
-  description: P2P_sflow-tests-sand-no-future_Ethernet10
+  description: P2P_sflow-tests-r-series-no-future_Ethernet10
   shutdown: false
   mtu: 9214
   metadata:
-    peer: sflow-tests-sand-no-future
+    peer: sflow-tests-r-series-no-future
     peer_interface: Ethernet10
     peer_type: spine
   sflow:
@@ -17,18 +17,18 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet10.100
-  description: P2P_sflow-tests-sand-no-future_Ethernet10.100
+  description: P2P_sflow-tests-r-series-no-future_Ethernet10.100
   shutdown: false
   mtu: 9214
   metadata:
-    peer: sflow-tests-sand-no-future
+    peer: sflow-tests-r-series-no-future
     peer_interface: Ethernet10.100
     peer_type: spine
   sflow:
     enable: true
   switchport:
     enabled: false
-hostname: sflow-tests-non-sand-future
+hostname: sflow-tests-non-r-series-future
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

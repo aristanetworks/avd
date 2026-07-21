@@ -286,6 +286,14 @@ $defs:
                 Support for sFlow on sub-interfaces.
                 The feature will be ignored on platforms where this is false.
               default: true
+            sflow_subinterfaces_future:
+              type: bool
+              description: |-
+                Temporary future value for `sflow_subinterfaces`.
+                This setting has no effect unless `avd_design_future.disable_sflow_subinterfaces_on_r_series_platforms` is enabled.
+                When enabled, this value overrides `sflow_subinterfaces` for the matched platform setting.
+                This can be set under `custom_platform_settings` for custom R series platform definitions.
+                This setting will be removed in AVD 7.0.
             wan:
               type: bool
               description: |-
