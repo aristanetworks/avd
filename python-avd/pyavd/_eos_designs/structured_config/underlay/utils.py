@@ -323,14 +323,14 @@ class UtilsMixin(Protocol):
             | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
         ),
     ) -> EosDesigns.Ipv6AclsItem:
-        interface_ip = next(iter(interface.ipv6_addresses), None)
-        if interface_ip is not None and "/" in interface_ip:
-            interface_ip = get_ip_from_ip_prefix(interface_ip)
+        interface_ipv6 = next(iter(interface.ipv6_addresses), None)
+        if interface_ipv6 is not None and "/" in interface_ipv6:
+            interface_ipv6 = get_ip_from_ip_prefix(interface_ipv6)
 
         return self.shared_utils.get_ipv6_acl(
             name=acl_name,
             interface_name=interface.name,
-            interface_ip=interface_ip,
+            interface_ipv6=interface_ipv6,
             peer_ipv6=interface.peer_ipv6,
         )
 

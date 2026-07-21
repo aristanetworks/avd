@@ -248,8 +248,8 @@ class MiscMixin(Protocol):
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv6_acl = org_ipv6_acl._deepcopy()
         ip_replacements = {
-            "interface_ip": interface_ip,
-            "interface_ipv6": interface_ip,
+            "interface_ip": interface_ipv6,
+            "interface_ipv6": interface_ipv6,
             "peer_ip": peer_ipv6,
         }
         changed = False

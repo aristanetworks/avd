@@ -113,7 +113,7 @@ class VlanInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_in,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_in = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
@@ -122,7 +122,7 @@ class VlanInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_out,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_out = acl.name
             self.structured_config_utils._set_ipv6_acl(acl)
