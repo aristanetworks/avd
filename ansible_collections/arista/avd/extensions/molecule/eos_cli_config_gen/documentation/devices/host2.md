@@ -33,8 +33,6 @@
 - [DHCP Relay](#dhcp-relay)
   - [DHCP Relay Summary](#dhcp-relay-summary)
   - [DHCP Relay Device Configuration](#dhcp-relay-device-configuration)
-- [System Boot Settings](#system-boot-settings)
-  - [System Boot Device Configuration](#system-boot-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
@@ -570,14 +568,6 @@ prompt Test
 dhcp relay
    server dhcp-relay-server1
    server dhcp-relay-server2
-```
-
-## System Boot Settings
-
-### System Boot Device Configuration
-
-```eos
-!
 ```
 
 ## Monitoring

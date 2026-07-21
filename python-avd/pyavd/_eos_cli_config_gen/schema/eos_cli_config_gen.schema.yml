@@ -2682,6 +2682,16 @@ keys:
 
           When `false` (default), renders the legacy `spanning-tree portfast` without
           the `edge` keyword.'
+      only_render_separator_with_boot_secret_key:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          When `true`, the ''!'' separator before ''boot secret'' is only rendered
+          when `boot.secret.key` is provided.
+
+          When `false` (default), the ''!'' separator is always rendered when `boot.secret`
+          is defined, even if `boot.secret.key` is missing, for backward compatibility.'
   errdisable:
     type: dict
     keys:
