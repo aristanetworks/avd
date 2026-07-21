@@ -157,6 +157,42 @@ def test_run_routes_missing_device_warning_to_display(action_module: Callable[..
     assert result.get("failed") is not True
 
 
+def test_main_marks_changed_when_p2p_links_csv_changes(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover changed aggregation for p2p link CSV output."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    p2p_links_csv_file = tmp_path / "p2p-links.csv"
+    output = _empty_output()
+    output.p2p_links_csv = "node,peer\nleaf1,spine1\n"
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "p2p_links_csv": True,
+                "p2p_links_csv_file": str(p2p_links_csv_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME})
+
+    assert written_files == {str(p2p_links_csv_file): "node,peer\nleaf1,spine1\n"}
+    assert module.result["changed"] is True
+
+
 def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """Cover the cLab-only topology key ordering: name and prefix must be emitted first."""
     module = action_module(ActionModule)
@@ -208,6 +244,53 @@ def test_main_writes_containerlab_topology_with_ordered_name_and_prefix(action_m
         "ManagementIntf": {"eth0": "Management1"},
         "EthernetIntf": {"eth1": "Ethernet1"},
     }
+
+
+def test_main_writes_containerlab_topology_without_interface_mapping(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Cover cLab topology rendering when no interface mapping sidecar is present."""
+    module = action_module(ActionModule)
+    module.result["changed"] = False
+    topology_file = tmp_path / "fabric.clab.yml"
+    output = _empty_output()
+    output.digital_twin = ContainerlabDigitalTwin(
+        name="DC1",
+        prefix="",
+        mgmt=ContainerlabMgmt(network="clab-mgmt", ipv4_subnet="172.16.1.0/24"),
+        topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind="arista_ceos"),
+            kinds={"arista_ceos": ContainerlabKind(enforce_startup_config=True, image="ceos:latest")},
+            nodes={"leaf1": ContainerlabNode(mgmt_ipv4="172.16.1.101")},
+            links=(),
+        ),
+        interface_mapping=None,
+    )
+    written_files: dict[str, str] = {}
+
+    def mock_write_file(content: str, filename: str, file_mode: str) -> bool:
+        assert file_mode == "0o664"
+        written_files[filename] = content
+        return True
+
+    with (
+        patch.object(
+            module,
+            "_validate_args",
+            return_value={
+                **BASE_VALIDATED_ARGS,
+                "digital_twin": True,
+                "digital_twin_file": str(topology_file),
+                "mode": "0o664",
+            },
+        ),
+        patch.object(module, "load_facts", return_value={}),
+        patch.object(module, "read_structured_configs", return_value={}),
+        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=output),
+        patch(f"{MODULE_PATH}.write_file", side_effect=mock_write_file),
+    ):
+        module.main(task_vars={"fabric_name": FABRIC_NAME, "digital_twin": {"environment": "containerlab"}})
+
+    assert list(written_files) == [str(topology_file)]
+    assert written_files[str(topology_file)].splitlines()[:3] == ["---", "name: DC1", "prefix: ''"]
 
 
 def test_main_writes_act_topology_without_containerlab_post_processing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:

@@ -63,3 +63,16 @@ def test_get_fabric_documentation_containerlab(digital_twin_enabled: bool) -> No
         assert fabric_documentation_obj.digital_twin.mgmt.ipv4_subnet == "192.0.2.0/24"
     else:
         assert fabric_documentation_obj.digital_twin is None
+
+
+def test_get_digital_twin_returns_none_for_unsupported_environment() -> None:
+    """Test fallback behavior through the public documentation API."""
+    output = get_fabric_documentation(
+        avd_facts={},
+        structured_configs={"leaf1": {"metadata": {"digital_twin": {"environment": "unsupported"}}}},
+        fabric_name="UNSUPPORTED_FABRIC",
+        fabric_documentation=False,
+        digital_twin=True,
+    )
+
+    assert output.digital_twin is None
