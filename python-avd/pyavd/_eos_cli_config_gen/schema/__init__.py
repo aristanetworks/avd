@@ -65610,15 +65610,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
-                        """
-                        Redistribute all OSPFv3 leaked routes.
-                        Mutually exclusive with match_internal.
-                        """
+                        """Redistribute OSPFv3 leaked routes."""
                         match_internal: bool | None
-                        """
-                        Redistribute only internal OSPFv3 leaked routes.
-                        Mutually exclusive with `enabled`.
-                        """
+                        """Redistribute only internal OSPFv3 leaked routes instead of all types."""
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -65637,12 +65631,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled:
-                                       Redistribute all OSPFv3 leaked routes.
-                                       Mutually exclusive with match_internal.
-                                    match_internal:
-                                       Redistribute only internal OSPFv3 leaked routes.
-                                       Mutually exclusive with `enabled`.
+                                    enabled: Redistribute OSPFv3 leaked routes.
+                                    match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
                                     route_map: route_map
 
                                 """
@@ -65793,13 +65783,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool
             """Activate the address family."""
             router_id: str | None
-            """32-bit OSPF router ID or an IP address."""
+            """32-bit OSPF router ID as an IP address."""
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
             redistribute: Redistribute
             """
-            Redistribute routes with OSPFv3.
+            Redistribute routes into OSPFv3.
 
             Subclass of AvdModel.
             """
@@ -65823,11 +65813,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         enabled: Activate the address family.
-                        router_id: 32-bit OSPF router ID or an IP address.
+                        router_id: 32-bit OSPF router ID as an IP address.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         redistribute:
-                           Redistribute routes with OSPFv3.
+                           Redistribute routes into OSPFv3.
 
                            Subclass of AvdModel.
 
@@ -65993,15 +65983,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
-                        """
-                        Redistribute all OSPFv3 leaked routes.
-                        Mutually exclusive with match_internal.
-                        """
+                        """Redistribute OSPFv3 leaked routes."""
                         match_internal: bool | None
-                        """
-                        Redistribute only internal OSPFv3 leaked routes.
-                        Mutually exclusive with `enabled`.
-                        """
+                        """Redistribute only internal OSPFv3 leaked routes instead of all types."""
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -66020,12 +66004,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled:
-                                       Redistribute all OSPFv3 leaked routes.
-                                       Mutually exclusive with match_internal.
-                                    match_internal:
-                                       Redistribute only internal OSPFv3 leaked routes.
-                                       Mutually exclusive with `enabled`.
+                                    enabled: Redistribute OSPFv3 leaked routes.
+                                    match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
                                     route_map: route_map
 
                                 """
@@ -66180,14 +66160,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             redistribute: Redistribute
             """
-            Redistribute routes with OSPFv3.
+            Redistribute routes into OSPFv3.
 
             Subclass of AvdModel.
             """
             enabled: bool
             """Activate the address family."""
             router_id: str | None
-            """32-bit OSPF router ID or an IP address."""
+            """32-bit OSPF router ID as an IP address."""
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -66211,11 +66191,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         redistribute:
-                           Redistribute routes with OSPFv3.
+                           Redistribute routes into OSPFv3.
 
                            Subclass of AvdModel.
                         enabled: Activate the address family.
-                        router_id: 32-bit OSPF router ID or an IP address.
+                        router_id: 32-bit OSPF router ID as an IP address.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
@@ -66367,15 +66347,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
-                            """
-                            Redistribute all OSPFv3 leaked routes.
-                            Mutually exclusive with match_internal.
-                            """
+                            """Redistribute OSPFv3 leaked routes."""
                             match_internal: bool | None
-                            """
-                            Redistribute only internal OSPFv3 leaked routes.
-                            Mutually exclusive with `enabled`.
-                            """
+                            """Redistribute only internal OSPFv3 leaked routes instead of all types."""
                             route_map: str | None
 
                             if TYPE_CHECKING:
@@ -66394,12 +66368,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Redistribute all OSPFv3 leaked routes.
-                                           Mutually exclusive with match_internal.
-                                        match_internal:
-                                           Redistribute only internal OSPFv3 leaked routes.
-                                           Mutually exclusive with `enabled`.
+                                        enabled: Redistribute OSPFv3 leaked routes.
+                                        match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
                                         route_map: route_map
 
                                     """
@@ -66550,13 +66520,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool
                 """Activate the address family."""
                 router_id: str | None
-                """32-bit OSPF router ID or an IP address."""
+                """32-bit OSPF router ID as an IP address."""
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
                 redistribute: Redistribute
                 """
-                Redistribute routes with OSPFv3.
+                Redistribute routes into OSPFv3.
 
                 Subclass of AvdModel.
                 """
@@ -66580,11 +66550,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             enabled: Activate the address family.
-                            router_id: 32-bit OSPF router ID or an IP address.
+                            router_id: 32-bit OSPF router ID as an IP address.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             redistribute:
-                               Redistribute routes with OSPFv3.
+                               Redistribute routes into OSPFv3.
 
                                Subclass of AvdModel.
 
@@ -66755,15 +66725,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool
-                            """
-                            Redistribute all OSPFv3 leaked routes.
-                            Mutually exclusive with match_internal.
-                            """
+                            """Redistribute OSPFv3 leaked routes."""
                             match_internal: bool | None
-                            """
-                            Redistribute only internal OSPFv3 leaked routes.
-                            Mutually exclusive with `enabled`.
-                            """
+                            """Redistribute only internal OSPFv3 leaked routes instead of all types."""
                             route_map: str | None
 
                             if TYPE_CHECKING:
@@ -66782,12 +66746,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Redistribute all OSPFv3 leaked routes.
-                                           Mutually exclusive with match_internal.
-                                        match_internal:
-                                           Redistribute only internal OSPFv3 leaked routes.
-                                           Mutually exclusive with `enabled`.
+                                        enabled: Redistribute OSPFv3 leaked routes.
+                                        match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
                                         route_map: route_map
 
                                     """
@@ -66942,14 +66902,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 redistribute: Redistribute
                 """
-                Redistribute routes with OSPFv3.
+                Redistribute routes into OSPFv3.
 
                 Subclass of AvdModel.
                 """
                 enabled: bool
                 """Activate the address family."""
                 router_id: str | None
-                """32-bit OSPF router ID or an IP address."""
+                """32-bit OSPF router ID as an IP address."""
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
@@ -66973,11 +66933,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             redistribute:
-                               Redistribute routes with OSPFv3.
+                               Redistribute routes into OSPFv3.
 
                                Subclass of AvdModel.
                             enabled: Activate the address family.
-                            router_id: 32-bit OSPF router ID or an IP address.
+                            router_id: 32-bit OSPF router ID as an IP address.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
@@ -66993,8 +66953,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "eos_cli": {"type": str},
             }
             name: str
+            """
+            VRF name.
+            VRF 'default' must be configured directly under 'router_ospfv3'.
+            """
             router_id: str | None
-            """32-bit OSPF router ID or an IP address."""
+            """32-bit OSPF router ID as an IP address."""
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -67041,8 +67005,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: name
-                        router_id: 32-bit OSPF router ID or an IP address.
+                        name:
+                           VRF name.
+                           VRF 'default' must be configured directly under 'router_ospfv3'.
+                        router_id: 32-bit OSPF router ID as an IP address.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         address_family_ipv4:
@@ -67082,7 +67048,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "eos_cli": {"type": str},
         }
         router_id: str | None
-        """32-bit OSPF router ID or an IP address."""
+        """32-bit OSPF router ID as an IP address."""
         passive_interface_default: bool | None
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
@@ -67131,7 +67097,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    router_id: 32-bit OSPF router ID or an IP address.
+                    router_id: 32-bit OSPF router ID as an IP address.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                     address_family_ipv4:
@@ -78645,7 +78611,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     router_ospf: RouterOspf
     """Subclass of AvdModel."""
     router_ospfv3: RouterOspfv3
-    """Subclass of AvdModel."""
+    """
+    Mutually exclusive with 'ipv6 router ospf'.
+    Use only one style across all VRFs and instances.
+    Subclass of AvdModel.
+    """
     router_path_selection: RouterPathSelection
     """
     Dynamic path selection configuration.
@@ -79301,7 +79271,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 router_msdp: Subclass of AvdModel.
                 router_multicast: Subclass of AvdModel.
                 router_ospf: Subclass of AvdModel.
-                router_ospfv3: Subclass of AvdModel.
+                router_ospfv3:
+                   Mutually exclusive with 'ipv6 router ospf'.
+                   Use only one style across all VRFs and instances.
+                   Subclass of AvdModel.
                 router_path_selection:
                    Dynamic path selection configuration.
 

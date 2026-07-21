@@ -145,7 +145,11 @@ router ospf 703
 
 #### VRF: default
 
-- Auto Cost Reference Bandwidth: 100
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
 
 ##### Address Family IPv4
 
@@ -156,7 +160,7 @@ router ospf 703
 | bgp | True | - |
 | connected | True | - |
 | isis level-1 | True | - |
-| ospfv3 leaked | - | map1 |
+| ospfv3 leaked | True | map1 |
 | static | - | map1 |
 
 ##### Address Family IPv6
@@ -169,14 +173,16 @@ router ospf 703
 | connected | True | - |
 | dhcp | - | map1 |
 | isis level-1 | True | - |
-| ospfv3 leaked | - | map1 |
+| ospfv3 leaked | True | map1 |
 | static | - | map1 |
 
 #### VRF: Test
 
-- Router ID: 2.2.2.2
-- Passive Interface Default: True
-- Auto Cost Reference Bandwidth: 100
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
 
 #### Router OSPFv3 Device Configuration
 
@@ -189,6 +195,7 @@ router ospfv3 vrf Test
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   bfd default
    !
    address-family ipv4
       redistribute bgp include leaked
@@ -204,8 +211,6 @@ router ospfv3
       redistribute isis include leaked level-1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
-   !
-   bfd default
 ```
 
 ### Router ISIS

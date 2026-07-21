@@ -26,6 +26,10 @@ router ospfv3 vrf {{ vrf.name }}
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.eos_cli is arista.avd.defined %}
+   {{ vrf.eos_cli | indent(3, false) }}
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if use_delimiter and vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
    !
 {%     endif %}
@@ -198,10 +202,6 @@ router ospfv3 vrf {{ vrf.name }}
       {{ redistribute_static_cli }}
 {%         endif %}
 {%     endif %}
-{%     if vrf.eos_cli is arista.avd.defined %}
-   !
-   {{ vrf.eos_cli | indent(3, false) }}
-{%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
       or router_ospfv3.passive_interface_default is arista.avd.defined
@@ -227,6 +227,10 @@ router ospfv3
            and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined
            and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
    passive-interface default
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.eos_cli is arista.avd.defined %}
+   {{ router_ospfv3.eos_cli | indent(3, false) }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if use_delimiter and router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
@@ -400,9 +404,5 @@ router ospfv3
 {%             endif %}
       {{ redistribute_static_cli }}
 {%         endif %}
-{%     endif %}
-{%     if router_ospfv3.eos_cli is arista.avd.defined %}
-   !
-   {{ router_ospfv3.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endif %}

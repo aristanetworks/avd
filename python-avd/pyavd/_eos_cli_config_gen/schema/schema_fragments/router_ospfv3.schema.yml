@@ -9,14 +9,19 @@ keys:
   router_ospfv3:
     type: dict
     display_name: Router OSPFv3 Configuration
+    description: |-
+      Mutually exclusive with 'ipv6 router ospf'.
+      Use only one style across all VRFs and instances.
     keys:
       router_id:
         type: str
-        description: 32-bit OSPF router ID or an IP address.
+        description: 32-bit OSPF router ID as an IP address.
       passive_interface_default:
         type: bool
       auto_cost_reference_bandwidth:
         type: int
+        convert_types:
+          - str
         min: 1
         max: 4294967
         description: Reference bandwidth in Mbps.
@@ -33,17 +38,19 @@ keys:
             description: Activate the address family.
           router_id:
             type: str
-            description: 32-bit OSPF router ID or an IP address.
+            description: 32-bit OSPF router ID as an IP address.
           passive_interface_default:
             type: bool
           auto_cost_reference_bandwidth:
             type: int
+            convert_types:
+              - str
             min: 1
             max: 4294967
             description: Reference bandwidth in Mbps.
           redistribute:
             type: dict
-            description: Redistribute routes with OSPFv3.
+            description: Redistribute routes into OSPFv3.
             keys:
               bgp:
                 type: dict
@@ -101,13 +108,11 @@ keys:
                         type: bool
                         required: true
                         description: |-
-                          Redistribute all OSPFv3 leaked routes.
-                          Mutually exclusive with match_internal.
+                          Redistribute OSPFv3 leaked routes.
                       match_internal:
                         type: bool
                         description: |-
-                          Redistribute only internal OSPFv3 leaked routes.
-                          Mutually exclusive with `enabled`.
+                          Redistribute only internal OSPFv3 leaked routes instead of all types.
                       route_map:
                         type: str
                   leaked_match_external:
@@ -138,7 +143,7 @@ keys:
         keys:
           redistribute:
             type: dict
-            description: Redistribute routes with OSPFv3.
+            description: Redistribute routes into OSPFv3.
             keys:
               dhcp:
                 type: dict
@@ -156,13 +161,19 @@ keys:
           keys:
             name:
               type: str
+              description: |-
+                VRF name.
+                VRF 'default' must be configured directly under 'router_ospfv3'.
+              pattern: "(?!default$).+"
             router_id:
               type: str
-              description: 32-bit OSPF router ID or an IP address.
+              description: 32-bit OSPF router ID as an IP address.
             passive_interface_default:
               type: bool
             auto_cost_reference_bandwidth:
               type: int
+              convert_types:
+                - str
               min: 1
               max: 4294967
               description: Reference bandwidth in Mbps.

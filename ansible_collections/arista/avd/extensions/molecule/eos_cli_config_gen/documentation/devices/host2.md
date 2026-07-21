@@ -1193,7 +1193,11 @@ router ospf 701
 
 #### VRF: default
 
-- Passive Interface Default: True
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | - |
 
 ##### Address Family IPv4
 
@@ -1204,7 +1208,7 @@ router ospf 701
 | bgp | - | - |
 | connected | - | - |
 | isis | - | - |
-| ospfv3 leaked | - | - |
+| ospfv3 leaked | True | - |
 | static | - | - |
 
 ##### Address Family IPv6
@@ -1217,7 +1221,7 @@ router ospf 701
 | connected | - | - |
 | dhcp | - | - |
 | isis | - | - |
-| ospfv3 leaked | - | - |
+| ospfv3 leaked | True | - |
 | static | - | - |
 
 #### VRF: FULL
@@ -1237,9 +1241,9 @@ router ospf 701
 | bgp | True | - |
 | connected | True | - |
 | isis level-2 | True | - |
-| ospfv3 match internal leaked | - | map2 |
-| ospfv3 match external leaked | - | map2 |
-| ospfv3 match nssa-external leaked | - | map2 |
+| ospfv3 leaked match internal | True | map2 |
+| ospfv3 leaked match external | True | map2 |
+| ospfv3 leaked match nssa-external | True | map2 |
 
 ##### Address Family IPv6
 
@@ -1256,14 +1260,17 @@ router ospf 701
 | bgp | True | - |
 | connected | True | - |
 | isis level-2 | True | - |
-| ospfv3 match internal leaked | - | map2 |
-| ospfv3 match external leaked | - | map2 |
-| ospfv3 match nssa-external leaked | - | map2 |
+| ospfv3 leaked match internal | True | map2 |
+| ospfv3 leaked match external | True | map2 |
+| ospfv3 leaked match nssa-external | True | map2 |
 
 #### VRF: MGMT
 
-- Router ID: 2.2.2.2
-- Auto Cost Reference Bandwidth: 100
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
 
 ##### Address Family IPv4
 
@@ -1280,7 +1287,7 @@ router ospf 701
 | bgp | - | - |
 | connected | - | - |
 | isis | - | - |
-| ospfv3 leaked | - | - |
+| ospfv3 leaked | True | - |
 | static | - | - |
 
 ##### Address Family IPv6
@@ -1299,7 +1306,7 @@ router ospf 701
 | connected | - | - |
 | dhcp | - | - |
 | isis | - | - |
-| ospfv3 leaked | - | - |
+| ospfv3 leaked | True | - |
 | static | - | - |
 
 #### VRF: Test
@@ -1316,9 +1323,9 @@ router ospf 701
 
 | Source Protocol | Include Leaked | Route Map |
 | --------------- | -------------- | --------- |
-| ospfv3 leaked | - | - |
-| ospfv3 match external leaked | - | - |
-| ospfv3 match nssa-external leaked | - | - |
+| ospfv3 leaked | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
 
 ##### Address Family IPv6
 
@@ -1332,20 +1339,25 @@ router ospf 701
 
 | Source Protocol | Include Leaked | Route Map |
 | --------------- | -------------- | --------- |
-| ospfv3 leaked | - | - |
-| ospfv3 match external leaked | - | - |
-| ospfv3 match nssa-external leaked | - | - |
+| ospfv3 leaked | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
 
 #### VRF: Test_VRF
 
-- Router ID: 1.1.1.1
-- Passive Interface Default: True
-- Auto Cost Reference Bandwidth: 1000
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 1.1.1.1 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 1000 |
 
 #### VRF: data
 
-- Router ID: 2.2.2.2
-- Passive Interface Default: True
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | - |
 
 ##### Address Family IPv4
 
@@ -1362,7 +1374,7 @@ router ospf 701
 | bgp | - | map1 |
 | connected | - | map1 |
 | isis | - | map1 |
-| ospfv3 leaked | - | map1 |
+| ospfv3 leaked | True | map1 |
 | static | True | map1 |
 
 ##### Address Family IPv6
@@ -1381,7 +1393,7 @@ router ospf 701
 | connected | - | map1 |
 | dhcp | - | map1 |
 | isis | - | map1 |
-| ospfv3 leaked | - | map1 |
+| ospfv3 leaked | True | map1 |
 | static | - | map1 |
 
 #### Router OSPFv3 Device Configuration
