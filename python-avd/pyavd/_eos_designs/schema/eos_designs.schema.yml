@@ -7637,6 +7637,7 @@ keys:
         default: true
       servers:
         type: list
+        primary_key: name
         description: 'By default, AVD marks the first server as `preferred`.
 
           Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
