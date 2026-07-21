@@ -117,6 +117,9 @@ router_bgp:
     peer_group: MYPEERGROUP
     metadata:
       validate_state: false
+    default_originate:
+      enabled: true
+      always: true
   redistribute:
     connected:
       enabled: true
