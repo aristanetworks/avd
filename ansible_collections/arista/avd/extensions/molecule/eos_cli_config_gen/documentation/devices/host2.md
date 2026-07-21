@@ -1277,7 +1277,7 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
-| Passive Interface Default | True |
+| Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
 
 ###### Redistribution
@@ -1428,7 +1428,6 @@ router ospfv3 vrf MGMT
    auto-cost reference-bandwidth 100
    !
    address-family ipv4
-      passive-interface default
       redistribute bgp
       redistribute connected
       redistribute isis

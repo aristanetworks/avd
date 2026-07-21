@@ -88,7 +88,7 @@ router_ospfv3:
               enabled: true
               route_map: map2
     - name: data
-      # These settings will not get rendered as address family level settings gets precedence.
+      # These settings(auto_cost_reference_bandwidth) will not get rendered as address family level settings gets precedence.
       router_id: 2.2.2.2
       passive_interface_default: true
       auto_cost_reference_bandwidth: 100
@@ -142,7 +142,7 @@ router_ospfv3:
       passive_interface_default: true
       address_family_ipv4:
         enabled: true
-        passive_interface_default: true
+        passive_interface_default: false
         redistribute:
           bgp:
             enabled: true

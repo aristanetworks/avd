@@ -13,8 +13,8 @@
            and router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined
            and router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined %}
 {%     set default_passive_interface_default = router_ospfv3.passive_interface_default is arista.avd.defined(true)
-           and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-           and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
+           and router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined
+           and router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
 {%     set default_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
            and router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
            and router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
@@ -175,8 +175,8 @@
                and vrf.address_family_ipv4.router_id is not arista.avd.defined
                and vrf.address_family_ipv6.router_id is not arista.avd.defined %}
 {%         set vrf_passive_interface_default = vrf.passive_interface_default is arista.avd.defined(true)
-               and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined(true)
-               and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined(true) %}
+               and vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined
+               and vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined %}
 {%         set vrf_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth is arista.avd.defined
                and vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined
                and vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined %}
