@@ -36,5 +36,5 @@
     that:
       - result is success
       - result.changed == true
-      - result.warnings is not defined or result.warnings | length > 0
-      - result.warnings is not defined or result.warnings[0] == "Could not find structured config files for 'testhost'. The documentation may be incomplete."
+      - result.warnings | length > 0
+      - result.warnings[0] == "Could not find structured config files for 'testhost'. The documentation may be incomplete."
