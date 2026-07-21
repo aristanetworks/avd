@@ -1,0 +1,20 @@
+---
+# This host is present in the fabric only to provide peer facts for
+# reverse-overlapping-evpn-route-server-and-gateway-remote-peer.
+# It is excluded from structured config testing via EOS_DESIGNS_FAILURES_EXCLUDED.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: reverse-evpn-gateway-remote-peer
+      id: 3
+      bgp_as: 65105
+      mgmt_ip: 192.168.200.112/24
+      evpn_gateway:
+        remote_peers:
+          - hostname: reverse-overlapping-evpn-route-server-and-gateway-remote-peer

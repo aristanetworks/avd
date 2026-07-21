@@ -13737,6 +13737,9 @@ $defs:
                   If a remote peer is also an uplink switch, AVD treats the EVPN peering
                   to that peer as an EVPN Gateway core peering.
 
+                  Reverse EVPN Gateway core peering is only auto-rendered for inventory
+                  peers where neither `ip_address` nor `bgp_as` is manually overridden.
+
                   '
                 type: list
                 primary_key: hostname

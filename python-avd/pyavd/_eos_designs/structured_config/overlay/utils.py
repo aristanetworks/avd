@@ -84,6 +84,13 @@ class UtilsMixin(Protocol):
             if avd_peer in self._evpn_gateway_remote_peer_hostnames:
                 continue
 
+            if avd_peer in self.facts.evpn_route_servers:
+                msg = (
+                    f"Cannot configure EVPN Gateway remote peer '{avd_peer}' under both another node's 'evpn_gateway.remote_peers' "
+                    "and 'evpn_route_servers' on this node. Use each inventory hostname in only one of these inputs."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
             peer_facts = self.shared_utils.get_peer_facts(avd_peer)
             if peer_facts.evpn_role in ["server", "client"]:
                 self._append_peer(evpn_gateway_remote_peer_clients, avd_peer, peer_facts)
