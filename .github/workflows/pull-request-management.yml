@@ -568,13 +568,12 @@ jobs:
         run: |
           ansible-test integration --coverage --requirements -vv ${{ matrix.integration_args }}
           ansible-test coverage xml
-          mv tests/output/reports/coverage.xml ./integration-coverage.xml
+          mv tests/output/reports/coverage.xml "./integration-coverage-${{ matrix.ansible_version }}.xml"
       - name: Upload coverage from ansible-test integration
-        if: matrix.ansible_version == 'latest_stable'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ansible-test-integration-coverage
-          path: ansible_collections/arista/avd/integration-coverage.xml
+          name: ansible-test-integration-coverage-${{ matrix.ansible_version }}
+          path: ansible_collections/arista/avd/integration-coverage-${{ matrix.ansible_version }}.xml
 
   # ----------------------------------- #
   # Build Collection
