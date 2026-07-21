@@ -68,6 +68,7 @@ ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
     "avd_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": True},
             "output_dir": {"type": "str"},
@@ -87,6 +88,7 @@ ARGUMENT_SPEC = {
     },
     "user_catalogs": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
@@ -94,6 +96,7 @@ ARGUMENT_SPEC = {
     },
     "runner": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "timeout": {"type": "float", "default": 30.0},
             "batch_size": {"type": "int", "default": 5},
@@ -103,6 +106,7 @@ ARGUMENT_SPEC = {
     },
     "report": {
         "type": "dict",
+        "apply_defaults": True,
         "options": {
             "expand_results": {"type": "bool", "default": False},
             "generate_custom_field": {"type": "bool", "default": False},
@@ -115,6 +119,7 @@ ARGUMENT_SPEC = {
             },
             "sorting": {
                 "type": "dict",
+                "apply_defaults": True,
                 "options": {
                     "status_priority": {
                         "type": "list",
