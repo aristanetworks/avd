@@ -20,7 +20,7 @@ name: "Benchmarks"
   workflow_dispatch:
     inputs:
       full_suite:
-        description: "Run the full benchmark suite, including scale benchmarks."
+        description: "Include scale benchmarks."
         required: false
         default: false
         type: boolean
@@ -71,7 +71,7 @@ jobs:
               -m "not benchmark_scale" \
               -q
 
-      - name: Run full benchmarks
+      - name: Run full benchmark suite with scale benchmarks
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.full_suite)
         uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
         with:
