@@ -62,6 +62,7 @@ ip_access_lists:
         source: any
         destination: any
         copy_captive_portal: true
+        # Log is ignored.
         log: true
       - action: permit
         remark: copy_captive_portal does not apply to permit entries
@@ -70,6 +71,11 @@ ip_access_lists:
         destination: any
         log: true
         copy_captive_portal: true
+      - action: deny
+        protocol: tcp
+        source: any
+        destination: any
+        copy_captive_portal: false
       - action: permit
         protocol: icmp
         source: any
@@ -77,7 +83,6 @@ ip_access_lists:
         icmp_type: 3
         icmp_code: 4
         ttl: 40
-        copy_captive_portal: false
       - action: permit
         protocol: icmp
         source: any
