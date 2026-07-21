@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 import sys
 from copy import deepcopy
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
@@ -10,6 +11,7 @@ import pytest
 from pyavd import get_fabric_documentation
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import ACTDigitalTwin, ContainerlabDigitalTwin, FabricDocumentation
+from pyavd.get_fabric_documentation import _get_digital_twin
 from tests.models import MoleculeScenario
 
 
@@ -46,6 +48,13 @@ def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytes
     )
 
     assert "## Connected Endpoints\n\nNo connected endpoint configured!" in fabric_documentation_obj.fabric_documentation
+
+
+def test_get_digital_twin_returns_none_for_unsupported_environment() -> None:
+    """Test fallback path for unsupported Digital Twin environment."""
+    fabric_documentation_facts = SimpleNamespace(structured_configs={"leaf1": {"metadata": {"digital_twin": {"environment": "unsupported"}}}})
+
+    assert _get_digital_twin(fabric_documentation_facts) is None
 
 
 @pytest.mark.molecule_scenarios(
