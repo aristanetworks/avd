@@ -40107,7 +40107,7 @@ class EosDesigns(EosDesignsRootModel):
                 "minpoll": {"type": int},
                 "version": {"type": int},
             }
-            name: str | None
+            name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
             burst: bool | None
             iburst: bool | None
@@ -40123,7 +40123,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     burst: bool | None | UndefinedType = Undefined,
                     iburst: bool | None | UndefinedType = Undefined,
                     key: int | None | UndefinedType = Undefined,
@@ -40148,8 +40148,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Servers(AvdList[ServersItem]):
-            """Subclass of AvdList with `ServersItem` items."""
+        class Servers(AvdIndexedList[str, ServersItem]):
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         Servers._item_type = ServersItem
 
@@ -40278,7 +40280,7 @@ class EosDesigns(EosDesignsRootModel):
         'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
         Subclass of
-        AvdList with `ServersItem` items.
+        AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -40334,7 +40336,7 @@ class EosDesigns(EosDesignsRootModel):
                        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
                        Subclass of
-                       AvdList with `ServersItem` items.
+                       AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
