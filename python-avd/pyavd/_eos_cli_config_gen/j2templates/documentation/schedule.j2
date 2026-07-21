@@ -23,7 +23,7 @@
 | ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
 {%         for job in schedule.jobs | arista.avd.natural_sort('name') %}
 {%             set period = "-" %}
-{%             if job.interval is arista.avd.defined or job.at.once is arista.avd.defined(true) or job.interval is arista.avd.defined %}
+{%             if job.interval is arista.avd.defined or job.at.once is arista.avd.defined(true) %}
 {%                 if job.at is arista.avd.defined %}
 {%                     set period = "at " ~ job.at.time ~ " " ~ job.at.date %}
 {%                     if job.at.once is arista.avd.defined(true) %}
