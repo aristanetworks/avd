@@ -22,3 +22,10 @@ general_settings:
 
   # Test IP ICMP redirect
   ip_icmp_redirect: false
+  suspended_vlans:
+    - id: 1001
+      name: unused
+    - id: 101
+      name: suspend
+    # Test with no name
+    - id: 10
