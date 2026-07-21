@@ -27,7 +27,8 @@ runner, or network services.
 
 ## GitHub Actions
 
-The standalone `Benchmarks` workflow runs on:
+The standalone `Benchmarks` workflow runs on `ubuntu-latest` with tokenless
+CodSpeed upload and no write-capable checkout token. It runs on:
 
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
@@ -45,13 +46,15 @@ python -m pytest --codspeed \
   -q
 ```
 
-Manual full-suite runs include the 150-device scale benchmark:
+Manual full-suite runs include the 150-device scale benchmark. They do not add
+an all-host render benchmark for the full molecule scenario; that kind of load
+test is intentionally outside the CodSpeed suite.
 
 ```bash
 python -m pytest --codspeed benchmarks -q
 ```
 
-Daily scheduled runs also use the full-suite command.
+Daily scheduled runs also use this scale-inclusive command.
 
 ## Local Usage
 
