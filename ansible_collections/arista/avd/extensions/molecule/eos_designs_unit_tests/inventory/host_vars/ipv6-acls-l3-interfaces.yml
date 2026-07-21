@@ -46,6 +46,13 @@ spine:
           ipv6_addresses:
             - 2001:db8:6::2/64
           ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+        # Testing interface_ipv6 substitution token in both in and out directions.
+        - name: Ethernet7
+          ip_address: 172.23.0.2/30
+          ipv6_addresses:
+            - 2001:db8:7::2/64
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
       l3_port_channels:
         - name: Port-Channel1
           mode: active
@@ -80,7 +87,17 @@ ipv6_acls:
       - remark: Some remark will not require source and destination fields.
       - action: permit
         protocol: ipv6
-        source: interface_ip
+        source: interface_ipv6
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: interface_ipv6
+      - action: deny
+        protocol: ipv6
+        source: interface_ipv6
         destination: any
   - name: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
     entries:

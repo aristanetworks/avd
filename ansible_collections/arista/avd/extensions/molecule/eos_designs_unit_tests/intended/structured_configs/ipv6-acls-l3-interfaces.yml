@@ -63,6 +63,17 @@ ethernet_interfaces:
   ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
   metadata:
     peer_type: l3_interface
+- name: Ethernet7
+  shutdown: false
+  ip_address: 172.23.0.2/30
+  ipv6_addresses:
+  - 2001:db8:7::2/64
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet10
   description: peer1_Ethernet1
   shutdown: false
@@ -137,6 +148,16 @@ ipv6_access_lists:
     source: 2001:db8:6::2
     destination: any
     action: permit
+- name: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:7::2
+    action: permit
+  - protocol: ipv6
+    source: 2001:db8:7::2
+    destination: any
+    action: deny
 - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Port-Channel1
   entries:
   - protocol: ipv6

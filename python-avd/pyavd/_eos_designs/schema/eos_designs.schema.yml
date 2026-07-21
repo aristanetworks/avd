@@ -15442,7 +15442,8 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
+            for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6
+            address) and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15451,7 +15452,8 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
+            for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6
+            address) and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15719,7 +15721,8 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
+            for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6
+            address) and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
@@ -15728,7 +15731,8 @@ $defs:
             direction.
 
             The access-list must be defined under `ipv6_acls` and supports field substitution
-            for "interface_ip" and "peer_ip" (resolved from `peer_ipv6`).'
+            for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6
+            address) and "peer_ip" (resolved from `peer_ipv6`).'
           type: str
           convert_types:
           - int
