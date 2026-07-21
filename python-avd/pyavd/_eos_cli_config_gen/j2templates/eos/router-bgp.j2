@@ -260,6 +260,11 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ default_originate_cli }}
 {%         endif %}
+{%         if peer_group.enforce_first_as is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} enforce-first-as
+{%         elif peer_group.enforce_first_as is arista.avd.defined(false) %}
+   no neighbor {{ peer_group.name }} enforce-first-as
+{%         endif %}
 {%         if peer_group.send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group.name }} send-community
 {%         elif peer_group.send_community is arista.avd.defined %}
@@ -435,6 +440,11 @@ router bgp {{ router_bgp.as }}
 {%                 set default_originate_cli = default_originate_cli ~ " always" %}
 {%             endif %}
    {{ default_originate_cli }}
+{%         endif %}
+{%         if neighbor.enforce_first_as is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} enforce-first-as
+{%         elif neighbor.enforce_first_as is arista.avd.defined(false) %}
+   no neighbor {{ neighbor.ip_address }} enforce-first-as
 {%         endif %}
 {%         if neighbor.send_community is arista.avd.defined('all') %}
    neighbor {{ neighbor.ip_address }} send-community
@@ -2987,6 +2997,11 @@ router bgp {{ router_bgp.as }}
 {%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " always" %}
 {%                 endif %}
       {{ neighbor_default_originate_cli }}
+{%             endif %}
+{%             if neighbor.enforce_first_as is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} enforce-first-as
+{%             elif neighbor.enforce_first_as is arista.avd.defined(false) %}
+      no neighbor {{ neighbor.ip_address }} enforce-first-as
 {%             endif %}
 {%             if neighbor.send_community is arista.avd.defined('all') %}
       neighbor {{ neighbor.ip_address }} send-community
