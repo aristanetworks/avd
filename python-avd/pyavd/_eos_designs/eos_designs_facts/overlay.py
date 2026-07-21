@@ -39,7 +39,8 @@ class OverlayMixin(EosDesignsFactsProtocol, Protocol):
         """
         Exposed in avd_switch_facts.
 
-        For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.
+        For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere,
+        after excluding hostnames configured under evpn_gateway.remote_peers.
         For all other evpn roles there is no default.
         """
         if self.shared_utils.underlay_router is True:
