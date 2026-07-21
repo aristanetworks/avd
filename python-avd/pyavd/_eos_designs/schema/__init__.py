@@ -22392,7 +22392,12 @@ class EosDesigns(EosDesignsRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             copy_captive_portal: bool | None
-            """Copy packet to CPU queue for dot1x captive-portal."""
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`.
+            """
             vlan_inner: bool
             """
             Render vlan and mask as inner vlan.
@@ -22412,7 +22417,10 @@ class EosDesigns(EosDesignsRootModel):
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -22496,7 +22504,11 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        copy_captive_portal: Copy packet to CPU queue for dot1x captive-portal.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
@@ -22506,7 +22518,9 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -22674,7 +22688,6 @@ class EosDesigns(EosDesignsRootModel):
                 "vlan_mask": {"type": str},
                 "inner_vlan": {"type": int},
                 "inner_vlan_mask": {"type": str},
-                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "mirror_session": {"type": str},
             }
@@ -22713,8 +22726,6 @@ class EosDesigns(EosDesignsRootModel):
             and not converted to a decimal (like 1), use single or
             double quotes.
             """
-            copy_captive_portal: bool | None
-            """Copy packet to CPU queue for dot1x captive-portal."""
             log: bool | None
             """Enable logging when a packet matches the ACL rule."""
             mirror_session: str | None
@@ -22733,7 +22744,6 @@ class EosDesigns(EosDesignsRootModel):
                     vlan_mask: str | None | UndefinedType = Undefined,
                     inner_vlan: int | None | UndefinedType = Undefined,
                     inner_vlan_mask: str | None | UndefinedType = Undefined,
-                    copy_captive_portal: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     mirror_session: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -22768,7 +22778,6 @@ class EosDesigns(EosDesignsRootModel):
                            like 0x001 is treated strictly as a string
                            and not converted to a decimal (like 1), use single or
                            double quotes.
-                        copy_captive_portal: Copy packet to CPU queue for dot1x captive-portal.
                         log: Enable logging when a packet matches the ACL rule.
                         mirror_session: Mirror session to mirror matches against this rule.
 
@@ -22918,7 +22927,10 @@ class EosDesigns(EosDesignsRootModel):
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -23003,7 +23015,9 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.

@@ -117,8 +117,7 @@ ip access-list {{ acl.name }}
 {#                 * add log #}
 {%                 if acle.action == "deny" and acle.copy_captive_portal is arista.avd.defined(true) %}
 {%                     set acl_entry.string = acl_entry.string ~ ' copy captive-portal' %}
-{%                 endif %}
-{%                 if acle.log is arista.avd.defined(true) %}
+{%                 elif acle.log is arista.avd.defined(true) %}
 {%                     set acl_entry.string = acl_entry.string ~ ' log' %}
 {%                 endif %}
 {#                 check if the number of ACL entries is below the limit #}

@@ -12849,7 +12849,9 @@ ip access-list standard ACL-SSH-VRF
 !
 ip access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
-   deny udp any any copy captive-portal log
+   deny udp any any log
+   deny tcp any any copy captive-portal
+   remark copy_captive_portal does not apply to permit entries
    permit icmp any any 3 4 ttl eq 40
    permit icmp any any unreachable ttl gt 3
    permit ip any any fragments dscp 46

@@ -5933,7 +5933,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             start_limit_infinite: bool | None
             """Set captive-portal start limit to infinite."""
             access_list_ipv4: str | None
-            """Standard/Extended access-list name."""
+            """Extended access-list name."""
 
             if TYPE_CHECKING:
 
@@ -5960,7 +5960,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                              - https: https://<hostname>[:<port>]
                         ssl_profile: ssl_profile
                         start_limit_infinite: Set captive-portal start limit to infinite.
-                        access_list_ipv4: Standard/Extended access-list name.
+                        access_list_ipv4: Extended access-list name.
 
                     """
 
@@ -17149,7 +17149,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             copy_captive_portal: bool | None
-            """Copy packet to CPU queue for dot1x captive-portal."""
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`.
+            """
             vlan_inner: bool
             """
             Render vlan and mask as inner vlan.
@@ -17169,7 +17174,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -17247,7 +17255,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        copy_captive_portal: Copy packet to CPU queue for dot1x captive-portal.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
@@ -17257,7 +17269,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -20341,7 +20355,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            Mutually exclusive with `copy_captive_portal`.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -20422,7 +20439,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        log:
+                           Log matches against this rule.
+                           Mutually exclusive with `copy_captive_portal`.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.

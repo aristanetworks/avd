@@ -1,0 +1,24 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-web-authentication-acl-in-ipv4-acls
+
+aaa_settings:
+  radius:
+    servers:
+      - host: server1
+        cleartext_key: super-secret-key
+        vrf: vrf1
+
+dot1x_settings:
+  enabled: true
+  web_authentication:
+    enabled: true
+    url: https://www.arista.com
+    ssl_profile: web-authentication-ssl-profile
+    ipv4_acl: missing-acl
+
+expected_error_message: >-
+  'ipv4_acls[name=missing-acl]' is required but was not found for host 'missing-web-authentication-acl-in-ipv4-acls'.

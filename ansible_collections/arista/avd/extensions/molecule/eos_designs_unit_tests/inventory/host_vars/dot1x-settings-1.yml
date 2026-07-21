@@ -7,22 +7,8 @@ l2leaf:
     - name: dot1x-settings-1
       mgmt_ip: 192.168.0.2/24
 
-ipv4_acls:
-# ip_access_lists:
-  - name: web-acl
-    entries:
-      - sequence: 15
-        action: deny
-        protocol: ip
-        source: any
-        destination: 10.0.0.1
-        copy_captive_portal: true
-
 dot1x_settings:
   enabled: true
-  web_authentication:
-    enabled: true
-    ipv4_acl: web-acl
 
 aaa_settings:
   radius:

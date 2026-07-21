@@ -2349,7 +2349,7 @@ keys:
             description: Set captive-portal start limit to infinite.
           access_list_ipv4:
             type: str
-            description: Standard/Extended access-list name.
+            description: Extended access-list name.
       supplicant:
         type: dict
         keys:
@@ -6709,7 +6709,11 @@ keys:
                 default: eq
               copy_captive_portal:
                 type: bool
-                description: Copy packet to CPU queue for dot1x captive-portal.
+                description: 'Copy packet to CPU queue for dot1x captive-portal.
+
+                  Only supported with deny entries.
+
+                  Mutually exclusive with `log`.'
               vlan_inner:
                 type: bool
                 default: false
@@ -27685,7 +27689,9 @@ $defs:
           description: TCP Flag Name.
       log:
         type: bool
-        description: Log matches against this rule.
+        description: 'Log matches against this rule.
+
+          Mutually exclusive with `copy_captive_portal`.'
       icmp_type:
         type: str
         convert_types:
