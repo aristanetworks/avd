@@ -35537,12 +35537,14 @@ class EosDesigns(EosDesignsRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"always": {"type": bool}}
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "enabled": {"type": bool, "default": True}}
                     always: bool | None
+                    enabled: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, always: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -35551,6 +35553,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 always: always
+                                enabled: enabled
 
                             """
 
@@ -84782,12 +84785,14 @@ class EosDesigns(EosDesignsRootModel):
                         class DefaultOriginate(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"always": {"type": bool}}
+                            _fields: ClassVar[dict] = {"always": {"type": bool}, "enabled": {"type": bool, "default": True}}
                             always: bool | None
+                            enabled: bool
+                            """Default value: `True`"""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, always: bool | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, always: bool | None | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
                                     """
                                     DefaultOriginate.
 
@@ -84796,6 +84801,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         always: always
+                                        enabled: enabled
 
                                     """
 

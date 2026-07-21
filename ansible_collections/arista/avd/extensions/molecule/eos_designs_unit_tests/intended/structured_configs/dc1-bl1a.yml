@@ -601,6 +601,7 @@ router_bgp:
       send_community: standard extended
       maximum_routes: 0
       default_originate:
+        enabled: true
         always: false
       update_source: Loopback123
       route_map_in: RM-123-1-1-11-IN

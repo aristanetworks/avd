@@ -118,7 +118,6 @@ router_bgp:
     metadata:
       validate_state: false
     default_originate:
-      enabled: true
       always: true
   redistribute:
     connected:

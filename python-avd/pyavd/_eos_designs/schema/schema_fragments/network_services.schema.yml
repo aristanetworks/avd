@@ -1525,6 +1525,10 @@ keys:
                       keys:
                         always:
                           type: bool
+                        enabled:
+                          type: bool
+                          # TODO: 7.0 remove default: true
+                          default: true
                     update_source:
                       type: str
                     ebgp_multihop:

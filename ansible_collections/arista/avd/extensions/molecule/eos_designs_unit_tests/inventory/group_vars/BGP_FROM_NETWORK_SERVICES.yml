@@ -83,6 +83,7 @@ tenants:
             nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
             default_originate:
               always: true
+              enabled: true
         bgp_peer_groups:
           - name: MYPEERGROUP
             remote_as: 65991

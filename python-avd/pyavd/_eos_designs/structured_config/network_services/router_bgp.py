@@ -230,9 +230,11 @@ class RouterBgpMixin(Protocol):
                         prefix_list_in=bgp_peer.prefix_list_in,
                         prefix_list_out=bgp_peer.prefix_list_out,
                     )
-
                     # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+                    # We have default in eos_designs schema for bgp_peer.default_originate but not in eos_cli_config_gen
                     bgp_peer_config = bgp_peer._cast_as(bgp_vrf.NeighborsItem, ignore_extra_keys=True)
+                    if bgp_peer._get_defined_attr("default_originate") is not Undefined and bgp_peer.default_originate.enabled:
+                        bgp_peer_config.default_originate.enabled = True
                     # encrypt password if needed
                     bgp_peer_config.password = self.shared_utils.get_bgp_password(bgp_peer)
 
@@ -241,10 +243,6 @@ class RouterBgpMixin(Protocol):
                         bgp_peer_config.route_map_out = route_map
                         if bgp_peer_config.default_originate and not bgp_peer_config.default_originate.route_map:
                             bgp_peer_config.default_originate.route_map = route_map
-
-                    # Render enabled: True in case of always or route_map set for bgp peer
-                    if bgp_peer_config.default_originate.route_map or bgp_peer.default_originate.always:
-                        bgp_peer_config.default_originate.enabled = True
 
                     # Needing this since type checker gets too confused about the type of bgp_vrf vs. bgp_peer_config.
                     if vrf.name == "default":
