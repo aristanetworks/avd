@@ -570,6 +570,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - "group tacacs+ local"
             - "group MYGROUP none"
             - "group radius group MYGROUP local"
+            - "group ldap"
             """
             command_api: str | None
             """
@@ -612,6 +613,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            - "group tacacs+ local"
                            - "group MYGROUP none"
                            - "group radius group MYGROUP local"
+                           - "group ldap"
                         command_api:
                            Command-API authentication method(s) as a string.
                            This feature is not yet visible in EOS.
@@ -854,6 +856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - "group MYGROUP none"
             -
             "group radius group MYGROUP local"
+            - "group ldap"
             """
 
             if TYPE_CHECKING:
@@ -873,6 +876,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            - "group MYGROUP none"
                            -
                            "group radius group MYGROUP local"
+                           - "group ldap"
 
                     """
 
@@ -6476,6 +6480,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class EnvironmentFanSpeed(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"minimum": {"type": int}}
+        minimum: int | None
+        """Set the minimum fan speed in percent."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, minimum: int | None | UndefinedType = Undefined) -> None:
+                """
+                EnvironmentFanSpeed.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    minimum: Set the minimum fan speed in percent.
+
+                """
+
     class EosCliConfigGenConfiguration(AvdModel):
         """Subclass of AvdModel."""
 
@@ -6569,6 +6594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
+            "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6631,6 +6657,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_separator_with_boot_secret_key: bool
+        """
+        Available from AVD 6.4.0.
+        When `true`, the '!' separator before 'boot secret' is only rendered when
+        `boot.secret.key` is provided.
+        When `false` (default), the '!' separator is always rendered when
+        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6643,6 +6679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
+                only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6688,6 +6725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        matching the running-config preserved by EOS 4.33.2F and later.
                        When `false` (default), renders the
                        legacy `spanning-tree portfast` without the `edge` keyword.
+                    only_render_separator_with_boot_secret_key:
+                       Available from AVD 6.4.0.
+                       When `true`, the '!' separator before 'boot secret' is only rendered when
+                       `boot.secret.key` is provided.
+                       When `false` (default), the '!' separator is always rendered when
+                       `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
 
                 """
 
@@ -25519,6 +25562,417 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     ManagementInterfaces._item_type = ManagementInterfacesItem
 
+    class ManagementLdap(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServerDefaults(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Search(AvdModel):
+                """Subclass of AvdModel."""
+
+                PasswordType: TypeAlias = Literal["0", "7", "8a"]
+                _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
+                username: str
+                """LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                password: str
+                """Password for the search bind user."""
+                password_type: PasswordType | None
+                """
+                Password encryption type.
+                - 0 = clear text
+                - 7 = obfuscated
+                - 8a = AES-256-GCM encrypted.
+                Omit to
+                provide an unobfuscated string (EOS will store it obfuscated).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Search.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            username: LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            password: Password for the search bind user.
+                            password_type:
+                               Password encryption type.
+                               - 0 = clear text
+                               - 7 = obfuscated
+                               - 8a = AES-256-GCM encrypted.
+                               Omit to
+                               provide an unobfuscated string (EOS will store it obfuscated).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "base_dn": {"type": str},
+                "rdn_attribute_user": {"type": str},
+                "ssl_profile": {"type": str},
+                "authorization_group_policy": {"type": str},
+                "timeout": {"type": int},
+                "search": {"type": Search},
+            }
+            base_dn: str | None
+            """Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com)."""
+            rdn_attribute_user: str | None
+            """Relative Distinguished Name attribute(s) for user lookup (e.g., cn)."""
+            ssl_profile: str | None
+            """SSL profile name to secure LDAP connections."""
+            authorization_group_policy: str | None
+            """LDAP group policy name to use for user authorization."""
+            timeout: int | None
+            """Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server."""
+            search: Search
+            """
+            Credentials used by the switch to perform LDAP search bind operations.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    search: Search | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServerDefaults.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+                        rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
+                        ssl_profile: SSL profile name to secure LDAP connections.
+                        authorization_group_policy: LDAP group policy name to use for user authorization.
+                        timeout: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
+                        search:
+                           Credentials used by the switch to perform LDAP search bind operations.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class ServerHostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Search(AvdModel):
+                """Subclass of AvdModel."""
+
+                PasswordType: TypeAlias = Literal["0", "7", "8a"]
+                _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str}}
+                username: str
+                """LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com)."""
+                password: str
+                """Password for the search bind user."""
+                password_type: PasswordType | None
+                """
+                Password encryption type.
+                - 0 = clear text
+                - 7 = obfuscated
+                - 8a = AES-256-GCM encrypted.
+                Omit to
+                provide an unobfuscated string (EOS will store it obfuscated).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
+                        password_type: PasswordType | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Search.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            username: LDAP username (full DN) for search bind operations (e.g., cn=ldap-admin,dc=example,dc=com).
+                            password: Password for the search bind user.
+                            password_type:
+                               Password encryption type.
+                               - 0 = clear text
+                               - 7 = obfuscated
+                               - 8a = AES-256-GCM encrypted.
+                               Omit to
+                               provide an unobfuscated string (EOS will store it obfuscated).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "host": {"type": str},
+                "port": {"type": int},
+                "vrf": {"type": str},
+                "base_dn": {"type": str},
+                "rdn_attribute_user": {"type": str},
+                "ssl_profile": {"type": str},
+                "authorization_group_policy": {"type": str},
+                "timeout": {"type": int},
+                "search": {"type": Search},
+            }
+            host: str
+            """Hostname or IP address of the LDAP server."""
+            port: int | None
+            """Port of LDAP server (EOS default 389)."""
+            vrf: str | None
+            base_dn: str | None
+            """Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com)."""
+            rdn_attribute_user: str | None
+            """Relative Distinguished Name attribute(s) for user lookup (e.g., cn)."""
+            ssl_profile: str | None
+            """SSL profile name to secure LDAP connections."""
+            authorization_group_policy: str | None
+            """LDAP group policy name to use for user authorization."""
+            timeout: int | None
+            """Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server."""
+            search: Search
+            """
+            Credentials used by the switch to perform LDAP search bind operations.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    host: str | UndefinedType = Undefined,
+                    port: int | None | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    base_dn: str | None | UndefinedType = Undefined,
+                    rdn_attribute_user: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    authorization_group_policy: str | None | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    search: Search | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServerHostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        host: Hostname or IP address of the LDAP server.
+                        port: Port of LDAP server (EOS default 389).
+                        vrf: vrf
+                        base_dn: Base Distinguished Name used for LDAP searches (e.g., dc=example,dc=com).
+                        rdn_attribute_user: Relative Distinguished Name attribute(s) for user lookup (e.g., cn).
+                        ssl_profile: SSL profile name to secure LDAP connections.
+                        authorization_group_policy: LDAP group policy name to use for user authorization.
+                        timeout: Time in seconds (EOS default 30 seconds) to wait for a response from this LDAP server.
+                        search:
+                           Credentials used by the switch to perform LDAP search bind operations.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class ServerHosts(AvdList[ServerHostsItem]):
+            """Subclass of AvdList with `ServerHostsItem` items."""
+
+        ServerHosts._item_type = ServerHostsItem
+
+        class GroupPoliciesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class SearchFilter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"objectclass": {"type": str}, "attribute": {"type": str}}
+                objectclass: str
+                """LDAP objectclass value to match (e.g., group)."""
+                attribute: str
+                """LDAP attribute that holds group member DNs (e.g., member)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, objectclass: str | UndefinedType = Undefined, attribute: str | UndefinedType = Undefined) -> None:
+                        """
+                        SearchFilter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            objectclass: LDAP objectclass value to match (e.g., group).
+                            attribute: LDAP attribute that holds group member DNs (e.g., member).
+
+                        """
+
+            class GroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "role": {"type": str}, "privilege": {"type": int}}
+                name: str
+                """LDAP group name."""
+                role: str
+                """EOS role assigned to members of this LDAP group."""
+                privilege: int | None
+                """Optional privilege level (0-15) assigned alongside the role."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, name: str | UndefinedType = Undefined, role: str | UndefinedType = Undefined, privilege: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        GroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: LDAP group name.
+                            role: EOS role assigned to members of this LDAP group.
+                            privilege: Optional privilege level (0-15) assigned alongside the role.
+
+                        """
+
+            class Groups(AvdIndexedList[str, GroupsItem]):
+                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Groups._item_type = GroupsItem
+
+            _fields: ClassVar[dict] = {"policy": {"type": str}, "search_filter": {"type": SearchFilter}, "groups": {"type": Groups}}
+            policy: str
+            """Group policy name. Referenced by server authorization_group_policy."""
+            search_filter: SearchFilter
+            """
+            LDAP search filter used to enumerate group membership.
+
+            Subclass of AvdModel.
+            """
+            groups: Groups
+            """
+            List of LDAP group-to-role mappings within this policy.
+
+            Subclass of AvdIndexedList with
+            `GroupsItem` items. Primary key is `name` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: str | UndefinedType = Undefined,
+                    search_filter: SearchFilter | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    GroupPoliciesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: Group policy name. Referenced by server authorization_group_policy.
+                        search_filter:
+                           LDAP search filter used to enumerate group membership.
+
+                           Subclass of AvdModel.
+                        groups:
+                           List of LDAP group-to-role mappings within this policy.
+
+                           Subclass of AvdIndexedList with
+                           `GroupsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class GroupPolicies(AvdIndexedList[str, GroupPoliciesItem]):
+            """Subclass of AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`)."""
+
+            _primary_key: ClassVar[str] = "policy"
+
+        GroupPolicies._item_type = GroupPoliciesItem
+
+        _fields: ClassVar[dict] = {
+            "server_defaults": {"type": ServerDefaults},
+            "server_hosts": {"type": ServerHosts},
+            "group_policies": {"type": GroupPolicies},
+        }
+        server_defaults: ServerDefaults
+        """
+        Default LDAP options applied to all servers unless overridden per host.
+
+        Subclass of AvdModel.
+        """
+        server_hosts: ServerHosts
+        """
+        List of LDAP server hosts.
+        Combination of 'host', 'port' and 'vrf' should be unique.
+
+        Subclass of
+        AvdList with `ServerHostsItem` items.
+        """
+        group_policies: GroupPolicies
+        """
+        Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
+
+        Subclass of
+        AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                server_defaults: ServerDefaults | UndefinedType = Undefined,
+                server_hosts: ServerHosts | UndefinedType = Undefined,
+                group_policies: GroupPolicies | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ManagementLdap.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    server_defaults:
+                       Default LDAP options applied to all servers unless overridden per host.
+
+                       Subclass of AvdModel.
+                    server_hosts:
+                       List of LDAP server hosts.
+                       Combination of 'host', 'port' and 'vrf' should be unique.
+
+                       Subclass of
+                       AvdList with `ServerHostsItem` items.
+                    group_policies:
+                       Named LDAP group policies that map LDAP groups to EOS roles and privilege levels.
+
+                       Subclass of
+                       AvdIndexedList with `GroupPoliciesItem` items. Primary key is `policy` (`str`).
+
+                """
+
     class ManagementSecurity(AvdModel):
         """Subclass of AvdModel."""
 
@@ -34617,13 +35071,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
                 ipv4: bool | None
                 """Enable/disable address locking for IPv4."""
+                ipv6: bool | None
+                """Enable/disable address locking for IPv6."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -34632,6 +35088,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             ipv4: Enable/disable address locking for IPv4.
+                            ipv6: Enable/disable address locking for IPv6.
 
                         """
 
@@ -44635,6 +45092,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -44709,6 +45167,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -44775,6 +45235,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -44838,6 +45299,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -45282,6 +45744,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_tag_in": {"type": str},
                 "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -45353,6 +45816,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Outbound discard peer tag name."""
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -45421,6 +45886,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_tag_in: str | None | UndefinedType = Undefined,
                     peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -45481,6 +45947,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_tag_in: Inbound peer tag name.
                         peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -55972,6 +56439,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "maximum_routes_warning_only": {"type": bool},
                     "allowas_in": {"type": AllowasIn},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "update_source": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
@@ -56049,6 +56517,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 update_source: str | None
                 route_map_in: str | None
                 """Inbound route-map name."""
@@ -56095,6 +56565,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         update_source: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
@@ -56157,6 +56628,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             maximum_routes_warning_only: maximum_routes_warning_only
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
@@ -65955,6 +66427,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "bfd": {"type": bool},
                 "make_before_break": {"type": bool},
+                "message_hello_address_secondary_ipv6": {"type": bool},
                 "ssm_range": {"type": str},
                 "register_local_interface": {"type": str},
                 "rp_addresses": {"type": RpAddresses},
@@ -65964,6 +66437,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable BFD."""
             make_before_break: bool | None
             """Enable/Disable Make-Before-Break."""
+            message_hello_address_secondary_ipv6: bool | None
+            """Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
             register_local_interface: str | None
@@ -65980,6 +66455,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     bfd: bool | None | UndefinedType = Undefined,
                     make_before_break: bool | None | UndefinedType = Undefined,
+                    message_hello_address_secondary_ipv6: bool | None | UndefinedType = Undefined,
                     ssm_range: str | None | UndefinedType = Undefined,
                     register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
@@ -65994,6 +66470,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
+                        message_hello_address_secondary_ipv6: Include the IPv6 address in PIM hellos for PIM IPv4 over IPv6 next-hops.
                         ssm_range: IPv4 Prefix associated with SSM.
                         register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
@@ -67704,6 +68181,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class ExtensionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"oid": {"type": str}, "path": {"type": str}, "one_shot": {"type": bool}}
+            oid: str
+            """Object Identifier (OID) for the SNMP extension."""
+            path: str
+            """Path to the script or MIB file on the device (e.g., flash:/script.py)."""
+            one_shot: bool | None
+            """Enable one-shot mode for the extension script."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, oid: str | UndefinedType = Undefined, path: str | UndefinedType = Undefined, one_shot: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ExtensionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        oid: Object Identifier (OID) for the SNMP extension.
+                        path: Path to the script or MIB file on the device (e.g., flash:/script.py).
+                        one_shot: Enable one-shot mode for the extension script.
+
+                    """
+
+        class Extensions(AvdIndexedList[str, ExtensionsItem]):
+            """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
+
+            _primary_key: ClassVar[str] = "oid"
+
+        Extensions._item_type = ExtensionsItem
+
         class CommunitiesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -68245,6 +68758,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "engine_ids": {"type": EngineIds},
+            "extensions": {"type": Extensions},
             "contact": {"type": str},
             "location": {"type": str},
             "communities": {"type": Communities},
@@ -68261,6 +68775,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         engine_ids: EngineIds
         """Subclass of AvdModel."""
+        extensions: Extensions
+        """Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`)."""
         contact: str | None
         """SNMP contact."""
         location: str | None
@@ -68294,6 +68810,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 engine_ids: EngineIds | UndefinedType = Undefined,
+                extensions: Extensions | UndefinedType = Undefined,
                 contact: str | None | UndefinedType = Undefined,
                 location: str | None | UndefinedType = Undefined,
                 communities: Communities | UndefinedType = Undefined,
@@ -68316,6 +68833,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     engine_ids: Subclass of AvdModel.
+                    extensions: Subclass of AvdIndexedList with `ExtensionsItem` items. Primary key is `oid` (`str`).
                     contact: SNMP contact.
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
@@ -73020,6 +73538,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        IsisCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
         class IsisAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
@@ -74112,6 +74632,54 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Mpls(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interface": {"type": bool}, "igp_sync": {"type": bool}}
+                interface: bool | None
+                """Enable LDP on this interface."""
+                igp_sync: bool | None
+                """Tell the IGP to keep a link at max metric until LDP labels are ready."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interface: bool | None | UndefinedType = Undefined, igp_sync: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Ldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interface: Enable LDP on this interface.
+                            igp_sync: Tell the IGP to keep a link at max metric until LDP labels are ready.
+
+                        """
+
+            _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}}
+            ip: bool | None
+            """Enable MPLS traffic on interface if MPLS enabled globally."""
+            ldp: Ldp
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: bool | None | UndefinedType = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                    """
+                    Mpls.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: Enable MPLS traffic on interface if MPLS enabled globally.
+                        ldp: Subclass of AvdModel.
+
+                    """
+
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
@@ -74229,6 +74797,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "isis_passive": {"type": bool},
             "isis_metric": {"type": int},
             "isis_network_point_to_point": {"type": bool},
+            "isis_circuit_type": {"type": str},
+            "isis_hello_padding": {"type": bool},
             "isis_authentication": {"type": IsisAuthentication},
             "mtu": {"type": int},
             "no_autostate": {"type": bool},
@@ -74239,6 +74809,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "service_policy": {"type": ServicePolicy},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "traffic_policy": {"type": TrafficPolicy},
+            "mpls": {"type": Mpls},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
             "metadata": {"type": Metadata},
@@ -74391,6 +74962,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_passive: bool | None
         isis_metric: int | None
         isis_network_point_to_point: bool | None
+        isis_circuit_type: IsisCircuitType | None
+        isis_hello_padding: bool | None
         isis_authentication: IsisAuthentication
         """Subclass of AvdModel."""
         mtu: int | None
@@ -74413,6 +74986,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         tcp_mss_ceiling: TcpMssCeiling
         """Subclass of AvdModel."""
         traffic_policy: TrafficPolicy
+        """Subclass of AvdModel."""
+        mpls: Mpls
         """Subclass of AvdModel."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
@@ -74489,6 +75064,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_passive: bool | None | UndefinedType = Undefined,
                 isis_metric: int | None | UndefinedType = Undefined,
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 no_autostate: bool | None | UndefinedType = Undefined,
@@ -74499,6 +75076,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 service_policy: ServicePolicy | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
+                mpls: Mpls | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
                 metadata: Metadata | UndefinedType = Undefined,
@@ -74604,6 +75182,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     isis_passive: isis_passive
                     isis_metric: isis_metric
                     isis_network_point_to_point: isis_network_point_to_point
+                    isis_circuit_type: isis_circuit_type
+                    isis_hello_padding: isis_hello_padding
                     isis_authentication: Subclass of AvdModel.
                     mtu: mtu
                     no_autostate: no_autostate
@@ -74618,6 +75198,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     service_policy: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     traffic_policy: Subclass of AvdModel.
+                    mpls: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
                     metadata: Subclass of AvdModel.
@@ -75001,6 +75582,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
+            "rd": {"type": str},
             "ip_routing": {"type": bool},
             "ipv6_routing": {"type": bool},
             "ip_routing_ipv6_interfaces": {"type": bool},
@@ -75009,6 +75591,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """VRF Name."""
         description: str | None
+        rd: str | None
+        """
+        Renders Route Distinguisher under 'vrf instance'.
+        This is deprecated in EOS; configure the Route
+        Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.
+        This key is kept
+        only to support existing/legacy device configurations and is intentionally not shown in the
+        generated device documentation.
+        """
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
@@ -75028,6 +75619,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
+                rd: str | None | UndefinedType = Undefined,
                 ip_routing: bool | None | UndefinedType = Undefined,
                 ipv6_routing: bool | None | UndefinedType = Undefined,
                 ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -75042,6 +75634,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: VRF Name.
                     description: description
+                    rd:
+                       Renders Route Distinguisher under 'vrf instance'.
+                       This is deprecated in EOS; configure the Route
+                       Distinguisher under 'router bgp' VRF submode instead using `router_bgp.vrfs[].rd`.
+                       This key is kept
+                       only to support existing/legacy device configurations and is intentionally not shown in the
+                       generated device documentation.
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
@@ -75662,6 +76261,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "dps_interfaces": {"type": DpsInterfaces},
         "dynamic_prefix_lists": {"type": DynamicPrefixLists},
         "enable_password": {"type": EnablePassword},
+        "environment_fan_speed": {"type": EnvironmentFanSpeed},
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
@@ -75744,6 +76344,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "management_cvx": {"type": ManagementCvx},
         "management_defaults": {"type": ManagementDefaults},
         "management_interfaces": {"type": ManagementInterfaces},
+        "management_ldap": {"type": ManagementLdap},
         "management_security": {"type": ManagementSecurity},
         "management_ssh": {"type": ManagementSsh},
         "management_tech_support": {"type": ManagementTechSupport},
@@ -75811,7 +76412,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "static_routes": {"type": StaticRoutes},
         "stun": {"type": Stun},
         "switchport_default": {"type": SwitchportDefault},
+        "switchport_ethernet_llc_validation": {"type": bool},
         "switchport_port_security": {"type": SwitchportPortSecurity},
+        "switchport_vlan_tag_validation": {"type": bool},
         "sync_e": {"type": SyncE},
         "system": {"type": System},
         "tacacs_servers": {"type": TacacsServers},
@@ -75999,6 +76602,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`)."""
     enable_password: EnablePassword
     """Subclass of AvdModel."""
+    environment_fan_speed: EnvironmentFanSpeed
+    """
+    Environment fan-speed settings.
+
+    Subclass of AvdModel.
+    """
     eos_cli: str | None
     """Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration."""
     eos_cli_config_gen_configuration: EosCliConfigGenConfiguration
@@ -76226,6 +76835,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     management_interfaces: ManagementInterfaces
     """Subclass of AvdIndexedList with `ManagementInterfacesItem` items. Primary key is `name` (`str`)."""
+    management_ldap: ManagementLdap
+    """Subclass of AvdModel."""
     management_security: ManagementSecurity
     """Subclass of AvdModel."""
     management_ssh: ManagementSsh
@@ -76417,8 +77028,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     switchport_default: SwitchportDefault
     """Subclass of AvdModel."""
+    switchport_ethernet_llc_validation: bool | None
+    """Enable Ethernet LLC header validation."""
     switchport_port_security: SwitchportPortSecurity
     """Subclass of AvdModel."""
+    switchport_vlan_tag_validation: bool | None
+    """Enable VLAN tag validation."""
     sync_e: SyncE
     """Subclass of AvdModel."""
     system: System
@@ -76507,6 +77122,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dps_interfaces: DpsInterfaces | UndefinedType = Undefined,
             dynamic_prefix_lists: DynamicPrefixLists | UndefinedType = Undefined,
             enable_password: EnablePassword | UndefinedType = Undefined,
+            environment_fan_speed: EnvironmentFanSpeed | UndefinedType = Undefined,
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
@@ -76589,6 +77205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             management_cvx: ManagementCvx | UndefinedType = Undefined,
             management_defaults: ManagementDefaults | UndefinedType = Undefined,
             management_interfaces: ManagementInterfaces | UndefinedType = Undefined,
+            management_ldap: ManagementLdap | UndefinedType = Undefined,
             management_security: ManagementSecurity | UndefinedType = Undefined,
             management_ssh: ManagementSsh | UndefinedType = Undefined,
             management_tech_support: ManagementTechSupport | UndefinedType = Undefined,
@@ -76656,7 +77273,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             static_routes: StaticRoutes | UndefinedType = Undefined,
             stun: Stun | UndefinedType = Undefined,
             switchport_default: SwitchportDefault | UndefinedType = Undefined,
+            switchport_ethernet_llc_validation: bool | None | UndefinedType = Undefined,
             switchport_port_security: SwitchportPortSecurity | UndefinedType = Undefined,
+            switchport_vlan_tag_validation: bool | None | UndefinedType = Undefined,
             sync_e: SyncE | UndefinedType = Undefined,
             system: System | UndefinedType = Undefined,
             tacacs_servers: TacacsServers | UndefinedType = Undefined,
@@ -76797,6 +77416,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dps_interfaces: Subclass of AvdIndexedList with `DpsInterfacesItem` items. Primary key is `name` (`str`).
                 dynamic_prefix_lists: Subclass of AvdIndexedList with `DynamicPrefixListsItem` items. Primary key is `name` (`str`).
                 enable_password: Subclass of AvdModel.
+                environment_fan_speed:
+                   Environment fan-speed settings.
+
+                   Subclass of AvdModel.
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
@@ -76933,6 +77556,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 management_cvx: Subclass of AvdModel.
                 management_defaults: Subclass of AvdModel.
                 management_interfaces: Subclass of AvdIndexedList with `ManagementInterfacesItem` items. Primary key is `name` (`str`).
+                management_ldap: Subclass of AvdModel.
                 management_security: Subclass of AvdModel.
                 management_ssh: Subclass of AvdModel.
                 management_tech_support: Subclass of AvdModel.
@@ -77044,7 +77668,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 switchport_default: Subclass of AvdModel.
+                switchport_ethernet_llc_validation: Enable Ethernet LLC header validation.
                 switchport_port_security: Subclass of AvdModel.
+                switchport_vlan_tag_validation: Enable VLAN tag validation.
                 sync_e: Subclass of AvdModel.
                 system: Subclass of AvdModel.
                 tacacs_servers: Subclass of AvdModel.

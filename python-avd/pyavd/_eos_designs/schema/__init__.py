@@ -981,6 +981,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
@@ -998,6 +999,14 @@ class EosDesigns(EosDesignsRootModel):
         Available from AVD 6.2.0.
         Configure management interface to accept DHCP default route when the
         management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
+        accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool
+        """
+        Available from AVD 6.4.0.
+        Configure management interface to accept Router Advertisement default
+        route when the IPv6 management IP is set to 'auto-config'.
 
         Default value: `False`
         """
@@ -1101,6 +1110,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
@@ -1124,6 +1134,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
                        management IP is set to 'dhcp'.
+                    accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+                       Available from AVD 6.4.0.
+                       Configure management interface to accept Router Advertisement default
+                       route when the IPv6 management IP is set to 'auto-config'.
                     accept_dhcp_default_route_for_inband_mgmt_ip_dhcp:
                        Available from AVD 6.3.0.
                        Configure inband management interface to accept DHCP default route when
@@ -3090,14 +3104,16 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4: bool | None
                 """
                 Enable address locking for IPv4.
-                Key `ipv4` can only be set to false.
-                For EOS version 4.31 and
-                higher.
+                For Port-Channels, only `ipv4: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
                 ipv6: bool | None
                 """
                 Enable address locking for IPv6.
-                For EOS version 4.31 and higher.
+                For Port-Channels, only `ipv6: false` is supported.
+                For EOS version
+                4.31 and higher.
                 """
 
                 if TYPE_CHECKING:
@@ -3112,12 +3128,14 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             ipv4:
                                Enable address locking for IPv4.
-                               Key `ipv4` can only be set to false.
-                               For EOS version 4.31 and
-                               higher.
+                               For Port-Channels, only `ipv4: false` is supported.
+                               For EOS version
+                               4.31 and higher.
                             ipv6:
                                Enable address locking for IPv6.
-                               For EOS version 4.31 and higher.
+                               For Port-Channels, only `ipv6: false` is supported.
+                               For EOS version
+                               4.31 and higher.
 
                         """
 
@@ -10871,11 +10889,25 @@ class EosDesigns(EosDesignsRootModel):
         provide the gateway.
         """
         ipv6_mgmt_ip: str | None
-        """Node management interface IPv6 address."""
+        """
+        Node management interface IPv6 address with prefix length or 'auto-config'.
+        Set 'auto-config' to use
+        SLAAC to automatically configure the IPv6 address.
+        When set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+        advertisements are expected to provide the gateway and the default route.
+        In this case, AVD also
+        configures the management interface to accept the default route and honor route preferences from
+        Router Advertisements.
+        """
         ipv6_mgmt_gateway: str | None
         """
         This key sets the ipv6 management gateway for the device. It takes precedence over the global
         `ipv6_mgmt_gateway`.
+        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+        advertisements are expected to provide the gateway and the default route.
         """
         mgmt_interface: str | None
         """
@@ -11258,7 +11290,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -11924,10 +11956,23 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                        provide the gateway.
-                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_ip:
+                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                       Set 'auto-config' to use
+                       SLAAC to automatically configure the IPv6 address.
+                       When set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                       advertisements are expected to provide the gateway and the default route.
+                       In this case, AVD also
+                       configures the management interface to accept the default route and honor route preferences from
+                       Router Advertisements.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                        `ipv6_mgmt_gateway`.
+                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                       advertisements are expected to provide the gateway and the default route.
                     mgmt_interface:
                        Management Interface Name.
                        Default -> platform_management_interface -> mgmt_interface ->
@@ -12194,7 +12239,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -16164,11 +16209,25 @@ class EosDesigns(EosDesignsRootModel):
         provide the gateway.
         """
         ipv6_mgmt_ip: str | None
-        """Node management interface IPv6 address."""
+        """
+        Node management interface IPv6 address with prefix length or 'auto-config'.
+        Set 'auto-config' to use
+        SLAAC to automatically configure the IPv6 address.
+        When set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+        advertisements are expected to provide the gateway and the default route.
+        In this case, AVD also
+        configures the management interface to accept the default route and honor route preferences from
+        Router Advertisements.
+        """
         ipv6_mgmt_gateway: str | None
         """
         This key sets the ipv6 management gateway for the device. It takes precedence over the global
         `ipv6_mgmt_gateway`.
+        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+        advertisements are expected to provide the gateway and the default route.
         """
         mgmt_interface: str | None
         """
@@ -16551,7 +16610,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipvpn_gateway: IpvpnGateway
         """
-        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
         this is "bgp_peer_groups.ipvpn_gateway_peers".
         L3 Reachability is required for this to work, the
         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -17226,10 +17285,23 @@ class EosDesigns(EosDesignsRootModel):
                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                        provide the gateway.
-                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_ip:
+                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                       Set 'auto-config' to use
+                       SLAAC to automatically configure the IPv6 address.
+                       When set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                       advertisements are expected to provide the gateway and the default route.
+                       In this case, AVD also
+                       configures the management interface to accept the default route and honor route preferences from
+                       Router Advertisements.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                        `ipv6_mgmt_gateway`.
+                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                       advertisements are expected to provide the gateway and the default route.
                     mgmt_interface:
                        Management Interface Name.
                        Default -> platform_management_interface -> mgmt_interface ->
@@ -17496,7 +17568,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     ipvpn_gateway:
-                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                        L3 Reachability is required for this to work, the
                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -21880,11 +21952,41 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class SuspendedVlansItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"id": {"type": int}, "name": {"type": str}}
+            id: int
+            name: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, id: int | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    SuspendedVlansItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: id
+                        name: name
+
+                    """
+
+        class SuspendedVlans(AvdIndexedList[int, SuspendedVlansItem]):
+            """Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        SuspendedVlans._item_type = SuspendedVlansItem
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
+            "suspended_vlans": {"type": SuspendedVlans},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -21893,6 +21995,16 @@ class EosDesigns(EosDesignsRootModel):
         ip_icmp_redirect: bool | None
         dhcp_relay: DhcpRelay
         """Subclass of AvdModel."""
+        suspended_vlans: SuspendedVlans
+        """
+        Suspended VLANs are rendered only as local suspended VLAN definitions.
+        They are not used for
+        endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+        defined by network services.
+
+        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+        key is `id` (`int`).
+        """
 
         if TYPE_CHECKING:
 
@@ -21903,6 +22015,7 @@ class EosDesigns(EosDesignsRootModel):
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
+                suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -21915,6 +22028,14 @@ class EosDesigns(EosDesignsRootModel):
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
                     dhcp_relay: Subclass of AvdModel.
+                    suspended_vlans:
+                       Suspended VLANs are rendered only as local suspended VLAN definitions.
+                       They are not used for
+                       endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+                       defined by network services.
+
+                       Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+                       key is `id` (`int`).
 
                 """
 
@@ -22565,6 +22686,158 @@ class EosDesigns(EosDesignsRootModel):
         _primary_key: ClassVar[str] = "name"
 
     Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
+
+    class Ipv4StandardAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "vlan": {"type": int},
+                "vlan_mask": {"type": str},
+                "inner_vlan": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "log": {"type": bool},
+                "mirror_session": {"type": str},
+            }
+            sequence: int | None
+            """Sequence ID."""
+            action: Action | None
+            """Action as string."""
+            remark: str | None
+            """Specify a comment. If remark is specified other keys of the entry are ignored."""
+            source: str | None
+            """
+            Required for non-remark entries.
+            The value can be:
+            1. A single source address.
+            2. Source address
+            with mask. e.g. '10.0.0.1/8'.
+            3. 'any' source address.
+            """
+            vlan: int | None
+            """Match packets by VLAN value."""
+            vlan_mask: str | None
+            """
+            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+            To ensure that a value like 0x001
+            is treated strictly as a string
+            and not converted to a decimal (like 1), use single or double
+            quotes.
+            """
+            inner_vlan: int | None
+            """Match packets by inner VLAN value."""
+            inner_vlan_mask: str | None
+            """
+            Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+            To ensure that a value
+            like 0x001 is treated strictly as a string
+            and not converted to a decimal (like 1), use single or
+            double quotes.
+            """
+            log: bool | None
+            """Enable logging when a packet matches the ACL rule."""
+            mirror_session: str | None
+            """Mirror session to mirror matches against this rule."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    mirror_session: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action: Action as string.
+                        remark: Specify a comment. If remark is specified other keys of the entry are ignored.
+                        source:
+                           Required for non-remark entries.
+                           The value can be:
+                           1. A single source address.
+                           2. Source address
+                           with mask. e.g. '10.0.0.1/8'.
+                           3. 'any' source address.
+                        vlan: Match packets by VLAN value.
+                        vlan_mask:
+                           VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+                           To ensure that a value like 0x001
+                           is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or double
+                           quotes.
+                        inner_vlan: Match packets by inner VLAN value.
+                        inner_vlan_mask:
+                           Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                           To ensure that a value
+                           like 0x001 is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or
+                           double quotes.
+                        log: Enable logging when a packet matches the ACL rule.
+                        mirror_session: Mirror session to mirror matches against this rule.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """Access-list Name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Ipv4StandardAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Access-list Name.
+                    counters_per_entry: counters_per_entry
+                    entries: Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class Ipv4StandardAcls(AvdIndexedList[str, Ipv4StandardAclsItem]):
+        """Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv4StandardAcls._item_type = Ipv4StandardAclsItem
 
     class Ipv6AclsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -27133,14 +27406,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -27155,12 +27430,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -28665,6 +28942,69 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ListenRangesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "remote_as": {"type": str},
+                    "peer_id_include_router_id": {"type": bool},
+                    "peer_filter": {"type": str},
+                }
+                prefix: str
+                """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                remote_as: str | None
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                note: `peer_filter` or `remote_as` is required.
+                """
+                peer_id_include_router_id: bool | None
+                """Include router ID as part of peer filter."""
+                peer_filter: str | None
+                """
+                Peer-filter name.
+                note: `peer_filter` or `remote_as` is required.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        remote_as: str | None | UndefinedType = Undefined,
+                        peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                        peer_filter: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ListenRangesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                            remote_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                               note: `peer_filter` or `remote_as` is required.
+                            peer_id_include_router_id: Include router ID as part of peer filter.
+                            peer_filter:
+                               Peer-filter name.
+                               note: `peer_filter` or `remote_as` is required.
+
+                        """
+
+            class ListenRanges(AvdList[ListenRangesItem]):
+                """Subclass of AvdList with `ListenRangesItem` items."""
+
+            ListenRanges._item_type = ListenRangesItem
+
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -29051,6 +29391,7 @@ class EosDesigns(EosDesignsRootModel):
                 "nodes": {"type": Nodes},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "listen_ranges": {"type": ListenRanges},
                 "metadata": {"type": Metadata},
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
@@ -29070,6 +29411,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -29116,6 +29458,13 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             address_family_ipv6: AddressFamilyIpv6
             """Subclass of AvdModel."""
+            listen_ranges: ListenRanges
+            """
+            Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+            listen ranges.
+
+            Subclass of AvdList with `ListenRangesItem` items.
+            """
             metadata: Metadata
             """Subclass of AvdModel."""
             remote_as: str | None
@@ -29169,6 +29518,8 @@ class EosDesigns(EosDesignsRootModel):
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -29220,6 +29571,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    listen_ranges: ListenRanges | UndefinedType = Undefined,
                     metadata: Metadata | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
@@ -29239,6 +29591,7 @@ class EosDesigns(EosDesignsRootModel):
                     password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -29283,6 +29636,11 @@ class EosDesigns(EosDesignsRootModel):
                            of AvdList with `str` items.
                         address_family_ipv4: Subclass of AvdModel.
                         address_family_ipv6: Subclass of AvdModel.
+                        listen_ranges:
+                           Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                           listen ranges.
+
+                           Subclass of AvdList with `ListenRangesItem` items.
                         metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -29319,6 +29677,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -35654,6 +36013,69 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class ListenRangesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "prefix": {"type": str},
+                        "remote_as": {"type": str},
+                        "peer_id_include_router_id": {"type": bool},
+                        "peer_filter": {"type": str},
+                    }
+                    prefix: str
+                    """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                    remote_as: str | None
+                    """
+                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                    For asdot notation in
+                    YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                    number.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+                    peer_id_include_router_id: bool | None
+                    """Include router ID as part of peer filter."""
+                    peer_filter: str | None
+                    """
+                    Peer-filter name.
+                    note: `peer_filter` or `remote_as` is required.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            remote_as: str | None | UndefinedType = Undefined,
+                            peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                            peer_filter: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ListenRangesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                remote_as:
+                                   BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                   For asdot notation in
+                                   YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                   number.
+                                   note: `peer_filter` or `remote_as` is required.
+                                peer_id_include_router_id: Include router ID as part of peer filter.
+                                peer_filter:
+                                   Peer-filter name.
+                                   note: `peer_filter` or `remote_as` is required.
+
+                            """
+
+                class ListenRanges(AvdList[ListenRangesItem]):
+                    """Subclass of AvdList with `ListenRangesItem` items."""
+
+                ListenRanges._item_type = ListenRangesItem
+
                 class Metadata(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -36047,6 +36469,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_password": {"type": str},
                     "address_family_ipv4": {"type": AddressFamilyIpv4},
                     "address_family_ipv6": {"type": AddressFamilyIpv6},
+                    "listen_ranges": {"type": ListenRanges},
                     "metadata": {"type": Metadata},
                     "remote_as": {"type": str},
                     "local_as": {"type": str},
@@ -36066,6 +36489,7 @@ class EosDesigns(EosDesignsRootModel):
                     "password_type": {"type": str, "default": "7"},
                     "passive": {"type": bool},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "send_community": {"type": str},
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
@@ -36112,6 +36536,17 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 address_family_ipv6: AddressFamilyIpv6
                 """Subclass of AvdModel."""
+                listen_ranges: ListenRanges
+                """
+                Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                bgp listen ranges.
+                When set for VRF default, this is configured under root `router bgp <as>`. For
+                other VRFs this is configured under
+                respective VRF.
+
+                Subclass of AvdList with `ListenRangesItem`
+                items.
+                """
                 metadata: Metadata
                 """Subclass of AvdModel."""
                 remote_as: str | None
@@ -36165,6 +36600,8 @@ class EosDesigns(EosDesignsRootModel):
                 passive: bool | None
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 send_community: str | None
                 """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                 maximum_routes: int | None
@@ -36216,6 +36653,7 @@ class EosDesigns(EosDesignsRootModel):
                         cleartext_password: str | None | UndefinedType = Undefined,
                         address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                         address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                        listen_ranges: ListenRanges | UndefinedType = Undefined,
                         metadata: Metadata | UndefinedType = Undefined,
                         remote_as: str | None | UndefinedType = Undefined,
                         local_as: str | None | UndefinedType = Undefined,
@@ -36235,6 +36673,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: PasswordType | UndefinedType = Undefined,
                         passive: bool | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         send_community: str | None | UndefinedType = Undefined,
                         maximum_routes: int | None | UndefinedType = Undefined,
                         maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -36279,6 +36718,15 @@ class EosDesigns(EosDesignsRootModel):
                                make use of a vault or similar.
                             address_family_ipv4: Subclass of AvdModel.
                             address_family_ipv6: Subclass of AvdModel.
+                            listen_ranges:
+                               Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                               bgp listen ranges.
+                               When set for VRF default, this is configured under root `router bgp <as>`. For
+                               other VRFs this is configured under
+                               respective VRF.
+
+                               Subclass of AvdList with `ListenRangesItem`
+                               items.
                             metadata: Subclass of AvdModel.
                             remote_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -36315,6 +36763,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: password_type
                             passive: passive
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                             maximum_routes: Maximum number of routes (0 means unlimited).
                             maximum_routes_warning_limit:
@@ -39680,6 +40129,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+            "set_first_ntp_server_as_preferred": {"type": bool, "default": True},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
@@ -39707,11 +40157,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_vrf"`
         """
+        set_first_ntp_server_as_preferred: bool
+        """
+        If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+        Set to 'false' to
+        avoid automatically setting any server as 'preferred'.
+
+        Default value: `True`
+        """
         servers: Servers
         """
-        The first server is always set as "preferred".
+        By default, AVD marks the first server as `preferred`.
+        Set
+        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-        Subclass of AvdList with `ServersItem` items.
+        Subclass of
+        AvdList with `ServersItem` items.
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -39726,6 +40187,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 server_vrf: str | UndefinedType = Undefined,
+                set_first_ntp_server_as_preferred: bool | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -39756,10 +40218,17 @@ class EosDesigns(EosDesignsRootModel):
                        - Any other
                        string will be used directly as the VRF name but local interface must be set with
                        `custom_structured_configuration_ntp` if needed.
+                    set_first_ntp_server_as_preferred:
+                       If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+                       Set to 'false' to
+                       avoid automatically setting any server as 'preferred'.
                     servers:
-                       The first server is always set as "preferred".
+                       By default, AVD marks the first server as `preferred`.
+                       Set
+                       'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
-                       Subclass of AvdList with `ServersItem` items.
+                       Subclass of
+                       AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
@@ -44320,14 +44789,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            For Port-Channels, only `ipv4: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            For Port-Channels, only `ipv6: false` is supported.
+            For EOS version
+            4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -44342,12 +44813,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           For Port-Channels, only `ipv4: false` is supported.
+                           For EOS version
+                           4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           For Port-Channels, only `ipv6: false` is supported.
+                           For EOS version
+                           4.31 and higher.
 
                     """
 
@@ -46341,6 +46814,107 @@ class EosDesigns(EosDesignsRootModel):
 
         Hosts._item_type = HostsItem
 
+        class CommunitiesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Access: TypeAlias = Literal["ro", "rw"]
+
+            class AccessListIpv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}}
+                name: str | None
+                """IPv4 access list name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        AccessListIpv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: IPv4 access list name.
+
+                        """
+
+            class AccessListIpv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}}
+                name: str | None
+                """IPv6 access list name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        AccessListIpv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: IPv6 access list name.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "access": {"type": str},
+                "access_list_ipv4": {"type": AccessListIpv4},
+                "ipv4_standard_acl": {"type": str},
+                "access_list_ipv6": {"type": AccessListIpv6},
+                "view": {"type": str},
+            }
+            name: str
+            """Community name."""
+            access: Access | None
+            access_list_ipv4: AccessListIpv4
+            """Subclass of AvdModel."""
+            ipv4_standard_acl: str | None
+            """IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`."""
+            access_list_ipv6: AccessListIpv6
+            """Subclass of AvdModel."""
+            view: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    access: Access | None | UndefinedType = Undefined,
+                    access_list_ipv4: AccessListIpv4 | UndefinedType = Undefined,
+                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
+                    access_list_ipv6: AccessListIpv6 | UndefinedType = Undefined,
+                    view: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CommunitiesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Community name.
+                        access: access
+                        access_list_ipv4: Subclass of AvdModel.
+                        ipv4_standard_acl: IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
+                        access_list_ipv6: Subclass of AvdModel.
+                        view: view
+
+                    """
+
+        class Communities(AvdIndexedList[str, CommunitiesItem]):
+            """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Communities._item_type = CommunitiesItem
+
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -46445,7 +47019,7 @@ class EosDesigns(EosDesignsRootModel):
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
-            "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
+            "communities": {"type": Communities},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "traps": {"type": EosCliConfigGen.SnmpServer.Traps},
@@ -46547,7 +47121,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
-        communities: EosCliConfigGen.SnmpServer.Communities
+        communities: Communities
+        """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -46569,7 +47144,7 @@ class EosDesigns(EosDesignsRootModel):
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
-                communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
+                communities: Communities | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 traps: EosCliConfigGen.SnmpServer.Traps | UndefinedType = Undefined,
@@ -46647,7 +47222,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `UsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
-                    communities: communities
+                    communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     traps: traps
@@ -55683,11 +56258,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -56070,7 +56659,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -56719,10 +57308,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -56989,7 +57591,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -60971,11 +61573,25 @@ class EosDesigns(EosDesignsRootModel):
                         provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
-                        """Node management interface IPv6 address."""
+                        """
+                        Node management interface IPv6 address with prefix length or 'auto-config'.
+                        Set 'auto-config' to use
+                        SLAAC to automatically configure the IPv6 address.
+                        When set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                        advertisements are expected to provide the gateway and the default route.
+                        In this case, AVD also
+                        configures the management interface to accept the default route and honor route preferences from
+                        Router Advertisements.
+                        """
                         ipv6_mgmt_gateway: str | None
                         """
                         This key sets the ipv6 management gateway for the device. It takes precedence over the global
                         `ipv6_mgmt_gateway`.
+                        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                        advertisements are expected to provide the gateway and the default route.
                         """
                         mgmt_interface: str | None
                         """
@@ -61358,7 +61974,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -62016,10 +62632,23 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                        provide the gateway.
-                                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                                    ipv6_mgmt_ip:
+                                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                                       Set 'auto-config' to use
+                                       SLAAC to automatically configure the IPv6 address.
+                                       When set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                       advertisements are expected to provide the gateway and the default route.
+                                       In this case, AVD also
+                                       configures the management interface to accept the default route and honor route preferences from
+                                       Router Advertisements.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                        `ipv6_mgmt_gateway`.
+                                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                       advertisements are expected to provide the gateway and the default route.
                                     mgmt_interface:
                                        Management Interface Name.
                                        Default -> platform_management_interface -> mgmt_interface ->
@@ -62286,7 +62915,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -66179,11 +66808,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -66566,7 +67209,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -67226,10 +67869,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -67496,7 +68152,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -71461,11 +72117,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -71848,7 +72518,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -72506,10 +73176,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -72776,7 +73459,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -74061,14 +74744,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -74083,12 +74768,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -76113,14 +76800,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        For Port-Channels, only `ipv4: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        For Port-Channels, only `ipv6: false` is supported.
+                        For EOS version
+                        4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -76135,12 +76824,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       For Port-Channels, only `ipv4: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       For Port-Channels, only `ipv6: false` is supported.
+                                       For EOS version
+                                       4.31 and higher.
 
                                 """
 
@@ -77456,6 +78147,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class ListenRangesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "prefix": {"type": str},
+                            "remote_as": {"type": str},
+                            "peer_id_include_router_id": {"type": bool},
+                            "peer_filter": {"type": str},
+                        }
+                        prefix: str
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        remote_as: str | None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in
+                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                        number.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+                        peer_id_include_router_id: bool | None
+                        """Include router ID as part of peer filter."""
+                        peer_filter: str | None
+                        """
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                prefix: str | UndefinedType = Undefined,
+                                remote_as: str | None | UndefinedType = Undefined,
+                                peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                peer_filter: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                ListenRangesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    remote_as:
+                                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                       For asdot notation in
+                                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                       number.
+                                       note: `peer_filter` or `remote_as` is required.
+                                    peer_id_include_router_id: Include router ID as part of peer filter.
+                                    peer_filter:
+                                       Peer-filter name.
+                                       note: `peer_filter` or `remote_as` is required.
+
+                                """
+
+                    class ListenRanges(AvdList[ListenRangesItem]):
+                        """Subclass of AvdList with `ListenRangesItem` items."""
+
+                    ListenRanges._item_type = ListenRangesItem
+
                     class Metadata(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -77851,6 +78605,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
+                        "listen_ranges": {"type": ListenRanges},
                         "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
@@ -77870,6 +78625,7 @@ class EosDesigns(EosDesignsRootModel):
                         "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
+                        "enforce_first_as": {"type": bool},
                         "send_community": {"type": str},
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
@@ -77916,6 +78672,13 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
+                    listen_ranges: ListenRanges
+                    """
+                    Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                    listen ranges.
+
+                    Subclass of AvdList with `ListenRangesItem` items.
+                    """
                     metadata: Metadata
                     """Subclass of AvdModel."""
                     remote_as: str | None
@@ -77969,6 +78732,8 @@ class EosDesigns(EosDesignsRootModel):
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
+                    enforce_first_as: bool | None
+                    """Enforce the first AS in eBGP updates. EOS default is true."""
                     send_community: str | None
                     """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                     maximum_routes: int | None
@@ -78020,6 +78785,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                            listen_ranges: ListenRanges | UndefinedType = Undefined,
                             metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
@@ -78039,6 +78805,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
+                            enforce_first_as: bool | None | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
                             maximum_routes: int | None | UndefinedType = Undefined,
                             maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -78083,6 +78850,11 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
+                                listen_ranges:
+                                   Note - bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the bgp
+                                   listen ranges.
+
+                                   Subclass of AvdList with `ListenRangesItem` items.
                                 metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -78119,6 +78891,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
+                                enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                 maximum_routes: Maximum number of routes (0 means unlimited).
                                 maximum_routes_warning_limit:
@@ -84485,6 +85258,69 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class ListenRangesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "remote_as": {"type": str},
+                                "peer_id_include_router_id": {"type": bool},
+                                "peer_filter": {"type": str},
+                            }
+                            prefix: str
+                            """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                            remote_as: str | None
+                            """
+                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                            For asdot notation in
+                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                            number.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+                            peer_id_include_router_id: bool | None
+                            """Include router ID as part of peer filter."""
+                            peer_filter: str | None
+                            """
+                            Peer-filter name.
+                            note: `peer_filter` or `remote_as` is required.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | UndefinedType = Undefined,
+                                    remote_as: str | None | UndefinedType = Undefined,
+                                    peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                    peer_filter: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    ListenRangesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                        remote_as:
+                                           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                           For asdot notation in
+                                           YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                           number.
+                                           note: `peer_filter` or `remote_as` is required.
+                                        peer_id_include_router_id: Include router ID as part of peer filter.
+                                        peer_filter:
+                                           Peer-filter name.
+                                           note: `peer_filter` or `remote_as` is required.
+
+                                    """
+
+                        class ListenRanges(AvdList[ListenRangesItem]):
+                            """Subclass of AvdList with `ListenRangesItem` items."""
+
+                        ListenRanges._item_type = ListenRangesItem
+
                         class Metadata(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -84884,6 +85720,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
+                            "listen_ranges": {"type": ListenRanges},
                             "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
@@ -84903,6 +85740,7 @@ class EosDesigns(EosDesignsRootModel):
                             "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
+                            "enforce_first_as": {"type": bool},
                             "send_community": {"type": str},
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
@@ -84949,6 +85787,17 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
+                        listen_ranges: ListenRanges
+                        """
+                        Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                        bgp listen ranges.
+                        When set for VRF default, this is configured under root `router bgp <as>`. For
+                        other VRFs this is configured under
+                        respective VRF.
+
+                        Subclass of AvdList with `ListenRangesItem`
+                        items.
+                        """
                         metadata: Metadata
                         """Subclass of AvdModel."""
                         remote_as: str | None
@@ -85002,6 +85851,8 @@ class EosDesigns(EosDesignsRootModel):
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
+                        enforce_first_as: bool | None
+                        """Enforce the first AS in eBGP updates. EOS default is true."""
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                         maximum_routes: int | None
@@ -85053,6 +85904,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                                listen_ranges: ListenRanges | UndefinedType = Undefined,
                                 metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
@@ -85072,6 +85924,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
+                                enforce_first_as: bool | None | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
                                 maximum_routes: int | None | UndefinedType = Undefined,
                                 maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -85116,6 +85969,15 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
+                                    listen_ranges:
+                                       Note - vrfs[].bgp_peer_groups[].nodes[] must have a node matching with the hostname to configure the
+                                       bgp listen ranges.
+                                       When set for VRF default, this is configured under root `router bgp <as>`. For
+                                       other VRFs this is configured under
+                                       respective VRF.
+
+                                       Subclass of AvdList with `ListenRangesItem`
+                                       items.
                                     metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -85152,6 +86014,7 @@ class EosDesigns(EosDesignsRootModel):
                                     password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
+                                    enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     maximum_routes: Maximum number of routes (0 means unlimited).
                                     maximum_routes_warning_limit:
@@ -90831,11 +91694,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -91218,7 +92095,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -91867,10 +92744,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -92137,7 +93027,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -96119,11 +97009,25 @@ class EosDesigns(EosDesignsRootModel):
                         provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
-                        """Node management interface IPv6 address."""
+                        """
+                        Node management interface IPv6 address with prefix length or 'auto-config'.
+                        Set 'auto-config' to use
+                        SLAAC to automatically configure the IPv6 address.
+                        When set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                        'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                        advertisements are expected to provide the gateway and the default route.
+                        In this case, AVD also
+                        configures the management interface to accept the default route and honor route preferences from
+                        Router Advertisements.
+                        """
                         ipv6_mgmt_gateway: str | None
                         """
                         This key sets the ipv6 management gateway for the device. It takes precedence over the global
                         `ipv6_mgmt_gateway`.
+                        This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                        'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                        advertisements are expected to provide the gateway and the default route.
                         """
                         mgmt_interface: str | None
                         """
@@ -96506,7 +97410,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipvpn_gateway: IpvpnGateway
                         """
-                        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                        Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                         this is "bgp_peer_groups.ipvpn_gateway_peers".
                         L3 Reachability is required for this to work, the
                         preferred method to establish underlay connectivity is to use core_interfaces.
@@ -97164,10 +98068,23 @@ class EosDesigns(EosDesignsRootModel):
                                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                        provide the gateway.
-                                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                                    ipv6_mgmt_ip:
+                                       Node management interface IPv6 address with prefix length or 'auto-config'.
+                                       Set 'auto-config' to use
+                                       SLAAC to automatically configure the IPv6 address.
+                                       When set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                       'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                       advertisements are expected to provide the gateway and the default route.
+                                       In this case, AVD also
+                                       configures the management interface to accept the default route and honor route preferences from
+                                       Router Advertisements.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                        `ipv6_mgmt_gateway`.
+                                       This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                       'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                       advertisements are expected to provide the gateway and the default route.
                                     mgmt_interface:
                                        Management Interface Name.
                                        Default -> platform_management_interface -> mgmt_interface ->
@@ -97434,7 +98351,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ipvpn_gateway:
-                                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                       Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                        this is "bgp_peer_groups.ipvpn_gateway_peers".
                                        L3 Reachability is required for this to work, the
                                        preferred method to establish underlay connectivity is to use core_interfaces.
@@ -101327,11 +102244,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -101714,7 +102645,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -102374,10 +103305,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -102644,7 +103588,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -106609,11 +107553,25 @@ class EosDesigns(EosDesignsRootModel):
                     provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
-                    """Node management interface IPv6 address."""
+                    """
+                    Node management interface IPv6 address with prefix length or 'auto-config'.
+                    Set 'auto-config' to use
+                    SLAAC to automatically configure the IPv6 address.
+                    When set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                    'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                    advertisements are expected to provide the gateway and the default route.
+                    In this case, AVD also
+                    configures the management interface to accept the default route and honor route preferences from
+                    Router Advertisements.
+                    """
                     ipv6_mgmt_gateway: str | None
                     """
                     This key sets the ipv6 management gateway for the device. It takes precedence over the global
                     `ipv6_mgmt_gateway`.
+                    This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                    advertisements are expected to provide the gateway and the default route.
                     """
                     mgmt_interface: str | None
                     """
@@ -106996,7 +107954,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ipvpn_gateway: IpvpnGateway
                     """
-                    Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                    Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                     this is "bgp_peer_groups.ipvpn_gateway_peers".
                     L3 Reachability is required for this to work, the
                     preferred method to establish underlay connectivity is to use core_interfaces.
@@ -107654,10 +108612,23 @@ class EosDesigns(EosDesignsRootModel):
                                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
                                    provide the gateway.
-                                ipv6_mgmt_ip: Node management interface IPv6 address.
+                                ipv6_mgmt_ip:
+                                   Node management interface IPv6 address with prefix length or 'auto-config'.
+                                   Set 'auto-config' to use
+                                   SLAAC to automatically configure the IPv6 address.
+                                   When set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', the
+                                   'ipv6_mgmt_gateway' and 'ipv6_mgmt_destination_networks' settings are ignored since the router
+                                   advertisements are expected to provide the gateway and the default route.
+                                   In this case, AVD also
+                                   configures the management interface to accept the default route and honor route preferences from
+                                   Router Advertisements.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
                                    `ipv6_mgmt_gateway`.
+                                   This setting is ignored when 'ipv6_mgmt_ip' is set to 'auto-config' and
+                                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true', since the router
+                                   advertisements are expected to provide the gateway and the default route.
                                 mgmt_interface:
                                    Management Interface Name.
                                    Default -> platform_management_interface -> mgmt_interface ->
@@ -107924,7 +108895,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ipvpn_gateway:
-                                   Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                                   Node is acting as IP-VPN gateway for EVPN to MPLS IP-VPN interworking. The BGP peer group used for
                                    this is "bgp_peer_groups.ipvpn_gateway_peers".
                                    L3 Reachability is required for this to work, the
                                    preferred method to establish underlay connectivity is to use core_interfaces.
@@ -108418,6 +109389,7 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_graceful_restart": {"type": BgpGracefulRestart},
         "bgp_maximum_paths": {"type": int},
         "bgp_mesh_pes": {"type": bool, "default": False},
+        "bgp_peer_filters_catalog": {"type": EosCliConfigGen.PeerFilters},
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
@@ -108520,6 +109492,7 @@ class EosDesigns(EosDesignsRootModel):
         "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
+        "ipv4_standard_acls": {"type": Ipv4StandardAcls},
         "ipv6_acls": {"type": Ipv6Acls},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
         "ipv6_mgmt_gateway": {"type": str},
@@ -109800,6 +110773,13 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters
+    """
+    BGP peer filter catalog.
+    Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+    the configuration when
+    they are explicitly referenced in listen ranges.
+    """
     bgp_peer_groups: BgpPeerGroups
     """
     Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
@@ -110623,6 +111603,15 @@ class EosDesigns(EosDesignsRootModel):
     - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
+    ipv4_standard_acls: Ipv4StandardAcls
+    """
+    IPv4 standard access-lists catalog.
+    These access-lists will only be configured on devices where they
+    are in use.
+
+    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+    (`str`).
+    """
     ipv6_acls: Ipv6Acls
     """
     IPv6 extended access-lists supporting substitution on certain fields.
@@ -110649,6 +111638,12 @@ class EosDesigns(EosDesignsRootModel):
     List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
     gateway.
     Replaces the default route.
+    Ignored when
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', since router
+    advertisements are expected to provide the
+    gateway and default route.
 
 
     Subclass of AvdList with `str` items.
@@ -110658,6 +111653,12 @@ class EosDesigns(EosDesignsRootModel):
     OOB Management interface gateway in IPv6 format.
     Used as next-hop for default gateway or static
     routes defined under 'ipv6_mgmt_destination_networks'.
+    Ignored when
+    'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+    'ipv6_mgmt_ip'
+    under node config is set to 'auto-config', since router
+    advertisements are expected to provide the
+    gateway and default route.
     """
     is_deployed: bool
     """
@@ -111806,6 +112807,7 @@ class EosDesigns(EosDesignsRootModel):
             bgp_graceful_restart: BgpGracefulRestart | UndefinedType = Undefined,
             bgp_maximum_paths: int | None | UndefinedType = Undefined,
             bgp_mesh_pes: bool | UndefinedType = Undefined,
+            bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters | UndefinedType = Undefined,
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -111883,6 +112885,7 @@ class EosDesigns(EosDesignsRootModel):
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
+            ipv4_standard_acls: Ipv4StandardAcls | UndefinedType = Undefined,
             ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
             ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -112093,6 +113096,11 @@ class EosDesigns(EosDesignsRootModel):
                    Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
                    Only
                    supported in combination with MPLS overlay.
+                bgp_peer_filters_catalog:
+                   BGP peer filter catalog.
+                   Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+                   the configuration when
+                   they are explicitly referenced in listen ranges.
                 bgp_peer_groups:
                    Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                    Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
@@ -112711,6 +113719,13 @@ class EosDesigns(EosDesignsRootModel):
                    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
+                ipv4_standard_acls:
+                   IPv4 standard access-lists catalog.
+                   These access-lists will only be configured on devices where they
+                   are in use.
+
+                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
@@ -112734,6 +113749,12 @@ class EosDesigns(EosDesignsRootModel):
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
                    Replaces the default route.
+                   Ignored when
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', since router
+                   advertisements are expected to provide the
+                   gateway and default route.
 
 
                    Subclass of AvdList with `str` items.
@@ -112741,6 +113762,12 @@ class EosDesigns(EosDesignsRootModel):
                    OOB Management interface gateway in IPv6 format.
                    Used as next-hop for default gateway or static
                    routes defined under 'ipv6_mgmt_destination_networks'.
+                   Ignored when
+                   'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and
+                   'ipv6_mgmt_ip'
+                   under node config is set to 'auto-config', since router
+                   advertisements are expected to provide the
+                   gateway and default route.
                 is_deployed:
                    If the device is already deployed in the fabric.
                    When set to false:

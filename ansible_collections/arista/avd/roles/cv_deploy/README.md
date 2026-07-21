@@ -58,6 +58,24 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
     ![Figure 1: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/studios_end_to_end_provisioning.png)
 
+- **CloudVision device replacement** is not fully supported when using the default flat-layout configuration deployment.
+  When CloudVision replaces a device using the
+  [Replace](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-replacing-devices)
+  workflow in the [Inventory & Topology Studio](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#inventory-and-topology-studio), it updates the serial number reference inside the existing Static Configuration Studio container.
+  On the next `cv_deploy` run, AVD creates a **new** container and configlet keyed to the new serial number. While the original container and
+  configlet become orphaned (from `cv_deploy` point of view), they are still associated with the replacement device through the updated query.
+
+  Choose one of the following approaches to avoid duplicate configlet assignment:
+
+  - **After replacement**: Manually delete (using CloudVision UI) the orphaned container and configlet from the Static Configuration Studio in CloudVision after
+    the replacement is complete but before running `cv_deploy` again.
+  - **Instead of replacement**: Use the CloudVision
+    [Decommission](https://www.arista.io/help/articles/provisioning-studios-built-in-inventory#cHJvdmlzaW9uaW5nLnN0dWRpby9UT1BPTE9HWQ==-decommissioning-devices-from-cloud-vision)
+    workflow to remove the old device first, then run `cv_deploy` again to onboard and apply the configuration to the replacement device.
+
+  The manifest-based deployment is **not affected** by this limitation, as it automatically removes unused/orphaned manifest-created containers and
+  configlets on each run.
+
 ## Roadmap
 
 This feature is still under development, so several planned features are not implemented yet.

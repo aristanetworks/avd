@@ -115,6 +115,32 @@ No specific password policy is set for management accounts.
 management accounts
 ```
 
+## Management LDAP
+
+### LDAP Server Defaults
+
+| Setting | Value |
+| ------- | ----- |
+| Authorization Group Policy | LDAP_GROUP_POLICY |
+
+### LDAP Server Hosts
+
+| Host | Port | VRF | Timeout | Base DN | RDN Attribute (User) | SSL Profile | Authorization Group Policy | Search Username |
+| ---- | ---- | --- | ------- | ------- | -------------------- | ----------- | -------------------------- | --------------- |
+| ldap1.example.com | - | - | - | - | - | LDAP_HOST_SSL_PROFILE | - | - |
+
+### Management LDAP Device Configuration
+
+```eos
+!
+management ldap
+   server defaults
+      authorization group policy LDAP_GROUP_POLICY
+   !
+   server host ldap1.example.com
+      ssl-profile LDAP_HOST_SSL_PROFILE
+```
+
 ## CVX
 
 CVX is enabled
@@ -173,6 +199,19 @@ aaa accounting commands 1 console start-stop logging
 aaa accounting system default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
+```
+
+## System Boot Settings
+
+### Boot Secret Summary
+
+- The md5 hashed Aboot password is configured
+
+### System Boot Device Configuration
+
+```eos
+!
+boot secret 5 <removed>
 ```
 
 ## Monitoring

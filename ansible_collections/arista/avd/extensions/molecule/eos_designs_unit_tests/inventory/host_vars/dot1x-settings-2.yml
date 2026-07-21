@@ -6,7 +6,6 @@ l2leaf:
   nodes:
     - name: dot1x-settings-2
       mgmt_ip: 192.168.0.2/24
-
 dot1x_settings:
   enabled: true
   authentication:

@@ -187,7 +187,7 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
-            msg = "The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
+            msg = "The 'arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
 
         # Setup module logging

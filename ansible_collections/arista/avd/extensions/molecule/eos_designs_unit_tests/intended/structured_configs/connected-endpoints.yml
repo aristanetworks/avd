@@ -155,6 +155,28 @@ ethernet_interfaces:
     peer: OLD_SW-1/9
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet49
+  description: Interface description Et49 Custom_Server_old_sw-1/10_ENDPOINT_PORT1
+  shutdown: false
+  channel_group:
+    id: 49
+    mode: active
+  metadata:
+    peer: OLD_SW-1/10
+    peer_interface: Endpoint_port1
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet50
+  description: Interface description Et50 Custom_Server_old_sw-1/10_ENDPOINT_PORT2
+  shutdown: false
+  channel_group:
+    id: 49
+    mode: active
+  metadata:
+    peer: OLD_SW-1/10
+    peer_interface: ENDPOINT_PORT2
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet12
   description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
@@ -648,6 +670,26 @@ ethernet_interfaces:
     peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet47
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  channel_group:
+    id: 47
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet48
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  channel_group:
+    id: 47
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -757,6 +799,11 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
+- name: Port-Channel49
+  description: Port channel description Po49 custom_server_OLD_SW-1/10_Po49_ENDPOINT_PORT_CHANNEL_interface description po49 custom_server_old_sw-1/10_endpoint_port_channel
+  shutdown: false
+  switchport:
+    enabled: true
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
@@ -861,6 +908,17 @@ port_channel_interfaces:
 - name: Port-Channel45
   description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
   shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel47
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV6_FALSE_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: false
   switchport:
     enabled: true
     mode: access

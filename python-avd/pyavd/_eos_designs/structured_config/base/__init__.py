@@ -102,6 +102,9 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.node_config.ipv6_mgmt_ip is None:
             return
 
+        if self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config" and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+            return
+
         if self.inputs.ipv6_mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.ipv6_mgmt_destination_networks:
                 self.structured_config.ipv6_static_routes.append_new(
@@ -213,6 +216,15 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         self.structured_config.vlan_internal_order = self.inputs.internal_vlan_order._cast_as(EosCliConfigGen.VlanInternalOrder)
+
+    @structured_config_contributor
+    def vlans(self) -> None:
+        """Suspend vlans set based on general_settings.suspended_vlans data-model."""
+        if not (suspended_vlans := self.inputs.general_settings.suspended_vlans):
+            return
+
+        for vlan in suspended_vlans:
+            self.structured_config.vlans.append_new(id=vlan.id, name=vlan.name, state="suspend")
 
     @structured_config_contributor
     def config_end(self) -> None:
