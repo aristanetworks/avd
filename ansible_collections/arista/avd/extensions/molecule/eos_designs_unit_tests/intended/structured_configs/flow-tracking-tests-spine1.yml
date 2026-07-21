@@ -165,9 +165,9 @@ flow_tracking:
     - name: FLOW-TRACKER-1
       table_size: 4331
       record_export:
-        mpls: true
         on_inactive_timeout: 50000
         on_interval: 300331
+        mpls: true
       exporters:
       - name: ayush_exporter
         collectors:
