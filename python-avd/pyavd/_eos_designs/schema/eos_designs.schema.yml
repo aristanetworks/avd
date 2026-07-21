@@ -3650,6 +3650,22 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+      suspended_vlans:
+        type: list
+        description: 'Suspended VLANs are rendered only as local suspended VLAN definitions.
+
+          They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk
+          allowed VLANs, and must not overlap with VLANs defined by network services.'
+        primary_key: id
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              min: 1
+              max: 4094
+            name:
+              type: str
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

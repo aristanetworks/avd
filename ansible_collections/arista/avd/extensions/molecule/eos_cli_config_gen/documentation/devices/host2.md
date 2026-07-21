@@ -73,9 +73,8 @@
   - [DPS Interfaces](#dps-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
-- [Switchport Port-security](#switchport-port-security)
-  - [Switchport Port-security Summary](#switchport-port-security-summary)
-  - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
+- [Switchport](#switchport)
+  - [Switchport Port-security](#switchport-port-security)
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -1073,15 +1072,17 @@ interface Vxlan1
    no vxlan qos map dscp to traffic-class decapsulation
 ```
 
-## Switchport Port-security
+## Switchport
 
-### Switchport Port-security Summary
+### Switchport Port-security
+
+#### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Mac-address Aging | True |
 
-### Switchport Port-security Device Configuration
+#### Switchport Port-security Device Configuration
 
 ```eos
 !

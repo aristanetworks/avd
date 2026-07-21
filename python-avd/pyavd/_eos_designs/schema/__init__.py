@@ -21952,11 +21952,41 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class SuspendedVlansItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"id": {"type": int}, "name": {"type": str}}
+            id: int
+            name: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, id: int | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    SuspendedVlansItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: id
+                        name: name
+
+                    """
+
+        class SuspendedVlans(AvdIndexedList[int, SuspendedVlansItem]):
+            """Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        SuspendedVlans._item_type = SuspendedVlansItem
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
+            "suspended_vlans": {"type": SuspendedVlans},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -21965,6 +21995,16 @@ class EosDesigns(EosDesignsRootModel):
         ip_icmp_redirect: bool | None
         dhcp_relay: DhcpRelay
         """Subclass of AvdModel."""
+        suspended_vlans: SuspendedVlans
+        """
+        Suspended VLANs are rendered only as local suspended VLAN definitions.
+        They are not used for
+        endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+        defined by network services.
+
+        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+        key is `id` (`int`).
+        """
 
         if TYPE_CHECKING:
 
@@ -21975,6 +22015,7 @@ class EosDesigns(EosDesignsRootModel):
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
+                suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -21987,6 +22028,14 @@ class EosDesigns(EosDesignsRootModel):
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
                     dhcp_relay: Subclass of AvdModel.
+                    suspended_vlans:
+                       Suspended VLANs are rendered only as local suspended VLAN definitions.
+                       They are not used for
+                       endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+                       defined by network services.
+
+                       Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+                       key is `id` (`int`).
 
                 """
 
