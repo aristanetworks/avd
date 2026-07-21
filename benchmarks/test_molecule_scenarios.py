@@ -32,8 +32,8 @@ logger = logging.getLogger(__name__)
 # The runtime CodSpeed fixture exposes `pedantic`, but the third-party type does
 # not, so keep a local protocol for the fixture surface used here.
 class BenchmarkFixture(Protocol):
-
     def pedantic(self, target: Callable[[], None], *, iterations: int, rounds: int = 1, warmup_rounds: int = 0) -> None: ...
+
 
 REPRESENTATIVE_BENCHMARK_HOSTS = (
     # Baseline data center fabric roles.
