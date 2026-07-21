@@ -125,8 +125,7 @@ def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., Action
             AnsibleActionFail,
             match=(
                 r"Error during plugin 'arista.avd.eos_designs_structured_config' execution: "
-                r"The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' "
-                r"Python library. Got import error"
+                r"Requires the 'pyavd' Python library. Got import error"
             ),
         ),
     ):
