@@ -13,7 +13,7 @@ from __future__ import annotations
 import logging
 import sys
 from contextlib import contextmanager
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Protocol
 from unittest.mock import patch
 
 import pytest
@@ -22,12 +22,18 @@ from pyavd import get_avd_facts, get_device_config, get_device_structured_config
 from pyavd.api.schemas import AVDDesign
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Callable, Iterator
 
-    from pytest_codspeed import BenchmarkFixture
     from tests.models import MoleculeHost, MoleculeScenario
 
 logger = logging.getLogger(__name__)
+
+
+# The runtime CodSpeed fixture exposes `pedantic`, but the third-party type does
+# not, so keep a local protocol for the fixture surface used here.
+class BenchmarkFixture(Protocol):
+
+    def pedantic(self, target: Callable[[], None], *, iterations: int, rounds: int = 1, warmup_rounds: int = 0) -> None: ...
 
 REPRESENTATIVE_BENCHMARK_HOSTS = (
     # Baseline data center fabric roles.
@@ -101,7 +107,7 @@ def test_molecule_scenario_avd_facts_benchmark(
 
             assert len(avd_facts) == len(molecule_scenario.hosts)
 
-        benchmark(_)
+        benchmark.pedantic(_, iterations=1, rounds=1, warmup_rounds=0)
 
 
 @pytest.mark.molecule_scenarios("eos_designs_unit_tests", hosts=REPRESENTATIVE_BENCHMARK_HOSTS)
@@ -136,4 +142,4 @@ def test_molecule_host_config_render_benchmark(
             get_device_config(structured_config)
 
     with disabled_logging():
-        benchmark.pedantic(b, iterations=5, warmup_rounds=1)  # type: ignore[reportAttributeAccessIssue]
+        benchmark.pedantic(b, iterations=5, warmup_rounds=1)
