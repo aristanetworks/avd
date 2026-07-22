@@ -40130,9 +40130,8 @@ class EosDesigns(EosDesignsRootModel):
             address as the IPv6 address of the inband management interface.
             - Any other string is used directly
             as the source address (for example, an IPv4 or IPv6 address).
-            use_* values fail validation when the
-            management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF, or
-            the use_* keyword is unsupported.
+            `use_*` values fail validation when
+            the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
             """
 
             if TYPE_CHECKING:
@@ -40174,9 +40173,8 @@ class EosDesigns(EosDesignsRootModel):
                            address as the IPv6 address of the inband management interface.
                            - Any other string is used directly
                            as the source address (for example, an IPv4 or IPv6 address).
-                           use_* values fail validation when the
-                           management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF, or
-                           the use_* keyword is unsupported.
+                           `use_*` values fail validation when
+                           the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
 
                     """
 
