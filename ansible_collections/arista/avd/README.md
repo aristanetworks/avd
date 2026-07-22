@@ -29,7 +29,11 @@ The AVD collection has the following requirements:
 
 Follow the [installation guide](https://avd.arista.com/stable/docs/installation/collection-installation.html) to install the requirements.
 
-Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
+As Red Hat Ansible Certified Content, the recommended way to install this collection is from [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/arista/avd/).
+You must configure your Ansible Galaxy client to use Automation Hub as a server. See [Configuring the ansible-galaxy client](https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#configuring-the-ansible-galaxy-client) for details.
+No additional configuration is required when installing this collection from [Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/arista/avd/).
+
+Install the Ansible collection with the Ansible Galaxy command-line tool:
 
 ```shell
 ansible-galaxy collection install arista.avd
@@ -42,7 +46,7 @@ collections:
   - name: arista.avd
 ```
 
-Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package.
+Note that if the Ansible collection is already present, it will not be upgraded automatically.
 
 To upgrade the collection to the latest available version, run the following command:
 
@@ -50,7 +54,7 @@ To upgrade the collection to the latest available version, run the following com
 ansible-galaxy collection install arista.avd --upgrade
 ```
 
-You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 4.7.1:
+You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 5.2.3:
 
 ```shell
 ansible-galaxy collection install arista.avd:==5.2.3
@@ -103,6 +107,6 @@ Please see the [release notes](https://avd.arista.com) for the latest updates to
 
 ## License Information
 
-Copyright (c) 2019-2024 Arista Networks, Inc.
+Copyright (c) 2019-2026 Arista Networks, Inc.
 
 The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)
