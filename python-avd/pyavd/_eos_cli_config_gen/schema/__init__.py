@@ -32847,9 +32847,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             source_address: str | None
             """
-            Source IPv4 address.
-            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-            if both are set.
+            Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
@@ -32889,9 +32888,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Source interface.
                            Mutually exclusive with 'source_address'. Takes precedence if both are set.
                         source_address:
-                           Source IPv4 address.
-                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-                           if both are set.
+                           Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
