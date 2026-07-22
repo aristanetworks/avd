@@ -49,7 +49,7 @@ class UtilsMixin(Protocol):
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
-        
+
     def _set_ipv4_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.ipv4_acls:
             msg = f"ipv4_acls[name={acl_name}]"
