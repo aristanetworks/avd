@@ -9,21 +9,10 @@ name: "Benchmarks"
       - "benchmarks/**"
       - "pyproject.toml"
       - "python-avd/pyavd/**"
-      - "python-avd/tests/models.py"
       - "ansible_collections/arista/avd/extensions/molecule/**"
   pull_request:
     types: [reopened, synchronize, labeled]
     branches: [devel]
-  schedule:
-    # GitHub Actions schedules are UTC.
-    - cron: "0 2 * * *"
-  workflow_dispatch:
-    inputs:
-      full_suite:
-        description: "Include scale benchmarks."
-        required: false
-        default: false
-        type: boolean
 
 env:
   PY_COLORS: 1
@@ -60,7 +49,6 @@ jobs:
           make -C python-avd dep
 
       - name: Run default benchmarks
-        if: github.event_name != 'schedule' && (github.event_name != 'workflow_dispatch' || !inputs.full_suite)
         uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
         with:
           mode: simulation
@@ -70,11 +58,3 @@ jobs:
               benchmarks/test_large_fabric_scaling.py \
               -m "not benchmark_scale" \
               -q
-
-      - name: Run full benchmark suite with scale benchmarks
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.full_suite)
-        uses: CodSpeedHQ/action@c0179f10961f7a08defab9f862e9a09562d674d0 # v4
-        with:
-          mode: simulation
-          run: |
-            python -m pytest --codspeed benchmarks -q
