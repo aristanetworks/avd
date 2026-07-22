@@ -673,8 +673,8 @@ class RouterBgpMixin(Protocol):
 
             if remote_peer_name in self.shared_utils.node_config.evpn_route_servers:
                 msg = (
-                    f"Cannot configure EVPN Gateway remote peer '{remote_peer_name}' under both 'evpn_gateway.remote_peers' and "
-                    "'evpn_route_servers'. Use each inventory hostname in only one of these inputs."
+                    f"EVPN Gateway remote peer '{remote_peer_name}' is also configured under 'evpn_route_servers'. "
+                    "Use each inventory hostname in only one of these inputs."
                 )
                 raise AristaAvdInvalidInputsError(msg)
 

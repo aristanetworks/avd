@@ -20,5 +20,5 @@ l3leaf:
             ip_address: 192.168.42.42
 
 expected_error_message: >-
-  Cannot configure EVPN Gateway remote peer 'explicit-evpn-route-server' under both 'evpn_gateway.remote_peers' and
-  'evpn_route_servers'. Use each inventory hostname in only one of these inputs.
+  EVPN Gateway remote peer 'explicit-evpn-route-server' is also configured under 'evpn_route_servers'. Use each inventory hostname in
+  only one of these inputs.
