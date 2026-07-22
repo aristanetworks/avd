@@ -12629,7 +12629,8 @@ keys:
                 are set.'
             source_address:
               type: str
-              description: 'Source IPv4 address.
+              description: 'Source IPv4/IPv6 address. If ''name'' is an IP address,
+                ''source_address'' must use the same IP version.
 
                 Mutually exclusive with ''local_interface''. ''local_interface'' takes
                 precedence if both are set.'
