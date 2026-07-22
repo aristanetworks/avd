@@ -65,11 +65,11 @@ ip_access_lists:
         # Log is ignored.
         log: true
       - action: permit
-        remark: copy_captive_portal does not apply to permit entries
         protocol: udp
         source: any
         destination: any
         log: true
+        # Copy captive portal is ignored as it is only supported with deny entries.
         copy_captive_portal: true
       - action: deny
         protocol: tcp

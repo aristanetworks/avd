@@ -17113,13 +17113,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "fragments": {"type": bool},
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
-                "copy_captive_portal": {"type": bool},
                 "vlan_inner": {"type": bool, "default": False},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -17166,13 +17166,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """TTL value."""
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
-            copy_captive_portal: bool | None
-            """
-            Copy packet to CPU queue for dot1x captive-portal.
-            Only supported with deny entries.
-            Mutually
-            exclusive with `log`.
-            """
             vlan_inner: bool
             """
             Render vlan and mask as inner vlan.
@@ -17191,6 +17184,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`.
+            """
             log: bool | None
             """
             Log matches against this rule.
@@ -17227,13 +17227,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     fragments: bool | None | UndefinedType = Undefined,
                     ttl: int | None | UndefinedType = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
-                    copy_captive_portal: bool | None | UndefinedType = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
@@ -17273,11 +17273,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        copy_captive_portal:
-                           Copy packet to CPU queue for dot1x captive-portal.
-                           Only supported with deny entries.
-                           Mutually
-                           exclusive with `log`.
                         vlan_inner:
                            Render vlan and mask as inner vlan.
                            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
@@ -17287,6 +17282,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`.
                         log:
                            Log matches against this rule.
                            Mutually exclusive with `copy_captive_portal`.
@@ -20316,6 +20316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -20372,6 +20373,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            Mutually
+            exclusive with `log`.
+            """
             log: bool | None
             """
             Log matches against this rule.
@@ -20413,6 +20421,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
@@ -20457,6 +20466,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           Mutually
+                           exclusive with `log`.
                         log:
                            Log matches against this rule.
                            Mutually exclusive with `copy_captive_portal`.
