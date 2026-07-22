@@ -76,18 +76,11 @@ class PortChannelInterfacesMixin(Protocol):
                 if not (interface_description := l3_port_channel.description):
                     interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
 
-                # Resolve interface IP
-                interface_ip = l3_port_channel.ip_address
-                if interface_ip and "/" in interface_ip:
-                    interface_ip = get_ip_from_ip_prefix(interface_ip)
-
                 # Generate their structured config for the l3_port_channels.
                 port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
                     name=l3_port_channel.name,
                     mtu=self.shared_utils.get_interface_mtu(l3_port_channel.name, l3_port_channel.mtu),
                     description=interface_description or None,
-                    ip_address=l3_port_channel.ip_address,
-                    ip_address_secondaries=EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries(l3_port_channel.ip_address_secondaries),
                     arp_gratuitous_accept=l3_port_channel.arp_gratuitous_accept,
                     shutdown=not l3_port_channel.enabled,
                     eos_cli=l3_port_channel.raw_eos_cli,
@@ -120,16 +113,11 @@ class PortChannelInterfacesMixin(Protocol):
                     port_channel_interface.access_group_out = acl.name
                     self.structured_config_utils._set_ipv4_acl(acl)
 
+                self._update_port_channel_interface_ipv4(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf, tenant=tenant)
+                self._update_port_channel_interface_ipv6(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf)
+
                 if not is_subinterface:
                     port_channel_interface.switchport.enabled = False
-
-                if l3_port_channel.ospf.enabled and vrf.ospf.enabled:
-                    port_channel_interface._update(
-                        ospf_area=l3_port_channel.ospf.area,
-                        ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
-                        ospf_cost=l3_port_channel.ospf.cost,
-                    )
-                    self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
                 if is_subinterface:
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)
@@ -137,9 +125,11 @@ class PortChannelInterfacesMixin(Protocol):
                     port_channel_interface.encapsulation_dot1q.vlan = default(
                         l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])
                     )
-                    if not l3_port_channel.ip_address:
-                        msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
-                        msg += f"[name={l3_port_channel.name}].ip_address"
+                    if not l3_port_channel.ip_address and not l3_port_channel.ipv6_addresses:
+                        msg = (
+                            f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
+                            f"[name={l3_port_channel.name}].ip_address or ipv6_addresses"
+                        )
                         raise AristaAvdMissingVariableError(msg)
                 else:
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)
@@ -150,6 +140,74 @@ class PortChannelInterfacesMixin(Protocol):
                     )
 
                 self.structured_config.port_channel_interfaces.append(port_channel_interface)
+
+    def _update_port_channel_interface_ipv4(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        port_channel_interface: EosCliConfigGen.PortChannelInterfacesItem,
+        *,
+        l3_port_channel: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """Set the IPv4-only configuration on a PortChannelInterface from its l3_port_channel."""
+        # TODO: AVD 7.0.0 - early-return when `ip_address is None`, mirroring the IPv6 path. OSPFv2 requires a valid IPv4.
+        port_channel_interface.ip_address = l3_port_channel.ip_address
+        port_channel_interface.ip_address_secondaries = EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries(l3_port_channel.ip_address_secondaries)
+        interface_ip = l3_port_channel.ip_address
+        if interface_ip and "/" in interface_ip:
+            interface_ip = get_ip_from_ip_prefix(interface_ip)
+        if l3_port_channel.ipv4_acl_in:
+            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            port_channel_interface.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+        if l3_port_channel.ipv4_acl_out:
+            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            port_channel_interface.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
+        self._update_port_channel_interface_ospf(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf, tenant=tenant)
+
+    def _update_port_channel_interface_ospf(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        port_channel_interface: EosCliConfigGen.PortChannelInterfacesItem,
+        *,
+        l3_port_channel: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """Set the OSPF configuration on a PortChannelInterface from its l3_port_channel."""
+        if l3_port_channel.ospf.enabled and vrf.ospf.enabled:
+            port_channel_interface._update(
+                ospf_area=l3_port_channel.ospf.area,
+                ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
+                ospf_cost=l3_port_channel.ospf.cost,
+            )
+            self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
+
+    def _update_port_channel_interface_ipv6(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        port_channel_interface: EosCliConfigGen.PortChannelInterfacesItem,
+        *,
+        l3_port_channel: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> None:
+        """Set the IPv6-only configuration on a PortChannelInterface from its l3_port_channel."""
+        if not l3_port_channel.ipv6_addresses:
+            return
+        port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
+        if vrf.name == "default":
+            self.structured_config.ipv6_unicast_routing = True
+        # Use the first IPv6 address for "interface_ip" substitution in ACLs, matching the IPv4 behavior.
+        ipv6_interface_ip = next(iter(l3_port_channel.ipv6_addresses), None)
+        if ipv6_interface_ip and "/" in ipv6_interface_ip:
+            ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
+        if l3_port_channel.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_in, interface_name=l3_port_channel.name, interface_ip=ipv6_interface_ip)
+            port_channel_interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+        if l3_port_channel.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_out, interface_name=l3_port_channel.name, interface_ip=ipv6_interface_ip)
+            port_channel_interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)
 
     def _set_point_to_point_port_channel_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,
