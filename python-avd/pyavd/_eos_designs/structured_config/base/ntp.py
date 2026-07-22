@@ -141,11 +141,6 @@ class NtpMixin(Protocol):
 
     def _validate_ntp_server_source_address_type(self: AvdStructuredConfigBaseProtocol, server_name: str | None, source_address: str) -> None:
         """Validate that source address type matches server address type for IP-address-based servers."""
-        if server_name is None:
-            # TODO: 7.0 Clean up when `server.name` becomes primary key in the data model.
-            msg = "'ntp_settings.servers[].name' is required and cannot be null/none."
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-
         try:
             server_ip = ip_address(server_name)
         except ValueError:

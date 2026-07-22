@@ -7549,6 +7549,7 @@ keys:
         default: true
       servers:
         type: list
+        primary_key: name
         description: 'By default, AVD marks the first server as `preferred`.
 
           Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
@@ -7592,11 +7593,9 @@ keys:
                 - Any other string is used directly as the source address (for example,
                 an IPv4 or IPv6 address).
 
-                For `use_*` values, an error is raised if the referenced management
-                address is not configured (or is set to `dhcp`),
-
-                if `ntp_settings.server_vrf` does not resolve to the expected management
-                VRF, or if an unsupported `use_*` keyword is used.'
+                use_* values fail validation when the management address is missing/dhcp,
+                ntp_settings.server_vrf is not the expected management VRF, or the
+                use_* keyword is unsupported.'
       authenticate:
         type: bool
       authenticate_servers_only:
