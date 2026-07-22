@@ -81,7 +81,7 @@ class NtpMixin(Protocol):
 
     def _get_ntp_server_source_address(
         self: AvdStructuredConfigBaseProtocol,
-        server_name: str | None,
+        server_name: str,
         source_address: str,
         server_vrf: str,
     ) -> str:
@@ -139,7 +139,7 @@ class NtpMixin(Protocol):
         self._validate_ntp_server_source_address_type(server_name, resolved_source_address)
         return resolved_source_address
 
-    def _validate_ntp_server_source_address_type(self: AvdStructuredConfigBaseProtocol, server_name: str | None, source_address: str) -> None:
+    def _validate_ntp_server_source_address_type(self: AvdStructuredConfigBaseProtocol, server_name: str, source_address: str) -> None:
         """Validate that source address type matches server address type for IP-address-based servers."""
         try:
             server_ip = ip_address(server_name)
