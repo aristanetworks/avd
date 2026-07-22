@@ -1,7 +1,7 @@
 ---
 name: "Benchmarks"
 
-"on": # zizmor: ignore[dangerous-triggers]
+"on":
   push:
     branches: [devel]
     paths:
