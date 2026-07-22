@@ -6325,6 +6325,12 @@ keys:
                   description: 'Maximum number of entries in flow table.
 
                     '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
       hardware:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
@@ -6335,6 +6341,18 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
       mirror_on_drop:
         type: dict
         keys:
@@ -27970,9 +27988,6 @@ $defs:
                   min: 1000
                   max: 36000000
                   description: Flow record export interval in milliseconds.
-                mpls:
-                  type: bool
-                  description: Export MPLS forwarding information.
             exporters:
               type: list
               primary_key: name
