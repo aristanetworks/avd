@@ -33,10 +33,8 @@ CodSpeed upload and no write-capable checkout token. It runs on:
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
 - Pull requests with the `benchmark` label.
-- Daily at 02:00 UTC.
-- Manual `workflow_dispatch` runs.
 
-Default CI runs:
+CI runs:
 
 ```bash
 python -m pytest --codspeed \
@@ -46,15 +44,13 @@ python -m pytest --codspeed \
   -q
 ```
 
-Manual full-suite runs include the 150-device scale benchmark. They do not add
+Manual local full-suite runs include the 150-device scale benchmark. They do not add
 an all-host render benchmark for the full molecule scenario; that kind of load
 test is intentionally outside the CodSpeed suite.
 
 ```bash
 python -m pytest --codspeed benchmarks -q
 ```
-
-Daily scheduled runs also use this scale-inclusive command.
 
 ## Local Usage
 
