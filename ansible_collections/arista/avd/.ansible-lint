@@ -1,4 +1,6 @@
 ---
+# Reference from Ansible partner certification requirements:
+# https://raw.githubusercontent.com/ansible-collections/partner-certification-requirements/refs/heads/main/docs/.ansible-lint
 profile: production
 
 mock_modules:
@@ -12,3 +14,12 @@ mock_modules:
 kinds:
   - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
   - yaml: "**/extensions/molecule/howto/artifacts.yml"
+exclude_paths:
+  - tests/integration
+  - tests/unit
+  - extensions/molecule
+  - extensions/scripts
+  - changelogs
+
+warn_list:
+  - no-log-password
