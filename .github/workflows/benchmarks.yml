@@ -9,6 +9,7 @@ name: "Benchmarks"
       - "benchmarks/**"
       - "pyproject.toml"
       - "python-avd/pyavd/**"
+      - "python-avd/tests/models.py"
       - "ansible_collections/arista/avd/extensions/molecule/**"
   pull_request:
     types: [reopened, synchronize, labeled]
