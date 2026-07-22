@@ -1,0 +1,50 @@
+---
+# This workflow calls a pinned version of the
+# reusable workflow. Copy this file into your
+# repository to check against pinned versions
+# of Automation Hub tests.
+# The version is pinned to an exact release tag
+# (e.g. @v1.2.0) for supply chain security.
+# Use Dependabot to receive automatic PRs when
+# new versions are released.
+name: Run collection certification checks
+
+permissions:
+  contents: read
+
+"on":
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
+
+concurrency:
+  group: cert-ver-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# Files that are not related to the core functionality
+# of your collection can cause Ansible Lint to fail.
+# If this happens, add an .ansible-lint file that includes
+# those files and directories to the root of your
+# repository; for example:
+# https://github.com/ansible-collections/partner-certification-checker/blob/main/.ansible-lint
+# https://github.com/ansible-collections/partner-certification-checker/blob/main/.ansible-lint
+
+# If there are sanity test failures that cannot be fixed and are allowed to ignore
+# https://docs.ansible.com/projects/lint/rules/sanity/, create a sanity ignore file
+# https://docs.ansible.com/projects/ansible/devel/dev_guide/testing/sanity/ignores.html#ignore-file-location
+# for each affected version of ansible-core (for example, `tests/sanity/ignore-2.18.txt`) and add corresponding entries.
+jobs:
+  call:
+    uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@v3.0.0 # zizmor: ignore[unpinned-uses]
+    # For details on tested ansible-core branches and Python versions,
+    # see: https://github.com/ansible-collections/partner-certification-checker#tested-ansible-core-branches-and-python-versions
+    # with:
+    #   ansible-core-version: '2.18.0'
+    #   collection-root: 'ansible_collections/junipernetworks/junos'
+    #   automation-hub: true
+    # Uncomment the lines below if you have 'automation-hub: true' and need to install collections from Red Hat Ansible Automation Hub.
+    # This requires setting a repository secret called 'AH_TOKEN' which value contains a Red Hat Ansible Automation Hub token.
+    # secrets:
+    #   AH_TOKEN: ${{ secrets.AH_TOKEN }}
