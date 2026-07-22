@@ -115,30 +115,7 @@ jobs:
   # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
-    runs-on: ubuntu-latest
-    outputs:
-      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: |
-            3.12
-      - name: Create pyavd wheel and output wheel path
-        id: build_step
-        working-directory: ./python-avd
-        run: |
-          pip install build
-          python -m build --wheel
-          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
-          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
-      - name: Upload pyavd artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: pyavd
-          path: ./python-avd/dist/*.whl
+    uses: ./.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit

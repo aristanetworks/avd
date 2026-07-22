@@ -1,0 +1,81 @@
+---
+name: "Build PyAVD wheel"
+
+"on":
+  workflow_call:
+    inputs:
+      ref:
+        description: "Git ref to build the PyAVD package from"
+        required: false
+        default: ""
+        type: string
+      artifact_name:
+        description: "Name for the uploaded PyAVD wheel artifact"
+        required: false
+        default: "pyavd"
+        type: string
+    outputs:
+      target_version:
+        description: "PyAVD version built by the workflow"
+        value: ${{ jobs.build_pyavd_dist.outputs.target_version }}
+      wheel_file:
+        description: "Path to the downloaded PyAVD wheel artifact"
+        value: ${{ jobs.build_pyavd_dist.outputs.wheel_file }}
+
+permissions:
+  contents: read
+
+env:
+  AVD_NEVER_RUN_FROM_SOURCE: 1
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  build_pyavd_dist:
+    name: Build PyAVD wheel
+    runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd'
+    outputs:
+      target_version: ${{ steps.target_version.outputs.target_version }}
+      wheel_file: ${{ steps.build.outputs.wheel_file }}
+    steps:
+      - name: Checkout current ref
+        if: inputs.ref == ''
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Checkout requested ref
+        if: inputs.ref != ''
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.ref }}
+
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+
+      - name: Install release requirements
+        run: python -m pip install --group release
+
+      - name: Set target version
+        id: target_version
+        run: |
+          CURRENT_VERSION=$(bump-my-version show current_version | tr '-' '.')
+          echo "target_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and check PyAVD wheel
+        id: build
+        working-directory: ./python-avd
+        run: |
+          python -m build --wheel
+          python -m twine check dist/*
+          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
+          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Upload PyAVD wheel
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ./python-avd/dist/*.whl
