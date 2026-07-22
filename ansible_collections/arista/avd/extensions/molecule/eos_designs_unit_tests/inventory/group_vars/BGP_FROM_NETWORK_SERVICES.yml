@@ -81,9 +81,9 @@ tenants:
           - ip_address: 10.10.1.2
             peer_group: MYPEERGROUP
             nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+            # This will render enabled: True in structured config
             default_originate:
               always: true
-              enabled: true
         bgp_peer_groups:
           - name: MYPEERGROUP
             remote_as: 65991
@@ -115,6 +115,9 @@ tenants:
           - ip_address: 10.10.2.2
             peer_group: VALIDATE_BGP_PEERS
             nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+            # This will not render enabled: True in structured config
+            default_originate:
+              always: true
         bgp_peer_groups:
           - name: VALIDATE_BGP_PEERS
             remote_as: 65991

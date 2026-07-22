@@ -363,7 +363,6 @@ router_bgp:
       send_community: standard extended
       maximum_routes: 0
       default_originate:
-        enabled: true
         always: false
         route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       update_source: Loopback123

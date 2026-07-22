@@ -6864,9 +6864,6 @@ keys:
                       keys:
                         always:
                           type: bool
-                        enabled:
-                          type: bool
-                          default: true
                     update_source:
                       type: str
                     ebgp_multihop:

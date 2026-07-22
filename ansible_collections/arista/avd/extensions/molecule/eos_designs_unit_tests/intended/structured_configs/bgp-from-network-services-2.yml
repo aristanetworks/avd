@@ -118,6 +118,7 @@ router_bgp:
     metadata:
       validate_state: false
     default_originate:
+      enabled: true
       always: true
   redistribute:
     connected:
@@ -144,6 +145,8 @@ router_bgp:
         validate_state: true
     - ip_address: 10.10.2.2
       peer_group: VALIDATE_BGP_PEERS
+      default_originate:
+        always: true
       metadata:
         validate_state: true
     redistribute:

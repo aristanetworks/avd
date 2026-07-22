@@ -48628,22 +48628,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "always": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    """Default value: `True`"""
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
                     route_map: str | None
                     """Route-map name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            enabled: bool | UndefinedType = Undefined,
-                            always: bool | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -48651,7 +48643,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: enabled
                                 always: always
                                 route_map: Route-map name.
 
@@ -48866,21 +48857,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "always": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    """Default value: `True`"""
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
                     route_map: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            enabled: bool | UndefinedType = Undefined,
-                            always: bool | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -48888,7 +48871,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: enabled
                                 always: always
                                 route_map: route_map
 
@@ -56321,9 +56303,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "always": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    """Default value: `True`"""
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool | None
                     always: bool | None
                     route_map: str | None
 
@@ -56332,7 +56313,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType = Undefined,
+                            enabled: bool | None | UndefinedType = Undefined,
                             always: bool | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                         ) -> None:

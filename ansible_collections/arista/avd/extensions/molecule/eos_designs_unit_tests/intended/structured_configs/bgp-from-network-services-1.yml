@@ -137,6 +137,8 @@ router_bgp:
         validate_state: true
     - ip_address: 10.10.2.2
       peer_group: VALIDATE_BGP_PEERS
+      default_originate:
+        always: true
       metadata:
         validate_state: true
     redistribute:

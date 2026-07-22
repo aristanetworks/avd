@@ -701,7 +701,6 @@ keys:
               keys:
                 enabled:
                   type: bool
-                  #default: true
                 always:
                   type: bool
                 route_map:
@@ -1724,10 +1723,6 @@ keys:
                 default_originate:
                   type: dict
                   keys:
-                    enabled:
-                      type: bool
-                      # TODO: 7.0 remove default: true
-                      default: true
                     always:
                       type: bool
                     route_map:
@@ -1798,10 +1793,6 @@ keys:
                 default_originate:
                   type: dict
                   keys:
-                    enabled:
-                      type: bool
-                      # TODO: 7.0 remove default: true
-                      default: true
                     always:
                       type: bool
                     route_map:
@@ -4148,8 +4139,6 @@ keys:
                     keys:
                       enabled:
                         type: bool
-                        # TODO: 7.0 remove default: true
-                        default: true
                       always:
                         type: bool
                       route_map:
