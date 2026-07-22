@@ -86,10 +86,6 @@ class NtpMixin(Protocol):
         server_vrf: str,
     ) -> str:
         """Resolve the source address for an NTP server."""
-        if not source_address.startswith("use_"):
-            self._validate_ntp_server_source_address_type(server_name, source_address)
-            return source_address
-
         context = f"ntp_settings.servers[name={server_name}].source_address"
 
         match source_address:
@@ -110,12 +106,8 @@ class NtpMixin(Protocol):
                 ip_prefix = self.shared_utils.inband_mgmt_ipv6_address
                 missing_variable = "inband_mgmt_ipv6_address"
             case _:
-                msg = (
-                    f"'{context}' is set to '{source_address}', which is not supported. "
-                    "Supported values are 'use_mgmt_interface_ipv4', 'use_mgmt_interface_ipv6', "
-                    "'use_inband_mgmt_interface_ipv4', and 'use_inband_mgmt_interface_ipv6'."
-                )
-                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                self._validate_ntp_server_source_address_type(server_name, source_address)
+                return source_address
 
         if ip_prefix is None:
             msg = f"'{context}' is set to '{source_address}' but this node is missing '{missing_variable}'."
