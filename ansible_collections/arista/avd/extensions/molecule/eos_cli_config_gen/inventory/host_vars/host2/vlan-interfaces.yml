@@ -23,3 +23,10 @@ vlan_interfaces:
       ip: false
       ldp:
         igp_sync: false
+    ospfv3:
+      ipv4:
+        area: 0.0.0.0
+      ipv6:
+        area: 1000
+      passive_interface: true
+      network_point_to_point: true

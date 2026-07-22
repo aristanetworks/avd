@@ -26871,7 +26871,10 @@ keys:
           - int
         ipv6_ospf:
           type: dict
-          description: IPv6 OSPF configuration for the interface.
+          description: 'IPv6 OSPF configuration for the interface. Mutually exclusive
+            with ''ospfv3''. Ignored when ''ospfv3'' is also configured.
+
+            Use only one style throughout the configuration.'
           keys:
             process:
               type: dict
@@ -26891,6 +26894,34 @@ keys:
                   convert_types:
                   - int
                   required: true
+            network_point_to_point:
+              type: bool
+        ospfv3:
+          type: dict
+          description: 'Mutually exclusive with ''ipv6_ospf'' and takes precedence
+            over it.
+
+            Use only one style throughout the configuration.'
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295).'
+            ipv6:
+              type: dict
+              keys:
+                area:
+                  type: str
+                  required: true
+                  description: 'OSPF area ID in IPv4 address or decimal format (range:
+                    0 to 4294967295)'
+            passive_interface:
+              type: bool
+              description: Include interface but without actively running OSPF.
             network_point_to_point:
               type: bool
         ospf_cost:

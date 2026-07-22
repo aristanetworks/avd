@@ -1009,6 +1009,12 @@ interface Dps1
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
 
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ---------------------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | 0.0.0.0 | 1000 |
+
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -1026,6 +1032,10 @@ interface Vlan85
    bfd echo
    no mpls ldp igp sync
    no mpls ip
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
    isis authentication mode sha key-id 2

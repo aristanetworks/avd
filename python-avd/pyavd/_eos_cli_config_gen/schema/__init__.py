@@ -73384,6 +73384,89 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | None | UndefinedType = Undefined,
+                    network_point_to_point: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -74786,6 +74869,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
             "ipv6_ospf": {"type": Ipv6Ospf},
+            "ospfv3": {"type": Ospfv3},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -74932,7 +75016,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_area: str | None
         ipv6_ospf: Ipv6Ospf
         """
-        IPv6 OSPF configuration for the interface.
+        IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+        is also configured.
+        Use only one style throughout the configuration.
+
+        Subclass of AvdModel.
+        """
+        ospfv3: Ospfv3
+        """
+        Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+        Use only one style throughout the
+        configuration.
 
         Subclass of AvdModel.
         """
@@ -75053,6 +75147,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
@@ -75164,7 +75259,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ospf_area: ospf_area
                     ipv6_ospf:
-                       IPv6 OSPF configuration for the interface.
+                       IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+                       is also configured.
+                       Use only one style throughout the configuration.
+
+                       Subclass of AvdModel.
+                    ospfv3:
+                       Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+                       Use only one style throughout the
+                       configuration.
 
                        Subclass of AvdModel.
                     ospf_cost: ospf_cost
