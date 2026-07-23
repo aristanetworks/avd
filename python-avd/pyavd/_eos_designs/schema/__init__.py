@@ -23262,14 +23262,10 @@ class EosDesigns(EosDesignsRootModel):
                 source_address: str | None
                 """
                 The value of `source_address` will be interpreted according to these rules:
-                - `vrf_router_id` will
-                configure the VRF router ID address according to
-                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                - 'diagnostic_loopback' will configure the
-                VRF Diagnostic Loopback address.
-                - `main_router_id` will configure the Loopback0 IP address.
-                - An
-                IPv4 address will be used directly as the source address.
+                - `vrf_router_id`,
+                `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                tied to an L2VLAN.
+                - An IPv4 address will be used directly as the source address.
                 Overrides
                 `<network_services_key>[].igmp_snooping.querier.source_address`.
                 """
@@ -23295,14 +23291,10 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                             source_address:
                                The value of `source_address` will be interpreted according to these rules:
-                               - `vrf_router_id` will
-                               configure the VRF router ID address according to
-                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                               - 'diagnostic_loopback' will configure the
-                               VRF Diagnostic Loopback address.
-                               - `main_router_id` will configure the Loopback0 IP address.
-                               - An
-                               IPv4 address will be used directly as the source address.
+                               - `vrf_router_id`,
+                               `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                               tied to an L2VLAN.
+                               - An IPv4 address will be used directly as the source address.
                                Overrides
                                `<network_services_key>[].igmp_snooping.querier.source_address`.
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -23338,6 +23330,107 @@ class EosDesigns(EosDesignsRootModel):
                         fast_leave: Enable IGMP snooping fast-leave feature.
 
                     """
+
+        class NodesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class IgmpSnooping(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Querier(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Version: TypeAlias = Literal[1, 2, 3]
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                    enabled: bool | None
+                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                    source_address: str | None
+                    """
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id`,
+                    `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                    tied to an L2VLAN.
+                    - An IPv4 address will be used directly as the source address.
+                    Overrides
+                    `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                    """
+                    version: Version | None
+                    """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            source_address: str | None | UndefinedType = Undefined,
+                            version: Version | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Querier.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                source_address:
+                                   The value of `source_address` will be interpreted according to these rules:
+                                   - `vrf_router_id`,
+                                   `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                   tied to an L2VLAN.
+                                   - An IPv4 address will be used directly as the source address.
+                                   Overrides
+                                   `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                                version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                            """
+
+                _fields: ClassVar[dict] = {"querier": {"type": Querier}}
+                querier: Querier
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, querier: Querier | UndefinedType = Undefined) -> None:
+                        """
+                        IgmpSnooping.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            querier: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"node": {"type": str}, "igmp_snooping": {"type": IgmpSnooping}}
+            node: str
+            """Node inventory hostname."""
+            igmp_snooping: IgmpSnooping
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, node: str | UndefinedType = Undefined, igmp_snooping: IgmpSnooping | UndefinedType = Undefined) -> None:
+                    """
+                    NodesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        node: Node inventory hostname.
+                        igmp_snooping: Subclass of AvdModel.
+
+                    """
+
+        class Nodes(AvdIndexedList[str, NodesItem]):
+            """Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`)."""
+
+            _primary_key: ClassVar[str] = "node"
+
+        Nodes._item_type = NodesItem
 
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
@@ -23474,6 +23567,7 @@ class EosDesigns(EosDesignsRootModel):
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "igmp_snooping": {"type": IgmpSnooping},
+            "nodes": {"type": Nodes},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
             "bgp": {"type": Bgp},
@@ -23565,6 +23659,14 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         igmp_snooping: IgmpSnooping
         """Subclass of AvdModel."""
+        nodes: Nodes
+        """
+        Define node specific IGMP snooping querier configuration.
+
+
+        Subclass of AvdIndexedList with
+        `NodesItem` items. Primary key is `node` (`str`).
+        """
         igmp_snooping_enabled: bool | None
         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -23600,6 +23702,7 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
+                nodes: Nodes | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
@@ -23673,6 +23776,12 @@ class EosDesigns(EosDesignsRootModel):
                        AvdModel.
                     vxlan_flood_multicast: Subclass of AvdModel.
                     igmp_snooping: Subclass of AvdModel.
+                    nodes:
+                       Define node specific IGMP snooping querier configuration.
+
+
+                       Subclass of AvdIndexedList with
+                       `NodesItem` items. Primary key is `node` (`str`).
                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                     igmp_snooping_querier:
                        Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -37780,14 +37889,10 @@ class EosDesigns(EosDesignsRootModel):
                     source_address: str | None
                     """
                     The value of `source_address` will be interpreted according to these rules:
-                    - `vrf_router_id` will
-                    configure the VRF router ID address according to
-                    `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                    - 'diagnostic_loopback' will configure the
-                    VRF Diagnostic Loopback address.
-                    - `main_router_id` will configure the Loopback0 IP address.
-                    - An
-                    IPv4 address will be used directly as the source address.
+                    - `vrf_router_id`,
+                    `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                    tied to an L2VLAN.
+                    - An IPv4 address will be used directly as the source address.
                     Overrides
                     `<network_services_key>[].igmp_snooping.querier.source_address`.
                     """
@@ -37813,14 +37918,10 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                 source_address:
                                    The value of `source_address` will be interpreted according to these rules:
-                                   - `vrf_router_id` will
-                                   configure the VRF router ID address according to
-                                   `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                                   - 'diagnostic_loopback' will configure the
-                                   VRF Diagnostic Loopback address.
-                                   - `main_router_id` will configure the Loopback0 IP address.
-                                   - An
-                                   IPv4 address will be used directly as the source address.
+                                   - `vrf_router_id`,
+                                   `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                   tied to an L2VLAN.
+                                   - An IPv4 address will be used directly as the source address.
                                    Overrides
                                    `<network_services_key>[].igmp_snooping.querier.source_address`.
                                 version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -37856,6 +37957,107 @@ class EosDesigns(EosDesignsRootModel):
                             fast_leave: Enable IGMP snooping fast-leave feature.
 
                         """
+
+            class NodesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class IgmpSnooping(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Querier(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Version: TypeAlias = Literal[1, 2, 3]
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                        enabled: bool | None
+                        """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                        source_address: str | None
+                        """
+                        The value of `source_address` will be interpreted according to these rules:
+                        - `vrf_router_id`,
+                        `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                        tied to an L2VLAN.
+                        - An IPv4 address will be used directly as the source address.
+                        Overrides
+                        `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                        """
+                        version: Version | None
+                        """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | None | UndefinedType = Undefined,
+                                source_address: str | None | UndefinedType = Undefined,
+                                version: Version | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Querier.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                    source_address:
+                                       The value of `source_address` will be interpreted according to these rules:
+                                       - `vrf_router_id`,
+                                       `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                       tied to an L2VLAN.
+                                       - An IPv4 address will be used directly as the source address.
+                                       Overrides
+                                       `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                                    version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                """
+
+                    _fields: ClassVar[dict] = {"querier": {"type": Querier}}
+                    querier: Querier
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, querier: Querier | UndefinedType = Undefined) -> None:
+                            """
+                            IgmpSnooping.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                querier: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"node": {"type": str}, "igmp_snooping": {"type": IgmpSnooping}}
+                node: str
+                """Node inventory hostname."""
+                igmp_snooping: IgmpSnooping
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, node: str | UndefinedType = Undefined, igmp_snooping: IgmpSnooping | UndefinedType = Undefined) -> None:
+                        """
+                        NodesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            node: Node inventory hostname.
+                            igmp_snooping: Subclass of AvdModel.
+
+                        """
+
+            class Nodes(AvdIndexedList[str, NodesItem]):
+                """Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`)."""
+
+                _primary_key: ClassVar[str] = "node"
+
+            Nodes._item_type = NodesItem
 
             class IgmpSnoopingQuerier(AvdModel):
                 """Subclass of AvdModel."""
@@ -37994,6 +38196,7 @@ class EosDesigns(EosDesignsRootModel):
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "igmp_snooping": {"type": IgmpSnooping},
+                "nodes": {"type": Nodes},
                 "igmp_snooping_enabled": {"type": bool},
                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                 "bgp": {"type": Bgp},
@@ -38098,6 +38301,14 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             igmp_snooping: IgmpSnooping
             """Subclass of AvdModel."""
+            nodes: Nodes
+            """
+            Define node specific IGMP snooping querier configuration.
+
+
+            Subclass of AvdIndexedList with
+            `NodesItem` items. Primary key is `node` (`str`).
+            """
             igmp_snooping_enabled: bool | None
             """Enable or disable IGMP snooping (Enabled by default on EOS)."""
             igmp_snooping_querier: IgmpSnoopingQuerier
@@ -38135,6 +38346,7 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
+                    nodes: Nodes | UndefinedType = Undefined,
                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
@@ -38216,6 +38428,12 @@ class EosDesigns(EosDesignsRootModel):
                            AvdModel.
                         vxlan_flood_multicast: Subclass of AvdModel.
                         igmp_snooping: Subclass of AvdModel.
+                        nodes:
+                           Define node specific IGMP snooping querier configuration.
+
+
+                           Subclass of AvdIndexedList with
+                           `NodesItem` items. Primary key is `node` (`str`).
                         igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                         igmp_snooping_querier:
                            Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -87142,14 +87360,10 @@ class EosDesigns(EosDesignsRootModel):
                             source_address: str | None
                             """
                             The value of `source_address` will be interpreted according to these rules:
-                            - `vrf_router_id` will
-                            configure the VRF router ID address according to
-                            `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                            - 'diagnostic_loopback' will configure the
-                            VRF Diagnostic Loopback address.
-                            - `main_router_id` will configure the Loopback0 IP address.
-                            - An
-                            IPv4 address will be used directly as the source address.
+                            - `vrf_router_id`,
+                            `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                            tied to an L2VLAN.
+                            - An IPv4 address will be used directly as the source address.
                             Overrides
                             `<network_services_key>[].igmp_snooping.querier.source_address`.
                             """
@@ -87175,14 +87389,10 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                         source_address:
                                            The value of `source_address` will be interpreted according to these rules:
-                                           - `vrf_router_id` will
-                                           configure the VRF router ID address according to
-                                           `<network_services_keys.name>[].vrfs[].bgp.router_id`.
-                                           - 'diagnostic_loopback' will configure the
-                                           VRF Diagnostic Loopback address.
-                                           - `main_router_id` will configure the Loopback0 IP address.
-                                           - An
-                                           IPv4 address will be used directly as the source address.
+                                           - `vrf_router_id`,
+                                           `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                           tied to an L2VLAN.
+                                           - An IPv4 address will be used directly as the source address.
                                            Overrides
                                            `<network_services_key>[].igmp_snooping.querier.source_address`.
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -87218,6 +87428,107 @@ class EosDesigns(EosDesignsRootModel):
                                     fast_leave: Enable IGMP snooping fast-leave feature.
 
                                 """
+
+                    class NodesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class IgmpSnooping(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Querier(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Version: TypeAlias = Literal[1, 2, 3]
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                enabled: bool | None
+                                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                                source_address: str | None
+                                """
+                                The value of `source_address` will be interpreted according to these rules:
+                                - `vrf_router_id`,
+                                `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                tied to an L2VLAN.
+                                - An IPv4 address will be used directly as the source address.
+                                Overrides
+                                `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                                """
+                                version: Version | None
+                                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        source_address: str | None | UndefinedType = Undefined,
+                                        version: Version | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Querier.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                            source_address:
+                                               The value of `source_address` will be interpreted according to these rules:
+                                               - `vrf_router_id`,
+                                               `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF
+                                               tied to an L2VLAN.
+                                               - An IPv4 address will be used directly as the source address.
+                                               Overrides
+                                               `<network_services_key>[].l2vlans[].igmp_snooping.querier.source_address`.
+                                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"querier": {"type": Querier}}
+                            querier: Querier
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, querier: Querier | UndefinedType = Undefined) -> None:
+                                    """
+                                    IgmpSnooping.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        querier: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"node": {"type": str}, "igmp_snooping": {"type": IgmpSnooping}}
+                        node: str
+                        """Node inventory hostname."""
+                        igmp_snooping: IgmpSnooping
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, node: str | UndefinedType = Undefined, igmp_snooping: IgmpSnooping | UndefinedType = Undefined) -> None:
+                                """
+                                NodesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    node: Node inventory hostname.
+                                    igmp_snooping: Subclass of AvdModel.
+
+                                """
+
+                    class Nodes(AvdIndexedList[str, NodesItem]):
+                        """Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "node"
+
+                    Nodes._item_type = NodesItem
 
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
@@ -87361,6 +87672,7 @@ class EosDesigns(EosDesignsRootModel):
                         "evpn_l2_multicast": {"type": EvpnL2Multicast},
                         "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                         "igmp_snooping": {"type": IgmpSnooping},
+                        "nodes": {"type": Nodes},
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
@@ -87465,6 +87777,14 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     igmp_snooping: IgmpSnooping
                     """Subclass of AvdModel."""
+                    nodes: Nodes
+                    """
+                    Define node specific IGMP snooping querier configuration.
+
+
+                    Subclass of AvdIndexedList with
+                    `NodesItem` items. Primary key is `node` (`str`).
+                    """
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -87502,6 +87822,7 @@ class EosDesigns(EosDesignsRootModel):
                             evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                             vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                             igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
+                            nodes: Nodes | UndefinedType = Undefined,
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
@@ -87583,6 +87904,12 @@ class EosDesigns(EosDesignsRootModel):
                                    AvdModel.
                                 vxlan_flood_multicast: Subclass of AvdModel.
                                 igmp_snooping: Subclass of AvdModel.
+                                nodes:
+                                   Define node specific IGMP snooping querier configuration.
+
+
+                                   Subclass of AvdIndexedList with
+                                   `NodesItem` items. Primary key is `node` (`str`).
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.

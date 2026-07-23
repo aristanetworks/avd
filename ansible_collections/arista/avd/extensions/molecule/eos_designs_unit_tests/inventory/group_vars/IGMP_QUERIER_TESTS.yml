@@ -19,6 +19,22 @@ svi_profiles:
         source_address: 1.1.1.1
         version: 3
 
+l2vlan_profiles:
+  - profile: IGMP_QUERIER_NODE_SPECIFIC
+    nodes:
+      - node: igmp-querier-l3leaf1a
+        igmp_snooping:
+          querier:
+            enabled: true
+            source_address: 10.0.125.2
+            version: 3
+      - node: igmp-querier-l2leaf1a
+        igmp_snooping:
+          querier:
+            enabled: true
+            source_address: 10.0.125.3
+            version: 3
+
 tenants:
 # igmp_snooping.querier enable on Tenant
   - name: Tenant_A
@@ -214,3 +230,27 @@ tenants:
         igmp_snooping:
           querier:
             enabled: false
+      # Expected results:
+      # igmp querier enabled with per-node source addresses.
+      - id: 124
+        name: "VLAN_124"
+        tags: ['test_l2']
+        nodes:
+          - node: igmp-querier-l3leaf1a
+            igmp_snooping:
+              querier:
+                enabled: true
+                source_address: 10.0.124.2
+                version: 2
+          - node: igmp-querier-l2leaf1a
+            igmp_snooping:
+              querier:
+                enabled: true
+                source_address: 10.0.124.3
+                version: 2
+      # Expected results:
+      # igmp querier enabled with per-node source addresses inherited from l2vlan profile.
+      - id: 125
+        name: "VLAN_125"
+        tags: ['test_l2']
+        profile: IGMP_QUERIER_NODE_SPECIFIC
