@@ -55,7 +55,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         peer_mlag_interfaces = peer_facts_generator._mlag_interfaces
-        if len(self.shared_utils.mlag_interfaces) != peer_mlag_interfaces:
+        if len(self.shared_utils.mlag_interfaces) != len(peer_mlag_interfaces):
             msg = f"Inconsistent number of 'mlag_interfaces' defined for MLAG peer '{peer_hostname}'"
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
