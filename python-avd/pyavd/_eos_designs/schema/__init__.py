@@ -40106,8 +40106,9 @@ class EosDesigns(EosDesignsRootModel):
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "version": {"type": int},
+                "source_address": {"type": str},
             }
-            name: str | None
+            name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
             burst: bool | None
             iburst: bool | None
@@ -40117,19 +40118,35 @@ class EosDesigns(EosDesignsRootModel):
             minpoll: int | None
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             version: int | None
+            source_address: str | None
+            """
+            - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+            interface.
+            - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+            management interface.
+            - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+            address of the inband management interface.
+            - `use_inband_mgmt_interface_ipv6` configures the source
+            address as the IPv6 address of the inband management interface.
+            - Any other string is used directly
+            as the source address (for example, an IPv4 or IPv6 address).
+            `use_*` values fail validation when
+            the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
+            """
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     burst: bool | None | UndefinedType = Undefined,
                     iburst: bool | None | UndefinedType = Undefined,
                     key: int | None | UndefinedType = Undefined,
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -40145,11 +40162,26 @@ class EosDesigns(EosDesignsRootModel):
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         version: version
+                        source_address:
+                           - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+                           interface.
+                           - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+                           management interface.
+                           - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+                           address of the inband management interface.
+                           - `use_inband_mgmt_interface_ipv6` configures the source
+                           address as the IPv6 address of the inband management interface.
+                           - Any other string is used directly
+                           as the source address (for example, an IPv4 or IPv6 address).
+                           `use_*` values fail validation when
+                           the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
 
                     """
 
-        class Servers(AvdList[ServersItem]):
-            """Subclass of AvdList with `ServersItem` items."""
+        class Servers(AvdIndexedList[str, ServersItem]):
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         Servers._item_type = ServersItem
 
@@ -40278,7 +40310,7 @@ class EosDesigns(EosDesignsRootModel):
         'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
         Subclass of
-        AvdList with `ServersItem` items.
+        AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -40334,7 +40366,7 @@ class EosDesigns(EosDesignsRootModel):
                        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
                        Subclass of
-                       AvdList with `ServersItem` items.
+                       AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
