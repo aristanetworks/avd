@@ -160,8 +160,8 @@ class RoutingMixin(Protocol):
         try:
             if len(bgp_as_range_expanded) == 1:
                 return bgp_as_range_expanded[0]
-            if self.mlag_switch_ids:
-                return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
+            if self.switch_facts.mlag_primary is False and self.switch_facts.mlag_peer_id is not None:
+                return bgp_as_range_expanded[self.switch_facts.mlag_peer_id - 1]
 
             if self.id is None:
                 msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"

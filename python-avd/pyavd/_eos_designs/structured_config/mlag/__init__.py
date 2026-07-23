@@ -3,9 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
-from pyavd._utils import AvdStringFormatter, default
+from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import AvdStringFormatter, default, get_ip_from_ip_prefix
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
@@ -21,20 +24,18 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
     @structured_config_contributor
     def spanning_tree(self) -> None:
         vlans = [self.shared_utils.node_config.mlag_peer_vlan]
-        if self.shared_utils.mlag_peer_l3_vlan is not None:
-            vlans.append(self.shared_utils.mlag_peer_l3_vlan)
+        if self.facts.mlag.local.mlag_l3_vlan is not None:
+            vlans.append(self.facts.mlag.local.mlag_l3_vlan)
 
         self.structured_config.spanning_tree.no_spanning_tree_vlan = list_compress(vlans)
 
     @structured_config_contributor
     def vlans(self) -> None:
-        if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
+        if (mlag_l3_vlan := self.facts.mlag.local.mlag_l3_vlan) is not None and self.shared_utils.underlay_routing_protocol != "none":
             self.structured_config.vlans.append_new(
-                id=self.shared_utils.mlag_peer_l3_vlan,
+                id=mlag_l3_vlan,
                 metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
-                name=AvdStringFormatter().format(
-                    self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
-                ),
+                name=AvdStringFormatter().format(self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=mlag_l3_vlan),
                 trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
             )
 
@@ -73,15 +74,15 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             )
 
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            main_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
+            main_vlan_interface.ipv6_addresses.append(f"{self.facts.mlag.local.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
         else:
-            main_vlan_interface.ip_address = f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
-        if not self.shared_utils.mlag_l3 or self.shared_utils.underlay_routing_protocol == "none":
+            main_vlan_interface.ip_address = f"{self.facts.mlag.local.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+        if not self.facts.mlag.local.mlag_l3_enabled or self.shared_utils.underlay_routing_protocol == "none":
             self.structured_config.vlan_interfaces.append(main_vlan_interface)
             return
 
         # Add L3 config if the main interface is also used for L3 peering
-        if self.shared_utils.mlag_peer_l3_vlan is None:
+        if self.facts.mlag.local.mlag_l3_vlan is None:
             self._set_mlag_l3_vlan_interface(main_vlan_interface)
             # Applying structured config from l3_vlan only when not set on the main vlan
             if self.shared_utils.node_config.mlag_peer_l3_vlan_structured_config and not self.shared_utils.node_config.mlag_peer_vlan_structured_config:
@@ -92,7 +93,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # Next create l3 interface if not using the main vlan
-        l3_vlan_interface_name = f"Vlan{self.shared_utils.mlag_peer_l3_vlan}"
+        l3_vlan_interface_name = f"Vlan{self.facts.mlag.local.mlag_l3_vlan}"
         l3_vlan_interface = EosCliConfigGen.VlanInterfacesItem(
             name=l3_vlan_interface_name,
             description=self.shared_utils.interface_descriptions.mlag_peer_l3_svi(
@@ -103,9 +104,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         )
         if not self.inputs.underlay_rfc5549:
             if self.shared_utils.underlay_ipv6_numbered:
-                l3_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
+                l3_vlan_interface.ipv6_addresses.append(f"{self.facts.mlag.local.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
             else:
-                l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+                l3_vlan_interface.ip_address = f"{self.facts.mlag.local.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
 
         self._set_mlag_l3_vlan_interface(l3_vlan_interface)
 
@@ -147,9 +148,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=isis_authentication_key,
                     key_type="7",
                 )
-        if self.shared_utils.underlay_multicast_pim_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.pim_sm:
+        if self.facts.mlag.local.underlay_multicast.pim_sm:
             vlan_interface.pim.ipv4.sparse_mode = True
-        if self.shared_utils.underlay_multicast_static_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.static:
+        if self.facts.mlag.local.underlay_multicast.static:
             vlan_interface.multicast.ipv4.static = True
 
         if self.inputs.underlay_rfc5549:
@@ -159,7 +160,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
     @structured_config_contributor
     def port_channel_interfaces(self) -> None:
         """Set one Port Channel Interface used for MLAG Peer Link."""
-        port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
+        port_channel_interface_name = f"Port-Channel{self.facts.mlag.local.port_channel_id}"
 
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
             name=port_channel_interface_name,
@@ -167,7 +168,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface=port_channel_interface_name,
-                    peer_interface=f"Port-Channel{self.shared_utils.mlag_peer_port_channel_id}",
+                    peer_interface=f"Port-Channel{self.facts.mlag.peer.port_channel_id}",
                     # The description class has @property methods for other mlag related facts.
                 ),
             ),
@@ -203,10 +204,8 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             port_channel_interface.ptp = ptp_profile_config._cast_as(EosCliConfigGen.PortChannelInterfacesItem.Ptp, ignore_extra_keys=True)
             port_channel_interface.ptp.enable = True
 
-        if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
-            port_channel_interface._update(
-                lacp_fallback_mode="individual", lacp_fallback_timeout=self.shared_utils.mlag_peer_facts.inband_ztp_lacp_fallback_delay
-            )
+        if self.facts.mlag.peer.inband_ztp:
+            port_channel_interface._update(lacp_fallback_mode="individual", lacp_fallback_timeout=self.facts.mlag.peer.inband_ztp_lacp_fallback_delay)
 
         self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
@@ -220,17 +219,17 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
-                        peer_interface=self.shared_utils.mlag_peer_interfaces[index],
+                        peer_interface=self.facts.mlag.peer.mlag_interfaces[index],
                         # The description class has @property methods for other mlag related facts.
                     ),
                 ),
                 shutdown=False,
                 speed=default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed),
             )
-            ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
-            ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
-            if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
-                ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.mlag_peer_facts.inband_ztp_vlan)
+            ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.facts.mlag.peer.hostname, peer_type="mlag_peer")
+            ethernet_interface.channel_group._update(id=self.facts.mlag.local.port_channel_id, mode="active")
+            if self.facts.mlag.peer.inband_ztp:
+                ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.facts.mlag.peer.inband_ztp_vlan)
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
     @structured_config_contributor
@@ -239,14 +238,14 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         mlag_configuration = EosCliConfigGen.MlagConfiguration(
             domain_id=default(self.shared_utils.node_config.mlag_domain_id, self.shared_utils.group),
             local_interface=f"Vlan{self.shared_utils.node_config.mlag_peer_vlan}",
-            peer_address=self.shared_utils.mlag_peer_ip,
-            peer_link=f"Port-Channel{self.shared_utils.mlag_port_channel_id}",
+            peer_address=self.facts.mlag.peer.mlag_ip,
+            peer_link=f"Port-Channel{self.facts.mlag.local.port_channel_id}",
             reload_delay_mlag=str(default(self.shared_utils.platform_settings.reload_delay.mlag, "")) or None,
             reload_delay_non_mlag=str(default(self.shared_utils.platform_settings.reload_delay.non_mlag, "")) or None,
         )
-        if self.shared_utils.node_config.mlag_dual_primary_detection and self.shared_utils.mlag_peer_mgmt_ip and self.shared_utils.mgmt_interface_vrf:
+        if self.shared_utils.node_config.mlag_dual_primary_detection and self._mlag_peer_mgmt_ip and self.shared_utils.mgmt_interface_vrf:
             mlag_configuration.peer_address_heartbeat._update(
-                peer_ip=self.shared_utils.mlag_peer_mgmt_ip,
+                peer_ip=self._mlag_peer_mgmt_ip,
                 vrf=self.shared_utils.mgmt_interface_vrf,
             )
             mlag_configuration.dual_primary_detection_delay = 5
@@ -260,7 +259,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
         For other underlay protocols the MLAG peer-group may be created as part of the network services logic.
         """
-        if not (self.shared_utils.mlag_l3 is True and self.shared_utils.underlay_bgp):
+        if not (self.facts.mlag.local.mlag_l3_enabled and self.shared_utils.underlay_bgp):
             return
 
         # MLAG Peer group
@@ -268,7 +267,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if not self.inputs.avd_design_future.only_configure_mlag_vrfs_peer_group_when_used and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
             self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
 
-        vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
+        vlan = default(self.facts.mlag.local.mlag_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
         interface_name = f"Vlan{vlan}"
 
         # Underlay MLAG peering
@@ -276,26 +275,39 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             self.structured_config.router_bgp.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=self.shared_utils.mlag_peer),
+                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=self.facts.mlag.peer.hostname),
                 remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
-                    mlag_peer=self.shared_utils.mlag_peer,
+                    mlag_peer=self.facts.mlag.peer.hostname,
                     interface=interface_name,
                     peer_interface=interface_name,
                 ),
             )
 
         else:
-            neighbor_ip = default(self.shared_utils.mlag_peer_l3_ip, self.shared_utils.mlag_peer_ip)
             self.structured_config.router_bgp.neighbors.append_new(
-                ip_address=neighbor_ip,
+                ip_address=self.shared_utils.mlag_peer_ibgp_ip,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.shared_utils.mlag_peer),
+                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.facts.mlag.peer.hostname),
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
-                    mlag_peer=self.shared_utils.mlag_peer,
+                    mlag_peer=self.facts.mlag.peer.hostname,
                     interface=interface_name,
                     peer_interface=interface_name,
                 ),
             )
+
+    @cached_property
+    def _mlag_peer_mgmt_ip(self) -> str | None:
+        if (mlag_peer_mgmt_ip := self.facts.mlag.peer.mgmt_ip) is None:
+            return None
+
+        if mlag_peer_mgmt_ip == "dhcp":
+            msg = (
+                f"'mgmt_ip: dhcp' is not supported for MLAG peer '{self.shared_utils.mlag_peer}'."
+                f" MLAG dual-primary detection heartbeat requires a static management IP address."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        return get_ip_from_ip_prefix(mlag_peer_mgmt_ip)

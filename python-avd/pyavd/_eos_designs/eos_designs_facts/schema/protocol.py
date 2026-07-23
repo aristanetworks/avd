@@ -153,52 +153,184 @@ class EosDesignsFactsProtocol(Protocol):
 
     PortProfileNames._item_type = PortProfileNamesItem
 
-    class MlagInterfaces(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    MlagInterfaces._item_type = str
-
-    class MlagSwitchIds(AvdModel):
+    class Mlag(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"primary": {"type": int}, "secondary": {"type": int}}
-        primary: int
-        secondary: int
+        class Local(AvdModel):
+            """Subclass of AvdModel."""
+
+            class UnderlayMulticast(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
+                pim_sm: bool
+                static: bool
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
+                        """
+                        UnderlayMulticast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            pim_sm: pim_sm
+                            static: static
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "primary": {"type": bool},
+                "port_channel_id": {"type": int},
+                "mlag_ip": {"type": str},
+                "mlag_l3_enabled": {"type": bool},
+                "mlag_l3_vlan": {"type": int},
+                "mlag_l3_ip": {"type": str},
+                "underlay_multicast": {"type": UnderlayMulticast},
+            }
+            primary: bool
+            port_channel_id: int
+            mlag_ip: str
+            mlag_l3_enabled: bool
+            mlag_l3_vlan: int | None
+            mlag_l3_ip: str | None
+            underlay_multicast: UnderlayMulticast
+            """
+            Should multicast be enabled on the mlag peer-l3-vlan.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    primary: bool | UndefinedType = Undefined,
+                    port_channel_id: int | UndefinedType = Undefined,
+                    mlag_ip: str | UndefinedType = Undefined,
+                    mlag_l3_enabled: bool | UndefinedType = Undefined,
+                    mlag_l3_vlan: int | None | UndefinedType = Undefined,
+                    mlag_l3_ip: str | None | UndefinedType = Undefined,
+                    underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Local.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        primary: primary
+                        port_channel_id: port_channel_id
+                        mlag_ip: mlag_ip
+                        mlag_l3_enabled: mlag_l3_enabled
+                        mlag_l3_vlan: mlag_l3_vlan
+                        mlag_l3_ip: mlag_l3_ip
+                        underlay_multicast:
+                           Should multicast be enabled on the mlag peer-l3-vlan.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class Peer(AvdModel):
+            """Subclass of AvdModel."""
+
+            class MlagInterfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            MlagInterfaces._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "hostname": {"type": str},
+                "id": {"type": int},
+                "mlag_ip": {"type": str},
+                "port_channel_id": {"type": int},
+                "mlag_interfaces": {"type": MlagInterfaces},
+                "mgmt_ip": {"type": str},
+                "mlag_l3_ip": {"type": str},
+                "bgp_as": {"type": str},
+                "inband_ztp": {"type": bool},
+                "inband_ztp_lacp_fallback_delay": {"type": int},
+                "inband_ztp_vlan": {"type": int},
+            }
+            hostname: str
+            """Same hostname as mlag_peer fact but here we have a type guarantee."""
+            id: int
+            mlag_ip: str
+            port_channel_id: int
+            mlag_interfaces: MlagInterfaces
+            """Subclass of AvdList with `str` items."""
+            mgmt_ip: str | None
+            mlag_l3_ip: str | None
+            bgp_as: str | None
+            inband_ztp: bool
+            inband_ztp_lacp_fallback_delay: int | None
+            inband_ztp_vlan: int | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    hostname: str | UndefinedType = Undefined,
+                    id: int | UndefinedType = Undefined,
+                    mlag_ip: str | UndefinedType = Undefined,
+                    port_channel_id: int | UndefinedType = Undefined,
+                    mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                    mgmt_ip: str | None | UndefinedType = Undefined,
+                    mlag_l3_ip: str | None | UndefinedType = Undefined,
+                    bgp_as: str | None | UndefinedType = Undefined,
+                    inband_ztp: bool | UndefinedType = Undefined,
+                    inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
+                    inband_ztp_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Peer.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        hostname: Same hostname as mlag_peer fact but here we have a type guarantee.
+                        id: id
+                        mlag_ip: mlag_ip
+                        port_channel_id: port_channel_id
+                        mlag_interfaces: Subclass of AvdList with `str` items.
+                        mgmt_ip: mgmt_ip
+                        mlag_l3_ip: mlag_l3_ip
+                        bgp_as: bgp_as
+                        inband_ztp: inband_ztp
+                        inband_ztp_lacp_fallback_delay: inband_ztp_lacp_fallback_delay
+                        inband_ztp_vlan: inband_ztp_vlan
+
+                    """
+
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "local": {"type": Local}, "peer": {"type": Peer}}
+        enabled: bool
+        local: Local
+        """Subclass of AvdModel."""
+        peer: Peer
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, primary: int | UndefinedType = Undefined, secondary: int | UndefinedType = Undefined) -> None:
+            def __init__(
+                self, *, enabled: bool | UndefinedType = Undefined, local: Local | UndefinedType = Undefined, peer: Peer | UndefinedType = Undefined
+            ) -> None:
                 """
-                MlagSwitchIds.
+                Mlag.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    primary: primary
-                    secondary: secondary
-
-                """
-
-    class MlagUnderlayMulticast(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
-        pim_sm: bool
-        static: bool
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
-                """
-                MlagUnderlayMulticast.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    pim_sm: pim_sm
-                    static: static
+                    enabled: enabled
+                    local: Subclass of AvdModel.
+                    peer: Subclass of AvdModel.
 
                 """
 
@@ -1131,13 +1263,10 @@ class EosDesignsFactsProtocol(Protocol):
         "pod": {"type": str},
         "connected_endpoints_keys": {"type": ConnectedEndpointsKeys},
         "port_profile_names": {"type": PortProfileNames},
+        "mlag": {"type": Mlag},
         "mlag_peer": {"type": str},
-        "mlag_port_channel_id": {"type": int},
-        "mlag_interfaces": {"type": MlagInterfaces},
-        "mlag_ip": {"type": str},
-        "mlag_l3_ip": {"type": str},
-        "mlag_switch_ids": {"type": MlagSwitchIds},
-        "mlag_underlay_multicast": {"type": MlagUnderlayMulticast},
+        "mlag_primary": {"type": bool},
+        "mlag_peer_id": {"type": int},
         "evpn_role": {"type": str},
         "mpls_overlay_role": {"type": str},
         "evpn_route_servers": {"type": EvpnRouteServers},
@@ -1187,7 +1316,7 @@ class EosDesignsFactsProtocol(Protocol):
     inband_mgmt_subnet: str | None
     inband_mgmt_ipv6_subnet: str | None
     inband_mgmt_vlan: int | None
-    inband_ztp: bool | None
+    inband_ztp: bool
     inband_ztp_vlan: int | None
     inband_ztp_lacp_fallback_delay: int | None
     dc_name: str | None
@@ -1215,24 +1344,18 @@ class EosDesignsFactsProtocol(Protocol):
     Subclass of
     AvdList with `PortProfileNamesItem` items.
     """
+    mlag: Mlag
+    """Subclass of AvdModel."""
     mlag_peer: str | None
-    mlag_port_channel_id: int | None
-    mlag_interfaces: MlagInterfaces
-    """Subclass of AvdList with `str` items."""
-    mlag_ip: str | None
-    mlag_l3_ip: str | None
-    mlag_switch_ids: MlagSwitchIds
     """
-    The switch ids of both primary and secondary switches for a this node group.
-
-    Subclass of AvdModel.
+    MLAG peer is only set when MLAG is allowed and configured with a proper peer.
+    So presence of the
+    mlag_peer fact is the same as MLAG should be configured.
     """
-    mlag_underlay_multicast: MlagUnderlayMulticast
-    """
-    Should multicast be enabled on the mlag peer-l3-vlan.
-
-    Subclass of AvdModel.
-    """
+    mlag_primary: bool | None
+    """MLAG primary is only set when MLAG is allowed and configured with a proper peer."""
+    mlag_peer_id: int | None
+    """MLAG peer ID is only set when MLAG is allowed and configured with a proper peer."""
     evpn_role: str | None
     mpls_overlay_role: str | None
     evpn_route_servers: EvpnRouteServers
@@ -1352,7 +1475,7 @@ class EosDesignsFactsProtocol(Protocol):
             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
             inband_mgmt_ipv6_subnet: str | None | UndefinedType = Undefined,
             inband_mgmt_vlan: int | None | UndefinedType = Undefined,
-            inband_ztp: bool | None | UndefinedType = Undefined,
+            inband_ztp: bool | UndefinedType = Undefined,
             inband_ztp_vlan: int | None | UndefinedType = Undefined,
             inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
@@ -1363,13 +1486,10 @@ class EosDesignsFactsProtocol(Protocol):
             pod: str | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             port_profile_names: PortProfileNames | UndefinedType = Undefined,
+            mlag: Mlag | UndefinedType = Undefined,
             mlag_peer: str | None | UndefinedType = Undefined,
-            mlag_port_channel_id: int | None | UndefinedType = Undefined,
-            mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-            mlag_ip: str | None | UndefinedType = Undefined,
-            mlag_l3_ip: str | None | UndefinedType = Undefined,
-            mlag_switch_ids: MlagSwitchIds | UndefinedType = Undefined,
-            mlag_underlay_multicast: MlagUnderlayMulticast | UndefinedType = Undefined,
+            mlag_primary: bool | None | UndefinedType = Undefined,
+            mlag_peer_id: int | None | UndefinedType = Undefined,
             evpn_role: str | None | UndefinedType = Undefined,
             mpls_overlay_role: str | None | UndefinedType = Undefined,
             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
@@ -1445,19 +1565,13 @@ class EosDesignsFactsProtocol(Protocol):
 
                    Subclass of
                    AvdList with `PortProfileNamesItem` items.
-                mlag_peer: mlag_peer
-                mlag_port_channel_id: mlag_port_channel_id
-                mlag_interfaces: Subclass of AvdList with `str` items.
-                mlag_ip: mlag_ip
-                mlag_l3_ip: mlag_l3_ip
-                mlag_switch_ids:
-                   The switch ids of both primary and secondary switches for a this node group.
-
-                   Subclass of AvdModel.
-                mlag_underlay_multicast:
-                   Should multicast be enabled on the mlag peer-l3-vlan.
-
-                   Subclass of AvdModel.
+                mlag: Subclass of AvdModel.
+                mlag_peer:
+                   MLAG peer is only set when MLAG is allowed and configured with a proper peer.
+                   So presence of the
+                   mlag_peer fact is the same as MLAG should be configured.
+                mlag_primary: MLAG primary is only set when MLAG is allowed and configured with a proper peer.
+                mlag_peer_id: MLAG peer ID is only set when MLAG is allowed and configured with a proper peer.
                 evpn_role: evpn_role
                 mpls_overlay_role: mpls_overlay_role
                 evpn_route_servers:

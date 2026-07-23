@@ -31,7 +31,7 @@
     | [<samp>inband_mgmt_subnet</samp>](## "inband_mgmt_subnet") | String |  |  |  |  |
     | [<samp>inband_mgmt_ipv6_subnet</samp>](## "inband_mgmt_ipv6_subnet") | String |  |  |  |  |
     | [<samp>inband_mgmt_vlan</samp>](## "inband_mgmt_vlan") | Integer |  |  |  |  |
-    | [<samp>inband_ztp</samp>](## "inband_ztp") | Boolean |  |  |  |  |
+    | [<samp>inband_ztp</samp>](## "inband_ztp") | Boolean | Required |  |  |  |
     | [<samp>inband_ztp_vlan</samp>](## "inband_ztp_vlan") | Integer |  |  |  |  |
     | [<samp>inband_ztp_lacp_fallback_delay</samp>](## "inband_ztp_lacp_fallback_delay") | Integer |  |  |  |  |
     | [<samp>dc_name</samp>](## "dc_name") | String |  |  |  |  |
@@ -47,18 +47,34 @@
     | [<samp>port_profile_names</samp>](## "port_profile_names") | List, items: Dictionary |  |  |  | List of port_profiles configured - including the ones not in use.<br>Used for fabric docs. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "port_profile_names.[].profile") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profile_names.[].parent_profile") | String |  |  |  |  |
-    | [<samp>mlag_peer</samp>](## "mlag_peer") | String |  |  |  |  |
-    | [<samp>mlag_port_channel_id</samp>](## "mlag_port_channel_id") | Integer |  |  |  |  |
-    | [<samp>mlag_interfaces</samp>](## "mlag_interfaces") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mlag_interfaces.[]") | String |  |  |  |  |
-    | [<samp>mlag_ip</samp>](## "mlag_ip") | String |  |  |  |  |
-    | [<samp>mlag_l3_ip</samp>](## "mlag_l3_ip") | String |  |  |  |  |
-    | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
-    | [<samp>&nbsp;&nbsp;primary</samp>](## "mlag_switch_ids.primary") | Integer | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;secondary</samp>](## "mlag_switch_ids.secondary") | Integer | Required |  |  |  |
-    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
-    | [<samp>&nbsp;&nbsp;pim_sm</samp>](## "mlag_underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
+    | [<samp>mlag</samp>](## "mlag") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "mlag.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;local</samp>](## "mlag.local") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;primary</samp>](## "mlag.local.primary") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "mlag.local.port_channel_id") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip</samp>](## "mlag.local.mlag_ip") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_enabled</samp>](## "mlag.local.mlag_l3_enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_vlan</samp>](## "mlag.local.mlag_l3_vlan") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip</samp>](## "mlag.local.mlag_l3_ip") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "mlag.local.underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "mlag.local.underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "mlag.local.underlay_multicast.static") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;peer</samp>](## "mlag.peer") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "mlag.peer.hostname") | String | Required |  |  | Same hostname as mlag_peer fact but here we have a type guarantee. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "mlag.peer.id") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip</samp>](## "mlag.peer.mlag_ip") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "mlag.peer.port_channel_id") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "mlag.peer.mlag_interfaces") | List, items: String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mlag.peer.mlag_interfaces.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "mlag.peer.mgmt_ip") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip</samp>](## "mlag.peer.mlag_l3_ip") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "mlag.peer.bgp_as") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp</samp>](## "mlag.peer.inband_ztp") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_lacp_fallback_delay</samp>](## "mlag.peer.inband_ztp_lacp_fallback_delay") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_vlan</samp>](## "mlag.peer.inband_ztp_vlan") | Integer |  |  |  |  |
+    | [<samp>mlag_peer</samp>](## "mlag_peer") | String |  |  |  | MLAG peer is only set when MLAG is allowed and configured with a proper peer.<br>So presence of the mlag_peer fact is the same as MLAG should be configured. |
+    | [<samp>mlag_primary</samp>](## "mlag_primary") | Boolean |  |  |  | MLAG primary is only set when MLAG is allowed and configured with a proper peer. |
+    | [<samp>mlag_peer_id</samp>](## "mlag_peer_id") | Integer |  |  |  | MLAG peer ID is only set when MLAG is allowed and configured with a proper peer. |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
     | [<samp>mpls_overlay_role</samp>](## "mpls_overlay_role") | String |  |  |  |  |
     | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.<br>For all other evpn roles there is no default. |
@@ -212,7 +228,7 @@
     inband_mgmt_subnet: <str>
     inband_mgmt_ipv6_subnet: <str>
     inband_mgmt_vlan: <int>
-    inband_ztp: <bool>
+    inband_ztp: <bool; required>
     inband_ztp_vlan: <int>
     inband_ztp_lacp_fallback_delay: <int>
     dc_name: <str>
@@ -244,22 +260,45 @@
     port_profile_names:
       - profile: <str; required>
         parent_profile: <str>
+    mlag:
+      enabled: <bool; required>
+      local:
+        primary: <bool; required>
+        port_channel_id: <int; required>
+        mlag_ip: <str; required>
+        mlag_l3_enabled: <bool; required>
+        mlag_l3_vlan: <int>
+        mlag_l3_ip: <str>
+
+        # Should multicast be enabled on the mlag peer-l3-vlan.
+        underlay_multicast:
+          pim_sm: <bool; required>
+          static: <bool; required>
+      peer:
+
+        # Same hostname as mlag_peer fact but here we have a type guarantee.
+        hostname: <str; required>
+        id: <int; required>
+        mlag_ip: <str; required>
+        port_channel_id: <int; required>
+        mlag_interfaces: # required
+          - <str>
+        mgmt_ip: <str>
+        mlag_l3_ip: <str>
+        bgp_as: <str>
+        inband_ztp: <bool; required>
+        inband_ztp_lacp_fallback_delay: <int>
+        inband_ztp_vlan: <int>
+
+    # MLAG peer is only set when MLAG is allowed and configured with a proper peer.
+    # So presence of the mlag_peer fact is the same as MLAG should be configured.
     mlag_peer: <str>
-    mlag_port_channel_id: <int>
-    mlag_interfaces:
-      - <str>
-    mlag_ip: <str>
-    mlag_l3_ip: <str>
 
-    # The switch ids of both primary and secondary switches for a this node group.
-    mlag_switch_ids:
-      primary: <int; required>
-      secondary: <int; required>
+    # MLAG primary is only set when MLAG is allowed and configured with a proper peer.
+    mlag_primary: <bool>
 
-    # Should multicast be enabled on the mlag peer-l3-vlan.
-    mlag_underlay_multicast:
-      pim_sm: <bool; required>
-      static: <bool; required>
+    # MLAG peer ID is only set when MLAG is allowed and configured with a proper peer.
+    mlag_peer_id: <int>
     evpn_role: <str>
     mpls_overlay_role: <str>
 

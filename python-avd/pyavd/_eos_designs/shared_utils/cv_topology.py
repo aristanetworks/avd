@@ -67,7 +67,11 @@ class CvTopology(Protocol):
 
     @cached_property
     def cv_topology_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem:
-        """Returns node config derived from cv_topology to make it easy to merge on top of other node config."""
+        """
+        Returns node config derived from cv_topology to make it easy to merge on top of other node config.
+
+        TODO: Move this to facts phase only.
+        """
         node_config = EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
         if self.cv_topology is None:
             return node_config

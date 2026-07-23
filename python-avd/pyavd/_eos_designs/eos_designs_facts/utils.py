@@ -33,4 +33,7 @@ class UtilsMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def _mlag_peer_facts_generator(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsGenerator:
         """EosDesignsFactsGenerator for the MLAG peer. Raises if not found."""
-        return self.get_peer_facts_generator(self.shared_utils.mlag_peer)
+        if self.mlag_peer is None:
+            msg = "Only call _mlag_peer_facts_generator when MLAG is configured correctly"
+            raise NotImplementedError(msg)
+        return self.get_peer_facts_generator(self.mlag_peer)

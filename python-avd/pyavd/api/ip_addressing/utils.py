@@ -22,17 +22,25 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _mlag_primary_id(self: AvdIpAddressingProtocol) -> int:
-        if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("primary") is None:
-            msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses."
-            raise AristaAvdInvalidInputsError(msg)
-        return self.shared_utils.mlag_switch_ids["primary"]
+        """Returns our ID if MLAG is not configured or we are MLAG primary. Otherwise returns the peer ID."""
+        if self.shared_utils.switch_facts.mlag_primary is False:
+            if (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
+                msg = "'id' is required to calculate IP addresses."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.mlag_peer)
+            return peer_id
+
+        return self._id
 
     @cached_property
     def _mlag_secondary_id(self: AvdIpAddressingProtocol) -> int:
-        if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("secondary") is None:
-            msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses."
-            raise AristaAvdInvalidInputsError(msg)
-        return self.shared_utils.mlag_switch_ids["secondary"]
+        """Returns our ID if MLAG is not configured or we are MLAG secondary. Otherwise returns the peer ID."""
+        if not self.shared_utils.switch_facts.mlag_primary:
+            return self._id
+
+        if (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
+            msg = "'id' is required to calculate IP addresses."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.mlag_peer)
+        return peer_id
 
     @cached_property
     def _mlag_peer_ipv4_pool(self: AvdIpAddressingProtocol) -> str:

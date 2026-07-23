@@ -50,7 +50,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         """
         uplink_port_channel_id = self.shared_utils.node_config.uplink_port_channel_id
 
-        if self.shared_utils.mlag_role == "secondary":
+        if self.mlag.enabled and not self.mlag.local.primary:
             # MLAG Secondary
             peer_uplink_port_channel_id = self._mlag_peer_facts_generator._uplink_port_channel_id
             # check that port-channel IDs are the same as on primary
@@ -68,7 +68,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink_port_channel_id = int("".join(re.findall(r"\d", self.shared_utils.uplink_interfaces[0])))
 
         # produce an error if the switch is MLAG and port-channel ID is above 2000
-        if self.shared_utils.mlag and not 1 <= uplink_port_channel_id <= 2000:
+        if self.mlag.enabled and not 1 <= uplink_port_channel_id <= 2000:
             msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}'."
             raise AristaAvdError(msg)
 
@@ -89,7 +89,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         """
         uplink_switch_port_channel_id = self.shared_utils.node_config.uplink_switch_port_channel_id
 
-        if self.shared_utils.mlag_role == "secondary":
+        if self.mlag.enabled and not self.mlag.local.primary:
             # MLAG Secondary
             peer_uplink_switch_port_channel_id = self._mlag_peer_facts_generator._uplink_switch_port_channel_id
             # check that port-channel IDs are the same as on primary
@@ -108,7 +108,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
         # produce an error if the uplink switch is MLAG and port-channel ID is above 2000
         uplink_switch_facts = self.get_peer_facts_generator(self.shared_utils.uplink_switches[0])
-        if uplink_switch_facts.shared_utils.mlag and not 1 <= uplink_switch_port_channel_id <= 2000:
+        if uplink_switch_facts.mlag.enabled and not 1 <= uplink_switch_port_channel_id <= 2000:
             msg = f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}'."
             raise AristaAvdError(msg)
 
@@ -251,13 +251,13 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         # Reusing get_l2_uplink
         uplink = self._get_l2_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
 
-        if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
+        if uplink_switch_facts.mlag.enabled or self._short_esi is not None:
             # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
             uplink.peer_node_group = uplink_switch_facts.shared_utils.group
 
         # Used to determine whether or not port-channel should have an mlag id configure on the uplink_switch
         unique_uplink_switches = set(self.shared_utils.uplink_switches)
-        if self.shared_utils.mlag is True:
+        if self.mlag.enabled:
             # Override the peer's description on port-channel to be our group name if we are mlag pair #}
             uplink.node_group = self.shared_utils.group
 
@@ -307,7 +307,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.inputs.enable_trunk_groups:
             uplink.trunk_groups.append_unique("UPLINK")
-            if self.shared_utils.mlag is True and self.shared_utils.group:
+            if self.mlag.enabled and self.shared_utils.group:
                 uplink.peer_trunk_groups.append_unique(self.shared_utils.group)
             else:
                 uplink.peer_trunk_groups.append_unique(self.shared_utils.hostname)

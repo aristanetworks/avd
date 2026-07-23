@@ -650,7 +650,7 @@ class InterfaceDescriptionData:
         return self._shared_utils.overlay_routing_protocol
 
     @property
-    def mlag_interfaces(self) -> list:
+    def mlag_interfaces(self) -> list[str]:
         return self._shared_utils.mlag_interfaces
 
     @property
@@ -659,11 +659,11 @@ class InterfaceDescriptionData:
 
     @property
     def mlag_port_channel_id(self) -> int:
-        return self._shared_utils.mlag_port_channel_id
+        return self._shared_utils.switch_facts.mlag.local.port_channel_id
 
     @property
     def mlag_peer_port_channel_id(self) -> int:
-        return self._shared_utils.mlag_peer_port_channel_id
+        return self._shared_utils.switch_facts.mlag.peer.port_channel_id
 
     @property
     def mlag_peer_vlan(self) -> int:
@@ -671,7 +671,7 @@ class InterfaceDescriptionData:
 
     @property
     def mlag_peer_l3_vlan(self) -> int | None:
-        return self._shared_utils.mlag_peer_l3_vlan
+        return self._shared_utils.switch_facts.mlag.local.mlag_l3_vlan
 
     @property
     def mpls_lsr(self) -> bool:
