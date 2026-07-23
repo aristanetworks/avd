@@ -3650,6 +3650,22 @@ keys:
 
               This will only be configured on VXLAN VTEPs which are also MLAG devices.'
             default: false
+      suspended_vlans:
+        type: list
+        description: 'Suspended VLANs are rendered only as local suspended VLAN definitions.
+
+          They are not used for endpoint VLANs, defined_vlans, or AVD-computed trunk
+          allowed VLANs, and must not overlap with VLANs defined by network services.'
+        primary_key: id
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              min: 1
+              max: 4094
+            name:
+              type: str
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -6194,6 +6210,18 @@ keys:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        Can be used instead of or together with `ip_addresses`.
+
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses`
+                        must be set.'
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     static_routes:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
@@ -6233,6 +6261,30 @@ keys:
                       convert_types:
                       - int
                     ipv4_acl_out:
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_in:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ip".
+
+                        The "interface_ip" substitution field is resolved from the
+                        IPv6 address set on the interface for this node.'
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_out:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ip".
+
+                        The "interface_ip" substitution field is resolved from the
+                        IPv6 address set on the interface for this node.'
                       type: str
                       convert_types:
                       - int
@@ -6461,6 +6513,18 @@ keys:
                       items:
                         type: str
                         description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        Can be used instead of or together with `ip_address`.
+
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses`
+                        must be set.'
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from
                         the interface name by default, but can also be specified.
@@ -6495,6 +6559,30 @@ keys:
                     ipv4_acl_out:
                       description: Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_in:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ip".
+
+                        The "interface_ip" substitution field is resolved from the
+                        first IPv6 address set on the interface.'
+                      type: str
+                      convert_types:
+                      - int
+                    ipv6_acl_out:
+                      description: 'Name of the IPv6 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv6_acls` and supports
+                        substitution of the field "interface_ip".
+
+                        The "interface_ip" substitution field is resolved from the
+                        first IPv6 address set on the interface.'
                       type: str
                       convert_types:
                       - int
@@ -7549,6 +7637,7 @@ keys:
         default: true
       servers:
         type: list
+        primary_key: name
         description: 'By default, AVD marks the first server as `preferred`.
 
           Set ''ntp_settings.set_first_ntp_server_as_preferred: false'' to disable
@@ -7575,6 +7664,25 @@ keys:
             version:
               type: int
               $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
+            source_address:
+              type: str
+              description: '- `use_mgmt_interface_ipv4` configures the source address
+                as the IPv4 address of the management interface.
+
+                - `use_mgmt_interface_ipv6` configures the source address as the IPv6
+                address of the management interface.
+
+                - `use_inband_mgmt_interface_ipv4` configures the source address as
+                the IPv4 address of the inband management interface.
+
+                - `use_inband_mgmt_interface_ipv6` configures the source address as
+                the IPv6 address of the inband management interface.
+
+                - Any other string is used directly as the source address (for example,
+                an IPv4 or IPv6 address).
+
+                `use_*` values fail validation when the management address is missing/dhcp,
+                ntp_settings.server_vrf is not the expected management VRF.'
       authenticate:
         type: bool
       authenticate_servers_only:

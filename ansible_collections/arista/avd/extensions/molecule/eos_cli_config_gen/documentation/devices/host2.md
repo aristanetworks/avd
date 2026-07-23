@@ -33,8 +33,6 @@
 - [DHCP Relay](#dhcp-relay)
   - [DHCP Relay Summary](#dhcp-relay-summary)
   - [DHCP Relay Device Configuration](#dhcp-relay-device-configuration)
-- [System Boot Settings](#system-boot-settings)
-  - [System Boot Device Configuration](#system-boot-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
@@ -75,9 +73,8 @@
   - [DPS Interfaces](#dps-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
-- [Switchport Port-security](#switchport-port-security)
-  - [Switchport Port-security Summary](#switchport-port-security-summary)
-  - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
+- [Switchport](#switchport)
+  - [Switchport Port-security](#switchport-port-security)
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -567,14 +564,6 @@ prompt Test
 dhcp relay
    server dhcp-relay-server1
    server dhcp-relay-server2
-```
-
-## System Boot Settings
-
-### System Boot Device Configuration
-
-```eos
-!
 ```
 
 ## Monitoring
@@ -1080,15 +1069,17 @@ interface Vxlan1
    no vxlan qos map dscp to traffic-class decapsulation
 ```
 
-## Switchport Port-security
+## Switchport
 
-### Switchport Port-security Summary
+### Switchport Port-security
+
+#### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Mac-address Aging | True |
 
-### Switchport Port-security Device Configuration
+#### Switchport Port-security Device Configuration
 
 ```eos
 !
