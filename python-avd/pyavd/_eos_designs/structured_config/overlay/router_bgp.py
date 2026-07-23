@@ -671,6 +671,13 @@ class RouterBgpMixin(Protocol):
                 msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
                 raise AristaAvdError(msg)
 
+            if remote_peer_name in self.shared_utils.node_config.evpn_route_servers:
+                msg = (
+                    f"EVPN Gateway remote peer '{remote_peer_name}' is also configured under 'evpn_route_servers'. "
+                    "Use each inventory hostname in only one of these inputs."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
             neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
             self.structured_config.router_bgp.neighbors.append(neighbor)
 

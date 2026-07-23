@@ -13602,7 +13602,12 @@ $defs:
           evpn_route_servers:
             documentation_options:
               table: node-type-bgp-configuration
-            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+            description: 'List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+              Hostnames configured here cannot also be configured under `evpn_gateway.remote_peers`
+              on the same node.
+
+              '
             type: list
             items:
               type: str
@@ -13725,6 +13730,12 @@ $defs:
 
                   If the peer''s hostname can not be found in the inventory, ip_address
                   and bgp_as must be defined.
+
+                  Hostnames configured here cannot also be configured under `evpn_route_servers`
+                  on the same node.
+
+                  If a remote peer is also an uplink switch, AVD treats the EVPN peering
+                  to that peer as an EVPN Gateway core peering.
 
                   '
                 type: list
