@@ -362,18 +362,16 @@ class UtilsMixin(Protocol):
                 elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-        if p2p_link.macsec_profile:
-            interface.mac_security.profile = p2p_link.macsec_profile
-
         interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             interface.name,
             default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
         )
 
-        # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR(S3923)
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
         else:
+            if p2p_link.macsec_profile:
+                interface.mac_security.profile = p2p_link.macsec_profile
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
