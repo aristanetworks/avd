@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get
 
 if TYPE_CHECKING:
@@ -33,13 +34,18 @@ class RouterPimSparseModeMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 if vrf_rps := getattr(vrf._internal_data, "pim_rp_addresses", None):
-                    ipv4_config = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4()
-                    for rps in vrf_rps:
-                        rpaddress = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4.RpAddressesItem()
-                        rpaddress.address = rps["address"]
-                        for group in get(rps, "groups", []):
-                            rpaddress.groups.append(group)
-                        for access_list in get(rps, "access_lists", []):
-                            rpaddress.access_lists.append(access_list)
-                        ipv4_config.rp_addresses.append_unique(rpaddress)
-                    self.structured_config.router_pim_sparse_mode.vrfs.append_new(name=vrf.name, ipv4=ipv4_config)
+                    if vrf.name == "default":
+                        msg = f"Use 'underlay_multicast_rps' instead of 'tenant[name={tenant.name}].vrfs[name=default].pim_rp_addresses'"\
+                              f" for the host '{self.shared_utils.hostname}'."
+                        raise AristaAvdInvalidInputsError(msg)
+                    else:
+                        ipv4_config = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4()
+                        for rps in vrf_rps:
+                            rpaddress = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4.RpAddressesItem()
+                            rpaddress.address = rps["address"]
+                            for group in get(rps, "groups", []):
+                                rpaddress.groups.append(group)
+                            for access_list in get(rps, "access_lists", []):
+                                rpaddress.access_lists.append(access_list)
+                            ipv4_config.rp_addresses.append_unique(rpaddress)
+                        self.structured_config.router_pim_sparse_mode.vrfs.append_new(name=vrf.name, ipv4=ipv4_config)

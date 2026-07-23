@@ -1,0 +1,39 @@
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast_pim_sm: true # If set to "false" will raise an error.
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101-65106
+  nodes:
+    - name: pim-rp-addresses-in-vrf-default
+      id: 1
+
+tenants:
+  - name: Default_tenant
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_vni: 10
+        pim_rp_addresses:
+          - nodes: [pim-rp-addresses-in-vrf-default]
+            rps:
+              - 10.1.51.129
+              - 10.1.52.129
+            groups:
+              - 232.0.104.0/21
+              - 232.0.96.0/21
+        svis:
+          - id: 110
+            name: "MULTICAST_ENABLED_110"
+            enabled: true
+
+expected_error_message: >-
+  Use 'underlay_multicast_rps' instead of 'tenant[name=Default_tenant].vrfs[name=default].pim_rp_addresses'
+  for the host 'pim-rp-addresses-in-vrf-default'.
