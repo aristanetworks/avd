@@ -17,13 +17,14 @@ if TYPE_CHECKING:
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_designs_facts"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
+MOCK_OUTPUT_DIR = "/avd/mocked/output"
 
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that plugin execution fails when pyavd is missing."""
     module = action_module(
         ActionModule,
-        {"tmp_dir": MOCK_TMP_DIR, "output_dir": "/tmp"},
+        {"tmp_dir": MOCK_TMP_DIR, "output_dir": MOCK_OUTPUT_DIR},
         ansible_name="arista.avd.eos_designs_facts",
     )
 
@@ -52,7 +53,7 @@ def test_run_raises_when_fabric_name_invalid(
     """Test that plugin execution fails when fabric_name is missing or invalid."""
     module = action_module(
         ActionModule,
-        {"tmp_dir": MOCK_TMP_DIR, "output_dir": "/tmp"},
+        {"tmp_dir": MOCK_TMP_DIR, "output_dir": MOCK_OUTPUT_DIR},
         ansible_name="arista.avd.eos_designs_facts",
     )
     module._templar.template.side_effect = lambda value: value
