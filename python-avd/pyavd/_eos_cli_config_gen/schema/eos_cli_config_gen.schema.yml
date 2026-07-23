@@ -23898,7 +23898,7 @@ keys:
   router_ospfv3:
     type: dict
     display_name: Router OSPFv3 Configuration
-    description: 'Mutually exclusive with ''ipv6 router ospf''.
+    description: 'Mutually exclusive with ''ipv6_router_ospf''.
 
       Use only one style across all VRFs and instances.'
     keys:

@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>router_ospfv3</samp>](## "router_ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6 router ospf'.<br>Use only one style across all VRFs and instances. |
+    | [<samp>router_ospfv3</samp>](## "router_ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6_router_ospf'.<br>Use only one style across all VRFs and instances. |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
@@ -164,7 +164,7 @@
 === "YAML"
 
     ```yaml
-    # Mutually exclusive with 'ipv6 router ospf'.
+    # Mutually exclusive with 'ipv6_router_ospf'.
     # Use only one style across all VRFs and instances.
     router_ospfv3:
 

@@ -78630,7 +78630,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     router_ospfv3: RouterOspfv3
     """
-    Mutually exclusive with 'ipv6 router ospf'.
+    Mutually exclusive with 'ipv6_router_ospf'.
     Use only one style across all VRFs and instances.
     Subclass of AvdModel.
     """
@@ -79296,7 +79296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 router_multicast: Subclass of AvdModel.
                 router_ospf: Subclass of AvdModel.
                 router_ospfv3:
-                   Mutually exclusive with 'ipv6 router ospf'.
+                   Mutually exclusive with 'ipv6_router_ospf'.
                    Use only one style across all VRFs and instances.
                    Subclass of AvdModel.
                 router_path_selection:
