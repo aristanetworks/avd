@@ -25,7 +25,7 @@
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU.<br>Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214 |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links. |
-    | [<samp>shutdown_bgp_towards_undeployed_peers</samp>](## "shutdown_bgp_towards_undeployed_peers") | Boolean |  | `True` |  | Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`. |
+    | [<samp>shutdown_bgp_towards_undeployed_peers</samp>](## "shutdown_bgp_towards_undeployed_peers") | Boolean |  | `True` |  | Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`, including auto-rendered reverse EVPN Gateway peerings. |
     | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | `True` |  | Administratively shuts down interfaces on deployed devices that connect to a peer marked with `is_deployed: false`. |
     | [<samp>trunk_groups</samp>](## "trunk_groups") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mlag</samp>](## "trunk_groups.mlag") | Dictionary |  |  |  | Trunk Group used for MLAG VLAN (Typically VLAN 4094).<br> |
@@ -213,7 +213,7 @@
     # QOS Profile assigned on all infrastructure links.
     p2p_uplinks_qos_profile: <str>
 
-    # Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
+    # Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`, including auto-rendered reverse EVPN Gateway peerings.
     shutdown_bgp_towards_undeployed_peers: <bool; default=True>
 
     # Administratively shuts down interfaces on deployed devices that connect to a peer marked with `is_deployed: false`.

@@ -752,7 +752,9 @@ $defs:
                   If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                   Hostnames configured here cannot also be configured under `evpn_route_servers` on the same node.
                   If a remote peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core peering.
-                  Reverse EVPN Gateway core peering is only auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is manually overridden.
+                  When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`, the local node must have EVPN overlay enabled when `remote_peers` is configured.
+                  When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is manually overridden.
+                  Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
                 type: list
                 primary_key: hostname
                 items:

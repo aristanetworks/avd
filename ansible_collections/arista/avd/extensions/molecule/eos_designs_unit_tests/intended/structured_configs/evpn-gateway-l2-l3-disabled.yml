@@ -74,6 +74,7 @@ router_bgp:
     metadata:
       peer: evpn-l2-multi-domain
     description: evpn-l2-multi-domain_Loopback0
+    shutdown: true
   redistribute:
     connected:
       enabled: true

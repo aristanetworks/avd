@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
 
 from .mlag import MlagMixin
@@ -352,6 +352,22 @@ class EosDesignsFactsGeneratorProtocol(
 
         Remote peers with manual overrides are skipped, since the reverse side cannot infer the intended peering parameters from the inventory.
         """
+        if not self.shared_utils.node_config.evpn_gateway.remote_peers:
+            return
+
+        if not self.shared_utils.overlay_evpn:
+            if not self.inputs.avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn:
+                return
+
+            msg = (
+                f"Cannot configure 'evpn_gateway.remote_peers' on '{self.shared_utils.hostname}' because EVPN overlay is not enabled for this node. "
+                "Remove 'evpn_gateway.remote_peers' or enable EVPN overlay."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if not self.inputs.avd_design_future.configure_reverse_evpn_gateway_remote_peers:
+            return
+
         for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers:
             if remote_peer.ip_address or remote_peer.bgp_as or remote_peer.hostname not in self.peer_generators:
                 continue

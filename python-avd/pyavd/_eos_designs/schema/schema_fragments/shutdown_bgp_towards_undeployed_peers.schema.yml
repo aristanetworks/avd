@@ -12,4 +12,4 @@ keys:
     type: bool
     default: true
     description: |-
-      Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
+      Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`, including auto-rendered reverse EVPN Gateway peerings.

@@ -1,4 +1,7 @@
 ---
+# This host tests the reverse overlap case: it is listed as an
+# evpn_gateway.remote_peers target by reverse-evpn-gateway-remote-peer while
+# also listing that same peer under evpn_route_servers locally.
 type: l3leaf
 
 l3leaf:

@@ -94,6 +94,13 @@ router_bgp:
     metadata:
       peer: evpn-gateway-l3-rd-rt-rewrite
     description: evpn-gateway-l3-rd-rt-rewrite_Loopback0
+  - ip_address: 192.168.255.5
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65001'
+    metadata:
+      peer: evpn-l2-multi-domain
+    description: evpn-l2-multi-domain_Loopback0
+    shutdown: true
   - ip_address: 192.168.100.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65002'

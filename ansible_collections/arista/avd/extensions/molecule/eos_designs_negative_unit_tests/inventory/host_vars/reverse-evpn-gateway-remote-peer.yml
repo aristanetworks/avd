@@ -3,6 +3,10 @@
 # reverse-overlapping-evpn-route-server-and-gateway-remote-peer.
 # It is excluded from structured config testing via EOS_DESIGNS_FAILURES_EXCLUDED.
 type: l3leaf
+avd_design_future:
+  # Enable reverse peer generation so the target host can detect the overlap
+  # between another node's evpn_gateway.remote_peers and its own evpn_route_servers.
+  configure_reverse_evpn_gateway_remote_peers: true
 
 l3leaf:
   defaults:

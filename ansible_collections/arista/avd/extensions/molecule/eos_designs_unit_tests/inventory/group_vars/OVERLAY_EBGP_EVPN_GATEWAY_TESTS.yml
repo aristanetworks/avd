@@ -3,6 +3,10 @@ type: l3leaf
 
 # using default overlay_routing_protocol: ebgp
 evpn_overlay_bgp_rtc: true
+avd_design_future:
+  # Exercise automatic reverse EVPN Gateway core peering for inventory peers
+  # referenced by hostname under evpn_gateway.remote_peers.
+  configure_reverse_evpn_gateway_remote_peers: true
 
 l3leaf:
   defaults:
@@ -93,6 +97,9 @@ l3leaf:
           - hostname: DCI_TEST
             ip_address: 192.168.100.10
             bgp_as: 65002
+          # Inventory peer without manual ip_address/bgp_as overrides, so the
+          # reverse EVPN Gateway core peering is rendered on this host.
+          - hostname: evpn-gateway-l2-evpn-role-server
         evpn_l2:
           enabled: true
 
