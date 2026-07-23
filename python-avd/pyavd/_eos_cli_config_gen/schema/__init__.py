@@ -6594,6 +6594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
+            "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6656,6 +6657,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_separator_with_boot_secret_key: bool
+        """
+        Available from AVD 6.4.0.
+        When `true`, the '!' separator before 'boot secret' is only rendered when
+        `boot.secret.key` is provided.
+        When `false` (default), the '!' separator is always rendered when
+        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6668,6 +6679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
+                only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6713,6 +6725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        matching the running-config preserved by EOS 4.33.2F and later.
                        When `false` (default), renders the
                        legacy `spanning-tree portfast` without the `edge` keyword.
+                    only_render_separator_with_boot_secret_key:
+                       Available from AVD 6.4.0.
+                       When `true`, the '!' separator before 'boot secret' is only rendered when
+                       `boot.secret.key` is provided.
+                       When `false` (default), the '!' separator is always rendered when
+                       `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
 
                 """
 
@@ -32829,9 +32847,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             source_address: str | None
             """
-            Source IPv4 address.
-            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-            if both are set.
+            Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
@@ -32871,9 +32888,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Source interface.
                            Mutually exclusive with 'source_address'. Takes precedence if both are set.
                         source_address:
-                           Source IPv4 address.
-                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-                           if both are set.
+                           Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
@@ -78047,7 +78063,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "static_routes": {"type": StaticRoutes},
         "stun": {"type": Stun},
         "switchport_default": {"type": SwitchportDefault},
+        "switchport_ethernet_llc_validation": {"type": bool},
         "switchport_port_security": {"type": SwitchportPortSecurity},
+        "switchport_vlan_tag_validation": {"type": bool},
         "sync_e": {"type": SyncE},
         "system": {"type": System},
         "tacacs_servers": {"type": TacacsServers},
@@ -78667,8 +78685,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     switchport_default: SwitchportDefault
     """Subclass of AvdModel."""
+    switchport_ethernet_llc_validation: bool | None
+    """Enable Ethernet LLC header validation."""
     switchport_port_security: SwitchportPortSecurity
     """Subclass of AvdModel."""
+    switchport_vlan_tag_validation: bool | None
+    """Enable VLAN tag validation."""
     sync_e: SyncE
     """Subclass of AvdModel."""
     system: System
@@ -78909,7 +78931,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             static_routes: StaticRoutes | UndefinedType = Undefined,
             stun: Stun | UndefinedType = Undefined,
             switchport_default: SwitchportDefault | UndefinedType = Undefined,
+            switchport_ethernet_llc_validation: bool | None | UndefinedType = Undefined,
             switchport_port_security: SwitchportPortSecurity | UndefinedType = Undefined,
+            switchport_vlan_tag_validation: bool | None | UndefinedType = Undefined,
             sync_e: SyncE | UndefinedType = Undefined,
             system: System | UndefinedType = Undefined,
             tacacs_servers: TacacsServers | UndefinedType = Undefined,
@@ -79306,7 +79330,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 switchport_default: Subclass of AvdModel.
+                switchport_ethernet_llc_validation: Enable Ethernet LLC header validation.
                 switchport_port_security: Subclass of AvdModel.
+                switchport_vlan_tag_validation: Enable VLAN tag validation.
                 sync_e: Subclass of AvdModel.
                 system: Subclass of AvdModel.
                 tacacs_servers: Subclass of AvdModel.

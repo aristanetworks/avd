@@ -201,6 +201,19 @@ aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```
 
+## System Boot Settings
+
+### Boot Secret Summary
+
+- The md5 hashed Aboot password is configured
+
+### System Boot Device Configuration
+
+```eos
+!
+boot secret 5 <removed>
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon

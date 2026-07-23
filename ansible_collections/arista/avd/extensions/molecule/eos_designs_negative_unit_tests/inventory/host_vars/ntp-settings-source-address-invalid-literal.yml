@@ -1,0 +1,14 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ntp-settings-source-address-invalid-literal
+      id: 1
+      mgmt_ip: 192.168.66.11/32
+
+ntp_settings:
+  servers:
+    - name: 192.0.2.10
+      source_address: invalid-literal
+
+expected_error_message: >-
+  'ntp_settings.servers[name=192.0.2.10].source_address' resolves to 'invalid-literal', which is not a valid IP address.
