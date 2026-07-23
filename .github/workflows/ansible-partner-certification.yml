@@ -16,8 +16,8 @@ permissions:
   pull_request:
     branches: [devel]
   workflow_dispatch:
-  schedule:
-    - cron: "0 6 * * *"
+  merge_group:
+    types: [checks_requested]
 
 concurrency:
   group: cert-ver-${{ github.head_ref || github.run_id }}
@@ -37,6 +37,7 @@ concurrency:
 # for each affected version of ansible-core (for example, `tests/sanity/ignore-2.18.txt`) and add corresponding entries.
 jobs:
   call:
+    if: github.repository == 'aristanetworks/avd'
     uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@6a7d1fe5159620648295b44222c48789008a9660 # v3.0.0
     # For details on tested ansible-core branches and Python versions,
     # see: https://github.com/ansible-collections/partner-certification-checker#tested-ansible-core-branches-and-python-versions
