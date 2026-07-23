@@ -106,7 +106,7 @@ class AVDActionPlugin(ActionBase):
 
         except Exception as exc:
             # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin '{self.ansible_name}' execution: '{exc}'"
+            msg = f"Error during plugin '{self.ansible_name}' execution: {exc}"
             raise_action_fail(msg, exc)
 
         return self.result

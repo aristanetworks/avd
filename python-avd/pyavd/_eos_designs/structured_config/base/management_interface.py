@@ -24,14 +24,15 @@ class ManagementInterfaceMixin(Protocol):
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
             # Check if mgmt_ip is set to "dhcp"
-            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
+            is_dhcp = self.shared_utils.oob_mgmt_ip == "dhcp"
+            is_auto_config = self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config"
 
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.shared_utils.mgmt_interface_vrf,
-                ip_address=self.shared_utils.node_config.mgmt_ip,
+                ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
             )
 
@@ -45,7 +46,10 @@ class ManagementInterfaceMixin(Protocol):
             """
             inserting ipv6 variables if ipv6_mgmt_ip is set
             """
-            if self.shared_utils.node_config.ipv6_mgmt_ip:
+            if is_auto_config and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+                interface_settings._update(ipv6_enable=True, ipv6_address_auto_config=True)
+                interface_settings.ipv6_nd.ra.rx_accept._update(default_route=True, route_preference=True)
+            elif self.shared_utils.node_config.ipv6_mgmt_ip:
                 interface_settings._update(
                     ipv6_enable=True,
                     ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
