@@ -40,9 +40,9 @@ jobs:
     uses: ansible-collections/partner-certification-checker/.github/workflows/certification-reusable.yml@6a7d1fe5159620648295b44222c48789008a9660 # v3.0.0
     # For details on tested ansible-core branches and Python versions,
     # see: https://github.com/ansible-collections/partner-certification-checker#tested-ansible-core-branches-and-python-versions
-    # with:
+    with:
+      collection-root: 'ansible_collections/arista/avd'
     #   ansible-core-version: '2.18.0'
-    #   collection-root: 'ansible_collections/junipernetworks/junos'
     #   automation-hub: true
     # Uncomment the lines below if you have 'automation-hub: true' and need to install collections from Red Hat Ansible Automation Hub.
     # This requires setting a repository secret called 'AH_TOKEN' which value contains a Red Hat Ansible Automation Hub token.
