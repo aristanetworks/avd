@@ -443,6 +443,8 @@ keys:
               keys:
                 area:
                   type: str
+                  convert_types:
+                    - int
                   required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
@@ -451,6 +453,8 @@ keys:
               keys:
                 area:
                   type: str
+                  convert_types:
+                    - int
                   required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)
