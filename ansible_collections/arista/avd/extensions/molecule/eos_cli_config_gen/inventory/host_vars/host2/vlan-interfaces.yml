@@ -30,3 +30,11 @@ vlan_interfaces:
         area: 1000
       passive_interface: true
       network_point_to_point: true
+
+  - name: Vlan1000
+    description: Vlan with minimal ospfv3 configurations
+    ospfv3:
+      ipv4:
+        area: 1000
+      ipv6:
+        area: 0.0.0.0
