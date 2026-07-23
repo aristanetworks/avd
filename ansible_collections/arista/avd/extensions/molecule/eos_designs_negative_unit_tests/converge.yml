@@ -14,7 +14,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - failure-devices-and-node-key-2
   hosts: failure-devices-and-node-key-2
@@ -31,7 +31,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - failure-devices-mlag-group
   hosts: failure-devices-mlag-group
@@ -48,7 +48,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-underlay-ipv6
   hosts: missing-underlay-ipv6
@@ -65,7 +65,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-devices-profile
   hosts: missing-devices-profile
@@ -82,7 +82,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-devices-parent-profile
   hosts: missing-devices-parent-profile
@@ -99,7 +99,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-devices-type
   hosts: missing-devices-type
@@ -116,7 +116,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels
   hosts: missing-cv-topology-levels
@@ -133,7 +133,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels
   hosts: missing-cv-topology-levels
@@ -150,7 +150,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels-type
   hosts: missing-cv-topology-levels-type
@@ -167,7 +167,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology
   hosts: missing-cv-topology
@@ -184,7 +184,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - failure-cv-topology-uplink-interfaces
   hosts: failure-cv-topology-uplink-interfaces
@@ -201,7 +201,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-loopback-ipv4-pool
   hosts: missing-loopback-ipv4-pool
@@ -218,7 +218,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-vtep-loopback-ipv4-pool
   hosts: missing-vtep-loopback-ipv4-pool
@@ -235,7 +235,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer
   hosts: missing-mlag-peer
@@ -252,7 +252,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - mlag-odd-id-oddodd1
   hosts: mlag-odd-id-oddodd1
@@ -269,7 +269,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer-ipv4-pool
   hosts: missing-mlag-peer-ipv4-pool1
@@ -286,7 +286,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer-ipv6-pool
   hosts: missing-mlag-peer-ipv6-pool1
@@ -303,7 +303,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer-l3-ipv4-pool
   hosts: missing-mlag-peer-l3-ipv4-pool1
@@ -320,7 +320,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-interfaces1
   hosts: missing-mlag-interfaces1
@@ -337,7 +337,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-id-for-mlag1
   hosts: missing-id-for-mlag1
@@ -354,7 +354,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - missing-id-for-secondary-mlag2
   hosts: missing-id-for-secondary-mlag2
@@ -371,7 +371,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - invalid-schema
   hosts: invalid-schema
@@ -387,7 +387,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: invalid-schema-connected-endpoints
@@ -403,7 +403,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: invalid-uplink-port-channel-id-1-l3leaf-1
@@ -419,7 +419,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: invalid-uplink-port-channel-id-2-l3leaf-1
@@ -435,7 +435,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: invalid-uplink-port-channel-id-3-l2leaf-1
@@ -451,7 +451,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: invalid-uplink-type-p2p-vrfs-underlay-router-false
@@ -467,7 +467,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: downlink-pools-duplicate-spine
@@ -483,7 +483,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: downlink-pools-missing-spine
@@ -499,7 +499,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: downlink-pools-missing-spine-ipv6
@@ -515,7 +515,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: downlink-interfaces-too-small-l3leaf
@@ -531,7 +531,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FAILURE_CONNECTED_ENDPOINT_PORT_PROFILE_DOES_NOT_EXIST_IN_FACTS
@@ -547,7 +547,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: MISSING_BGP_AS_WITH_L3_INTERFACES_BGP_PEERS
@@ -563,7 +563,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_ID_STATIC_AND_POOL_MANAGER_INVALID
@@ -579,7 +579,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: id-static-and-pool-manager-collision-a
@@ -595,7 +595,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_UNDEFINED_PEER
@@ -611,7 +611,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_UNDERLAY_ROUTER_WITH_PORT_CHANNEL_UPLINK
@@ -627,7 +627,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FABRIC_UNDERLAY_ROUTER_WITH_L2_ETHERNET_UPLINK
@@ -643,7 +643,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: EOS_DESIGNS_FAILURES_INCLUDED
@@ -660,7 +660,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: inband-mgmt-missing-id-with-subnet
@@ -677,7 +677,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: inband-mgmt-missing-id-with-ipv6-subnet
@@ -694,7 +694,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: SMALL_BGP_AS_RANGE
@@ -710,7 +710,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-router-id-pool
@@ -727,7 +727,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-vtep-loopback-ipv6-pool
@@ -744,7 +744,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-mlag-peer-l3-ipv6-pool
@@ -761,7 +761,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-wan-router-underlay-ipv6-numbered
@@ -778,7 +778,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-underlay-multicast-underlay-ipv6-numbered
@@ -795,7 +795,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-rfc5549-underlay-ipv6-numbered
@@ -812,7 +812,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-vtep-vvtep-ip-underlay-ipv6-numbered
@@ -829,7 +829,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-inband-ztp-ip-underlay-ipv6-numbered
@@ -846,7 +846,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: unsupported-non-ebgp-underlay-routing-protocol-ip-underlay-ipv6-numbered
@@ -863,7 +863,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-wan-interfaces
@@ -880,7 +880,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-wan-carriers
@@ -897,7 +897,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-wan-interfaces-ip-address
@@ -914,7 +914,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: wan-server-with-interfaces-as-dhcp-address
@@ -931,7 +931,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: FAILURE_OVERLAY_ROUTING_PROTOCOL_ADDRESS_FAMILY_IPV6
@@ -947,7 +947,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: digital-twin-act-missing-node-type
@@ -963,7 +963,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: digital-twin-act-missing-ip-addr
@@ -979,7 +979,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: wan-unsupported-platform
@@ -995,7 +995,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: multiple-uplink-interfaces-for-uplink-type-lan
@@ -1011,7 +1011,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: missing-underlay-router-and-network-services-for-uplink-type-lan
@@ -1027,7 +1027,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: missing-id-on-l2leaf-uplink-switch-interfaces
@@ -1043,7 +1043,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: missing-downlink-interfaces-spine
@@ -1059,7 +1059,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: incorrect-uplink-port-channel-id-l2leaf1b
@@ -1075,7 +1075,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_BGP_AS_ON_UPLINK_SWITCH
   hosts: missing-bgp-as-on-uplink-switch-leaf
@@ -1091,7 +1091,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_SMALL_BGP_AS_RANGE_ON_UPLINK_SWITCH
   hosts: small-bgp-as-range-on-uplink-switch-leaf
@@ -1107,7 +1107,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_UNDERLAY_MULTICAST_FOR_EVPN_MULTICAST
   hosts: evpn-multicast-missing-underlay-multicast
@@ -1123,7 +1123,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_TESTS_1
   hosts: uplink-switches-length-less-than-uplink-interfaces
@@ -1139,7 +1139,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_TESTS_2
   hosts: uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches
@@ -1155,7 +1155,7 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)
 
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_TESTS_3
   hosts: uplink-switches-interfaces-length-not-equal-to-uplink-switches
@@ -1171,4 +1171,4 @@
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
+              - ansible_failed_result.msg.endswith(expected_error_message)

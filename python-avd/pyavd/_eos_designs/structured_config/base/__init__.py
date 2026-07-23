@@ -80,7 +80,7 @@ class AvdStructuredConfigBaseProtocol(
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
         # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,
         # since DHCP will provide the default route
-        if self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        if self.shared_utils.oob_mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
             return
 
         if self.shared_utils.mgmt_gateway is None:
@@ -494,7 +494,7 @@ class AvdStructuredConfigBaseProtocol(
     @cached_property
     def _act_ensure_eapi_access(self) -> bool:
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
-        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
+        return self.shared_utils.is_act_digital_twin and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
     @structured_config_contributor
     def management_settings(self) -> None:
