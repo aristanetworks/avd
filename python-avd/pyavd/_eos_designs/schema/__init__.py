@@ -21974,11 +21974,41 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class SuspendedVlansItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"id": {"type": int}, "name": {"type": str}}
+            id: int
+            name: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, id: int | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    SuspendedVlansItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: id
+                        name: name
+
+                    """
+
+        class SuspendedVlans(AvdIndexedList[int, SuspendedVlansItem]):
+            """Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        SuspendedVlans._item_type = SuspendedVlansItem
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
+            "suspended_vlans": {"type": SuspendedVlans},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -21987,6 +22017,16 @@ class EosDesigns(EosDesignsRootModel):
         ip_icmp_redirect: bool | None
         dhcp_relay: DhcpRelay
         """Subclass of AvdModel."""
+        suspended_vlans: SuspendedVlans
+        """
+        Suspended VLANs are rendered only as local suspended VLAN definitions.
+        They are not used for
+        endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+        defined by network services.
+
+        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+        key is `id` (`int`).
+        """
 
         if TYPE_CHECKING:
 
@@ -21997,6 +22037,7 @@ class EosDesigns(EosDesignsRootModel):
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
+                suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -22009,6 +22050,14 @@ class EosDesigns(EosDesignsRootModel):
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
                     dhcp_relay: Subclass of AvdModel.
+                    suspended_vlans:
+                       Suspended VLANs are rendered only as local suspended VLAN definitions.
+                       They are not used for
+                       endpoint VLANs, defined_vlans, or AVD-computed trunk allowed VLANs, and must not overlap with VLANs
+                       defined by network services.
+
+                       Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
+                       key is `id` (`int`).
 
                 """
 
@@ -29384,6 +29433,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -29490,6 +29540,8 @@ class EosDesigns(EosDesignsRootModel):
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -29561,6 +29613,7 @@ class EosDesigns(EosDesignsRootModel):
                     password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -29646,6 +29699,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -33710,6 +33764,11 @@ class EosDesigns(EosDesignsRootModel):
 
                 IpAddresses._item_type = str
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class StaticRoutesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -34300,6 +34359,7 @@ class EosDesigns(EosDesignsRootModel):
                     "interfaces": {"type": Interfaces},
                     "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                     "ip_addresses": {"type": IpAddresses},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                     "nodes": {"type": Nodes},
@@ -34310,6 +34370,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv6_acl_in": {"type": str},
+                    "ipv6_acl_out": {"type": str},
                     "ospf": {"type": Ospf},
                     "pim": {"type": Pim},
                     "flow_tracking": {"type": FlowTracking},
@@ -34330,6 +34392,14 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 ip_addresses: IpAddresses
                 """Subclass of AvdList with `str` items."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                Can be used instead of or together with
+                `ip_addresses`.
+                For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
+                Subclass of AvdList with `str` items.
+                """
                 static_routes: StaticRoutes
                 """
                 Static routes to be configured on every device where this interface is configured.
@@ -34361,6 +34431,22 @@ class EosDesigns(EosDesignsRootModel):
                 mtu: int | None
                 ipv4_acl_in: str | None
                 ipv4_acl_out: str | None
+                ipv6_acl_in: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the IPv6 address set on the interface for this node.
+                """
+                ipv6_acl_out: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the IPv6 address set on the interface for this node.
+                """
                 ospf: Ospf
                 """
                 OSPF interface configuration.
@@ -34423,6 +34509,7 @@ class EosDesigns(EosDesignsRootModel):
                         interfaces: Interfaces | UndefinedType = Undefined,
                         encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                         ip_addresses: IpAddresses | UndefinedType = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
@@ -34433,6 +34520,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None | UndefinedType = Undefined,
                         ipv4_acl_in: str | None | UndefinedType = Undefined,
                         ipv4_acl_out: str | None | UndefinedType = Undefined,
+                        ipv6_acl_in: str | None | UndefinedType = Undefined,
+                        ipv6_acl_out: str | None | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
                         pim: Pim | UndefinedType = Undefined,
                         flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -34456,6 +34545,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdList with `int` items.
                             ip_addresses: Subclass of AvdList with `str` items.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               Can be used instead of or together with
+                               `ip_addresses`.
+                               For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
+                               Subclass of AvdList with `str` items.
                             static_routes:
                                Static routes to be configured on every device where this interface is configured.
 
@@ -34478,6 +34573,18 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: mtu
                             ipv4_acl_in: ipv4_acl_in
                             ipv4_acl_out: ipv4_acl_out
+                            ipv6_acl_in:
+                               Name of the IPv6 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the IPv6 address set on the interface for this node.
+                            ipv6_acl_out:
+                               Name of the IPv6 access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the IPv6 address set on the interface for this node.
                             ospf:
                                OSPF interface configuration.
 
@@ -34696,6 +34803,11 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdList with `str` items."""
 
                 IpAddressSecondaries._item_type = str
+
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
 
                 class StaticRoutesItem(AvdModel):
                     """Subclass of AvdModel."""
@@ -35006,6 +35118,7 @@ class EosDesigns(EosDesignsRootModel):
                     "member_interfaces": {"type": MemberInterfaces},
                     "ip_address": {"type": str},
                     "ip_address_secondaries": {"type": IpAddressSecondaries},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "encapsulation_dot1q_vlan": {"type": int},
                     "enabled": {"type": bool, "default": True},
                     "peer": {"type": str},
@@ -35013,6 +35126,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv6_acl_in": {"type": str},
+                    "ipv6_acl_out": {"type": str},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                     "ospf": {"type": Ospf},
@@ -35055,6 +35170,14 @@ class EosDesigns(EosDesignsRootModel):
                 """IPv4 address/Mask."""
                 ip_address_secondaries: IpAddressSecondaries
                 """Subclass of AvdList with `str` items."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                Can be used instead of or together with
+                `ip_address`.
+                For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                Subclass of AvdList with `str` items.
+                """
                 encapsulation_dot1q_vlan: int | None
                 """
                 For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
@@ -35076,6 +35199,22 @@ class EosDesigns(EosDesignsRootModel):
                 """Name of the IPv4 access-list to be assigned in the ingress direction."""
                 ipv4_acl_out: str | None
                 """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                ipv6_acl_in: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
+                """
+                ipv6_acl_out: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                The "interface_ip"
+                substitution field is resolved from the first IPv6 address set on the interface.
+                """
                 static_routes: StaticRoutes
                 """
                 Static routes to be configured on the device where this Port-channel interface is configured.
@@ -35120,6 +35259,7 @@ class EosDesigns(EosDesignsRootModel):
                         member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                         ip_address: str | None | UndefinedType = Undefined,
                         ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         peer: str | None | UndefinedType = Undefined,
@@ -35127,6 +35267,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None | UndefinedType = Undefined,
                         ipv4_acl_in: str | None | UndefinedType = Undefined,
                         ipv4_acl_out: str | None | UndefinedType = Undefined,
+                        ipv6_acl_in: str | None | UndefinedType = Undefined,
+                        ipv6_acl_out: str | None | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -35162,6 +35304,12 @@ class EosDesigns(EosDesignsRootModel):
                                AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                             ip_address: IPv4 address/Mask.
                             ip_address_secondaries: Subclass of AvdList with `str` items.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               Can be used instead of or together with
+                               `ip_address`.
+                               For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                               Subclass of AvdList with `str` items.
                             encapsulation_dot1q_vlan:
                                For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
                                specified.
@@ -35171,6 +35319,18 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: MTU can only be set on the parent Port-Channel.
                             ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                             ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                            ipv6_acl_in:
+                               Name of the IPv6 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
+                            ipv6_acl_out:
+                               Name of the IPv6 access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               The "interface_ip"
+                               substitution field is resolved from the first IPv6 address set on the interface.
                             static_routes:
                                Static routes to be configured on the device where this Port-channel interface is configured.
                                Subclass of AvdList with `StaticRoutesItem` items.
@@ -36457,6 +36617,7 @@ class EosDesigns(EosDesignsRootModel):
                     "password_type": {"type": str, "default": "7"},
                     "passive": {"type": bool},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "send_community": {"type": str},
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
@@ -36567,6 +36728,8 @@ class EosDesigns(EosDesignsRootModel):
                 passive: bool | None
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 send_community: str | None
                 """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                 maximum_routes: int | None
@@ -36638,6 +36801,7 @@ class EosDesigns(EosDesignsRootModel):
                         password_type: PasswordType | UndefinedType = Undefined,
                         passive: bool | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         send_community: str | None | UndefinedType = Undefined,
                         maximum_routes: int | None | UndefinedType = Undefined,
                         maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -36727,6 +36891,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: password_type
                             passive: passive
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                             maximum_routes: Maximum number of routes (0 means unlimited).
                             maximum_routes_warning_limit:
@@ -39963,8 +40128,9 @@ class EosDesigns(EosDesignsRootModel):
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "version": {"type": int},
+                "source_address": {"type": str},
             }
-            name: str | None
+            name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
             burst: bool | None
             iburst: bool | None
@@ -39974,19 +40140,35 @@ class EosDesigns(EosDesignsRootModel):
             minpoll: int | None
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             version: int | None
+            source_address: str | None
+            """
+            - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+            interface.
+            - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+            management interface.
+            - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+            address of the inband management interface.
+            - `use_inband_mgmt_interface_ipv6` configures the source
+            address as the IPv6 address of the inband management interface.
+            - Any other string is used directly
+            as the source address (for example, an IPv4 or IPv6 address).
+            `use_*` values fail validation when
+            the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
+            """
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     burst: bool | None | UndefinedType = Undefined,
                     iburst: bool | None | UndefinedType = Undefined,
                     key: int | None | UndefinedType = Undefined,
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -40002,11 +40184,26 @@ class EosDesigns(EosDesignsRootModel):
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         version: version
+                        source_address:
+                           - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+                           interface.
+                           - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+                           management interface.
+                           - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+                           address of the inband management interface.
+                           - `use_inband_mgmt_interface_ipv6` configures the source
+                           address as the IPv6 address of the inband management interface.
+                           - Any other string is used directly
+                           as the source address (for example, an IPv4 or IPv6 address).
+                           `use_*` values fail validation when
+                           the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
 
                     """
 
-        class Servers(AvdList[ServersItem]):
-            """Subclass of AvdList with `ServersItem` items."""
+        class Servers(AvdIndexedList[str, ServersItem]):
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         Servers._item_type = ServersItem
 
@@ -40135,7 +40332,7 @@ class EosDesigns(EosDesignsRootModel):
         'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
         Subclass of
-        AvdList with `ServersItem` items.
+        AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -40191,7 +40388,7 @@ class EosDesigns(EosDesignsRootModel):
                        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
 
                        Subclass of
-                       AvdList with `ServersItem` items.
+                       AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
@@ -78632,6 +78829,7 @@ class EosDesigns(EosDesignsRootModel):
                         "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
+                        "enforce_first_as": {"type": bool},
                         "send_community": {"type": str},
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
@@ -78738,6 +78936,8 @@ class EosDesigns(EosDesignsRootModel):
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
+                    enforce_first_as: bool | None
+                    """Enforce the first AS in eBGP updates. EOS default is true."""
                     send_community: str | None
                     """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                     maximum_routes: int | None
@@ -78809,6 +79009,7 @@ class EosDesigns(EosDesignsRootModel):
                             password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
+                            enforce_first_as: bool | None | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
                             maximum_routes: int | None | UndefinedType = Undefined,
                             maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -78894,6 +79095,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
+                                enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                 maximum_routes: Maximum number of routes (0 means unlimited).
                                 maximum_routes_warning_limit:
@@ -82985,6 +83187,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         IpAddresses._item_type = str
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -83579,6 +83786,7 @@ class EosDesigns(EosDesignsRootModel):
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
@@ -83589,6 +83797,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
@@ -83609,6 +83819,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_addresses: IpAddresses
                         """Subclass of AvdList with `str` items."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with
+                        `ip_addresses`.
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
+                        Subclass of AvdList with `str` items.
+                        """
                         static_routes: StaticRoutes
                         """
                         Static routes to be configured on every device where this interface is configured.
@@ -83640,6 +83858,22 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None
                         ipv4_acl_in: str | None
                         ipv4_acl_out: str | None
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the IPv6 address set on the interface for this node.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the IPv6 address set on the interface for this node.
+                        """
                         ospf: Ospf
                         """
                         OSPF interface configuration.
@@ -83702,6 +83936,7 @@ class EosDesigns(EosDesignsRootModel):
                                 interfaces: Interfaces | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -83712,6 +83947,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -83735,6 +83972,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       Can be used instead of or together with
+                                       `ip_addresses`.
+                                       For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
+                                       Subclass of AvdList with `str` items.
                                     static_routes:
                                        Static routes to be configured on every device where this interface is configured.
 
@@ -83757,6 +84000,18 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: mtu
                                     ipv4_acl_in: ipv4_acl_in
                                     ipv4_acl_out: ipv4_acl_out
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the IPv6 address set on the interface for this node.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the IPv6 address set on the interface for this node.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -83975,6 +84230,11 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         IpAddressSecondaries._item_type = str
+
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
 
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
@@ -84285,6 +84545,7 @@ class EosDesigns(EosDesignsRootModel):
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
                             "ip_address_secondaries": {"type": IpAddressSecondaries},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "encapsulation_dot1q_vlan": {"type": int},
                             "enabled": {"type": bool, "default": True},
                             "peer": {"type": str},
@@ -84292,6 +84553,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "ospf": {"type": Ospf},
@@ -84334,6 +84597,14 @@ class EosDesigns(EosDesignsRootModel):
                         """IPv4 address/Mask."""
                         ip_address_secondaries: IpAddressSecondaries
                         """Subclass of AvdList with `str` items."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with
+                        `ip_address`.
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                        Subclass of AvdList with `str` items.
+                        """
                         encapsulation_dot1q_vlan: int | None
                         """
                         For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
@@ -84355,6 +84626,22 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 access-list to be assigned in the ingress direction."""
                         ipv4_acl_out: str | None
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        The "interface_ip"
+                        substitution field is resolved from the first IPv6 address set on the interface.
+                        """
                         static_routes: StaticRoutes
                         """
                         Static routes to be configured on the device where this Port-channel interface is configured.
@@ -84399,6 +84686,7 @@ class EosDesigns(EosDesignsRootModel):
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -84406,6 +84694,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -84441,6 +84731,12 @@ class EosDesigns(EosDesignsRootModel):
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: IPv4 address/Mask.
                                     ip_address_secondaries: Subclass of AvdList with `str` items.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       Can be used instead of or together with
+                                       `ip_address`.
+                                       For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                                       Subclass of AvdList with `str` items.
                                     encapsulation_dot1q_vlan:
                                        For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
                                        specified.
@@ -84450,6 +84746,18 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: MTU can only be set on the parent Port-Channel.
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       The "interface_ip"
+                                       substitution field is resolved from the first IPv6 address set on the interface.
                                     static_routes:
                                        Static routes to be configured on the device where this Port-channel interface is configured.
                                        Subclass of AvdList with `StaticRoutesItem` items.
@@ -85742,6 +86050,7 @@ class EosDesigns(EosDesignsRootModel):
                             "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
+                            "enforce_first_as": {"type": bool},
                             "send_community": {"type": str},
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
@@ -85852,6 +86161,8 @@ class EosDesigns(EosDesignsRootModel):
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
+                        enforce_first_as: bool | None
+                        """Enforce the first AS in eBGP updates. EOS default is true."""
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                         maximum_routes: int | None
@@ -85923,6 +86234,7 @@ class EosDesigns(EosDesignsRootModel):
                                 password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
+                                enforce_first_as: bool | None | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
                                 maximum_routes: int | None | UndefinedType = Undefined,
                                 maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -86012,6 +86324,7 @@ class EosDesigns(EosDesignsRootModel):
                                     password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
+                                    enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     maximum_routes: Maximum number of routes (0 means unlimited).
                                     maximum_routes_warning_limit:

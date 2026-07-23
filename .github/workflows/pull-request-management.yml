@@ -99,6 +99,7 @@ jobs:
               - '.sonarcloud.properties'
               - '.pre-commit-config.yaml'
             pyavd:
+              - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'

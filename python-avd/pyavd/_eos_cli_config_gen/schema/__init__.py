@@ -6594,6 +6594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
+            "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6656,6 +6657,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_separator_with_boot_secret_key: bool
+        """
+        Available from AVD 6.4.0.
+        When `true`, the '!' separator before 'boot secret' is only rendered when
+        `boot.secret.key` is provided.
+        When `false` (default), the '!' separator is always rendered when
+        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6668,6 +6679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
+                only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6713,6 +6725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        matching the running-config preserved by EOS 4.33.2F and later.
                        When `false` (default), renders the
                        legacy `spanning-tree portfast` without the `edge` keyword.
+                    only_render_separator_with_boot_secret_key:
+                       Available from AVD 6.4.0.
+                       When `true`, the '!' separator before 'boot secret' is only rendered when
+                       `boot.secret.key` is provided.
+                       When `false` (default), the '!' separator is always rendered when
+                       `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
 
                 """
 
@@ -32829,9 +32847,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             source_address: str | None
             """
-            Source IPv4 address.
-            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-            if both are set.
+            Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
@@ -32871,9 +32888,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Source interface.
                            Mutually exclusive with 'source_address'. Takes precedence if both are set.
                         source_address:
-                           Source IPv4 address.
-                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-                           if both are set.
+                           Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
@@ -45074,6 +45090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -45148,6 +45165,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -45214,6 +45233,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -45277,6 +45297,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -45721,6 +45742,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_tag_in": {"type": str},
                 "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
+                "enforce_first_as": {"type": bool},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
@@ -45792,6 +45814,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Outbound discard peer tag name."""
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
+            enforce_first_as: bool | None
+            """Enforce the first AS in eBGP updates. EOS default is true."""
             send_community: str | None
             """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
             maximum_routes: int | None
@@ -45860,6 +45884,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_tag_in: str | None | UndefinedType = Undefined,
                     peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
+                    enforce_first_as: bool | None | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
                     maximum_routes_warning_limit: str | None | UndefinedType = Undefined,
@@ -45920,6 +45945,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_tag_in: Inbound peer tag name.
                         peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
+                        enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
                         maximum_routes_warning_limit:
@@ -56411,6 +56437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "maximum_routes_warning_only": {"type": bool},
                     "allowas_in": {"type": AllowasIn},
                     "default_originate": {"type": DefaultOriginate},
+                    "enforce_first_as": {"type": bool},
                     "update_source": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
@@ -56488,6 +56515,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                enforce_first_as: bool | None
+                """Enforce the first AS in eBGP updates. EOS default is true."""
                 update_source: str | None
                 route_map_in: str | None
                 """Inbound route-map name."""
@@ -56534,6 +56563,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        enforce_first_as: bool | None | UndefinedType = Undefined,
                         update_source: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
@@ -56596,6 +56626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             maximum_routes_warning_only: maximum_routes_warning_only
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
+                            enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
@@ -76379,7 +76410,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "static_routes": {"type": StaticRoutes},
         "stun": {"type": Stun},
         "switchport_default": {"type": SwitchportDefault},
+        "switchport_ethernet_llc_validation": {"type": bool},
         "switchport_port_security": {"type": SwitchportPortSecurity},
+        "switchport_vlan_tag_validation": {"type": bool},
         "sync_e": {"type": SyncE},
         "system": {"type": System},
         "tacacs_servers": {"type": TacacsServers},
@@ -76993,8 +77026,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     switchport_default: SwitchportDefault
     """Subclass of AvdModel."""
+    switchport_ethernet_llc_validation: bool | None
+    """Enable Ethernet LLC header validation."""
     switchport_port_security: SwitchportPortSecurity
     """Subclass of AvdModel."""
+    switchport_vlan_tag_validation: bool | None
+    """Enable VLAN tag validation."""
     sync_e: SyncE
     """Subclass of AvdModel."""
     system: System
@@ -77234,7 +77271,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             static_routes: StaticRoutes | UndefinedType = Undefined,
             stun: Stun | UndefinedType = Undefined,
             switchport_default: SwitchportDefault | UndefinedType = Undefined,
+            switchport_ethernet_llc_validation: bool | None | UndefinedType = Undefined,
             switchport_port_security: SwitchportPortSecurity | UndefinedType = Undefined,
+            switchport_vlan_tag_validation: bool | None | UndefinedType = Undefined,
             sync_e: SyncE | UndefinedType = Undefined,
             system: System | UndefinedType = Undefined,
             tacacs_servers: TacacsServers | UndefinedType = Undefined,
@@ -77627,7 +77666,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 switchport_default: Subclass of AvdModel.
+                switchport_ethernet_llc_validation: Enable Ethernet LLC header validation.
                 switchport_port_security: Subclass of AvdModel.
+                switchport_vlan_tag_validation: Enable VLAN tag validation.
                 sync_e: Subclass of AvdModel.
                 system: Subclass of AvdModel.
                 tacacs_servers: Subclass of AvdModel.

@@ -99,6 +99,7 @@ mlag_peer_l3_vrf_vlan_name: "MLAG_L3_VRF_{vrf}"
 
 # MLAG BGP peer description
 mlag_bgp_peer_description: "{mlag_peer}_{peer_interface}"
+mlag_bgp_peer_group_description: "{mlag_peer}"
 
 # Overlay BGP peer description
 overlay_bgp_peer_description: "{peer}{peer_interface?<_}"
