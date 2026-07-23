@@ -113,6 +113,7 @@ jobs:
               - 'Makefile'
               - '.github/workflows/pull-request-management.yml'
             lock_check:
+              - 'Makefile'
               - 'pyproject.toml'
               - 'uv.lock'
               - 'python-avd/pyproject.toml'
