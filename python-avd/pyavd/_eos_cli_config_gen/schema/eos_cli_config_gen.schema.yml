@@ -12641,7 +12641,8 @@ keys:
                 are set.'
             source_address:
               type: str
-              description: 'Source IPv4 address.
+              description: 'Source IPv4/IPv6 address. If ''name'' is an IP address,
+                ''source_address'' must use the same IP version.
 
                 Mutually exclusive with ''local_interface''. ''local_interface'' takes
                 precedence if both are set.'
@@ -25619,6 +25620,9 @@ keys:
             valid_values:
             - cos
             - dscp
+  switchport_ethernet_llc_validation:
+    type: bool
+    description: Enable Ethernet LLC header validation.
   switchport_port_security:
     type: dict
     keys:
@@ -25633,6 +25637,9 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  switchport_vlan_tag_validation:
+    type: bool
+    description: Enable VLAN tag validation.
   sync_e:
     type: dict
     keys:

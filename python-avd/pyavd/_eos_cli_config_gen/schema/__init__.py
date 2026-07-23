@@ -32854,9 +32854,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             source_address: str | None
             """
-            Source IPv4 address.
-            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-            if both are set.
+            Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+            Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
             """
             maxpoll: int | None
             """Value of maxpoll between 3 - 17 (Logarithmic)."""
@@ -32896,9 +32895,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Source interface.
                            Mutually exclusive with 'source_address'. Takes precedence if both are set.
                         source_address:
-                           Source IPv4 address.
-                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence
-                           if both are set.
+                           Source IPv4/IPv6 address. If 'name' is an IP address, 'source_address' must use the same IP version.
+                           Mutually exclusive with 'local_interface'. 'local_interface' takes precedence if both are set.
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
@@ -76419,7 +76417,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "static_routes": {"type": StaticRoutes},
         "stun": {"type": Stun},
         "switchport_default": {"type": SwitchportDefault},
+        "switchport_ethernet_llc_validation": {"type": bool},
         "switchport_port_security": {"type": SwitchportPortSecurity},
+        "switchport_vlan_tag_validation": {"type": bool},
         "sync_e": {"type": SyncE},
         "system": {"type": System},
         "tacacs_servers": {"type": TacacsServers},
@@ -77033,8 +77033,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     switchport_default: SwitchportDefault
     """Subclass of AvdModel."""
+    switchport_ethernet_llc_validation: bool | None
+    """Enable Ethernet LLC header validation."""
     switchport_port_security: SwitchportPortSecurity
     """Subclass of AvdModel."""
+    switchport_vlan_tag_validation: bool | None
+    """Enable VLAN tag validation."""
     sync_e: SyncE
     """Subclass of AvdModel."""
     system: System
@@ -77274,7 +77278,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             static_routes: StaticRoutes | UndefinedType = Undefined,
             stun: Stun | UndefinedType = Undefined,
             switchport_default: SwitchportDefault | UndefinedType = Undefined,
+            switchport_ethernet_llc_validation: bool | None | UndefinedType = Undefined,
             switchport_port_security: SwitchportPortSecurity | UndefinedType = Undefined,
+            switchport_vlan_tag_validation: bool | None | UndefinedType = Undefined,
             sync_e: SyncE | UndefinedType = Undefined,
             system: System | UndefinedType = Undefined,
             tacacs_servers: TacacsServers | UndefinedType = Undefined,
@@ -77667,7 +77673,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 switchport_default: Subclass of AvdModel.
+                switchport_ethernet_llc_validation: Enable Ethernet LLC header validation.
                 switchport_port_security: Subclass of AvdModel.
+                switchport_vlan_tag_validation: Enable VLAN tag validation.
                 sync_e: Subclass of AvdModel.
                 system: Subclass of AvdModel.
                 tacacs_servers: Subclass of AvdModel.
