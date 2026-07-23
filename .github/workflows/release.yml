@@ -18,7 +18,7 @@ jobs:
       ref: ${{ github.event.release.tag_name }}
       artifact_name: pyavd-dist
 
-  # TODO: Move PyPI publishing back to the reusable workflow once trusted publishing supports it.
+  # TODO: Move PyPI publishing back to a reusable workflow once trusted publishing supports it.
   # Track: https://github.com/pypi/warehouse/issues/11096
   publish_pyavd_testpypi:
     name: Publish PyAVD to TestPyPI
