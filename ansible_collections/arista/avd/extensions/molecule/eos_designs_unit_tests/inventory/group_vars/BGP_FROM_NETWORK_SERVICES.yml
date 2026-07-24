@@ -88,11 +88,11 @@ tenants:
             peer_group: MYPEERGROUP
             nodes: [bgp-from-network-services-1]
             # This will render enabled: True in structured config
+            set_ipv4_next_hop: 10.10.1.2
           - ip_address: 12.12.1.2
             peer_group: MYPEERGROUP
             nodes: [bgp-from-network-services-2]
             # This will render enabled: True in structured config
-            set_ipv4_next_hop: 10.10.1.2
             default_originate:
               always: false
         bgp_peer_groups:

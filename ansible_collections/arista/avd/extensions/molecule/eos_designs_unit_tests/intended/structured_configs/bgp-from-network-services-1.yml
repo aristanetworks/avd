@@ -71,6 +71,12 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
+- name: RM-default-11.11.1.2-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ip next-hop 10.10.1.2
 router_bgp:
   as: '65001'
   router_id: 192.0.255.1
@@ -116,6 +122,7 @@ router_bgp:
     peer_group: MYPEERGROUP
     metadata:
       validate_state: false
+    route_map_out: RM-default-11.11.1.2-SET-NEXT-HOP-OUT
   redistribute:
     connected:
       enabled: true
