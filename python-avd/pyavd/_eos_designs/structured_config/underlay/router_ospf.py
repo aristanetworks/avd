@@ -40,7 +40,7 @@ class RouterOspfMixin(Protocol):
             if link.type == "underlay_p2p":
                 process.no_passive_interfaces.append(link.interface)
 
-        if self.shared_utils.mlag_l3:
+        if self.shared_utils.mlag_l3 is True:
             mlag_l3_vlan = default(self.facts.mlag.local.mlag_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
             process.no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
 

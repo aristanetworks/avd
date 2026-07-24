@@ -25,7 +25,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        return self.switch_facts.mlag_peer is not None
+        return bool(self.switch_facts.mlag_peer)
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:

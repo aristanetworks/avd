@@ -127,10 +127,10 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         if not self._mlag_allowed:
             return None
 
-        if (primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
+        if (is_primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
             return None
 
-        return primary_and_peer_hostname[1]
+        return is_primary_and_peer_hostname[1]
 
     @remove_cached_property_type
     @cached_property
@@ -143,10 +143,10 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         if not self._mlag_allowed:
             return None
 
-        if (primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
+        if (is_primary_and_peer_hostname := self._mlag_is_primary_and_peer_hostname) is None:
             return None
 
-        return primary_and_peer_hostname[0]
+        return is_primary_and_peer_hostname[0]
 
     @remove_cached_property_type
     @cached_property

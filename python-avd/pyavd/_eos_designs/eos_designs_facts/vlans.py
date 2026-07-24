@@ -210,7 +210,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         Ex: {1, 20, 21, 22, 23} or set().
         """
         endpoint_vlans, _ = self._endpoint_vlans_and_trunk_groups
-        if not self.mlag.enabled:
+        if not self.shared_utils.mlag:
             return endpoint_vlans
 
         # Get the set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.
@@ -239,7 +239,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return set()
 
         _, endpoint_trunk_groups = self._endpoint_vlans_and_trunk_groups
-        if not self.mlag.enabled:
+        if not self.shared_utils.mlag:
             return endpoint_trunk_groups
 
         # Get the set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.

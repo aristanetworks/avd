@@ -32,7 +32,7 @@ class ShortEsiMixin(EosDesignsFactsProtocol, Protocol):
         as primary MLAG switch.
         """
         # On the MLAG Secondary use short-esi from MLAG primary
-        if self.mlag.enabled and not self.mlag.local.primary and (peer_short_esi := self._mlag_peer_facts_generator._short_esi) is not None:
+        if self.shared_utils.mlag_role == "secondary" and (peer_short_esi := self._mlag_peer_facts_generator._short_esi) is not None:
             return peer_short_esi
         short_esi = self.shared_utils.node_config.short_esi
         if short_esi == "auto":
