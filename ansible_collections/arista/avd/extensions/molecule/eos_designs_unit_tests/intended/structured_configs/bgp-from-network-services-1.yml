@@ -112,6 +112,10 @@ router_bgp:
     default_originate:
       enabled: true
       always: true
+  - ip_address: 11.11.1.2
+    peer_group: MYPEERGROUP
+    metadata:
+      validate_state: false
   redistribute:
     connected:
       enabled: true
@@ -122,6 +126,8 @@ router_bgp:
       activate: true
     neighbors:
     - ip_address: 10.10.1.2
+      activate: true
+    - ip_address: 11.11.1.2
       activate: true
   vrfs:
   - name: validate_bgp_peers
