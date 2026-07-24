@@ -92,8 +92,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message = "The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
-                )
+                    _message="The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
+                ),
             )
 
         if data.description is not None:
@@ -187,8 +187,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message = "The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
-                )
+                    _message="The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
+                ),
             )
 
         if data.port_channel_description is not None:

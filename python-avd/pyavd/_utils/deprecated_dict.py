@@ -3,8 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
 import logging
+from typing import Any
 
 
 class DeprecatedDict(dict):
