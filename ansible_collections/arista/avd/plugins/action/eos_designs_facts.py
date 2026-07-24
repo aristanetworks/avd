@@ -41,8 +41,6 @@ except ImportError:
     HAS_PYAVD = False
 
 
-PLUGIN_NAME = "arista.avd.eos_designs_facts"
-
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
     "output_dir": {"type": "str", "required": True},
@@ -66,7 +64,7 @@ class ActionModule(AVDActionPlugin):
             raise ImportError(msg)
 
         self.logger.debug("Validating task arguments...")
-        validated_args = self._validate_args()
+        validated_args = self.validate_args()
         self.logger.debug("Validating task arguments [done].")
 
         self.tmp_dir = validated_args["tmp_dir"]
@@ -115,7 +113,7 @@ class ActionModule(AVDActionPlugin):
         # Save any updated pools.
         self.result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
 
-    def _validate_args(self) -> dict[str, Any]:
+    def validate_args(self) -> dict[str, Any]:
         """Get task arguments and validate them."""
         _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
 
