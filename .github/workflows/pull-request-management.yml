@@ -117,30 +117,7 @@ jobs:
   # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
-    runs-on: ubuntu-latest
-    outputs:
-      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: |
-            3.12
-      - name: Create pyavd wheel and output wheel path
-        id: build_step
-        working-directory: ./python-avd
-        run: |
-          pip install build
-          python -m build --wheel
-          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
-          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
-      - name: Upload pyavd artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: pyavd
-          path: ./python-avd/dist/*.whl
+    uses: ./.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
@@ -194,7 +171,7 @@ jobs:
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "$WHEEL_FILE" --group dev --upgrade
 
@@ -241,7 +218,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -341,7 +318,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -381,7 +358,7 @@ jobs:
         # Need to delete min_requirements afterwards otherwise git status is sad
         # pip upgrade to get dependency groups
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install uv
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
@@ -438,7 +415,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
       - name: Run molecule test
@@ -494,7 +471,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "${{ matrix.pip_installation }}" "$WHEEL_FILE[ansible-collection]"
       - name: Run ansible-test sanity
@@ -522,7 +499,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "ansible-core<2.22.0" "$WHEEL_FILE[ansible-collection]"
       - name: Run ansible-test units
@@ -673,7 +650,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python & Ansible requirements
         env:
-          WHEEL_FILE: ${{ needs.build_pyavd.outputs.wheel_file }}
+          WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "$WHEEL_FILE[ansible-collection]" --group dev --upgrade
       - name: Download collection
