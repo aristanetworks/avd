@@ -29,6 +29,8 @@ from pyavd._cv.api.arista.time import TimeBounds
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
+from .models import get_required_field
+from .utils import remove_item_from_list, upsert_item_in_list
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -82,16 +84,18 @@ class TagMixin(Protocol):
             List of Tag objects.
         """
         request = TagStreamRequest(
-            partial_eq_filter=Tag(
-                # Notice the "" for workspace, since we are fetching mainline.
-                key=TagKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
-                creator_type=CREATOR_TYPE_MAP[creator_type],
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                Tag(
+                    # Notice the "" for workspace, since we are fetching mainline.
+                    key=TagKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
+                    creator_type=CREATOR_TYPE_MAP[creator_type],
+                )
+            ],
+            time=TimeBounds(start=None, end=time) if time else None,
         )
-        client = TagServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        tags = [response.value async for response in responses]
+        client = self.new_stub(TagServiceStub)
+        responses = client.get_all(request, timeout=timeout)
+        tags = [get_required_field(response, "value", response.value) async for response in responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -99,23 +103,25 @@ class TagMixin(Protocol):
 
         # Next up fetch the tags config from the workspace if workspace is not "".
         request = TagConfigStreamRequest(
-            partial_eq_filter=TagConfig(
-                # This time fetch for the actual workspace we are interested in.
-                key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagConfig(
+                    # This time fetch for the actual workspace we are interested in.
+                    key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
+                )
+            ],
+            time=TimeBounds(start=None, end=time) if time else None,
         )
-        client = TagConfigServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(TagConfigServiceStub)
+        responses = client.get_all(request, timeout=timeout)
         async for response in responses:
-            tag_config = response.value
+            tag_config = get_required_field(response, "value", response.value)
 
             # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
             tag = Tag(key=tag_config.key, creator_type=CreatorType.USER)
             if tag_config.remove:
-                self._remove_item_from_list(tag, tags, self._match_tags)
+                remove_item_from_list(tag, tags, _match_tags)
             else:
-                self._upsert_item_in_list(tag, tags, self._match_tags)
+                upsert_item_in_list(tag, tags, _match_tags)
 
         return tags
 
@@ -150,10 +156,10 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        client = self.new_stub(TagConfigServiceStub)
+        responses = client.set_some(request, timeout=timeout + len(request.values) * 0.1)
 
-        return [response.key async for response in responses]
+        return [get_required_field(response, "key", response.key) async for response in responses]
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_tag_assignments(
@@ -181,16 +187,18 @@ class TagMixin(Protocol):
             Workspace object matching the workspace_id
         """
         request = TagAssignmentStreamRequest(
-            partial_eq_filter=TagAssignment(
-                # Notice the "" for workspace, since we are fetching mainline.
-                key=TagAssignmentKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
-                tag_creator_type=CREATOR_TYPE_MAP[creator_type],
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagAssignment(
+                    # Notice the "" for workspace, since we are fetching mainline.
+                    key=TagAssignmentKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
+                    tag_creator_type=CREATOR_TYPE_MAP[creator_type],
+                )
+            ],
+            time=TimeBounds(start=None, end=time) if time else None,
         )
-        client = TagAssignmentServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        tag_assignments = [response.value async for response in responses]
+        client = self.new_stub(TagAssignmentServiceStub)
+        responses = client.get_all(request, timeout=timeout)
+        tag_assignments = [get_required_field(response, "value", response.value) async for response in responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -198,23 +206,25 @@ class TagMixin(Protocol):
 
         # Next up fetch the tags config from the workspace if workspace is not "".
         request = TagAssignmentConfigStreamRequest(
-            partial_eq_filter=TagAssignmentConfig(
-                # This time fetch for the actual workspace we are interested in.
-                key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagAssignmentConfig(
+                    # This time fetch for the actual workspace we are interested in.
+                    key=TagAssignmentKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
+                )
+            ],
+            time=TimeBounds(start=None, end=time) if time else None,
         )
-        client = TagAssignmentConfigServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(TagAssignmentConfigServiceStub)
+        responses = client.get_all(request, timeout=timeout)
         async for response in responses:
-            tag_assignment_config = response.value
+            tag_assignment_config = get_required_field(response, "value", response.value)
 
             # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
             tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.USER)
             if tag_assignment_config.remove:
-                self._remove_item_from_list(tag_assignment, tag_assignments, self._match_tag_assignments)
+                remove_item_from_list(tag_assignment, tag_assignments, _match_tag_assignments)
             else:
-                self._upsert_item_in_list(tag_assignment, tag_assignments, self._match_tag_assignments)
+                upsert_item_in_list(tag_assignment, tag_assignments, _match_tag_assignments)
 
         return tag_assignments
 
@@ -251,10 +261,10 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagAssignmentConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        client = self.new_stub(TagAssignmentConfigServiceStub)
+        responses = client.set_some(request, timeout=timeout + len(request.values) * 0.1)
 
-        return [response.key async for response in responses]
+        return [get_required_field(response, "key", response.key) async for response in responses]
 
     @GRPCRequestHandler(list_field="tag_assignments")
     async def delete_tag_assignments(
@@ -290,25 +300,29 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagAssignmentConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        client = self.new_stub(TagAssignmentConfigServiceStub)
+        responses = client.set_some(request, timeout=timeout + len(request.values) * 0.1)
 
-        return [response.key async for response in responses]
+        return [get_required_field(response, "key", response.key) async for response in responses]
 
-    @staticmethod
-    def _match_tags(a: Tag, b: Tag) -> bool:
-        """Match up the properties of two tags without looking at the Workspace and Creator Type fields."""
-        return all([a.key.element_type == b.key.element_type, a.key.label == b.key.label, a.key.value == b.key.value])
 
-    @staticmethod
-    def _match_tag_assignments(a: TagAssignment, b: TagAssignment) -> bool:
-        """Match up the properties of two tag assignments without looking at the Workspace and Creator Type fields."""
-        return all(
-            [
-                a.key.element_type == b.key.element_type,
-                a.key.label == b.key.label,
-                a.key.value == b.key.value,
-                a.key.device_id == b.key.device_id,
-                a.key.interface_id == b.key.interface_id,
-            ],
-        )
+def _match_tags(a: Tag, b: Tag) -> bool:
+    """Match up the properties of two tags without looking at the Workspace and Creator Type fields."""
+    a_key = get_required_field(a, "key", a.key)
+    b_key = get_required_field(b, "key", b.key)
+    return all([a_key.element_type == b_key.element_type, a_key.label == b_key.label, a_key.value == b_key.value])
+
+
+def _match_tag_assignments(a: TagAssignment, b: TagAssignment) -> bool:
+    """Match up the properties of two tag assignments without looking at the Workspace and Creator Type fields."""
+    a_key = get_required_field(a, "key", a.key)
+    b_key = get_required_field(b, "key", b.key)
+    return all(
+        [
+            a_key.element_type == b_key.element_type,
+            a_key.label == b_key.label,
+            a_key.value == b_key.value,
+            a_key.device_id == b_key.device_id,
+            a_key.interface_id == b_key.interface_id,
+        ],
+    )

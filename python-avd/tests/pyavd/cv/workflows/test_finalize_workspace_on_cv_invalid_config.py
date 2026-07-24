@@ -76,7 +76,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         -   description: Start Workspace build
             request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
                 request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78b0000100')))'
-            targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/3e5f35a5e74c704bd5ab2489162a937d7205b1da.json'
+            targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/e8a74f4575582e9482183bc24da1060315724a27.json'
 
         -   description: Fetch build results
             request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
@@ -86,7 +86,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
                 workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78b0000100'))])'
             targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
-                85ff5d81e72ea2e4f36942319dc7329094cdb591.json'
+                66808cb306d3f28a691b1990f8e29756d6e07565.json'
 
     """
 
@@ -125,7 +125,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         -   description: Start Workspace build
             request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
                 request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))'
-            targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json'
+            targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/f4718a9ef72056a50d7666e8d40074fd373b24e6.json'
 
         -   description: Fetch build results
             request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
@@ -135,7 +135,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
                 workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78bf781229'))])'
             targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
-                f451562f4f8c0dc37965a23121bb11dd6efc0f6a.json'
+                4d6031f452ea1fb1718b2fff3ec37d4fb2594554.json'
         """
         workspace_id: str = MOCKED_WORKSPACE_ID
         workspace_build_id: str = MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS["id"]
@@ -715,11 +715,11 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
                 workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78b0000100'))])'
             targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
-                85ff5d81e72ea2e4f36942319dc7329094cdb591.json'
+                66808cb306d3f28a691b1990f8e29756d6e07565.json'
 
         """
         # Redefine list of CVDevices making sure avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6) is missing in it
-        cv_devices_short: tuple[CVDevice, ...] = (
+        cv_devices_short = [
             CVDevice(
                 avd_device=AvdDevice(hostname="avd-ci-spine1"),
                 serial_number="DCC816CEAC4BBD6319385043AD318362",
@@ -734,7 +734,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 exists_on_cv=True,
                 streaming=True,
             ),
-        )
+        ]
 
         # Fetch mocked/recorded API response which includes config validation warnings for avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6)
         workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=self.workspace_id, build_id=self.workspace_build_id)

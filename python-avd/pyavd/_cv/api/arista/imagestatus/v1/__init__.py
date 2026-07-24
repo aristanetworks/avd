@@ -7,116 +7,63 @@
 # This file has been @generated
 
 __all__ = (
-    "ExtensionInstallStatus",
-    "SoftwareComplianceCode",
-    "DiffOp",
-    "ErrorCode",
-    "WarningCode",
-    "InfoCode",
-    "ImageSource",
-    "SoftwareImage",
-    "ImageMetadata",
-    "Extension",
-    "Extensions",
     "ComplianceStatus",
     "ComplianceStatusBySup",
-    "RebootRequired",
-    "SoftwareImageDiff",
-    "SoftwareImageDiffsBySup",
+    "DiffOp",
+    "ErrorCode",
+    "Extension",
     "ExtensionDiff",
-    "TerminAttrDiffsBySup",
     "ExtensionDiffs",
     "ExtensionDiffsBySup",
-    "ImageSummary",
-    "SummaryKey",
-    "Summary",
+    "ExtensionInstallStatus",
+    "Extensions",
     "ImageError",
     "ImageErrors",
-    "ImageWarning",
-    "ImageWarnings",
     "ImageInfo",
     "ImageInfos",
+    "ImageMetadata",
+    "ImageSource",
+    "ImageSummary",
+    "ImageWarning",
+    "ImageWarnings",
+    "InfoCode",
     "MetaResponse",
+    "RebootRequired",
+    "SoftwareComplianceCode",
+    "SoftwareImage",
+    "SoftwareImageDiff",
+    "SoftwareImageDiffsBySup",
+    "Summary",
+    "SummaryBatchedStreamRequest",
+    "SummaryBatchedStreamResponse",
+    "SummaryKey",
     "SummaryRequest",
     "SummaryResponse",
+    "SummaryServiceStub",
     "SummarySomeRequest",
     "SummarySomeResponse",
     "SummaryStreamRequest",
     "SummaryStreamResponse",
-    "SummaryBatchedStreamRequest",
-    "SummaryBatchedStreamResponse",
-    "SummaryServiceStub",
-    "SummaryServiceBase",
+    "TerminAttrDiffsBySup",
+    "WarningCode",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class ExtensionInstallStatus(aristaproto.Enum):
-    """
-    ExtensionInstallStatus indicates whether an extension is installed, not installed
-    or force installed.
-    """
-
-    UNSPECIFIED = 0
-    """
-    EXTENSION_INSTALL_STATUS_UNSPECIFIED indicates extensions install status is unspecified.
-    """
-
-    NOT_INSTALLED = 1
-    """
-    EXTENSION_INSTALL_STATUS_NOT_INSTALLED indicates extension is not installed on the device.
-    """
-
-    INSTALLED = 2
-    """
-    EXTENSION_INSTALL_STATUS_INSTALLED indicates extension is installed on the device.
-    """
-
-    FORCE_INSTALLED = 3
-    """
-    EXTENSION_INSTALL_STATUS_FORCE_INSTALLED indicates extension is force installed on
-    device.
-    """
-
-
-class SoftwareComplianceCode(aristaproto.Enum):
-    """SoftwareComplianceCode indicates possible compliance status."""
-
-    UNSPECIFIED = 0
-    """
-    SOFTWARE_COMPLIANCE_CODE_UNSPECIFIED indicates compliance code is unspecified.
-    """
-
-    IN_SYNC = 1
-    """
-    SOFTWARE_COMPLIANCE_CODE_IN_SYNC indicates designed and running images/extensions
-    are identical.
-    """
-
-    OUT_OF_SYNC = 2
-    """
-    SOFTWARE_COMPLIANCE_CODE_OUT_OF_SYNC indicates designed and running images/extensions
-    are not identical.
-    """
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class DiffOp(aristaproto.Enum):
@@ -126,26 +73,60 @@ class DiffOp(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """DIFF_OP_UNSPECIFIED indicates op code is unspecified."""
+    """
+    DIFF_OP_UNSPECIFIED indicates op code is unspecified.
+    """
 
     NOP = 1
-    """DIFF_OP_NOP indicates no change."""
+    """
+    DIFF_OP_NOP indicates no change.
+    """
 
     ADD = 2
-    """DIFF_OP_ADD is an addition of a software."""
+    """
+    DIFF_OP_ADD is an addition of a software.
+    """
 
     DELETE = 3
-    """DIFF_OP_DELETE is deletion of a software."""
+    """
+    DIFF_OP_DELETE is deletion of a software.
+    """
 
     CHANGE = 4
-    """DIFF_OP_CHANGE is an update to the software."""
+    """
+    DIFF_OP_CHANGE is an update to the software.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DIFF_OP_UNSPECIFIED",
+            1: "DIFF_OP_NOP",
+            2: "DIFF_OP_ADD",
+            3: "DIFF_OP_DELETE",
+            4: "DIFF_OP_CHANGE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DIFF_OP_UNSPECIFIED": 0,
+            "DIFF_OP_NOP": 1,
+            "DIFF_OP_ADD": 2,
+            "DIFF_OP_DELETE": 3,
+            "DIFF_OP_CHANGE": 4,
+        }
 
 
 class ErrorCode(aristaproto.Enum):
-    """ErrorCode indicates errors produced during image validations."""
+    """
+    ErrorCode indicates errors produced during image validations.
+    """
 
     UNSPECIFIED = 0
-    """ERROR_CODE_UNSPECIFIED indicates error code is unspecified."""
+    """
+    ERROR_CODE_UNSPECIFIED indicates error code is unspecified.
+    """
 
     SUPPORT_NOT_INTRODUCED = 1
     """
@@ -257,12 +238,233 @@ class ErrorCode(aristaproto.Enum):
     and Extension architecture are incompatible.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ERROR_CODE_UNSPECIFIED",
+            1: "ERROR_CODE_SUPPORT_NOT_INTRODUCED",
+            2: "ERROR_CODE_SUPPORT_REMOVED",
+            3: "ERROR_CODE_DEVICE_UNREACHABLE",
+            4: "ERROR_CODE_VALIDATION_FAILED",
+            5: "ERROR_CODE_GET_PROPOSED_IMAGE_INFO_FAILED",
+            6: "ERROR_CODE_GET_RUNNING_IMAGE_INFO_FROM_ACTIVE_SUPERVISOR_FAILED",
+            7: "ERROR_CODE_GET_RUNNING_IMAGE_INFO_FROM_PEER_SUPERVISOR_FAILED",
+            8: "ERROR_CODE_EOS_TA_ARCHITECTURE_INCOMPATIBLE",
+            9: "ERROR_CODE_TA_CV_INCOMPATIBLE",
+            10: "ERROR_CODE_EOS_CV_INCOMPATIBLE",
+            11: "ERROR_CODE_EOS_SUPPORT_NOT_INTRODUCED",
+            12: "ERROR_CODE_EOS_SUPPORT_REMOVED",
+            13: "ERROR_CODE_PHYSICAL_DEVICE_EOS_INCOMPATIBLE",
+            14: "ERROR_CODE_TA_EMBEDDEDEXT_INCOMPATIBLE",
+            15: "ERROR_CODE_DEVICE_EOS_2GB_INCOMPATIBLE",
+            16: "ERROR_CODE_EOS_EXTENSION_VERSION_INCOMPATIBLE",
+            17: "ERROR_CODE_ARCH_UNSUPPORTED",
+            18: "ERROR_CODE_EOS_EXTENSION_ARCHITECTURE_INCOMPATIBLE",
+        }
 
-class WarningCode(aristaproto.Enum):
-    """WarningCode indicates warnings produced during image validations."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ERROR_CODE_UNSPECIFIED": 0,
+            "ERROR_CODE_SUPPORT_NOT_INTRODUCED": 1,
+            "ERROR_CODE_SUPPORT_REMOVED": 2,
+            "ERROR_CODE_DEVICE_UNREACHABLE": 3,
+            "ERROR_CODE_VALIDATION_FAILED": 4,
+            "ERROR_CODE_GET_PROPOSED_IMAGE_INFO_FAILED": 5,
+            "ERROR_CODE_GET_RUNNING_IMAGE_INFO_FROM_ACTIVE_SUPERVISOR_FAILED": 6,
+            "ERROR_CODE_GET_RUNNING_IMAGE_INFO_FROM_PEER_SUPERVISOR_FAILED": 7,
+            "ERROR_CODE_EOS_TA_ARCHITECTURE_INCOMPATIBLE": 8,
+            "ERROR_CODE_TA_CV_INCOMPATIBLE": 9,
+            "ERROR_CODE_EOS_CV_INCOMPATIBLE": 10,
+            "ERROR_CODE_EOS_SUPPORT_NOT_INTRODUCED": 11,
+            "ERROR_CODE_EOS_SUPPORT_REMOVED": 12,
+            "ERROR_CODE_PHYSICAL_DEVICE_EOS_INCOMPATIBLE": 13,
+            "ERROR_CODE_TA_EMBEDDEDEXT_INCOMPATIBLE": 14,
+            "ERROR_CODE_DEVICE_EOS_2GB_INCOMPATIBLE": 15,
+            "ERROR_CODE_EOS_EXTENSION_VERSION_INCOMPATIBLE": 16,
+            "ERROR_CODE_ARCH_UNSUPPORTED": 17,
+            "ERROR_CODE_EOS_EXTENSION_ARCHITECTURE_INCOMPATIBLE": 18,
+        }
+
+
+class ExtensionInstallStatus(aristaproto.Enum):
+    """
+    ExtensionInstallStatus indicates whether an extension is installed, not installed
+    or force installed.
+    """
 
     UNSPECIFIED = 0
-    """WARNING_CODE_UNSPECIFIED indicates warning code is unspecified."""
+    """
+    EXTENSION_INSTALL_STATUS_UNSPECIFIED indicates extensions install status is unspecified.
+    """
+
+    NOT_INSTALLED = 1
+    """
+    EXTENSION_INSTALL_STATUS_NOT_INSTALLED indicates extension is not installed on the device.
+    """
+
+    INSTALLED = 2
+    """
+    EXTENSION_INSTALL_STATUS_INSTALLED indicates extension is installed on the device.
+    """
+
+    FORCE_INSTALLED = 3
+    """
+    EXTENSION_INSTALL_STATUS_FORCE_INSTALLED indicates extension is force installed on
+    device.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "EXTENSION_INSTALL_STATUS_UNSPECIFIED",
+            1: "EXTENSION_INSTALL_STATUS_NOT_INSTALLED",
+            2: "EXTENSION_INSTALL_STATUS_INSTALLED",
+            3: "EXTENSION_INSTALL_STATUS_FORCE_INSTALLED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "EXTENSION_INSTALL_STATUS_UNSPECIFIED": 0,
+            "EXTENSION_INSTALL_STATUS_NOT_INSTALLED": 1,
+            "EXTENSION_INSTALL_STATUS_INSTALLED": 2,
+            "EXTENSION_INSTALL_STATUS_FORCE_INSTALLED": 3,
+        }
+
+
+class ImageSource(aristaproto.Enum):
+    """
+    ImageSource indicates the source type for the image configuration.
+    """
+
+    UNSPECIFIED = 0
+    """
+    IMAGE_SOURCE_UNSPECIFIED uninitialized value
+    """
+
+    STUDIO = 1
+    """
+    IMAGE_SOURCE_STUDIO - image configured from studio
+    """
+
+    NETWORK_PROVISIONING = 2
+    """
+    IMAGE_SOURCE_NETWORK_PROVISIONING - image configured from
+    network provisioning workflow
+    """
+
+    HIERARCHY = 3
+    """
+    IMAGE_SOURCE_HIERARCHY - image configured from hierarchy workflow
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "IMAGE_SOURCE_UNSPECIFIED",
+            1: "IMAGE_SOURCE_STUDIO",
+            2: "IMAGE_SOURCE_NETWORK_PROVISIONING",
+            3: "IMAGE_SOURCE_HIERARCHY",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "IMAGE_SOURCE_UNSPECIFIED": 0,
+            "IMAGE_SOURCE_STUDIO": 1,
+            "IMAGE_SOURCE_NETWORK_PROVISIONING": 2,
+            "IMAGE_SOURCE_HIERARCHY": 3,
+        }
+
+
+class InfoCode(aristaproto.Enum):
+    """
+    InfoCode indicates info messages produced during image validations.
+    """
+
+    UNSPECIFIED = 0
+    """
+    INFO_CODE_UNSPECIFIED indicates info code is unspecified.
+    """
+
+    NEWER_VERSION_AVAILABLE = 1
+    """
+    INFO_CODE_NEWER_VERSION_AVAILABLE represents cases where a newer EOS maintainance
+    release is available for download.
+    """
+
+    UNIVERSAL_IMAGE_ARCH_APPLIED = 2
+    """
+    INFO_CODE_UNIVERSAL_IMAGE_ARCH_APPLIED represents cases where a specific architecture is
+    picked for a Universal (multiarch) EOS image.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "INFO_CODE_UNSPECIFIED",
+            1: "INFO_CODE_NEWER_VERSION_AVAILABLE",
+            2: "INFO_CODE_UNIVERSAL_IMAGE_ARCH_APPLIED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "INFO_CODE_UNSPECIFIED": 0,
+            "INFO_CODE_NEWER_VERSION_AVAILABLE": 1,
+            "INFO_CODE_UNIVERSAL_IMAGE_ARCH_APPLIED": 2,
+        }
+
+
+class SoftwareComplianceCode(aristaproto.Enum):
+    """
+    SoftwareComplianceCode indicates possible compliance status.
+    """
+
+    UNSPECIFIED = 0
+    """
+    SOFTWARE_COMPLIANCE_CODE_UNSPECIFIED indicates compliance code is unspecified.
+    """
+
+    IN_SYNC = 1
+    """
+    SOFTWARE_COMPLIANCE_CODE_IN_SYNC indicates designed and running images/extensions
+    are identical.
+    """
+
+    OUT_OF_SYNC = 2
+    """
+    SOFTWARE_COMPLIANCE_CODE_OUT_OF_SYNC indicates designed and running images/extensions
+    are not identical.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SOFTWARE_COMPLIANCE_CODE_UNSPECIFIED",
+            1: "SOFTWARE_COMPLIANCE_CODE_IN_SYNC",
+            2: "SOFTWARE_COMPLIANCE_CODE_OUT_OF_SYNC",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SOFTWARE_COMPLIANCE_CODE_UNSPECIFIED": 0,
+            "SOFTWARE_COMPLIANCE_CODE_IN_SYNC": 1,
+            "SOFTWARE_COMPLIANCE_CODE_OUT_OF_SYNC": 2,
+        }
+
+
+class WarningCode(aristaproto.Enum):
+    """
+    WarningCode indicates warnings produced during image validations.
+    """
+
+    UNSPECIFIED = 0
+    """
+    WARNING_CODE_UNSPECIFIED indicates warning code is unspecified.
+    """
 
     NOT_APPLICABLE = 1
     """
@@ -359,136 +561,49 @@ class WarningCode(aristaproto.Enum):
     under Aeris analytics dataset is missing.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "WARNING_CODE_UNSPECIFIED",
+            1: "WARNING_CODE_NOT_APPLICABLE",
+            2: "WARNING_CODE_SKUINFO_UNAVAILABLE",
+            3: "WARNING_CODE_DEVICE_SKU_UNAVAILABLE",
+            4: "WARNING_CODE_SWI_UNKNOWN",
+            5: "WARNING_CODE_TA_EOS_INCOMPATIBLE",
+            6: "WARNING_CODE_TA_CV_INCOMPATIBLE",
+            7: "WARNING_CODE_EOS_CV_INCOMPATIBLE",
+            8: "WARNING_CODE_EOS_ARCH_UNKNOWN",
+            9: "WARNING_CODE_TA_EMBEDDEDEXT_INCOMPATIBLE",
+            10: "WARNING_CODE_ARCH_INCOMPATIBLE",
+            11: "WARNING_CODE_EOS_END_OF_LIFE_DATE_PASSED",
+            12: "WARNING_CODE_SUPPORT_NOT_INTRODUCED",
+            13: "WARNING_CODE_SUPPORT_REMOVED",
+            14: "WARNING_CODE_RUNNING_TA_BELOW_MIN_SUPPORTED_VERSION",
+            15: "WARNING_CODE_TA_STUDIO_INCOMPATIBLE",
+            16: "WARNING_CODE_BUGALERTS_DATA_MISSING",
+        }
 
-class InfoCode(aristaproto.Enum):
-    """InfoCode indicates info messages produced during image validations."""
-
-    UNSPECIFIED = 0
-    """INFO_CODE_UNSPECIFIED indicates info code is unspecified."""
-
-    NEWER_VERSION_AVAILABLE = 1
-    """
-    INFO_CODE_NEWER_VERSION_AVAILABLE represents cases where a newer EOS maintainance
-    release is available for download.
-    """
-
-    UNIVERSAL_IMAGE_ARCH_APPLIED = 2
-    """
-    INFO_CODE_UNIVERSAL_IMAGE_ARCH_APPLIED represents cases where a specific architecture is
-    picked for a Universal (multiarch) EOS image.
-    """
-
-
-class ImageSource(aristaproto.Enum):
-    """ImageSource indicates the source type for the image configuration."""
-
-    UNSPECIFIED = 0
-    """IMAGE_SOURCE_UNSPECIFIED uninitialized value"""
-
-    STUDIO = 1
-    """IMAGE_SOURCE_STUDIO - image configured from studio"""
-
-    NETWORK_PROVISIONING = 2
-    """
-    IMAGE_SOURCE_NETWORK_PROVISIONING - image configured from
-    network provisioning workflow
-    """
-
-    HIERARCHY = 3
-    """IMAGE_SOURCE_HIERARCHY - image configured from hierarchy workflow"""
-
-
-@dataclass(eq=False, repr=False)
-class SoftwareImage(aristaproto.Message):
-    """
-    SoftwareImage provides information of the running/designed EOS image.
-    """
-
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the name of the EOS image."""
-
-    version: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """version is the version of the EOS image."""
-
-    metadata: "ImageMetadata" = aristaproto.message_field(3)
-    """metadata  is the metadata of EOS image."""
-
-
-@dataclass(eq=False, repr=False)
-class ImageMetadata(aristaproto.Message):
-    """ImageMetadata provides information regarding the software image."""
-
-    version: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """version is the version of the EOS image."""
-
-    release: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """release is the release name of the EOS image."""
-
-    flavor: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    flavor is the flavor information of the EOS image.
-    default flavor is DEFAULT. Other flavors can be DPE, 2GB, etc.
-    """
-
-    variant: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    variant is the variant information of the EOS image.
-    possible values: INT or US.
-    """
-
-    arch: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """arch is the architecture of the EOS image."""
-
-
-@dataclass(eq=False, repr=False)
-class Extension(aristaproto.Message):
-    """Extension provides information of the running/designed extensions."""
-
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the name of the extension."""
-
-    version: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """version is the version of the extension."""
-
-    reboot_required: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    reboot_required indicates whether applying/deleting this extension
-    would result in a reboot.
-    """
-
-    present: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """
-    present indicates whether the extension is present in the device
-    or not.
-    """
-
-    installed: "ExtensionInstallStatus" = aristaproto.enum_field(5)
-    """
-    installed indicates whether the extension is installed, not
-    installed or force installed.
-    """
-
-    status_detail: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """
-    status_detail gives the details behind installation of the extension.
-    """
-
-    is_embedded: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
-    """
-    is_embedded indicates whether the extension is embedded in the EOS swi
-    or not.
-    """
-
-    arch: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
-    """arch is architecture type of the extension."""
-
-
-@dataclass(eq=False, repr=False)
-class Extensions(aristaproto.Message):
-    """Extensions provides an ordered list of running/designed extensions."""
-
-    values: List["Extension"] = aristaproto.message_field(1)
-    """values represents extension information."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "WARNING_CODE_UNSPECIFIED": 0,
+            "WARNING_CODE_NOT_APPLICABLE": 1,
+            "WARNING_CODE_SKUINFO_UNAVAILABLE": 2,
+            "WARNING_CODE_DEVICE_SKU_UNAVAILABLE": 3,
+            "WARNING_CODE_SWI_UNKNOWN": 4,
+            "WARNING_CODE_TA_EOS_INCOMPATIBLE": 5,
+            "WARNING_CODE_TA_CV_INCOMPATIBLE": 6,
+            "WARNING_CODE_EOS_CV_INCOMPATIBLE": 7,
+            "WARNING_CODE_EOS_ARCH_UNKNOWN": 8,
+            "WARNING_CODE_TA_EMBEDDEDEXT_INCOMPATIBLE": 9,
+            "WARNING_CODE_ARCH_INCOMPATIBLE": 10,
+            "WARNING_CODE_EOS_END_OF_LIFE_DATE_PASSED": 11,
+            "WARNING_CODE_SUPPORT_NOT_INTRODUCED": 12,
+            "WARNING_CODE_SUPPORT_REMOVED": 13,
+            "WARNING_CODE_RUNNING_TA_BELOW_MIN_SUPPORTED_VERSION": 14,
+            "WARNING_CODE_TA_STUDIO_INCOMPATIBLE": 15,
+            "WARNING_CODE_BUGALERTS_DATA_MISSING": 16,
+        }
 
 
 @dataclass(eq=False, repr=False)
@@ -498,14 +613,23 @@ class ComplianceStatus(aristaproto.Message):
     and extensions.
     """
 
-    software_image_compliance_code: "SoftwareComplianceCode" = aristaproto.enum_field(1)
-    """software_image_compliance_code is the compliance code for images."""
+    software_image_compliance_code: "SoftwareComplianceCode" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareComplianceCode(0))
+    """
+    software_image_compliance_code is the compliance code for images.
+    """
 
-    terminattr_compliance_code: "SoftwareComplianceCode" = aristaproto.enum_field(2)
-    """terminattr_compliance_code is the compliance code for TerminAttr."""
+    terminattr_compliance_code: "SoftwareComplianceCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareComplianceCode(0))
+    """
+    terminattr_compliance_code is the compliance code for TerminAttr.
+    """
 
-    extensions_compliance_code: "SoftwareComplianceCode" = aristaproto.enum_field(3)
-    """extensions_compliance_code is the compliance code for extensions."""
+    extensions_compliance_code: "SoftwareComplianceCode" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareComplianceCode(0))
+    """
+    extensions_compliance_code is the compliance code for extensions.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ComplianceStatus", ComplianceStatus)
 
 
 @dataclass(eq=False, repr=False)
@@ -515,95 +639,100 @@ class ComplianceStatusBySup(aristaproto.Message):
     supervisor.
     """
 
-    values: Dict[str, "ComplianceStatus"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is the mapping of supervisor type to compliance code."""
+    values: "dict[str, ComplianceStatus]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is the mapping of supervisor type to compliance code.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ComplianceStatusBySup", ComplianceStatusBySup)
 
 
 @dataclass(eq=False, repr=False)
-class RebootRequired(aristaproto.Message):
+class Extension(aristaproto.Message):
     """
-    RebootRequired indicates the reboot information per software image,
-    terminattr and extension for the switch as a whole.
-    """
-
-    software_image_reboot_required: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    software_image_reboot_required indicates whether reboot is required
-    for the software image being applied.
+    Extension provides information of the running/designed extensions.
     """
 
-    terminattr_reboot_required: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    terminattr_reboot_required indicates whether reboot is required
-    for the terminattr being applied/deleted.
-    """
-
-    extension_reboot_required: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    extension_reboot_required indicates whether reboot is required
-    for the extensions being applied/deleted.
+    name is the name of the extension.
     """
 
-
-@dataclass(eq=False, repr=False)
-class SoftwareImageDiff(aristaproto.Message):
-    """SoftwareImageDiff is the diff for the running/designed images."""
-
-    code: "DiffOp" = aristaproto.enum_field(1)
+    version: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    code indicates the operation performed to get from one side of the diff
-    to the other.
+    version is the version of the extension.
     """
 
-    a: "SoftwareImage" = aristaproto.message_field(2)
-    """a is the software image on the a side (left hand side)."""
-
-    b: "SoftwareImage" = aristaproto.message_field(3)
-    """b is the software image on the b side (right hand side)."""
-
-    text_code: "DiffOp" = aristaproto.enum_field(4)
-    """text_code is the color in the diff view page."""
-
-
-@dataclass(eq=False, repr=False)
-class SoftwareImageDiffsBySup(aristaproto.Message):
+    reboot_required: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
-    SoftwareImageDiffsBySup is software image diff information for each
-    supervisor.
+    reboot_required indicates whether applying/deleting this extension
+    would result in a reboot.
     """
 
-    values: Dict[str, "SoftwareImageDiff"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is the mapping of supervisor type to image diff."""
+    present: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    present indicates whether the extension is present in the device
+    or not.
+    """
+
+    installed: "ExtensionInstallStatus" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: ExtensionInstallStatus(0))
+    """
+    installed indicates whether the extension is installed, not
+    installed or force installed.
+    """
+
+    status_detail: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    status_detail gives the details behind installation of the extension.
+    """
+
+    is_embedded: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_embedded indicates whether the extension is embedded in the EOS swi
+    or not.
+    """
+
+    arch: "str | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    arch is architecture type of the extension.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "Extension", Extension)
 
 
 @dataclass(eq=False, repr=False)
 class ExtensionDiff(aristaproto.Message):
-    """ExtensionDiff is the diff for the running/designed extensions."""
+    """
+    ExtensionDiff is the diff for the running/designed extensions.
+    """
 
-    code: "DiffOp" = aristaproto.enum_field(1)
+    code: "DiffOp" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
     """
     code indicates the operation performed to get from one side of the diff
     to the other.
     """
 
-    a: "Extension" = aristaproto.message_field(2)
-    """a is the extension on the a side (left hand side)."""
-
-    b: "Extension" = aristaproto.message_field(3)
-    """b is the extension on the b side (right hand side)."""
-
-    text_code: "DiffOp" = aristaproto.enum_field(4)
-    """text_code is the color in the diff view page."""
-
-
-@dataclass(eq=False, repr=False)
-class TerminAttrDiffsBySup(aristaproto.Message):
+    a: "Extension | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    TerminAttrDiffsBySup is the terminattr diff information for each supervisor.
+    a is the extension on the a side (left hand side).
     """
 
-    values: Dict[str, "ExtensionDiff"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is the mapping of supervisor type to terminattr diff."""
+    b: "Extension | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    b is the extension on the b side (right hand side).
+    """
+
+    text_code: "DiffOp" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
+    """
+    text_code is the color in the diff view page.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ExtensionDiff", ExtensionDiff)
 
 
 @dataclass(eq=False, repr=False)
@@ -613,8 +742,13 @@ class ExtensionDiffs(aristaproto.Message):
     will be applied.
     """
 
-    values: List["ExtensionDiff"] = aristaproto.message_field(1)
-    """values is an ordered list of extension diffs applied to the device."""
+    values: "list[ExtensionDiff]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is an ordered list of extension diffs applied to the device.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ExtensionDiffs", ExtensionDiffs)
 
 
 @dataclass(eq=False, repr=False)
@@ -623,126 +757,55 @@ class ExtensionDiffsBySup(aristaproto.Message):
     ExtensionDiffsBySup is the extension diff information for each supervisor.
     """
 
-    values: Dict[str, "ExtensionDiffs"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is the mapping of supervisor type to extension diff."""
+    values: "dict[str, ExtensionDiffs]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is the mapping of supervisor type to extension diff.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ExtensionDiffsBySup", ExtensionDiffsBySup)
 
 
 @dataclass(eq=False, repr=False)
-class ImageSummary(aristaproto.Message):
-    """ImageSummary represents device image summary."""
-
-    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """sku indicates the top-level sku or model number."""
-
-    running_image_update_time: datetime = aristaproto.message_field(2)
+class Extensions(aristaproto.Message):
     """
-    running_image_update_time is the most recent timestamp at which one of
-    running image side properties is updated.
+    Extensions provides an ordered list of running/designed extensions.
     """
 
-    designed_image_update_time: datetime = aristaproto.message_field(3)
+    values: "list[Extension]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    designed_image_update_time is the most recent timestamp at which one of
-    designed image side properties is updated.
-    """
-
-    dual_sup: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """dual_sup indicates if a device is a dual supervisor."""
-
-    active_slot: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
-    """
-    active_slot indicates the physical slot number for the the active
-    supervisor.
-    """
-
-    standby_slot: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
-    """
-    standby_slot indicates the physical slot number for the standby
-    supervisor.
-    """
-
-    software_image_diff: "SoftwareImageDiffsBySup" = aristaproto.message_field(7)
-    """software_image_diff indicates the image diff for each supervisor."""
-
-    terminattr_diff: "TerminAttrDiffsBySup" = aristaproto.message_field(8)
-    """terminattr_diff indicates the terminattr diff for each supervisor."""
-
-    extensions_diff: "ExtensionDiffsBySup" = aristaproto.message_field(9)
-    """extensions_diff indicates the extension diff for each supervisor."""
-
-    compliance_status: "SoftwareComplianceCode" = aristaproto.enum_field(10)
-    """
-    compliance_status is the aggregated compliance status (including both
-    active/standby and image/TA/extension compliance).
-    """
-
-    compliance: "ComplianceStatusBySup" = aristaproto.message_field(11)
-    """compliance provides compliance information for each supervisor."""
-
-    reboot_required: "RebootRequired" = aristaproto.message_field(12)
-    """
-    reboot_required indicates whether a reboot is required if the designed
-    image is pushed to the device.
-    """
-
-    digest: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
-    """
-     digest is the digest of the image summary. It can use SHA-256 hash
-     algorithm for example. It is computed by stringifying the
-    software_image_diff, terminattr_diff and extensions_diff and computing the
-     hash.
+    values represents extension information.
     """
 
 
-@dataclass(eq=False, repr=False)
-class SummaryKey(aristaproto.Message):
-    """SummaryKey uniquely identifies a device summary request."""
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the serial number of the device"""
-
-
-@dataclass(eq=False, repr=False)
-class Summary(aristaproto.Message):
-    """Summary represents the device image summary."""
-
-    key: "SummaryKey" = aristaproto.message_field(1)
-    """key represents the image summary key."""
-
-    summary: "ImageSummary" = aristaproto.message_field(2)
-    """summary is the image diff summary."""
-
-    errors: "ImageErrors" = aristaproto.message_field(3)
-    """
-    errors are the image errors encountered while validating the image. These are
-    displayed on the workspace build results page.
-    """
-
-    warnings: "ImageWarnings" = aristaproto.message_field(4)
-    """
-    warnings are the image warnings encountered while validating the image. These are
-    displayed on the workspace build results page.
-    """
-
-    infos: "ImageInfos" = aristaproto.message_field(5)
-    """
-    infos are the image infos encountered while validating the image. These are
-    displayed on the workspace build results page.
-    """
+default_message_pool.register_message("arista.imagestatus.v1", "Extensions", Extensions)
 
 
 @dataclass(eq=False, repr=False)
 class ImageError(aristaproto.Message):
-    """ImageError wraps `ErrorCode` enum with a reason string."""
+    """
+    ImageError wraps `ErrorCode` enum with a reason string.
+    """
 
-    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """sku represents the name of the sku."""
+    sku: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sku represents the name of the sku.
+    """
 
-    error_code: "ErrorCode" = aristaproto.enum_field(2)
-    """error_code is the error code."""
+    error_code: "ErrorCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ErrorCode(0))
+    """
+    error_code is the error code.
+    """
 
-    error_msg: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """error_msg provides a description of the error."""
+    error_msg: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error_msg provides a description of the error.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageError", ImageError)
 
 
 @dataclass(eq=False, repr=False)
@@ -752,22 +815,203 @@ class ImageErrors(aristaproto.Message):
     validations.
     """
 
-    values: List["ImageError"] = aristaproto.message_field(1)
-    """values is a list of image errors."""
+    values: "list[ImageError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of image errors.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageErrors", ImageErrors)
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfo(aristaproto.Message):
+    """
+    ImageInfo wraps `InfoCode` enum with a reason string.
+    """
+
+    sku: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sku represents the name of the sku.
+    """
+
+    info_code: "InfoCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: InfoCode(0))
+    """
+    info_code is the info code.
+    """
+
+    info_msg: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    info_msg provides a description of the info.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageInfo", ImageInfo)
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfos(aristaproto.Message):
+    """
+    ImageInfos is the list of info messages reported by CVP when handling image validations.
+    """
+
+    values: "list[ImageInfo]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of image infos.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageInfos", ImageInfos)
+
+
+@dataclass(eq=False, repr=False)
+class ImageMetadata(aristaproto.Message):
+    """
+    ImageMetadata provides information regarding the software image.
+    """
+
+    version: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version is the version of the EOS image.
+    """
+
+    release: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    release is the release name of the EOS image.
+    """
+
+    flavor: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    flavor is the flavor information of the EOS image.
+    default flavor is DEFAULT. Other flavors can be DPE, 2GB, etc.
+    """
+
+    variant: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    variant is the variant information of the EOS image.
+    possible values: INT or US.
+    """
+
+    arch: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    arch is the architecture of the EOS image.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageMetadata", ImageMetadata)
+
+
+@dataclass(eq=False, repr=False)
+class ImageSummary(aristaproto.Message):
+    """
+    ImageSummary represents device image summary.
+    """
+
+    sku: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sku indicates the top-level sku or model number.
+    """
+
+    running_image_update_time: "datetime.datetime | None" = aristaproto.field(
+        2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
+    """
+    running_image_update_time is the most recent timestamp at which one of
+    running image side properties is updated.
+    """
+
+    designed_image_update_time: "datetime.datetime | None" = aristaproto.field(
+        3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
+    """
+    designed_image_update_time is the most recent timestamp at which one of
+    designed image side properties is updated.
+    """
+
+    dual_sup: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    dual_sup indicates if a device is a dual supervisor.
+    """
+
+    active_slot: "int | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    active_slot indicates the physical slot number for the the active
+    supervisor.
+    """
+
+    standby_slot: "int | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    standby_slot indicates the physical slot number for the standby
+    supervisor.
+    """
+
+    software_image_diff: "SoftwareImageDiffsBySup | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    software_image_diff indicates the image diff for each supervisor.
+    """
+
+    terminattr_diff: "TerminAttrDiffsBySup | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    terminattr_diff indicates the terminattr diff for each supervisor.
+    """
+
+    extensions_diff: "ExtensionDiffsBySup | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    extensions_diff indicates the extension diff for each supervisor.
+    """
+
+    compliance_status: "SoftwareComplianceCode" = aristaproto.field(10, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareComplianceCode(0))
+    """
+    compliance_status is the aggregated compliance status (including both
+    active/standby and image/TA/extension compliance).
+    """
+
+    compliance: "ComplianceStatusBySup | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    compliance provides compliance information for each supervisor.
+    """
+
+    reboot_required: "RebootRequired | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    reboot_required indicates whether a reboot is required if the designed
+    image is pushed to the device.
+    """
+
+    digest: "str | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    digest is the digest of the image summary. It can use SHA-256 hash
+    algorithm for example. It is computed by stringifying the
+    software_image_diff, terminattr_diff and extensions_diff and computing the
+    hash.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageSummary", ImageSummary)
 
 
 @dataclass(eq=False, repr=False)
 class ImageWarning(aristaproto.Message):
-    """ImageWarning wraps `WarningCode` enum with a reason string."""
+    """
+    ImageWarning wraps `WarningCode` enum with a reason string.
+    """
 
-    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """sku represents the name of the sku."""
+    sku: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sku represents the name of the sku.
+    """
 
-    warning_code: "WarningCode" = aristaproto.enum_field(2)
-    """warning_code is the warning code."""
+    warning_code: "WarningCode" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: WarningCode(0))
+    """
+    warning_code is the warning code.
+    """
 
-    warning_msg: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """warning_msg provides a description of the warning."""
+    warning_msg: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    warning_msg provides a description of the warning.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageWarning", ImageWarning)
 
 
 @dataclass(eq=False, repr=False)
@@ -777,42 +1021,23 @@ class ImageWarnings(aristaproto.Message):
     validations.
     """
 
-    values: List["ImageWarning"] = aristaproto.message_field(1)
-    """values is a list of image warnings."""
-
-
-@dataclass(eq=False, repr=False)
-class ImageInfo(aristaproto.Message):
-    """ImageInfo wraps `InfoCode` enum with a reason string."""
-
-    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """sku represents the name of the sku."""
-
-    info_code: "InfoCode" = aristaproto.enum_field(2)
-    """info_code is the info code."""
-
-    info_msg: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """info_msg provides a description of the info."""
-
-
-@dataclass(eq=False, repr=False)
-class ImageInfos(aristaproto.Message):
+    values: "list[ImageWarning]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    ImageInfos is the list of info messages reported by CVP when handling image validations.
+    values is a list of image warnings.
     """
 
-    values: List["ImageInfo"] = aristaproto.message_field(1)
-    """values is a list of image infos."""
+
+default_message_pool.register_message("arista.imagestatus.v1", "ImageWarnings", ImageWarnings)
 
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -820,130 +1045,161 @@ class MetaResponse(aristaproto.Message):
     you should not see INITIAL again.
     """
 
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     Count is the number of items present under the conditions of the request.
     """
 
 
-@dataclass(eq=False, repr=False)
-class SummaryRequest(aristaproto.Message):
-    key: "SummaryKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Summary instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.imagestatus.v1", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
-class SummaryResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
+class RebootRequired(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    RebootRequired indicates the reboot information per software image,
+    terminattr and extension for the switch as a whole.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    software_image_reboot_required: "bool | None" = aristaproto.field(
+        1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True
+    )
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Summary instance in this response.
+    software_image_reboot_required indicates whether reboot is required
+    for the software image being applied.
+    """
+
+    terminattr_reboot_required: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    terminattr_reboot_required indicates whether reboot is required
+    for the terminattr being applied/deleted.
+    """
+
+    extension_reboot_required: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    extension_reboot_required indicates whether reboot is required
+    for the extensions being applied/deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class SummarySomeRequest(aristaproto.Message):
-    keys: List["SummaryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SummarySomeResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Summary instance in this response.
-    """
+default_message_pool.register_message("arista.imagestatus.v1", "RebootRequired", RebootRequired)
 
 
 @dataclass(eq=False, repr=False)
-class SummaryStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
+class SoftwareImage(aristaproto.Message):
     """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    SoftwareImage provides information of the running/designed EOS image.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Summary at end.
-        * Each Summary response is fully-specified (all fields set).
-      * start: Returns the state of each Summary at start, followed by updates until now.
-        * Each Summary response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Summary at start, followed by updates
-        until end.
-        * Each Summary response at start is fully-specified, but updates until end may
-          be partial.
+    name is the name of the EOS image.
     """
+
+    version: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version is the version of the EOS image.
+    """
+
+    metadata: "ImageMetadata | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    metadata  is the metadata of EOS image.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SoftwareImage", SoftwareImage)
 
 
 @dataclass(eq=False, repr=False)
-class SummaryStreamResponse(aristaproto.Message):
-    value: "Summary" = aristaproto.message_field(1)
+class SoftwareImageDiff(aristaproto.Message):
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    SoftwareImageDiff is the diff for the running/designed images.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Summary's last modification."""
+    code: "DiffOp" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
+    """
+    code indicates the operation performed to get from one side of the diff
+    to the other.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    a: "SoftwareImage | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the Summary value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    a is the software image on the a side (left hand side).
     """
+
+    b: "SoftwareImage | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    b is the software image on the b side (right hand side).
+    """
+
+    text_code: "DiffOp" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: DiffOp(0))
+    """
+    text_code is the color in the diff view page.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SoftwareImageDiff", SoftwareImageDiff)
+
+
+@dataclass(eq=False, repr=False)
+class SoftwareImageDiffsBySup(aristaproto.Message):
+    """
+    SoftwareImageDiffsBySup is software image diff information for each
+    supervisor.
+    """
+
+    values: "dict[str, SoftwareImageDiff]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is the mapping of supervisor type to image diff.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SoftwareImageDiffsBySup", SoftwareImageDiffsBySup)
+
+
+@dataclass(eq=False, repr=False)
+class Summary(aristaproto.Message):
+    """
+    Summary represents the device image summary.
+    """
+
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key represents the image summary key.
+    """
+
+    summary: "ImageSummary | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    summary is the image diff summary.
+    """
+
+    errors: "ImageErrors | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    errors are the image errors encountered while validating the image. These are
+    displayed on the workspace build results page.
+    """
+
+    warnings: "ImageWarnings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    warnings are the image warnings encountered while validating the image. These are
+    displayed on the workspace build results page.
+    """
+
+    infos: "ImageInfos | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    infos are the image infos encountered while validating the image. These are
+    displayed on the workspace build results page.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "Summary", Summary)
 
 
 @dataclass(eq=False, repr=False)
 class SummaryBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[Summary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -952,7 +1208,7 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -969,7 +1225,7 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -978,9 +1234,12 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryBatchedStreamRequest", SummaryBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SummaryBatchedStreamResponse(aristaproto.Message):
-    responses: List["SummaryStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[SummaryStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -988,285 +1247,345 @@ class SummaryBatchedStreamResponse(aristaproto.Message):
     """
 
 
-class SummaryServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryBatchedStreamResponse", SummaryBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryKey(aristaproto.Message):
+    """
+    SummaryKey uniquely identifies a device summary request.
+    """
+
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the serial number of the device
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryKey", SummaryKey)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryRequest(aristaproto.Message):
+    key: "SummaryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Summary instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryRequest", SummaryRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryResponse(aristaproto.Message):
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Summary instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryResponse", SummaryResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SummarySomeRequest(aristaproto.Message):
+    keys: "list[SummaryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummarySomeRequest", SummarySomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SummarySomeResponse(aristaproto.Message):
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Summary instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummarySomeResponse", SummarySomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Summary]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryStreamRequest", SummaryStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SummaryStreamResponse(aristaproto.Message):
+    value: "Summary | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Summary's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Summary value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "SummaryStreamResponse", SummaryStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TerminAttrDiffsBySup(aristaproto.Message):
+    """
+    TerminAttrDiffsBySup is the terminattr diff information for each supervisor.
+    """
+
+    values: "dict[str, ExtensionDiff]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is the mapping of supervisor type to terminattr diff.
+    """
+
+
+default_message_pool.register_message("arista.imagestatus.v1", "TerminAttrDiffsBySup", TerminAttrDiffsBySup)
+
+
+class SummaryServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        summary_request: "SummaryRequest",
+        message: "SummaryRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SummaryResponse":
+
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetOne",
-            summary_request,
+            message,
             SummaryResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        summary_some_request: "SummarySomeRequest",
+        message: "SummarySomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SummarySomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetSome",
-            summary_some_request,
+            message,
             SummarySomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAll",
-            summary_stream_request,
+            message,
             SummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SummaryStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/Subscribe",
-            summary_stream_request,
+            message,
             SummaryStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetMeta",
-            summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        summary_stream_request: "SummaryStreamRequest",
+        message: "SummaryStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeMeta",
-            summary_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        summary_batched_stream_request: "SummaryBatchedStreamRequest",
+        message: "SummaryBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAllBatched",
-            summary_batched_stream_request,
+            message,
             SummaryBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        summary_batched_stream_request: "SummaryBatchedStreamRequest",
+        message: "SummaryBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeBatched",
-            summary_batched_stream_request,
+            message,
             SummaryBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class SummaryServiceBase(ServiceBase):
-    async def get_one(self, summary_request: "SummaryRequest") -> "SummaryResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, summary_some_request: "SummarySomeRequest") -> AsyncIterator[SummarySomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, summary_stream_request: "SummaryStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SummaryStreamRequest, SummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SummaryStreamRequest, SummaryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SummaryBatchedStreamRequest, SummaryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SummaryBatchedStreamRequest, SummaryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.imagestatus.v1.SummaryService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SummaryRequest,
-                SummaryResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummarySomeRequest,
-                SummarySomeResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                SummaryStreamResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                SummaryStreamResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryBatchedStreamRequest,
-                SummaryBatchedStreamResponse,
-            ),
-            "/arista.imagestatus.v1.SummaryService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SummaryBatchedStreamRequest,
-                SummaryBatchedStreamResponse,
-            ),
-        }

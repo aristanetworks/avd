@@ -6,17 +6,19 @@ dev = [
     "anta==1.8.0",
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.6",
-    "python-socks[asyncio]>=2.7.2",
+    "pyyaml>=6.0.0",
     {include-group = "schema-tools"},
     # dev requirements"
     {include-group = "pytest"},
     {include-group = "molecule"},
     "ansible-doc-extractor>=0.1.11",
+    "ansible-lint>=26.4.0",
+    "aristaproto_compiler==2.0.0.dev1",
     "ansible-lint>=26.6.0",
-    "aristaproto[compiler]==0.1.5",
     "bump-my-version>=1.3.0",
     "codespell>=2.4.2",
     "docker>=7.1.0",
+    "grpcio>=1.72.1",
     "identify>=2.6.18",
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
@@ -178,7 +180,6 @@ runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 typeCheckingMode = "standard"
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
-  "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema/models",                                     # TODO
   "python-avd/schema_tools/generate_docs",                               # TODO
   "python-avd/schema_tools/metaschema",                                  # TODO

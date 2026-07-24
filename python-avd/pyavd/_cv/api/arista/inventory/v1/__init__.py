@@ -7,162 +7,113 @@
 # This file has been @generated
 
 __all__ = (
-    "StreamingStatus",
-    "OnboardingStatus",
     "DecommissioningStatus",
-    "ProvisioningStatus",
-    "ExtendedAttributes",
-    "DeviceKey",
-    "DeviceConfiguration",
-    "UuidKey",
-    "DeviceOnboardingConfig",
-    "DeviceOnboarding",
-    "DeviceDecommissioningConfig",
-    "DeviceDecommissioning",
     "Device",
-    "ProvisionedDevice",
-    "MetaResponse",
-    "DeviceRequest",
-    "DeviceResponse",
-    "DeviceSomeRequest",
-    "DeviceSomeResponse",
-    "DeviceStreamRequest",
-    "DeviceStreamResponse",
     "DeviceBatchedStreamRequest",
     "DeviceBatchedStreamResponse",
-    "DeviceDecommissioningRequest",
-    "DeviceDecommissioningResponse",
-    "DeviceDecommissioningSomeRequest",
-    "DeviceDecommissioningSomeResponse",
-    "DeviceDecommissioningStreamRequest",
-    "DeviceDecommissioningStreamResponse",
+    "DeviceConfiguration",
+    "DeviceDecommissioning",
     "DeviceDecommissioningBatchedStreamRequest",
     "DeviceDecommissioningBatchedStreamResponse",
-    "DeviceDecommissioningConfigRequest",
-    "DeviceDecommissioningConfigResponse",
-    "DeviceDecommissioningConfigSomeRequest",
-    "DeviceDecommissioningConfigSomeResponse",
-    "DeviceDecommissioningConfigStreamRequest",
-    "DeviceDecommissioningConfigStreamResponse",
+    "DeviceDecommissioningConfig",
     "DeviceDecommissioningConfigBatchedStreamRequest",
     "DeviceDecommissioningConfigBatchedStreamResponse",
-    "DeviceDecommissioningConfigSetRequest",
-    "DeviceDecommissioningConfigSetResponse",
-    "DeviceDecommissioningConfigSetSomeRequest",
-    "DeviceDecommissioningConfigSetSomeResponse",
+    "DeviceDecommissioningConfigDeleteAllRequest",
+    "DeviceDecommissioningConfigDeleteAllResponse",
     "DeviceDecommissioningConfigDeleteRequest",
     "DeviceDecommissioningConfigDeleteResponse",
     "DeviceDecommissioningConfigDeleteSomeRequest",
     "DeviceDecommissioningConfigDeleteSomeResponse",
-    "DeviceDecommissioningConfigDeleteAllRequest",
-    "DeviceDecommissioningConfigDeleteAllResponse",
-    "DeviceOnboardingRequest",
-    "DeviceOnboardingResponse",
-    "DeviceOnboardingSomeRequest",
-    "DeviceOnboardingSomeResponse",
-    "DeviceOnboardingStreamRequest",
-    "DeviceOnboardingStreamResponse",
+    "DeviceDecommissioningConfigRequest",
+    "DeviceDecommissioningConfigResponse",
+    "DeviceDecommissioningConfigServiceStub",
+    "DeviceDecommissioningConfigSetRequest",
+    "DeviceDecommissioningConfigSetResponse",
+    "DeviceDecommissioningConfigSetSomeRequest",
+    "DeviceDecommissioningConfigSetSomeResponse",
+    "DeviceDecommissioningConfigSomeRequest",
+    "DeviceDecommissioningConfigSomeResponse",
+    "DeviceDecommissioningConfigStreamRequest",
+    "DeviceDecommissioningConfigStreamResponse",
+    "DeviceDecommissioningRequest",
+    "DeviceDecommissioningResponse",
+    "DeviceDecommissioningServiceStub",
+    "DeviceDecommissioningSomeRequest",
+    "DeviceDecommissioningSomeResponse",
+    "DeviceDecommissioningStreamRequest",
+    "DeviceDecommissioningStreamResponse",
+    "DeviceKey",
+    "DeviceOnboarding",
     "DeviceOnboardingBatchedStreamRequest",
     "DeviceOnboardingBatchedStreamResponse",
-    "DeviceOnboardingConfigRequest",
-    "DeviceOnboardingConfigResponse",
-    "DeviceOnboardingConfigSomeRequest",
-    "DeviceOnboardingConfigSomeResponse",
-    "DeviceOnboardingConfigStreamRequest",
-    "DeviceOnboardingConfigStreamResponse",
+    "DeviceOnboardingConfig",
     "DeviceOnboardingConfigBatchedStreamRequest",
     "DeviceOnboardingConfigBatchedStreamResponse",
-    "DeviceOnboardingConfigSetRequest",
-    "DeviceOnboardingConfigSetResponse",
-    "DeviceOnboardingConfigSetSomeRequest",
-    "DeviceOnboardingConfigSetSomeResponse",
+    "DeviceOnboardingConfigDeleteAllRequest",
+    "DeviceOnboardingConfigDeleteAllResponse",
     "DeviceOnboardingConfigDeleteRequest",
     "DeviceOnboardingConfigDeleteResponse",
     "DeviceOnboardingConfigDeleteSomeRequest",
     "DeviceOnboardingConfigDeleteSomeResponse",
-    "DeviceOnboardingConfigDeleteAllRequest",
-    "DeviceOnboardingConfigDeleteAllResponse",
+    "DeviceOnboardingConfigRequest",
+    "DeviceOnboardingConfigResponse",
+    "DeviceOnboardingConfigServiceStub",
+    "DeviceOnboardingConfigSetRequest",
+    "DeviceOnboardingConfigSetResponse",
+    "DeviceOnboardingConfigSetSomeRequest",
+    "DeviceOnboardingConfigSetSomeResponse",
+    "DeviceOnboardingConfigSomeRequest",
+    "DeviceOnboardingConfigSomeResponse",
+    "DeviceOnboardingConfigStreamRequest",
+    "DeviceOnboardingConfigStreamResponse",
+    "DeviceOnboardingRequest",
+    "DeviceOnboardingResponse",
+    "DeviceOnboardingServiceStub",
+    "DeviceOnboardingSomeRequest",
+    "DeviceOnboardingSomeResponse",
+    "DeviceOnboardingStreamRequest",
+    "DeviceOnboardingStreamResponse",
+    "DeviceRequest",
+    "DeviceResponse",
+    "DeviceServiceStub",
+    "DeviceSomeRequest",
+    "DeviceSomeResponse",
+    "DeviceStreamRequest",
+    "DeviceStreamResponse",
+    "ExtendedAttributes",
+    "MetaResponse",
+    "OnboardingStatus",
+    "ProvisionedDevice",
+    "ProvisionedDeviceBatchedStreamRequest",
+    "ProvisionedDeviceBatchedStreamResponse",
     "ProvisionedDeviceRequest",
     "ProvisionedDeviceResponse",
+    "ProvisionedDeviceServiceStub",
     "ProvisionedDeviceSomeRequest",
     "ProvisionedDeviceSomeResponse",
     "ProvisionedDeviceStreamRequest",
     "ProvisionedDeviceStreamResponse",
-    "ProvisionedDeviceBatchedStreamRequest",
-    "ProvisionedDeviceBatchedStreamResponse",
-    "DeviceServiceStub",
-    "DeviceServiceBase",
-    "DeviceDecommissioningServiceStub",
-    "DeviceDecommissioningServiceBase",
-    "DeviceDecommissioningConfigServiceStub",
-    "DeviceDecommissioningConfigServiceBase",
-    "DeviceOnboardingServiceStub",
-    "DeviceOnboardingServiceBase",
-    "DeviceOnboardingConfigServiceStub",
-    "DeviceOnboardingConfigServiceBase",
-    "ProvisionedDeviceServiceStub",
-    "ProvisionedDeviceServiceBase",
+    "ProvisioningStatus",
+    "StreamingStatus",
+    "UuidKey",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
 
-
-class StreamingStatus(aristaproto.Enum):
-    """
-    StreamingStatus defines the status of telemetry streaming for a device.
-    """
-
-    UNSPECIFIED = 0
-    """
-    STREAMING_STATUS_UNSPECIFIED indicates the device streaming telemetry status is unspecified.
-    """
-
-    INACTIVE = 1
-    """
-    STREAMING_STATUS_INACTIVE indicates the device is not streaming telemetry.
-    """
-
-    ACTIVE = 2
-    """STREAMING_STATUS_ACTIVE indicates the device is streaming telemetry."""
-
-
-class OnboardingStatus(aristaproto.Enum):
-    """
-    OnboardingStatus defines the set of possible states in the onboarding process
-    for a device.
-    """
-
-    UNSPECIFIED = 0
-    """
-    ONBOARDING_STATUS_UNSPECIFIED indicates onboarding status is unspecified.
-    """
-
-    IN_PROGRESS = 1
-    """ONBOARDING_STATUS_IN_PROGRESS indicates onboarding is in progress."""
-
-    FAILURE = 2
-    """ONBOARDING_STATUS_FAILURE indicates onboarding failed."""
-
-    SUCCESS = 3
-    """ONBOARDING_STATUS_SUCCESS indicates onboarding succeeded."""
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class DecommissioningStatus(aristaproto.Enum):
@@ -182,10 +133,77 @@ class DecommissioningStatus(aristaproto.Enum):
     """
 
     FAILURE = 2
-    """DECOMMISSIONING_STATUS_FAILURE indicates decommissioning failed."""
+    """
+    DECOMMISSIONING_STATUS_FAILURE indicates decommissioning failed.
+    """
 
     SUCCESS = 3
-    """DECOMMISSIONING_STATUS_SUCCESS indicates decommissioning succeeded."""
+    """
+    DECOMMISSIONING_STATUS_SUCCESS indicates decommissioning succeeded.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DECOMMISSIONING_STATUS_UNSPECIFIED",
+            1: "DECOMMISSIONING_STATUS_IN_PROGRESS",
+            2: "DECOMMISSIONING_STATUS_FAILURE",
+            3: "DECOMMISSIONING_STATUS_SUCCESS",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DECOMMISSIONING_STATUS_UNSPECIFIED": 0,
+            "DECOMMISSIONING_STATUS_IN_PROGRESS": 1,
+            "DECOMMISSIONING_STATUS_FAILURE": 2,
+            "DECOMMISSIONING_STATUS_SUCCESS": 3,
+        }
+
+
+class OnboardingStatus(aristaproto.Enum):
+    """
+    OnboardingStatus defines the set of possible states in the onboarding process
+    for a device.
+    """
+
+    UNSPECIFIED = 0
+    """
+    ONBOARDING_STATUS_UNSPECIFIED indicates onboarding status is unspecified.
+    """
+
+    IN_PROGRESS = 1
+    """
+    ONBOARDING_STATUS_IN_PROGRESS indicates onboarding is in progress.
+    """
+
+    FAILURE = 2
+    """
+    ONBOARDING_STATUS_FAILURE indicates onboarding failed.
+    """
+
+    SUCCESS = 3
+    """
+    ONBOARDING_STATUS_SUCCESS indicates onboarding succeeded.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ONBOARDING_STATUS_UNSPECIFIED",
+            1: "ONBOARDING_STATUS_IN_PROGRESS",
+            2: "ONBOARDING_STATUS_FAILURE",
+            3: "ONBOARDING_STATUS_SUCCESS",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ONBOARDING_STATUS_UNSPECIFIED": 0,
+            "ONBOARDING_STATUS_IN_PROGRESS": 1,
+            "ONBOARDING_STATUS_FAILURE": 2,
+            "ONBOARDING_STATUS_SUCCESS": 3,
+        }
 
 
 class ProvisioningStatus(aristaproto.Enum):
@@ -205,32 +223,188 @@ class ProvisioningStatus(aristaproto.Enum):
     """
 
     FAILURE = 2
-    """PROVISIONING_STATUS_FAILURE indicates provisioning failed."""
+    """
+    PROVISIONING_STATUS_FAILURE indicates provisioning failed.
+    """
 
     SUCCESS = 3
-    """PROVISIONING_STATUS_SUCCESS indicates provisioning succeeded."""
+    """
+    PROVISIONING_STATUS_SUCCESS indicates provisioning succeeded.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "PROVISIONING_STATUS_UNSPECIFIED",
+            1: "PROVISIONING_STATUS_IN_PROGRESS",
+            2: "PROVISIONING_STATUS_FAILURE",
+            3: "PROVISIONING_STATUS_SUCCESS",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "PROVISIONING_STATUS_UNSPECIFIED": 0,
+            "PROVISIONING_STATUS_IN_PROGRESS": 1,
+            "PROVISIONING_STATUS_FAILURE": 2,
+            "PROVISIONING_STATUS_SUCCESS": 3,
+        }
+
+
+class StreamingStatus(aristaproto.Enum):
+    """
+    StreamingStatus defines the status of telemetry streaming for a device.
+    """
+
+    UNSPECIFIED = 0
+    """
+    STREAMING_STATUS_UNSPECIFIED indicates the device streaming telemetry status is unspecified.
+    """
+
+    INACTIVE = 1
+    """
+    STREAMING_STATUS_INACTIVE indicates the device is not streaming telemetry.
+    """
+
+    ACTIVE = 2
+    """
+    STREAMING_STATUS_ACTIVE indicates the device is streaming telemetry.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "STREAMING_STATUS_UNSPECIFIED",
+            1: "STREAMING_STATUS_INACTIVE",
+            2: "STREAMING_STATUS_ACTIVE",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "STREAMING_STATUS_UNSPECIFIED": 0,
+            "STREAMING_STATUS_INACTIVE": 1,
+            "STREAMING_STATUS_ACTIVE": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class ExtendedAttributes(aristaproto.Message):
+class Device(aristaproto.Message):
     """
-    ExtendedAttributes wraps any additional, potentially non-standard, features
-    or attributes the device reports.
+    Device describes an onboarded device.
     """
 
-    feature_enabled: Dict[str, bool] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    feature_enabled is a map of feature name to enabled status.
-    If a feature is missing from this map it can be assumed off.
+    key uniquely identifies the device.
     """
+
+    software_version: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    software_version gives the currently running device software version.
+    """
+
+    model_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    model_name describes the hardware model of this device.
+    """
+
+    hardware_revision: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    hardware_revision describes any revisional data to the model name.
+    """
+
+    fqdn: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    fqdn gives the device's fully qualified domain name.
+    """
+
+    hostname: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    hostname is the hostname as reported on the device.
+    """
+
+    domain_name: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    domain_name provides the domain name on which the device is registered.
+    """
+
+    system_mac_address: "str | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    system_mac_address provides the MAC address of the management port.
+    """
+
+    boot_time: "datetime.datetime | None" = aristaproto.field(20, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    boot_time indicates when the device was last booted.
+    """
+
+    streaming_status: "StreamingStatus" = aristaproto.field(30, aristaproto.TYPE_ENUM, default_factory=lambda: StreamingStatus(0))
+    """
+    streaming_status is the status of telemetry streaming for this device.
+    """
+
+    extended_attributes: "ExtendedAttributes | None" = aristaproto.field(31, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    extended_attributes wraps any additional, potentially non-standard, features
+    or attributes that the device reports.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "Device", Device)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceKey(aristaproto.Message):
-    """DeviceKey uniquely identifies a single device."""
+class DeviceBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Device]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id is the unique identifier of the device."""
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Device at end.
+        * Each Device response is fully-specified (all fields set).
+      * start: Returns the state of each Device at start, followed by updates until now.
+        * Each Device response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Device at start, followed by updates
+        until end.
+        * Each Device response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceBatchedStreamRequest", DeviceBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceBatchedStreamResponse", DeviceBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -240,109 +414,110 @@ class DeviceConfiguration(aristaproto.Message):
     device, as defined in https://github.com/aristanetworks/cloudvision-go.
     """
 
-    options: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
+    options: "dict[str, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_STRING))
     """
     options is a map from device option to value.
 
     E.g., for an SNMP device, this could be the following:
 
-    \"address\":   \"my_snmp_hostname\",
-    \"community\": \"public\"
+    "address":   "my_snmp_hostname",
+    "community": "public"
     """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceConfiguration", DeviceConfiguration)
 
 
 @dataclass(eq=False, repr=False)
-class UuidKey(aristaproto.Message):
+class DeviceDecommissioning(aristaproto.Message):
     """
-    UUIDKey is a key that holds a UUID for an onboarding or decommissioning request.
-    """
-
-    request_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """request_id should be a UUID for the request."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfig(aristaproto.Message):
-    """
-    DeviceOnboardingConfig describes a device onboarding request. \"Onboarding\"
-    refers to the process of initiating device streaming to CloudVision and
-    adding the streaming device to CloudVision's inventory.
-
-    The request flow works as follows:
-
-    1. Set on DeviceOnboardingConfig sends an onboarding request with a UUID
-       that the user is responsible for generating.
-    2. Once the server receives the request, it validates and records it.
-    3. Then, the server processes it, initiating the onboarding procedure and
-       tracking the status of the onboarding attempt.
-    4. The user may do a GetOne or Subscribe on DeviceOnboarding using the same
-       UUID to see the status of the request.
+    DeviceDecommissioning describes the status of a decommissioning process.
     """
 
-    key: "UuidKey" = aristaproto.message_field(1)
-    """key identifies the request to onboard the device at hostname_or_ip."""
-
-    hostname_or_ip: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    hostname_or_ip is a hostname or an IP at which the device can be reached.
+    key identifies the request for which to retrieve a decommissioning status.
     """
 
-    device_type: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    status: "DecommissioningStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: DecommissioningStatus(0))
     """
-    device_type describes the method by which to retrieve information for the
-    device. The value should be \"eos\" for eos devices. For third-party devices,
-    supported values are: \"openconfig\", \"snmp\", \"cvp\", \"mwm\", and \"vCenter\".
+    status describes the decommissioning status of the device.
     """
 
-    device_config: "DeviceConfiguration" = aristaproto.message_field(4)
-    """device_config is the configuration for a third-party device."""
-
-    profile_name: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    profile_name specifies the name of the TerminAttr profile which includes the
-    custom TerminAttr configuration to be applied to the device while onboarding.
+    error is the error that caused status to become DECOMMISSIONING_STATUS_FAILURE.
     """
 
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboarding(aristaproto.Message):
-    """DeviceOnboarding describes the status of an onboarding process."""
-
-    key: "UuidKey" = aristaproto.message_field(1)
+    status_message: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    key identifies the request for which to retrieve an onboarding status.
-    """
-
-    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """device_id is the unique device ID that is discovered via onboarding."""
-
-    status: "OnboardingStatus" = aristaproto.enum_field(3)
-    """status describes the onboarding status of the device."""
-
-    error: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    error is the error that caused status to become ONBOARDING_STATUS_FAILURE.
-    """
-
-    status_message: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    status_message contains information on the status of the onboarding attempt,
+    status_message contains information on the status of the decommissioning attempt,
     if any. This is generally an unstructured log message that is for display
     purposes only (its structure and contents may change).
     """
 
-    profile_name: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioning", DeviceDecommissioning)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceDecommissioning]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    profile_name is the name of the custom TerminAttr profile that was specified in the
-    onboarding request.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceDecommissioning at end.
+        * Each DeviceDecommissioning response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
+        until end.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningBatchedStreamRequest", DeviceDecommissioningBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceDecommissioningStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningBatchedStreamResponse", DeviceDecommissioningBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningConfig(aristaproto.Message):
     """
     DeviceDecommissioningConfig describes a device decommissioning request.
-    \"Decommissioning\" refers to the process of stopping device streaming to
+    "Decommissioning" refers to the process of stopping device streaming to
     CloudVision and removing it from CloudVision's inventory.
 
     The request flow works as follows:
@@ -359,15 +534,17 @@ class DeviceDecommissioningConfig(aristaproto.Message):
     Studios and Tags. See `DecommissionConfig` in `arista.studio_topology.v1`.
     """
 
-    key: "UuidKey" = aristaproto.message_field(1)
-    """key identifies the request to decommission the device."""
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the request to decommission the device.
+    """
 
-    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     device_id is the unique device ID that was discovered via onboarding.
     """
 
-    force: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    force: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     force is a flag that indicates if the decommission is to be forced.
     Normally, if there are pending or in-progress tasks associated with the device
@@ -375,82 +552,1317 @@ class DeviceDecommissioningConfig(aristaproto.Message):
     tasks would be ignored and decommissioning will be continued.
     """
 
-    user_name: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """user_name is name of the user who decommissioned the device."""
+    user_name: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user_name is name of the user who decommissioned the device.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfig", DeviceDecommissioningConfig)
 
 
 @dataclass(eq=False, repr=False)
-class DeviceDecommissioning(aristaproto.Message):
+class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceDecommissioningConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    DeviceDecommissioning describes the status of a decommissioning process.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
 
-    key: "UuidKey" = aristaproto.message_field(1)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    key identifies the request for which to retrieve a decommissioning status.
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceDecommissioningConfig at end.
+        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
+        until end.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
-    status: "DecommissioningStatus" = aristaproto.enum_field(2)
-    """status describes the decommissioning status of the device."""
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
 
-    error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigBatchedStreamRequest", DeviceDecommissioningConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceDecommissioningConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    error is the error that caused status to become DECOMMISSIONING_STATUS_FAILURE.
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
-    status_message: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+
+default_message_pool.register_message(
+    "arista.inventory.v1", "DeviceDecommissioningConfigBatchedStreamResponse", DeviceDecommissioningConfigBatchedStreamResponse
+)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceDecommissioningConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    status_message contains information on the status of the decommissioning attempt,
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteAllRequest", DeviceDecommissioningConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the DeviceDecommissioningConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteAllResponse", DeviceDecommissioningConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which DeviceDecommissioningConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteRequest", DeviceDecommissioningConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteResponse(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted DeviceDecommissioningConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteResponse", DeviceDecommissioningConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of DeviceDecommissioningConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteSomeRequest", DeviceDecommissioningConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    DeviceDecommissioningConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigDeleteSomeResponse", DeviceDecommissioningConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceDecommissioningConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigRequest", DeviceDecommissioningConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigResponse(aristaproto.Message):
+    value: "DeviceDecommissioningConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceDecommissioningConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigResponse", DeviceDecommissioningConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSetRequest(aristaproto.Message):
+    value: "DeviceDecommissioningConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    DeviceDecommissioningConfig carries the value to set into the datastore.
+    See the documentation on the DeviceDecommissioningConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSetRequest", DeviceDecommissioningConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSetResponse(aristaproto.Message):
+    value: "DeviceDecommissioningConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the DeviceDecommissioningConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSetResponse", DeviceDecommissioningConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSetSomeRequest(aristaproto.Message):
+    values: "list[DeviceDecommissioningConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of DeviceDecommissioningConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSetSomeRequest", DeviceDecommissioningConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSetSomeResponse(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSetSomeResponse", DeviceDecommissioningConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSomeRequest", DeviceDecommissioningConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigSomeResponse(aristaproto.Message):
+    value: "DeviceDecommissioningConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceDecommissioningConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigSomeResponse", DeviceDecommissioningConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceDecommissioningConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceDecommissioningConfig at end.
+        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
+        until end.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigStreamRequest", DeviceDecommissioningConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningConfigStreamResponse(aristaproto.Message):
+    value: "DeviceDecommissioningConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceDecommissioningConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceDecommissioningConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningConfigStreamResponse", DeviceDecommissioningConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceDecommissioning instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningRequest", DeviceDecommissioningRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningResponse(aristaproto.Message):
+    value: "DeviceDecommissioning | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceDecommissioning instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningResponse", DeviceDecommissioningResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningSomeRequest", DeviceDecommissioningSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningSomeResponse(aristaproto.Message):
+    value: "DeviceDecommissioning | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceDecommissioning instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningSomeResponse", DeviceDecommissioningSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceDecommissioning]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceDecommissioning at end.
+        * Each DeviceDecommissioning response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
+        until end.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningStreamRequest", DeviceDecommissioningStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceDecommissioningStreamResponse(aristaproto.Message):
+    value: "DeviceDecommissioning | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceDecommissioning's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceDecommissioning value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceDecommissioningStreamResponse", DeviceDecommissioningStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceKey(aristaproto.Message):
+    """
+    DeviceKey uniquely identifies a single device.
+    """
+
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the unique identifier of the device.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceKey", DeviceKey)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboarding(aristaproto.Message):
+    """
+    DeviceOnboarding describes the status of an onboarding process.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the request for which to retrieve an onboarding status.
+    """
+
+    device_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id is the unique device ID that is discovered via onboarding.
+    """
+
+    status: "OnboardingStatus" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: OnboardingStatus(0))
+    """
+    status describes the onboarding status of the device.
+    """
+
+    error: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error is the error that caused status to become ONBOARDING_STATUS_FAILURE.
+    """
+
+    status_message: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    status_message contains information on the status of the onboarding attempt,
     if any. This is generally an unstructured log message that is for display
     purposes only (its structure and contents may change).
     """
 
+    profile_name: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    profile_name is the name of the custom TerminAttr profile that was specified in the
+    onboarding request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboarding", DeviceOnboarding)
+
 
 @dataclass(eq=False, repr=False)
-class Device(aristaproto.Message):
-    """Device describes an onboarded device."""
-
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device."""
-
-    software_version: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+class DeviceOnboardingBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceOnboarding]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    software_version gives the currently running device software version.
-    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    model_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """model_name describes the hardware model of this device."""
-
-    hardware_revision: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """hardware_revision describes any revisional data to the model name."""
-
-    fqdn: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
-    """fqdn gives the device's fully qualified domain name."""
-
-    hostname: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
-    """hostname is the hostname as reported on the device."""
-
-    domain_name: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
-    """
-    domain_name provides the domain name on which the device is registered.
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
 
-    system_mac_address: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
-    """system_mac_address provides the MAC address of the management port."""
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
 
-    boot_time: datetime = aristaproto.message_field(20)
-    """boot_time indicates when the device was last booted."""
+    For GetAll, the fields start and end can be used as follows:
 
-    streaming_status: "StreamingStatus" = aristaproto.enum_field(30)
-    """
-    streaming_status is the status of telemetry streaming for this device.
+      * end: Returns the state of each DeviceOnboarding at end.
+        * Each DeviceOnboarding response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
+        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
+        until end.
+        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
+          be partial.
     """
 
-    extended_attributes: "ExtendedAttributes" = aristaproto.message_field(31)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
-    extended_attributes wraps any additional, potentially non-standard, features
-    or attributes that the device reports.
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
     """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingBatchedStreamRequest", DeviceOnboardingBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceOnboardingStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingBatchedStreamResponse", DeviceOnboardingBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfig(aristaproto.Message):
+    """
+    DeviceOnboardingConfig describes a device onboarding request. "Onboarding"
+    refers to the process of initiating device streaming to CloudVision and
+    adding the streaming device to CloudVision's inventory.
+
+    The request flow works as follows:
+
+    1. Set on DeviceOnboardingConfig sends an onboarding request with a UUID
+       that the user is responsible for generating.
+    2. Once the server receives the request, it validates and records it.
+    3. Then, the server processes it, initiating the onboarding procedure and
+       tracking the status of the onboarding attempt.
+    4. The user may do a GetOne or Subscribe on DeviceOnboarding using the same
+       UUID to see the status of the request.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies the request to onboard the device at hostname_or_ip.
+    """
+
+    hostname_or_ip: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    hostname_or_ip is a hostname or an IP at which the device can be reached.
+    """
+
+    device_type: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_type describes the method by which to retrieve information for the
+    device. The value should be "eos" for eos devices. For third-party devices,
+    supported values are: "openconfig", "snmp", "cvp", "mwm", and "vCenter".
+    """
+
+    device_config: "DeviceConfiguration | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    device_config is the configuration for a third-party device.
+    """
+
+    profile_name: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    profile_name specifies the name of the TerminAttr profile which includes the
+    custom TerminAttr configuration to be applied to the device while onboarding.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfig", DeviceOnboardingConfig)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceOnboardingConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceOnboardingConfig at end.
+        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
+        until end.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigBatchedStreamRequest", DeviceOnboardingConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DeviceOnboardingConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigBatchedStreamResponse", DeviceOnboardingConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceOnboardingConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteAllRequest", DeviceOnboardingConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the DeviceOnboardingConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteAllResponse", DeviceOnboardingConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which DeviceOnboardingConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteRequest", DeviceOnboardingConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteResponse(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted DeviceOnboardingConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteResponse", DeviceOnboardingConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of DeviceOnboardingConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteSomeRequest", DeviceOnboardingConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    DeviceOnboardingConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigDeleteSomeResponse", DeviceOnboardingConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceOnboardingConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigRequest", DeviceOnboardingConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigResponse(aristaproto.Message):
+    value: "DeviceOnboardingConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceOnboardingConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigResponse", DeviceOnboardingConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSetRequest(aristaproto.Message):
+    value: "DeviceOnboardingConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    DeviceOnboardingConfig carries the value to set into the datastore.
+    See the documentation on the DeviceOnboardingConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSetRequest", DeviceOnboardingConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSetResponse(aristaproto.Message):
+    value: "DeviceOnboardingConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the DeviceOnboardingConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSetResponse", DeviceOnboardingConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSetSomeRequest(aristaproto.Message):
+    values: "list[DeviceOnboardingConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of DeviceOnboardingConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSetSomeRequest", DeviceOnboardingConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSetSomeResponse(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSetSomeResponse", DeviceOnboardingConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSomeRequest", DeviceOnboardingConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigSomeResponse(aristaproto.Message):
+    value: "DeviceOnboardingConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceOnboardingConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigSomeResponse", DeviceOnboardingConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceOnboardingConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceOnboardingConfig at end.
+        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
+        until end.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigStreamRequest", DeviceOnboardingConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingConfigStreamResponse(aristaproto.Message):
+    value: "DeviceOnboardingConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceOnboardingConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceOnboardingConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingConfigStreamResponse", DeviceOnboardingConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingRequest(aristaproto.Message):
+    key: "UuidKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a DeviceOnboarding instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingRequest", DeviceOnboardingRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingResponse(aristaproto.Message):
+    value: "DeviceOnboarding | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceOnboarding instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingResponse", DeviceOnboardingResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingSomeRequest(aristaproto.Message):
+    keys: "list[UuidKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingSomeRequest", DeviceOnboardingSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingSomeResponse(aristaproto.Message):
+    value: "DeviceOnboarding | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    DeviceOnboarding instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingSomeResponse", DeviceOnboardingSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[DeviceOnboarding]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DeviceOnboarding at end.
+        * Each DeviceOnboarding response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
+        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
+        until end.
+        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingStreamRequest", DeviceOnboardingStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceOnboardingStreamResponse(aristaproto.Message):
+    value: "DeviceOnboarding | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this DeviceOnboarding's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the DeviceOnboarding value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceOnboardingStreamResponse", DeviceOnboardingStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceRequest(aristaproto.Message):
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Device instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceRequest", DeviceRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceResponse(aristaproto.Message):
+    value: "Device | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Device instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceResponse", DeviceResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceSomeRequest(aristaproto.Message):
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceSomeRequest", DeviceSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceSomeResponse(aristaproto.Message):
+    value: "Device | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Device instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceSomeResponse", DeviceSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Device]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Device at end.
+        * Each Device response is fully-specified (all fields set).
+      * start: Returns the state of each Device at start, followed by updates until now.
+        * Each Device response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Device at start, followed by updates
+        until end.
+        * Each Device response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceStreamRequest", DeviceStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DeviceStreamResponse(aristaproto.Message):
+    value: "Device | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Device's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Device value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "DeviceStreamResponse", DeviceStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ExtendedAttributes(aristaproto.Message):
+    """
+    ExtendedAttributes wraps any additional, potentially non-standard, features
+    or attributes the device reports.
+    """
+
+    feature_enabled: "dict[str, bool]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL)
+    )
+    """
+    feature_enabled is a map of feature name to enabled status.
+    If a feature is missing from this map it can be assumed off.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "ExtendedAttributes", ExtendedAttributes)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -460,128 +1872,53 @@ class ProvisionedDevice(aristaproto.Message):
     if the onboarded device is configured for provisioning.
     """
 
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """key uniquely identifies the device."""
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the device.
+    """
 
-    status: "ProvisioningStatus" = aristaproto.enum_field(2)
-    """status describes the onboarded device's provisioning status."""
+    status: "ProvisioningStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ProvisioningStatus(0))
+    """
+    status describes the onboarded device's provisioning status.
+    """
 
-    error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     error is the error that caused status to become PROVISIONING_STATUS_FAILURE.
     """
 
-    ztp_mode: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """ztp_mode indicates whether the device is in ZTP mode."""
+    ztp_mode: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    ztp_mode indicates whether the device is in ZTP mode.
+    """
 
-    ip_address: "___fmp__.IpAddress" = aristaproto.message_field(5)
+    ip_address: "___fmp__.IpAddress | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
     """
     ip_address is the current (post-provisioning) IP address of the device.
     """
 
-    provisioning_group_name: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    provisioning_group_name: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     provisioning_group_name is the name of the group (also known as a container)
     to which the device belongs. Any provisioning operation performed on this
     group will also be performed on this device. If the device is not yet provisioned,
-    this will not be set. Once it is provisioned, this will be set to \"undefined_container\"
+    this will not be set. Once it is provisioned, this will be set to "undefined_container"
     which indicates that the device does not yet belong to a group. At this point,
     a user may set it to an existing group.
     """
 
-    ipv6_address: "___fmp__.IpAddress" = aristaproto.message_field(7)
-    """ipv6_address is the IPV6 address of the device."""
+    ipv6_address: "___fmp__.IpAddress | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ipv6_address is the IPV6 address of the device.
+    """
+
+
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDevice", ProvisionedDevice)
 
 
 @dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Device instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceResponse(aristaproto.Message):
-    value: "Device" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Device instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceSomeResponse(aristaproto.Message):
-    value: "Device" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Device instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Device"] = aristaproto.message_field(1)
+class ProvisionedDeviceBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ProvisionedDevice]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -590,74 +1927,24 @@ class DeviceStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Device at end.
-        * Each Device response is fully-specified (all fields set).
-      * start: Returns the state of each Device at start, followed by updates until now.
-        * Each Device response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Device at start, followed by updates
+      * end: Returns the state of each ProvisionedDevice at end.
+        * Each ProvisionedDevice response is fully-specified (all fields set).
+      * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
+        * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
         until end.
-        * Each Device response at start is fully-specified, but updates until end may
+        * Each ProvisionedDevice response at start is fully-specified, but updates until end may
           be partial.
     """
 
-
-@dataclass(eq=False, repr=False)
-class DeviceStreamResponse(aristaproto.Message):
-    value: "Device" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Device's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Device value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Device"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Device at end.
-        * Each Device response is fully-specified (all fields set).
-      * start: Returns the state of each Device at start, followed by updates until now.
-        * Each Device response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Device at start, followed by updates
-        until end.
-        * Each Device response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -666,9 +1953,12 @@ class DeviceBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceBatchedStreamRequest", ProvisionedDeviceBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class DeviceBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceStreamResponse"] = aristaproto.message_field(1)
+class ProvisionedDeviceBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ProvisionedDeviceStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -676,916 +1966,30 @@ class DeviceBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceDecommissioning instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningResponse(aristaproto.Message):
-    value: "DeviceDecommissioning" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceDecommissioning instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningSomeResponse(aristaproto.Message):
-    value: "DeviceDecommissioning" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceDecommissioning instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioning"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceDecommissioning at end.
-        * Each DeviceDecommissioning response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
-        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
-        until end.
-        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningStreamResponse(aristaproto.Message):
-    value: "DeviceDecommissioning" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceDecommissioning's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceDecommissioning value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioning"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceDecommissioning at end.
-        * Each DeviceDecommissioning response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
-        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
-        until end.
-        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceDecommissioningStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceDecommissioningConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigResponse(aristaproto.Message):
-    value: "DeviceDecommissioningConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceDecommissioningConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSomeResponse(aristaproto.Message):
-    value: "DeviceDecommissioningConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceDecommissioningConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceDecommissioningConfig at end.
-        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
-        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
-        until end.
-        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigStreamResponse(aristaproto.Message):
-    value: "DeviceDecommissioningConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceDecommissioningConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceDecommissioningConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceDecommissioningConfig at end.
-        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
-        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
-        until end.
-        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceDecommissioningConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSetRequest(aristaproto.Message):
-    value: "DeviceDecommissioningConfig" = aristaproto.message_field(1)
-    """
-    DeviceDecommissioningConfig carries the value to set into the datastore.
-    See the documentation on the DeviceDecommissioningConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSetResponse(aristaproto.Message):
-    value: "DeviceDecommissioningConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the DeviceDecommissioningConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSetSomeRequest(aristaproto.Message):
-    values: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of DeviceDecommissioningConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigSetSomeResponse(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key indicates which DeviceDecommissioningConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteResponse(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key echoes back the key of the deleted DeviceDecommissioningConfig instance.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    """key contains a list of DeviceDecommissioningConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    DeviceDecommissioningConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "UuidKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceDecommissioningConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "UuidKey" = aristaproto.message_field(3)
-    """
-    This is the key of the DeviceDecommissioningConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceOnboarding instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingResponse(aristaproto.Message):
-    value: "DeviceOnboarding" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceOnboarding instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingSomeResponse(aristaproto.Message):
-    value: "DeviceOnboarding" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceOnboarding instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceOnboarding"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceOnboarding at end.
-        * Each DeviceOnboarding response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
-        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
-        until end.
-        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingStreamResponse(aristaproto.Message):
-    value: "DeviceOnboarding" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceOnboarding's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceOnboarding value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceOnboarding"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceOnboarding at end.
-        * Each DeviceOnboarding response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
-        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
-        until end.
-        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceOnboardingStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a DeviceOnboardingConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigResponse(aristaproto.Message):
-    value: "DeviceOnboardingConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceOnboardingConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSomeResponse(aristaproto.Message):
-    value: "DeviceOnboardingConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    DeviceOnboardingConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceOnboardingConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceOnboardingConfig at end.
-        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
-        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
-        until end.
-        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigStreamResponse(aristaproto.Message):
-    value: "DeviceOnboardingConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this DeviceOnboardingConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the DeviceOnboardingConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceOnboardingConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DeviceOnboardingConfig at end.
-        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
-      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
-        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
-        until end.
-        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceOnboardingConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSetRequest(aristaproto.Message):
-    value: "DeviceOnboardingConfig" = aristaproto.message_field(1)
-    """
-    DeviceOnboardingConfig carries the value to set into the datastore.
-    See the documentation on the DeviceOnboardingConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSetResponse(aristaproto.Message):
-    value: "DeviceOnboardingConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the DeviceOnboardingConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSetSomeRequest(aristaproto.Message):
-    values: List["DeviceOnboardingConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of DeviceOnboardingConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigSetSomeResponse(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteRequest(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key indicates which DeviceOnboardingConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteResponse(aristaproto.Message):
-    key: "UuidKey" = aristaproto.message_field(1)
-    """
-    Key echoes back the key of the deleted DeviceOnboardingConfig instance.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["UuidKey"] = aristaproto.message_field(1)
-    """key contains a list of DeviceOnboardingConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteSomeResponse(aristaproto.Message):
-    """
-    DeviceOnboardingConfigDeleteSomeResponse is only sent when there is an error.
-    """
-
-    key: "UuidKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceOnboardingConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DeviceOnboardingConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "UuidKey" = aristaproto.message_field(3)
-    """
-    This is the key of the DeviceOnboardingConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceBatchedStreamResponse", ProvisionedDeviceBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceRequest(aristaproto.Message):
-    key: "DeviceKey" = aristaproto.message_field(1)
+    key: "DeviceKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a ProvisionedDevice instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceRequest", ProvisionedDeviceRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceResponse(aristaproto.Message):
-    value: "ProvisionedDevice" = aristaproto.message_field(1)
+    value: "ProvisionedDevice | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1593,26 +1997,33 @@ class ProvisionedDeviceResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ProvisionedDevice instance in this response.
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceResponse", ProvisionedDeviceResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceSomeRequest(aristaproto.Message):
-    keys: List["DeviceKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[DeviceKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceSomeRequest", ProvisionedDeviceSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceSomeResponse(aristaproto.Message):
-    value: "ProvisionedDevice" = aristaproto.message_field(1)
+    value: "ProvisionedDevice | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1620,22 +2031,25 @@ class ProvisionedDeviceSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     ProvisionedDevice instance in this response.
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceSomeResponse", ProvisionedDeviceSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ProvisionedDevice"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ProvisionedDevice]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1644,7 +2058,7 @@ class ProvisionedDeviceStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1662,21 +2076,24 @@ class ProvisionedDeviceStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceStreamRequest", ProvisionedDeviceStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ProvisionedDeviceStreamResponse(aristaproto.Message):
-    value: "ProvisionedDevice" = aristaproto.message_field(1)
+    value: "ProvisionedDevice | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this ProvisionedDevice's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the ProvisionedDevice value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1685,2141 +2102,1239 @@ class ProvisionedDeviceStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ProvisionedDeviceBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ProvisionedDevice"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ProvisionedDevice at end.
-        * Each ProvisionedDevice response is fully-specified (all fields set).
-      * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
-        * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
-        until end.
-        * Each ProvisionedDevice response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.inventory.v1", "ProvisionedDeviceStreamResponse", ProvisionedDeviceStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ProvisionedDeviceBatchedStreamResponse(aristaproto.Message):
-    responses: List["ProvisionedDeviceStreamResponse"] = aristaproto.message_field(1)
+class UuidKey(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    UUIDKey is a key that holds a UUID for an onboarding or decommissioning request.
     """
 
+    request_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    request_id should be a UUID for the request.
+    """
 
-class DeviceServiceStub(aristaproto.ServiceStub):
+
+default_message_pool.register_message("arista.inventory.v1", "UUIDKey", UuidKey)
+
+
+class DeviceDecommissioningConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_request: "DeviceRequest",
+        message: "DeviceDecommissioningConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "DeviceResponse":
-        return await self._unary_unary(
-            "/arista.inventory.v1.DeviceService/GetOne",
-            device_request,
-            DeviceResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        device_some_request: "DeviceSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/GetSome",
-            device_some_request,
-            DeviceSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        device_stream_request: "DeviceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/GetAll",
-            device_stream_request,
-            DeviceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        device_stream_request: "DeviceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/Subscribe",
-            device_stream_request,
-            DeviceStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        device_stream_request: "DeviceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.inventory.v1.DeviceService/GetMeta",
-            device_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        device_stream_request: "DeviceStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/SubscribeMeta",
-            device_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        device_batched_stream_request: "DeviceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/GetAllBatched",
-            device_batched_stream_request,
-            DeviceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        device_batched_stream_request: "DeviceBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceService/SubscribeBatched",
-            device_batched_stream_request,
-            DeviceBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        device_decommissioning_request: "DeviceDecommissioningRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "DeviceDecommissioningResponse":
-        return await self._unary_unary(
-            "/arista.inventory.v1.DeviceDecommissioningService/GetOne",
-            device_decommissioning_request,
-            DeviceDecommissioningResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        device_decommissioning_some_request: "DeviceDecommissioningSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceDecommissioningSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/GetSome",
-            device_decommissioning_some_request,
-            DeviceDecommissioningSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceDecommissioningStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/GetAll",
-            device_decommissioning_stream_request,
-            DeviceDecommissioningStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceDecommissioningStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/Subscribe",
-            device_decommissioning_stream_request,
-            DeviceDecommissioningStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.inventory.v1.DeviceDecommissioningService/GetMeta",
-            device_decommissioning_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeMeta",
-            device_decommissioning_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        device_decommissioning_batched_stream_request: "DeviceDecommissioningBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceDecommissioningBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/GetAllBatched",
-            device_decommissioning_batched_stream_request,
-            DeviceDecommissioningBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        device_decommissioning_batched_stream_request: "DeviceDecommissioningBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceDecommissioningBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeBatched",
-            device_decommissioning_batched_stream_request,
-            DeviceDecommissioningBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        device_decommissioning_config_request: "DeviceDecommissioningConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceDecommissioningConfigResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetOne",
-            device_decommissioning_config_request,
+            message,
             DeviceDecommissioningConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_decommissioning_config_some_request: "DeviceDecommissioningConfigSomeRequest",
+        message: "DeviceDecommissioningConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetSome",
-            device_decommissioning_config_some_request,
+            message,
             DeviceDecommissioningConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest",
+        message: "DeviceDecommissioningConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAll",
-            device_decommissioning_config_stream_request,
+            message,
             DeviceDecommissioningConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest",
+        message: "DeviceDecommissioningConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Subscribe",
-            device_decommissioning_config_stream_request,
+            message,
             DeviceDecommissioningConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest",
+        message: "DeviceDecommissioningConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetMeta",
-            device_decommissioning_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest",
+        message: "DeviceDecommissioningConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeMeta",
-            device_decommissioning_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        device_decommissioning_config_set_request: "DeviceDecommissioningConfigSetRequest",
+        message: "DeviceDecommissioningConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceDecommissioningConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Set",
-            device_decommissioning_config_set_request,
+            message,
             DeviceDecommissioningConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        device_decommissioning_config_set_some_request: "DeviceDecommissioningConfigSetSomeRequest",
+        message: "DeviceDecommissioningConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SetSome",
-            device_decommissioning_config_set_some_request,
+            message,
             DeviceDecommissioningConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        device_decommissioning_config_delete_request: "DeviceDecommissioningConfigDeleteRequest",
+        message: "DeviceDecommissioningConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceDecommissioningConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Delete",
-            device_decommissioning_config_delete_request,
+            message,
             DeviceDecommissioningConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        device_decommissioning_config_delete_some_request: "DeviceDecommissioningConfigDeleteSomeRequest",
+        message: "DeviceDecommissioningConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteSome",
-            device_decommissioning_config_delete_some_request,
+            message,
             DeviceDecommissioningConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        device_decommissioning_config_delete_all_request: "DeviceDecommissioningConfigDeleteAllRequest",
+        message: "DeviceDecommissioningConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteAll",
-            device_decommissioning_config_delete_all_request,
+            message,
             DeviceDecommissioningConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_decommissioning_config_batched_stream_request: "DeviceDecommissioningConfigBatchedStreamRequest",
+        message: "DeviceDecommissioningConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAllBatched",
-            device_decommissioning_config_batched_stream_request,
+            message,
             DeviceDecommissioningConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_decommissioning_config_batched_stream_request: "DeviceDecommissioningConfigBatchedStreamRequest",
+        message: "DeviceDecommissioningConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceDecommissioningConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeBatched",
-            device_decommissioning_config_batched_stream_request,
+            message,
             DeviceDecommissioningConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
+class DeviceDecommissioningServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_onboarding_request: "DeviceOnboardingRequest",
+        message: "DeviceDecommissioningRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "DeviceOnboardingResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "DeviceDecommissioningResponse":
+
         return await self._unary_unary(
-            "/arista.inventory.v1.DeviceOnboardingService/GetOne",
-            device_onboarding_request,
-            DeviceOnboardingResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/GetOne",
+            message,
+            DeviceDecommissioningResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_onboarding_some_request: "DeviceOnboardingSomeRequest",
+        message: "DeviceDecommissioningSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceOnboardingSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceDecommissioningSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/GetSome",
-            device_onboarding_some_request,
-            DeviceOnboardingSomeResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/GetSome",
+            message,
+            DeviceDecommissioningSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_onboarding_stream_request: "DeviceOnboardingStreamRequest",
+        message: "DeviceDecommissioningStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceOnboardingStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceDecommissioningStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/GetAll",
-            device_onboarding_stream_request,
-            DeviceOnboardingStreamResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/GetAll",
+            message,
+            DeviceDecommissioningStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_onboarding_stream_request: "DeviceOnboardingStreamRequest",
+        message: "DeviceDecommissioningStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceOnboardingStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceDecommissioningStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/Subscribe",
-            device_onboarding_stream_request,
-            DeviceOnboardingStreamResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/Subscribe",
+            message,
+            DeviceDecommissioningStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_onboarding_stream_request: "DeviceOnboardingStreamRequest",
+        message: "DeviceDecommissioningStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.inventory.v1.DeviceOnboardingService/GetMeta",
-            device_onboarding_stream_request,
+            "/arista.inventory.v1.DeviceDecommissioningService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_onboarding_stream_request: "DeviceOnboardingStreamRequest",
+        message: "DeviceDecommissioningStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/SubscribeMeta",
-            device_onboarding_stream_request,
+            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_onboarding_batched_stream_request: "DeviceOnboardingBatchedStreamRequest",
+        message: "DeviceDecommissioningBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceOnboardingBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceDecommissioningBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/GetAllBatched",
-            device_onboarding_batched_stream_request,
-            DeviceOnboardingBatchedStreamResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/GetAllBatched",
+            message,
+            DeviceDecommissioningBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_onboarding_batched_stream_request: "DeviceOnboardingBatchedStreamRequest",
+        message: "DeviceDecommissioningBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[DeviceOnboardingBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceDecommissioningBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.DeviceOnboardingService/SubscribeBatched",
-            device_onboarding_batched_stream_request,
-            DeviceOnboardingBatchedStreamResponse,
+            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeBatched",
+            message,
+            DeviceDecommissioningBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
+class DeviceOnboardingConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        device_onboarding_config_request: "DeviceOnboardingConfigRequest",
+        message: "DeviceOnboardingConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceOnboardingConfigResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetOne",
-            device_onboarding_config_request,
+            message,
             DeviceOnboardingConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        device_onboarding_config_some_request: "DeviceOnboardingConfigSomeRequest",
+        message: "DeviceOnboardingConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetSome",
-            device_onboarding_config_some_request,
+            message,
             DeviceOnboardingConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest",
+        message: "DeviceOnboardingConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetAll",
-            device_onboarding_config_stream_request,
+            message,
             DeviceOnboardingConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest",
+        message: "DeviceOnboardingConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Subscribe",
-            device_onboarding_config_stream_request,
+            message,
             DeviceOnboardingConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest",
+        message: "DeviceOnboardingConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetMeta",
-            device_onboarding_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest",
+        message: "DeviceOnboardingConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeMeta",
-            device_onboarding_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        device_onboarding_config_set_request: "DeviceOnboardingConfigSetRequest",
+        message: "DeviceOnboardingConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceOnboardingConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Set",
-            device_onboarding_config_set_request,
+            message,
             DeviceOnboardingConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        device_onboarding_config_set_some_request: "DeviceOnboardingConfigSetSomeRequest",
+        message: "DeviceOnboardingConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SetSome",
-            device_onboarding_config_set_some_request,
+            message,
             DeviceOnboardingConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        device_onboarding_config_delete_request: "DeviceOnboardingConfigDeleteRequest",
+        message: "DeviceOnboardingConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DeviceOnboardingConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Delete",
-            device_onboarding_config_delete_request,
+            message,
             DeviceOnboardingConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        device_onboarding_config_delete_some_request: "DeviceOnboardingConfigDeleteSomeRequest",
+        message: "DeviceOnboardingConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteSome",
-            device_onboarding_config_delete_some_request,
+            message,
             DeviceOnboardingConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        device_onboarding_config_delete_all_request: "DeviceOnboardingConfigDeleteAllRequest",
+        message: "DeviceOnboardingConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteAll",
-            device_onboarding_config_delete_all_request,
+            message,
             DeviceOnboardingConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        device_onboarding_config_batched_stream_request: "DeviceOnboardingConfigBatchedStreamRequest",
+        message: "DeviceOnboardingConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetAllBatched",
-            device_onboarding_config_batched_stream_request,
+            message,
             DeviceOnboardingConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        device_onboarding_config_batched_stream_request: "DeviceOnboardingConfigBatchedStreamRequest",
+        message: "DeviceOnboardingConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DeviceOnboardingConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeBatched",
-            device_onboarding_config_batched_stream_request,
+            message,
             DeviceOnboardingConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
+class DeviceOnboardingServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        provisioned_device_request: "ProvisionedDeviceRequest",
+        message: "DeviceOnboardingRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ProvisionedDeviceResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "DeviceOnboardingResponse":
+
         return await self._unary_unary(
-            "/arista.inventory.v1.ProvisionedDeviceService/GetOne",
-            provisioned_device_request,
-            ProvisionedDeviceResponse,
+            "/arista.inventory.v1.DeviceOnboardingService/GetOne",
+            message,
+            DeviceOnboardingResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        provisioned_device_some_request: "ProvisionedDeviceSomeRequest",
+        message: "DeviceOnboardingSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ProvisionedDeviceSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceOnboardingSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/GetSome",
-            provisioned_device_some_request,
-            ProvisionedDeviceSomeResponse,
+            "/arista.inventory.v1.DeviceOnboardingService/GetSome",
+            message,
+            DeviceOnboardingSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        provisioned_device_stream_request: "ProvisionedDeviceStreamRequest",
+        message: "DeviceOnboardingStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ProvisionedDeviceStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceOnboardingStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/GetAll",
-            provisioned_device_stream_request,
-            ProvisionedDeviceStreamResponse,
+            "/arista.inventory.v1.DeviceOnboardingService/GetAll",
+            message,
+            DeviceOnboardingStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        provisioned_device_stream_request: "ProvisionedDeviceStreamRequest",
+        message: "DeviceOnboardingStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ProvisionedDeviceStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceOnboardingStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/Subscribe",
-            provisioned_device_stream_request,
-            ProvisionedDeviceStreamResponse,
+            "/arista.inventory.v1.DeviceOnboardingService/Subscribe",
+            message,
+            DeviceOnboardingStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        provisioned_device_stream_request: "ProvisionedDeviceStreamRequest",
+        message: "DeviceOnboardingStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.inventory.v1.ProvisionedDeviceService/GetMeta",
-            provisioned_device_stream_request,
+            "/arista.inventory.v1.DeviceOnboardingService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        provisioned_device_stream_request: "ProvisionedDeviceStreamRequest",
+        message: "DeviceOnboardingStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeMeta",
-            provisioned_device_stream_request,
+            "/arista.inventory.v1.DeviceOnboardingService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        provisioned_device_batched_stream_request: "ProvisionedDeviceBatchedStreamRequest",
+        message: "DeviceOnboardingBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ProvisionedDeviceBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceOnboardingBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/GetAllBatched",
-            provisioned_device_batched_stream_request,
-            ProvisionedDeviceBatchedStreamResponse,
+            "/arista.inventory.v1.DeviceOnboardingService/GetAllBatched",
+            message,
+            DeviceOnboardingBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        provisioned_device_batched_stream_request: "ProvisionedDeviceBatchedStreamRequest",
+        message: "DeviceOnboardingBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ProvisionedDeviceBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceOnboardingBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeBatched",
-            provisioned_device_batched_stream_request,
+            "/arista.inventory.v1.DeviceOnboardingService/SubscribeBatched",
+            message,
+            DeviceOnboardingBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class DeviceServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "DeviceRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "DeviceResponse":
+
+        return await self._unary_unary(
+            "/arista.inventory.v1.DeviceService/GetOne",
+            message,
+            DeviceResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "DeviceSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/GetSome",
+            message,
+            DeviceSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "DeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/GetAll",
+            message,
+            DeviceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "DeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/Subscribe",
+            message,
+            DeviceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "DeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.inventory.v1.DeviceService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "DeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "DeviceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/GetAllBatched",
+            message,
+            DeviceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "DeviceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[DeviceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.DeviceService/SubscribeBatched",
+            message,
+            DeviceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class ProvisionedDeviceServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ProvisionedDeviceRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ProvisionedDeviceResponse":
+
+        return await self._unary_unary(
+            "/arista.inventory.v1.ProvisionedDeviceService/GetOne",
+            message,
+            ProvisionedDeviceResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ProvisionedDeviceSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ProvisionedDeviceSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/GetSome",
+            message,
+            ProvisionedDeviceSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ProvisionedDeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ProvisionedDeviceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/GetAll",
+            message,
+            ProvisionedDeviceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ProvisionedDeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ProvisionedDeviceStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/Subscribe",
+            message,
+            ProvisionedDeviceStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ProvisionedDeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.inventory.v1.ProvisionedDeviceService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ProvisionedDeviceStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "ProvisionedDeviceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ProvisionedDeviceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/GetAllBatched",
+            message,
             ProvisionedDeviceBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "ProvisionedDeviceBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ProvisionedDeviceBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeBatched",
+            message,
+            ProvisionedDeviceBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class DeviceServiceBase(ServiceBase):
-    async def get_one(self, device_request: "DeviceRequest") -> "DeviceResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_some_request: "DeviceSomeRequest") -> AsyncIterator[DeviceSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator[DeviceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator[DeviceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_stream_request: "DeviceStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, device_batched_stream_request: "DeviceBatchedStreamRequest") -> AsyncIterator[DeviceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, device_batched_stream_request: "DeviceBatchedStreamRequest") -> AsyncIterator[DeviceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceRequest, DeviceResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceSomeRequest, DeviceSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[DeviceBatchedStreamRequest, DeviceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[DeviceBatchedStreamRequest, DeviceBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.DeviceService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceRequest,
-                DeviceResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceSomeRequest,
-                DeviceSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStreamRequest,
-                DeviceStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStreamRequest,
-                DeviceStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceBatchedStreamRequest,
-                DeviceBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceBatchedStreamRequest,
-                DeviceBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceDecommissioningServiceBase(ServiceBase):
-    async def get_one(self, device_decommissioning_request: "DeviceDecommissioningRequest") -> "DeviceDecommissioningResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_decommissioning_some_request: "DeviceDecommissioningSomeRequest") -> AsyncIterator[DeviceDecommissioningSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest") -> AsyncIterator[DeviceDecommissioningStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_decommissioning_stream_request: "DeviceDecommissioningStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_decommissioning_batched_stream_request: "DeviceDecommissioningBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_decommissioning_batched_stream_request: "DeviceDecommissioningBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceDecommissioningRequest, DeviceDecommissioningResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceDecommissioningSomeRequest, DeviceDecommissioningSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceDecommissioningStreamRequest, DeviceDecommissioningStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceDecommissioningStreamRequest, DeviceDecommissioningStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceDecommissioningStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceDecommissioningStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningBatchedStreamRequest, DeviceDecommissioningBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningBatchedStreamRequest, DeviceDecommissioningBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.DeviceDecommissioningService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningRequest,
-                DeviceDecommissioningResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningSomeRequest,
-                DeviceDecommissioningSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningStreamRequest,
-                DeviceDecommissioningStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningStreamRequest,
-                DeviceDecommissioningStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningBatchedStreamRequest,
-                DeviceDecommissioningBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningBatchedStreamRequest,
-                DeviceDecommissioningBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceDecommissioningConfigServiceBase(ServiceBase):
-    async def get_one(self, device_decommissioning_config_request: "DeviceDecommissioningConfigRequest") -> "DeviceDecommissioningConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, device_decommissioning_config_some_request: "DeviceDecommissioningConfigSomeRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_decommissioning_config_stream_request: "DeviceDecommissioningConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, device_decommissioning_config_set_request: "DeviceDecommissioningConfigSetRequest") -> "DeviceDecommissioningConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, device_decommissioning_config_set_some_request: "DeviceDecommissioningConfigSetSomeRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(
-        self, device_decommissioning_config_delete_request: "DeviceDecommissioningConfigDeleteRequest"
-    ) -> "DeviceDecommissioningConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, device_decommissioning_config_delete_some_request: "DeviceDecommissioningConfigDeleteSomeRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, device_decommissioning_config_delete_all_request: "DeviceDecommissioningConfigDeleteAllRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_decommissioning_config_batched_stream_request: "DeviceDecommissioningConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_decommissioning_config_batched_stream_request: "DeviceDecommissioningConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceDecommissioningConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigRequest, DeviceDecommissioningConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigSomeRequest, DeviceDecommissioningConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigStreamRequest, DeviceDecommissioningConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigStreamRequest, DeviceDecommissioningConfigStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigSetRequest, DeviceDecommissioningConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigSetSomeRequest, DeviceDecommissioningConfigSetSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigDeleteRequest, DeviceDecommissioningConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigDeleteSomeRequest, DeviceDecommissioningConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigDeleteAllRequest, DeviceDecommissioningConfigDeleteAllResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigBatchedStreamRequest, DeviceDecommissioningConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceDecommissioningConfigBatchedStreamRequest, DeviceDecommissioningConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningConfigRequest,
-                DeviceDecommissioningConfigResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigSomeRequest,
-                DeviceDecommissioningConfigSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigStreamRequest,
-                DeviceDecommissioningConfigStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigStreamRequest,
-                DeviceDecommissioningConfigStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningConfigSetRequest,
-                DeviceDecommissioningConfigSetResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigSetSomeRequest,
-                DeviceDecommissioningConfigSetSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceDecommissioningConfigDeleteRequest,
-                DeviceDecommissioningConfigDeleteResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigDeleteSomeRequest,
-                DeviceDecommissioningConfigDeleteSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigDeleteAllRequest,
-                DeviceDecommissioningConfigDeleteAllResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigBatchedStreamRequest,
-                DeviceDecommissioningConfigBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceDecommissioningConfigBatchedStreamRequest,
-                DeviceDecommissioningConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceOnboardingServiceBase(ServiceBase):
-    async def get_one(self, device_onboarding_request: "DeviceOnboardingRequest") -> "DeviceOnboardingResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_onboarding_some_request: "DeviceOnboardingSomeRequest") -> AsyncIterator[DeviceOnboardingSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator[DeviceOnboardingStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator[DeviceOnboardingStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_onboarding_batched_stream_request: "DeviceOnboardingBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_onboarding_batched_stream_request: "DeviceOnboardingBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceOnboardingRequest, DeviceOnboardingResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceOnboardingSomeRequest, DeviceOnboardingSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceOnboardingStreamRequest, DeviceOnboardingStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceOnboardingStreamRequest, DeviceOnboardingStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceOnboardingStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceOnboardingStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[DeviceOnboardingBatchedStreamRequest, DeviceOnboardingBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceOnboardingBatchedStreamRequest, DeviceOnboardingBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.DeviceOnboardingService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingRequest,
-                DeviceOnboardingResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingSomeRequest,
-                DeviceOnboardingSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingStreamRequest,
-                DeviceOnboardingStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingStreamRequest,
-                DeviceOnboardingStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingBatchedStreamRequest,
-                DeviceOnboardingBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingBatchedStreamRequest,
-                DeviceOnboardingBatchedStreamResponse,
-            ),
-        }
-
-
-class DeviceOnboardingConfigServiceBase(ServiceBase):
-    async def get_one(self, device_onboarding_config_request: "DeviceOnboardingConfigRequest") -> "DeviceOnboardingConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, device_onboarding_config_some_request: "DeviceOnboardingConfigSomeRequest") -> AsyncIterator[DeviceOnboardingConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, device_onboarding_config_stream_request: "DeviceOnboardingConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, device_onboarding_config_set_request: "DeviceOnboardingConfigSetRequest") -> "DeviceOnboardingConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, device_onboarding_config_set_some_request: "DeviceOnboardingConfigSetSomeRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, device_onboarding_config_delete_request: "DeviceOnboardingConfigDeleteRequest") -> "DeviceOnboardingConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, device_onboarding_config_delete_some_request: "DeviceOnboardingConfigDeleteSomeRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, device_onboarding_config_delete_all_request: "DeviceOnboardingConfigDeleteAllRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, device_onboarding_config_batched_stream_request: "DeviceOnboardingConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, device_onboarding_config_batched_stream_request: "DeviceOnboardingConfigBatchedStreamRequest"
-    ) -> AsyncIterator[DeviceOnboardingConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigRequest, DeviceOnboardingConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigSomeRequest, DeviceOnboardingConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigStreamRequest, DeviceOnboardingConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigStreamRequest, DeviceOnboardingConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigSetRequest, DeviceOnboardingConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigSetSomeRequest, DeviceOnboardingConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigDeleteRequest, DeviceOnboardingConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[DeviceOnboardingConfigDeleteSomeRequest, DeviceOnboardingConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[DeviceOnboardingConfigDeleteAllRequest, DeviceOnboardingConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[DeviceOnboardingConfigBatchedStreamRequest, DeviceOnboardingConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[DeviceOnboardingConfigBatchedStreamRequest, DeviceOnboardingConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.DeviceOnboardingConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingConfigRequest,
-                DeviceOnboardingConfigResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigSomeRequest,
-                DeviceOnboardingConfigSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigStreamRequest,
-                DeviceOnboardingConfigStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigStreamRequest,
-                DeviceOnboardingConfigStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingConfigSetRequest,
-                DeviceOnboardingConfigSetResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigSetSomeRequest,
-                DeviceOnboardingConfigSetSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DeviceOnboardingConfigDeleteRequest,
-                DeviceOnboardingConfigDeleteResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigDeleteSomeRequest,
-                DeviceOnboardingConfigDeleteSomeResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigDeleteAllRequest,
-                DeviceOnboardingConfigDeleteAllResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigBatchedStreamRequest,
-                DeviceOnboardingConfigBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DeviceOnboardingConfigBatchedStreamRequest,
-                DeviceOnboardingConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class ProvisionedDeviceServiceBase(ServiceBase):
-    async def get_one(self, provisioned_device_request: "ProvisionedDeviceRequest") -> "ProvisionedDeviceResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, provisioned_device_some_request: "ProvisionedDeviceSomeRequest") -> AsyncIterator[ProvisionedDeviceSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator[ProvisionedDeviceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator[ProvisionedDeviceStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, provisioned_device_batched_stream_request: "ProvisionedDeviceBatchedStreamRequest"
-    ) -> AsyncIterator[ProvisionedDeviceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, provisioned_device_batched_stream_request: "ProvisionedDeviceBatchedStreamRequest"
-    ) -> AsyncIterator[ProvisionedDeviceBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ProvisionedDeviceRequest, ProvisionedDeviceResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ProvisionedDeviceSomeRequest, ProvisionedDeviceSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ProvisionedDeviceStreamRequest, ProvisionedDeviceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ProvisionedDeviceStreamRequest, ProvisionedDeviceStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ProvisionedDeviceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ProvisionedDeviceStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[ProvisionedDeviceBatchedStreamRequest, ProvisionedDeviceBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[ProvisionedDeviceBatchedStreamRequest, ProvisionedDeviceBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.inventory.v1.ProvisionedDeviceService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ProvisionedDeviceRequest,
-                ProvisionedDeviceResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceSomeRequest,
-                ProvisionedDeviceSomeResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceStreamRequest,
-                ProvisionedDeviceStreamResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceStreamRequest,
-                ProvisionedDeviceStreamResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ProvisionedDeviceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceBatchedStreamRequest,
-                ProvisionedDeviceBatchedStreamResponse,
-            ),
-            "/arista.inventory.v1.ProvisionedDeviceService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ProvisionedDeviceBatchedStreamRequest,
-                ProvisionedDeviceBatchedStreamResponse,
-            ),
-        }

@@ -44,16 +44,14 @@ async def test_verify_devices_in_cloudvision_inventory(
     1. Verify device based on serial_number
         Exact test steps:
         -   description: Fetch device status
-            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'),
-                hostname=None, system_mac_address=None)], time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/76601a85f4ab2a9e434ec80eaeea2efc8dc02d71.json'
+            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'))], time=None)'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/8c9b7b9fbe7b400b3b0ee321fef808e91965b6f0.json'
 
     2. Verify device based on system_mac_address
         Exact test steps:
         -   description: Fetch device status
-            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname=None, system_mac_address='50:00:00:d5:5d:c0')],
-                time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/396119d5076221da87045ff93ab5041f30e9d9e0.json'
+            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(), system_mac_address='50:00:00:d5:5d:c0')], time=None)'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/c366ca78dc6c3dc82984cf42d928f028825ac536.json'
     """
     result = await verify_devices_in_cloudvision_inventory(
         devices=input_devices,

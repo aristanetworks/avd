@@ -7,77 +7,74 @@
 # This file has been @generated
 
 __all__ = (
-    "ProtocolBinding",
-    "OAuthKey",
-    "OAuthConfig",
-    "SamlKey",
-    "SamlConfig",
     "MetaResponse",
-    "OAuthConfigRequest",
-    "OAuthConfigResponse",
-    "OAuthConfigSomeRequest",
-    "OAuthConfigSomeResponse",
-    "OAuthConfigStreamRequest",
-    "OAuthConfigStreamResponse",
+    "OAuthConfig",
     "OAuthConfigBatchedStreamRequest",
     "OAuthConfigBatchedStreamResponse",
-    "OAuthConfigSetRequest",
-    "OAuthConfigSetResponse",
-    "OAuthConfigSetSomeRequest",
-    "OAuthConfigSetSomeResponse",
+    "OAuthConfigDeleteAllRequest",
+    "OAuthConfigDeleteAllResponse",
     "OAuthConfigDeleteRequest",
     "OAuthConfigDeleteResponse",
     "OAuthConfigDeleteSomeRequest",
     "OAuthConfigDeleteSomeResponse",
-    "OAuthConfigDeleteAllRequest",
-    "OAuthConfigDeleteAllResponse",
-    "SamlConfigRequest",
-    "SamlConfigResponse",
-    "SamlConfigSomeRequest",
-    "SamlConfigSomeResponse",
-    "SamlConfigStreamRequest",
-    "SamlConfigStreamResponse",
+    "OAuthConfigRequest",
+    "OAuthConfigResponse",
+    "OAuthConfigServiceStub",
+    "OAuthConfigSetRequest",
+    "OAuthConfigSetResponse",
+    "OAuthConfigSetSomeRequest",
+    "OAuthConfigSetSomeResponse",
+    "OAuthConfigSomeRequest",
+    "OAuthConfigSomeResponse",
+    "OAuthConfigStreamRequest",
+    "OAuthConfigStreamResponse",
+    "OAuthKey",
+    "ProtocolBinding",
+    "SamlConfig",
     "SamlConfigBatchedStreamRequest",
     "SamlConfigBatchedStreamResponse",
-    "SamlConfigSetRequest",
-    "SamlConfigSetResponse",
-    "SamlConfigSetSomeRequest",
-    "SamlConfigSetSomeResponse",
+    "SamlConfigDeleteAllRequest",
+    "SamlConfigDeleteAllResponse",
     "SamlConfigDeleteRequest",
     "SamlConfigDeleteResponse",
     "SamlConfigDeleteSomeRequest",
     "SamlConfigDeleteSomeResponse",
-    "SamlConfigDeleteAllRequest",
-    "SamlConfigDeleteAllResponse",
-    "OAuthConfigServiceStub",
-    "OAuthConfigServiceBase",
+    "SamlConfigRequest",
+    "SamlConfigResponse",
     "SamlConfigServiceStub",
-    "SamlConfigServiceBase",
+    "SamlConfigSetRequest",
+    "SamlConfigSetResponse",
+    "SamlConfigSetSomeRequest",
+    "SamlConfigSetSomeResponse",
+    "SamlConfigSomeRequest",
+    "SamlConfigSomeResponse",
+    "SamlConfigStreamRequest",
+    "SamlConfigStreamResponse",
+    "SamlKey",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class ProtocolBinding(aristaproto.Enum):
-    """ProtocolBinding indicates SAML protocol binding to be used."""
+    """
+    ProtocolBinding indicates SAML protocol binding to be used.
+    """
 
     UNSPECIFIED = 0
     """
@@ -94,23 +91,59 @@ class ProtocolBinding(aristaproto.Enum):
     PROTOCOL_BINDING_HTTP_REDIRECT indicates HTTP-Redirect SAML protocol binding.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "PROTOCOL_BINDING_UNSPECIFIED",
+            1: "PROTOCOL_BINDING_HTTP_POST",
+            2: "PROTOCOL_BINDING_HTTP_REDIRECT",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "PROTOCOL_BINDING_UNSPECIFIED": 0,
+            "PROTOCOL_BINDING_HTTP_POST": 1,
+            "PROTOCOL_BINDING_HTTP_REDIRECT": 2,
+        }
+
 
 @dataclass(eq=False, repr=False)
-class OAuthKey(aristaproto.Message):
-    """OAuthKey contains OAuth provider ID."""
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
 
-    provider_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """provider_id is the ID of the OAuth provider."""
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
 class OAuthConfig(aristaproto.Message):
-    """OAuthConfig holds the configuration for an OAuth provider."""
+    """
+    OAuthConfig holds the configuration for an OAuth provider.
+    """
 
-    key: "OAuthKey" = aristaproto.message_field(1)
-    """key is the ID of the OAuth provider."""
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the ID of the OAuth provider.
+    """
 
-    endpoint: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    endpoint: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     endpoint is the URL that identifies an OAuth authorization server.
     This endpoint is used to interact with the provider. It must be a
@@ -118,44 +151,44 @@ class OAuthConfig(aristaproto.Message):
     and optionally, port and path components, but no query or fragment components.
     """
 
-    client_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    client_id: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     client_id is the ID that the OAuth authorization server issues to the
     registered client.
     """
 
-    client_secret: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    client_secret: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     client_secret is the secret that the OAuth authorization server issues
     to the registered client.
     """
 
-    algorithms: "___fmp__.RepeatedString" = aristaproto.message_field(5)
+    algorithms: "___fmp__.RepeatedString | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
     """
     algorithms is the set of signing algorithms. This is an optional field.
     If specified, only this set of algorithms may be used to sign the JWT.
     Otherwise, this defaults to the set of algorithms that the provider supports.
     """
 
-    link_to_shared_provider: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
+    link_to_shared_provider: "bool | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     link_to_shared_provider indicates whether or not use the provider as a shared
     provider. This is an optional field and set to false by default.
     """
 
-    jwks_uri: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    jwks_uri: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     jwks_uri is where signing keys are downloaded. This is an optional field.
     Only needed if the default construction from endpoint would be incorrect.
     """
 
-    permitted_email_domains: "___fmp__.RepeatedString" = aristaproto.message_field(8)
+    permitted_email_domains: "___fmp__.RepeatedString | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
     """
     permitted_email_domains are domains of emails that users are allowed to use.
     This is an optional field. If not set, all domains are accepted by default.
     """
 
-    roles_scope_name: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
+    roles_scope_name: "str | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     roles_scope_name is the name for a scope tied to a claim that holds
     CloudVision roles in ID Token. CloudVision uses scope values to specify
@@ -166,7 +199,9 @@ class OAuthConfig(aristaproto.Message):
     also needs to be set.
     """
 
-    bearer_token_introspection_endpoint: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
+    bearer_token_introspection_endpoint: "str | None" = aristaproto.field(
+        10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True
+    )
     """
     bearer_token_introspection_endpoint is the provider instrospection endpoint used
     in Bearer Token based login support for CloudVision. This is an optional field.
@@ -174,7 +209,7 @@ class OAuthConfig(aristaproto.Message):
     the provider to log in automated user accounts.
     """
 
-    roles_claim_name: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
+    roles_claim_name: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     roles_claim_name is the name for a claim that holds CloudVision roles in ID Token.
     CloudVision uses this value to look up roles in the ID Token.
@@ -184,71 +219,430 @@ class OAuthConfig(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class SamlKey(aristaproto.Message):
-    """SAMLKey contains SAML Provider ID."""
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfig", OAuthConfig)
 
-    provider_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """provider_id is the ID of the SAML provider."""
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[OAuthConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each OAuthConfig at end.
+        * Each OAuthConfig response is fully-specified (all fields set).
+      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
+        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each OAuthConfig at start, followed by updates
+        until end.
+        * Each OAuthConfig response at start is fully-specified, but updates until end may
+          be partial.
+
+    This field is not allowed in the Subscribe RPC.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigBatchedStreamRequest", OAuthConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[OAuthConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigBatchedStreamResponse", OAuthConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[OAuthConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteAllRequest", OAuthConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "OAuthKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the OAuthConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteAllResponse", OAuthConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteRequest(aristaproto.Message):
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which OAuthConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteRequest", OAuthConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteResponse(aristaproto.Message):
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted OAuthConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteResponse", OAuthConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[OAuthKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of OAuthConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteSomeRequest", OAuthConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    OAuthConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigDeleteSomeResponse", OAuthConfigDeleteSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigRequest(aristaproto.Message):
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a OAuthConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigRequest", OAuthConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigResponse(aristaproto.Message):
+    value: "OAuthConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    OAuthConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigResponse", OAuthConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetRequest(aristaproto.Message):
+    value: "OAuthConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    OAuthConfig carries the value to set into the datastore.
+    See the documentation on the OAuthConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSetRequest", OAuthConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetResponse(aristaproto.Message):
+    value: "OAuthConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the OAuthConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSetResponse", OAuthConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetSomeRequest(aristaproto.Message):
+    values: "list[OAuthConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of OAuthConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSetSomeRequest", OAuthConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetSomeResponse(aristaproto.Message):
+    key: "OAuthKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSetSomeResponse", OAuthConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSomeRequest(aristaproto.Message):
+    keys: "list[OAuthKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSomeRequest", OAuthConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSomeResponse(aristaproto.Message):
+    value: "OAuthConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigSomeResponse", OAuthConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[OAuthConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each OAuthConfig at end.
+        * Each OAuthConfig response is fully-specified (all fields set).
+      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
+        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each OAuthConfig at start, followed by updates
+        until end.
+        * Each OAuthConfig response at start is fully-specified, but updates until end may
+          be partial.
+
+    This field is not allowed in the Subscribe RPC.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigStreamRequest", OAuthConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigStreamResponse(aristaproto.Message):
+    value: "OAuthConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this OAuthConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the OAuthConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthConfigStreamResponse", OAuthConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class OAuthKey(aristaproto.Message):
+    """
+    OAuthKey contains OAuth provider ID.
+    """
+
+    provider_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    provider_id is the ID of the OAuth provider.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "OAuthKey", OAuthKey)
 
 
 @dataclass(eq=False, repr=False)
 class SamlConfig(aristaproto.Message):
-    """SAMLConfig holds the configuration for a SAML provider."""
+    """
+    SAMLConfig holds the configuration for a SAML provider.
+    """
 
-    key: "SamlKey" = aristaproto.message_field(1)
-    """key is the ID of the SAML provider."""
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key is the ID of the SAML provider.
+    """
 
-    idp_issuer: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    idp_issuer: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     idp_issuer identifies the SAML provider. There is no restriction on its format
     other than a string to carry the issuer's name.
     """
 
-    idp_metadata_url: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    idp_metadata_url: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     idp_metadata_url is the URL that CloudVision uses to fetch the
     SAML provider metadata.
     """
 
-    authreq_binding: "ProtocolBinding" = aristaproto.enum_field(4)
+    authreq_binding: "ProtocolBinding" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: ProtocolBinding(0))
     """
     authreq_binding specifies the ProtocolBinding used to send SAML authentication
     request to the SAML provider.
     """
 
-    email_attrname: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    email_attrname: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     email_attrname specifies the Attribute name for email ID in Assertion of SAMLResponse
     from the SAML provider.
     """
 
-    link_to_shared_provider: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
+    link_to_shared_provider: "bool | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     link_to_shared_provider indicates whether or not use the provider as a shared
     provider. This is an optional field and set to false by default.
     """
 
-    permitted_email_domains: "___fmp__.RepeatedString" = aristaproto.message_field(7)
+    permitted_email_domains: "___fmp__.RepeatedString | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
     """
     permitted_email_domains are domains of emails that users are allowed to use.
     This is an optional field. If not set, all domains are accepted by default.
     """
 
-    force_saml_authn: Optional[bool] = aristaproto.message_field(8, wraps=aristaproto.TYPE_BOOL)
+    force_saml_authn: "bool | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     force_saml_authn indicates wether or not enable force authentication in SAML login.
     This is an optional field. If not set, it defaults to false.
     """
 
-    roles_attrname: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
+    roles_attrname: "str | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     roles_attrname specifies the Attribute name for CloudVision roles in the Assertion
     of SAMLResponse. This is an optional field. If not set, CloudVision determines that
     mapping roles from the provider is disabled.
     """
 
-    org_attrname: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
+    org_attrname: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     org_attrname specifies the Attribute name for CloudVision organization/tenant in
     the Assertion of SAMLResponse. This is an optional field. CloudVision supports use
@@ -265,7 +659,7 @@ class SamlConfig(aristaproto.Message):
     is not specified.
     """
 
-    username_attrname: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
+    username_attrname: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     username_attrname specifies Attribute name for CloudVision users' username in the
     Assertion of SAMLResponse. This is an optional field as long as mapping roles from
@@ -273,91 +667,12 @@ class SamlConfig(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfig", SamlConfig)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigRequest(aristaproto.Message):
-    key: "OAuthKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a OAuthConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigResponse(aristaproto.Message):
-    value: "OAuthConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    OAuthConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigSomeRequest(aristaproto.Message):
-    keys: List["OAuthKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigSomeResponse(aristaproto.Message):
-    value: "OAuthConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["OAuthConfig"] = aristaproto.message_field(1)
+class SamlConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SamlConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -366,78 +681,26 @@ class OAuthConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each OAuthConfig at end.
-        * Each OAuthConfig response is fully-specified (all fields set).
-      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
-        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each OAuthConfig at start, followed by updates
+      * end: Returns the state of each SAMLConfig at end.
+        * Each SAMLConfig response is fully-specified (all fields set).
+      * start: Returns the state of each SAMLConfig at start, followed by updates until now.
+        * Each SAMLConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SAMLConfig at start, followed by updates
         until end.
-        * Each OAuthConfig response at start is fully-specified, but updates until end may
+        * Each SAMLConfig response at start is fully-specified, but updates until end may
           be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
 
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigStreamResponse(aristaproto.Message):
-    value: "OAuthConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this OAuthConfig's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the OAuthConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["OAuthConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each OAuthConfig at end.
-        * Each OAuthConfig response is fully-specified (all fields set).
-      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
-        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each OAuthConfig at start, followed by updates
-        until end.
-        * Each OAuthConfig response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -446,9 +709,12 @@ class OAuthConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigBatchedStreamRequest", SamlConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
-class OAuthConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["OAuthConfigStreamResponse"] = aristaproto.message_field(1)
+class SamlConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SamlConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -456,67 +722,69 @@ class OAuthConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class OAuthConfigSetRequest(aristaproto.Message):
-    value: "OAuthConfig" = aristaproto.message_field(1)
-    """
-    OAuthConfig carries the value to set into the datastore.
-    See the documentation on the OAuthConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigBatchedStreamResponse", SamlConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigSetResponse(aristaproto.Message):
-    value: "OAuthConfig" = aristaproto.message_field(1)
+class SamlConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[SamlConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the OAuthConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteAllRequest", SamlConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigSetSomeRequest(aristaproto.Message):
-    values: List["OAuthConfig"] = aristaproto.message_field(1)
+class SamlConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of OAuthConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
     """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "SamlKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the SAMLConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteAllResponse", SamlConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigSetSomeResponse(aristaproto.Message):
-    key: "OAuthKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class OAuthConfigDeleteRequest(aristaproto.Message):
-    key: "OAuthKey" = aristaproto.message_field(1)
+class SamlConfigDeleteRequest(aristaproto.Message):
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Key indicates which OAuthConfig instance to remove.
+    Key indicates which SAMLConfig instance to remove.
     This field must always be set.
     """
 
 
-@dataclass(eq=False, repr=False)
-class OAuthConfigDeleteResponse(aristaproto.Message):
-    key: "OAuthKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted OAuthConfig instance."""
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteRequest", SamlConfigDeleteRequest)
 
-    time: datetime = aristaproto.message_field(2)
+
+@dataclass(eq=False, repr=False)
+class SamlConfigDeleteResponse(aristaproto.Message):
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted SAMLConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -526,68 +794,55 @@ class OAuthConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class OAuthConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["OAuthKey"] = aristaproto.message_field(1)
-    """key contains a list of OAuthConfig keys to delete"""
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteResponse", SamlConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigDeleteSomeResponse(aristaproto.Message):
-    """OAuthConfigDeleteSomeResponse is only sent when there is an error."""
+class SamlConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[SamlKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of SAMLConfig keys to delete
+    """
 
-    key: "OAuthKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteSomeRequest", SamlConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class OAuthConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["OAuthConfig"] = aristaproto.message_field(1)
+class SamlConfigDeleteSomeResponse(aristaproto.Message):
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    SAMLConfigDeleteSomeResponse is only sent when there is an error.
     """
 
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
 
-@dataclass(eq=False, repr=False)
-class OAuthConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
 
-    key: "OAuthKey" = aristaproto.message_field(3)
-    """
-    This is the key of the OAuthConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigDeleteSomeResponse", SamlConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class SamlConfigRequest(aristaproto.Message):
-    key: "SamlKey" = aristaproto.message_field(1)
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a SAMLConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigRequest", SamlConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SamlConfigResponse(aristaproto.Message):
-    value: "SamlConfig" = aristaproto.message_field(1)
+    value: "SamlConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -595,26 +850,92 @@ class SamlConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     SAMLConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigResponse", SamlConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetRequest(aristaproto.Message):
+    value: "SamlConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    SAMLConfig carries the value to set into the datastore.
+    See the documentation on the SAMLConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSetRequest", SamlConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetResponse(aristaproto.Message):
+    value: "SamlConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the SAMLConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSetResponse", SamlConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetSomeRequest(aristaproto.Message):
+    values: "list[SamlConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of SAMLConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSetSomeRequest", SamlConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetSomeResponse(aristaproto.Message):
+    key: "SamlKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSetSomeResponse", SamlConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class SamlConfigSomeRequest(aristaproto.Message):
-    keys: List["SamlKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[SamlKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSomeRequest", SamlConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SamlConfigSomeResponse(aristaproto.Message):
-    value: "SamlConfig" = aristaproto.message_field(1)
+    value: "SamlConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -622,18 +943,21 @@ class SamlConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+
+
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigSomeResponse", SamlConfigSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class SamlConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SamlConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[SamlConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -642,7 +966,7 @@ class SamlConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -662,19 +986,24 @@ class SamlConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigStreamRequest", SamlConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SamlConfigStreamResponse(aristaproto.Message):
-    value: "SamlConfig" = aristaproto.message_field(1)
+    value: "SamlConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this SAMLConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this SAMLConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the SAMLConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -683,1065 +1012,567 @@ class SamlConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class SamlConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SamlConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each SAMLConfig at end.
-        * Each SAMLConfig response is fully-specified (all fields set).
-      * start: Returns the state of each SAMLConfig at start, followed by updates until now.
-        * Each SAMLConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SAMLConfig at start, followed by updates
-        until end.
-        * Each SAMLConfig response at start is fully-specified, but updates until end may
-          be partial.
-
-    This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLConfigStreamResponse", SamlConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class SamlConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["SamlConfigStreamResponse"] = aristaproto.message_field(1)
+class SamlKey(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    SAMLKey contains SAML Provider ID.
     """
 
-
-@dataclass(eq=False, repr=False)
-class SamlConfigSetRequest(aristaproto.Message):
-    value: "SamlConfig" = aristaproto.message_field(1)
+    provider_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    SAMLConfig carries the value to set into the datastore.
-    See the documentation on the SAMLConfig struct for which fields are required.
+    provider_id is the ID of the SAML provider.
     """
 
 
-@dataclass(eq=False, repr=False)
-class SamlConfigSetResponse(aristaproto.Message):
-    value: "SamlConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the SAMLConfigSetRequest as well
-    as any server-generated values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.identityprovider.v1", "SAMLKey", SamlKey)
 
 
-@dataclass(eq=False, repr=False)
-class SamlConfigSetSomeRequest(aristaproto.Message):
-    values: List["SamlConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of SAMLConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigSetSomeResponse(aristaproto.Message):
-    key: "SamlKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteRequest(aristaproto.Message):
-    key: "SamlKey" = aristaproto.message_field(1)
-    """
-    Key indicates which SAMLConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteResponse(aristaproto.Message):
-    key: "SamlKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted SAMLConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["SamlKey"] = aristaproto.message_field(1)
-    """key contains a list of SAMLConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteSomeResponse(aristaproto.Message):
-    """SAMLConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "SamlKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["SamlConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SamlConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "SamlKey" = aristaproto.message_field(3)
-    """
-    This is the key of the SAMLConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-class OAuthConfigServiceStub(aristaproto.ServiceStub):
+class OAuthConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        o_auth_config_request: "OAuthConfigRequest",
+        message: "OAuthConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "OAuthConfigResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/GetOne",
-            o_auth_config_request,
+            message,
             OAuthConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        o_auth_config_some_request: "OAuthConfigSomeRequest",
+        message: "OAuthConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetSome",
-            o_auth_config_some_request,
+            message,
             OAuthConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        o_auth_config_stream_request: "OAuthConfigStreamRequest",
+        message: "OAuthConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetAll",
-            o_auth_config_stream_request,
+            message,
             OAuthConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        o_auth_config_stream_request: "OAuthConfigStreamRequest",
+        message: "OAuthConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/Subscribe",
-            o_auth_config_stream_request,
+            message,
             OAuthConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        o_auth_config_stream_request: "OAuthConfigStreamRequest",
+        message: "OAuthConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/GetMeta",
-            o_auth_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        o_auth_config_stream_request: "OAuthConfigStreamRequest",
+        message: "OAuthConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SubscribeMeta",
-            o_auth_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        o_auth_config_set_request: "OAuthConfigSetRequest",
+        message: "OAuthConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "OAuthConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/Set",
-            o_auth_config_set_request,
+            message,
             OAuthConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        o_auth_config_set_some_request: "OAuthConfigSetSomeRequest",
+        message: "OAuthConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SetSome",
-            o_auth_config_set_some_request,
+            message,
             OAuthConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        o_auth_config_delete_request: "OAuthConfigDeleteRequest",
+        message: "OAuthConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "OAuthConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/Delete",
-            o_auth_config_delete_request,
+            message,
             OAuthConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        o_auth_config_delete_some_request: "OAuthConfigDeleteSomeRequest",
+        message: "OAuthConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/DeleteSome",
-            o_auth_config_delete_some_request,
+            message,
             OAuthConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        o_auth_config_delete_all_request: "OAuthConfigDeleteAllRequest",
+        message: "OAuthConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/DeleteAll",
-            o_auth_config_delete_all_request,
+            message,
             OAuthConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        o_auth_config_batched_stream_request: "OAuthConfigBatchedStreamRequest",
+        message: "OAuthConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetAllBatched",
-            o_auth_config_batched_stream_request,
+            message,
             OAuthConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        o_auth_config_batched_stream_request: "OAuthConfigBatchedStreamRequest",
+        message: "OAuthConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[OAuthConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SubscribeBatched",
-            o_auth_config_batched_stream_request,
+            message,
             OAuthConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SamlConfigServiceStub(aristaproto.ServiceStub):
+class SamlConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        saml_config_request: "SamlConfigRequest",
+        message: "SamlConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SamlConfigResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/GetOne",
-            saml_config_request,
+            message,
             SamlConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        saml_config_some_request: "SamlConfigSomeRequest",
+        message: "SamlConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetSome",
-            saml_config_some_request,
+            message,
             SamlConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        saml_config_stream_request: "SamlConfigStreamRequest",
+        message: "SamlConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetAll",
-            saml_config_stream_request,
+            message,
             SamlConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        saml_config_stream_request: "SamlConfigStreamRequest",
+        message: "SamlConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/Subscribe",
-            saml_config_stream_request,
+            message,
             SamlConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        saml_config_stream_request: "SamlConfigStreamRequest",
+        message: "SamlConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/GetMeta",
-            saml_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        saml_config_stream_request: "SamlConfigStreamRequest",
+        message: "SamlConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SubscribeMeta",
-            saml_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        saml_config_set_request: "SamlConfigSetRequest",
+        message: "SamlConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SamlConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/Set",
-            saml_config_set_request,
+            message,
             SamlConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        saml_config_set_some_request: "SamlConfigSetSomeRequest",
+        message: "SamlConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SetSome",
-            saml_config_set_some_request,
+            message,
             SamlConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        saml_config_delete_request: "SamlConfigDeleteRequest",
+        message: "SamlConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SamlConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/Delete",
-            saml_config_delete_request,
+            message,
             SamlConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        saml_config_delete_some_request: "SamlConfigDeleteSomeRequest",
+        message: "SamlConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/DeleteSome",
-            saml_config_delete_some_request,
+            message,
             SamlConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        saml_config_delete_all_request: "SamlConfigDeleteAllRequest",
+        message: "SamlConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/DeleteAll",
-            saml_config_delete_all_request,
+            message,
             SamlConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest",
+        message: "SamlConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetAllBatched",
-            saml_config_batched_stream_request,
+            message,
             SamlConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest",
+        message: "SamlConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SamlConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SubscribeBatched",
-            saml_config_batched_stream_request,
+            message,
             SamlConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class OAuthConfigServiceBase(ServiceBase):
-    async def get_one(self, o_auth_config_request: "OAuthConfigRequest") -> "OAuthConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, o_auth_config_some_request: "OAuthConfigSomeRequest") -> AsyncIterator[OAuthConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator[OAuthConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator[OAuthConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, o_auth_config_set_request: "OAuthConfigSetRequest") -> "OAuthConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, o_auth_config_set_some_request: "OAuthConfigSetSomeRequest") -> AsyncIterator[OAuthConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, o_auth_config_delete_request: "OAuthConfigDeleteRequest") -> "OAuthConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, o_auth_config_delete_some_request: "OAuthConfigDeleteSomeRequest") -> AsyncIterator[OAuthConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, o_auth_config_delete_all_request: "OAuthConfigDeleteAllRequest") -> AsyncIterator[OAuthConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, o_auth_config_batched_stream_request: "OAuthConfigBatchedStreamRequest") -> AsyncIterator[OAuthConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, o_auth_config_batched_stream_request: "OAuthConfigBatchedStreamRequest"
-    ) -> AsyncIterator[OAuthConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[OAuthConfigRequest, OAuthConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[OAuthConfigSomeRequest, OAuthConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, OAuthConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, OAuthConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[OAuthConfigSetRequest, OAuthConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[OAuthConfigSetSomeRequest, OAuthConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[OAuthConfigDeleteRequest, OAuthConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[OAuthConfigDeleteSomeRequest, OAuthConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[OAuthConfigDeleteAllRequest, OAuthConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[OAuthConfigBatchedStreamRequest, OAuthConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[OAuthConfigBatchedStreamRequest, OAuthConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.identityprovider.v1.OAuthConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                OAuthConfigRequest,
-                OAuthConfigResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigSomeRequest,
-                OAuthConfigSomeResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigStreamRequest,
-                OAuthConfigStreamResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigStreamRequest,
-                OAuthConfigStreamResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                OAuthConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                OAuthConfigSetRequest,
-                OAuthConfigSetResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigSetSomeRequest,
-                OAuthConfigSetSomeResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                OAuthConfigDeleteRequest,
-                OAuthConfigDeleteResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigDeleteSomeRequest,
-                OAuthConfigDeleteSomeResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigDeleteAllRequest,
-                OAuthConfigDeleteAllResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigBatchedStreamRequest,
-                OAuthConfigBatchedStreamResponse,
-            ),
-            "/arista.identityprovider.v1.OAuthConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                OAuthConfigBatchedStreamRequest,
-                OAuthConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class SamlConfigServiceBase(ServiceBase):
-    async def get_one(self, saml_config_request: "SamlConfigRequest") -> "SamlConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, saml_config_some_request: "SamlConfigSomeRequest") -> AsyncIterator[SamlConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator[SamlConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator[SamlConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, saml_config_stream_request: "SamlConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, saml_config_set_request: "SamlConfigSetRequest") -> "SamlConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, saml_config_set_some_request: "SamlConfigSetSomeRequest") -> AsyncIterator[SamlConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, saml_config_delete_request: "SamlConfigDeleteRequest") -> "SamlConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, saml_config_delete_some_request: "SamlConfigDeleteSomeRequest") -> AsyncIterator[SamlConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, saml_config_delete_all_request: "SamlConfigDeleteAllRequest") -> AsyncIterator[SamlConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest") -> AsyncIterator[SamlConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest") -> AsyncIterator[SamlConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SamlConfigRequest, SamlConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SamlConfigSomeRequest, SamlConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, SamlConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, SamlConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[SamlConfigSetRequest, SamlConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[SamlConfigSetSomeRequest, SamlConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[SamlConfigDeleteRequest, SamlConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[SamlConfigDeleteSomeRequest, SamlConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[SamlConfigDeleteAllRequest, SamlConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SamlConfigBatchedStreamRequest, SamlConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SamlConfigBatchedStreamRequest, SamlConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.identityprovider.v1.SAMLConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SamlConfigRequest,
-                SamlConfigResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigSomeRequest,
-                SamlConfigSomeResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigStreamRequest,
-                SamlConfigStreamResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigStreamRequest,
-                SamlConfigStreamResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SamlConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SamlConfigSetRequest,
-                SamlConfigSetResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigSetSomeRequest,
-                SamlConfigSetSomeResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SamlConfigDeleteRequest,
-                SamlConfigDeleteResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigDeleteSomeRequest,
-                SamlConfigDeleteSomeResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigDeleteAllRequest,
-                SamlConfigDeleteAllResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigBatchedStreamRequest,
-                SamlConfigBatchedStreamResponse,
-            ),
-            "/arista.identityprovider.v1.SAMLConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SamlConfigBatchedStreamRequest,
-                SamlConfigBatchedStreamResponse,
-            ),
-        }

@@ -11,9 +11,13 @@ __all__ = ("Operation",)
 
 import aristaproto
 
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
+
 
 class Operation(aristaproto.Enum):
     UNSPECIFIED = 0
+
     INITIAL = 10
     """
     INITIAL indicates the associated notification is that of the

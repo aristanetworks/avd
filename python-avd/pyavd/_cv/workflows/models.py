@@ -8,9 +8,8 @@ from datetime import datetime
 from logging import getLogger
 from pathlib import Path
 from typing import Any, Literal
+from urllib.parse import quote
 from uuid import NAMESPACE_DNS, uuid4, uuid5
-
-from grpclib.config import Configuration
 
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
@@ -23,7 +22,7 @@ AVD_ENTITY_PREFIX = "avd_"
 LOGGER = getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class CVGRPCKeepalives:
     enabled: bool = False
     keepalive_time: int = 60
@@ -36,33 +35,62 @@ class CVGRPCKeepalives:
             raise ValueError(msg)
 
 
-@dataclass
-class CVGRPCChannelConfiguration:
+@dataclass(frozen=True)
+class CVProxyConfiguration:
+    """HTTP CONNECT proxy settings for CloudVision connections."""
+
+    host: str
+    port: int = 8080
+    username: str | None = None
+    password: str | None = None
+
+    @property
+    def proxy_url(self) -> str:
+        """Build the HTTP proxy URL."""
+        if self.username and self.password:
+            username = quote(self.username, safe="")
+            password = quote(self.password, safe="")
+            return f"http://{username}:{password}@{self.host}:{self.port}"  # NOSONAR: accept http for proxy.
+
+        return f"http://{self.host}:{self.port}"  # NOSONAR: accept http for proxy.
+
+    def get_requests_proxies(self) -> dict[str, str]:
+        """Build requests proxy configuration."""
+        return {
+            "http": self.proxy_url,
+            "https": self.proxy_url,
+        }
+
+    def as_grpcio_channel_options(self) -> tuple[tuple[str, str], ...]:
+        """Build grpcio channel options from the configured HTTP proxy settings."""
+        return (("grpc.http_proxy", self.proxy_url),)
+
+
+@dataclass(frozen=True)
+class CVGRPCConfiguration:
     """Advanced configuration settings of the gRPC channel."""
 
     grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
     """Keepalive settings of the gRPC channel."""
 
-    def as_grpclib_configuration(self) -> Configuration:
-        if not self.grpc_keepalives.enabled:
-            return Configuration()
-        try:
-            return Configuration(
-                _keepalive_time=self.grpc_keepalives.keepalive_time,
-                _keepalive_timeout=self.grpc_keepalives.keepalive_timeout,
-                _keepalive_permit_without_calls=self.grpc_keepalives.permit_without_calls,
-                # Disable the grpclib default cap of 2 pings without data so keepalives
-                # continue for the duration of the deployment.
-                _http2_max_pings_without_data=0,
-                # Override grpclib's 300s rate-limit so pings fire at the configured interval.
-                _http2_min_sent_ping_interval_without_data=self.grpc_keepalives.keepalive_time,
+    def as_grpcio_channel_options(self, user_agent: str) -> tuple[tuple[str, str | int], ...]:
+        """Build grpcio channel options from the typed gRPC channel configuration."""
+        options: tuple[tuple[str, str | int], ...] = (("grpc.primary_user_agent", user_agent),)
+
+        if self.grpc_keepalives.enabled:
+            options += (
+                ("grpc.keepalive_time_ms", self.grpc_keepalives.keepalive_time * 1000),
+                ("grpc.keepalive_timeout_ms", self.grpc_keepalives.keepalive_timeout * 1000),
+                ("grpc.keepalive_permit_without_calls", int(self.grpc_keepalives.permit_without_calls)),
+                # Disable the default cap of 2 pings without data so keepalives continue
+                # for the duration of the deployment.
+                ("grpc.http2.max_pings_without_data", 0),
             )
-        except TypeError:
-            LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
-            return Configuration()
+
+        return options
 
 
-@dataclass
+@dataclass(frozen=True)
 class CVDeployFuture:
     """Opt-in to future cv_deploy behaviors which will become defaults in a future major version."""
 
@@ -70,19 +98,36 @@ class CVDeployFuture:
     """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR. Will become the default in AVD 7.0."""
 
 
-@dataclass
+@dataclass(frozen=True)
+class CVTLSConfiguration:
+    """TLS configuration settings for CloudVision connections."""
+
+    verify_certs: bool = True
+    """Disables TLS certificate verification if set to False. Not recommended for production."""
+
+    use_system_certs: bool = False
+    """Use system certificates and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR."""
+
+
+@dataclass(frozen=True)
 class CloudVision:
-    servers: str | list[str]
+    servers: tuple[str, ...]
     token: str | None
     username: str | None
     password: str | None
-    verify_certs: bool
-    proxy_host: str | None
-    proxy_port: int | None
-    proxy_username: str | None
-    proxy_password: str | None
-    grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
-    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
+    port: int = 443
+    tls_configuration: CVTLSConfiguration = field(default_factory=CVTLSConfiguration)
+    grpc_configuration: CVGRPCConfiguration = field(default_factory=CVGRPCConfiguration)
+    proxy_configuration: CVProxyConfiguration | None = None
+
+    def get_result(self) -> dict[str, Any]:
+        """Return CloudVision connection details without internal configuration objects."""
+        return {
+            "servers": self.servers,
+            "token": "<removed>" if self.token is not None else None,
+            "username": self.username,
+            "password": "<removed>" if self.password is not None else None,
+        }
 
 
 @dataclass(frozen=True)
@@ -106,7 +151,7 @@ class AvdChangeControl:
 class CVChangeControl:
     avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
-    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"] | None = None
     name: str | None = None
     description: str | None = None
 
@@ -217,7 +262,7 @@ class CVStudioInputs:
 @dataclass
 class CVPathfinderMetadata:
     metadata: dict
-    device: CVDevice | None = None
+    device: CVDevice
 
 
 @dataclass
@@ -353,7 +398,7 @@ class DeployToCvResult:
     failed: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
-    workspace: CVWorkspace | None = None
+    workspace: CVWorkspace = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_static_config_containers: list[AvdContainer] = field(default_factory=list)

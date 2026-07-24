@@ -8,96 +8,99 @@
 
 __all__ = (
     "DeleteError",
-    "SortDirection",
-    "RepeatedDouble",
-    "RepeatedFloat",
-    "RepeatedInt64",
-    "RepeatedUInt64",
-    "RepeatedInt32",
-    "RepeatedUInt32",
-    "RepeatedBool",
-    "RepeatedString",
-    "RepeatedBytes",
-    "MapInt64Double",
-    "MapInt64Float",
-    "MapInt64Int64",
-    "MapInt64UInt64",
-    "MapInt64Int32",
-    "MapInt64UInt32",
-    "MapInt64Bool",
-    "MapInt64String",
-    "MapInt64Bytes",
-    "MapUInt64Double",
-    "MapUInt64Float",
-    "MapUInt64Int64",
-    "MapUInt64UInt64",
-    "MapUInt64Int32",
-    "MapUInt64UInt32",
-    "MapUInt64Bool",
-    "MapUInt64String",
-    "MapUInt64Bytes",
-    "MapInt32Double",
-    "MapInt32Float",
-    "MapInt32Int64",
-    "MapInt32UInt64",
-    "MapInt32Int32",
-    "MapInt32UInt32",
-    "MapInt32Bool",
-    "MapInt32String",
-    "MapInt32Bytes",
-    "MapUInt32Double",
-    "MapUInt32Float",
-    "MapUInt32Int64",
-    "MapUInt32UInt64",
-    "MapUInt32Int32",
-    "MapUInt32UInt32",
-    "MapUInt32Bool",
-    "MapUInt32String",
-    "MapUInt32Bytes",
+    "IPv4Address",
+    "IPv4Prefix",
+    "IPv6Address",
+    "IPv6Prefix",
+    "IpAddress",
+    "IpPrefix",
+    "MacAddress",
+    "MapBoolBool",
+    "MapBoolBytes",
     "MapBoolDouble",
     "MapBoolFloat",
-    "MapBoolInt64",
-    "MapBoolUInt64",
     "MapBoolInt32",
-    "MapBoolUInt32",
-    "MapBoolBool",
+    "MapBoolInt64",
     "MapBoolString",
-    "MapBoolBytes",
+    "MapBoolUInt32",
+    "MapBoolUInt64",
+    "MapInt32Bool",
+    "MapInt32Bytes",
+    "MapInt32Double",
+    "MapInt32Float",
+    "MapInt32Int32",
+    "MapInt32Int64",
+    "MapInt32String",
+    "MapInt32UInt32",
+    "MapInt32UInt64",
+    "MapInt64Bool",
+    "MapInt64Bytes",
+    "MapInt64Double",
+    "MapInt64Float",
+    "MapInt64Int32",
+    "MapInt64Int64",
+    "MapInt64String",
+    "MapInt64UInt32",
+    "MapInt64UInt64",
+    "MapStringBool",
+    "MapStringBytes",
     "MapStringDouble",
     "MapStringFloat",
-    "MapStringInt64",
-    "MapStringUInt64",
     "MapStringInt32",
-    "MapStringUInt32",
-    "MapStringBool",
+    "MapStringInt64",
     "MapStringString",
-    "MapStringBytes",
-    "MacAddress",
-    "RepeatedMacAddress",
-    "IpAddress",
-    "RepeatedIpAddress",
-    "IPv4Address",
-    "RepeatedIPv4Address",
-    "IPv6Address",
-    "RepeatedIPv6Address",
-    "IpPrefix",
-    "IPv4Prefix",
-    "IPv6Prefix",
+    "MapStringUInt32",
+    "MapStringUInt64",
+    "MapUInt32Bool",
+    "MapUInt32Bytes",
+    "MapUInt32Double",
+    "MapUInt32Float",
+    "MapUInt32Int32",
+    "MapUInt32Int64",
+    "MapUInt32String",
+    "MapUInt32UInt32",
+    "MapUInt32UInt64",
+    "MapUInt64Bool",
+    "MapUInt64Bytes",
+    "MapUInt64Double",
+    "MapUInt64Float",
+    "MapUInt64Int32",
+    "MapUInt64Int64",
+    "MapUInt64String",
+    "MapUInt64UInt32",
+    "MapUInt64UInt64",
     "Port",
+    "RepeatedBool",
+    "RepeatedBytes",
+    "RepeatedDouble",
+    "RepeatedFloat",
+    "RepeatedIPv4Address",
+    "RepeatedIPv6Address",
+    "RepeatedInt32",
+    "RepeatedInt64",
+    "RepeatedIpAddress",
+    "RepeatedMacAddress",
+    "RepeatedString",
+    "RepeatedUInt32",
+    "RepeatedUInt64",
+    "SortDirection",
 )
 
 
 from dataclasses import dataclass
-from typing import (
-    Dict,
-    List,
-)
 
 import aristaproto
 
+from ..message_pool import default_message_pool
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
+
 
 class DeleteError(aristaproto.Enum):
-    """DeleteError defines the set of delete error types."""
+    """
+    DeleteError defines the set of delete error types.
+    """
 
     UNSPECIFIED = 0
     """
@@ -123,6 +126,24 @@ class DeleteError(aristaproto.Enum):
     not allowed by the service.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DELETE_ERROR_UNSPECIFIED",
+            1: "DELETE_ERROR_UNAUTHORIZED",
+            2: "DELETE_ERROR_INTERNAL",
+            3: "DELETE_ERROR_UNDELETABLE_KEY",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DELETE_ERROR_UNSPECIFIED": 0,
+            "DELETE_ERROR_UNAUTHORIZED": 1,
+            "DELETE_ERROR_INTERNAL": 2,
+            "DELETE_ERROR_UNDELETABLE_KEY": 3,
+        }
+
 
 class SortDirection(aristaproto.Enum):
     """
@@ -130,574 +151,1073 @@ class SortDirection(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """SORT_DIRECTION_UNSPECIFIED means that no sort direction specified."""
+    """
+    SORT_DIRECTION_UNSPECIFIED means that no sort direction specified.
+    """
 
     ASCENDING = 1
-    """SORT_DIRECTION_ASCENDING sorts in ascending order."""
+    """
+    SORT_DIRECTION_ASCENDING sorts in ascending order.
+    """
 
     DESCENDING = 2
-    """SORT_DIRECTION_DESCENDING sorts in descending order."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedDouble(aristaproto.Message):
-    """Wrapper message for `repeated double`."""
-
-    values: List[float] = aristaproto.double_field(1)
-    """The repeated double values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedFloat(aristaproto.Message):
-    """Wrapper message for `repeated float`."""
-
-    values: List[float] = aristaproto.float_field(1)
-    """The repeated float values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedInt64(aristaproto.Message):
-    """Wrapper message for `repeated int64`."""
-
-    values: List[int] = aristaproto.int64_field(1)
-    """The repeated int64 values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedUInt64(aristaproto.Message):
-    """Wrapper message for `repeated uint64`."""
-
-    values: List[int] = aristaproto.uint64_field(1)
-    """The repeated uint64 values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedInt32(aristaproto.Message):
-    """Wrapper message for `repeated int32`."""
-
-    values: List[int] = aristaproto.int32_field(1)
-    """The repeated int32 values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedUInt32(aristaproto.Message):
-    """Wrapper message for `repeated uint32`."""
-
-    values: List[int] = aristaproto.uint32_field(1)
-    """The repeated uint32 values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedBool(aristaproto.Message):
-    """Wrapper message for `repeated bool`."""
-
-    values: List[bool] = aristaproto.bool_field(1)
-    """The repeated bool values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedString(aristaproto.Message):
-    """Wrapper message for `repeated string`."""
-
-    values: List[str] = aristaproto.string_field(1)
-    """The repeated string values."""
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedBytes(aristaproto.Message):
-    """Wrapper message for `repeated bytes`."""
-
-    values: List[bytes] = aristaproto.bytes_field(1)
-    """The repeated bytes values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Double(aristaproto.Message):
-    """Wrapper message for `map<int64, double>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_DOUBLE)
-    """The map<int64, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Float(aristaproto.Message):
-    """Wrapper message for `map<int64, float>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_FLOAT)
-    """The map<int64, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Int64(aristaproto.Message):
-    """Wrapper message for `map<int64, int64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT64)
-    """The map<int64, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64UInt64(aristaproto.Message):
-    """Wrapper message for `map<int64, uint64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT64)
-    """The map<int64, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Int32(aristaproto.Message):
-    """Wrapper message for `map<int64, int32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT32)
-    """The map<int64, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64UInt32(aristaproto.Message):
-    """Wrapper message for `map<int64, uint32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT32)
-    """The map<int64, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Bool(aristaproto.Message):
-    """Wrapper message for `map<int64, bool>`."""
-
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_BOOL)
-    """The map<int64, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64String(aristaproto.Message):
-    """Wrapper message for `map<int64, string>`."""
-
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_STRING)
-    """The map<int64, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt64Bytes(aristaproto.Message):
-    """Wrapper message for `map<int64, bytes>`."""
-
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_BYTES)
-    """The map<int64, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Double(aristaproto.Message):
-    """Wrapper message for `map<uint64, double>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_DOUBLE)
-    """The map<uint64, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Float(aristaproto.Message):
-    """Wrapper message for `map<uint64, float>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_FLOAT)
-    """The map<uint64, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Int64(aristaproto.Message):
-    """Wrapper message for `map<uint64, int64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT64)
-    """The map<uint64, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64UInt64(aristaproto.Message):
-    """Wrapper message for `map<uint64, uint64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT64)
-    """The map<uint64, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Int32(aristaproto.Message):
-    """Wrapper message for `map<uint64, int32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT32)
-    """The map<uint64, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64UInt32(aristaproto.Message):
-    """Wrapper message for `map<uint64, uint32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT32)
-    """The map<uint64, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Bool(aristaproto.Message):
-    """Wrapper message for `map<uint64, bool>`."""
-
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BOOL)
-    """The map<uint64, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64String(aristaproto.Message):
-    """Wrapper message for `map<uint64, string>`."""
-
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_STRING)
-    """The map<uint64, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt64Bytes(aristaproto.Message):
-    """Wrapper message for `map<uint64, bytes>`."""
-
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BYTES)
-    """The map<uint64, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Double(aristaproto.Message):
-    """Wrapper message for `map<int32, double>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_DOUBLE)
-    """The map<int32, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Float(aristaproto.Message):
-    """Wrapper message for `map<int32, float>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_FLOAT)
-    """The map<int32, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Int64(aristaproto.Message):
-    """Wrapper message for `map<int32, int64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT64)
-    """The map<int32, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32UInt64(aristaproto.Message):
-    """Wrapper message for `map<int32, uint64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT64)
-    """The map<int32, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Int32(aristaproto.Message):
-    """Wrapper message for `map<int32, int32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT32)
-    """The map<int32, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32UInt32(aristaproto.Message):
-    """Wrapper message for `map<int32, uint32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT32)
-    """The map<int32, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Bool(aristaproto.Message):
-    """Wrapper message for `map<int32, bool>`."""
-
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_BOOL)
-    """The map<int32, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32String(aristaproto.Message):
-    """Wrapper message for `map<int32, string>`."""
-
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_STRING)
-    """The map<int32, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapInt32Bytes(aristaproto.Message):
-    """Wrapper message for `map<int32, bytes>`."""
-
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_BYTES)
-    """The map<int32, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Double(aristaproto.Message):
-    """Wrapper message for `map<uint32, double>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_DOUBLE)
-    """The map<uint32, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Float(aristaproto.Message):
-    """Wrapper message for `map<uint32, float>`."""
-
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_FLOAT)
-    """The map<uint32, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Int64(aristaproto.Message):
-    """Wrapper message for `map<uint32, int64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT64)
-    """The map<uint32, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32UInt64(aristaproto.Message):
-    """Wrapper message for `map<uint32, uint64>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT64)
-    """The map<uint32, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Int32(aristaproto.Message):
-    """Wrapper message for `map<uint32, int32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT32)
-    """The map<uint32, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32UInt32(aristaproto.Message):
-    """Wrapper message for `map<uint32, uint32>`."""
-
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT32)
-    """The map<uint32, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Bool(aristaproto.Message):
-    """Wrapper message for `map<uint32, bool>`."""
-
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BOOL)
-    """The map<uint32, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32String(aristaproto.Message):
-    """Wrapper message for `map<uint32, string>`."""
-
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_STRING)
-    """The map<uint32, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapUInt32Bytes(aristaproto.Message):
-    """Wrapper message for `map<uint32, bytes>`."""
-
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BYTES)
-    """The map<uint32, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolDouble(aristaproto.Message):
-    """Wrapper message for `map<bool, double>`."""
-
-    values: Dict[bool, float] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_DOUBLE)
-    """The map<bool, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolFloat(aristaproto.Message):
-    """Wrapper message for `map<bool, float>`."""
-
-    values: Dict[bool, float] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_FLOAT)
-    """The map<bool, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolInt64(aristaproto.Message):
-    """Wrapper message for `map<bool, int64>`."""
-
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT64)
-    """The map<bool, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolUInt64(aristaproto.Message):
-    """Wrapper message for `map<bool, uint64>`."""
-
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT64)
-    """The map<bool, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolInt32(aristaproto.Message):
-    """Wrapper message for `map<bool, int32>`."""
-
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT32)
-    """The map<bool, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolUInt32(aristaproto.Message):
-    """Wrapper message for `map<bool, uint32>`."""
-
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT32)
-    """The map<bool, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolBool(aristaproto.Message):
-    """Wrapper message for `map<bool, bool>`."""
-
-    values: Dict[bool, bool] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BOOL)
-    """The map<bool, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolString(aristaproto.Message):
-    """Wrapper message for `map<bool, string>`."""
-
-    values: Dict[bool, str] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_STRING)
-    """The map<bool, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapBoolBytes(aristaproto.Message):
-    """Wrapper message for `map<bool, bytes>`."""
-
-    values: Dict[bool, bytes] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BYTES)
-    """The map<bool, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringDouble(aristaproto.Message):
-    """Wrapper message for `map<string, double>`."""
-
-    values: Dict[str, float] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_DOUBLE)
-    """The map<string, double> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringFloat(aristaproto.Message):
-    """Wrapper message for `map<string, float>`."""
-
-    values: Dict[str, float] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_FLOAT)
-    """The map<string, float> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringInt64(aristaproto.Message):
-    """Wrapper message for `map<string, int64>`."""
-
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT64)
-    """The map<string, int64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringUInt64(aristaproto.Message):
-    """Wrapper message for `map<string, uint64>`."""
-
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT64)
-    """The map<string, uint64> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringInt32(aristaproto.Message):
-    """Wrapper message for `map<string, int32>`."""
-
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT32)
-    """The map<string, int32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringUInt32(aristaproto.Message):
-    """Wrapper message for `map<string, uint32>`."""
-
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT32)
-    """The map<string, uint32> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringBool(aristaproto.Message):
-    """Wrapper message for `map<string, bool>`."""
-
-    values: Dict[str, bool] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL)
-    """The map<string, bool> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringString(aristaproto.Message):
-    """Wrapper message for `map<string, string>`."""
-
-    values: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
-    """The map<string, string> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MapStringBytes(aristaproto.Message):
-    """Wrapper message for `map<string, bytes>`."""
-
-    values: Dict[str, bytes] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BYTES)
-    """The map<string, bytes> values."""
-
-
-@dataclass(eq=False, repr=False)
-class MacAddress(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedMacAddress(aristaproto.Message):
-    values: List["MacAddress"] = aristaproto.message_field(1)
+    """
+    SORT_DIRECTION_DESCENDING sorts in descending order.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SORT_DIRECTION_UNSPECIFIED",
+            1: "SORT_DIRECTION_ASCENDING",
+            2: "SORT_DIRECTION_DESCENDING",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SORT_DIRECTION_UNSPECIFIED": 0,
+            "SORT_DIRECTION_ASCENDING": 1,
+            "SORT_DIRECTION_DESCENDING": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
 class IpAddress(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
 
 
-@dataclass(eq=False, repr=False)
-class RepeatedIpAddress(aristaproto.Message):
-    values: List["IpAddress"] = aristaproto.message_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class IPv4Address(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedIPv4Address(aristaproto.Message):
-    values: List["IPv4Address"] = aristaproto.message_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class IPv6Address(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class RepeatedIPv6Address(aristaproto.Message):
-    values: List["IPv6Address"] = aristaproto.message_field(1)
+default_message_pool.register_message("fmp", "IPAddress", IpAddress)
 
 
 @dataclass(eq=False, repr=False)
 class IpPrefix(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "IPPrefix", IpPrefix)
+
+
+@dataclass(eq=False, repr=False)
+class IPv4Address(aristaproto.Message):
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "IPv4Address", IPv4Address)
 
 
 @dataclass(eq=False, repr=False)
 class IPv4Prefix(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "IPv4Prefix", IPv4Prefix)
+
+
+@dataclass(eq=False, repr=False)
+class IPv6Address(aristaproto.Message):
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "IPv6Address", IPv6Address)
 
 
 @dataclass(eq=False, repr=False)
 class IPv6Prefix(aristaproto.Message):
-    value: str = aristaproto.string_field(1)
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "IPv6Prefix", IPv6Prefix)
+
+
+@dataclass(eq=False, repr=False)
+class MacAddress(aristaproto.Message):
+    value: "str" = aristaproto.field(1, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("fmp", "MACAddress", MacAddress)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolBool(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, bool>`.
+    """
+
+    values: "dict[bool, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_BOOL))
+    """
+    The map<bool, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolBool", MapBoolBool)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolBytes(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, bytes>`.
+    """
+
+    values: "dict[bool, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_BYTES))
+    """
+    The map<bool, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolBytes", MapBoolBytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolDouble(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, double>`.
+    """
+
+    values: "dict[bool, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_DOUBLE))
+    """
+    The map<bool, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolDouble", MapBoolDouble)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolFloat(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, float>`.
+    """
+
+    values: "dict[bool, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_FLOAT))
+    """
+    The map<bool, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolFloat", MapBoolFloat)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, int32>`.
+    """
+
+    values: "dict[bool, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_INT32))
+    """
+    The map<bool, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolInt32", MapBoolInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, int64>`.
+    """
+
+    values: "dict[bool, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_INT64))
+    """
+    The map<bool, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolInt64", MapBoolInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolString(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, string>`.
+    """
+
+    values: "dict[bool, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_STRING))
+    """
+    The map<bool, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolString", MapBoolString)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolUInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, uint32>`.
+    """
+
+    values: "dict[bool, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT32))
+    """
+    The map<bool, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolUInt32", MapBoolUInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapBoolUInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<bool, uint64>`.
+    """
+
+    values: "dict[bool, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT64))
+    """
+    The map<bool, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapBoolUInt64", MapBoolUInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Bool(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, bool>`.
+    """
+
+    values: "dict[int, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_BOOL))
+    """
+    The map<int32, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Bool", MapInt32Bool)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Bytes(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, bytes>`.
+    """
+
+    values: "dict[int, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_BYTES))
+    """
+    The map<int32, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Bytes", MapInt32Bytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Double(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, double>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_DOUBLE))
+    """
+    The map<int32, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Double", MapInt32Double)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Float(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, float>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_FLOAT))
+    """
+    The map<int32, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Float", MapInt32Float)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Int32(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, int32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_INT32))
+    """
+    The map<int32, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Int32", MapInt32Int32)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32Int64(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, int64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_INT64))
+    """
+    The map<int32, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32Int64", MapInt32Int64)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32String(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, string>`.
+    """
+
+    values: "dict[int, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_STRING))
+    """
+    The map<int32, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32String", MapInt32String)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32UInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, uint32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_UINT32))
+    """
+    The map<int32, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32UInt32", MapInt32UInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt32UInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<int32, uint64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT32, aristaproto.TYPE_UINT64))
+    """
+    The map<int32, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt32UInt64", MapInt32UInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Bool(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, bool>`.
+    """
+
+    values: "dict[int, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_BOOL))
+    """
+    The map<int64, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Bool", MapInt64Bool)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Bytes(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, bytes>`.
+    """
+
+    values: "dict[int, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_BYTES))
+    """
+    The map<int64, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Bytes", MapInt64Bytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Double(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, double>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_DOUBLE))
+    """
+    The map<int64, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Double", MapInt64Double)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Float(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, float>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_FLOAT))
+    """
+    The map<int64, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Float", MapInt64Float)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Int32(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, int32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_INT32))
+    """
+    The map<int64, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Int32", MapInt64Int32)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64Int64(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, int64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_INT64))
+    """
+    The map<int64, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64Int64", MapInt64Int64)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64String(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, string>`.
+    """
+
+    values: "dict[int, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_STRING))
+    """
+    The map<int64, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64String", MapInt64String)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64UInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, uint32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_UINT32))
+    """
+    The map<int64, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64UInt32", MapInt64UInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapInt64UInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<int64, uint64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_INT64, aristaproto.TYPE_UINT64))
+    """
+    The map<int64, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapInt64UInt64", MapInt64UInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringBool(aristaproto.Message):
+    """
+    Wrapper message for `map<string, bool>`.
+    """
+
+    values: "dict[str, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL))
+    """
+    The map<string, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringBool", MapStringBool)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringBytes(aristaproto.Message):
+    """
+    Wrapper message for `map<string, bytes>`.
+    """
+
+    values: "dict[str, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_BYTES))
+    """
+    The map<string, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringBytes", MapStringBytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringDouble(aristaproto.Message):
+    """
+    Wrapper message for `map<string, double>`.
+    """
+
+    values: "dict[str, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_DOUBLE))
+    """
+    The map<string, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringDouble", MapStringDouble)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringFloat(aristaproto.Message):
+    """
+    Wrapper message for `map<string, float>`.
+    """
+
+    values: "dict[str, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_FLOAT))
+    """
+    The map<string, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringFloat", MapStringFloat)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<string, int32>`.
+    """
+
+    values: "dict[str, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_INT32))
+    """
+    The map<string, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringInt32", MapStringInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<string, int64>`.
+    """
+
+    values: "dict[str, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_INT64))
+    """
+    The map<string, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringInt64", MapStringInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringString(aristaproto.Message):
+    """
+    Wrapper message for `map<string, string>`.
+    """
+
+    values: "dict[str, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_STRING))
+    """
+    The map<string, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringString", MapStringString)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringUInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<string, uint32>`.
+    """
+
+    values: "dict[str, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_UINT32))
+    """
+    The map<string, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringUInt32", MapStringUInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapStringUInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<string, uint64>`.
+    """
+
+    values: "dict[str, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_UINT64))
+    """
+    The map<string, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapStringUInt64", MapStringUInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Bool(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, bool>`.
+    """
+
+    values: "dict[int, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_BOOL))
+    """
+    The map<uint32, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Bool", MapUInt32Bool)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Bytes(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, bytes>`.
+    """
+
+    values: "dict[int, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_BYTES))
+    """
+    The map<uint32, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Bytes", MapUInt32Bytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Double(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, double>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_DOUBLE))
+    """
+    The map<uint32, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Double", MapUInt32Double)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Float(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, float>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_FLOAT))
+    """
+    The map<uint32, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Float", MapUInt32Float)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Int32(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, int32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_INT32))
+    """
+    The map<uint32, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Int32", MapUInt32Int32)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32Int64(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, int64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_INT64))
+    """
+    The map<uint32, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32Int64", MapUInt32Int64)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32String(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, string>`.
+    """
+
+    values: "dict[int, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_STRING))
+    """
+    The map<uint32, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32String", MapUInt32String)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32UInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, uint32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT32))
+    """
+    The map<uint32, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32UInt32", MapUInt32UInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt32UInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<uint32, uint64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT64))
+    """
+    The map<uint32, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt32UInt64", MapUInt32UInt64)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Bool(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, bool>`.
+    """
+
+    values: "dict[int, bool]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_BOOL))
+    """
+    The map<uint64, bool> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Bool", MapUInt64Bool)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Bytes(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, bytes>`.
+    """
+
+    values: "dict[int, bytes]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_BYTES))
+    """
+    The map<uint64, bytes> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Bytes", MapUInt64Bytes)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Double(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, double>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_DOUBLE))
+    """
+    The map<uint64, double> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Double", MapUInt64Double)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Float(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, float>`.
+    """
+
+    values: "dict[int, float]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_FLOAT))
+    """
+    The map<uint64, float> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Float", MapUInt64Float)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Int32(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, int32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_INT32))
+    """
+    The map<uint64, int32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Int32", MapUInt64Int32)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64Int64(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, int64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_INT64))
+    """
+    The map<uint64, int64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64Int64", MapUInt64Int64)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64String(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, string>`.
+    """
+
+    values: "dict[int, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_STRING))
+    """
+    The map<uint64, string> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64String", MapUInt64String)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64UInt32(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, uint32>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT32))
+    """
+    The map<uint64, uint32> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64UInt32", MapUInt64UInt32)
+
+
+@dataclass(eq=False, repr=False)
+class MapUInt64UInt64(aristaproto.Message):
+    """
+    Wrapper message for `map<uint64, uint64>`.
+    """
+
+    values: "dict[int, int]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT64))
+    """
+    The map<uint64, uint64> values.
+    """
+
+
+default_message_pool.register_message("fmp", "MapUInt64UInt64", MapUInt64UInt64)
 
 
 @dataclass(eq=False, repr=False)
 class Port(aristaproto.Message):
-    value: int = aristaproto.uint32_field(1)
+    value: "int" = aristaproto.field(1, aristaproto.TYPE_UINT32)
+
+
+default_message_pool.register_message("fmp", "Port", Port)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedBool(aristaproto.Message):
+    """
+    Wrapper message for `repeated bool`.
+    """
+
+    values: "list[bool]" = aristaproto.field(1, aristaproto.TYPE_BOOL, repeated=True)
+    """
+    The repeated bool values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedBool", RepeatedBool)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedBytes(aristaproto.Message):
+    """
+    Wrapper message for `repeated bytes`.
+    """
+
+    values: "list[bytes]" = aristaproto.field(1, aristaproto.TYPE_BYTES, repeated=True)
+    """
+    The repeated bytes values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedBytes", RepeatedBytes)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedDouble(aristaproto.Message):
+    """
+    Wrapper message for `repeated double`.
+    """
+
+    values: "list[float]" = aristaproto.field(1, aristaproto.TYPE_DOUBLE, repeated=True)
+    """
+    The repeated double values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedDouble", RepeatedDouble)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedFloat(aristaproto.Message):
+    """
+    Wrapper message for `repeated float`.
+    """
+
+    values: "list[float]" = aristaproto.field(1, aristaproto.TYPE_FLOAT, repeated=True)
+    """
+    The repeated float values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedFloat", RepeatedFloat)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedInt32(aristaproto.Message):
+    """
+    Wrapper message for `repeated int32`.
+    """
+
+    values: "list[int]" = aristaproto.field(1, aristaproto.TYPE_INT32, repeated=True)
+    """
+    The repeated int32 values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedInt32", RepeatedInt32)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedInt64(aristaproto.Message):
+    """
+    Wrapper message for `repeated int64`.
+    """
+
+    values: "list[int]" = aristaproto.field(1, aristaproto.TYPE_INT64, repeated=True)
+    """
+    The repeated int64 values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedInt64", RepeatedInt64)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedIpAddress(aristaproto.Message):
+    values: "list[IpAddress]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+
+default_message_pool.register_message("fmp", "RepeatedIPAddress", RepeatedIpAddress)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedIPv4Address(aristaproto.Message):
+    values: "list[IPv4Address]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+
+default_message_pool.register_message("fmp", "RepeatedIPv4Address", RepeatedIPv4Address)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedIPv6Address(aristaproto.Message):
+    values: "list[IPv6Address]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+
+default_message_pool.register_message("fmp", "RepeatedIPv6Address", RepeatedIPv6Address)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedMacAddress(aristaproto.Message):
+    values: "list[MacAddress]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+
+default_message_pool.register_message("fmp", "RepeatedMACAddress", RepeatedMacAddress)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedString(aristaproto.Message):
+    """
+    Wrapper message for `repeated string`.
+    """
+
+    values: "list[str]" = aristaproto.field(1, aristaproto.TYPE_STRING, repeated=True)
+    """
+    The repeated string values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedString", RepeatedString)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedUInt32(aristaproto.Message):
+    """
+    Wrapper message for `repeated uint32`.
+    """
+
+    values: "list[int]" = aristaproto.field(1, aristaproto.TYPE_UINT32, repeated=True)
+    """
+    The repeated uint32 values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedUInt32", RepeatedUInt32)
+
+
+@dataclass(eq=False, repr=False)
+class RepeatedUInt64(aristaproto.Message):
+    """
+    Wrapper message for `repeated uint64`.
+    """
+
+    values: "list[int]" = aristaproto.field(1, aristaproto.TYPE_UINT64, repeated=True)
+    """
+    The repeated uint64 values.
+    """
+
+
+default_message_pool.register_message("fmp", "RepeatedUInt64", RepeatedUInt64)

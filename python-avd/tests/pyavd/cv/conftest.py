@@ -8,11 +8,12 @@ from os import environ
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
-import aristaproto
+import aristaproto.grpcio
 import pytest_asyncio
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.versioning import CvVersion
+from pyavd._cv.workflows.models import CloudVision
 from pyavd._utils import get_v2
 from tests.pyavd.cv.mockery import (
     mocked_cv_client_aenter,
@@ -56,37 +57,37 @@ async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, 
         LOGGER.info("Running in online mode connecting to %s.", CV_SERVER)
         if RECORDING:
             LOGGER.info("Mocking ServiceStub to RecordingServiceStub")
-            aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._unary_stream
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = recording_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = recording_unary_stream
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
+            aristaproto.grpcio.ServiceStub._org_unary_unary = aristaproto.grpcio.ServiceStub._unary_unary
+            aristaproto.grpcio.ServiceStub._org_unary_stream = aristaproto.grpcio.ServiceStub._unary_stream
+            aristaproto.grpcio.ServiceStub._unary_unary = recording_unary_unary
+            aristaproto.grpcio.ServiceStub._unary_stream = recording_unary_stream
+            async with CVClient(cloudvision=CloudVision(servers=(CV_SERVER,), token=CV_TOKEN, username=None, password=None)) as cv_client:
                 yield cv_client
 
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
+            aristaproto.grpcio.ServiceStub._unary_unary = aristaproto.grpcio.ServiceStub._org_unary_unary
+            aristaproto.grpcio.ServiceStub._unary_stream = aristaproto.grpcio.ServiceStub._org_unary_stream
 
         else:
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
+            async with CVClient(cloudvision=CloudVision(servers=(CV_SERVER,), token=CV_TOKEN, username=None, password=None)) as cv_client:
                 yield cv_client
 
     else:
         LOGGER.info("Mocking ServiceStub to MockedServiceStub")
-        aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._unary_unary
-        aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._unary_stream
+        aristaproto.grpcio.ServiceStub._org_unary_unary = aristaproto.grpcio.ServiceStub._unary_unary
+        aristaproto.grpcio.ServiceStub._org_unary_stream = aristaproto.grpcio.ServiceStub._unary_stream
         if get_v2(request, "param.static_recording"):
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_static_recording_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_static_recording_unary_stream
+            aristaproto.grpcio.ServiceStub._unary_unary = playback_static_recording_unary_unary
+            aristaproto.grpcio.ServiceStub._unary_stream = playback_static_recording_unary_stream
         else:
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_unary_stream
+            aristaproto.grpcio.ServiceStub._unary_unary = playback_unary_unary
+            aristaproto.grpcio.ServiceStub._unary_stream = playback_unary_stream
         with (
             patch("pyavd._cv.client.CVClient.__aenter__", new=mocked_cv_client_aenter),
             patch("pyavd._cv.client.CVClient._cv_version", CvVersion(get_v2(request, "param.cv_version", default="CVaaS"))),
         ):
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
+            async with CVClient(cloudvision=CloudVision(servers=(CV_SERVER,), token=CV_TOKEN, username=None, password=None)) as cv_client:
                 yield cv_client
 
-        aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary
-        aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
+        aristaproto.grpcio.ServiceStub._unary_unary = aristaproto.grpcio.ServiceStub._org_unary_unary
+        aristaproto.grpcio.ServiceStub._unary_stream = aristaproto.grpcio.ServiceStub._org_unary_stream
         return

@@ -8,7 +8,7 @@ import logging
 from asyncio import gather, run
 from pathlib import Path
 from string import Template
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -25,6 +25,34 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
+if TYPE_CHECKING:
+    from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+    from pyavd._cv.workflows.models import (
+        AvdChangeControl,
+        AvdDevice,
+        AvdManifest,
+        AvdWorkspace,
+        AvdWorkspaceBuildWarningsConfig,
+        CloudVision,
+        CVChangeControl,
+        CVDeployFuture,
+        CVDevice,
+        CVDeviceDeployment,
+        CVDeviceTag,
+        CVEosConfig,
+        CVGRPCConfiguration,
+        CVGRPCKeepalives,
+        CVInterfaceTag,
+        CVPathfinderMetadata,
+        CVProxyConfiguration,
+        CVTimeOuts,
+        CVTLSConfiguration,
+        CVWorkspace,
+        DeployToCvResult,
+    )
+    from pyavd._cv.workflows.utils import extract_from_device_deployments, get_result
+    from pyavd._utils import default, get, strip_empties_from_dict
+
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
@@ -40,11 +68,13 @@ try:
         CVDeviceDeployment,
         CVDeviceTag,
         CVEosConfig,
-        CVGRPCChannelConfiguration,
+        CVGRPCConfiguration,
         CVGRPCKeepalives,
         CVInterfaceTag,
         CVPathfinderMetadata,
+        CVProxyConfiguration,
         CVTimeOuts,
+        CVTLSConfiguration,
         CVWorkspace,
         DeployToCvResult,
     )
@@ -194,29 +224,40 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(msg)
 
         try:
+            deploy_future = CVDeployFuture(**get(validated_args, "cv_deploy_future", default={}))
+            tls_configuration = CVTLSConfiguration(
+                verify_certs=validated_args["cv_verify_certs"],
+                use_system_certs=deploy_future.use_system_certs,
+            )
+            grpc_configuration = CVGRPCConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {})))
+            proxy_configuration = None
+            if proxy_host := validated_args.get("proxy_host"):
+                proxy_configuration = CVProxyConfiguration(
+                    host=proxy_host,
+                    port=validated_args.get("proxy_port", 8080),
+                    username=validated_args.get("proxy_username"),
+                    password=validated_args.get("proxy_password"),
+                )
+
             # Create CloudVision object
             cloudvision = CloudVision(
-                servers=validated_args["cv_servers"],
+                servers=tuple(validated_args["cv_servers"]),
                 token=validated_args.get("cv_token"),
                 username=validated_args.get("cv_username"),
                 password=validated_args.get("cv_password"),
-                verify_certs=validated_args["cv_verify_certs"],
-                deploy_future=CVDeployFuture(**get(validated_args, "cv_deploy_future", default={})),
-                proxy_host=validated_args.get("proxy_host"),
-                proxy_port=validated_args.get("proxy_port"),
-                proxy_username=validated_args.get("proxy_username"),
-                proxy_password=validated_args.get("proxy_password"),
-                grpc_channel_configuration=CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {}))),
+                tls_configuration=tls_configuration,
+                grpc_configuration=grpc_configuration,
+                proxy_configuration=proxy_configuration,
             )
 
             # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
             if read_from_validated_inputs:
-                _templated_path, validated_path = get_tmp_paths(tmp_dir)
+                _templated_path, validated_path = get_tmp_paths(cast("str", tmp_dir))
                 structured_config_dir = str(validated_path)
                 structured_config_suffix = "json"
             else:
                 structured_config_dir = validated_args.get("structured_config_dir")
-                structured_config_suffix = validated_args.get("structured_config_suffix")
+                structured_config_suffix: str = validated_args["structured_config_suffix"]
 
             # Build list of CVDeviceDeployment objects (one per deployed device).
             device_deployments = await self.build_device_deployments(
@@ -237,11 +278,7 @@ class ActionModule(ActionBase):
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
                 result.update(
-                    cloudvision={
-                        **get_result(cloudvision),
-                        "token": "<removed>",
-                        **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
-                    },
+                    cloudvision=cloudvision.get_result(),
                     configs=[get_result(config) for config in eos_config_objects],
                     device_tags=[get_result(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[get_result(interface_tag) for interface_tag in interface_tag_objects],
@@ -285,7 +322,7 @@ class ActionModule(ActionBase):
                 # Add warnings caught by the logger.
                 result_object.warnings.extend(result.get("warnings", []))
             else:
-                result_object = DeployToCvResult(workspace=None)
+                result_object = DeployToCvResult()
                 result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
 
             # Add either all return data or only warnings, errors, failed.

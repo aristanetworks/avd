@@ -7,96 +7,90 @@
 # This file has been @generated
 
 __all__ = (
-    "MatchPolicy",
-    "ConfigletKey",
-    "Filter",
     "Configlet",
-    "ConfigletConfig",
-    "ConfigletAssignmentKey",
-    "ConfigletAssignmentConfig",
     "ConfigletAssignment",
-    "MetaResponse",
-    "ConfigletRequest",
-    "ConfigletResponse",
-    "ConfigletSomeRequest",
-    "ConfigletSomeResponse",
-    "ConfigletStreamRequest",
-    "ConfigletStreamResponse",
-    "ConfigletBatchedStreamRequest",
-    "ConfigletBatchedStreamResponse",
-    "ConfigletAssignmentRequest",
-    "ConfigletAssignmentResponse",
-    "ConfigletAssignmentSomeRequest",
-    "ConfigletAssignmentSomeResponse",
-    "ConfigletAssignmentStreamRequest",
-    "ConfigletAssignmentStreamResponse",
     "ConfigletAssignmentBatchedStreamRequest",
     "ConfigletAssignmentBatchedStreamResponse",
-    "ConfigletAssignmentConfigRequest",
-    "ConfigletAssignmentConfigResponse",
-    "ConfigletAssignmentConfigSomeRequest",
-    "ConfigletAssignmentConfigSomeResponse",
-    "ConfigletAssignmentConfigStreamRequest",
-    "ConfigletAssignmentConfigStreamResponse",
+    "ConfigletAssignmentConfig",
     "ConfigletAssignmentConfigBatchedStreamRequest",
     "ConfigletAssignmentConfigBatchedStreamResponse",
-    "ConfigletAssignmentConfigSetRequest",
-    "ConfigletAssignmentConfigSetResponse",
-    "ConfigletAssignmentConfigSetSomeRequest",
-    "ConfigletAssignmentConfigSetSomeResponse",
+    "ConfigletAssignmentConfigDeleteAllRequest",
+    "ConfigletAssignmentConfigDeleteAllResponse",
     "ConfigletAssignmentConfigDeleteRequest",
     "ConfigletAssignmentConfigDeleteResponse",
     "ConfigletAssignmentConfigDeleteSomeRequest",
     "ConfigletAssignmentConfigDeleteSomeResponse",
-    "ConfigletAssignmentConfigDeleteAllRequest",
-    "ConfigletAssignmentConfigDeleteAllResponse",
-    "ConfigletConfigRequest",
-    "ConfigletConfigResponse",
-    "ConfigletConfigSomeRequest",
-    "ConfigletConfigSomeResponse",
-    "ConfigletConfigStreamRequest",
-    "ConfigletConfigStreamResponse",
+    "ConfigletAssignmentConfigRequest",
+    "ConfigletAssignmentConfigResponse",
+    "ConfigletAssignmentConfigServiceStub",
+    "ConfigletAssignmentConfigSetRequest",
+    "ConfigletAssignmentConfigSetResponse",
+    "ConfigletAssignmentConfigSetSomeRequest",
+    "ConfigletAssignmentConfigSetSomeResponse",
+    "ConfigletAssignmentConfigSomeRequest",
+    "ConfigletAssignmentConfigSomeResponse",
+    "ConfigletAssignmentConfigStreamRequest",
+    "ConfigletAssignmentConfigStreamResponse",
+    "ConfigletAssignmentKey",
+    "ConfigletAssignmentRequest",
+    "ConfigletAssignmentResponse",
+    "ConfigletAssignmentServiceStub",
+    "ConfigletAssignmentSomeRequest",
+    "ConfigletAssignmentSomeResponse",
+    "ConfigletAssignmentStreamRequest",
+    "ConfigletAssignmentStreamResponse",
+    "ConfigletBatchedStreamRequest",
+    "ConfigletBatchedStreamResponse",
+    "ConfigletConfig",
     "ConfigletConfigBatchedStreamRequest",
     "ConfigletConfigBatchedStreamResponse",
-    "ConfigletConfigSetRequest",
-    "ConfigletConfigSetResponse",
-    "ConfigletConfigSetSomeRequest",
-    "ConfigletConfigSetSomeResponse",
+    "ConfigletConfigDeleteAllRequest",
+    "ConfigletConfigDeleteAllResponse",
     "ConfigletConfigDeleteRequest",
     "ConfigletConfigDeleteResponse",
     "ConfigletConfigDeleteSomeRequest",
     "ConfigletConfigDeleteSomeResponse",
-    "ConfigletConfigDeleteAllRequest",
-    "ConfigletConfigDeleteAllResponse",
-    "ConfigletServiceStub",
-    "ConfigletServiceBase",
-    "ConfigletAssignmentServiceStub",
-    "ConfigletAssignmentServiceBase",
-    "ConfigletAssignmentConfigServiceStub",
-    "ConfigletAssignmentConfigServiceBase",
+    "ConfigletConfigRequest",
+    "ConfigletConfigResponse",
     "ConfigletConfigServiceStub",
-    "ConfigletConfigServiceBase",
+    "ConfigletConfigSetRequest",
+    "ConfigletConfigSetResponse",
+    "ConfigletConfigSetSomeRequest",
+    "ConfigletConfigSetSomeResponse",
+    "ConfigletConfigSomeRequest",
+    "ConfigletConfigSomeResponse",
+    "ConfigletConfigStreamRequest",
+    "ConfigletConfigStreamResponse",
+    "ConfigletKey",
+    "ConfigletRequest",
+    "ConfigletResponse",
+    "ConfigletServiceStub",
+    "ConfigletSomeRequest",
+    "ConfigletSomeResponse",
+    "ConfigletStreamRequest",
+    "ConfigletStreamResponse",
+    "Filter",
+    "MatchPolicy",
+    "MetaResponse",
 )
 
+import datetime
 import warnings
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class MatchPolicy(aristaproto.Enum):
@@ -106,7 +100,9 @@ class MatchPolicy(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """MATCH_POLICY_UNSPECIFIED is the unspecified match policy."""
+    """
+    MATCH_POLICY_UNSPECIFIED is the unspecified match policy.
+    """
 
     MATCH_FIRST = 1
     """
@@ -118,74 +114,86 @@ class MatchPolicy(aristaproto.Enum):
     MATCH_POLICY_MATCH_ALL dictates that matching devices are used across all children
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "MATCH_POLICY_UNSPECIFIED",
+            1: "MATCH_POLICY_MATCH_FIRST",
+            2: "MATCH_POLICY_MATCH_ALL",
+        }
 
-@dataclass(eq=False, repr=False)
-class ConfigletKey(aristaproto.Message):
-    """ConfigletKey uniquely identifies a static configlet."""
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    workspace_id identifies the workspace within which the static configlet resides
-    empty string (\"\") stands for the \"mainline\".
-    """
-
-    configlet_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """configlet_id is the static configlet ID."""
-
-
-@dataclass(eq=False, repr=False)
-class Filter(aristaproto.Message):
-    """Filter is used to filter static configlets."""
-
-    include_body: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """include_body specifies the static configlet body is to be included."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "MATCH_POLICY_UNSPECIFIED": 0,
+            "MATCH_POLICY_MATCH_FIRST": 1,
+            "MATCH_POLICY_MATCH_ALL": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
 class Configlet(aristaproto.Message):
     """
     Configlet is the state of a static configlet in a workspace or mainline.
-    Subscribe and GetAll do not return the \"body\"
+    Subscribe and GetAll do not return the "body"
     Use GetOne to get the body of individual configlets
     """
 
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    """key uniquely identifies the static configlet."""
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the static configlet.
+    """
 
-    display_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """display_name is the display name of the static configlet."""
+    display_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the display name of the static configlet.
+    """
 
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the static configlet."""
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the static configlet.
+    """
 
-    migrated_from: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    migrated_from: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     migrated_from is populated with the source configlet name when migrated
     from network provisioning to studio.
     """
 
-    body: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """body is the static configlet body."""
+    body: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    body is the static configlet body.
+    """
 
-    created_at: datetime = aristaproto.message_field(6)
-    """created_at is the time when the Configlet was created."""
+    created_at: "datetime.datetime | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at is the time when the Configlet was created.
+    """
 
-    created_by: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """created_by is the user who created the Configlet."""
+    created_by: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the user who created the Configlet.
+    """
 
-    last_modified_at: datetime = aristaproto.message_field(8)
-    """last_modified_at is the time when the Configlet was last modified."""
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at is the time when the Configlet was last modified.
+    """
 
-    last_modified_by: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
-    """last_modified_by is the user who last modified the Configlet."""
+    last_modified_by: "str | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by is the user who last modified the Configlet.
+    """
 
-    digest: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
+    digest: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     digest is the sha256 hash of the configlet body encoded in hexadecimal.
     """
 
-    size: Optional[int] = aristaproto.message_field(11, wraps=aristaproto.TYPE_INT64)
-    """size of configlet body in bytes."""
+    size: "int | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int64Value, optional=True)
+    """
+    size of configlet body in bytes.
+    """
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -193,51 +201,128 @@ class Configlet(aristaproto.Message):
             warnings.warn("Configlet.migrated_from is deprecated", DeprecationWarning)
 
 
-@dataclass(eq=False, repr=False)
-class ConfigletConfig(aristaproto.Message):
-    """ConfigletConfig updates a static configlet in a workspace."""
-
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    """key uniquely identifies the static configlet."""
-
-    remove: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """
-    remove specifies the static configlet is to be removed from the workspace.
-    Other data fields are not allowed when this field is set to true.
-    """
-
-    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """display_name is the display name of the static configlet."""
-
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the static configlet."""
-
-    migrated_from: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    migrated_from is populated with the source configlet name when migrated
-    from network provisioning to studio.
-    """
-
-    body: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """body is the static configlet body."""
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        if self.is_set("migrated_from"):
-            warnings.warn("ConfigletConfig.migrated_from is deprecated", DeprecationWarning)
+default_message_pool.register_message("arista.configlet.v1", "Configlet", Configlet)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletAssignmentKey(aristaproto.Message):
-    """ConfigletAssignmentKey uniquely identifies a configlet assignment"""
-
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """workspace_id is the unique identifier of the workspace."""
-
-    configlet_assignment_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+class ConfigletAssignment(aristaproto.Message):
     """
-    configlet_assignment_id is the unique identifier of the configlet_assignment.
+    ConfigletAssignment is the state of this assignment in a workspace/mainline
     """
+
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the configlet assignment.
+    """
+
+    display_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the display name of the configlet assignment.
+    """
+
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the configlet assignment.
+    """
+
+    configlet_ids: "___fmp__.RepeatedString | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    configlet_ids is the list of configlets which are assigned
+    """
+
+    query: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    query represents the tag query assigned
+    """
+
+    match_policy: "MatchPolicy" = aristaproto.field(7, aristaproto.TYPE_ENUM, default_factory=lambda: MatchPolicy(0))
+    """
+    match_policy is the discriminator for the query field
+    """
+
+    child_assignment_ids: "___fmp__.RepeatedString | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    child_assignment_ids is the list of child assignment IDs.
+    """
+
+    created_at: "datetime.datetime | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    created_at is the time when the ConfigletAssignment was created.
+    """
+
+    created_by: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the user who created the ConfigletAssignment.
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(
+        11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True
+    )
+    """
+    last_modified_at is the time when the ConfigletAssignment
+    was last modified.
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by is the user who last modified the ConfigletAssignment.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignment", ConfigletAssignment)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigletAssignment at end.
+        * Each ConfigletAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
+        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
+        until end.
+        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentBatchedStreamRequest", ConfigletAssignmentBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ConfigletAssignmentStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentBatchedStreamResponse", ConfigletAssignmentBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -245,7 +330,7 @@ class ConfigletAssignmentConfig(aristaproto.Message):
     """
     ConfigletAssignmentConfig are the the inputs to the static configlet studio.
     Each assignment assigns a list of configlets to the devices matching the tag query.
-    Individual assignments can have a list of \"child\" assignments.
+    Individual assignments can have a list of "child" assignments.
     The totality of these assignments form a list of tree hierarchies.
     Using the corresponding GUI workflow should help explain this structure.
     When traversing a tree and assigning static configlets to devices, the following rules
@@ -256,29 +341,37 @@ class ConfigletAssignmentConfig(aristaproto.Message):
     2) Match policy determines how the assignment's devices get divied up amongst its children.
     """
 
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    """key uniquely identifies the configlet assignment."""
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the configlet assignment.
+    """
 
-    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """display_name is the display name of the configlet assignment."""
+    display_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the display name of the configlet assignment.
+    """
 
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the configlet assignment."""
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the configlet assignment.
+    """
 
-    configlet_ids: "___fmp__.RepeatedString" = aristaproto.message_field(5)
-    """configlet_ids is the list of configlets to be assigned"""
+    configlet_ids: "___fmp__.RepeatedString | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    configlet_ids is the list of configlets to be assigned
+    """
 
-    query: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    query: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     query is a tag query string that conforms to the CloudVision
-    tag query language. E.g., the query, `\"datacenter:NYC,SFO AND
-    sflow:enabled\"`, matches all devices with sflow enabled in
+    tag query language. E.g., the query, `"datacenter:NYC,SFO AND
+    sflow:enabled"`, matches all devices with sflow enabled in
     data centers NYC and SFO.
     malformed queries result in an error
     tags not matching devices are ignored
     """
 
-    remove: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
+    remove: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     remove indicates whether to remove (`true`) or add (`false`,
     unset) the tag assignments involving the studio identified
@@ -286,539 +379,23 @@ class ConfigletAssignmentConfig(aristaproto.Message):
     fields are not allowed if this field is set to true.
     """
 
-    match_policy: "MatchPolicy" = aristaproto.enum_field(8)
-    """match_policy is the discriminator for the query field"""
-
-    child_assignment_ids: "___fmp__.RepeatedString" = aristaproto.message_field(9)
-    """child_assignment_ids is the list of child assignment IDs."""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignment(aristaproto.Message):
-    """
-    ConfigletAssignment is the state of this assignment in a workspace/mainline
-    """
-
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    """key uniquely identifies the configlet assignment."""
-
-    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """display_name is the display name of the configlet assignment."""
-
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is the description of the configlet assignment."""
-
-    configlet_ids: "___fmp__.RepeatedString" = aristaproto.message_field(5)
-    """configlet_ids is the list of configlets which are assigned"""
-
-    query: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """query represents the tag query assigned"""
-
-    match_policy: "MatchPolicy" = aristaproto.enum_field(7)
-    """match_policy is the discriminator for the query field"""
-
-    child_assignment_ids: "___fmp__.RepeatedString" = aristaproto.message_field(8)
-    """child_assignment_ids is the list of child assignment IDs."""
-
-    created_at: datetime = aristaproto.message_field(9)
-    """created_at is the time when the ConfigletAssignment was created."""
-
-    created_by: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
-    """created_by is the user who created the ConfigletAssignment."""
-
-    last_modified_at: datetime = aristaproto.message_field(11)
-    """
-    last_modified_at is the time when the ConfigletAssignment
-    was last modified.
-    """
-
-    last_modified_by: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
-    """
-    last_modified_by is the user who last modified the ConfigletAssignment.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletRequest(aristaproto.Message):
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Configlet instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletResponse(aristaproto.Message):
-    value: "Configlet" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Configlet instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletSomeRequest(aristaproto.Message):
-    keys: List["ConfigletKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletSomeResponse(aristaproto.Message):
-    value: "Configlet" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Configlet instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Configlet"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "Filter" = aristaproto.message_field(2)
-    """
-    For each Configlet in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given Configlet is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Configlet at end.
-        * Each Configlet response is fully-specified (all fields set).
-      * start: Returns the state of each Configlet at start, followed by updates until now.
-        * Each Configlet response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Configlet at start, followed by updates
-        until end.
-        * Each Configlet response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletStreamResponse(aristaproto.Message):
-    value: "Configlet" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Configlet's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Configlet value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Configlet"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "Filter" = aristaproto.message_field(2)
-    """
-    For each Configlet in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given Configlet is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Configlet at end.
-        * Each Configlet response is fully-specified (all fields set).
-      * start: Returns the state of each Configlet at start, followed by updates until now.
-        * Each Configlet response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Configlet at start, followed by updates
-        until end.
-        * Each Configlet response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigletStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentRequest(aristaproto.Message):
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ConfigletAssignment instance to retrieve.
-    This value must be populated.
+    match_policy: "MatchPolicy" = aristaproto.field(8, aristaproto.TYPE_ENUM, default_factory=lambda: MatchPolicy(0))
     """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentResponse(aristaproto.Message):
-    value: "ConfigletAssignment" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletAssignment instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentSomeRequest(aristaproto.Message):
-    keys: List["ConfigletAssignmentKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentSomeResponse(aristaproto.Message):
-    value: "ConfigletAssignment" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletAssignment instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletAssignment"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ConfigletAssignment at end.
-        * Each ConfigletAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
-        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
-        until end.
-        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentStreamResponse(aristaproto.Message):
-    value: "ConfigletAssignment" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this ConfigletAssignment's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ConfigletAssignment value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletAssignment"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ConfigletAssignment at end.
-        * Each ConfigletAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
-        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
-        until end.
-        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigletAssignmentStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigRequest(aristaproto.Message):
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ConfigletAssignmentConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigResponse(aristaproto.Message):
-    value: "ConfigletAssignmentConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletAssignmentConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSomeRequest(aristaproto.Message):
-    keys: List["ConfigletAssignmentKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    match_policy is the discriminator for the query field
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSomeResponse(aristaproto.Message):
-    value: "ConfigletAssignmentConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletAssignmentConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletAssignmentConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ConfigletAssignmentConfig at end.
-        * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
-        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
-        until end.
-        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
-          be partial.
+    child_assignment_ids: "___fmp__.RepeatedString | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
     """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigStreamResponse(aristaproto.Message):
-    value: "ConfigletAssignmentConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    child_assignment_ids is the list of child assignment IDs.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this ConfigletAssignmentConfig's last modification.
-    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ConfigletAssignmentConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfig", ConfigletAssignmentConfig)
 
 
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletAssignmentConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ConfigletAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -827,7 +404,7 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -844,7 +421,7 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -853,9 +430,12 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigBatchedStreamRequest", ConfigletAssignmentConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigletAssignmentConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[ConfigletAssignmentConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -863,69 +443,69 @@ class ConfigletAssignmentConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSetRequest(aristaproto.Message):
-    value: "ConfigletAssignmentConfig" = aristaproto.message_field(1)
-    """
-    ConfigletAssignmentConfig carries the value to set into the datastore.
-    See the documentation on the ConfigletAssignmentConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigBatchedStreamResponse", ConfigletAssignmentConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSetResponse(aristaproto.Message):
-    value: "ConfigletAssignmentConfig" = aristaproto.message_field(1)
+class ConfigletAssignmentConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the ConfigletAssignmentConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteAllRequest", ConfigletAssignmentConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSetSomeRequest(aristaproto.Message):
-    values: List["ConfigletAssignmentConfig"] = aristaproto.message_field(1)
+class ConfigletAssignmentConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of ConfigletAssignmentConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the ConfigletAssignmentConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigSetSomeResponse(aristaproto.Message):
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteAllResponse", ConfigletAssignmentConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigDeleteRequest(aristaproto.Message):
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which ConfigletAssignmentConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteRequest", ConfigletAssignmentConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigDeleteResponse(aristaproto.Message):
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key echoes back the key of the deleted ConfigletAssignmentConfig instance.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -935,10 +515,18 @@ class ConfigletAssignmentConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteResponse", ConfigletAssignmentConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ConfigletAssignmentKey"] = aristaproto.message_field(1)
-    """key contains a list of ConfigletAssignmentConfig keys to delete"""
+    keys: "list[ConfigletAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ConfigletAssignmentConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteSomeRequest", ConfigletAssignmentConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -947,58 +535,35 @@ class ConfigletAssignmentConfigDeleteSomeResponse(aristaproto.Message):
     ConfigletAssignmentConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigDeleteSomeResponse", ConfigletAssignmentConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletAssignmentConfig"] = aristaproto.message_field(1)
+class ConfigletAssignmentConfigRequest(aristaproto.Message):
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletAssignmentConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "ConfigletAssignmentKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ConfigletAssignmentConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigRequest(aristaproto.Message):
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a ConfigletConfig instance to retrieve.
+    Key uniquely identifies a ConfigletAssignmentConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigRequest", ConfigletAssignmentConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
-class ConfigletConfigResponse(aristaproto.Message):
-    value: "ConfigletConfig" = aristaproto.message_field(1)
+class ConfigletAssignmentConfigResponse(aristaproto.Message):
+    value: "ConfigletAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1006,177 +571,37 @@ class ConfigletConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletConfig instance in this response.
+    ConfigletAssignmentConfig instance in this response.
     """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigResponse", ConfigletAssignmentConfigResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletConfigSomeRequest(aristaproto.Message):
-    keys: List["ConfigletKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class ConfigletAssignmentConfigSetRequest(aristaproto.Message):
+    value: "ConfigletAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    ConfigletAssignmentConfig carries the value to set into the datastore.
+    See the documentation on the ConfigletAssignmentConfig struct for which fields are required.
     """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSetRequest", ConfigletAssignmentConfigSetRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletConfigSomeResponse(aristaproto.Message):
-    value: "ConfigletConfig" = aristaproto.message_field(1)
+class ConfigletAssignmentConfigSetResponse(aristaproto.Message):
+    value: "ConfigletAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    ConfigletConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "Filter" = aristaproto.message_field(2)
-    """
-    For each ConfigletConfig in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given ConfigletConfig is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ConfigletConfig at end.
-        * Each ConfigletConfig response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
-        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
-        until end.
-        * Each ConfigletConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigStreamResponse(aristaproto.Message):
-    value: "ConfigletConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this ConfigletConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the ConfigletConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "Filter" = aristaproto.message_field(2)
-    """
-    For each ConfigletConfig in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given ConfigletConfig is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each ConfigletConfig at end.
-        * Each ConfigletConfig response is fully-specified (all fields set).
-      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
-        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
-        until end.
-        * Each ConfigletConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigletConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigSetRequest(aristaproto.Message):
-    value: "ConfigletConfig" = aristaproto.message_field(1)
-    """
-    ConfigletConfig carries the value to set into the datastore.
-    See the documentation on the ConfigletConfig struct for which fields are required.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ConfigletConfigSetResponse(aristaproto.Message):
-    value: "ConfigletConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the ConfigletConfigSetRequest as well
+    Value carries all the values given in the ConfigletAssignmentConfigSetRequest as well
     as any server-generated values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
@@ -1186,40 +611,523 @@ class ConfigletConfigSetResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSetResponse", ConfigletAssignmentConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
-class ConfigletConfigSetSomeRequest(aristaproto.Message):
-    values: List["ConfigletConfig"] = aristaproto.message_field(1)
+class ConfigletAssignmentConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ConfigletAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    value contains a list of ConfigletConfig values to write.
+    value contains a list of ConfigletAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
         - the maxiumum send size of the client
         - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    See gRPC "maximum message size" documentation for more information.
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSetSomeRequest", ConfigletAssignmentConfigSetSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
-class ConfigletConfigSetSomeResponse(aristaproto.Message):
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class ConfigletAssignmentConfigSetSomeResponse(aristaproto.Message):
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSetSomeResponse", ConfigletAssignmentConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentConfigSomeRequest(aristaproto.Message):
+    keys: "list[ConfigletAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSomeRequest", ConfigletAssignmentConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentConfigSomeResponse(aristaproto.Message):
+    value: "ConfigletAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigletAssignmentConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigSomeResponse", ConfigletAssignmentConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletAssignmentConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigletAssignmentConfig at end.
+        * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
+        until end.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigStreamRequest", ConfigletAssignmentConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentConfigStreamResponse(aristaproto.Message):
+    value: "ConfigletAssignmentConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ConfigletAssignmentConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ConfigletAssignmentConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentConfigStreamResponse", ConfigletAssignmentConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentKey(aristaproto.Message):
+    """
+    ConfigletAssignmentKey uniquely identifies a configlet assignment
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id is the unique identifier of the workspace.
+    """
+
+    configlet_assignment_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    configlet_assignment_id is the unique identifier of the configlet_assignment.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentKey", ConfigletAssignmentKey)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentRequest(aristaproto.Message):
+    key: "ConfigletAssignmentKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a ConfigletAssignment instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentRequest", ConfigletAssignmentRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentResponse(aristaproto.Message):
+    value: "ConfigletAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigletAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentResponse", ConfigletAssignmentResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentSomeRequest(aristaproto.Message):
+    keys: "list[ConfigletAssignmentKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentSomeRequest", ConfigletAssignmentSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentSomeResponse(aristaproto.Message):
+    value: "ConfigletAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigletAssignment instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentSomeResponse", ConfigletAssignmentSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletAssignment]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigletAssignment at end.
+        * Each ConfigletAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
+        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
+        until end.
+        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentStreamRequest", ConfigletAssignmentStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletAssignmentStreamResponse(aristaproto.Message):
+    value: "ConfigletAssignment | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ConfigletAssignment's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ConfigletAssignment value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletAssignmentStreamResponse", ConfigletAssignmentStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Configlet]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each Configlet in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given Configlet is streamed to the user.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Configlet at end.
+        * Each Configlet response is fully-specified (all fields set).
+      * start: Returns the state of each Configlet at start, followed by updates until now.
+        * Each Configlet response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configlet at start, followed by updates
+        until end.
+        * Each Configlet response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletBatchedStreamRequest", ConfigletBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ConfigletStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletBatchedStreamResponse", ConfigletBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfig(aristaproto.Message):
+    """
+    ConfigletConfig updates a static configlet in a workspace.
+    """
+
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the static configlet.
+    """
+
+    remove: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    remove specifies the static configlet is to be removed from the workspace.
+    Other data fields are not allowed when this field is set to true.
+    """
+
+    display_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the display name of the static configlet.
+    """
+
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the description of the static configlet.
+    """
+
+    migrated_from: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    migrated_from is populated with the source configlet name when migrated
+    from network provisioning to studio.
+    """
+
+    body: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    body is the static configlet body.
+    """
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if self.is_set("migrated_from"):
+            warnings.warn("ConfigletConfig.migrated_from is deprecated", DeprecationWarning)
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfig", ConfigletConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each ConfigletConfig in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given ConfigletConfig is streamed to the user.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigletConfig at end.
+        * Each ConfigletConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
+        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
+        until end.
+        * Each ConfigletConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigBatchedStreamRequest", ConfigletConfigBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigBatchedStreamResponse(aristaproto.Message):
+    responses: "list[ConfigletConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigBatchedStreamResponse", ConfigletConfigBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+    filter: "Filter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each ConfigletConfig in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given ConfigletConfig will be deleted.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteAllRequest", ConfigletConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "ConfigletKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the ConfigletConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteAllResponse", ConfigletConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ConfigletConfigDeleteRequest(aristaproto.Message):
-    key: "ConfigletKey" = aristaproto.message_field(1)
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which ConfigletConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteRequest", ConfigletConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigletConfigDeleteResponse(aristaproto.Message):
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted ConfigletConfig instance."""
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted ConfigletConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1229,10 +1137,18 @@ class ConfigletConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteResponse", ConfigletConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ConfigletConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["ConfigletKey"] = aristaproto.message_field(1)
-    """key contains a list of ConfigletConfig keys to delete"""
+    keys: "list[ConfigletKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of ConfigletConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteSomeRequest", ConfigletConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -1241,1537 +1157,1298 @@ class ConfigletConfigDeleteSomeResponse(aristaproto.Message):
     ConfigletConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "ConfigletKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigDeleteSomeResponse", ConfigletConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["ConfigletConfig"] = aristaproto.message_field(1)
+class ConfigletConfigRequest(aristaproto.Message):
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    Key uniquely identifies a ConfigletConfig instance to retrieve.
+    This value must be populated.
     """
 
-    filter: "Filter" = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigRequest", ConfigletConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigResponse(aristaproto.Message):
+    value: "ConfigletConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigletConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigResponse", ConfigletConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSetRequest(aristaproto.Message):
+    value: "ConfigletConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ConfigletConfig carries the value to set into the datastore.
+    See the documentation on the ConfigletConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSetRequest", ConfigletConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSetResponse(aristaproto.Message):
+    value: "ConfigletConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the ConfigletConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSetResponse", ConfigletConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSetSomeRequest(aristaproto.Message):
+    values: "list[ConfigletConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of ConfigletConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSetSomeRequest", ConfigletConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSetSomeResponse(aristaproto.Message):
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSetSomeResponse", ConfigletConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSomeRequest(aristaproto.Message):
+    keys: "list[ConfigletKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSomeRequest", ConfigletConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigSomeResponse(aristaproto.Message):
+    value: "ConfigletConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    ConfigletConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigSomeResponse", ConfigletConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ConfigletConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     For each ConfigletConfig in the list, all populated fields are considered ANDed together
     as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given ConfigletConfig will be deleted.
+    filter that matches a given ConfigletConfig is streamed to the user.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each ConfigletConfig at end.
+        * Each ConfigletConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
+        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
+        until end.
+        * Each ConfigletConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigStreamRequest", ConfigletConfigStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ConfigletConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class ConfigletConfigStreamResponse(aristaproto.Message):
+    value: "ConfigletConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "ConfigletKey" = aristaproto.message_field(3)
-    """
-    This is the key of the ConfigletConfig instance that failed to be deleted.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this ConfigletConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the ConfigletConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
 
-class ConfigletServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.configlet.v1", "ConfigletConfigStreamResponse", ConfigletConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletKey(aristaproto.Message):
+    """
+    ConfigletKey uniquely identifies a static configlet.
+    """
+
+    workspace_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    workspace_id identifies the workspace within which the static configlet resides
+    empty string ("") stands for the "mainline".
+    """
+
+    configlet_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    configlet_id is the static configlet ID.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletKey", ConfigletKey)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletRequest(aristaproto.Message):
+    key: "ConfigletKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Configlet instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletRequest", ConfigletRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletResponse(aristaproto.Message):
+    value: "Configlet | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Configlet instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletResponse", ConfigletResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletSomeRequest(aristaproto.Message):
+    keys: "list[ConfigletKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletSomeRequest", ConfigletSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletSomeResponse(aristaproto.Message):
+    value: "Configlet | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Configlet instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletSomeResponse", ConfigletSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Configlet]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each Configlet in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given Configlet is streamed to the user.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Configlet at end.
+        * Each Configlet response is fully-specified (all fields set).
+      * start: Returns the state of each Configlet at start, followed by updates until now.
+        * Each Configlet response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configlet at start, followed by updates
+        until end.
+        * Each Configlet response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletStreamRequest", ConfigletStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigletStreamResponse(aristaproto.Message):
+    value: "Configlet | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Configlet's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Configlet value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "ConfigletStreamResponse", ConfigletStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Filter(aristaproto.Message):
+    """
+    Filter is used to filter static configlets.
+    """
+
+    include_body: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    include_body specifies the static configlet body is to be included.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "Filter", Filter)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.configlet.v1", "MetaResponse", MetaResponse)
+
+
+class ConfigletAssignmentConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        configlet_request: "ConfigletRequest",
+        message: "ConfigletAssignmentConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ConfigletResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletService/GetOne",
-            configlet_request,
-            ConfigletResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        configlet_some_request: "ConfigletSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/GetSome",
-            configlet_some_request,
-            ConfigletSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        configlet_stream_request: "ConfigletStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/GetAll",
-            configlet_stream_request,
-            ConfigletStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        configlet_stream_request: "ConfigletStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/Subscribe",
-            configlet_stream_request,
-            ConfigletStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        configlet_stream_request: "ConfigletStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletService/GetMeta",
-            configlet_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        configlet_stream_request: "ConfigletStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/SubscribeMeta",
-            configlet_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        configlet_batched_stream_request: "ConfigletBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/GetAllBatched",
-            configlet_batched_stream_request,
-            ConfigletBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        configlet_batched_stream_request: "ConfigletBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletService/SubscribeBatched",
-            configlet_batched_stream_request,
-            ConfigletBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        configlet_assignment_request: "ConfigletAssignmentRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ConfigletAssignmentResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletAssignmentService/GetOne",
-            configlet_assignment_request,
-            ConfigletAssignmentResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        configlet_assignment_some_request: "ConfigletAssignmentSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletAssignmentSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/GetSome",
-            configlet_assignment_some_request,
-            ConfigletAssignmentSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletAssignmentStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/GetAll",
-            configlet_assignment_stream_request,
-            ConfigletAssignmentStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletAssignmentStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/Subscribe",
-            configlet_assignment_stream_request,
-            ConfigletAssignmentStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletAssignmentService/GetMeta",
-            configlet_assignment_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeMeta",
-            configlet_assignment_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        configlet_assignment_batched_stream_request: "ConfigletAssignmentBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletAssignmentBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/GetAllBatched",
-            configlet_assignment_batched_stream_request,
-            ConfigletAssignmentBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        configlet_assignment_batched_stream_request: "ConfigletAssignmentBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletAssignmentBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeBatched",
-            configlet_assignment_batched_stream_request,
-            ConfigletAssignmentBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        configlet_assignment_config_request: "ConfigletAssignmentConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ConfigletAssignmentConfigResponse":
+
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetOne",
-            configlet_assignment_config_request,
+            message,
             ConfigletAssignmentConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        configlet_assignment_config_some_request: "ConfigletAssignmentConfigSomeRequest",
+        message: "ConfigletAssignmentConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetSome",
-            configlet_assignment_config_some_request,
+            message,
             ConfigletAssignmentConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest",
+        message: "ConfigletAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAll",
-            configlet_assignment_config_stream_request,
+            message,
             ConfigletAssignmentConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest",
+        message: "ConfigletAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Subscribe",
-            configlet_assignment_config_stream_request,
+            message,
             ConfigletAssignmentConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest",
+        message: "ConfigletAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetMeta",
-            configlet_assignment_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest",
+        message: "ConfigletAssignmentConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeMeta",
-            configlet_assignment_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        configlet_assignment_config_set_request: "ConfigletAssignmentConfigSetRequest",
+        message: "ConfigletAssignmentConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ConfigletAssignmentConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Set",
-            configlet_assignment_config_set_request,
+            message,
             ConfigletAssignmentConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        configlet_assignment_config_set_some_request: "ConfigletAssignmentConfigSetSomeRequest",
+        message: "ConfigletAssignmentConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SetSome",
-            configlet_assignment_config_set_some_request,
+            message,
             ConfigletAssignmentConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        configlet_assignment_config_delete_request: "ConfigletAssignmentConfigDeleteRequest",
+        message: "ConfigletAssignmentConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ConfigletAssignmentConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Delete",
-            configlet_assignment_config_delete_request,
+            message,
             ConfigletAssignmentConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        configlet_assignment_config_delete_some_request: "ConfigletAssignmentConfigDeleteSomeRequest",
+        message: "ConfigletAssignmentConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteSome",
-            configlet_assignment_config_delete_some_request,
+            message,
             ConfigletAssignmentConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        configlet_assignment_config_delete_all_request: "ConfigletAssignmentConfigDeleteAllRequest",
+        message: "ConfigletAssignmentConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteAll",
-            configlet_assignment_config_delete_all_request,
+            message,
             ConfigletAssignmentConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        configlet_assignment_config_batched_stream_request: "ConfigletAssignmentConfigBatchedStreamRequest",
+        message: "ConfigletAssignmentConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAllBatched",
-            configlet_assignment_config_batched_stream_request,
+            message,
             ConfigletAssignmentConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        configlet_assignment_config_batched_stream_request: "ConfigletAssignmentConfigBatchedStreamRequest",
+        message: "ConfigletAssignmentConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ConfigletAssignmentConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeBatched",
-            configlet_assignment_config_batched_stream_request,
+            message,
             ConfigletAssignmentConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ConfigletConfigServiceStub(aristaproto.ServiceStub):
+class ConfigletAssignmentServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        configlet_config_request: "ConfigletConfigRequest",
+        message: "ConfigletAssignmentRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ConfigletConfigResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ConfigletAssignmentResponse":
+
         return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletConfigService/GetOne",
-            configlet_config_request,
-            ConfigletConfigResponse,
+            "/arista.configlet.v1.ConfigletAssignmentService/GetOne",
+            message,
+            ConfigletAssignmentResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        configlet_config_some_request: "ConfigletConfigSomeRequest",
+        message: "ConfigletAssignmentSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletAssignmentSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/GetSome",
-            configlet_config_some_request,
-            ConfigletConfigSomeResponse,
+            "/arista.configlet.v1.ConfigletAssignmentService/GetSome",
+            message,
+            ConfigletAssignmentSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        configlet_config_stream_request: "ConfigletConfigStreamRequest",
+        message: "ConfigletAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/GetAll",
-            configlet_config_stream_request,
-            ConfigletConfigStreamResponse,
+            "/arista.configlet.v1.ConfigletAssignmentService/GetAll",
+            message,
+            ConfigletAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        configlet_config_stream_request: "ConfigletConfigStreamRequest",
+        message: "ConfigletAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletAssignmentStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/Subscribe",
-            configlet_config_stream_request,
-            ConfigletConfigStreamResponse,
+            "/arista.configlet.v1.ConfigletAssignmentService/Subscribe",
+            message,
+            ConfigletAssignmentStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        configlet_config_stream_request: "ConfigletConfigStreamRequest",
+        message: "ConfigletAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletConfigService/GetMeta",
-            configlet_config_stream_request,
+            "/arista.configlet.v1.ConfigletAssignmentService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        configlet_config_stream_request: "ConfigletConfigStreamRequest",
+        message: "ConfigletAssignmentStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/SubscribeMeta",
-            configlet_config_stream_request,
+            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
-        ):
-            yield response
-
-    async def set(
-        self,
-        configlet_config_set_request: "ConfigletConfigSetRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ConfigletConfigSetResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletConfigService/Set",
-            configlet_config_set_request,
-            ConfigletConfigSetResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def set_some(
-        self,
-        configlet_config_set_some_request: "ConfigletConfigSetSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigSetSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/SetSome",
-            configlet_config_set_some_request,
-            ConfigletConfigSetSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete(
-        self,
-        configlet_config_delete_request: "ConfigletConfigDeleteRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ConfigletConfigDeleteResponse":
-        return await self._unary_unary(
-            "/arista.configlet.v1.ConfigletConfigService/Delete",
-            configlet_config_delete_request,
-            ConfigletConfigDeleteResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def delete_some(
-        self,
-        configlet_config_delete_some_request: "ConfigletConfigDeleteSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigDeleteSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/DeleteSome",
-            configlet_config_delete_some_request,
-            ConfigletConfigDeleteSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def delete_all(
-        self,
-        configlet_config_delete_all_request: "ConfigletConfigDeleteAllRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigDeleteAllResponse]":
-        async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/DeleteAll",
-            configlet_config_delete_all_request,
-            ConfigletConfigDeleteAllResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        configlet_config_batched_stream_request: "ConfigletConfigBatchedStreamRequest",
+        message: "ConfigletAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/GetAllBatched",
-            configlet_config_batched_stream_request,
-            ConfigletConfigBatchedStreamResponse,
+            "/arista.configlet.v1.ConfigletAssignmentService/GetAllBatched",
+            message,
+            ConfigletAssignmentBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        configlet_config_batched_stream_request: "ConfigletConfigBatchedStreamRequest",
+        message: "ConfigletAssignmentBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ConfigletConfigBatchedStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletAssignmentBatchedStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.configlet.v1.ConfigletConfigService/SubscribeBatched",
-            configlet_config_batched_stream_request,
+            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeBatched",
+            message,
+            ConfigletAssignmentBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class ConfigletConfigServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ConfigletConfigRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ConfigletConfigResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletConfigService/GetOne",
+            message,
+            ConfigletConfigResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ConfigletConfigSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/GetSome",
+            message,
+            ConfigletConfigSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ConfigletConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/GetAll",
+            message,
+            ConfigletConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ConfigletConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/Subscribe",
+            message,
+            ConfigletConfigStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ConfigletConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletConfigService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ConfigletConfigStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def set(
+        self,
+        message: "ConfigletConfigSetRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ConfigletConfigSetResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletConfigService/Set",
+            message,
+            ConfigletConfigSetResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def set_some(
+        self,
+        message: "ConfigletConfigSetSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigSetSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/SetSome",
+            message,
+            ConfigletConfigSetSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        message: "ConfigletConfigDeleteRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ConfigletConfigDeleteResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletConfigService/Delete",
+            message,
+            ConfigletConfigDeleteResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def delete_some(
+        self,
+        message: "ConfigletConfigDeleteSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigDeleteSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/DeleteSome",
+            message,
+            ConfigletConfigDeleteSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def delete_all(
+        self,
+        message: "ConfigletConfigDeleteAllRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigDeleteAllResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/DeleteAll",
+            message,
+            ConfigletConfigDeleteAllResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "ConfigletConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/GetAllBatched",
+            message,
             ConfigletConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "ConfigletConfigBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletConfigBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletConfigService/SubscribeBatched",
+            message,
+            ConfigletConfigBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class ConfigletServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ConfigletRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ConfigletResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletService/GetOne",
+            message,
+            ConfigletResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "ConfigletSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/GetSome",
+            message,
+            ConfigletSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "ConfigletStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/GetAll",
+            message,
+            ConfigletStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ConfigletStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/Subscribe",
+            message,
+            ConfigletStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "ConfigletStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.configlet.v1.ConfigletService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "ConfigletStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "ConfigletBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/GetAllBatched",
+            message,
+            ConfigletBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "ConfigletBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ConfigletBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.configlet.v1.ConfigletService/SubscribeBatched",
+            message,
+            ConfigletBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class ConfigletServiceBase(ServiceBase):
-    async def get_one(self, configlet_request: "ConfigletRequest") -> "ConfigletResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, configlet_some_request: "ConfigletSomeRequest") -> AsyncIterator[ConfigletSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator[ConfigletStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator[ConfigletStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, configlet_stream_request: "ConfigletStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest") -> AsyncIterator[ConfigletBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest") -> AsyncIterator[ConfigletBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigletRequest, ConfigletResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigletSomeRequest, ConfigletSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, ConfigletStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, ConfigletStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ConfigletBatchedStreamRequest, ConfigletBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ConfigletBatchedStreamRequest, ConfigletBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configlet.v1.ConfigletService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletRequest,
-                ConfigletResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletSomeRequest,
-                ConfigletSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletStreamRequest,
-                ConfigletStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletStreamRequest,
-                ConfigletStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletBatchedStreamRequest,
-                ConfigletBatchedStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletBatchedStreamRequest,
-                ConfigletBatchedStreamResponse,
-            ),
-        }
-
-
-class ConfigletAssignmentServiceBase(ServiceBase):
-    async def get_one(self, configlet_assignment_request: "ConfigletAssignmentRequest") -> "ConfigletAssignmentResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, configlet_assignment_some_request: "ConfigletAssignmentSomeRequest") -> AsyncIterator[ConfigletAssignmentSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator[ConfigletAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator[ConfigletAssignmentStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, configlet_assignment_batched_stream_request: "ConfigletAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, configlet_assignment_batched_stream_request: "ConfigletAssignmentBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigletAssignmentRequest, ConfigletAssignmentResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigletAssignmentSomeRequest, ConfigletAssignmentSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigletAssignmentStreamRequest, ConfigletAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigletAssignmentStreamRequest, ConfigletAssignmentStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigletAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigletAssignmentStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentBatchedStreamRequest, ConfigletAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentBatchedStreamRequest, ConfigletAssignmentBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configlet.v1.ConfigletAssignmentService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentRequest,
-                ConfigletAssignmentResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentSomeRequest,
-                ConfigletAssignmentSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentStreamRequest,
-                ConfigletAssignmentStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentStreamRequest,
-                ConfigletAssignmentStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentBatchedStreamRequest,
-                ConfigletAssignmentBatchedStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentBatchedStreamRequest,
-                ConfigletAssignmentBatchedStreamResponse,
-            ),
-        }
-
-
-class ConfigletAssignmentConfigServiceBase(ServiceBase):
-    async def get_one(self, configlet_assignment_config_request: "ConfigletAssignmentConfigRequest") -> "ConfigletAssignmentConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(
-        self, configlet_assignment_config_some_request: "ConfigletAssignmentConfigSomeRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, configlet_assignment_config_stream_request: "ConfigletAssignmentConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, configlet_assignment_config_set_request: "ConfigletAssignmentConfigSetRequest") -> "ConfigletAssignmentConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(
-        self, configlet_assignment_config_set_some_request: "ConfigletAssignmentConfigSetSomeRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, configlet_assignment_config_delete_request: "ConfigletAssignmentConfigDeleteRequest") -> "ConfigletAssignmentConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, configlet_assignment_config_delete_some_request: "ConfigletAssignmentConfigDeleteSomeRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(
-        self, configlet_assignment_config_delete_all_request: "ConfigletAssignmentConfigDeleteAllRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, configlet_assignment_config_batched_stream_request: "ConfigletAssignmentConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, configlet_assignment_config_batched_stream_request: "ConfigletAssignmentConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletAssignmentConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigRequest, ConfigletAssignmentConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigSomeRequest, ConfigletAssignmentConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigStreamRequest, ConfigletAssignmentConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigStreamRequest, ConfigletAssignmentConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigSetRequest, ConfigletAssignmentConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigSetSomeRequest, ConfigletAssignmentConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigDeleteRequest, ConfigletAssignmentConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigDeleteSomeRequest, ConfigletAssignmentConfigDeleteSomeResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigDeleteAllRequest, ConfigletAssignmentConfigDeleteAllResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigBatchedStreamRequest, ConfigletAssignmentConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[ConfigletAssignmentConfigBatchedStreamRequest, ConfigletAssignmentConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentConfigRequest,
-                ConfigletAssignmentConfigResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigSomeRequest,
-                ConfigletAssignmentConfigSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigStreamRequest,
-                ConfigletAssignmentConfigStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigStreamRequest,
-                ConfigletAssignmentConfigStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentConfigSetRequest,
-                ConfigletAssignmentConfigSetResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigSetSomeRequest,
-                ConfigletAssignmentConfigSetSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletAssignmentConfigDeleteRequest,
-                ConfigletAssignmentConfigDeleteResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigDeleteSomeRequest,
-                ConfigletAssignmentConfigDeleteSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigDeleteAllRequest,
-                ConfigletAssignmentConfigDeleteAllResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigBatchedStreamRequest,
-                ConfigletAssignmentConfigBatchedStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletAssignmentConfigBatchedStreamRequest,
-                ConfigletAssignmentConfigBatchedStreamResponse,
-            ),
-        }
-
-
-class ConfigletConfigServiceBase(ServiceBase):
-    async def get_one(self, configlet_config_request: "ConfigletConfigRequest") -> "ConfigletConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, configlet_config_some_request: "ConfigletConfigSomeRequest") -> AsyncIterator[ConfigletConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator[ConfigletConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator[ConfigletConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, configlet_config_set_request: "ConfigletConfigSetRequest") -> "ConfigletConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, configlet_config_set_some_request: "ConfigletConfigSetSomeRequest") -> AsyncIterator[ConfigletConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, configlet_config_delete_request: "ConfigletConfigDeleteRequest") -> "ConfigletConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, configlet_config_delete_some_request: "ConfigletConfigDeleteSomeRequest") -> AsyncIterator[ConfigletConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, configlet_config_delete_all_request: "ConfigletConfigDeleteAllRequest") -> AsyncIterator[ConfigletConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, configlet_config_batched_stream_request: "ConfigletConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, configlet_config_batched_stream_request: "ConfigletConfigBatchedStreamRequest"
-    ) -> AsyncIterator[ConfigletConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigletConfigRequest, ConfigletConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ConfigletConfigSomeRequest, ConfigletConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ConfigletConfigStreamRequest, ConfigletConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ConfigletConfigStreamRequest, ConfigletConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigletConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigletConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ConfigletConfigSetRequest, ConfigletConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[ConfigletConfigSetSomeRequest, ConfigletConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ConfigletConfigDeleteRequest, ConfigletConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[ConfigletConfigDeleteSomeRequest, ConfigletConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[ConfigletConfigDeleteAllRequest, ConfigletConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[ConfigletConfigBatchedStreamRequest, ConfigletConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[ConfigletConfigBatchedStreamRequest, ConfigletConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.configlet.v1.ConfigletConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletConfigRequest,
-                ConfigletConfigResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigSomeRequest,
-                ConfigletConfigSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigStreamRequest,
-                ConfigletConfigStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigStreamRequest,
-                ConfigletConfigStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletConfigSetRequest,
-                ConfigletConfigSetResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigSetSomeRequest,
-                ConfigletConfigSetSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ConfigletConfigDeleteRequest,
-                ConfigletConfigDeleteResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigDeleteSomeRequest,
-                ConfigletConfigDeleteSomeResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigDeleteAllRequest,
-                ConfigletConfigDeleteAllResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigBatchedStreamRequest,
-                ConfigletConfigBatchedStreamResponse,
-            ),
-            "/arista.configlet.v1.ConfigletConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ConfigletConfigBatchedStreamRequest,
-                ConfigletConfigBatchedStreamResponse,
-            ),
-        }

@@ -7,134 +7,358 @@
 # This file has been @generated
 
 __all__ = (
-    "SoftwareSource",
-    "Progress",
-    "SoftwareType",
-    "ImageFormatVersion",
     "Arch",
-    "Variant",
-    "Flavor",
-    "DigestType",
-    "RecommendedAction",
-    "Level",
-    "RepositoryKey",
-    "Repository",
-    "RepositoryConfig",
-    "SoftwareStatus",
-    "SoftwareMetadata",
-    "SwiMetadata",
-    "ExtensionMetadata",
-    "ReleasesStatus",
-    "Releases",
-    "ConcreteFile",
-    "ConcreteTypeToConcreteSwiMap",
-    "Device",
-    "Devices",
-    "ZtpUpgradeRule",
-    "ZtpUpgradeRules",
-    "StudioTagQuery",
-    "StudioTagQueries",
     "Assignments",
-    "MetaResponse",
+    "AssignmentsBatchedStreamRequest",
+    "AssignmentsBatchedStreamResponse",
     "AssignmentsRequest",
     "AssignmentsResponse",
+    "AssignmentsServiceStub",
     "AssignmentsSomeRequest",
     "AssignmentsSomeResponse",
     "AssignmentsStreamRequest",
     "AssignmentsStreamResponse",
-    "AssignmentsBatchedStreamRequest",
-    "AssignmentsBatchedStreamResponse",
+    "ConcreteFile",
+    "ConcreteTypeToConcreteSwiMap",
+    "Device",
+    "Devices",
+    "DigestType",
+    "ExtensionMetadata",
+    "Flavor",
+    "ImageFormatVersion",
+    "Level",
+    "MetaResponse",
+    "Progress",
+    "RecommendedAction",
+    "Releases",
     "ReleasesRequest",
     "ReleasesResponse",
+    "ReleasesServiceStub",
+    "ReleasesStatus",
     "ReleasesStreamRequest",
     "ReleasesStreamResponse",
-    "RepositoryRequest",
-    "RepositoryResponse",
-    "RepositorySomeRequest",
-    "RepositorySomeResponse",
-    "RepositoryStreamRequest",
-    "RepositoryStreamResponse",
+    "Repository",
     "RepositoryBatchedStreamRequest",
     "RepositoryBatchedStreamResponse",
-    "RepositoryConfigRequest",
-    "RepositoryConfigResponse",
-    "RepositoryConfigSomeRequest",
-    "RepositoryConfigSomeResponse",
-    "RepositoryConfigStreamRequest",
-    "RepositoryConfigStreamResponse",
+    "RepositoryConfig",
     "RepositoryConfigBatchedStreamRequest",
     "RepositoryConfigBatchedStreamResponse",
-    "RepositoryConfigSetRequest",
-    "RepositoryConfigSetResponse",
-    "RepositoryConfigSetSomeRequest",
-    "RepositoryConfigSetSomeResponse",
+    "RepositoryConfigDeleteAllRequest",
+    "RepositoryConfigDeleteAllResponse",
     "RepositoryConfigDeleteRequest",
     "RepositoryConfigDeleteResponse",
     "RepositoryConfigDeleteSomeRequest",
     "RepositoryConfigDeleteSomeResponse",
-    "RepositoryConfigDeleteAllRequest",
-    "RepositoryConfigDeleteAllResponse",
-    "AssignmentsServiceStub",
-    "AssignmentsServiceBase",
-    "ReleasesServiceStub",
-    "ReleasesServiceBase",
-    "RepositoryServiceStub",
-    "RepositoryServiceBase",
+    "RepositoryConfigRequest",
+    "RepositoryConfigResponse",
     "RepositoryConfigServiceStub",
-    "RepositoryConfigServiceBase",
+    "RepositoryConfigSetRequest",
+    "RepositoryConfigSetResponse",
+    "RepositoryConfigSetSomeRequest",
+    "RepositoryConfigSetSomeResponse",
+    "RepositoryConfigSomeRequest",
+    "RepositoryConfigSomeResponse",
+    "RepositoryConfigStreamRequest",
+    "RepositoryConfigStreamResponse",
+    "RepositoryKey",
+    "RepositoryRequest",
+    "RepositoryResponse",
+    "RepositoryServiceStub",
+    "RepositorySomeRequest",
+    "RepositorySomeResponse",
+    "RepositoryStreamRequest",
+    "RepositoryStreamResponse",
+    "SoftwareMetadata",
+    "SoftwareSource",
+    "SoftwareStatus",
+    "SoftwareType",
+    "StudioTagQueries",
+    "StudioTagQuery",
+    "SwiMetadata",
+    "Variant",
+    "ZtpUpgradeRule",
+    "ZtpUpgradeRules",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
-class SoftwareSource(aristaproto.Enum):
-    """SoftwareSource describes the software upload mode."""
+class Arch(aristaproto.Enum):
+    """
+    Arch is an enum used to specify the target architecture of an image or extension.
+    """
 
     UNSPECIFIED = 0
-    """SOFTWARE_SOURCE_UNSPECIFIED indicates that the source is not known"""
-
-    CLOUD = 1
     """
-    SOFTWARE_SOURCE_CLOUD indicates that the image or extension has been downloaded from
-    Arista's Software Download site
+    ARCH_UNSPECIFIED indicates an unknown or unspecified architecture
     """
 
-    LOCAL = 2
+    NO_ARCH = 1
     """
-    SOFTWARE_SOURCE_LOCAL indicates that the image or extension file has been uploaded directly
-    to CloudVision by the user
-    """
-
-    PRELOADED = 3
-    """
-    SOFTWARE_SOURCE_PRELOADED indicates that the image or extension file has been added as part
-    of an upgrade of CloudVision.
+    ARCH_NO_ARCH indicates that the software is architecture agnostic
     """
 
-    NP_MIGRATION = 4
+    I386 = 2
     """
-    SOFTWARE_SOURCE_NP_MIGRATION indicates that the image or extension file has been internally
-    transferred from Network Provisioning to Software Management Studio as part of the
-    migration process.
+    ARCH_I386 indicates that the software is intended for the i386 architecture
     """
+
+    I686 = 3
+    """
+    ARCH_I686 indicates that the software is intended for the i686 architecture
+    """
+
+    X86_64 = 4
+    """
+    ARCH_X86_64 indicates that the software is intended to be run on 64-bit platforms
+    """
+
+    AARCH64 = 5
+    """
+    ARCH_AARCH64 indicates that the software is intended to be run on ARM 64-bit platforms
+    """
+
+    MULTIARCH = 6
+    """
+    ARCH_MULTIARCH indicates that the software supports all architectures
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ARCH_UNSPECIFIED",
+            1: "ARCH_NO_ARCH",
+            2: "ARCH_I386",
+            3: "ARCH_I686",
+            4: "ARCH_X86_64",
+            5: "ARCH_AARCH64",
+            6: "ARCH_MULTIARCH",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ARCH_UNSPECIFIED": 0,
+            "ARCH_NO_ARCH": 1,
+            "ARCH_I386": 2,
+            "ARCH_I686": 3,
+            "ARCH_X86_64": 4,
+            "ARCH_AARCH64": 5,
+            "ARCH_MULTIARCH": 6,
+        }
+
+
+class DigestType(aristaproto.Enum):
+    """
+    DigestType is the digest algorithm used as a checksum on the software file.
+    """
+
+    UNSPECIFIED = 0
+    """
+    DIGEST_TYPE_UNSPECIFIED indicates that the digest type is unknown
+    """
+
+    SHA512 = 1
+    """
+    DIGEST_TYPE_SHA512 indicates that the SHA512 algorithm is used to calculate the digest
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "DIGEST_TYPE_UNSPECIFIED",
+            1: "DIGEST_TYPE_SHA512",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "DIGEST_TYPE_UNSPECIFIED": 0,
+            "DIGEST_TYPE_SHA512": 1,
+        }
+
+
+class Flavor(aristaproto.Enum):
+    """
+    Flavor is an enum containing the possible .swi flavor types.
+    """
+
+    UNSPECIFIED = 0
+    """
+    FLAVOR_UNSPECIFIED indicates that the swi image flavor is unknown
+    """
+
+    DEFAULT = 1
+    """
+    FLAVOR_DEFAULT is the default swi image
+    """
+
+    _2GB = 2
+    """
+    FLAVOR_2GB is an obsolete image supporting a reduced-size 2GB image version that runs
+    only on older models of devices with two gigabytes of flash memory
+    """
+
+    CLOUD = 3
+    """
+    FLAVOR_CLOUD is a swi image that runs in a virtualized cloud environment
+    """
+
+    DPE = 4
+    """
+    FLAVOR_DPE is a swi image that provides MacSec without a license
+    """
+
+    PDP = 5
+    """
+    FLAVOR_PDP is an image that defaults to support PDP but can also support CoPP
+    """
+
+    _2GB_PDP = 6
+    """
+    FLAVOR_2GB_PDP is a 2GB image that defaults to support PDP if available, but can support
+    CoPP
+    """
+
+    DPE_CTNR = 7
+    """
+    FLAVOR_DPE_CTNR is a swi image that provides MacSec without a license and natively
+    supports running containers on EOS
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "FLAVOR_UNSPECIFIED",
+            1: "FLAVOR_DEFAULT",
+            2: "FLAVOR_2GB",
+            3: "FLAVOR_CLOUD",
+            4: "FLAVOR_DPE",
+            5: "FLAVOR_PDP",
+            6: "FLAVOR_2GB_PDP",
+            7: "FLAVOR_DPE_CTNR",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "FLAVOR_UNSPECIFIED": 0,
+            "FLAVOR_DEFAULT": 1,
+            "FLAVOR_2GB": 2,
+            "FLAVOR_CLOUD": 3,
+            "FLAVOR_DPE": 4,
+            "FLAVOR_PDP": 5,
+            "FLAVOR_2GB_PDP": 6,
+            "FLAVOR_DPE_CTNR": 7,
+        }
+
+
+class ImageFormatVersion(aristaproto.Enum):
+    """
+    ImageFormatVersion is an enum defining the image format versions of a SWI image.
+    """
+
+    UNSPECIFIED = 0
+    """
+    IMAGE_FORMAT_VERSION_UNSPECIFIED indicates an unknown image format
+    """
+
+    _1_0 = 1
+    """
+    IMAGE_FORMAT_VERSION_1_0 indicates legacy swi format
+    """
+
+    _2_0 = 2
+    """
+    IMAGE_FORMAT_VERSION_2_0 indicates modular swi format
+    """
+
+    _3_0 = 3
+    """
+    IMAGE_FORMAT_VERSION_3_0 indicates optimised modular swi format
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "IMAGE_FORMAT_VERSION_UNSPECIFIED",
+            1: "IMAGE_FORMAT_VERSION_1_0",
+            2: "IMAGE_FORMAT_VERSION_2_0",
+            3: "IMAGE_FORMAT_VERSION_3_0",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "IMAGE_FORMAT_VERSION_UNSPECIFIED": 0,
+            "IMAGE_FORMAT_VERSION_1_0": 1,
+            "IMAGE_FORMAT_VERSION_2_0": 2,
+            "IMAGE_FORMAT_VERSION_3_0": 3,
+        }
+
+
+class Level(aristaproto.Enum):
+    """
+    Level specifies relative importance of the information returned in the message field of the
+    software releases status.
+    """
+
+    UNSPECIFIED = 0
+    """
+    LEVEL_UNSPECIFIED is set when the message level is unknown
+    """
+
+    INFO = 1
+    """
+    LEVEL_INFO is set when the message contains useful, informational content. No user action is
+    required.
+    """
+
+    WARNING = 2
+    """
+    LEVEL_WARNING is set when the message contains important information for the user that
+    should be addressed for continued proper behavior
+    """
+
+    ERROR = 3
+    """
+    LEVEL_ERROR is set when the message contains information alerting the user to an error
+    condition that occurred while retrieving the set of software releases. Remedial user action
+    may be required to clear this condition.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "LEVEL_UNSPECIFIED",
+            1: "LEVEL_INFO",
+            2: "LEVEL_WARNING",
+            3: "LEVEL_ERROR",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "LEVEL_UNSPECIFIED": 0,
+            "LEVEL_INFO": 1,
+            "LEVEL_WARNING": 2,
+            "LEVEL_ERROR": 3,
+        }
 
 
 class Progress(aristaproto.Enum):
@@ -149,7 +373,9 @@ class Progress(aristaproto.Enum):
     """
 
     INITIAL = 1
-    """PROGRESS_INITIAL indicates that a software upload has begun"""
+    """
+    PROGRESS_INITIAL indicates that a software upload has begun
+    """
 
     QUEUED = 2
     """
@@ -185,167 +411,31 @@ class Progress(aristaproto.Enum):
     validation phase. This is a terminal state of an upload.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "PROGRESS_UNSPECIFIED",
+            1: "PROGRESS_INITIAL",
+            2: "PROGRESS_QUEUED",
+            3: "PROGRESS_LOADING",
+            4: "PROGRESS_VALIDATING",
+            5: "PROGRESS_SAVING",
+            6: "PROGRESS_SUCCESS",
+            7: "PROGRESS_ERROR",
+        }
 
-class SoftwareType(aristaproto.Enum):
-    """
-    SoftwareType is an enum containing the possible Software types. `SOFTWARE_TYPE_TERMINATTR`,
-    which corresponds to an EOS Streaming Agent, is first-classed due to it's importance to
-    CloudVision.
-    """
-
-    UNSPECIFIED = 0
-    """
-    SOFTWARE_TYPE_UNSPECIFIED indicates that the type cannot or has not been determined
-    """
-
-    SWI = 1
-    """
-    SOFTWARE_TYPE_SWI identifies an EOS swi image type. The corresponding image files will
-    have a .swi extension.
-    """
-
-    TERMINATTR = 2
-    """
-    SOFTWARE_TYPE_TERMINATTR identifies a Streaming Agent extension. The corresponding
-    files will contain the term: \"TerminAttr\" (case insensitive) and a .swix extension.
-    """
-
-    SWIX = 3
-    """
-    SOFTWARE_TYPE_SWIX identifies an extension type. The corresponding files will have a .swix
-    extension.
-    """
-
-    RPM = 4
-    """
-    SOFTWARE_TYPE_RPM identifies an RPM file. The corresponding files will have a .rpm
-    extension.
-    """
-
-
-class ImageFormatVersion(aristaproto.Enum):
-    """
-    ImageFormatVersion is an enum defining the image format versions of a SWI image.
-    """
-
-    UNSPECIFIED = 0
-    """IMAGE_FORMAT_VERSION_UNSPECIFIED indicates an unknown image format"""
-
-    _1_0 = 1
-    """IMAGE_FORMAT_VERSION_1_0 indicates legacy swi format"""
-
-    _2_0 = 2
-    """IMAGE_FORMAT_VERSION_2_0 indicates modular swi format"""
-
-    _3_0 = 3
-    """IMAGE_FORMAT_VERSION_3_0 indicates optimised modular swi format"""
-
-
-class Arch(aristaproto.Enum):
-    """
-    Arch is an enum used to specify the target architecture of an image or extension.
-    """
-
-    UNSPECIFIED = 0
-    """ARCH_UNSPECIFIED indicates an unknown or unspecified architecture"""
-
-    NO_ARCH = 1
-    """ARCH_NO_ARCH indicates that the software is architecture agnostic"""
-
-    I386 = 2
-    """
-    ARCH_I386 indicates that the software is intended for the i386 architecture
-    """
-
-    I686 = 3
-    """
-    ARCH_I686 indicates that the software is intended for the i686 architecture
-    """
-
-    X86_64 = 4
-    """
-    ARCH_X86_64 indicates that the software is intended to be run on 64-bit platforms
-    """
-
-    AARCH64 = 5
-    """
-    ARCH_AARCH64 indicates that the software is intended to be run on ARM 64-bit platforms
-    """
-
-    MULTIARCH = 6
-    """
-    ARCH_MULTIARCH indicates that the software supports all architectures
-    """
-
-
-class Variant(aristaproto.Enum):
-    """Variant is an enum containing the possible .swi variant types."""
-
-    UNSPECIFIED = 0
-    """
-    VARIANT_UNSPECIFIED is used to indicate an unknown or unspecified EOS image variant
-    """
-
-    US = 1
-    """VARIANT_US specifies a US or default version of an EOS image variant"""
-
-    INTERNATIONAL = 2
-    """VARIANT_INTERNATIONAL specifies an international EOS image variant"""
-
-
-class Flavor(aristaproto.Enum):
-    """Flavor is an enum containing the possible .swi flavor types."""
-
-    UNSPECIFIED = 0
-    """FLAVOR_UNSPECIFIED indicates that the swi image flavor is unknown"""
-
-    DEFAULT = 1
-    """FLAVOR_DEFAULT is the default swi image"""
-
-    _2GB = 2
-    """
-    FLAVOR_2GB is an obsolete image supporting a reduced-size 2GB image version that runs
-    only on older models of devices with two gigabytes of flash memory
-    """
-
-    CLOUD = 3
-    """
-    FLAVOR_CLOUD is a swi image that runs in a virtualized cloud environment
-    """
-
-    DPE = 4
-    """FLAVOR_DPE is a swi image that provides MacSec without a license"""
-
-    PDP = 5
-    """
-    FLAVOR_PDP is an image that defaults to support PDP but can also support CoPP
-    """
-
-    _2GB_PDP = 6
-    """
-    FLAVOR_2GB_PDP is a 2GB image that defaults to support PDP if available, but can support
-    CoPP
-    """
-
-    DPE_CTNR = 7
-    """
-    FLAVOR_DPE_CTNR is a swi image that provides MacSec without a license and natively
-    supports running containers on EOS
-    """
-
-
-class DigestType(aristaproto.Enum):
-    """
-    DigestType is the digest algorithm used as a checksum on the software file.
-    """
-
-    UNSPECIFIED = 0
-    """DIGEST_TYPE_UNSPECIFIED indicates that the digest type is unknown"""
-
-    SHA512 = 1
-    """
-    DIGEST_TYPE_SHA512 indicates that the SHA512 algorithm is used to calculate the digest
-    """
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "PROGRESS_UNSPECIFIED": 0,
+            "PROGRESS_INITIAL": 1,
+            "PROGRESS_QUEUED": 2,
+            "PROGRESS_LOADING": 3,
+            "PROGRESS_VALIDATING": 4,
+            "PROGRESS_SAVING": 5,
+            "PROGRESS_SUCCESS": 6,
+            "PROGRESS_ERROR": 7,
+        }
 
 
 class RecommendedAction(aristaproto.Enum):
@@ -389,307 +479,492 @@ class RecommendedAction(aristaproto.Enum):
     re-attempting the previous action.
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "RECOMMENDED_ACTION_UNSPECIFIED",
+            1: "RECOMMENDED_ACTION_CONTACT_TAC",
+            2: "RECOMMENDED_ACTION_ADD_TOKEN",
+            3: "RECOMMENDED_ACTION_UPDATE_TOKEN",
+            4: "RECOMMENDED_ACTION_ACCEPT_EULA",
+            5: "RECOMMENDED_ACTION_RETRY",
+        }
 
-class Level(aristaproto.Enum):
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "RECOMMENDED_ACTION_UNSPECIFIED": 0,
+            "RECOMMENDED_ACTION_CONTACT_TAC": 1,
+            "RECOMMENDED_ACTION_ADD_TOKEN": 2,
+            "RECOMMENDED_ACTION_UPDATE_TOKEN": 3,
+            "RECOMMENDED_ACTION_ACCEPT_EULA": 4,
+            "RECOMMENDED_ACTION_RETRY": 5,
+        }
+
+
+class SoftwareSource(aristaproto.Enum):
     """
-    Level specifies relative importance of the information returned in the message field of the
-    software releases status.
+    SoftwareSource describes the software upload mode.
     """
 
     UNSPECIFIED = 0
-    """LEVEL_UNSPECIFIED is set when the message level is unknown"""
-
-    INFO = 1
     """
-    LEVEL_INFO is set when the message contains useful, informational content. No user action is
-    required.
+    SOFTWARE_SOURCE_UNSPECIFIED indicates that the source is not known
     """
 
-    WARNING = 2
+    CLOUD = 1
     """
-    LEVEL_WARNING is set when the message contains important information for the user that
-    should be addressed for continued proper behavior
+    SOFTWARE_SOURCE_CLOUD indicates that the image or extension has been downloaded from
+    Arista's Software Download site
     """
 
-    ERROR = 3
+    LOCAL = 2
     """
-    LEVEL_ERROR is set when the message contains information alerting the user to an error
-    condition that occurred while retrieving the set of software releases. Remedial user action
-    may be required to clear this condition.
+    SOFTWARE_SOURCE_LOCAL indicates that the image or extension file has been uploaded directly
+    to CloudVision by the user
     """
+
+    PRELOADED = 3
+    """
+    SOFTWARE_SOURCE_PRELOADED indicates that the image or extension file has been added as part
+    of an upgrade of CloudVision.
+    """
+
+    NP_MIGRATION = 4
+    """
+    SOFTWARE_SOURCE_NP_MIGRATION indicates that the image or extension file has been internally
+    transferred from Network Provisioning to Software Management Studio as part of the
+    migration process.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SOFTWARE_SOURCE_UNSPECIFIED",
+            1: "SOFTWARE_SOURCE_CLOUD",
+            2: "SOFTWARE_SOURCE_LOCAL",
+            3: "SOFTWARE_SOURCE_PRELOADED",
+            4: "SOFTWARE_SOURCE_NP_MIGRATION",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SOFTWARE_SOURCE_UNSPECIFIED": 0,
+            "SOFTWARE_SOURCE_CLOUD": 1,
+            "SOFTWARE_SOURCE_LOCAL": 2,
+            "SOFTWARE_SOURCE_PRELOADED": 3,
+            "SOFTWARE_SOURCE_NP_MIGRATION": 4,
+        }
+
+
+class SoftwareType(aristaproto.Enum):
+    """
+    SoftwareType is an enum containing the possible Software types. `SOFTWARE_TYPE_TERMINATTR`,
+    which corresponds to an EOS Streaming Agent, is first-classed due to it's importance to
+    CloudVision.
+    """
+
+    UNSPECIFIED = 0
+    """
+    SOFTWARE_TYPE_UNSPECIFIED indicates that the type cannot or has not been determined
+    """
+
+    SWI = 1
+    """
+    SOFTWARE_TYPE_SWI identifies an EOS swi image type. The corresponding image files will
+    have a .swi extension.
+    """
+
+    TERMINATTR = 2
+    """
+    SOFTWARE_TYPE_TERMINATTR identifies a Streaming Agent extension. The corresponding
+    files will contain the term: "TerminAttr" (case insensitive) and a .swix extension.
+    """
+
+    SWIX = 3
+    """
+    SOFTWARE_TYPE_SWIX identifies an extension type. The corresponding files will have a .swix
+    extension.
+    """
+
+    RPM = 4
+    """
+    SOFTWARE_TYPE_RPM identifies an RPM file. The corresponding files will have a .rpm
+    extension.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SOFTWARE_TYPE_UNSPECIFIED",
+            1: "SOFTWARE_TYPE_SWI",
+            2: "SOFTWARE_TYPE_TERMINATTR",
+            3: "SOFTWARE_TYPE_SWIX",
+            4: "SOFTWARE_TYPE_RPM",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SOFTWARE_TYPE_UNSPECIFIED": 0,
+            "SOFTWARE_TYPE_SWI": 1,
+            "SOFTWARE_TYPE_TERMINATTR": 2,
+            "SOFTWARE_TYPE_SWIX": 3,
+            "SOFTWARE_TYPE_RPM": 4,
+        }
+
+
+class Variant(aristaproto.Enum):
+    """
+    Variant is an enum containing the possible .swi variant types.
+    """
+
+    UNSPECIFIED = 0
+    """
+    VARIANT_UNSPECIFIED is used to indicate an unknown or unspecified EOS image variant
+    """
+
+    US = 1
+    """
+    VARIANT_US specifies a US or default version of an EOS image variant
+    """
+
+    INTERNATIONAL = 2
+    """
+    VARIANT_INTERNATIONAL specifies an international EOS image variant
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "VARIANT_UNSPECIFIED",
+            1: "VARIANT_US",
+            2: "VARIANT_INTERNATIONAL",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "VARIANT_UNSPECIFIED": 0,
+            "VARIANT_US": 1,
+            "VARIANT_INTERNATIONAL": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryKey(aristaproto.Message):
+class Assignments(aristaproto.Message):
     """
-    RepositoryKey is the key used by the `Repository` state and config models to uniquely
-    identify an image or extension.
-
-    The `name` field must contain the file suffix. Valid file types include .swi, .swix and .rpm
-    files. Streaming Agent files must also contain the term: `TerminAttr` (case insensitive).
+    Assignments returns the lists of devices, ZTP upgrade rules, and studio tags queries that
+    reference the software image identified by the key
     """
 
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    name is a unique identifier that will be used to identify the image or extension in
-    CloudVision
+    key uniquely identifies the software image resource being queried.
+    This key is defined as part of the repository configuration request when an image is added to the software repository.
     """
+
+    devices: "Devices | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    devices is a list of devices whose designed image references the software image identified by
+    the key.
+    """
+
+    ztp_upgrade_rules: "ZtpUpgradeRules | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ztp_upgrade_rules is a list of ztp upgrade rules which reference the software image identified
+    by the key.
+    """
+
+    studio_tag_queries: "StudioTagQueries | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    studio_tag_queries contains the studio tags queries which reference the software image identified
+    by the key.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "Assignments", Assignments)
 
 
 @dataclass(eq=False, repr=False)
-class Repository(aristaproto.Message):
+class AssignmentsBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Assignments]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Repository is the state model that displays metadata for software images and extensions.
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-    `Repository` objects are created when new software is added via a `Set`
-    request issued to the `RepositoryConfig` resource or when using the Software Upload REST API.
-    The `key` uniquely identifies the software state and is identical to the key used to create it
-    via the call to `Set`.
-    """
-
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """key is the unique identifier"""
-
-    uploaded_by: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """uploaded_by specifies the author of the upload"""
-
-    uploaded_at: datetime = aristaproto.message_field(3)
-    """uploaded_at specifies the date and time of the upload"""
-
-    last_modified_by: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    last_modified_by is the author of the most recent metadata modification
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
 
-    last_modified_at: datetime = aristaproto.message_field(5)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    last_modified_at is the date and time of the most recent metadata modification
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Assignments at end.
+        * Each Assignments response is fully-specified (all fields set).
+      * start: Returns the state of each Assignments at start, followed by updates until now.
+        * Each Assignments response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignments at start, followed by updates
+        until end.
+        * Each Assignments response at start is fully-specified, but updates until end may
+          be partial.
     """
 
-    software_status: "SoftwareStatus" = aristaproto.message_field(6)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
-    software_status displays status of the software that is being added to CloudVision
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
     """
 
-    software_metadata: "SoftwareMetadata" = aristaproto.message_field(7)
-    """software_metadata displays details about available software"""
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsBatchedStreamRequest", AssignmentsBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfig(aristaproto.Message):
+class AssignmentsBatchedStreamResponse(aristaproto.Message):
+    responses: "list[AssignmentsStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-     RepositoryConfig objects are used to add, delete, and update images or extensions in
-     CloudVision.
-
-     The `Set` method is used to add and modify software stored in CloudVision.
-     The `Delete` method is used to remove software.
-
-     Adding Software to CloudVision:
-
-     When a `Set` is made, the software identified by the URI will be downloaded from Arista's
-     Software Download site and stored in CloudVision. The status of the software will be reflected
-     by a corresponding `Repository` entry identified by the same `RepositoryKey`.
-
-     Here is an example where a .swi EOS image is added to CloudVision:
-
-     ```
-    {
-      \"value\": {
-        \"key\": {
-          \"name\": \"EOS64-4.30.0.1F.swi\"
-        },
-        \"uri\": \"/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi\",
-        \"rebootRequired\": true
-      },
-    }
-     ```
-
-     The following is an example of a configuration that will add the
-     _AristaAppForSplunk-2.0.1-4.27.swix_ extension to CloudVision:
-
-     ```
-    {
-      \"value\": {
-        \"key\": {
-          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-        },
-        \"uri\": \"/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix\",
-        \"rebootRequired\": false
-      },
-    }
-     ```
-
-     Updating Existing Software:
-
-     `Repository` metadata objects can be _updated_ by using the config `Set` method and
-     specifying the field or fields to be modified. Currently, `reboot_required` is the only field
-     that can be modified after software has been added to CloudVision. All other fields must match
-     the existing configuration, or can be omitted.
-
-     NOTE: The `reboot_required` field must be `true` for .swi images.
-
-     In this example, we update the `reboot_required` field changing it from `false` to `true`
-     while leaving out the uri field:
-
-     ```
-    {
-      \"value\": {
-        \"key\": {
-          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-        },
-        \"rebootRequired\": true
-      },
-    }
-     ```
-
-     Deleting Software:
-
-     `Repository` objects can be deleted using the `RepositoryConfig` `Delete` method.
-     A `Delete` request will specify the `key` which uniquely identifies the image or extension in
-     CloudVision. For example, a delete request will look like the following:
-     ```
-     {
-      \"value\": {
-        \"key\": {
-          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-        },
-      },
-    }
-    ```
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    key is a unique identifier that must be supplied by the user to start a valid upload of
-    software
-    """
 
-    uri: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    uri value depends on the origin of the software. If you are downloading an image or
-    extension file from Arista's Software Download site, use the site identifier. If you are
-    uploading software from your computer using the Software Upload REST API, this field will
-    be populated with the CloudVision file server identifier.
-    """
-
-    reboot_required: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    reboot_required is a Boolean indicating if a device requires a reboot after software
-    installation. .swi images always require a reboot.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsBatchedStreamResponse", AssignmentsBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class SoftwareStatus(aristaproto.Message):
+class AssignmentsRequest(aristaproto.Message):
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    SoftwareStatus contains a progress field and a description explaining the progress during
-    software upload.
+    Key uniquely identifies a Assignments instance to retrieve.
+    This value must be populated.
     """
 
-    progress: "Progress" = aristaproto.enum_field(1)
-    """progress displays the current status of the software upload"""
-
-    message: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """message describes the progress of the software upload"""
-
-    recommended_action: "RecommendedAction" = aristaproto.enum_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    recommended_action expresses a particular user-actionable step that can be carried out to
-    ensure the proper operation of CloudVision while managing software.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsRequest", AssignmentsRequest)
 
 
 @dataclass(eq=False, repr=False)
-class SoftwareMetadata(aristaproto.Message):
-    """SoftwareMetadata is the detailed metadata describing software files."""
-
-    digest_type: "DigestType" = aristaproto.enum_field(1)
+class AssignmentsResponse(aristaproto.Message):
+    value: "Assignments | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    digest_type specifies the type of digest algorithm used to calculate the digest for this
-    image or extension
-    """
-
-    digest: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """digest is the digest value for the image or extension"""
-
-    size: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT64)
-    """size is the size of the image or extension in bytes"""
-
-    reboot_required: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """
-    reboot_required boolean indicating if a device requires a reboot after software installation
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
     """
 
-    software_type: "SoftwareType" = aristaproto.enum_field(5)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    software_type determines which version field is populated - .swi image metadata appears in
-    swi_metadata. .swix and .rpm extensions appear in extension_metadata.
-    """
-
-    swi_metadata: "SwiMetadata" = aristaproto.message_field(6)
-    """swi_metadata is versioning information for .swi type images"""
-
-    extension_metadata: "ExtensionMetadata" = aristaproto.message_field(7)
-    """
-    extension_metadata is versioning information for extensions (.rpm and .swix)
+    Time carries the (UTC) timestamp of the last-modification of the
+    Assignments instance in this response.
     """
 
-    file_server_path: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsResponse", AssignmentsResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AssignmentsSomeRequest(aristaproto.Message):
+    keys: "list[RepositoryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsSomeRequest", AssignmentsSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AssignmentsSomeResponse(aristaproto.Message):
+    value: "Assignments | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Assignments instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsSomeResponse", AssignmentsSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AssignmentsStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Assignments]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Assignments at end.
+        * Each Assignments response is fully-specified (all fields set).
+      * start: Returns the state of each Assignments at start, followed by updates until now.
+        * Each Assignments response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignments at start, followed by updates
+        until end.
+        * Each Assignments response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsStreamRequest", AssignmentsStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AssignmentsStreamResponse(aristaproto.Message):
+    value: "Assignments | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Assignments's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Assignments value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "AssignmentsStreamResponse", AssignmentsStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ConcreteFile(aristaproto.Message):
+    """
+    ConcreteFile contains the name and corresponding metadata of the
+    file (like fileserver path, file size)
+    """
+
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    name is the name of the concrete file
+    """
+
+    file_server_path: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     file_server_path is the location of the image or extension as stored in CloudVision
     """
 
-    software_source: "SoftwareSource" = aristaproto.enum_field(9)
+    size: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt64Value, optional=True)
     """
-    software_source indicates if the software being processed has been downloaded
-    from Arista's Software Download site or uploaded to CloudVision from a user's local computer
+    size is the size of the image or extension in bytes
     """
+
+    release: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    release is the release version of the concrete file
+    """
+
+    variant: "Variant" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: Variant(0))
+    """
+    variant specifies the swi image variant
+    """
+
+    flavor: "Flavor" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: Flavor(0))
+    """
+    flavor is the swi image flavor
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "ConcreteFile", ConcreteFile)
 
 
 @dataclass(eq=False, repr=False)
-class SwiMetadata(aristaproto.Message):
-    """SwiMetadata is versioning metadata describing .swi type images."""
-
-    version: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """version specifies the version of the swi image"""
-
-    release: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """release specifies the swi image release information"""
-
-    variant: "Variant" = aristaproto.enum_field(3)
-    """variant specifies the swi image variant"""
-
-    flavor: "Flavor" = aristaproto.enum_field(4)
-    """flavor is the swi image flavor"""
-
-    arch: "Arch" = aristaproto.enum_field(5)
-    """arch is the swi architecture"""
-
-    max_hardware_epoch: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_UINT32)
-    """max_hardware_epoch specifies the max hardware epoch value supported"""
-
-    blessed: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
-    """blessed indicates if the swi image is blessed"""
-
-    image_format_version: "ImageFormatVersion" = aristaproto.enum_field(8)
-    """image_format_version specifies the EOS image format version"""
-
-    embedded_terminattr: "ExtensionMetadata" = aristaproto.message_field(9)
+class ConcreteTypeToConcreteSwiMap(aristaproto.Message):
     """
-    embedded_terminattr specifies the default embedded TerminAttr version pre-installed in the
-    EOS swi image
+    ConcreteTypeToConcreteSwiMap indicates a map keyed by stringified concrete type (limited
+    to i386, i686, x86_64 and aarch64, but can be extended to platform types in the future) to the concrete swi map.
     """
 
-    optimization: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
+    values: "dict[str, ConcreteFile]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
     """
-    optimization specifies any adaptations made to the image for specific products or
-    use-cases
+    values contains a collection of ConcreteTypeToConcreteSwiMap items.
     """
 
-    concrete_type_to_concrete_swi_map: "ConcreteTypeToConcreteSwiMap" = aristaproto.message_field(11)
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "ConcreteTypeToConcreteSwiMap", ConcreteTypeToConcreteSwiMap)
+
+
+@dataclass(eq=False, repr=False)
+class Device(aristaproto.Message):
     """
-    concrete_type_to_concrete_swi_map indicates a map to the concrete swi metadata
+    Device represents a device that has a designed image that references the software image
+    identified by the key
     """
+
+    device_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_id contains the unique device id string for a device
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "Device", Device)
+
+
+@dataclass(eq=False, repr=False)
+class Devices(aristaproto.Message):
+    """
+    Devices is the collection of devices whose designed images reference the software image
+    identified by the key.
+    """
+
+    values: "list[Device]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of devices
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "Devices", Devices)
 
 
 @dataclass(eq=False, repr=False)
@@ -698,28 +973,38 @@ class ExtensionMetadata(aristaproto.Message):
     ExtensionMetadata is versioning metadata describing extensions (.swix and .rpm).
     """
 
-    description: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """description is the swix or rpm description"""
+    description: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is the swix or rpm description
+    """
 
-    name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """name is the name of the swix or rpm extension"""
+    name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    name is the name of the swix or rpm extension
+    """
 
-    version: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """version is the version of the swix or rpm extension"""
+    version: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version is the version of the swix or rpm extension
+    """
 
-    release: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """release is the value of the swix or rpm extension release"""
+    release: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    release is the value of the swix or rpm extension release
+    """
 
-    epoch: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    epoch: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     epoch is versioning metadata in swix or rpm extensions which allows handling for
     hard-to-compare version numbers
     """
 
-    arch: "Arch" = aristaproto.enum_field(6)
-    """arch is the architecture of the swix or rpm extension"""
+    arch: "Arch" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: Arch(0))
+    """
+    arch is the architecture of the swix or rpm extension
+    """
 
-    supported_eos_versions: "___fmp__.RepeatedString" = aristaproto.message_field(7)
+    supported_eos_versions: "___fmp__.RepeatedString | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
     """
     supported_eos_versions is a list which contains EOS versions supported by the extension.
     An empty list indicates there are no known restrictions on the EOS versions supported by
@@ -727,31 +1012,31 @@ class ExtensionMetadata(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "ExtensionMetadata", ExtensionMetadata)
+
+
 @dataclass(eq=False, repr=False)
-class ReleasesStatus(aristaproto.Message):
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    ReleasesStatus contains information about the state of the available software releases
-    which are retrieved from Arista's Software Download site by CloudVision.
-    """
-
-    level: "Level" = aristaproto.enum_field(1)
-    """
-    level is the relative importance of the message field contained in the status
+    Time holds the timestamp of the last item included in the metadata calculation.
     """
 
-    message: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
-    message is populated with a string which will provide more information regarding
-    the latest interaction with the Arista's Software Download site while pulling the set of
-    available software releases
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
     """
 
-    recommended_action: "RecommendedAction" = aristaproto.enum_field(3)
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
-    recommended_action expresses a particular user-actionable step that can be carried out to
-    ensure the proper operation of CloudVision while interacting with Arista's Software
-    Download site to obtain the set of available software releases.
+    Count is the number of items present under the conditions of the request.
     """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "MetaResponse", MetaResponse)
 
 
 @dataclass(eq=False, repr=False)
@@ -762,13 +1047,13 @@ class Releases(aristaproto.Message):
     CloudVision.
     """
 
-    status: "ReleasesStatus" = aristaproto.message_field(1)
+    status: "ReleasesStatus | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     status is providing additional information about the retrieval of the software releases
     returned in the message
     """
 
-    uris: "___fmp__.RepeatedString" = aristaproto.message_field(2)
+    uris: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     uris are the URI paths specifying the location of the available software releases that
     can be downloaded from the Arista's Software Download site. These URIs are used
@@ -776,346 +1061,24 @@ class Releases(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ConcreteFile(aristaproto.Message):
-    """
-    ConcreteFile contains the name and corresponding metadata of the
-    file (like fileserver path, file size)
-    """
-
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the name of the concrete file"""
-
-    file_server_path: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    file_server_path is the location of the image or extension as stored in CloudVision
-    """
-
-    size: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT64)
-    """size is the size of the image or extension in bytes"""
-
-    release: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """release is the release version of the concrete file"""
-
-    variant: "Variant" = aristaproto.enum_field(5)
-    """variant specifies the swi image variant"""
-
-    flavor: "Flavor" = aristaproto.enum_field(6)
-    """flavor is the swi image flavor"""
-
-
-@dataclass(eq=False, repr=False)
-class ConcreteTypeToConcreteSwiMap(aristaproto.Message):
-    """
-    ConcreteTypeToConcreteSwiMap indicates a map keyed by stringified concrete type (limited
-    to i386, i686, x86_64 and aarch64, but can be extended to platform types in the future) to the concrete swi map.
-    """
-
-    values: Dict[str, "ConcreteFile"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values contains a collection of ConcreteTypeToConcreteSwiMap items."""
-
-
-@dataclass(eq=False, repr=False)
-class Device(aristaproto.Message):
-    """
-    Device represents a device that has a designed image that references the software image
-    identified by the key
-    """
-
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """device_id contains the unique device id string for a device"""
-
-
-@dataclass(eq=False, repr=False)
-class Devices(aristaproto.Message):
-    """
-    Devices is the collection of devices whose designed images reference the software image
-    identified by the key.
-    """
-
-    values: List["Device"] = aristaproto.message_field(1)
-    """values is a list of devices"""
-
-
-@dataclass(eq=False, repr=False)
-class ZtpUpgradeRule(aristaproto.Message):
-    """
-    ZtpUpgradeRule represents a Zero Touch Provisioning (ZTP) rule (identified by its model_regex
-    string) that references the software image identified by the key.
-    """
-
-    model_regex: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    model_regex represents a ZTP upgrade rule. It is a RE2-style regular expression used to match
-    against the model names of devices undergoing the ZTP software upgrade workflow.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ZtpUpgradeRules(aristaproto.Message):
-    """
-    ZtpUpgradeRules is the collection of Zero Touch Provisioning (ZTP) rules
-    which are currently referencing the software image identified by the key.
-    """
-
-    values: List["ZtpUpgradeRule"] = aristaproto.message_field(1)
-    """values is a list of ZtpUpgradeRules"""
-
-
-@dataclass(eq=False, repr=False)
-class StudioTagQuery(aristaproto.Message):
-    """
-    StudioTagQuery is a device tag query used in the Software Management Studio (SMS)
-    inputs. The software image represented by the key will be assigned to
-    the set of devices identified by the device tag query.
-    """
-
-    studio_tag_query: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    studio_tag_query stores a device tag query string that conforms to the CloudVision
-    tag query language. E.g., the query, `\"datacenter:NYC,SFO AND sflow:enabled\"`, matches all
-    devices with sflow enabled in data centers NYC and SFO
-    """
-
-
-@dataclass(eq=False, repr=False)
-class StudioTagQueries(aristaproto.Message):
-    """
-    StudioTagQueries is the collection of device tag queries which are currently referencing the
-    software image identified by the key
-    """
-
-    values: List["StudioTagQuery"] = aristaproto.message_field(1)
-    """values is a list of studio tag queries"""
-
-
-@dataclass(eq=False, repr=False)
-class Assignments(aristaproto.Message):
-    """
-    Assignments returns the lists of devices, ZTP upgrade rules, and studio tags queries that
-    reference the software image identified by the key
-    """
-
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    key uniquely identifies the software image resource being queried.
-    This key is defined as part of the repository configuration request when an image is added to the software repository.
-    """
-
-    devices: "Devices" = aristaproto.message_field(2)
-    """
-    devices is a list of devices whose designed image references the software image identified by
-    the key.
-    """
-
-    ztp_upgrade_rules: "ZtpUpgradeRules" = aristaproto.message_field(3)
-    """
-    ztp_upgrade_rules is a list of ztp upgrade rules which reference the software image identified
-    by the key.
-    """
-
-    studio_tag_queries: "StudioTagQueries" = aristaproto.message_field(4)
-    """
-    studio_tag_queries contains the studio tags queries which reference the software image identified
-    by the key.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsRequest(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Assignments instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsResponse(aristaproto.Message):
-    value: "Assignments" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Assignments instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsSomeRequest(aristaproto.Message):
-    keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsSomeResponse(aristaproto.Message):
-    value: "Assignments" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Assignments instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Assignments"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Assignments at end.
-        * Each Assignments response is fully-specified (all fields set).
-      * start: Returns the state of each Assignments at start, followed by updates until now.
-        * Each Assignments response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Assignments at start, followed by updates
-        until end.
-        * Each Assignments response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsStreamResponse(aristaproto.Message):
-    value: "Assignments" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Assignments's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Assignments value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Assignments"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Assignments at end.
-        * Each Assignments response is fully-specified (all fields set).
-      * start: Returns the state of each Assignments at start, followed by updates until now.
-        * Each Assignments response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Assignments at start, followed by updates
-        until end.
-        * Each Assignments response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AssignmentsBatchedStreamResponse(aristaproto.Message):
-    responses: List["AssignmentsStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "Releases", Releases)
 
 
 @dataclass(eq=False, repr=False)
 class ReleasesRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "ReleasesRequest", ReleasesRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ReleasesResponse(aristaproto.Message):
-    value: "Releases" = aristaproto.message_field(1)
+    value: "Releases | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -1123,16 +1086,49 @@ class ReleasesResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     Releases instance in this response.
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "ReleasesResponse", ReleasesResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ReleasesStatus(aristaproto.Message):
+    """
+    ReleasesStatus contains information about the state of the available software releases
+    which are retrieved from Arista's Software Download site by CloudVision.
+    """
+
+    level: "Level" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: Level(0))
+    """
+    level is the relative importance of the message field contained in the status
+    """
+
+    message: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    message is populated with a string which will provide more information regarding
+    the latest interaction with the Arista's Software Download site while pulling the set of
+    available software releases
+    """
+
+    recommended_action: "RecommendedAction" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: RecommendedAction(0))
+    """
+    recommended_action expresses a particular user-actionable step that can be carried out to
+    ensure the proper operation of CloudVision while interacting with Arista's Software
+    Download site to obtain the set of available software releases.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "ReleasesStatus", ReleasesStatus)
+
+
 @dataclass(eq=False, repr=False)
 class ReleasesStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Releases"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[Releases]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1141,7 +1137,7 @@ class ReleasesStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1159,19 +1155,24 @@ class ReleasesStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "ReleasesStreamRequest", ReleasesStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ReleasesStreamResponse(aristaproto.Message):
-    value: "Releases" = aristaproto.message_field(1)
+    value: "Releases | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Releases's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Releases's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the Releases value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1180,124 +1181,62 @@ class ReleasesStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryRequest(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Repository instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "ReleasesStreamResponse", ReleasesStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryResponse(aristaproto.Message):
-    value: "Repository" = aristaproto.message_field(1)
+class Repository(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    Repository is the state model that displays metadata for software images and extensions.
+
+    `Repository` objects are created when new software is added via a `Set`
+    request issued to the `RepositoryConfig` resource or when using the Software Upload REST API.
+    The `key` uniquely identifies the software state and is identical to the key used to create it
+    via the call to `Set`.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Repository instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RepositorySomeRequest(aristaproto.Message):
-    keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    key is the unique identifier
     """
 
-
-@dataclass(eq=False, repr=False)
-class RepositorySomeResponse(aristaproto.Message):
-    value: "Repository" = aristaproto.message_field(1)
+    uploaded_by: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    uploaded_by specifies the author of the upload
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    uploaded_at: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
+    uploaded_at specifies the date and time of the upload
     """
 
-    time: datetime = aristaproto.message_field(3)
+    last_modified_by: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Repository instance in this response.
+    last_modified_by is the author of the most recent metadata modification
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at is the date and time of the most recent metadata modification
+    """
+
+    software_status: "SoftwareStatus | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    software_status displays status of the software that is being added to CloudVision
+    """
+
+    software_metadata: "SoftwareMetadata | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    software_metadata displays details about available software
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Repository"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Repository at end.
-        * Each Repository response is fully-specified (all fields set).
-      * start: Returns the state of each Repository at start, followed by updates until now.
-        * Each Repository response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Repository at start, followed by updates
-        until end.
-        * Each Repository response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RepositoryStreamResponse(aristaproto.Message):
-    value: "Repository" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Repository's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Repository value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "Repository", Repository)
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Repository"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[Repository]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1306,7 +1245,7 @@ class RepositoryBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1323,18 +1262,21 @@ class RepositoryBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
     """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryBatchedStreamRequest", RepositoryBatchedStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryBatchedStreamResponse(aristaproto.Message):
-    responses: List["RepositoryStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[RepositoryStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1342,126 +1284,108 @@ class RepositoryBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryConfigRequest(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a RepositoryConfig instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryBatchedStreamResponse", RepositoryBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfigResponse(aristaproto.Message):
-    value: "RepositoryConfig" = aristaproto.message_field(1)
+class RepositoryConfig(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    RepositoryConfig objects are used to add, delete, and update images or extensions in
+    CloudVision.
+
+    The `Set` method is used to add and modify software stored in CloudVision.
+    The `Delete` method is used to remove software.
+
+    Adding Software to CloudVision:
+
+    When a `Set` is made, the software identified by the URI will be downloaded from Arista's
+    Software Download site and stored in CloudVision. The status of the software will be reflected
+    by a corresponding `Repository` entry identified by the same `RepositoryKey`.
+
+    Here is an example where a .swi EOS image is added to CloudVision:
+
+    ```
+    {
+        "value": {
+            "key": {"name": "EOS64-4.30.0.1F.swi"},
+            "uri": "/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi",
+            "rebootRequired": true,
+        },
+    }
+    ```
+
+    The following is an example of a configuration that will add the
+    _AristaAppForSplunk-2.0.1-4.27.swix_ extension to CloudVision:
+
+    ```
+    {
+        "value": {
+            "key": {"name": "AristaAppForSplunk-2.0.1-4.27.swix"},
+            "uri": "/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix",
+            "rebootRequired": false,
+        },
+    }
+    ```
+
+    Updating Existing Software:
+
+    `Repository` metadata objects can be _updated_ by using the config `Set` method and
+    specifying the field or fields to be modified. Currently, `reboot_required` is the only field
+    that can be modified after software has been added to CloudVision. All other fields must match
+    the existing configuration, or can be omitted.
+
+    NOTE: The `reboot_required` field must be `true` for .swi images.
+
+    In this example, we update the `reboot_required` field changing it from `false` to `true`
+    while leaving out the uri field:
+
+    ```
+    {
+        "value": {"key": {"name": "AristaAppForSplunk-2.0.1-4.27.swix"}, "rebootRequired": true},
+    }
+    ```
+
+    Deleting Software:
+
+    `Repository` objects can be deleted using the `RepositoryConfig` `Delete` method.
+    A `Delete` request will specify the `key` which uniquely identifies the image or extension in
+    CloudVision. For example, a delete request will look like the following:
+    ```
+    {
+        "value": {
+            "key": {"name": "AristaAppForSplunk-2.0.1-4.27.swix"},
+        },
+    }
+    ```
     """
 
-    time: datetime = aristaproto.message_field(2)
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    RepositoryConfig instance in this response.
+    key is a unique identifier that must be supplied by the user to start a valid upload of
+    software
+    """
+
+    uri: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    uri value depends on the origin of the software. If you are downloading an image or
+    extension file from Arista's Software Download site, use the site identifier. If you are
+    uploading software from your computer using the Software Upload REST API, this field will
+    be populated with the CloudVision file server identifier.
+    """
+
+    reboot_required: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    reboot_required is a Boolean indicating if a device requires a reboot after software
+    installation. .swi images always require a reboot.
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryConfigSomeRequest(aristaproto.Message):
-    keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RepositoryConfigSomeResponse(aristaproto.Message):
-    value: "RepositoryConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    RepositoryConfig instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RepositoryConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each RepositoryConfig at end.
-        * Each RepositoryConfig response is fully-specified (all fields set).
-      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
-        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
-        until end.
-        * Each RepositoryConfig response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class RepositoryConfigStreamResponse(aristaproto.Message):
-    value: "RepositoryConfig" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time holds the timestamp of this RepositoryConfig's last modification.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the RepositoryConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfig", RepositoryConfig)
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[RepositoryConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1470,7 +1394,7 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1487,7 +1411,7 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -1496,9 +1420,12 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigBatchedStreamRequest", RepositoryConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class RepositoryConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["RepositoryConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[RepositoryConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1506,67 +1433,69 @@ class RepositoryConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryConfigSetRequest(aristaproto.Message):
-    value: "RepositoryConfig" = aristaproto.message_field(1)
-    """
-    RepositoryConfig carries the value to set into the datastore.
-    See the documentation on the RepositoryConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigBatchedStreamResponse", RepositoryConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfigSetResponse(aristaproto.Message):
-    value: "RepositoryConfig" = aristaproto.message_field(1)
+class RepositoryConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[RepositoryConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Value carries all the values given in the RepositoryConfigSetRequest as well
-    as any server-generated values.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteAllRequest", RepositoryConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfigSetSomeRequest(aristaproto.Message):
-    values: List["RepositoryConfig"] = aristaproto.message_field(1)
+class RepositoryConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of RepositoryConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "RepositoryKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the RepositoryConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class RepositoryConfigSetSomeResponse(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteAllResponse", RepositoryConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteRequest(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which RepositoryConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteRequest", RepositoryConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteResponse(aristaproto.Message):
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted RepositoryConfig instance."""
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted RepositoryConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -1576,10 +1505,18 @@ class RepositoryConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteResponse", RepositoryConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    """key contains a list of RepositoryConfig keys to delete"""
+    keys: "list[RepositoryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of RepositoryConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteSomeRequest", RepositoryConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -1588,1199 +1525,1278 @@ class RepositoryConfigDeleteSomeResponse(aristaproto.Message):
     RepositoryConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "RepositoryKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigDeleteSomeResponse", RepositoryConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
+class RepositoryConfigRequest(aristaproto.Message):
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    Key uniquely identifies a RepositoryConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigRequest", RepositoryConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigResponse(aristaproto.Message):
+    value: "RepositoryConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    RepositoryConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigResponse", RepositoryConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSetRequest(aristaproto.Message):
+    value: "RepositoryConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    RepositoryConfig carries the value to set into the datastore.
+    See the documentation on the RepositoryConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSetRequest", RepositoryConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSetResponse(aristaproto.Message):
+    value: "RepositoryConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the RepositoryConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSetResponse", RepositoryConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSetSomeRequest(aristaproto.Message):
+    values: "list[RepositoryConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of RepositoryConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSetSomeRequest", RepositoryConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSetSomeResponse(aristaproto.Message):
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSetSomeResponse", RepositoryConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSomeRequest(aristaproto.Message):
+    keys: "list[RepositoryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSomeRequest", RepositoryConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigSomeResponse(aristaproto.Message):
+    value: "RepositoryConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    RepositoryConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigSomeResponse", RepositoryConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryConfigStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[RepositoryConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
     """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each RepositoryConfig at end.
+        * Each RepositoryConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
+        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
+        until end.
+        * Each RepositoryConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigStreamRequest", RepositoryConfigStreamRequest)
 
 
 @dataclass(eq=False, repr=False)
-class RepositoryConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class RepositoryConfigStreamResponse(aristaproto.Message):
+    value: "RepositoryConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "RepositoryKey" = aristaproto.message_field(3)
-    """
-    This is the key of the RepositoryConfig instance that failed to be deleted.
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this RepositoryConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the RepositoryConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
 
 
-class AssignmentsServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryConfigStreamResponse", RepositoryConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryKey(aristaproto.Message):
+    """
+    RepositoryKey is the key used by the `Repository` state and config models to uniquely
+    identify an image or extension.
+
+    The `name` field must contain the file suffix. Valid file types include .swi, .swix and .rpm
+    files. Streaming Agent files must also contain the term: `TerminAttr` (case insensitive).
+    """
+
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    name is a unique identifier that will be used to identify the image or extension in
+    CloudVision
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryKey", RepositoryKey)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryRequest(aristaproto.Message):
+    key: "RepositoryKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Repository instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryRequest", RepositoryRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryResponse(aristaproto.Message):
+    value: "Repository | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Repository instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryResponse", RepositoryResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositorySomeRequest(aristaproto.Message):
+    keys: "list[RepositoryKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositorySomeRequest", RepositorySomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositorySomeResponse(aristaproto.Message):
+    value: "Repository | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Repository instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositorySomeResponse", RepositorySomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Repository]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Repository at end.
+        * Each Repository response is fully-specified (all fields set).
+      * start: Returns the state of each Repository at start, followed by updates until now.
+        * Each Repository response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Repository at start, followed by updates
+        until end.
+        * Each Repository response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryStreamRequest", RepositoryStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class RepositoryStreamResponse(aristaproto.Message):
+    value: "Repository | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Repository's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Repository value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "RepositoryStreamResponse", RepositoryStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SoftwareMetadata(aristaproto.Message):
+    """
+    SoftwareMetadata is the detailed metadata describing software files.
+    """
+
+    digest_type: "DigestType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: DigestType(0))
+    """
+    digest_type specifies the type of digest algorithm used to calculate the digest for this
+    image or extension
+    """
+
+    digest: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    digest is the digest value for the image or extension
+    """
+
+    size: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt64Value, optional=True)
+    """
+    size is the size of the image or extension in bytes
+    """
+
+    reboot_required: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    reboot_required boolean indicating if a device requires a reboot after software installation
+    """
+
+    software_type: "SoftwareType" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareType(0))
+    """
+    software_type determines which version field is populated - .swi image metadata appears in
+    swi_metadata. .swix and .rpm extensions appear in extension_metadata.
+    """
+
+    swi_metadata: "SwiMetadata | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    swi_metadata is versioning information for .swi type images
+    """
+
+    extension_metadata: "ExtensionMetadata | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    extension_metadata is versioning information for extensions (.rpm and .swix)
+    """
+
+    file_server_path: "str | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    file_server_path is the location of the image or extension as stored in CloudVision
+    """
+
+    software_source: "SoftwareSource" = aristaproto.field(9, aristaproto.TYPE_ENUM, default_factory=lambda: SoftwareSource(0))
+    """
+    software_source indicates if the software being processed has been downloaded
+    from Arista's Software Download site or uploaded to CloudVision from a user's local computer
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "SoftwareMetadata", SoftwareMetadata)
+
+
+@dataclass(eq=False, repr=False)
+class SoftwareStatus(aristaproto.Message):
+    """
+    SoftwareStatus contains a progress field and a description explaining the progress during
+    software upload.
+    """
+
+    progress: "Progress" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: Progress(0))
+    """
+    progress displays the current status of the software upload
+    """
+
+    message: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    message describes the progress of the software upload
+    """
+
+    recommended_action: "RecommendedAction" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: RecommendedAction(0))
+    """
+    recommended_action expresses a particular user-actionable step that can be carried out to
+    ensure the proper operation of CloudVision while managing software.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "SoftwareStatus", SoftwareStatus)
+
+
+@dataclass(eq=False, repr=False)
+class StudioTagQueries(aristaproto.Message):
+    """
+    StudioTagQueries is the collection of device tag queries which are currently referencing the
+    software image identified by the key
+    """
+
+    values: "list[StudioTagQuery]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of studio tag queries
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "StudioTagQueries", StudioTagQueries)
+
+
+@dataclass(eq=False, repr=False)
+class StudioTagQuery(aristaproto.Message):
+    """
+    StudioTagQuery is a device tag query used in the Software Management Studio (SMS)
+    inputs. The software image represented by the key will be assigned to
+    the set of devices identified by the device tag query.
+    """
+
+    studio_tag_query: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    studio_tag_query stores a device tag query string that conforms to the CloudVision
+    tag query language. E.g., the query, `"datacenter:NYC,SFO AND sflow:enabled"`, matches all
+    devices with sflow enabled in data centers NYC and SFO
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "StudioTagQuery", StudioTagQuery)
+
+
+@dataclass(eq=False, repr=False)
+class SwiMetadata(aristaproto.Message):
+    """
+    SwiMetadata is versioning metadata describing .swi type images.
+    """
+
+    version: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    version specifies the version of the swi image
+    """
+
+    release: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    release specifies the swi image release information
+    """
+
+    variant: "Variant" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: Variant(0))
+    """
+    variant specifies the swi image variant
+    """
+
+    flavor: "Flavor" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: Flavor(0))
+    """
+    flavor is the swi image flavor
+    """
+
+    arch: "Arch" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: Arch(0))
+    """
+    arch is the swi architecture
+    """
+
+    max_hardware_epoch: "int | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    max_hardware_epoch specifies the max hardware epoch value supported
+    """
+
+    blessed: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    blessed indicates if the swi image is blessed
+    """
+
+    image_format_version: "ImageFormatVersion" = aristaproto.field(8, aristaproto.TYPE_ENUM, default_factory=lambda: ImageFormatVersion(0))
+    """
+    image_format_version specifies the EOS image format version
+    """
+
+    embedded_terminattr: "ExtensionMetadata | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    embedded_terminattr specifies the default embedded TerminAttr version pre-installed in the
+    EOS swi image
+    """
+
+    optimization: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    optimization specifies any adaptations made to the image for specific products or
+    use-cases
+    """
+
+    concrete_type_to_concrete_swi_map: "ConcreteTypeToConcreteSwiMap | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    concrete_type_to_concrete_swi_map indicates a map to the concrete swi metadata
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "SwiMetadata", SwiMetadata)
+
+
+@dataclass(eq=False, repr=False)
+class ZtpUpgradeRule(aristaproto.Message):
+    """
+    ZtpUpgradeRule represents a Zero Touch Provisioning (ZTP) rule (identified by its model_regex
+    string) that references the software image identified by the key.
+    """
+
+    model_regex: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    model_regex represents a ZTP upgrade rule. It is a RE2-style regular expression used to match
+    against the model names of devices undergoing the ZTP software upgrade workflow.
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "ZtpUpgradeRule", ZtpUpgradeRule)
+
+
+@dataclass(eq=False, repr=False)
+class ZtpUpgradeRules(aristaproto.Message):
+    """
+    ZtpUpgradeRules is the collection of Zero Touch Provisioning (ZTP) rules
+    which are currently referencing the software image identified by the key.
+    """
+
+    values: "list[ZtpUpgradeRule]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of ZtpUpgradeRules
+    """
+
+
+default_message_pool.register_message("arista.softwaremanagement.v1", "ZtpUpgradeRules", ZtpUpgradeRules)
+
+
+class AssignmentsServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        assignments_request: "AssignmentsRequest",
+        message: "AssignmentsRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AssignmentsResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.AssignmentsService/GetOne",
-            assignments_request,
+            message,
             AssignmentsResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        assignments_some_request: "AssignmentsSomeRequest",
+        message: "AssignmentsSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AssignmentsSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetSome",
-            assignments_some_request,
+            message,
             AssignmentsSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        assignments_stream_request: "AssignmentsStreamRequest",
+        message: "AssignmentsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AssignmentsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetAll",
-            assignments_stream_request,
+            message,
             AssignmentsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        assignments_stream_request: "AssignmentsStreamRequest",
+        message: "AssignmentsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AssignmentsStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/Subscribe",
-            assignments_stream_request,
+            message,
             AssignmentsStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        assignments_stream_request: "AssignmentsStreamRequest",
+        message: "AssignmentsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.AssignmentsService/GetMeta",
-            assignments_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        assignments_stream_request: "AssignmentsStreamRequest",
+        message: "AssignmentsStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/SubscribeMeta",
-            assignments_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        assignments_batched_stream_request: "AssignmentsBatchedStreamRequest",
+        message: "AssignmentsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AssignmentsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetAllBatched",
-            assignments_batched_stream_request,
+            message,
             AssignmentsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        assignments_batched_stream_request: "AssignmentsBatchedStreamRequest",
+        message: "AssignmentsBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AssignmentsBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/SubscribeBatched",
-            assignments_batched_stream_request,
+            message,
             AssignmentsBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ReleasesServiceStub(aristaproto.ServiceStub):
+class ReleasesServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        releases_request: "ReleasesRequest",
+        message: "ReleasesRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ReleasesResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.ReleasesService/GetOne",
-            releases_request,
+            message,
             ReleasesResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        releases_stream_request: "ReleasesStreamRequest",
+        message: "ReleasesStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReleasesStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/GetAll",
-            releases_stream_request,
+            message,
             ReleasesStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        releases_stream_request: "ReleasesStreamRequest",
+        message: "ReleasesStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ReleasesStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/Subscribe",
-            releases_stream_request,
+            message,
             ReleasesStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        releases_stream_request: "ReleasesStreamRequest",
+        message: "ReleasesStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/SubscribeMeta",
-            releases_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class RepositoryServiceStub(aristaproto.ServiceStub):
+class RepositoryConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        repository_request: "RepositoryRequest",
+        message: "RepositoryConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "RepositoryResponse":
-        return await self._unary_unary(
-            "/arista.softwaremanagement.v1.RepositoryService/GetOne",
-            repository_request,
-            RepositoryResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        repository_some_request: "RepositorySomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[RepositorySomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/GetSome",
-            repository_some_request,
-            RepositorySomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        repository_stream_request: "RepositoryStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[RepositoryStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/GetAll",
-            repository_stream_request,
-            RepositoryStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        repository_stream_request: "RepositoryStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[RepositoryStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/Subscribe",
-            repository_stream_request,
-            RepositoryStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        repository_stream_request: "RepositoryStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.softwaremanagement.v1.RepositoryService/GetMeta",
-            repository_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        repository_stream_request: "RepositoryStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/SubscribeMeta",
-            repository_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all_batched(
-        self,
-        repository_batched_stream_request: "RepositoryBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/GetAllBatched",
-            repository_batched_stream_request,
-            RepositoryBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        repository_batched_stream_request: "RepositoryBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.softwaremanagement.v1.RepositoryService/SubscribeBatched",
-            repository_batched_stream_request,
-            RepositoryBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class RepositoryConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        repository_config_request: "RepositoryConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RepositoryConfigResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetOne",
-            repository_config_request,
+            message,
             RepositoryConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        repository_config_some_request: "RepositoryConfigSomeRequest",
+        message: "RepositoryConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetSome",
-            repository_config_some_request,
+            message,
             RepositoryConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        repository_config_stream_request: "RepositoryConfigStreamRequest",
+        message: "RepositoryConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetAll",
-            repository_config_stream_request,
+            message,
             RepositoryConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        repository_config_stream_request: "RepositoryConfigStreamRequest",
+        message: "RepositoryConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Subscribe",
-            repository_config_stream_request,
+            message,
             RepositoryConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        repository_config_stream_request: "RepositoryConfigStreamRequest",
+        message: "RepositoryConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetMeta",
-            repository_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        repository_config_stream_request: "RepositoryConfigStreamRequest",
+        message: "RepositoryConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeMeta",
-            repository_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        repository_config_set_request: "RepositoryConfigSetRequest",
+        message: "RepositoryConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RepositoryConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Set",
-            repository_config_set_request,
+            message,
             RepositoryConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        repository_config_set_some_request: "RepositoryConfigSetSomeRequest",
+        message: "RepositoryConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SetSome",
-            repository_config_set_some_request,
+            message,
             RepositoryConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        repository_config_delete_request: "RepositoryConfigDeleteRequest",
+        message: "RepositoryConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "RepositoryConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Delete",
-            repository_config_delete_request,
+            message,
             RepositoryConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        repository_config_delete_some_request: "RepositoryConfigDeleteSomeRequest",
+        message: "RepositoryConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteSome",
-            repository_config_delete_some_request,
+            message,
             RepositoryConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        repository_config_delete_all_request: "RepositoryConfigDeleteAllRequest",
+        message: "RepositoryConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteAll",
-            repository_config_delete_all_request,
+            message,
             RepositoryConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest",
+        message: "RepositoryConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetAllBatched",
-            repository_config_batched_stream_request,
+            message,
             RepositoryConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest",
+        message: "RepositoryConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[RepositoryConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeBatched",
-            repository_config_batched_stream_request,
+            message,
             RepositoryConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class RepositoryServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "RepositoryRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "RepositoryResponse":
+
+        return await self._unary_unary(
+            "/arista.softwaremanagement.v1.RepositoryService/GetOne",
+            message,
+            RepositoryResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "RepositorySomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[RepositorySomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/GetSome",
+            message,
+            RepositorySomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "RepositoryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[RepositoryStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/GetAll",
+            message,
+            RepositoryStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "RepositoryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[RepositoryStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/Subscribe",
+            message,
+            RepositoryStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "RepositoryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.softwaremanagement.v1.RepositoryService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "RepositoryStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all_batched(
+        self,
+        message: "RepositoryBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/GetAllBatched",
+            message,
+            RepositoryBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_batched(
+        self,
+        message: "RepositoryBatchedStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.softwaremanagement.v1.RepositoryService/SubscribeBatched",
+            message,
+            RepositoryBatchedStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class AssignmentsServiceBase(ServiceBase):
-    async def get_one(self, assignments_request: "AssignmentsRequest") -> "AssignmentsResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, assignments_some_request: "AssignmentsSomeRequest") -> AsyncIterator[AssignmentsSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[AssignmentsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[AssignmentsStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, assignments_stream_request: "AssignmentsStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, assignments_batched_stream_request: "AssignmentsBatchedStreamRequest") -> AsyncIterator[AssignmentsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, assignments_batched_stream_request: "AssignmentsBatchedStreamRequest") -> AsyncIterator[AssignmentsBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AssignmentsRequest, AssignmentsResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AssignmentsSomeRequest, AssignmentsSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AssignmentsStreamRequest, AssignmentsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AssignmentsStreamRequest, AssignmentsStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AssignmentsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AssignmentsStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[AssignmentsBatchedStreamRequest, AssignmentsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[AssignmentsBatchedStreamRequest, AssignmentsBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.softwaremanagement.v1.AssignmentsService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AssignmentsRequest,
-                AssignmentsResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsSomeRequest,
-                AssignmentsSomeResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsStreamRequest,
-                AssignmentsStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsStreamRequest,
-                AssignmentsStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AssignmentsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsBatchedStreamRequest,
-                AssignmentsBatchedStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.AssignmentsService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AssignmentsBatchedStreamRequest,
-                AssignmentsBatchedStreamResponse,
-            ),
-        }
-
-
-class ReleasesServiceBase(ServiceBase):
-    async def get_one(self, releases_request: "ReleasesRequest") -> "ReleasesResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[ReleasesStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[ReleasesStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ReleasesRequest, ReleasesResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ReleasesStreamRequest, ReleasesStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ReleasesStreamRequest, ReleasesStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ReleasesStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.softwaremanagement.v1.ReleasesService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ReleasesRequest,
-                ReleasesResponse,
-            ),
-            "/arista.softwaremanagement.v1.ReleasesService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReleasesStreamRequest,
-                ReleasesStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.ReleasesService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReleasesStreamRequest,
-                ReleasesStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.ReleasesService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ReleasesStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class RepositoryServiceBase(ServiceBase):
-    async def get_one(self, repository_request: "RepositoryRequest") -> "RepositoryResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, repository_some_request: "RepositorySomeRequest") -> AsyncIterator[RepositorySomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[RepositoryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[RepositoryStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, repository_stream_request: "RepositoryStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(self, repository_batched_stream_request: "RepositoryBatchedStreamRequest") -> AsyncIterator[RepositoryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(self, repository_batched_stream_request: "RepositoryBatchedStreamRequest") -> AsyncIterator[RepositoryBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[RepositoryRequest, RepositoryResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[RepositorySomeRequest, RepositorySomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[RepositoryStreamRequest, RepositoryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[RepositoryStreamRequest, RepositoryStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[RepositoryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[RepositoryStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[RepositoryBatchedStreamRequest, RepositoryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[RepositoryBatchedStreamRequest, RepositoryBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.softwaremanagement.v1.RepositoryService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryRequest,
-                RepositoryResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositorySomeRequest,
-                RepositorySomeResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryStreamRequest,
-                RepositoryStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryStreamRequest,
-                RepositoryStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryBatchedStreamRequest,
-                RepositoryBatchedStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryBatchedStreamRequest,
-                RepositoryBatchedStreamResponse,
-            ),
-        }
-
-
-class RepositoryConfigServiceBase(ServiceBase):
-    async def get_one(self, repository_config_request: "RepositoryConfigRequest") -> "RepositoryConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, repository_config_some_request: "RepositoryConfigSomeRequest") -> AsyncIterator[RepositoryConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[RepositoryConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[RepositoryConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, repository_config_set_request: "RepositoryConfigSetRequest") -> "RepositoryConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, repository_config_set_some_request: "RepositoryConfigSetSomeRequest") -> AsyncIterator[RepositoryConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, repository_config_delete_request: "RepositoryConfigDeleteRequest") -> "RepositoryConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(
-        self, repository_config_delete_some_request: "RepositoryConfigDeleteSomeRequest"
-    ) -> AsyncIterator[RepositoryConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, repository_config_delete_all_request: "RepositoryConfigDeleteAllRequest") -> AsyncIterator[RepositoryConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest"
-    ) -> AsyncIterator[RepositoryConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest"
-    ) -> AsyncIterator[RepositoryConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[RepositoryConfigRequest, RepositoryConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[RepositoryConfigSomeRequest, RepositoryConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[RepositoryConfigStreamRequest, RepositoryConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[RepositoryConfigStreamRequest, RepositoryConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[RepositoryConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[RepositoryConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[RepositoryConfigSetRequest, RepositoryConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[RepositoryConfigSetSomeRequest, RepositoryConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[RepositoryConfigDeleteRequest, RepositoryConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[RepositoryConfigDeleteSomeRequest, RepositoryConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[RepositoryConfigDeleteAllRequest, RepositoryConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[RepositoryConfigBatchedStreamRequest, RepositoryConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self, stream: "grpclib.server.Stream[RepositoryConfigBatchedStreamRequest, RepositoryConfigBatchedStreamResponse]"
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.softwaremanagement.v1.RepositoryConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryConfigRequest,
-                RepositoryConfigResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigSomeRequest,
-                RepositoryConfigSomeResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigStreamRequest,
-                RepositoryConfigStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigStreamRequest,
-                RepositoryConfigStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryConfigSetRequest,
-                RepositoryConfigSetResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigSetSomeRequest,
-                RepositoryConfigSetSomeResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                RepositoryConfigDeleteRequest,
-                RepositoryConfigDeleteResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigDeleteSomeRequest,
-                RepositoryConfigDeleteSomeResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigDeleteAllRequest,
-                RepositoryConfigDeleteAllResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigBatchedStreamRequest,
-                RepositoryConfigBatchedStreamResponse,
-            ),
-            "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                RepositoryConfigBatchedStreamRequest,
-                RepositoryConfigBatchedStreamResponse,
-            ),
-        }

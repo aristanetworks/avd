@@ -7,96 +7,88 @@
 # This file has been @generated
 
 __all__ = (
-    "AccountStatus",
-    "AccountKey",
-    "AccountConfig",
     "Account",
-    "TokenKey",
-    "TokenConfig",
-    "Token",
-    "TokenSelfRefreshConfig",
-    "MetaResponse",
-    "AccountRequest",
-    "AccountResponse",
-    "AccountSomeRequest",
-    "AccountSomeResponse",
-    "AccountStreamRequest",
-    "AccountStreamResponse",
-    "AccountConfigRequest",
-    "AccountConfigResponse",
-    "AccountConfigSomeRequest",
-    "AccountConfigSomeResponse",
-    "AccountConfigStreamRequest",
-    "AccountConfigStreamResponse",
-    "AccountConfigSetRequest",
-    "AccountConfigSetResponse",
-    "AccountConfigSetSomeRequest",
-    "AccountConfigSetSomeResponse",
+    "AccountConfig",
+    "AccountConfigDeleteAllRequest",
+    "AccountConfigDeleteAllResponse",
     "AccountConfigDeleteRequest",
     "AccountConfigDeleteResponse",
     "AccountConfigDeleteSomeRequest",
     "AccountConfigDeleteSomeResponse",
-    "AccountConfigDeleteAllRequest",
-    "AccountConfigDeleteAllResponse",
-    "TokenRequest",
-    "TokenResponse",
-    "TokenSomeRequest",
-    "TokenSomeResponse",
-    "TokenStreamRequest",
-    "TokenStreamResponse",
-    "TokenConfigRequest",
-    "TokenConfigResponse",
-    "TokenConfigSomeRequest",
-    "TokenConfigSomeResponse",
-    "TokenConfigStreamRequest",
-    "TokenConfigStreamResponse",
-    "TokenConfigSetRequest",
-    "TokenConfigSetResponse",
-    "TokenConfigSetSomeRequest",
-    "TokenConfigSetSomeResponse",
+    "AccountConfigRequest",
+    "AccountConfigResponse",
+    "AccountConfigServiceStub",
+    "AccountConfigSetRequest",
+    "AccountConfigSetResponse",
+    "AccountConfigSetSomeRequest",
+    "AccountConfigSetSomeResponse",
+    "AccountConfigSomeRequest",
+    "AccountConfigSomeResponse",
+    "AccountConfigStreamRequest",
+    "AccountConfigStreamResponse",
+    "AccountKey",
+    "AccountRequest",
+    "AccountResponse",
+    "AccountServiceStub",
+    "AccountSomeRequest",
+    "AccountSomeResponse",
+    "AccountStatus",
+    "AccountStreamRequest",
+    "AccountStreamResponse",
+    "MetaResponse",
+    "Token",
+    "TokenConfig",
+    "TokenConfigDeleteAllRequest",
+    "TokenConfigDeleteAllResponse",
     "TokenConfigDeleteRequest",
     "TokenConfigDeleteResponse",
     "TokenConfigDeleteSomeRequest",
     "TokenConfigDeleteSomeResponse",
-    "TokenConfigDeleteAllRequest",
-    "TokenConfigDeleteAllResponse",
+    "TokenConfigRequest",
+    "TokenConfigResponse",
+    "TokenConfigServiceStub",
+    "TokenConfigSetRequest",
+    "TokenConfigSetResponse",
+    "TokenConfigSetSomeRequest",
+    "TokenConfigSetSomeResponse",
+    "TokenConfigSomeRequest",
+    "TokenConfigSomeResponse",
+    "TokenConfigStreamRequest",
+    "TokenConfigStreamResponse",
+    "TokenKey",
+    "TokenRequest",
+    "TokenResponse",
+    "TokenSelfRefreshConfig",
     "TokenSelfRefreshConfigRequest",
     "TokenSelfRefreshConfigResponse",
-    "TokenSelfRefreshConfigStreamRequest",
-    "TokenSelfRefreshConfigStreamResponse",
+    "TokenSelfRefreshConfigServiceStub",
     "TokenSelfRefreshConfigSetRequest",
     "TokenSelfRefreshConfigSetResponse",
-    "AccountServiceStub",
-    "AccountServiceBase",
-    "AccountConfigServiceStub",
-    "AccountConfigServiceBase",
+    "TokenSelfRefreshConfigStreamRequest",
+    "TokenSelfRefreshConfigStreamResponse",
     "TokenServiceStub",
-    "TokenServiceBase",
-    "TokenConfigServiceStub",
-    "TokenConfigServiceBase",
-    "TokenSelfRefreshConfigServiceStub",
-    "TokenSelfRefreshConfigServiceBase",
+    "TokenSomeRequest",
+    "TokenSomeResponse",
+    "TokenStreamRequest",
+    "TokenStreamResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class AccountStatus(aristaproto.Enum):
@@ -110,335 +102,233 @@ class AccountStatus(aristaproto.Enum):
     """
 
     ENABLED = 1
-    """ACCOUNT_STATUS_ENABLED indicates the service account is enabled."""
+    """
+    ACCOUNT_STATUS_ENABLED indicates the service account is enabled.
+    """
 
     DISABLED = 2
-    """ACCOUNT_STATUS_DISABLED indicates the service account is disabled."""
+    """
+    ACCOUNT_STATUS_DISABLED indicates the service account is disabled.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ACCOUNT_STATUS_UNSPECIFIED",
+            1: "ACCOUNT_STATUS_ENABLED",
+            2: "ACCOUNT_STATUS_DISABLED",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ACCOUNT_STATUS_UNSPECIFIED": 0,
+            "ACCOUNT_STATUS_ENABLED": 1,
+            "ACCOUNT_STATUS_DISABLED": 2,
+        }
 
 
 @dataclass(eq=False, repr=False)
-class AccountKey(aristaproto.Message):
-    """AccountKey contains the name of the service account."""
+class Account(aristaproto.Message):
+    """
+    Account describes a service account.
+    """
 
-    name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """name is the unique identifier of the service account."""
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the service account.
+    """
+
+    status: "AccountStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: AccountStatus(0))
+    """
+    status determines whether the service account is enabled or disabled.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a comment describing the service account.
+    """
+
+    groups: "___fmp__.RepeatedString | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    groups is a list of roles that the service account inherits permissions from.
+    """
+
+    created_by: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the name of the entity that created the service account.
+    """
+
+    last_access: "datetime.datetime | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_access is the time when the service account was last fetched.
+    """
+
+    allow_token_refresh: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    allow_token_refresh determines whether or not the service account can refresh
+    any of its own active tokens, including preexisting ones.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "Account", Account)
 
 
 @dataclass(eq=False, repr=False)
 class AccountConfig(aristaproto.Message):
-    """AccountConfig holds the configuration for a service account."""
+    """
+    AccountConfig holds the configuration for a service account.
+    """
 
-    key: "AccountKey" = aristaproto.message_field(1)
-    """key contains the name of the service account."""
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key contains the name of the service account.
+    """
 
-    status: "AccountStatus" = aristaproto.enum_field(2)
+    status: "AccountStatus" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: AccountStatus(0))
     """
     status determines if the service account is enabled or disabled. New service accounts are
     enabled by default.
     """
 
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is a comment describing the service account."""
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a comment describing the service account.
+    """
 
-    groups: "___fmp__.RepeatedString" = aristaproto.message_field(4)
+    groups: "___fmp__.RepeatedString | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
     """
     groups is a list of roles that the service account inherits permissions from.
     """
 
-    allow_token_refresh: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
+    allow_token_refresh: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
     """
     allow_token_refresh determines whether or not the service account can refresh
     any of its own active tokens, including preexisting ones.
     """
 
 
-@dataclass(eq=False, repr=False)
-class Account(aristaproto.Message):
-    """Account describes a service account."""
-
-    key: "AccountKey" = aristaproto.message_field(1)
-    """key uniquely identifies the service account."""
-
-    status: "AccountStatus" = aristaproto.enum_field(2)
-    """
-    status determines whether the service account is enabled or disabled.
-    """
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """description is a comment describing the service account."""
-
-    groups: "___fmp__.RepeatedString" = aristaproto.message_field(4)
-    """
-    groups is a list of roles that the service account inherits permissions from.
-    """
-
-    created_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    created_by is the name of the entity that created the service account.
-    """
-
-    last_access: datetime = aristaproto.message_field(6)
-    """last_access is the time when the service account was last fetched."""
-
-    allow_token_refresh: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
-    """
-    allow_token_refresh determines whether or not the service account can refresh
-    any of its own active tokens, including preexisting ones.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfig", AccountConfig)
 
 
 @dataclass(eq=False, repr=False)
-class TokenKey(aristaproto.Message):
-    """TokenKey contains service account token ID."""
-
-    id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """id is the unique identifier of the service account token."""
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfig(aristaproto.Message):
+class AccountConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[AccountConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    TokenConfig holds the configuration for a service account token. The token is a signed JWT which
-    can be used as a credential for REST and WRPC endpoints.
-    """
-
-    key: "TokenKey" = aristaproto.message_field(1)
-    """key uniquely identifies the service account token."""
-
-    user: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    user is the name of the service account that the token is generated for.
-    """
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    description is a short name or comment used to identify the service account token.
-    """
-
-    valid_for: timedelta = aristaproto.message_field(4)
-    """
-    valid_for determines the duration that the service account token will be valid for.
-    """
-
-    token: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    token is the JWT generated for a service account token.
-    It is only populated in Set response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Token(aristaproto.Message):
-    """Token describes a service account token."""
-
-    key: "TokenKey" = aristaproto.message_field(1)
-    """key uniquely identifies the service account token."""
-
-    user: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    user is the name of the service account that the token is generated for.
-    """
-
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    description is a short name or comment used to identify the service account token.
-    """
-
-    valid_until: datetime = aristaproto.message_field(4)
-    """
-    valid_until is the time that the service account token will be valid until.
-    """
-
-    created_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    created_by is the name of the entity that created the service account token.
-    """
-
-    last_used: datetime = aristaproto.message_field(6)
-    """
-    last_used is the time when the service account token was last used to authenticate.
-    """
-
-    replaced_at: datetime = aristaproto.message_field(7)
-    """
-    replaced_at is the time which the token has been replaced.
-    It is only populated when the token is refreshed.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenSelfRefreshConfig(aristaproto.Message):
-    """
-    TokenSelfRefreshConfig describes the response a service account gets when they refresh their token
-    """
-
-    valid_for: timedelta = aristaproto.message_field(1)
-    """
-    valid_for is the duration that the service account token will be valid for.
-    Default value will be the original token duration.
-    """
-
-    new_token: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    new_token is the JWT token generated for a service account token.
-    This is populated in the response of a Set() request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AccountRequest(aristaproto.Message):
-    key: "AccountKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Account instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AccountResponse(aristaproto.Message):
-    value: "Account" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Account instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AccountSomeRequest(aristaproto.Message):
-    keys: List["AccountKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AccountSomeResponse(aristaproto.Message):
-    value: "Account" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Account instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AccountStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Account"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
     This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
 
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Account at end.
-        * Each Account response is fully-specified (all fields set).
-      * start: Returns the state of each Account at start, followed by updates until now.
-        * Each Account response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Account at start, followed by updates
-        until end.
-        * Each Account response at start is fully-specified, but updates until end may
-          be partial.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteAllRequest", AccountConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class AccountStreamResponse(aristaproto.Message):
-    value: "Account" = aristaproto.message_field(1)
+class AccountConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Account's last modification."""
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    key: "AccountKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Operation indicates how the Account value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    This is the key of the AccountConfig instance that failed to be deleted.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteAllResponse", AccountConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigDeleteRequest(aristaproto.Message):
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which AccountConfig instance to remove.
+    This field must always be set.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteRequest", AccountConfigDeleteRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigDeleteResponse(aristaproto.Message):
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted AccountConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteResponse", AccountConfigDeleteResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[AccountKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of AccountConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteSomeRequest", AccountConfigDeleteSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigDeleteSomeResponse(aristaproto.Message):
+    """
+    AccountConfigDeleteSomeResponse is only sent when there is an error.
+    """
+
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigDeleteSomeResponse", AccountConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class AccountConfigRequest(aristaproto.Message):
-    key: "AccountKey" = aristaproto.message_field(1)
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a AccountConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigRequest", AccountConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AccountConfigResponse(aristaproto.Message):
-    value: "AccountConfig" = aristaproto.message_field(1)
+    value: "AccountConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -446,26 +336,92 @@ class AccountConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     AccountConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigResponse", AccountConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigSetRequest(aristaproto.Message):
+    value: "AccountConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    AccountConfig carries the value to set into the datastore.
+    See the documentation on the AccountConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSetRequest", AccountConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigSetResponse(aristaproto.Message):
+    value: "AccountConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the AccountConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSetResponse", AccountConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigSetSomeRequest(aristaproto.Message):
+    values: "list[AccountConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of AccountConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSetSomeRequest", AccountConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountConfigSetSomeResponse(aristaproto.Message):
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSetSomeResponse", AccountConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class AccountConfigSomeRequest(aristaproto.Message):
-    keys: List["AccountKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[AccountKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSomeRequest", AccountConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AccountConfigSomeResponse(aristaproto.Message):
-    value: "AccountConfig" = aristaproto.message_field(1)
+    value: "AccountConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -473,22 +429,25 @@ class AccountConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     AccountConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigSomeResponse", AccountConfigSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class AccountConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["AccountConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[AccountConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -497,7 +456,7 @@ class AccountConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -515,19 +474,24 @@ class AccountConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigStreamRequest", AccountConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AccountConfigStreamResponse(aristaproto.Message):
-    value: "AccountConfig" = aristaproto.message_field(1)
+    value: "AccountConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this AccountConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this AccountConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the AccountConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -536,67 +500,327 @@ class AccountConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class AccountConfigSetRequest(aristaproto.Message):
-    value: "AccountConfig" = aristaproto.message_field(1)
-    """
-    AccountConfig carries the value to set into the datastore.
-    See the documentation on the AccountConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountConfigStreamResponse", AccountConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigSetResponse(aristaproto.Message):
-    value: "AccountConfig" = aristaproto.message_field(1)
+class AccountKey(aristaproto.Message):
     """
-    Value carries all the values given in the AccountConfigSetRequest as well
-    as any server-generated values.
+    AccountKey contains the name of the service account.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
+    name is the unique identifier of the service account.
+    """
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountKey", AccountKey)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigSetSomeRequest(aristaproto.Message):
-    values: List["AccountConfig"] = aristaproto.message_field(1)
+class AccountRequest(aristaproto.Message):
+    key: "AccountKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    value contains a list of AccountConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    Key uniquely identifies a Account instance to retrieve.
+    This value must be populated.
     """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountRequest", AccountRequest)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigSetSomeResponse(aristaproto.Message):
-    key: "AccountKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+class AccountResponse(aristaproto.Message):
+    value: "Account | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Account instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountResponse", AccountResponse)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigDeleteRequest(aristaproto.Message):
-    key: "AccountKey" = aristaproto.message_field(1)
+class AccountSomeRequest(aristaproto.Message):
+    keys: "list[AccountKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Key indicates which AccountConfig instance to remove.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountSomeRequest", AccountSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountSomeResponse(aristaproto.Message):
+    value: "Account | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Account instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountSomeResponse", AccountSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AccountStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Account]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Account at end.
+        * Each Account response is fully-specified (all fields set).
+      * start: Returns the state of each Account at start, followed by updates until now.
+        * Each Account response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Account at start, followed by updates
+        until end.
+        * Each Account response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountStreamRequest", AccountStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AccountStreamResponse(aristaproto.Message):
+    value: "Account | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Account's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Account value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "AccountStreamResponse", AccountStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class Token(aristaproto.Message):
+    """
+    Token describes a service account token.
+    """
+
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the service account token.
+    """
+
+    user: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user is the name of the service account that the token is generated for.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a short name or comment used to identify the service account token.
+    """
+
+    valid_until: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    valid_until is the time that the service account token will be valid until.
+    """
+
+    created_by: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    created_by is the name of the entity that created the service account token.
+    """
+
+    last_used: "datetime.datetime | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_used is the time when the service account token was last used to authenticate.
+    """
+
+    replaced_at: "datetime.datetime | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    replaced_at is the time which the token has been replaced.
+    It is only populated when the token is refreshed.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "Token", Token)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfig(aristaproto.Message):
+    """
+    TokenConfig holds the configuration for a service account token. The token is a signed JWT which
+    can be used as a credential for REST and WRPC endpoints.
+    """
+
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the service account token.
+    """
+
+    user: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user is the name of the service account that the token is generated for.
+    """
+
+    description: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a short name or comment used to identify the service account token.
+    """
+
+    valid_for: "datetime.timedelta | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Duration, optional=True)
+    """
+    valid_for determines the duration that the service account token will be valid for.
+    """
+
+    token: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    token is the JWT generated for a service account token.
+    It is only populated in Set response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfig", TokenConfig)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigDeleteAllRequest(aristaproto.Message):
+    partial_eq_filter: "list[TokenConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a DeleteAll.
+    This requires all provided fields to be equal to the response.
+    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteAllRequest", TokenConfigDeleteAllRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
+    """
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "TokenKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the TokenConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteAllResponse", TokenConfigDeleteAllResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigDeleteRequest(aristaproto.Message):
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key indicates which TokenConfig instance to remove.
     This field must always be set.
     """
 
 
-@dataclass(eq=False, repr=False)
-class AccountConfigDeleteResponse(aristaproto.Message):
-    key: "AccountKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted AccountConfig instance."""
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteRequest", TokenConfigDeleteRequest)
 
-    time: datetime = aristaproto.message_field(2)
+
+@dataclass(eq=False, repr=False)
+class TokenConfigDeleteResponse(aristaproto.Message):
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted TokenConfig instance.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -606,183 +830,55 @@ class AccountConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class AccountConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["AccountKey"] = aristaproto.message_field(1)
-    """key contains a list of AccountConfig keys to delete"""
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteResponse", TokenConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigDeleteSomeResponse(aristaproto.Message):
-    """AccountConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "AccountKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class AccountConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["AccountConfig"] = aristaproto.message_field(1)
+class TokenConfigDeleteSomeRequest(aristaproto.Message):
+    keys: "list[TokenKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
+    key contains a list of TokenConfig keys to delete
     """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteSomeRequest", TokenConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
-class AccountConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class TokenConfigDeleteSomeResponse(aristaproto.Message):
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
+    TokenConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
 
-    key: "AccountKey" = aristaproto.message_field(3)
-    """
-    This is the key of the AccountConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
 
 
-@dataclass(eq=False, repr=False)
-class TokenRequest(aristaproto.Message):
-    key: "TokenKey" = aristaproto.message_field(1)
-    """
-    Key uniquely identifies a Token instance to retrieve.
-    This value must be populated.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenResponse(aristaproto.Message):
-    value: "Token" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Token instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenSomeRequest(aristaproto.Message):
-    keys: List["TokenKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenSomeResponse(aristaproto.Message):
-    value: "Token" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
-    """
-
-    time: datetime = aristaproto.message_field(3)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Token instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["Token"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Token at end.
-        * Each Token response is fully-specified (all fields set).
-      * start: Returns the state of each Token at start, followed by updates until now.
-        * Each Token response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Token at start, followed by updates
-        until end.
-        * Each Token response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenStreamResponse(aristaproto.Message):
-    value: "Token" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Token's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Token value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigDeleteSomeResponse", TokenConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
 class TokenConfigRequest(aristaproto.Message):
-    key: "TokenKey" = aristaproto.message_field(1)
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a TokenConfig instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigRequest", TokenConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TokenConfigResponse(aristaproto.Message):
-    value: "TokenConfig" = aristaproto.message_field(1)
+    value: "TokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -790,26 +886,92 @@ class TokenConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     TokenConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigResponse", TokenConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigSetRequest(aristaproto.Message):
+    value: "TokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TokenConfig carries the value to set into the datastore.
+    See the documentation on the TokenConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSetRequest", TokenConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigSetResponse(aristaproto.Message):
+    value: "TokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the TokenConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSetResponse", TokenConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigSetSomeRequest(aristaproto.Message):
+    values: "list[TokenConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of TokenConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSetSomeRequest", TokenConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenConfigSetSomeResponse(aristaproto.Message):
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSetSomeResponse", TokenConfigSetSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class TokenConfigSomeRequest(aristaproto.Message):
-    keys: List["TokenKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[TokenKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSomeRequest", TokenConfigSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TokenConfigSomeResponse(aristaproto.Message):
-    value: "TokenConfig" = aristaproto.message_field(1)
+    value: "TokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -817,22 +979,25 @@ class TokenConfigSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     TokenConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigSomeResponse", TokenConfigSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class TokenConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TokenConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[TokenConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -841,7 +1006,7 @@ class TokenConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -859,19 +1024,24 @@ class TokenConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigStreamRequest", TokenConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TokenConfigStreamResponse(aristaproto.Message):
-    value: "TokenConfig" = aristaproto.message_field(1)
+    value: "TokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this TokenConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this TokenConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the TokenConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -880,24 +1050,137 @@ class TokenConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TokenConfigSetRequest(aristaproto.Message):
-    value: "TokenConfig" = aristaproto.message_field(1)
-    """
-    TokenConfig carries the value to set into the datastore.
-    See the documentation on the TokenConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenConfigStreamResponse", TokenConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TokenConfigSetResponse(aristaproto.Message):
-    value: "TokenConfig" = aristaproto.message_field(1)
+class TokenKey(aristaproto.Message):
     """
-    Value carries all the values given in the TokenConfigSetRequest as well
+    TokenKey contains service account token ID.
+    """
+
+    id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    id is the unique identifier of the service account token.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenKey", TokenKey)
+
+
+@dataclass(eq=False, repr=False)
+class TokenRequest(aristaproto.Message):
+    key: "TokenKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a Token instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenRequest", TokenRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenResponse(aristaproto.Message):
+    value: "Token | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Token instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenResponse", TokenResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSelfRefreshConfig(aristaproto.Message):
+    """
+    TokenSelfRefreshConfig describes the response a service account gets when they refresh their token
+    """
+
+    valid_for: "datetime.timedelta | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Duration, optional=True)
+    """
+    valid_for is the duration that the service account token will be valid for.
+    Default value will be the original token duration.
+    """
+
+    new_token: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    new_token is the JWT token generated for a service account token.
+    This is populated in the response of a Set() request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfig", TokenSelfRefreshConfig)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSelfRefreshConfigRequest(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigRequest", TokenSelfRefreshConfigRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSelfRefreshConfigResponse(aristaproto.Message):
+    value: "TokenSelfRefreshConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TokenSelfRefreshConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigResponse", TokenSelfRefreshConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSelfRefreshConfigSetRequest(aristaproto.Message):
+    value: "TokenSelfRefreshConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TokenSelfRefreshConfig carries the value to set into the datastore.
+    See the documentation on the TokenSelfRefreshConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigSetRequest", TokenSelfRefreshConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSelfRefreshConfigSetResponse(aristaproto.Message):
+    value: "TokenSelfRefreshConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the TokenSelfRefreshConfigSetRequest as well
     as any server-generated values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
@@ -907,122 +1190,12 @@ class TokenConfigSetResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TokenConfigSetSomeRequest(aristaproto.Message):
-    values: List["TokenConfig"] = aristaproto.message_field(1)
-    """
-    value contains a list of TokenConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigSetSomeResponse(aristaproto.Message):
-    key: "TokenKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteRequest(aristaproto.Message):
-    key: "TokenKey" = aristaproto.message_field(1)
-    """
-    Key indicates which TokenConfig instance to remove.
-    This field must always be set.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteResponse(aristaproto.Message):
-    key: "TokenKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted TokenConfig instance."""
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["TokenKey"] = aristaproto.message_field(1)
-    """key contains a list of TokenConfig keys to delete"""
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteSomeResponse(aristaproto.Message):
-    """TokenConfigDeleteSomeResponse is only sent when there is an error."""
-
-    key: "TokenKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["TokenConfig"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a DeleteAll.
-    This requires all provided fields to be equal to the response.
-    A filtered DeleteAll will use GetAll with filter to find things to delete.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
-    """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "TokenKey" = aristaproto.message_field(3)
-    """
-    This is the key of the TokenConfig instance that failed to be deleted.
-    """
-
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
-
-
-@dataclass(eq=False, repr=False)
-class TokenSelfRefreshConfigRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TokenSelfRefreshConfigResponse(aristaproto.Message):
-    value: "TokenSelfRefreshConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TokenSelfRefreshConfig instance in this response.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigSetResponse", TokenSelfRefreshConfigSetResponse)
 
 
 @dataclass(eq=False, repr=False)
 class TokenSelfRefreshConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["TokenSelfRefreshConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[TokenSelfRefreshConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -1031,7 +1204,7 @@ class TokenSelfRefreshConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -1049,21 +1222,24 @@ class TokenSelfRefreshConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigStreamRequest", TokenSelfRefreshConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TokenSelfRefreshConfigStreamResponse(aristaproto.Message):
-    value: "TokenSelfRefreshConfig" = aristaproto.message_field(1)
+    value: "TokenSelfRefreshConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this TokenSelfRefreshConfig's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the TokenSelfRefreshConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -1072,1386 +1248,923 @@ class TokenSelfRefreshConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TokenSelfRefreshConfigSetRequest(aristaproto.Message):
-    value: "TokenSelfRefreshConfig" = aristaproto.message_field(1)
-    """
-    TokenSelfRefreshConfig carries the value to set into the datastore.
-    See the documentation on the TokenSelfRefreshConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSelfRefreshConfigStreamResponse", TokenSelfRefreshConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TokenSelfRefreshConfigSetResponse(aristaproto.Message):
-    value: "TokenSelfRefreshConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the TokenSelfRefreshConfigSetRequest as well
-    as any server-generated values.
-    """
+class TokenSomeRequest(aristaproto.Message):
+    keys: "list[TokenKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
-
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
 
 
-class AccountServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSomeRequest", TokenSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenSomeResponse(aristaproto.Message):
+    value: "Token | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Token instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenSomeResponse", TokenSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TokenStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[Token]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Token at end.
+        * Each Token response is fully-specified (all fields set).
+      * start: Returns the state of each Token at start, followed by updates until now.
+        * Each Token response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Token at start, followed by updates
+        until end.
+        * Each Token response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenStreamRequest", TokenStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TokenStreamResponse(aristaproto.Message):
+    value: "Token | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Token's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Token value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.serviceaccount.v1", "TokenStreamResponse", TokenStreamResponse)
+
+
+class AccountConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        account_request: "AccountRequest",
+        message: "AccountConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AccountResponse":
-        return await self._unary_unary(
-            "/arista.serviceaccount.v1.AccountService/GetOne",
-            account_request,
-            AccountResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_some(
-        self,
-        account_some_request: "AccountSomeRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[AccountSomeResponse]":
-        async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.AccountService/GetSome",
-            account_some_request,
-            AccountSomeResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_all(
-        self,
-        account_stream_request: "AccountStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[AccountStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.AccountService/GetAll",
-            account_stream_request,
-            AccountStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        account_stream_request: "AccountStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[AccountStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.AccountService/Subscribe",
-            account_stream_request,
-            AccountStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def get_meta(
-        self,
-        account_stream_request: "AccountStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "MetaResponse":
-        return await self._unary_unary(
-            "/arista.serviceaccount.v1.AccountService/GetMeta",
-            account_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def subscribe_meta(
-        self,
-        account_stream_request: "AccountStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.AccountService/SubscribeMeta",
-            account_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class AccountConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        account_config_request: "AccountConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AccountConfigResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/GetOne",
-            account_config_request,
+            message,
             AccountConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        account_config_some_request: "AccountConfigSomeRequest",
+        message: "AccountConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/GetSome",
-            account_config_some_request,
+            message,
             AccountConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        account_config_stream_request: "AccountConfigStreamRequest",
+        message: "AccountConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/GetAll",
-            account_config_stream_request,
+            message,
             AccountConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        account_config_stream_request: "AccountConfigStreamRequest",
+        message: "AccountConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/Subscribe",
-            account_config_stream_request,
+            message,
             AccountConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        account_config_stream_request: "AccountConfigStreamRequest",
+        message: "AccountConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/GetMeta",
-            account_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        account_config_stream_request: "AccountConfigStreamRequest",
+        message: "AccountConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/SubscribeMeta",
-            account_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        account_config_set_request: "AccountConfigSetRequest",
+        message: "AccountConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AccountConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/Set",
-            account_config_set_request,
+            message,
             AccountConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        account_config_set_some_request: "AccountConfigSetSomeRequest",
+        message: "AccountConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/SetSome",
-            account_config_set_some_request,
+            message,
             AccountConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        account_config_delete_request: "AccountConfigDeleteRequest",
+        message: "AccountConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AccountConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/Delete",
-            account_config_delete_request,
+            message,
             AccountConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        account_config_delete_some_request: "AccountConfigDeleteSomeRequest",
+        message: "AccountConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/DeleteSome",
-            account_config_delete_some_request,
+            message,
             AccountConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        account_config_delete_all_request: "AccountConfigDeleteAllRequest",
+        message: "AccountConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AccountConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/DeleteAll",
-            account_config_delete_all_request,
+            message,
             AccountConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TokenServiceStub(aristaproto.ServiceStub):
+class AccountServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        token_request: "TokenRequest",
+        message: "AccountRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "TokenResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AccountResponse":
+
         return await self._unary_unary(
-            "/arista.serviceaccount.v1.TokenService/GetOne",
-            token_request,
-            TokenResponse,
+            "/arista.serviceaccount.v1.AccountService/GetOne",
+            message,
+            AccountResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        token_some_request: "TokenSomeRequest",
+        message: "AccountSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TokenSomeResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[AccountSomeResponse]":
+
         async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.TokenService/GetSome",
-            token_some_request,
-            TokenSomeResponse,
+            "/arista.serviceaccount.v1.AccountService/GetSome",
+            message,
+            AccountSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        token_stream_request: "TokenStreamRequest",
+        message: "AccountStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TokenStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[AccountStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.TokenService/GetAll",
-            token_stream_request,
-            TokenStreamResponse,
+            "/arista.serviceaccount.v1.AccountService/GetAll",
+            message,
+            AccountStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        token_stream_request: "TokenStreamRequest",
+        message: "AccountStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[TokenStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[AccountStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.TokenService/Subscribe",
-            token_stream_request,
-            TokenStreamResponse,
+            "/arista.serviceaccount.v1.AccountService/Subscribe",
+            message,
+            AccountStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        token_stream_request: "TokenStreamRequest",
+        message: "AccountStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
-            "/arista.serviceaccount.v1.TokenService/GetMeta",
-            token_stream_request,
+            "/arista.serviceaccount.v1.AccountService/GetMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        token_stream_request: "TokenStreamRequest",
+        message: "AccountStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.serviceaccount.v1.TokenService/SubscribeMeta",
-            token_stream_request,
+            "/arista.serviceaccount.v1.AccountService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TokenConfigServiceStub(aristaproto.ServiceStub):
+class TokenConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        token_config_request: "TokenConfigRequest",
+        message: "TokenConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TokenConfigResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/GetOne",
-            token_config_request,
+            message,
             TokenConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        token_config_some_request: "TokenConfigSomeRequest",
+        message: "TokenConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/GetSome",
-            token_config_some_request,
+            message,
             TokenConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        token_config_stream_request: "TokenConfigStreamRequest",
+        message: "TokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/GetAll",
-            token_config_stream_request,
+            message,
             TokenConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        token_config_stream_request: "TokenConfigStreamRequest",
+        message: "TokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/Subscribe",
-            token_config_stream_request,
+            message,
             TokenConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        token_config_stream_request: "TokenConfigStreamRequest",
+        message: "TokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/GetMeta",
-            token_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        token_config_stream_request: "TokenConfigStreamRequest",
+        message: "TokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/SubscribeMeta",
-            token_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        token_config_set_request: "TokenConfigSetRequest",
+        message: "TokenConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TokenConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/Set",
-            token_config_set_request,
+            message,
             TokenConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        token_config_set_some_request: "TokenConfigSetSomeRequest",
+        message: "TokenConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/SetSome",
-            token_config_set_some_request,
+            message,
             TokenConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        token_config_delete_request: "TokenConfigDeleteRequest",
+        message: "TokenConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TokenConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/Delete",
-            token_config_delete_request,
+            message,
             TokenConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        token_config_delete_some_request: "TokenConfigDeleteSomeRequest",
+        message: "TokenConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/DeleteSome",
-            token_config_delete_some_request,
+            message,
             TokenConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        token_config_delete_all_request: "TokenConfigDeleteAllRequest",
+        message: "TokenConfigDeleteAllRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenConfigDeleteAllResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/DeleteAll",
-            token_config_delete_all_request,
+            message,
             TokenConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TokenSelfRefreshConfigServiceStub(aristaproto.ServiceStub):
+class TokenSelfRefreshConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        token_self_refresh_config_request: "TokenSelfRefreshConfigRequest",
+        message: "TokenSelfRefreshConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TokenSelfRefreshConfigResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/GetOne",
-            token_self_refresh_config_request,
+            message,
             TokenSelfRefreshConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest",
+        message: "TokenSelfRefreshConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenSelfRefreshConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/GetAll",
-            token_self_refresh_config_stream_request,
+            message,
             TokenSelfRefreshConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest",
+        message: "TokenSelfRefreshConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TokenSelfRefreshConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/Subscribe",
-            token_self_refresh_config_stream_request,
+            message,
             TokenSelfRefreshConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest",
+        message: "TokenSelfRefreshConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/SubscribeMeta",
-            token_self_refresh_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        token_self_refresh_config_set_request: "TokenSelfRefreshConfigSetRequest",
+        message: "TokenSelfRefreshConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TokenSelfRefreshConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/Set",
-            token_self_refresh_config_set_request,
+            message,
             TokenSelfRefreshConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
+
+
+class TokenServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "TokenRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "TokenResponse":
+
+        return await self._unary_unary(
+            "/arista.serviceaccount.v1.TokenService/GetOne",
+            message,
+            TokenResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_some(
+        self,
+        message: "TokenSomeRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TokenSomeResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.serviceaccount.v1.TokenService/GetSome",
+            message,
+            TokenSomeResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_all(
+        self,
+        message: "TokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TokenStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.serviceaccount.v1.TokenService/GetAll",
+            message,
+            TokenStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "TokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[TokenStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.serviceaccount.v1.TokenService/Subscribe",
+            message,
+            TokenStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def get_meta(
+        self,
+        message: "TokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "MetaResponse":
+
+        return await self._unary_unary(
+            "/arista.serviceaccount.v1.TokenService/GetMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def subscribe_meta(
+        self,
+        message: "TokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.serviceaccount.v1.TokenService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class AccountServiceBase(ServiceBase):
-    async def get_one(self, account_request: "AccountRequest") -> "AccountResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, account_some_request: "AccountSomeRequest") -> AsyncIterator[AccountSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator[AccountStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator[AccountStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, account_stream_request: "AccountStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AccountRequest, AccountResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AccountSomeRequest, AccountSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AccountStreamRequest, AccountStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AccountStreamRequest, AccountStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.serviceaccount.v1.AccountService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountRequest,
-                AccountResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountSomeRequest,
-                AccountSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountStreamRequest,
-                AccountStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountStreamRequest,
-                AccountStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class AccountConfigServiceBase(ServiceBase):
-    async def get_one(self, account_config_request: "AccountConfigRequest") -> "AccountConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, account_config_some_request: "AccountConfigSomeRequest") -> AsyncIterator[AccountConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator[AccountConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator[AccountConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, account_config_stream_request: "AccountConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, account_config_set_request: "AccountConfigSetRequest") -> "AccountConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, account_config_set_some_request: "AccountConfigSetSomeRequest") -> AsyncIterator[AccountConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, account_config_delete_request: "AccountConfigDeleteRequest") -> "AccountConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, account_config_delete_some_request: "AccountConfigDeleteSomeRequest") -> AsyncIterator[AccountConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, account_config_delete_all_request: "AccountConfigDeleteAllRequest") -> AsyncIterator[AccountConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AccountConfigRequest, AccountConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AccountConfigSomeRequest, AccountConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, AccountConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, AccountConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[AccountConfigSetRequest, AccountConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[AccountConfigSetSomeRequest, AccountConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[AccountConfigDeleteRequest, AccountConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[AccountConfigDeleteSomeRequest, AccountConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[AccountConfigDeleteAllRequest, AccountConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.serviceaccount.v1.AccountConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountConfigRequest,
-                AccountConfigResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigSomeRequest,
-                AccountConfigSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigStreamRequest,
-                AccountConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigStreamRequest,
-                AccountConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountConfigSetRequest,
-                AccountConfigSetResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigSetSomeRequest,
-                AccountConfigSetSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AccountConfigDeleteRequest,
-                AccountConfigDeleteResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigDeleteSomeRequest,
-                AccountConfigDeleteSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.AccountConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AccountConfigDeleteAllRequest,
-                AccountConfigDeleteAllResponse,
-            ),
-        }
-
-
-class TokenServiceBase(ServiceBase):
-    async def get_one(self, token_request: "TokenRequest") -> "TokenResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, token_some_request: "TokenSomeRequest") -> AsyncIterator[TokenSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator[TokenStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator[TokenStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, token_stream_request: "TokenStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TokenRequest, TokenResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TokenSomeRequest, TokenSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.serviceaccount.v1.TokenService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenRequest,
-                TokenResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenSomeRequest,
-                TokenSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenStreamRequest,
-                TokenStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenStreamRequest,
-                TokenStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class TokenConfigServiceBase(ServiceBase):
-    async def get_one(self, token_config_request: "TokenConfigRequest") -> "TokenConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, token_config_some_request: "TokenConfigSomeRequest") -> AsyncIterator[TokenConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator[TokenConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator[TokenConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, token_config_stream_request: "TokenConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, token_config_set_request: "TokenConfigSetRequest") -> "TokenConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, token_config_set_some_request: "TokenConfigSetSomeRequest") -> AsyncIterator[TokenConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, token_config_delete_request: "TokenConfigDeleteRequest") -> "TokenConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, token_config_delete_some_request: "TokenConfigDeleteSomeRequest") -> AsyncIterator[TokenConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, token_config_delete_all_request: "TokenConfigDeleteAllRequest") -> AsyncIterator[TokenConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TokenConfigRequest, TokenConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TokenConfigSomeRequest, TokenConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, TokenConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, TokenConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TokenConfigSetRequest, TokenConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[TokenConfigSetSomeRequest, TokenConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[TokenConfigDeleteRequest, TokenConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[TokenConfigDeleteSomeRequest, TokenConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[TokenConfigDeleteAllRequest, TokenConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.serviceaccount.v1.TokenConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenConfigRequest,
-                TokenConfigResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigSomeRequest,
-                TokenConfigSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigStreamRequest,
-                TokenConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigStreamRequest,
-                TokenConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenConfigSetRequest,
-                TokenConfigSetResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigSetSomeRequest,
-                TokenConfigSetSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenConfigDeleteRequest,
-                TokenConfigDeleteResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigDeleteSomeRequest,
-                TokenConfigDeleteSomeResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenConfigDeleteAllRequest,
-                TokenConfigDeleteAllResponse,
-            ),
-        }
-
-
-class TokenSelfRefreshConfigServiceBase(ServiceBase):
-    async def get_one(self, token_self_refresh_config_request: "TokenSelfRefreshConfigRequest") -> "TokenSelfRefreshConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(
-        self, token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest"
-    ) -> AsyncIterator[TokenSelfRefreshConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(
-        self, token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest"
-    ) -> AsyncIterator[TokenSelfRefreshConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, token_self_refresh_config_stream_request: "TokenSelfRefreshConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, token_self_refresh_config_set_request: "TokenSelfRefreshConfigSetRequest") -> "TokenSelfRefreshConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TokenSelfRefreshConfigRequest, TokenSelfRefreshConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TokenSelfRefreshConfigStreamRequest, TokenSelfRefreshConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TokenSelfRefreshConfigStreamRequest, TokenSelfRefreshConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TokenSelfRefreshConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TokenSelfRefreshConfigSetRequest, TokenSelfRefreshConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenSelfRefreshConfigRequest,
-                TokenSelfRefreshConfigResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenSelfRefreshConfigStreamRequest,
-                TokenSelfRefreshConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenSelfRefreshConfigStreamRequest,
-                TokenSelfRefreshConfigStreamResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TokenSelfRefreshConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.serviceaccount.v1.TokenSelfRefreshConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TokenSelfRefreshConfigSetRequest,
-                TokenSelfRefreshConfigSetResponse,
-            ),
-        }

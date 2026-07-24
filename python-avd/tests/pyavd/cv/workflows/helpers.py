@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from aristaproto import _DateTime
+from datetime import datetime
 
 from pyavd._cv.api.arista.changecontrol.v1 import Change, ChangeControl, ChangeControlStatus, Flag
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
@@ -18,7 +18,7 @@ from pyavd._cv.api.arista.tag.v2 import (
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.workflows.models import CVManifest
 
-DEFAULT_TIMESTAMP = _DateTime.fromisoformat("2025-10-03T00:00:00")
+DEFAULT_TIMESTAMP = datetime.fromisoformat("2025-10-03T00:00:00")
 
 # === Mock Creation Functions ===
 # These functions create instances of the API classes.
@@ -45,7 +45,7 @@ def create_grpc_change_control(
     error: str | None = None,
     name: str = "Test CC",
     notes: str = "Test Notes",
-    time: _DateTime = DEFAULT_TIMESTAMP,
+    time: datetime = DEFAULT_TIMESTAMP,
 ) -> ChangeControl:
     """Create a gRPC ChangeControl object."""
     change = Change(name=name, notes=notes, time=time)

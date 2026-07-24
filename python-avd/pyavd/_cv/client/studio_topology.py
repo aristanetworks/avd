@@ -55,10 +55,9 @@ class StudioTopologyMixin(Protocol):
         request = DecommissionConfigSetSomeRequest(
             values=[DecommissionConfig(key=DeviceKey(device_id=device_id, workspace_id=workspace_id)) for device_id in device_ids]
         )
-        client = DecommissionConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-
-        return [(response.key, response.error) async for response in responses]
+        client = self.new_stub(DecommissionConfigServiceStub)
+        responses = client.set_some(request, timeout=timeout)
+        return [(response.key or DeviceKey(), response.error) async for response in responses]
 
     @LimitCvVersion(min_ver="2025.1.0")
     @GRPCRequestHandler(retry_on_stream_reset=True)
@@ -87,27 +86,43 @@ class StudioTopologyMixin(Protocol):
         request = DecommissionStreamRequest(
             partial_eq_filter=[Decommission(key=DeviceKey(device_id=device_id, workspace_id=workspace_id)) for device_id in device_ids]
         )
-        client = DecommissionServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(DecommissionServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
 
         # Set of device_ids for which we have not yet received a response in terminal status
         devices_missing_terminal_response = set(device_ids)
         terminal_responses: list[Decommission] = []
 
         async for response in responses:
-            device_id = response.value.key.device_id
+            decommission = response.value
+            if decommission is None:
+                LOGGER.debug(
+                    "wait_for_device_decommission_staging: Received decommission staging response: "
+                    "Decommission(key=DeviceKey(device_id=None), status=DecommissionStatus.UNSPECIFIED)"
+                )
+                continue
+
+            key = decommission.key or DeviceKey()
+            device_id = key.device_id
             # Explicitly access status field to make sure the default value is revealed by __repr__
-            status = response.value.status
+            status = decommission.status
             if device_id and status in (DecommissionStatus.SUCCESS, DecommissionStatus.FAILURE):
                 LOGGER.debug(
-                    "wait_for_device_decommission_staging: Staging device %s for decommission completed: %s",
+                    "wait_for_device_decommission_staging: Staging device %s for decommission completed: %s status=DecommissionStatus.%s, error=%r",
                     device_id,
-                    response.value,
+                    decommission,
+                    status.name,
+                    decommission.error,
                 )
                 devices_missing_terminal_response.discard(device_id)
-                terminal_responses.append(response.value)
+                terminal_responses.append(decommission)
             else:
-                LOGGER.debug("wait_for_device_decommission_staging: Received decommission staging response: %s", response.value)
+                LOGGER.debug(
+                    "wait_for_device_decommission_staging: Received decommission staging response: %s status=DecommissionStatus.%s, error=%r",
+                    decommission,
+                    status.name,
+                    decommission.error,
+                )
 
             # Return as soon as terminal responses received for all devices
             if not devices_missing_terminal_response:

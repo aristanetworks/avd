@@ -7,6 +7,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Literal, Protocol
 from uuid import uuid4
 
+from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.arista.workspace.v1 import (
     Request,
     RequestParams,
@@ -31,6 +32,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, CVWorkspaceFailed
+from .models import get_required_field
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -88,11 +90,11 @@ class WorkspaceMixin(Protocol):
             ),
             time=time,
         )
-        client = WorkspaceServiceStub(self._channel)
+        client = self.new_stub(WorkspaceServiceStub)
 
-        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+        response = await client.get_one(request, timeout=timeout)
 
-        return response.value
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler()
     async def create_workspace(
@@ -121,9 +123,9 @@ class WorkspaceMixin(Protocol):
                 description=description,
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        return response.value
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler()
     async def abandon_workspace(
@@ -150,9 +152,9 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        return response.value
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler()
     async def build_workspace(
@@ -179,9 +181,9 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        return response.value
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
+        return get_required_field(response, "value", response.value)
 
     @LimitCvVersion(min_ver="2026.2.0")
     @GRPCRequestHandler()
@@ -209,9 +211,9 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        return response.value
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler()
     async def delete_workspace(
@@ -230,9 +232,9 @@ class WorkspaceMixin(Protocol):
             WorkspaceConfig object after being set including any server-generated values.
         """
         request = WorkspaceConfigDeleteRequest(key=WorkspaceKey(workspace_id=workspace_id))
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.delete(request, metadata=self._metadata, timeout=timeout)
-        return response.key
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.delete(request, timeout=timeout)
+        return get_required_field(response, "key", response.key)
 
     @GRPCRequestHandler()
     async def submit_workspace(
@@ -259,10 +261,10 @@ class WorkspaceMixin(Protocol):
                 request_params=RequestParams(request_id=f"req-{uuid4()}"),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
-        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceConfigServiceStub)
+        response = await client.set(request, timeout=timeout)
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
-        return response.value
+        return get_required_field(response, "value", response.value)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_response(
@@ -292,19 +294,25 @@ class WorkspaceMixin(Protocol):
                 ),
             ],
         )
-        client = WorkspaceServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            if request_id in response.value.responses.values:
-                LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
-                    return response.value.responses.values[request_id], response.value
+            if response.value is None:
+                LOGGER.debug("wait_for_workspace_response: Got workspace update without value: %s", response)
+                continue
+
+            workspace = response.value
+            workspace_responses = get_required_field(workspace, "responses", workspace.responses)
+            if request_id in workspace_responses.values:
+                LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, workspace_responses.values[request_id])
+                if workspace_responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
+                    return workspace_responses.values[request_id], workspace
             else:
                 LOGGER.debug(
                     "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
                     request_id,
-                    response.value.state,
-                    response.value.responses.values,
+                    workspace.state,
+                    workspace_responses.values,
                 )
 
         # Use case where stream completed without getting a response for the expected request_id
@@ -340,12 +348,17 @@ class WorkspaceMixin(Protocol):
                 ),
             ],
         )
-        client = WorkspaceServiceStub(self._channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceServiceStub)
+        responses = client.subscribe(request, timeout=timeout)
         async for response in responses:
-            if hasattr(response, "value") and response.value.state == WORKSPACE_STATE_MAP[state]:
+            if response.value is None:
+                LOGGER.debug("wait_for_workspace_state: Got workspace update without value: %s", response)
+                continue
+
+            workspace = response.value
+            if workspace.state == WORKSPACE_STATE_MAP[state]:
                 LOGGER.debug("wait_for_workspace_state: Workspace reached desired state (%s): %s", state, response)
-                return response.value
+                return workspace
             LOGGER.debug("wait_for_workspace_state: Got workspace update: %s", response)
 
         # Use case where stream completed without getting Workspace update in the desired state
@@ -378,9 +391,9 @@ class WorkspaceMixin(Protocol):
                     key=WorkspaceBuildDetailsKey(workspace_id=workspace_id, build_id=build_id),
                 ),
             ],
-            time=time,
+            time=TimeBounds(start=None, end=time) if time else None,
         )
-        client = WorkspaceBuildDetailsServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        client = self.new_stub(WorkspaceBuildDetailsServiceStub)
+        responses = client.get_all(request, timeout=timeout)
 
-        return [response.value async for response in responses]
+        return [get_required_field(response, "value", response.value) async for response in responses]

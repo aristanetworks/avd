@@ -10,8 +10,10 @@ from pyavd._cv.api.arista.time import TimeBounds
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
+from .models import get_required_field
 
 if TYPE_CHECKING:
+    from collections.abc import Collection
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -25,7 +27,7 @@ class InventoryMixin(Protocol):
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_inventory_devices(
         self: CVClientProtocol,
-        devices: set[tuple[str | None, str | None, str | None]] | None = None,
+        devices: Collection[tuple[str | None, str | None, str | None]] | None = None,
         time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Device]:
@@ -42,17 +44,18 @@ class InventoryMixin(Protocol):
         Returns:
             Device objects.
         """
-        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time) if time else None)
         if devices:
             for serial_number, system_mac_address, hostname in devices:
-                request.partial_eq_filter.append(
-                    Device(
-                        key=DeviceKey(device_id=serial_number),
-                        system_mac_address=system_mac_address,
-                        hostname=hostname,
-                    ),
-                )
-        client = DeviceServiceStub(self._channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+                device_filter = Device()
+                if serial_number is not None:
+                    device_filter.key = DeviceKey(device_id=serial_number)
+                if system_mac_address is not None:
+                    device_filter.system_mac_address = system_mac_address
+                if hostname is not None:
+                    device_filter.hostname = hostname
+                request.partial_eq_filter.append(device_filter)
+        client = self.new_stub(DeviceServiceStub)
+        responses = client.get_all(request, timeout=timeout)
 
-        return [response.value async for response in responses]
+        return [get_required_field(response, "value", response.value) async for response in responses]

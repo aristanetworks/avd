@@ -28,7 +28,17 @@ api-dir:
 	touch ./api/__init__.py
 
 api-models: api-dir
-	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) $(EXTRA_DIRS) $(EXTRA_EXTRA_DIRS) --python_aristaproto_out=$(APIPATH) $(ALL_PROTOS) $(EXTRA_PROTOS) $(EXTRA_EXTRA_PROTOS)
+	$(PYTHON) \
+		-m grpc_tools.protoc \
+		-I $(VENDORPATH) \
+		$(EXTRA_DIRS) \
+		$(EXTRA_EXTRA_DIRS) \
+		--python_aristaproto_out=$(APIPATH) \
+		--python_aristaproto_opt=client_generation=async \
+		--python_aristaproto_opt=client_async_transport=grpcio \
+		$(ALL_PROTOS) \
+		$(EXTRA_PROTOS) \
+		$(EXTRA_EXTRA_PROTOS)
 
 api: api-dir api-models  ## Build/refresh gRPC bindings in ./api
 	@rm -rf $(VENDORPATH)

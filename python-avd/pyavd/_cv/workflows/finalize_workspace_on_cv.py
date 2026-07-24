@@ -8,8 +8,9 @@ from re import Pattern, error
 from re import compile as re_compile
 from typing import TYPE_CHECKING
 
-from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
+from pyavd._cv.api.arista.workspace.v1 import Response, ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
+from pyavd._cv.client.models import get_required_field
 from pyavd._utils import get_v2
 
 from .constants import EOS_CLI_WARNINGS
@@ -38,6 +39,31 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 }
 
 
+def _format_response(response: Response) -> str:
+    return f"Response(status=ResponseStatus.{response.status.name}, message={response.message!r}, code=ResponseCode.{response.code.name})"
+
+
+def _format_config_errors(config_errors: object | None) -> str:
+    values = getattr(config_errors, "values", None)
+    if not values:
+        return "ConfigErrors()"
+
+    formatted_errors = []
+    for config_error in values:
+        error_code = getattr(config_error, "error_code", None)
+        error_code_repr = f"ErrorCode.{error_code.name}" if error_code is not None else repr(error_code)
+        formatted_errors.append(
+            "ConfigError("
+            f"error_code={error_code_repr}, "
+            f"error_msg={getattr(config_error, 'error_msg', '')!r}, "
+            f"line_num={getattr(config_error, 'line_num', 0)}, "
+            f"configlet_name={getattr(config_error, 'configlet_name', '')!r}"
+            ")"
+        )
+
+    return f"ConfigErrors(values=[{', '.join(formatted_errors)}])"
+
+
 async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, devices: list[CVDevice], warnings: list) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
@@ -51,7 +77,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
-    build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    request_params = get_required_field(workspace_config, "request_params", workspace_config.request_params)
+    request_id = get_required_field(request_params, "request_id", request_params.request_id)
+    build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=request_id)
     workspace.build_id = cv_workspace.last_build_id
     workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
     if build_result.status != ResponseStatus.SUCCESS:
@@ -62,7 +90,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             workspace.state = "abandoned"
             LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.id)
         msg = (
-            f"Failed to build workspace {workspace.id}: {build_result}. "
+            f"Failed to build workspace {workspace.id}: {_format_response(build_result)}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
         raise CVWorkspaceBuildFailed(msg)
@@ -75,9 +103,11 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
     # We can only submit if the build was successful
     if workspace.requested_state == "submitted" and workspace.state == "built":
         workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
+        request_params = get_required_field(workspace_config, "request_params", workspace_config.request_params)
+        request_id = get_required_field(request_params, "request_id", request_params.request_id)
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
             workspace_id=workspace.id,
-            request_id=workspace_config.request_params.request_id,
+            request_id=request_id,
         )
         # Form a list of known inactive existing devices
         if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is False]:
@@ -105,12 +135,13 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
             # If Workspace submission failed for any other reason - raise general exception.
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-            msg = f"Failed to submit workspace {workspace.id}: {submit_result}"
+            msg = f"Failed to submit workspace {workspace.id}: {_format_response(submit_result)}"
             raise CVWorkspaceSubmitFailed(msg)
 
         workspace.state = "submitted"
-        if cv_workspace.cc_ids.values:
-            workspace.change_control_id = cv_workspace.cc_ids.values[0]
+        cc_ids = get_required_field(cv_workspace, "cc_ids", cv_workspace.cc_ids)
+        if cc_ids.values:
+            workspace.change_control_id = cc_ids.values[0]
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 
@@ -216,12 +247,13 @@ def _should_include_build_details(
         True if the build details should be included, False otherwise.
     """
     # Always include if errors are present
-    if workspace_build_details_item.config_validation_result.errors:
+    if workspace_build_details_item.config_validation_result is not None and workspace_build_details_item.config_validation_result.errors:
         return True
 
     # Include if build warnings are present and they are not requested to be suppressed
-    return (
+    return bool(
         workspace.build_warnings.enabled
+        and workspace_build_details_item.config_validation_result is not None
         and workspace_build_details_item.config_validation_result.warnings
         and _has_unsuppressed_warnings(workspace_build_details_item, compiled_workspace_build_warnings_suppress_list)
     )
@@ -268,14 +300,20 @@ def _build_warnings_list(
     if not workspace.build_warnings.enabled:
         return []
 
+    config_validation_result = get_required_field(
+        workspace_build_details_item, "config_validation_result", workspace_build_details_item.config_validation_result
+    )
+    warnings = get_required_field(config_validation_result, "warning", config_validation_result.warnings)
     return [
         CVWorkspaceBuildConfigValidationWarning(
             warning_msg=config_validation_warning.error_msg,
             line_num=config_validation_warning.line_num,
             configlet_name=config_validation_warning.configlet_name,
         )
-        for config_validation_warning in get_v2(workspace_build_details_item, "config_validation_result.warnings.values", [])
-        if not _warning_is_suppressed(config_validation_warning.error_msg, compiled_workspace_build_warnings_suppress_list)
+        for config_validation_warning in warnings.values
+        if not _warning_is_suppressed(
+            get_required_field(config_validation_warning, "error_msg", config_validation_warning.error_msg), compiled_workspace_build_warnings_suppress_list
+        )
     ]
 
 
@@ -304,16 +342,19 @@ def _produce_cvworkspace_build_result(
         if not _should_include_build_details(workspace_build_details_item, workspace, compiled_workspace_build_warnings_suppress_list):
             continue
 
+        ws_build_details_key = get_required_field(workspace_build_details_item, "key", workspace_build_details_item.key)
         # Get the device for this build details item. Return None if device ID is not found in the list of targeted devices
         # TODO: Can there be a case where no device is found here? Example: Tag changes leading to the config change for the device we have not targeted.
-        device = next((device for device in devices if device.serial_number == workspace_build_details_item.key.device_id), None)
+        device = next((device for device in devices if device.serial_number == ws_build_details_key.device_id), None)
 
         # Continue if device is not in the list of devices targeted by this deployment
         if device is None:
             LOGGER.warning(
-                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s'",
-                workspace_build_details_item.key.device_id,
+                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s' "
+                "warnings=%s",
+                ws_build_details_key.device_id,
                 workspace_build_details_item,
+                _format_config_errors(getattr(workspace_build_details_item.config_validation_result, "warnings", None)),
             )
             continue
 

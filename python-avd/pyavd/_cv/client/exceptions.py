@@ -87,6 +87,27 @@ class CVClientBulkAPIError(CVClientException):
         super().__init__(msg)
 
 
+class CVIncompleteObjectError(CVClientException):
+    """
+    Received incomplete data from CloudVision.
+
+    The proto bindings for CloudVision APIs are mostly typed as optional fields since they are reused in partial filters.
+    The client enforces the API contract manually and will raise this error if the received data is incomplete.
+    """
+
+    cv_object_name: str
+    """Type of API object."""
+
+    missing_fields: tuple[str, ...]
+    """Fields missing from the received object."""
+
+    def __init__(self, cv_object_type: str, missing_fields: tuple[str, ...]) -> None:
+        self.cv_object_type = cv_object_type
+        self.missing_fields = missing_fields
+        msg = f"Received an incomplete '{cv_object_type}' object from CloudVision. Missing fields: {', '.join(missing_fields)}"
+        super().__init__(msg)
+
+
 class CVGRPCError(CVClientException):
     """GRPC call failed."""
 

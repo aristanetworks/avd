@@ -4,13 +4,10 @@
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from logging import DEBUG
-from pathlib import Path
+from dataclasses import FrozenInstanceError
 from typing import Any
-from unittest.mock import patch
 
 import pytest
-from grpclib.config import Configuration
 
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.models import (
@@ -23,17 +20,20 @@ from pyavd._cv.workflows.models import (
     AvdManifest,
     AvdWorkspace,
     AvdWorkspaceBuildWarningsConfig,
+    CloudVision,
     CVChangeControl,
     CVDeployFuture,
     CVDevice,
     CVDeviceTag,
     CVEosConfig,
-    CVGRPCChannelConfiguration,
+    CVGRPCConfiguration,
     CVGRPCKeepalives,
     CVInterfaceTag,
     CVManifest,
     CVPathfinderMetadata,
+    CVProxyConfiguration,
     CVStudioInputs,
+    CVTLSConfiguration,
     CVWorkspace,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationResult,
@@ -51,9 +51,9 @@ from .helpers import generate_id
 def complex_avd_manifest() -> AvdManifest:
     """Provides a complex, valid AVD manifest with nested containers and configlets."""
     # Configlets definition.
-    configlet1 = AvdConfiglet(name="configlet_global", file=Path("path/to/global.cfg"))
-    configlet2 = AvdConfiglet(name="configlet_leaf", file=Path("path/to/leaf.cfg"))
-    configlet3 = AvdConfiglet(name="configlet_extra", file=Path("path/to/extra.cfg"))
+    configlet1 = AvdConfiglet(name="configlet_global", file="path/to/global.cfg")
+    configlet2 = AvdConfiglet(name="configlet_leaf", file="path/to/leaf.cfg")
+    configlet3 = AvdConfiglet(name="configlet_extra", file="path/to/extra.cfg")
 
     # Container hierarchy definition.
     container_leaf_1a = AvdContainer(
@@ -144,8 +144,8 @@ class TestCVManifestGeneration:
 
     def test_duplicate_configlet_name_error(self) -> None:
         """Tests that a CVManifestError is raised for duplicate configlet names."""
-        configlet1 = AvdConfiglet(name="duplicate_name", file=Path("file1.conf"))
-        configlet2 = AvdConfiglet(name="duplicate_name", file=Path("file2.conf"))
+        configlet1 = AvdConfiglet(name="duplicate_name", file="file1.conf")
+        configlet2 = AvdConfiglet(name="duplicate_name", file="file2.conf")
         avd_manifest = AvdManifest(configlets=(configlet1, configlet2), containers=())
 
         with pytest.raises(CVManifestError, match="Duplicate configlet name found: 'duplicate_name'"):
@@ -180,7 +180,7 @@ class TestCVManifestGeneration:
 
     def test_manifest_with_configlets_only(self) -> None:
         """Tests a manifest that has configlets but no container definitions."""
-        configlet = AvdConfiglet(name="cfg1", file=Path("file1.cfg"))
+        configlet = AvdConfiglet(name="cfg1", file="file1.cfg")
         avd_manifest = AvdManifest(configlets=(configlet,), containers=())
 
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
@@ -462,48 +462,110 @@ class TestCVGRPCKeepalives:
             CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
 
 
-# === CVGRPCChannelConfiguration Tests ===
+# === CVGRPCConfiguration Tests ===
 
 
-class TestCVGRPCChannelConfiguration:
-    def test_as_grpclib_configuration_disabled_returns_default_configuration(self) -> None:
-        """Tests that as_grpclib_configuration returns a default Configuration when keepalives are disabled."""
-        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
-        config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        # _http2_max_pings_without_data is only set to 0 when keepalives are enabled
-        assert config._http2_max_pings_without_data != 0
+class TestCVGRPCConfiguration:
+    def test_as_grpcio_channel_options_disabled_returns_user_agent_only(self) -> None:
+        """Tests that as_grpcio_channel_options only returns user-agent when keepalives are disabled."""
+        channel_config = CVGRPCConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
+        assert channel_config.as_grpcio_channel_options(user_agent="pyavd/test") == (("grpc.primary_user_agent", "pyavd/test"),)
 
-    def test_as_grpclib_configuration_enabled_returns_configuration(self) -> None:
-        """Tests that as_grpclib_configuration builds a grpclib Configuration from the keepalive fields."""
-        channel_config = CVGRPCChannelConfiguration(
+    def test_as_grpcio_channel_options_enabled_returns_keepalive_options(self) -> None:
+        """Tests that as_grpcio_channel_options builds grpcio channel args from the keepalive fields."""
+        channel_config = CVGRPCConfiguration(
             grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
         )
-        config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        assert config._keepalive_time == 45
-        assert config._keepalive_timeout == 15
-        assert config._keepalive_permit_without_calls is True
-        assert config._http2_max_pings_without_data == 0
-        assert config._http2_min_sent_ping_interval_without_data == 45
+        assert channel_config.as_grpcio_channel_options(user_agent="pyavd/test") == (
+            ("grpc.primary_user_agent", "pyavd/test"),
+            ("grpc.keepalive_time_ms", 45000),
+            ("grpc.keepalive_timeout_ms", 15000),
+            ("grpc.keepalive_permit_without_calls", 1),
+            ("grpc.http2.max_pings_without_data", 0),
+        )
 
-    def test_as_grpclib_configuration_type_error_falls_back_to_default_configuration(self, caplog: pytest.LogCaptureFixture) -> None:
-        """Tests that a TypeError from grpclib Configuration falls back to a default Configuration and logs a warning."""
-        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True))
-        # Raise on first Configuration() call. Succeed on second
-        with (
-            caplog.at_level(DEBUG),
-            patch(
-                "pyavd._cv.workflows.models.Configuration",
-                side_effect=[TypeError("unexpected keyword argument"), Configuration()],
+
+# === CVProxyConfiguration Tests ===
+
+
+class TestCVProxyConfiguration:
+    def test_proxy_credentials_are_url_encoded(self) -> None:
+        """Tests that proxy username and password are URL-encoded for grpcio's proxy URI."""
+        proxy_config = CVProxyConfiguration(
+            host="proxy.example.com",
+            port=3128,
+            username="user@example.com",
+            password="pass word",  # noqa: S106
+        )
+        assert proxy_config.as_grpcio_channel_options() == (("grpc.http_proxy", "http://user%40example.com:pass%20word@proxy.example.com:3128"),)
+
+    def test_proxy_get_requests_proxies(self) -> None:
+        """Tests that proxy configuration builds requests proxies."""
+        proxy_config = CVProxyConfiguration(
+            host="proxy.example.com",
+            port=3128,
+            username="user@example.com",
+            password="pass word",  # noqa: S106
+        )
+        assert proxy_config.get_requests_proxies() == {
+            "http": "http://user%40example.com:pass%20word@proxy.example.com:3128",
+            "https": "http://user%40example.com:pass%20word@proxy.example.com:3128",
+        }
+
+
+class TestCloudVision:
+    def test_get_result_excludes_configuration(self) -> None:
+        cloudvision = CloudVision(
+            servers=("cv.example.com",),
+            token="token",  # noqa: S106
+            username="cv-user",
+            password="cv-password",  # noqa: S106
+            tls_configuration=CVTLSConfiguration(verify_certs=False, use_system_certs=True),
+            grpc_configuration=CVGRPCConfiguration(
+                grpc_keepalives=CVGRPCKeepalives(enabled=True),
             ),
-        ):
-            config = channel_config.as_grpclib_configuration()
-        assert isinstance(config, Configuration)
-        assert "gRPC keepalives will not be enabled" in caplog.text
+            proxy_configuration=CVProxyConfiguration(host="proxy.example.com", password="proxy-password"),  # noqa: S106
+        )
+
+        result = cloudvision.get_result()
+
+        assert result == {
+            "servers": ("cv.example.com",),
+            "token": "<removed>",
+            "username": "cv-user",
+            "password": "<removed>",
+        }
+        assert "grpc_configuration" not in result
+        assert "tls_configuration" not in result
+        assert "proxy_configuration" not in result
+
+    def test_port_defaults_to_https(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None)
+
+        assert cloudvision.port == 443
+
+    def test_accepts_custom_port(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None, port=8443)
+
+        assert cloudvision.port == 8443
+
+    def test_is_frozen(self) -> None:
+        cloudvision = CloudVision(servers=("cv.example.com",), token=None, username=None, password=None)
+
+        with pytest.raises(FrozenInstanceError):
+            cloudvision.username = "cv-user"  # pyright: ignore[reportAttributeAccessIssue]
 
 
-# === CVDeployFuture Tests ===
+class TestCVTLSConfiguration:
+    def test_defaults(self) -> None:
+        tls_configuration = CVTLSConfiguration()
+        assert tls_configuration.verify_certs is True
+        assert tls_configuration.use_system_certs is False
+
+    def test_custom_values(self) -> None:
+        tls_configuration = CVTLSConfiguration(verify_certs=False, use_system_certs=True)
+        assert tls_configuration.verify_certs is False
+        assert tls_configuration.use_system_certs is True
 
 
 class TestCVDeployFuture:
@@ -624,7 +686,7 @@ class TestDeployToCvResult:
             skipped_static_config_containers=[child_container],
             skipped_device_tags=[CVDeviceTag(label="dc", value="DC2")],
             skipped_interface_tags=[CVInterfaceTag(label="speed", value="10G")],
-            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "edge"})],
+            skipped_cv_pathfinder_metadata=[CVPathfinderMetadata(metadata={"role": "edge"}, device=cv_device_1)],
             removed_configs=["removed/leaf1.cfg"],
             removed_static_config_containers=["OLD_CONTAINER"],
             removed_static_config_configlets=["OLD_CONFIGLET"],
@@ -754,10 +816,13 @@ class TestDeployToCvResult:
         assert skipped_result_deployed_interface_tags["device"] is None
         assert skipped_result_deployed_interface_tags["interface"] is None
 
-        # skipped_cv_pathfinder_metadata — device is None
+        # skipped_cv_pathfinder_metadata
         skipped_result_deployed_cv_pathfinder_metadata = result["skipped_cv_pathfinder_metadata"][0]
         assert skipped_result_deployed_cv_pathfinder_metadata["metadata"] == {"role": "edge"}
-        assert skipped_result_deployed_cv_pathfinder_metadata["device"] is None
+        assert "avd_device" not in skipped_result_deployed_cv_pathfinder_metadata["device"]
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["hostname"] == "leaf1"
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["serial_number"] == "snleaf1"
+        assert skipped_result_deployed_cv_pathfinder_metadata["device"]["system_mac_address"] == "00:11:22:33:44:55"
 
         assert result["removed_configs"] == ["removed/leaf1.cfg"]
         assert result["removed_static_config_containers"] == ["OLD_CONTAINER"]

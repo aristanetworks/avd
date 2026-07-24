@@ -7,186 +7,182 @@
 # This file has been @generated
 
 __all__ = (
-    "ConfigErrorType",
-    "EndpointType",
-    "EndpointErrorType",
-    "CueSyslogMessageFormat",
-    "SnmpSecurityLevel",
-    "SnmpAuthProtocol",
-    "SnmpPrivProtocol",
-    "CueSnmpAuthProtocol",
-    "CueSnmpPrivProtocol",
-    "TemplateType",
-    "TemplateOutput",
-    "AlertConfig",
     "Alert",
-    "ConfigErrors",
-    "ConfigError",
-    "SenderStatusKey",
-    "SenderStatus",
-    "EventIdentifiers",
-    "EventIdentifier",
-    "EventFilter",
-    "EndpointErrors",
-    "EndpointError",
-    "Settings",
-    "EmailSettings",
-    "AzureOAuth",
-    "OAuth2ClientCredentials",
-    "HttpSettings",
-    "HttpHeaders",
-    "HeaderValues",
-    "SlackSettings",
-    "VictoropsSettings",
-    "PagerdutySettings",
-    "OpsgenieSettings",
-    "GoogleChatSettings",
-    "MsTeamsSettings",
-    "WebhookSettings",
-    "MsGraphSendMailSettings",
-    "SyslogSettings",
-    "Priorities",
-    "CueData",
-    "CueSyslogSettings",
-    "SnmpSettings",
-    "SnmpAuth",
-    "CueSnmpAuth",
-    "CueSnmpSettings",
-    "SendgridSettings",
-    "CueSendgridSettings",
-    "ZoomSettings",
-    "CvActionSettings",
-    "InhibitionSettings",
-    "EventList",
-    "Rules",
-    "Rule",
-    "Matches",
-    "BroadcastGroups",
-    "BroadcastGroup",
-    "EmailEndpoints",
-    "WebhookEndpoints",
-    "SlackEndpoints",
-    "OpsgenieEndpoints",
-    "PushoverEndpoints",
-    "PagerdutyEndpoints",
-    "VictorOpsEndpoints",
-    "GoogleChatEndpoints",
-    "MsTeamsEndpoints",
-    "SendgridEndpoints",
-    "CueSendgridEndpoints",
-    "SyslogEndpoints",
-    "CueSyslogEndpoints",
-    "SnmpEndpoints",
-    "CueSnmpEndpoints",
-    "ZoomEndpoints",
-    "MsGraphSendMailEndpoints",
-    "CvActionEndpoints",
-    "EmailEndpoint",
-    "WebhookEndpoint",
-    "MsGraphSendMailEndpoint",
-    "SlackEndpoint",
-    "OpsgenieEndpoint",
-    "PushoverEndpoint",
-    "PagerdutyEndpoint",
-    "VictorOpsEndpoint",
-    "GoogleChatEndpoint",
-    "MsTeamsEndpoint",
-    "SendgridEndpoint",
-    "CueSendgridEndpoint",
-    "SyslogEndpoint",
-    "CueSyslogEndpoint",
-    "SnmpEndpoint",
-    "CueSnmpEndpoint",
-    "ZoomEndpoint",
-    "CvActionEndpoint",
-    "CvActions",
-    "CvAction",
-    "TemplateKey",
-    "TemplateConfig",
-    "DefaultTemplate",
-    "MetaResponse",
-    "AlertRequest",
-    "AlertResponse",
-    "AlertStreamRequest",
-    "AlertStreamResponse",
+    "AlertConfig",
     "AlertConfigRequest",
     "AlertConfigResponse",
-    "AlertConfigStreamRequest",
-    "AlertConfigStreamResponse",
+    "AlertConfigServiceStub",
     "AlertConfigSetRequest",
     "AlertConfigSetResponse",
+    "AlertConfigStreamRequest",
+    "AlertConfigStreamResponse",
+    "AlertRequest",
+    "AlertResponse",
+    "AlertServiceStub",
+    "AlertStreamRequest",
+    "AlertStreamResponse",
+    "AzureOAuth",
+    "BroadcastGroup",
+    "BroadcastGroups",
+    "ConfigError",
+    "ConfigErrorType",
+    "ConfigErrors",
+    "CueData",
+    "CueSendgridEndpoint",
+    "CueSendgridEndpoints",
+    "CueSendgridSettings",
+    "CueSnmpAuth",
+    "CueSnmpAuthProtocol",
+    "CueSnmpEndpoint",
+    "CueSnmpEndpoints",
+    "CueSnmpPrivProtocol",
+    "CueSnmpSettings",
+    "CueSyslogEndpoint",
+    "CueSyslogEndpoints",
+    "CueSyslogMessageFormat",
+    "CueSyslogSettings",
+    "CvAction",
+    "CvActionEndpoint",
+    "CvActionEndpoints",
+    "CvActionSettings",
+    "CvActions",
+    "DefaultTemplate",
+    "DefaultTemplateBatchedStreamRequest",
+    "DefaultTemplateBatchedStreamResponse",
     "DefaultTemplateRequest",
     "DefaultTemplateResponse",
+    "DefaultTemplateServiceStub",
     "DefaultTemplateSomeRequest",
     "DefaultTemplateSomeResponse",
     "DefaultTemplateStreamRequest",
     "DefaultTemplateStreamResponse",
-    "DefaultTemplateBatchedStreamRequest",
-    "DefaultTemplateBatchedStreamResponse",
+    "EmailEndpoint",
+    "EmailEndpoints",
+    "EmailSettings",
+    "EndpointError",
+    "EndpointErrorType",
+    "EndpointErrors",
+    "EndpointType",
+    "EventFilter",
+    "EventIdentifier",
+    "EventIdentifiers",
+    "EventList",
+    "GoogleChatEndpoint",
+    "GoogleChatEndpoints",
+    "GoogleChatSettings",
+    "HeaderValues",
+    "HttpHeaders",
+    "HttpSettings",
+    "InhibitionSettings",
+    "Matches",
+    "MetaResponse",
+    "MsGraphSendMailEndpoint",
+    "MsGraphSendMailEndpoints",
+    "MsGraphSendMailSettings",
+    "MsTeamsEndpoint",
+    "MsTeamsEndpoints",
+    "MsTeamsSettings",
+    "OAuth2ClientCredentials",
+    "OpsgenieEndpoint",
+    "OpsgenieEndpoints",
+    "OpsgenieSettings",
+    "PagerdutyEndpoint",
+    "PagerdutyEndpoints",
+    "PagerdutySettings",
+    "Priorities",
+    "PushoverEndpoint",
+    "PushoverEndpoints",
+    "Rule",
+    "Rules",
+    "SenderStatus",
+    "SenderStatusBatchedStreamRequest",
+    "SenderStatusBatchedStreamResponse",
+    "SenderStatusKey",
     "SenderStatusRequest",
     "SenderStatusResponse",
+    "SenderStatusServiceStub",
     "SenderStatusSomeRequest",
     "SenderStatusSomeResponse",
     "SenderStatusStreamRequest",
     "SenderStatusStreamResponse",
-    "SenderStatusBatchedStreamRequest",
-    "SenderStatusBatchedStreamResponse",
-    "TemplateConfigRequest",
-    "TemplateConfigResponse",
-    "TemplateConfigSomeRequest",
-    "TemplateConfigSomeResponse",
-    "TemplateConfigStreamRequest",
-    "TemplateConfigStreamResponse",
+    "SendgridEndpoint",
+    "SendgridEndpoints",
+    "SendgridSettings",
+    "Settings",
+    "SlackEndpoint",
+    "SlackEndpoints",
+    "SlackSettings",
+    "SnmpAuth",
+    "SnmpAuthProtocol",
+    "SnmpEndpoint",
+    "SnmpEndpoints",
+    "SnmpPrivProtocol",
+    "SnmpSecurityLevel",
+    "SnmpSettings",
+    "SyslogEndpoint",
+    "SyslogEndpoints",
+    "SyslogSettings",
+    "TemplateConfig",
     "TemplateConfigBatchedStreamRequest",
     "TemplateConfigBatchedStreamResponse",
-    "TemplateConfigSetRequest",
-    "TemplateConfigSetResponse",
-    "TemplateConfigSetSomeRequest",
-    "TemplateConfigSetSomeResponse",
+    "TemplateConfigDeleteAllRequest",
+    "TemplateConfigDeleteAllResponse",
     "TemplateConfigDeleteRequest",
     "TemplateConfigDeleteResponse",
     "TemplateConfigDeleteSomeRequest",
     "TemplateConfigDeleteSomeResponse",
-    "TemplateConfigDeleteAllRequest",
-    "TemplateConfigDeleteAllResponse",
-    "AlertServiceStub",
-    "AlertServiceBase",
-    "AlertConfigServiceStub",
-    "AlertConfigServiceBase",
-    "DefaultTemplateServiceStub",
-    "DefaultTemplateServiceBase",
-    "SenderStatusServiceStub",
-    "SenderStatusServiceBase",
+    "TemplateConfigRequest",
+    "TemplateConfigResponse",
     "TemplateConfigServiceStub",
-    "TemplateConfigServiceBase",
+    "TemplateConfigSetRequest",
+    "TemplateConfigSetResponse",
+    "TemplateConfigSetSomeRequest",
+    "TemplateConfigSetSomeResponse",
+    "TemplateConfigSomeRequest",
+    "TemplateConfigSomeResponse",
+    "TemplateConfigStreamRequest",
+    "TemplateConfigStreamResponse",
+    "TemplateKey",
+    "TemplateOutput",
+    "TemplateType",
+    "VictorOpsEndpoint",
+    "VictorOpsEndpoints",
+    "VictoropsSettings",
+    "WebhookEndpoint",
+    "WebhookEndpoints",
+    "WebhookSettings",
+    "ZoomEndpoint",
+    "ZoomEndpoints",
+    "ZoomSettings",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 class ConfigErrorType(aristaproto.Enum):
-    """ConfigErrorType describes the set of possible config error types"""
+    """
+    ConfigErrorType describes the set of possible config error types
+    """
 
     UNSPECIFIED = 0
-    """CONFIG_ERROR_TYPE_UNSPECIFIED is the unspecified enum value"""
+    """
+    CONFIG_ERROR_TYPE_UNSPECIFIED is the unspecified enum value
+    """
 
     INVALID_FORMAT = 2
     """
@@ -218,74 +214,141 @@ class ConfigErrorType(aristaproto.Enum):
     CONFIG_ERROR_TYPE_INVALID_TYPE is caused by the wrong type found in backing store
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CONFIG_ERROR_TYPE_UNSPECIFIED",
+            2: "CONFIG_ERROR_TYPE_INVALID_FORMAT",
+            3: "CONFIG_ERROR_TYPE_INVALID_SYNTAX",
+            4: "CONFIG_ERROR_TYPE_TEMPLATE_INVALID",
+            5: "CONFIG_ERROR_TYPE_ILLEGAL_VALUE",
+            6: "CONFIG_ERROR_TYPE_MISSING_REQUIRED",
+            7: "CONFIG_ERROR_TYPE_INVALID_TYPE",
+        }
 
-class EndpointType(aristaproto.Enum):
-    """EndpointType describes the set of possible endpoint types."""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CONFIG_ERROR_TYPE_UNSPECIFIED": 0,
+            "CONFIG_ERROR_TYPE_INVALID_FORMAT": 2,
+            "CONFIG_ERROR_TYPE_INVALID_SYNTAX": 3,
+            "CONFIG_ERROR_TYPE_TEMPLATE_INVALID": 4,
+            "CONFIG_ERROR_TYPE_ILLEGAL_VALUE": 5,
+            "CONFIG_ERROR_TYPE_MISSING_REQUIRED": 6,
+            "CONFIG_ERROR_TYPE_INVALID_TYPE": 7,
+        }
+
+
+class CueSnmpAuthProtocol(aristaproto.Enum):
+    """
+    CueSNMPAuthProtocol represents the authentication protocol to be used
+    """
 
     UNSPECIFIED = 0
-    """ENDPOINT_TYPE_UNSPECIFIED represents the unspecified enum value."""
-
-    EMAIL = 1
-    """ENDPOINT_TYPE_EMAIL represents the email endpoint type."""
-
-    SLACK = 2
-    """ENDPOINT_TYPE_SLACK represents the Slack endpoint type."""
-
-    VICTOROPS = 3
-    """ENDPOINT_TYPE_VICTOROPS represents the VictorOps endpoint type."""
-
-    PAGERDUTY = 4
-    """ENDPOINT_TYPE_PAGERDUTY represents the PagerDuty endpoint type."""
-
-    PUSHOVER = 5
-    """ENDPOINT_TYPE_PUSHOVER represents the Pushover endpoint type."""
-
-    OPSGENIE = 6
-    """ENDPOINT_TYPE_OPSGENIE represents the Opsgenie endpoint type."""
-
-    GOOGLE_CHAT = 7
-    """ENDPOINT_TYPE_GOOGLE_CHAT represents the Google Chat endpoint type."""
-
-    MICROSOFT_TEAMS = 8
     """
-    ENDPOINT_TYPE_MICROSOFT_TEAMS represents the Microsft Teams endpoint type.
+    CUE_SNMP_AUTH_PROTOCOL_UNSPECIFIED is the unspecified enum value
     """
 
-    WEBHOOK = 9
-    """ENDPOINT_TYPE_WEBHOOK represents the Webhook endpoint type."""
-
-    SYSLOG = 10
-    """ENDPOINT_TYPE_SYSLOG represents the Syslog endpoint type."""
-
-    CUE_SYSLOG = 11
-    """ENDPOINT_TYPE_CUE_SYSLOG represents the Cue Syslog endpoint type."""
-
-    SENDGRID = 12
-    """ENDPOINT_TYPE_SENDGRID represents the Sendgrid endpoint type."""
-
-    CUE_SENDGRID = 13
+    MD5 = 1
     """
-    ENDPOINT_TYPE_CUE_SENDGRID represents the Cue Sendgrid endpoint type.
+    CUE_SNMP_AUTH_PROTOCOL_MD5 use the md5 protocol
     """
 
-    SNMP = 14
-    """ENDPOINT_TYPE_SNMP represents the SNMP endpoint type."""
-
-    CUE_SNMP = 15
-    """ENDPOINT_TYPE_CUE_SNMP represents the Cue SNMP endpoint type."""
-
-    ZOOM = 16
-    """ENDPOINT_TYPE_ZOOM represents the Zoom endpoint type."""
-
-    MS_GRAPH_SEND_MAIL = 17
+    SHA = 2
     """
-    ENDPOINT_TYPE_MS_GRAPH_SEND_MAIL represents the Microsoft Graph sendMail endpoint type.
+    CUE_SNMP_AUTH_PROTOCOL_SHA use the sha protocol
     """
 
-    CV_ACTION = 18
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CUE_SNMP_AUTH_PROTOCOL_UNSPECIFIED",
+            1: "CUE_SNMP_AUTH_PROTOCOL_MD5",
+            2: "CUE_SNMP_AUTH_PROTOCOL_SHA",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CUE_SNMP_AUTH_PROTOCOL_UNSPECIFIED": 0,
+            "CUE_SNMP_AUTH_PROTOCOL_MD5": 1,
+            "CUE_SNMP_AUTH_PROTOCOL_SHA": 2,
+        }
+
+
+class CueSnmpPrivProtocol(aristaproto.Enum):
     """
-    ENDPOINT_TYPE_CV_ACTION represents the Actions of the Cloud Vision Portal endpoint type.
+    CueSNMPPrivProtocol represents the privacy protocol to be used
     """
+
+    UNSPECIFIED = 0
+    """
+    CUE_SNMP_PRIV_PROTOCOL_UNSPECIFIED is the unspecified enum value
+    """
+
+    DES = 1
+    """
+    CUE_SNMP_PRIV_PROTOCOL_DES use the des protocol
+    """
+
+    AES = 2
+    """
+    CUE_SNMP_PRIV_PROTOCOL_AES use the aes protocol
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CUE_SNMP_PRIV_PROTOCOL_UNSPECIFIED",
+            1: "CUE_SNMP_PRIV_PROTOCOL_DES",
+            2: "CUE_SNMP_PRIV_PROTOCOL_AES",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CUE_SNMP_PRIV_PROTOCOL_UNSPECIFIED": 0,
+            "CUE_SNMP_PRIV_PROTOCOL_DES": 1,
+            "CUE_SNMP_PRIV_PROTOCOL_AES": 2,
+        }
+
+
+class CueSyslogMessageFormat(aristaproto.Enum):
+    """
+    CueSyslogMessageFormat is the message format for cue syslog messages
+    """
+
+    UNSPECIFIED = 0
+    """
+    CUE_SYSLOG_MESSAGE_FORMAT_UNSPECIFIED is the unspecified enum value
+    """
+
+    PLAIN = 1
+    """
+    CUE_SYSLOG_MESSAGE_FORMAT_PLAIN format uses the text format for constructing the syslog message
+    """
+
+    IDMEF = 2
+    """
+    CUE_SYSLOG_MESSAGE_FORMAT_IDMEF uses IDMEF message format as described here:
+    https://datatracker.ietf.org/doc/html/rfc4765
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "CUE_SYSLOG_MESSAGE_FORMAT_UNSPECIFIED",
+            1: "CUE_SYSLOG_MESSAGE_FORMAT_PLAIN",
+            2: "CUE_SYSLOG_MESSAGE_FORMAT_IDMEF",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "CUE_SYSLOG_MESSAGE_FORMAT_UNSPECIFIED": 0,
+            "CUE_SYSLOG_MESSAGE_FORMAT_PLAIN": 1,
+            "CUE_SYSLOG_MESSAGE_FORMAT_IDMEF": 2,
+        }
 
 
 class EndpointErrorType(aristaproto.Enum):
@@ -294,7 +357,9 @@ class EndpointErrorType(aristaproto.Enum):
     """
 
     UNSPECIFIED = 0
-    """ENDPOINT_ERROR_TYPE_UNSPECIFIED is the unspecified enum value"""
+    """
+    ENDPOINT_ERROR_TYPE_UNSPECIFIED is the unspecified enum value
+    """
 
     HTTP_POST_ERROR = 1
     """
@@ -325,7 +390,9 @@ class EndpointErrorType(aristaproto.Enum):
     """
 
     SMTP_ERROR = 6
-    """ENDPOINT_ERROR_TYPE_SMTP_ERROR is caused by errors with SMTP"""
+    """
+    ENDPOINT_ERROR_TYPE_SMTP_ERROR is caused by errors with SMTP
+    """
 
     CONNECTION_ERROR = 7
     """
@@ -365,124 +432,423 @@ class EndpointErrorType(aristaproto.Enum):
     an alert to a broadcast group that isn't present in the config
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ENDPOINT_ERROR_TYPE_UNSPECIFIED",
+            1: "ENDPOINT_ERROR_TYPE_HTTP_POST_ERROR",
+            2: "ENDPOINT_ERROR_TYPE_JSON_MARSHAL_ERROR",
+            3: "ENDPOINT_ERROR_TYPE_INVALID_CONFIG_ERROR",
+            4: "ENDPOINT_ERROR_TYPE_TEMPLATE_ERROR",
+            5: "ENDPOINT_ERROR_TYPE_BAD_RESPONSE_ERROR",
+            6: "ENDPOINT_ERROR_TYPE_SMTP_ERROR",
+            7: "ENDPOINT_ERROR_TYPE_CONNECTION_ERROR",
+            8: "ENDPOINT_ERROR_TYPE_TIMEOUT_ERROR",
+            9: "ENDPOINT_ERROR_TYPE_RATE_LIMIT_ERROR",
+            10: "ENDPOINT_ERROR_TYPE_ALERT_CAP_ERROR",
+            11: "ENDPOINT_ERROR_TYPE_O_AUTH_ERROR",
+            12: "ENDPOINT_ERROR_TYPE_INTERNAL_ERROR",
+            13: "ENDPOINT_ERROR_TYPE_BROADCAST_GROUP_MISSING",
+        }
 
-class CueSyslogMessageFormat(aristaproto.Enum):
-    """CueSyslogMessageFormat is the message format for cue syslog messages"""
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ENDPOINT_ERROR_TYPE_UNSPECIFIED": 0,
+            "ENDPOINT_ERROR_TYPE_HTTP_POST_ERROR": 1,
+            "ENDPOINT_ERROR_TYPE_JSON_MARSHAL_ERROR": 2,
+            "ENDPOINT_ERROR_TYPE_INVALID_CONFIG_ERROR": 3,
+            "ENDPOINT_ERROR_TYPE_TEMPLATE_ERROR": 4,
+            "ENDPOINT_ERROR_TYPE_BAD_RESPONSE_ERROR": 5,
+            "ENDPOINT_ERROR_TYPE_SMTP_ERROR": 6,
+            "ENDPOINT_ERROR_TYPE_CONNECTION_ERROR": 7,
+            "ENDPOINT_ERROR_TYPE_TIMEOUT_ERROR": 8,
+            "ENDPOINT_ERROR_TYPE_RATE_LIMIT_ERROR": 9,
+            "ENDPOINT_ERROR_TYPE_ALERT_CAP_ERROR": 10,
+            "ENDPOINT_ERROR_TYPE_O_AUTH_ERROR": 11,
+            "ENDPOINT_ERROR_TYPE_INTERNAL_ERROR": 12,
+            "ENDPOINT_ERROR_TYPE_BROADCAST_GROUP_MISSING": 13,
+        }
+
+
+class EndpointType(aristaproto.Enum):
+    """
+    EndpointType describes the set of possible endpoint types.
+    """
 
     UNSPECIFIED = 0
-    """CUE_SYSLOG_MESSAGE_FORMAT_UNSPECIFIED is the unspecified enum value"""
-
-    PLAIN = 1
     """
-    CUE_SYSLOG_MESSAGE_FORMAT_PLAIN format uses the text format for constructing the syslog message
+    ENDPOINT_TYPE_UNSPECIFIED represents the unspecified enum value.
     """
 
-    IDMEF = 2
+    EMAIL = 1
     """
-    CUE_SYSLOG_MESSAGE_FORMAT_IDMEF uses IDMEF message format as described here:
-    https://datatracker.ietf.org/doc/html/rfc4765
+    ENDPOINT_TYPE_EMAIL represents the email endpoint type.
     """
 
+    SLACK = 2
+    """
+    ENDPOINT_TYPE_SLACK represents the Slack endpoint type.
+    """
 
-class SnmpSecurityLevel(aristaproto.Enum):
-    """SNMPSecurityLevel indicates what level of security should be used"""
+    VICTOROPS = 3
+    """
+    ENDPOINT_TYPE_VICTOROPS represents the VictorOps endpoint type.
+    """
 
-    UNSPECIFIED = 0
-    """SNMP_SECURITY_LEVEL_UNSPECIFIED is the unspecified enum value"""
+    PAGERDUTY = 4
+    """
+    ENDPOINT_TYPE_PAGERDUTY represents the PagerDuty endpoint type.
+    """
 
-    NO_AUTH_NO_PRIV = 1
-    """SNMP_SECURITY_LEVEL_NO_AUTH_NO_PRIV use no security"""
+    PUSHOVER = 5
+    """
+    ENDPOINT_TYPE_PUSHOVER represents the Pushover endpoint type.
+    """
 
-    AUTH_NO_PRIV = 2
-    """SNMP_SECURITY_LEVEL_AUTH_NO_PRIV use authentication without privacy"""
+    OPSGENIE = 6
+    """
+    ENDPOINT_TYPE_OPSGENIE represents the Opsgenie endpoint type.
+    """
 
-    AUTH_PRIV = 3
-    """SNMP_SECURITY_LEVEL_AUTH_PRIV use both authentication and privacy"""
+    GOOGLE_CHAT = 7
+    """
+    ENDPOINT_TYPE_GOOGLE_CHAT represents the Google Chat endpoint type.
+    """
+
+    MICROSOFT_TEAMS = 8
+    """
+    ENDPOINT_TYPE_MICROSOFT_TEAMS represents the Microsft Teams endpoint type.
+    """
+
+    WEBHOOK = 9
+    """
+    ENDPOINT_TYPE_WEBHOOK represents the Webhook endpoint type.
+    """
+
+    SYSLOG = 10
+    """
+    ENDPOINT_TYPE_SYSLOG represents the Syslog endpoint type.
+    """
+
+    CUE_SYSLOG = 11
+    """
+    ENDPOINT_TYPE_CUE_SYSLOG represents the Cue Syslog endpoint type.
+    """
+
+    SENDGRID = 12
+    """
+    ENDPOINT_TYPE_SENDGRID represents the Sendgrid endpoint type.
+    """
+
+    CUE_SENDGRID = 13
+    """
+    ENDPOINT_TYPE_CUE_SENDGRID represents the Cue Sendgrid endpoint type.
+    """
+
+    SNMP = 14
+    """
+    ENDPOINT_TYPE_SNMP represents the SNMP endpoint type.
+    """
+
+    CUE_SNMP = 15
+    """
+    ENDPOINT_TYPE_CUE_SNMP represents the Cue SNMP endpoint type.
+    """
+
+    ZOOM = 16
+    """
+    ENDPOINT_TYPE_ZOOM represents the Zoom endpoint type.
+    """
+
+    MS_GRAPH_SEND_MAIL = 17
+    """
+    ENDPOINT_TYPE_MS_GRAPH_SEND_MAIL represents the Microsoft Graph sendMail endpoint type.
+    """
+
+    CV_ACTION = 18
+    """
+    ENDPOINT_TYPE_CV_ACTION represents the Actions of the Cloud Vision Portal endpoint type.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "ENDPOINT_TYPE_UNSPECIFIED",
+            1: "ENDPOINT_TYPE_EMAIL",
+            2: "ENDPOINT_TYPE_SLACK",
+            3: "ENDPOINT_TYPE_VICTOROPS",
+            4: "ENDPOINT_TYPE_PAGERDUTY",
+            5: "ENDPOINT_TYPE_PUSHOVER",
+            6: "ENDPOINT_TYPE_OPSGENIE",
+            7: "ENDPOINT_TYPE_GOOGLE_CHAT",
+            8: "ENDPOINT_TYPE_MICROSOFT_TEAMS",
+            9: "ENDPOINT_TYPE_WEBHOOK",
+            10: "ENDPOINT_TYPE_SYSLOG",
+            11: "ENDPOINT_TYPE_CUE_SYSLOG",
+            12: "ENDPOINT_TYPE_SENDGRID",
+            13: "ENDPOINT_TYPE_CUE_SENDGRID",
+            14: "ENDPOINT_TYPE_SNMP",
+            15: "ENDPOINT_TYPE_CUE_SNMP",
+            16: "ENDPOINT_TYPE_ZOOM",
+            17: "ENDPOINT_TYPE_MS_GRAPH_SEND_MAIL",
+            18: "ENDPOINT_TYPE_CV_ACTION",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "ENDPOINT_TYPE_UNSPECIFIED": 0,
+            "ENDPOINT_TYPE_EMAIL": 1,
+            "ENDPOINT_TYPE_SLACK": 2,
+            "ENDPOINT_TYPE_VICTOROPS": 3,
+            "ENDPOINT_TYPE_PAGERDUTY": 4,
+            "ENDPOINT_TYPE_PUSHOVER": 5,
+            "ENDPOINT_TYPE_OPSGENIE": 6,
+            "ENDPOINT_TYPE_GOOGLE_CHAT": 7,
+            "ENDPOINT_TYPE_MICROSOFT_TEAMS": 8,
+            "ENDPOINT_TYPE_WEBHOOK": 9,
+            "ENDPOINT_TYPE_SYSLOG": 10,
+            "ENDPOINT_TYPE_CUE_SYSLOG": 11,
+            "ENDPOINT_TYPE_SENDGRID": 12,
+            "ENDPOINT_TYPE_CUE_SENDGRID": 13,
+            "ENDPOINT_TYPE_SNMP": 14,
+            "ENDPOINT_TYPE_CUE_SNMP": 15,
+            "ENDPOINT_TYPE_ZOOM": 16,
+            "ENDPOINT_TYPE_MS_GRAPH_SEND_MAIL": 17,
+            "ENDPOINT_TYPE_CV_ACTION": 18,
+        }
 
 
 class SnmpAuthProtocol(aristaproto.Enum):
-    """SNMPAuthProtocol represents the authentication protocol to be used"""
+    """
+    SNMPAuthProtocol represents the authentication protocol to be used
+    """
 
     UNSPECIFIED = 0
-    """SNMP_AUTH_PROTOCOL_UNSPECIFIED is the unspecified enum value"""
+    """
+    SNMP_AUTH_PROTOCOL_UNSPECIFIED is the unspecified enum value
+    """
 
     MD5 = 1
-    """SNMP_AUTH_PROTOCOL_MD5 use the md5 protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_MD5 use the md5 protocol
+    """
 
     SHA = 2
-    """SNMP_AUTH_PROTOCOL_SHA use the sha protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_SHA use the sha protocol
+    """
 
     SHA_224 = 3
-    """SNMP_AUTH_PROTOCOL_SHA_224 use the sha224 protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_SHA_224 use the sha224 protocol
+    """
 
     SHA_256 = 4
-    """SNMP_AUTH_PROTOCOL_SHA_256 use the sha256 protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_SHA_256 use the sha256 protocol
+    """
 
     SHA_384 = 5
-    """SNMP_AUTH_PROTOCOL_SHA_384 use the sha384 protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_SHA_384 use the sha384 protocol
+    """
 
     SHA_512 = 6
-    """SNMP_AUTH_PROTOCOL_SHA_512 use the sha512 protocol"""
+    """
+    SNMP_AUTH_PROTOCOL_SHA_512 use the sha512 protocol
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SNMP_AUTH_PROTOCOL_UNSPECIFIED",
+            1: "SNMP_AUTH_PROTOCOL_MD5",
+            2: "SNMP_AUTH_PROTOCOL_SHA",
+            3: "SNMP_AUTH_PROTOCOL_SHA_224",
+            4: "SNMP_AUTH_PROTOCOL_SHA_256",
+            5: "SNMP_AUTH_PROTOCOL_SHA_384",
+            6: "SNMP_AUTH_PROTOCOL_SHA_512",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SNMP_AUTH_PROTOCOL_UNSPECIFIED": 0,
+            "SNMP_AUTH_PROTOCOL_MD5": 1,
+            "SNMP_AUTH_PROTOCOL_SHA": 2,
+            "SNMP_AUTH_PROTOCOL_SHA_224": 3,
+            "SNMP_AUTH_PROTOCOL_SHA_256": 4,
+            "SNMP_AUTH_PROTOCOL_SHA_384": 5,
+            "SNMP_AUTH_PROTOCOL_SHA_512": 6,
+        }
 
 
 class SnmpPrivProtocol(aristaproto.Enum):
-    """SNMPPrivProtocol represents the privacy protocol to be used"""
+    """
+    SNMPPrivProtocol represents the privacy protocol to be used
+    """
 
     UNSPECIFIED = 0
-    """SNMP_PRIV_PROTOCOL_UNSPECIFIED is the unspecified enum value"""
+    """
+    SNMP_PRIV_PROTOCOL_UNSPECIFIED is the unspecified enum value
+    """
 
     DES = 1
-    """SNMP_PRIV_PROTOCOL_DES use the des protocol"""
+    """
+    SNMP_PRIV_PROTOCOL_DES use the des protocol
+    """
 
     AES = 2
-    """SNMP_PRIV_PROTOCOL_AES use the aes protocol"""
+    """
+    SNMP_PRIV_PROTOCOL_AES use the aes protocol
+    """
 
     AES_192 = 3
-    """SNMP_PRIV_PROTOCOL_AES_192 use the aes192 protocol"""
+    """
+    SNMP_PRIV_PROTOCOL_AES_192 use the aes192 protocol
+    """
 
     AES_256 = 4
-    """SNMP_PRIV_PROTOCOL_AES_256 use the aes256 protocol"""
+    """
+    SNMP_PRIV_PROTOCOL_AES_256 use the aes256 protocol
+    """
 
     AES_192C = 5
-    """SNMP_PRIV_PROTOCOL_AES_192C use the aes192c protocol"""
+    """
+    SNMP_PRIV_PROTOCOL_AES_192C use the aes192c protocol
+    """
 
     AES_256C = 6
-    """SNMP_PRIV_PROTOCOL_AES_256C use the aes256c protocol"""
-
-
-class CueSnmpAuthProtocol(aristaproto.Enum):
     """
-    CueSNMPAuthProtocol represents the authentication protocol to be used
+    SNMP_PRIV_PROTOCOL_AES_256C use the aes256c protocol
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SNMP_PRIV_PROTOCOL_UNSPECIFIED",
+            1: "SNMP_PRIV_PROTOCOL_DES",
+            2: "SNMP_PRIV_PROTOCOL_AES",
+            3: "SNMP_PRIV_PROTOCOL_AES_192",
+            4: "SNMP_PRIV_PROTOCOL_AES_256",
+            5: "SNMP_PRIV_PROTOCOL_AES_192C",
+            6: "SNMP_PRIV_PROTOCOL_AES_256C",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SNMP_PRIV_PROTOCOL_UNSPECIFIED": 0,
+            "SNMP_PRIV_PROTOCOL_DES": 1,
+            "SNMP_PRIV_PROTOCOL_AES": 2,
+            "SNMP_PRIV_PROTOCOL_AES_192": 3,
+            "SNMP_PRIV_PROTOCOL_AES_256": 4,
+            "SNMP_PRIV_PROTOCOL_AES_192C": 5,
+            "SNMP_PRIV_PROTOCOL_AES_256C": 6,
+        }
+
+
+class SnmpSecurityLevel(aristaproto.Enum):
+    """
+    SNMPSecurityLevel indicates what level of security should be used
     """
 
     UNSPECIFIED = 0
-    """CUE_SNMP_AUTH_PROTOCOL_UNSPECIFIED is the unspecified enum value"""
+    """
+    SNMP_SECURITY_LEVEL_UNSPECIFIED is the unspecified enum value
+    """
 
-    MD5 = 1
-    """CUE_SNMP_AUTH_PROTOCOL_MD5 use the md5 protocol"""
+    NO_AUTH_NO_PRIV = 1
+    """
+    SNMP_SECURITY_LEVEL_NO_AUTH_NO_PRIV use no security
+    """
 
-    SHA = 2
-    """CUE_SNMP_AUTH_PROTOCOL_SHA use the sha protocol"""
+    AUTH_NO_PRIV = 2
+    """
+    SNMP_SECURITY_LEVEL_AUTH_NO_PRIV use authentication without privacy
+    """
+
+    AUTH_PRIV = 3
+    """
+    SNMP_SECURITY_LEVEL_AUTH_PRIV use both authentication and privacy
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "SNMP_SECURITY_LEVEL_UNSPECIFIED",
+            1: "SNMP_SECURITY_LEVEL_NO_AUTH_NO_PRIV",
+            2: "SNMP_SECURITY_LEVEL_AUTH_NO_PRIV",
+            3: "SNMP_SECURITY_LEVEL_AUTH_PRIV",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "SNMP_SECURITY_LEVEL_UNSPECIFIED": 0,
+            "SNMP_SECURITY_LEVEL_NO_AUTH_NO_PRIV": 1,
+            "SNMP_SECURITY_LEVEL_AUTH_NO_PRIV": 2,
+            "SNMP_SECURITY_LEVEL_AUTH_PRIV": 3,
+        }
 
 
-class CueSnmpPrivProtocol(aristaproto.Enum):
-    """CueSNMPPrivProtocol represents the privacy protocol to be used"""
+class TemplateOutput(aristaproto.Enum):
+    """
+    TemplateOutput is an enum of all of the possible output formats for templates
+    """
 
     UNSPECIFIED = 0
-    """CUE_SNMP_PRIV_PROTOCOL_UNSPECIFIED is the unspecified enum value"""
+    """
+    TEMPLATE_OUTPUT_UNSPECIFIED is the unspecfied value.
+    """
 
-    DES = 1
-    """CUE_SNMP_PRIV_PROTOCOL_DES use the des protocol"""
+    TEXT = 1
+    """
+    TEMPLATE_OUTPUT_TEXT indicates the the template outputs plain text.
+    """
 
-    AES = 2
-    """CUE_SNMP_PRIV_PROTOCOL_AES use the aes protocol"""
+    JSON = 2
+    """
+    TEMPLATE_OUTPUT_JSON indicates the the template outputs JSON.
+    """
+
+    HTML = 3
+    """
+    TEMPLATE_OUTPUT_HTML indicates the the template outputs HTML.
+    This also indicates that "html/templates" will be used instead of "text/templates" so that
+    html characters are automatically escaped from input.
+    """
+
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "TEMPLATE_OUTPUT_UNSPECIFIED",
+            1: "TEMPLATE_OUTPUT_TEXT",
+            2: "TEMPLATE_OUTPUT_JSON",
+            3: "TEMPLATE_OUTPUT_HTML",
+        }
+
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "TEMPLATE_OUTPUT_UNSPECIFIED": 0,
+            "TEMPLATE_OUTPUT_TEXT": 1,
+            "TEMPLATE_OUTPUT_JSON": 2,
+            "TEMPLATE_OUTPUT_HTML": 3,
+        }
 
 
 class TemplateType(aristaproto.Enum):
-    """TemplateType describes the types of Templates that are usable"""
+    """
+    TemplateType describes the types of Templates that are usable
+    """
 
     UNSPECIFIED = 0
-    """TEMPLATE_TYPE_UNSPECIFIED is the unspecified enum value"""
+    """
+    TEMPLATE_TYPE_UNSPECIFIED is the unspecified enum value
+    """
 
     EMAIL_HTML = 1
     """
@@ -583,1812 +949,126 @@ class TemplateType(aristaproto.Enum):
     single_alert option is false
     """
 
+    @classmethod
+    def aristaproto_value_to_renamed_proto_names(cls) -> dict[int, str]:
+        return {
+            0: "TEMPLATE_TYPE_UNSPECIFIED",
+            1: "TEMPLATE_TYPE_EMAIL_HTML",
+            2: "TEMPLATE_TYPE_EMAIL_TEXT",
+            3: "TEMPLATE_TYPE_SLACK_MESSAGE",
+            4: "TEMPLATE_TYPE_PUSHOVER_MESSAGE",
+            5: "TEMPLATE_TYPE_PAGERDUTY_SUMMARY",
+            6: "TEMPLATE_TYPE_VICTOROPS_DISPLAY_NAME",
+            7: "TEMPLATE_TYPE_VICTOROPS_STATE_MESSAGE",
+            8: "TEMPLATE_TYPE_GOOGLE_CHAT_MESSAGE",
+            9: "TEMPLATE_TYPE_MICROSOFT_TEAMS_MESSAGE",
+            10: "TEMPLATE_TYPE_EMAIL_SUBJECT",
+            11: "TEMPLATE_TYPE_SYSLOG_MESSAGE",
+            12: "TEMPLATE_TYPE_OPSGENIE_MESSAGE",
+            13: "TEMPLATE_TYPE_ZOOM_MESSAGE",
+            14: "TEMPLATE_TYPE_EMAIL_SINGLE_HTML",
+            15: "TEMPLATE_TYPE_EMAIL_SINGLE_TEXT",
+            16: "TEMPLATE_TYPE_EMAIL_SINGLE_SUBJECT",
+            17: "TEMPLATE_TYPE_WEBHOOK_SINGLE",
+            18: "TEMPLATE_TYPE_WEBHOOK_MULTIPLE",
+        }
 
-class TemplateOutput(aristaproto.Enum):
+    @classmethod
+    def aristaproto_renamed_proto_names_to_value(cls) -> dict[str, int]:
+        return {
+            "TEMPLATE_TYPE_UNSPECIFIED": 0,
+            "TEMPLATE_TYPE_EMAIL_HTML": 1,
+            "TEMPLATE_TYPE_EMAIL_TEXT": 2,
+            "TEMPLATE_TYPE_SLACK_MESSAGE": 3,
+            "TEMPLATE_TYPE_PUSHOVER_MESSAGE": 4,
+            "TEMPLATE_TYPE_PAGERDUTY_SUMMARY": 5,
+            "TEMPLATE_TYPE_VICTOROPS_DISPLAY_NAME": 6,
+            "TEMPLATE_TYPE_VICTOROPS_STATE_MESSAGE": 7,
+            "TEMPLATE_TYPE_GOOGLE_CHAT_MESSAGE": 8,
+            "TEMPLATE_TYPE_MICROSOFT_TEAMS_MESSAGE": 9,
+            "TEMPLATE_TYPE_EMAIL_SUBJECT": 10,
+            "TEMPLATE_TYPE_SYSLOG_MESSAGE": 11,
+            "TEMPLATE_TYPE_OPSGENIE_MESSAGE": 12,
+            "TEMPLATE_TYPE_ZOOM_MESSAGE": 13,
+            "TEMPLATE_TYPE_EMAIL_SINGLE_HTML": 14,
+            "TEMPLATE_TYPE_EMAIL_SINGLE_TEXT": 15,
+            "TEMPLATE_TYPE_EMAIL_SINGLE_SUBJECT": 16,
+            "TEMPLATE_TYPE_WEBHOOK_SINGLE": 17,
+            "TEMPLATE_TYPE_WEBHOOK_MULTIPLE": 18,
+        }
+
+
+@dataclass(eq=False, repr=False)
+class Alert(aristaproto.Message):
     """
-    TemplateOutput is an enum of all of the possible output formats for templates
+    Alert is the current status of the alert system
     """
 
-    UNSPECIFIED = 0
-    """TEMPLATE_OUTPUT_UNSPECIFIED is the unspecfied value."""
-
-    TEXT = 1
-    """TEMPLATE_OUTPUT_TEXT indicates the the template outputs plain text."""
-
-    JSON = 2
-    """TEMPLATE_OUTPUT_JSON indicates the the template outputs JSON."""
-
-    HTML = 3
+    configuration_errors: "ConfigErrors | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    TEMPLATE_OUTPUT_HTML indicates the the template outputs HTML.
-    This also indicates that \"html/templates\" will be used instead of \"text/templates\" so that
-    html characters are automatically escaped from input.
+    configuration_errors contain any configuration errors reported by the backend
     """
+
+    endpoint_errors: "EndpointErrors | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    endpoint_errors contain any failed attempts to send alerts
+    """
+
+    last_modified_at: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    last_modified_at is the time at which the configuration was last modified
+    """
+
+    last_modified_by: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    last_modified_by is the user who last modified the configuration
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Alert", Alert)
 
 
 @dataclass(eq=False, repr=False)
 class AlertConfig(aristaproto.Message):
-    """AlertConfig is the configuration for sending alerts"""
+    """
+    AlertConfig is the configuration for sending alerts
+    """
 
-    settings: "Settings" = aristaproto.message_field(1)
+    settings: "Settings | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     settings is the global default settings for various endpoints used in broadcast groups.
     Can be overwritten in individual endpoint settings
     """
 
-    rules: "Rules" = aristaproto.message_field(2)
-    """rules define how we route alerts to broadcast groups"""
-
-    broadcast_groups: "BroadcastGroups" = aristaproto.message_field(3)
-    """broadcast_groups are groups of endpoints that alerts are sent to"""
-
-
-@dataclass(eq=False, repr=False)
-class Alert(aristaproto.Message):
-    """Alert is the current status of the alert system"""
-
-    configuration_errors: "ConfigErrors" = aristaproto.message_field(1)
-    """
-    configuration_errors contain any configuration errors reported by the backend
-    """
-
-    endpoint_errors: "EndpointErrors" = aristaproto.message_field(2)
-    """endpoint_errors contain any failed attempts to send alerts"""
-
-    last_modified_at: datetime = aristaproto.message_field(3)
-    """
-    last_modified_at is the time at which the configuration was last modified
-    """
-
-    last_modified_by: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """last_modified_by is the user who last modified the configuration"""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigErrors(aristaproto.Message):
-    """ConfigErrors is a list of configuration-related errors"""
-
-    values: List["ConfigError"] = aristaproto.message_field(1)
-    """values is a list of errors"""
-
-
-@dataclass(eq=False, repr=False)
-class ConfigError(aristaproto.Message):
-    """
-    ConfigError is an error caused by an invalid config being rejected by the backend
-    """
-
-    path: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    path is the 'path' to the invalid config element,
-    eg: path.userPathName.email_configs[1].to =
-    the 'to' field of the second email config of the 'userPathName' broadcast_group
-    """
-
-    error_type: "ConfigErrorType" = aristaproto.enum_field(2)
-    """
-    error_type is the type of error, this allows custom handling of different error types
-    """
-
-    error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """error is a user-friendly error message"""
-
-
-@dataclass(eq=False, repr=False)
-class SenderStatusKey(aristaproto.Message):
-    """SenderStatusKey defines the unique key for SenderStatus."""
-
-    broadcast_group_name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    broadcast_group_name is the name of the broadcast group which was being used,
-    empty string if not group specific.
-    """
-
-    endpoint_type: "EndpointType" = aristaproto.enum_field(2)
-    """
-    endpoint_type indicates the target to which an attempt to send an alert was made
-    or is \"unknown\" if not endpoint-specific (eg: slack, opsgenie).
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SenderStatus(aristaproto.Message):
-    """
-    SenderStatus provides information about the status of particular send.
-    """
-
-    key: "SenderStatusKey" = aristaproto.message_field(1)
-    """key uniquely identifies the instance of sender status."""
-
-    success: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """success indicates whether the send succeeded or not."""
-
-    config_index: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """
-    config_index is the index of the config on the broadcast group or -1 if not applicable
-    e.g.: if there are two email configs in one broadcast group,
-    then the indices for each are 0 and 1.
-    Config indices are counted per type.
-    """
-
-    remaining_retries: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    remaining_retries is the number of remaining attempts to send a particular alert.
-    """
-
-    error_type: "EndpointErrorType" = aristaproto.enum_field(5)
-    """
-    error_type is the type of error. This allows custom handling of different error types.
-    """
-
-    error_message: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """error_message is a user-friendly error message."""
-
-    events: "EventIdentifiers" = aristaproto.message_field(7)
-    """events is a list of events triggering the alert."""
-
-    previous_attempts: Optional[int] = aristaproto.message_field(8, wraps=aristaproto.TYPE_UINT32)
-    """
-    previous_attempts is the number of times the alert corresponding to this sender status has been
-    retried.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventIdentifiers(aristaproto.Message):
-    """EventIdentifiers is a list of EventIdentifier messages."""
-
-    values: List["EventIdentifier"] = aristaproto.message_field(1)
-    """values is a list of event identifiers."""
-
-
-@dataclass(eq=False, repr=False)
-class EventIdentifier(aristaproto.Message):
-    """
-    EventIdentifier consists of the minimal information required
-    to uniquely match which event triggered an alert and due to which rule.
-    """
-
-    key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """key is the event key."""
-
-    time: datetime = aristaproto.message_field(2)
-    """time is the time of event generation."""
-
-    alerter_rule_index: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """
-    alerter_rule_index is the index of an alerter rule (don't confuse with generation rule)
-    that was used to match the receiver and event.
-    The rule index changes dynamically whenever a config change is issued.
-    """
-
-    firing: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """firing is true if event is ongoing and false if event has finished."""
-
-    is_test: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
-    """is_test is true if event was initiated via test notification page."""
-
-    event_type: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """event_type is the type of the event."""
-
-
-@dataclass(eq=False, repr=False)
-class EventFilter(aristaproto.Message):
-    """
-    EventFilter defines the criteria to filter response data based on the contained event
-    identifiers.
-    If EventFilter is nil, it's a pass-through filter.
-    """
-
-    events: "EventIdentifiers" = aristaproto.message_field(1)
-    """
-    events is a slice of EventIdentifiers that are matched against the EventIdentifiers in
-    a SenderStatus message.
-    Filter passes if any EventIdentifier from events match any EventIdentifier in SenderStatus.
-    Nil fields are considered pass-through.
-    """
-
-    is_test: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
-    """
-    is_test specifies filtering option with regard to sender status being triggered by a test event
-    or non-test event.
-    When set, it will discard events from status based on matching the IsTest field.
-    If not set, returns all.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EndpointErrors(aristaproto.Message):
-    """EndpointErrors is a set of errors related to sending of alerts"""
-
-    values: List["EndpointError"] = aristaproto.message_field(1)
-    """values is the list of errors"""
-
-
-@dataclass(eq=False, repr=False)
-class EndpointError(aristaproto.Message):
-    """
-    EndpointError is an error caused by a failure to send alert(s) for any reason
-    """
-
-    endpoint_type: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    endpoint_type indicates the type of endpoint which failed,
-    or unknown if not endpoint-specific (eg: slack, opsgenie)
-    """
-
-    broadcast_group_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    broadcast_group_name is the name of the broadcast group which was being used,
-    empty string if not group specific
-    """
-
-    config_index: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """
-    config_index is the index of the config on the broadcast group or -1 if not applicable
-    eg: if there are two email config in one broadcast group, then the indices for each are 0 and 1
-    note that these are done per type, so only counting email/slack/...
-    """
-
-    error_type: "EndpointErrorType" = aristaproto.enum_field(4)
-    """
-    error_type is the type of error, this allows custom handling of different error types
-    """
-
-    error: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """error is a user-friendly error message"""
-
-
-@dataclass(eq=False, repr=False)
-class Settings(aristaproto.Message):
-    """
-    Settings portion of config, a list of default global settings used by broadcast groups
-    """
-
-    email: "EmailSettings" = aristaproto.message_field(1)
-    """email is the global default settings for email"""
-
-    http: "HttpSettings" = aristaproto.message_field(2)
-    """http is the global default settings for http"""
-
-    slack: "SlackSettings" = aristaproto.message_field(3)
-    """slack is the global default settings for slack"""
-
-    victorops: "VictoropsSettings" = aristaproto.message_field(4)
-    """victorops is the global default settings for victorops"""
-
-    pagerduty: "PagerdutySettings" = aristaproto.message_field(5)
-    """pagerduty is the global default settings for pagerduty"""
-
-    opsgenie: "OpsgenieSettings" = aristaproto.message_field(6)
-    """opsgenie is the global default settings for opsgenie"""
-
-    gchat: "GoogleChatSettings" = aristaproto.message_field(7)
-    """gchat is the global default settings for google chat"""
-
-    msteams: "MsTeamsSettings" = aristaproto.message_field(8)
-    """msteams is the global default settings for ms teams"""
-
-    inhibition: "InhibitionSettings" = aristaproto.message_field(9)
-    """
-    inhibition defines the inhibition rules for alerts, allowing events of certain types to be
-    suppressed while another event type is active
-    """
-
-    base_url: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
-    """
-    base_url is the root address of your CloudVision app. Used to generate links in notifications.
-    """
-
-    timezone: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
-    """
-    timezone is used for formatting event times in notifications. E.g. 'UTC', 'US/Pacific'
-    """
-
-    syslog: "SyslogSettings" = aristaproto.message_field(12)
-    """syslog is the global default settings for syslog"""
-
-    snmp: "SnmpSettings" = aristaproto.message_field(13)
-    """snmp is the global default settings for snmp"""
-
-    sendgrid: "SendgridSettings" = aristaproto.message_field(14)
-    """sendgrid is the global default settings for sendgrid"""
-
-    cue_syslog: "CueSyslogSettings" = aristaproto.message_field(15)
-    """cue_syslog is the global default settings for cue syslog"""
-
-    cue_snmp: "CueSnmpSettings" = aristaproto.message_field(16)
-    """cue_snmp is the global default settings for cue snmp"""
-
-    cue_sendgrid: "CueSendgridSettings" = aristaproto.message_field(17)
-    """cue_sendgrid is the global default settings for cue sendgrid"""
-
-    hide_tags: Optional[bool] = aristaproto.message_field(18, wraps=aristaproto.TYPE_BOOL)
-    """
-    hide_tags is used to by the alerting system to omit tags and other \"superfluous\"
-    values from the notifications that are sent out by the system
-    """
-
-    zoom: "ZoomSettings" = aristaproto.message_field(19)
-    """zoom is the global default settings for zoom"""
-
-    webhook: "WebhookSettings" = aristaproto.message_field(20)
-    """webhook is the auth settings for webhook"""
-
-    ms_graph_send_mail: "MsGraphSendMailSettings" = aristaproto.message_field(21)
-    """ms_graph_send_mail is the settings for Microsoft Graph sendMail"""
-
-    cv_action: "CvActionSettings" = aristaproto.message_field(22)
-    """cv_action is the global default settings for CloudVision Action"""
-
-
-@dataclass(eq=False, repr=False)
-class EmailSettings(aristaproto.Message):
-    """EmailSettings contain the settings for the sending of emails"""
-
-    from_: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """from is the email address to send from"""
-
-    smarthost: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """smarthost is the hostname and port of the SMTP server"""
-
-    auth_username: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    auth_username the username to use when sending emails
-    required for all auth methods
-    """
-
-    auth_password: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """auth_password the password to use when sending emails"""
-
-    require_tls: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
-    """require_tls always use TLS connections when sending emails"""
-
-    single_alert_per_email: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
-    """
-    single_alert_per_email configures the Alerter such that each alert generates a separate email
-    notification, the email will only have a single notification, the format will also be different
-    """
-
-    azure_o_auth: "AzureOAuth" = aristaproto.message_field(7)
-    """
-    azure_o_auth used for auth when using an Azure smtp server
-    uses auth_username, scopes is not required as we use https://outlook.office365.com/.default
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AzureOAuth(aristaproto.Message):
-    """
-    AzureOAuth contains the settings for authenticating against Azure using OAuth2
-    """
-
-    client_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """client_id of the Azure environment"""
-
-    tenant_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """tenant_id of the Azure environment"""
-
-    client_secret: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """client_secret is a user generated secret key used for auth"""
-
-    auth_uri: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    auth_uri is the URI used for OAuth
-    this should always be https://login.microsoftonline.com/ unless using a very custom
-    set up, where the Azure enviroment is not running on microsoft servers
-    """
-
-    scopes: "___fmp__.RepeatedString" = aristaproto.message_field(5)
-    """scopes are the scopes that auth is granted for"""
-
-
-@dataclass(eq=False, repr=False)
-class OAuth2ClientCredentials(aristaproto.Message):
-    """
-    OAuth2ClientCredentials contains generic settings for authenticating webhook
-    requests using the OAuth2 client credentials (including OpenID Connect) flow.
-    """
-
-    client_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """client_id of the OAuth2 client"""
-
-    client_secret: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """client_secret for the OAuth2 client"""
-
-    token_url: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    token_url is the full URL of the OAuth2/OIDC token endpoint
-    e.g. https://example.com/oauth2/token
-    """
-
-    scope: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    scope is the optional OAuth2 scope string requested for the access token.
-    Multiple scopes can be defined by separating them with spaces,
-    e.g. \"scope1 scope2 scope3\".
-    """
-
-
-@dataclass(eq=False, repr=False)
-class HttpSettings(aristaproto.Message):
-    """
-    HttpSettings are the settings to be used when sending various message over a http connection
-    """
-
-    username: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """username is the username to use when connecting to the http proxy"""
-
-    password: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """password is the password to use when connecting to the http proxy"""
-
-    proxy_url: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """proxy_url is the url for the http proxy"""
-
-    custom_headers: "HttpHeaders" = aristaproto.message_field(4)
-    """
-    custom_headers is custom http headers to be used along with the default headers
-    """
-
-
-@dataclass(eq=False, repr=False)
-class HttpHeaders(aristaproto.Message):
-    """HttpHeaders is a set of http headers"""
-
-    values: Dict[str, "HeaderValues"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """values is a map of http header names to values"""
-
-
-@dataclass(eq=False, repr=False)
-class HeaderValues(aristaproto.Message):
-    """HeaderValues is a set of values for this header"""
-
-    values: List[str] = aristaproto.string_field(1)
-    """values is the header values"""
-
-
-@dataclass(eq=False, repr=False)
-class SlackSettings(aristaproto.Message):
-    """SlackSettings contain the settings for sending alerts to slack"""
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the url of the slack webhook to use"""
-
-
-@dataclass(eq=False, repr=False)
-class VictoropsSettings(aristaproto.Message):
-    """
-    VictoropsSettings contain the settings for sending alerts to victorops
-    """
-
-    key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """key is the API key to use when talking to the VictorOps API"""
-
-    url: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    url is the victorops url to use (without integration or routing key
-    default: https://alert.victorops.com/integrations/generic/20131114/alert/
-    """
-
-
-@dataclass(eq=False, repr=False)
-class PagerdutySettings(aristaproto.Message):
-    """
-    PagerdutySettings contain the settings for sending alerts to pagerduty
-    """
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the url to use when sending alerts to pagerduty"""
-
-
-@dataclass(eq=False, repr=False)
-class OpsgenieSettings(aristaproto.Message):
-    """OpsgenieSettings contain the settings for sending alerts to opsgenie"""
-
-    key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """key is the API key to use when talking to the OpsGenie API"""
-
-    url: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """url is the url to use when sending alerts to opsgenie"""
-
-
-@dataclass(eq=False, repr=False)
-class GoogleChatSettings(aristaproto.Message):
-    """
-    GoogleChatSettings contain the settings for sending alerts to google chat
-    """
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the url of the webhook to send alerts to"""
-
-
-@dataclass(eq=False, repr=False)
-class MsTeamsSettings(aristaproto.Message):
-    """MsTeamsSettings contain the settings for sending alerts to MS Teams"""
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the url of the webhook to send alerts to"""
-
-
-@dataclass(eq=False, repr=False)
-class WebhookSettings(aristaproto.Message):
-    """WebhookSettings contain the settings for sending alerts to a Webhook"""
-
-    azure_o_auth: "AzureOAuth" = aristaproto.message_field(1)
-    """
-    azure_o_auth used for auth when using Azure to authenticate webhook requests
-    """
-
-    oauth2_client_credentials: "OAuth2ClientCredentials" = aristaproto.message_field(2)
-    """
-    oauth2_client_credentials used for generic OAuth2/OIDC client-credentials auth for webhook
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MsGraphSendMailSettings(aristaproto.Message):
-    """
-    MsGraphSendMailSettings contain the settings for sending alerts to a Microsoft Graph sendMail
-    """
-
-    single_alert_per_email: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    single_alert_per_email configures the Alerter such that each alert generates a separate email
-    notification, the email will only have a single notification, the format will also be different
-    """
-
-    azure_o_auth: "AzureOAuth" = aristaproto.message_field(2)
-    """
-    azure_o_auth used for auth when using an Azure smtp server
-    uses auth_username
-    """
-
-    user_principal_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """user_principal_name is the user used to send from"""
-
-
-@dataclass(eq=False, repr=False)
-class SyslogSettings(aristaproto.Message):
-    """SyslogSettings contain the settings for sending alerts with syslog"""
-
-    network: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    network is the network protocol to use, default is \"udp\",
-    options also include: tcp,tcp4,tcp6,udp4,udp6
-    """
-
-    address: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """address is the network address to send syslog messages to"""
-
-    facility: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """
-    facility is the syslog facility 0-23 inc. This is the syslog facility as defined in RFC-3164
-    """
-
-    priorities: "Priorities" = aristaproto.message_field(4)
-    """
-    priorities describes how CVP severity maps to syslog priority
-    priority is a number between 0-7 inc. as defined in RFC-3164
-    """
-
-    tag: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    tag is the syslog TAG as described in RFC-3164, it is the prefix to all syslog messages
-    """
-
-    per_device: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
-    """
-    per_device allows message to optionally be sent per device,
-    if an event concerns two devices the behaviour is changed based on this option:
-      true: two messages are sent, one for each device
-      false: a single message is sent
-    """
-
-    use_tls: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
-    """
-    use_tls determines if the connection to the server should be secured with TLS
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Priorities(aristaproto.Message):
-    """Priorities is a mapping of CV event severities to syslog severities"""
-
-    critical: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_INT32)
-    """critical priority, default = 2 (Critical)"""
-
-    error: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """error priority, default = 3 (Error)"""
-
-    warn: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """warn priority, default = 4 (Warning)"""
-
-    info: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
-    """info priority, default = 6 (Informational)"""
-
-
-@dataclass(eq=False, repr=False)
-class CueData(aristaproto.Message):
-    """CueData contains additional cue-specific data"""
-
-    values: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
-    """
-    values can contain some additional data which is required by the cue specific provider
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CueSyslogSettings(aristaproto.Message):
-    """
-    CueSyslogSettings contain the settings for sending alerts with syslog for cue
-    """
-
-    network: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    network is the network protocol to use, default is \"udp\",
-    options also include: tcp,tcp4,tcp6,udp4,udp6
-    """
-
-    address: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """address is the ip address to send syslog messages to"""
-
-    port: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
-    """port is server's port to connect to"""
-
-    message_format: "CueSyslogMessageFormat" = aristaproto.enum_field(4)
-    """message_format defines the message format to use"""
-
-    append_bom_header: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
-    """
-    append_bom_header if true a BOM( Byte Order Mark ) will be appended to the outgoing message
-    BOM will tell the server that is receiving the messages, that the format is UTF8.
-    """
-
-    data: "CueData" = aristaproto.message_field(6)
-    """
-    data is additional data that maybe required for constructing the message or sending it
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SnmpSettings(aristaproto.Message):
-    """SNMPSettings contain the settings for sending alerts with SNMP"""
-
-    target: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """target is an ipv4 address to send messages to"""
-
-    port: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """port is the network port to target"""
-
-    transport: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    transport is the transport protocol to use (\"udp\" or \"tcp\"); if unset \"udp\" will be used
-    """
-
-    version: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
-    """
-    version is the SNMP version, v1, v2c and v3 are supported and can be set
-    with 1, 2 and 3 respectively
-    """
-
-    auth: "SnmpAuth" = aristaproto.message_field(5)
-    """auth is optional authentication settings"""
-
-    engine_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
-    """
-    engine_id is the engine ID that will be used by the Alerter
-    This should be a hexadecimal string, colon separators between bytes will be accepted when
-    writing, but will be absent when reading
-    optional: if excluded or left blank, this will be automatically generated
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SnmpAuth(aristaproto.Message):
-    """SNMPAuth contain authentication information for SNMP"""
-
-    community: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    community is the community string used for authentication in SNMPv1 and v2c
-    required if version < 3
-    """
-
-    username: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """username the username for SNMPv3 auth"""
-
-    security_level: "SnmpSecurityLevel" = aristaproto.enum_field(3)
-    """security_level the security level for SNMPv3"""
-
-    authentication_protocol: "SnmpAuthProtocol" = aristaproto.enum_field(4)
-    """
-    authentication_protocol is the protocol to use for authentication in SNMPv3
-    required for AUTH_NO_PRIV/AUTH_PRIV security levels
-    """
-
-    authentication_passphrase: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    authentication_passphrase is the passphrase to use for authentication in SNMPv3
-    required for AUTH_NO_PRIV/AUTH_PRIV security levels
-    """
-
-    privacy_protocol: "SnmpPrivProtocol" = aristaproto.enum_field(6)
-    """
-    privacy_protocol is the protocol to use for privacy in SNMPv3
-    required for AUTH_PRIV security level
-    """
-
-    privacy_passphrase: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """
-    privacy_passphrase is the passphrase to use for privacy in SNMPv3
-    required for AUTH_PRIV security level
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CueSnmpAuth(aristaproto.Message):
-    """CueSNMPAuth is the authentication"""
-
-    community: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    community is the community string used for authentication in SNMPv1 and v2c
-    required if version < 3
-    """
-
-    username: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """username the username for SNMPv3 auth"""
-
-    security_level: "SnmpSecurityLevel" = aristaproto.enum_field(3)
-    """security_level the security level for SNMPv3"""
-
-    authentication_protocol: "CueSnmpAuthProtocol" = aristaproto.enum_field(4)
-    """
-    authentication_protocol is the protocol to use for authentication in SNMPv3
-    required for AUTH_NO_PRIV/AUTH_PRIV security levels
-    """
-
-    authentication_passphrase: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    authentication_passphrase is the passphrase to use for authentication in SNMPv3
-    required for AUTH_NO_PRIV/AUTH_PRIV security levels
-    """
-
-    privacy_protocol: "CueSnmpPrivProtocol" = aristaproto.enum_field(6)
-    """
-    privacy_protocol is the protocol to use for privacy in SNMPv3
-    required for AUTH_PRIV security level
-    """
-
-    privacy_passphrase: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """
-    privacy_passphrase is the passphrase to use for privacy in SNMPv3
-    required for AUTH_PRIV security level
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CueSnmpSettings(aristaproto.Message):
-    """
-    CueSNMPSettings contain the settings for sending cue alerts with SNMP
-    """
-
-    target: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """target is an ipv4 address to send messages to"""
-
-    port: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
-    """port is the network port to target"""
-
-    transport: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """
-    transport is the transport protocol to use (\"udp\" or \"tcp\"); if unset \"udp\" will be used
-    """
-
-    version: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
-    """
-    version is the SNMP version, v2c and v3 are supported and can be set with 2 and 3 respectively
-    """
-
-    auth: "CueSnmpAuth" = aristaproto.message_field(5)
-    """auth is the optional authentication settings"""
-
-    data: "CueData" = aristaproto.message_field(6)
-    """
-    data is additional data that maybe required for constructing the message or sending it
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SendgridSettings(aristaproto.Message):
-    """
-    SendgridSettings contain the settings for sending emails via sendgrid
-    """
-
-    api_key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """api_key is the api key to use"""
-
-    from_: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """from is the email address to send from"""
-
-
-@dataclass(eq=False, repr=False)
-class CueSendgridSettings(aristaproto.Message):
-    """
-    CueSendgridSettings contain the settings for sending cue alerts to sendgrid
-    """
-
-    api_key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """api_key is the key used to connect to the sendgrid APIs"""
-
-    from_: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """from is the sender's address in the email sent"""
-
-
-@dataclass(eq=False, repr=False)
-class ZoomSettings(aristaproto.Message):
-    """ZoomSettings contain the settings for sending alerts to zoom"""
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the zoom incoming webhook URL to send messages to"""
-
-    verification_token: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """verification_token is the verification token to authenticate with"""
-
-
-@dataclass(eq=False, repr=False)
-class CvActionSettings(aristaproto.Message):
-    """
-    CvActionSettings contain the settings for sending alerts to CloudVision Action
-    """
-
-    pass
-
-
-@dataclass(eq=False, repr=False)
-class InhibitionSettings(aristaproto.Message):
-    """
-    InhibitionSettings allows certain event types to be suppressed while other event types are active
-    """
-
-    values: Dict[str, "EventList"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """
-    values is a map where the keys are event type which when active will suppress any events with
-    event types in the related EventList
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EventList(aristaproto.Message):
-    """EventList is a list of event types"""
-
-    event_types: "___fmp__.RepeatedString" = aristaproto.message_field(1)
-    """event_types contain the event types"""
-
-
-@dataclass(eq=False, repr=False)
-class Rules(aristaproto.Message):
-    """
-    Rules is a list of rules which dictates which events generate alerts for which broadcast groups
-    """
-
-    values: List["Rule"] = aristaproto.message_field(1)
-    """values contains the rules"""
-
-
-@dataclass(eq=False, repr=False)
-class Rule(aristaproto.Message):
-    """Rule is a rule to send to a certain broadcast group"""
-
-    sends_to: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    sends_to is the name of the broadcast group top send matching alerts to
-    """
-
-    match_criteria: "Matches" = aristaproto.message_field(2)
-    """
-    match_criteria is the criteria that an alert must match to be sent to the broadcast group
-    """
-
-    continue_checks: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    continue_checks if true, causes alerts matching this rule's criteria to continue
-    checking against other rules, allowing for additional matches. If false,
-    alerts matching this rule will not proceed with checking
-    """
-
-    comment: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """comment is a comment to include that will be displayed in the alert"""
-
-    suppress_for: timedelta = aristaproto.message_field(5)
-    """
-    suppress_for is a time duration that a rule will be debounced for after being called
-    """
-
-
-@dataclass(eq=False, repr=False)
-class Matches(aristaproto.Message):
-    """
-    Matches is a set of restrictions that must be satisfied for a rule to be matched
-    Empty fields are ignored for matching purposes. Condition contents are
-    OR'd and then AND'd with the other criteria
-    """
-
-    severities: "___fmp__.RepeatedString" = aristaproto.message_field(1)
-    """
-    severities is a list of severities to filter on,
-    if an event does not have one of these severities, it will not match
-    Valid values are DEBUG, INFO, WARNING, ERROR and CRITICAL
-    """
-
-    devices: "___fmp__.RepeatedString" = aristaproto.message_field(2)
-    """
-    devices is a list of device IDs to filter on,
-    if an event does not belong to one of these devices, it will not match
-    """
-
-    event_types: "___fmp__.RepeatedString" = aristaproto.message_field(3)
-    """
-    event_types is a list of event types to filter on,
-    if an event does not have one of these event types, it will not match
-    """
-
-    device_tags: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """
-    device_tags is a string tag query that is used to match on the event's device tags
-    """
-
-    intf_tags: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    intf_tags is a string tag query that is used to match on the event's interface tags
-    """
-
-    virtual_tags: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """
-    virtual_tags is a string tag query that is used to match on the event's virtual tags
-    """
-
-    rule_ids: "___fmp__.RepeatedString" = aristaproto.message_field(6)
-    """
-    rule_ids is a list of rule IDs to filter on,
-    if an event does not have one of these rule IDs, it will not match
-    """
-
-
-@dataclass(eq=False, repr=False)
-class BroadcastGroups(aristaproto.Message):
-    """BroadcastGroups is a collection of named broadcast groups"""
-
-    values: Dict[str, "BroadcastGroup"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
-    """
-    values is a map of user defined ids to broadcast groups. No restrictions to naming applies
-    """
-
-
-@dataclass(eq=False, repr=False)
-class BroadcastGroup(aristaproto.Message):
-    """
-    BroadcastGroup is a series of endpoints that alerts are sent to if routed there by a rule
-    No restriction on the number of types of endpoints that can be defined
-    """
-
-    email: "EmailEndpoints" = aristaproto.message_field(1)
-    """
-    email is a set of email endpoints to send alerts to as part of this group
-    """
-
-    webhook: "WebhookEndpoints" = aristaproto.message_field(2)
-    """
-    webhook is a set of webhook endpoints to send alerts to as part of this group
-    """
-
-    slack: "SlackEndpoints" = aristaproto.message_field(3)
-    """
-    slack is a set of slack endpoints to send alerts to as part of this group
-    """
-
-    opsgenie: "OpsgenieEndpoints" = aristaproto.message_field(4)
-    """
-    opsgenie is a set of opsgenie endpoints to send alerts to as part of this group
-    """
-
-    pushover: "PushoverEndpoints" = aristaproto.message_field(5)
-    """
-    pushover is a set of pushover endpoints to send alerts to as part of this group
-    """
-
-    pagerduty: "PagerdutyEndpoints" = aristaproto.message_field(6)
-    """
-    pagerduty is a set of pagerduty endpoints to send alerts to as part of this group
-    """
-
-    victorops: "VictorOpsEndpoints" = aristaproto.message_field(7)
-    """
-    victorops is a set of victorops endpoints to send alerts to as part of this group
-    """
-
-    gchat: "GoogleChatEndpoints" = aristaproto.message_field(8)
-    """
-    gchat is a set of google chat endpoints to send alerts to as part of this group
-    """
-
-    msteams: "MsTeamsEndpoints" = aristaproto.message_field(9)
-    """
-    msteams is a set of MS teams endpoints to send alerts to as part of this group
-    """
-
-    sendgrid: "SendgridEndpoints" = aristaproto.message_field(10)
-    """
-    sendgrid is a set of sendgrid endpoints to send alerts to as part of this group
-    """
-
-    syslog: "SyslogEndpoints" = aristaproto.message_field(11)
-    """
-    syslog is a set of syslog endpoints to send alerts to as part of this group
-    """
-
-    snmp: "SnmpEndpoints" = aristaproto.message_field(12)
-    """
-    snmp is a set of snmp endpoints to send alerts to as part of this group
-    """
-
-    cue_syslog: "CueSyslogEndpoints" = aristaproto.message_field(13)
-    """
-    cue_syslog is a set of cue syslog endpoints to send alerts to as part of this group
-    """
-
-    cue_snmp: "CueSnmpEndpoints" = aristaproto.message_field(14)
-    """
-    cue_snmp is a set of cue snmp endpoints to send alerts to as part of this group
-    """
-
-    cue_sendgrid: "CueSendgridEndpoints" = aristaproto.message_field(15)
-    """
-    cue_sendgrid is a set of cue sendgrid endpoints to send alerts to as part of this group
-    """
-
-    zoom: "ZoomEndpoints" = aristaproto.message_field(16)
-    """
-    zoom is a set of zoom endpoints to send alerts to as part of this group
-    """
-
-    ms_graph_send_mail: "MsGraphSendMailEndpoints" = aristaproto.message_field(17)
-    """
-    ms_graph_send_mail is a set of Microsoft Graph sendMail endpoints to send alerts to
-    as part of this group
-    """
-
-    cv_action: "CvActionEndpoints" = aristaproto.message_field(18)
-    """
-    cv_action is a set of Cloud Vision Portal Action endpoints to send alerts to as part
-    of this group. If the field is present during a Set call, all the Actions are set
-    to authenticate as the calling user.
-    """
-
-    sensor_name: Optional[str] = aristaproto.message_field(19, wraps=aristaproto.TYPE_STRING)
-    """
-    sensor_name is the name of the sensor that runs on prem for a CVaaS customer, that has its
-    own alert-sender running to send alerts to internal endpoints. This is an optional field and
-    if left empty the alerts are sent using the alert-sender on CVaaS.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EmailEndpoints(aristaproto.Message):
-    """EmailEndpoints is a set of email endpoints"""
-
-    values: List["EmailEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class WebhookEndpoints(aristaproto.Message):
-    """WebhookEndpoints is a set of webhook endpoints"""
-
-    values: List["WebhookEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class SlackEndpoints(aristaproto.Message):
-    """SlackEndpoints is a set of slack endpoints"""
-
-    values: List["SlackEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class OpsgenieEndpoints(aristaproto.Message):
-    """OpsgenieEndpoints is a set of opsgenie endpoints"""
-
-    values: List["OpsgenieEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class PushoverEndpoints(aristaproto.Message):
-    """PushoverEndpoints is a set of pushover endpoints"""
-
-    values: List["PushoverEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class PagerdutyEndpoints(aristaproto.Message):
-    """PagerdutyEndpoints is a set of pagerduty endpoints"""
-
-    values: List["PagerdutyEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class VictorOpsEndpoints(aristaproto.Message):
-    """VictorOpsEndpoints is a set of victorOps endpoints"""
-
-    values: List["VictorOpsEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class GoogleChatEndpoints(aristaproto.Message):
-    """GoogleChatEndpoints is a set of googleChat endpoints"""
-
-    values: List["GoogleChatEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class MsTeamsEndpoints(aristaproto.Message):
-    """MsTeamsEndpoints is a set of ms teams endpoints"""
-
-    values: List["MsTeamsEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class SendgridEndpoints(aristaproto.Message):
-    """SendgridEndpoints is a set of sendgrid endpoints"""
-
-    values: List["SendgridEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class CueSendgridEndpoints(aristaproto.Message):
-    """CueSendgridEndpoints is a set of cue sendgrid endpoints"""
-
-    values: List["CueSendgridEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class SyslogEndpoints(aristaproto.Message):
-    """SyslogEndpoints is a set of syslog endpoints"""
-
-    values: List["SyslogEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class CueSyslogEndpoints(aristaproto.Message):
-    """CueSyslogEndpoints is a set of cue syslog endpoints"""
-
-    values: List["CueSyslogEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class SnmpEndpoints(aristaproto.Message):
-    """SNMPEndpoints is a set of SNMP endpoints"""
-
-    values: List["SnmpEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class CueSnmpEndpoints(aristaproto.Message):
-    """CueSnmpEndpoints is a set of cue SNMP endpoints"""
-
-    values: List["CueSnmpEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class ZoomEndpoints(aristaproto.Message):
-    """ZoomEndpoints is a set of zoom endpoints"""
-
-    values: List["ZoomEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class MsGraphSendMailEndpoints(aristaproto.Message):
-    """
-    MsGraphSendMailEndpoints is a set of microsoft graph send mail endpoints
-    """
-
-    values: List["MsGraphSendMailEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class CvActionEndpoints(aristaproto.Message):
-    """CvActionEndpoints is a set of Cloud Vision Portal Action endpoints"""
-
-    values: List["CvActionEndpoint"] = aristaproto.message_field(1)
-    """values are the elements of the set"""
-
-
-@dataclass(eq=False, repr=False)
-class EmailEndpoint(aristaproto.Message):
-    """
-    EmailEndpoint contains the required information for an alert to be sent to an email endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    to: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    to address to send email to
-
-    Email does not have a http override
-    Email does not have a settings override
-    """
-
-
-@dataclass(eq=False, repr=False)
-class WebhookEndpoint(aristaproto.Message):
-    """
-    WebhookEndpoint contains the required information for an alert to be sent to a webhook endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
+    rules: "Rules | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    send_resolved send alerts when events are resolved along with when they are triggered
+    rules define how we route alerts to broadcast groups
     """
 
-    url: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """url is the url"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """http_override is the override of the global http settings"""
-
-    simple_output: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
-    """
-    simple_output is a boolean flag to control the JSON structure of the webhook body.
-    When false the output mimics the old alertmanager format.
-    When true the output is a simple array of json objects which each represent an event.
-    """
-
-    single_alert: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
-    """
-    single_alert is a boolean flag that will cause an individual webhook message to be sent per
-    alert when true.
-    """
-
-    settings_override: "WebhookSettings" = aristaproto.message_field(6)
-    """
-    settings_override is the override for the webhook global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MsGraphSendMailEndpoint(aristaproto.Message):
-    """
-    MsGraphSendMailEndpoint contains the required information for an alert to be sent to the
-    microsft graph send mail api
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    to: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """to address to send email to"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "MsGraphSendMailSettings" = aristaproto.message_field(4)
-    """
-    settings_override is the override for the microsoft graph send mail global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SlackEndpoint(aristaproto.Message):
-    """
-    SlackEndpoint contains the required information for an alert to be sent to a slack endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    http_override: "HttpSettings" = aristaproto.message_field(2)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "SlackSettings" = aristaproto.message_field(3)
-    """
-    settings_override is the override for the slack global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class OpsgenieEndpoint(aristaproto.Message):
-    """
-    OpsgenieEndpoint contains the required information for an alert to be sent to an opsgenie endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    http_override: "HttpSettings" = aristaproto.message_field(2)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "OpsgenieSettings" = aristaproto.message_field(3)
-    """
-    settings_override is the override for the opsgenie global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class PushoverEndpoint(aristaproto.Message):
-    """
-    PushoverEndpoint contains the required information for an alert to be sent to a pushover endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    token: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    token is the user's registered application's API token, see https://pushover.net/apps
-    """
-
-    user_key: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """user_key is the user's user key"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(4)
-    """
-    http_override is the override of the global http settings
-
-    Pushover does not have a settings override
-    """
-
-
-@dataclass(eq=False, repr=False)
-class PagerdutyEndpoint(aristaproto.Message):
-    """
-    PagerdutyEndpoint contains the required information for an alert to be sent to a pagerduty endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    routing_key: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """routing_key is the routing key for sending pagerduty alerts"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "PagerdutySettings" = aristaproto.message_field(4)
-    """
-    settings_override is the override for the pagerduty global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class VictorOpsEndpoint(aristaproto.Message):
-    """
-    VictorOpsEndpoint contains the required information for an alert to be sent to a victorOps endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    routing_key: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """routing_key is the PagerDuty integration key"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "VictoropsSettings" = aristaproto.message_field(4)
-    """
-    settings_override is the override for the victorops global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class GoogleChatEndpoint(aristaproto.Message):
-    """
-    GoogleChatEndpoint contains the required information for an alert to be sent to a google chat endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    http_override: "HttpSettings" = aristaproto.message_field(2)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "GoogleChatSettings" = aristaproto.message_field(3)
-    """
-    settings_override is the override for the google chat global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class MsTeamsEndpoint(aristaproto.Message):
-    """
-    MsTeamsEndpoint contains the required information for an alert to be sent to an ms teams endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    http_override: "HttpSettings" = aristaproto.message_field(2)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "MsTeamsSettings" = aristaproto.message_field(3)
-    """
-    settings_override is the override for the microsoft teams global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SendgridEndpoint(aristaproto.Message):
-    """
-    SendgridEndpoint contains the required information for an alert to be sent to a sendgrid endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    to: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """to address to send email to"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """http_override is the override of the global http settings"""
-
-
-@dataclass(eq=False, repr=False)
-class CueSendgridEndpoint(aristaproto.Message):
-    """
-    CueSendgridEndpoint contains the required information for an alert to be sent to a cue sendgrid endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    to: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """to address to send email to"""
-
-    http_override: "HttpSettings" = aristaproto.message_field(3)
-    """
-    http_override is the override of the global http settings
-    This overrides the value used in Settings message in the global alert config
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SyslogEndpoint(aristaproto.Message):
-    """
-    SyslogEndpoint contains the required information for an alert to be sent to a syslog endpoint
+    broadcast_groups: "BroadcastGroups | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    settings_override: "SyslogSettings" = aristaproto.message_field(2)
-    """
-    settings_override is the override for the microsoft teams global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CueSyslogEndpoint(aristaproto.Message):
-    """
-    CueSyslogEndpoint contains the required information for an alert to be sent to a cue syslog endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    settings_override: "CueSyslogSettings" = aristaproto.message_field(2)
-    """
-    settings_override is the override for the cue syslog global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class SnmpEndpoint(aristaproto.Message):
-    """
-    SNMPEndpoint contains the required information for an alert to be sent to an SNMP endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    settings_override: "SnmpSettings" = aristaproto.message_field(2)
-    """
-    settings_override is the override for the microsoft teams global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CueSnmpEndpoint(aristaproto.Message):
-    """
-    CueSNMPEndpoint contains the required information for an alert to be sent to a cue SNMP endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    settings_override: "CueSnmpSettings" = aristaproto.message_field(2)
-    """
-    settings_override is the override for the cue snmp global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ZoomEndpoint(aristaproto.Message):
-    """
-    ZoomEndpoint contains the required information for an alert to be sent to a zoom endpoint
-    """
-
-    send_resolved: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
-    """
-    send_resolved send alerts when events are resolved along with when they are triggered
-    """
-
-    http_override: "HttpSettings" = aristaproto.message_field(2)
-    """http_override is the override of the global http settings"""
-
-    settings_override: "ZoomSettings" = aristaproto.message_field(3)
-    """
-    settings_override is the override for the zoom global endpoint settings
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CvActionEndpoint(aristaproto.Message):
-    """
-    CvActionEndpoint contains the required information for an alert to run CloudVision Actions
-    (e.g. python scripts).
-    """
-
-    on_firing: "CvActions" = aristaproto.message_field(1)
-    """
-    on_firing are the CloudVision Actions to be executed sequentially, one after another,
-    when an event is triggered.
-    """
-
-    on_resolving: "CvActions" = aristaproto.message_field(2)
-    """
-    on_resolving are the CloudVision Actions to be executed sequentially, one after another,
-    when an event resolves.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CvActions(aristaproto.Message):
-    """
-    CvActions is a list of CloudVision Actions to be executed sequentially, one after another.
-    """
-
-    values: List["CvAction"] = aristaproto.message_field(1)
-    """values is a list of CloudVision Actions to be executed."""
-
-
-@dataclass(eq=False, repr=False)
-class CvAction(aristaproto.Message):
-    """CvAction is a single CloudVision Action to be executed."""
-
-    action_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """
-    action_id identifies the Action to run. Presently one cannot specify its arguments.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TemplateKey(aristaproto.Message):
-    """TemplateKey is used to identify templates for event notifications"""
-
-    template_type: "TemplateType" = aristaproto.enum_field(1)
-    """template_type is the enum value to match with the template"""
-
-
-@dataclass(eq=False, repr=False)
-class TemplateConfig(aristaproto.Message):
-    """TemplateConfig represents a template configuration"""
-
-    key: "TemplateKey" = aristaproto.message_field(1)
-    """key identifies which template the configuration is for"""
-
-    template: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    template is the string template value to be used
-    Templates need to be compatible with their respective parsers
-    Message templates are read and parsed by https://golang.org/pkg/text/template/
-    Html templates are read and parsed by https://golang.org/pkg/html/template/
-    Templates must output valid JSON for certain templates
-    Templates must not fail for any valid input
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DefaultTemplate(aristaproto.Message):
-    """
-    DefaultTemplate is the system default template which is used when no user template has been set
-    """
-
-    key: "TemplateKey" = aristaproto.message_field(1)
-    """key identifies which template the configuration is for"""
-
-    template: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """
-    template is the string template value to be used
-    Templates need to be compatible with their respective parsers
-    Message templates are read and parsed by https://golang.org/pkg/text/template/
-    Html templates are read and parsed by https://golang.org/pkg/html/template/
-    Templates must output valid JSON for certain templates
-    Templates must not fail for any valid input
-    """
-
-    multi_alert: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
-    """
-    multi_alert is true if this template uses a multiple alert context and false if a single
-    alert context is used.
-    """
-
-    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """description is a description of the template."""
-
-    external_documentation: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
-    """
-    external_documentation is a url to any relevant external documentation, or \"\" if there is no
-    relevant documentation.
-    """
-
-    output_format: "TemplateOutput" = aristaproto.enum_field(6)
-    """
-    output_format is the expected output format of this template
-    Any submitted template will be expected to output text with valid formatting for any input or
-    may fail validation.
-    """
-
-    display_name: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
-    """
-    display_name is the name that can be displayed to the user for this particular template type
+    broadcast_groups are groups of endpoints that alerts are sent to
     """
 
 
-@dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
-    """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertResponse(aristaproto.Message):
-    value: "Alert" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    Alert instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each Alert at end.
-        * Each Alert response is fully-specified (all fields set).
-      * start: Returns the state of each Alert at start, followed by updates until now.
-        * Each Alert response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Alert at start, followed by updates
-        until end.
-        * Each Alert response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertStreamResponse(aristaproto.Message):
-    value: "Alert" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this Alert's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the Alert value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.alert.v1", "AlertConfig", AlertConfig)
 
 
 @dataclass(eq=False, repr=False)
 class AlertConfigRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "AlertConfigRequest", AlertConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AlertConfigResponse(aristaproto.Message):
-    value: "AlertConfig" = aristaproto.message_field(1)
+    value: "AlertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2396,16 +1076,52 @@ class AlertConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     AlertConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "AlertConfigResponse", AlertConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AlertConfigSetRequest(aristaproto.Message):
+    value: "AlertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    AlertConfig carries the value to set into the datastore.
+    See the documentation on the AlertConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AlertConfigSetRequest", AlertConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AlertConfigSetResponse(aristaproto.Message):
+    value: "AlertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the AlertConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AlertConfigSetResponse", AlertConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
 class AlertConfigStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2423,19 +1139,24 @@ class AlertConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "AlertConfigStreamRequest", AlertConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class AlertConfigStreamResponse(aristaproto.Message):
-    value: "AlertConfig" = aristaproto.message_field(1)
+    value: "AlertConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this AlertConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this AlertConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the AlertConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -2444,51 +1165,774 @@ class AlertConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class AlertConfigSetRequest(aristaproto.Message):
-    value: "AlertConfig" = aristaproto.message_field(1)
-    """
-    AlertConfig carries the value to set into the datastore.
-    See the documentation on the AlertConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.alert.v1", "AlertConfigStreamResponse", AlertConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class AlertConfigSetResponse(aristaproto.Message):
-    value: "AlertConfig" = aristaproto.message_field(1)
+class AlertRequest(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Value carries all the values given in the AlertConfigSetRequest as well
-    as any server-generated values.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+default_message_pool.register_message("arista.alert.v1", "AlertRequest", AlertRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AlertResponse(aristaproto.Message):
+    value: "Alert | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    Alert instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AlertResponse", AlertResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AlertStreamRequest(aristaproto.Message):
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each Alert at end.
+        * Each Alert response is fully-specified (all fields set).
+      * start: Returns the state of each Alert at start, followed by updates until now.
+        * Each Alert response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Alert at start, followed by updates
+        until end.
+        * Each Alert response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AlertStreamRequest", AlertStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class AlertStreamResponse(aristaproto.Message):
+    value: "Alert | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this Alert's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the Alert value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AlertStreamResponse", AlertStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class AzureOAuth(aristaproto.Message):
+    """
+    AzureOAuth contains the settings for authenticating against Azure using OAuth2
+    """
+
+    client_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    client_id of the Azure environment
+    """
+
+    tenant_id: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    tenant_id of the Azure environment
+    """
+
+    client_secret: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    client_secret is a user generated secret key used for auth
+    """
+
+    auth_uri: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    auth_uri is the URI used for OAuth
+    this should always be https://login.microsoftonline.com/ unless using a very custom
+    set up, where the Azure enviroment is not running on microsoft servers
+    """
+
+    scopes: "___fmp__.RepeatedString | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    scopes are the scopes that auth is granted for
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "AzureOAuth", AzureOAuth)
+
+
+@dataclass(eq=False, repr=False)
+class BroadcastGroup(aristaproto.Message):
+    """
+    BroadcastGroup is a series of endpoints that alerts are sent to if routed there by a rule
+    No restriction on the number of types of endpoints that can be defined
+    """
+
+    email: "EmailEndpoints | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    email is a set of email endpoints to send alerts to as part of this group
+    """
+
+    webhook: "WebhookEndpoints | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    webhook is a set of webhook endpoints to send alerts to as part of this group
+    """
+
+    slack: "SlackEndpoints | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    slack is a set of slack endpoints to send alerts to as part of this group
+    """
+
+    opsgenie: "OpsgenieEndpoints | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    opsgenie is a set of opsgenie endpoints to send alerts to as part of this group
+    """
+
+    pushover: "PushoverEndpoints | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    pushover is a set of pushover endpoints to send alerts to as part of this group
+    """
+
+    pagerduty: "PagerdutyEndpoints | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    pagerduty is a set of pagerduty endpoints to send alerts to as part of this group
+    """
+
+    victorops: "VictorOpsEndpoints | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    victorops is a set of victorops endpoints to send alerts to as part of this group
+    """
+
+    gchat: "GoogleChatEndpoints | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    gchat is a set of google chat endpoints to send alerts to as part of this group
+    """
+
+    msteams: "MsTeamsEndpoints | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    msteams is a set of MS teams endpoints to send alerts to as part of this group
+    """
+
+    sendgrid: "SendgridEndpoints | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    sendgrid is a set of sendgrid endpoints to send alerts to as part of this group
+    """
+
+    syslog: "SyslogEndpoints | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    syslog is a set of syslog endpoints to send alerts to as part of this group
+    """
+
+    snmp: "SnmpEndpoints | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    snmp is a set of snmp endpoints to send alerts to as part of this group
+    """
+
+    cue_syslog: "CueSyslogEndpoints | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_syslog is a set of cue syslog endpoints to send alerts to as part of this group
+    """
+
+    cue_snmp: "CueSnmpEndpoints | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_snmp is a set of cue snmp endpoints to send alerts to as part of this group
+    """
+
+    cue_sendgrid: "CueSendgridEndpoints | None" = aristaproto.field(15, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_sendgrid is a set of cue sendgrid endpoints to send alerts to as part of this group
+    """
+
+    zoom: "ZoomEndpoints | None" = aristaproto.field(16, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    zoom is a set of zoom endpoints to send alerts to as part of this group
+    """
+
+    ms_graph_send_mail: "MsGraphSendMailEndpoints | None" = aristaproto.field(17, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ms_graph_send_mail is a set of Microsoft Graph sendMail endpoints to send alerts to
+    as part of this group
+    """
+
+    cv_action: "CvActionEndpoints | None" = aristaproto.field(18, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cv_action is a set of Cloud Vision Portal Action endpoints to send alerts to as part
+    of this group. If the field is present during a Set call, all the Actions are set
+    to authenticate as the calling user.
+    """
+
+    sensor_name: "str | None" = aristaproto.field(19, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sensor_name is the name of the sensor that runs on prem for a CVaaS customer, that has its
+    own alert-sender running to send alerts to internal endpoints. This is an optional field and
+    if left empty the alerts are sent using the alert-sender on CVaaS.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "BroadcastGroup", BroadcastGroup)
+
+
+@dataclass(eq=False, repr=False)
+class BroadcastGroups(aristaproto.Message):
+    """
+    BroadcastGroups is a collection of named broadcast groups
+    """
+
+    values: "dict[str, BroadcastGroup]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is a map of user defined ids to broadcast groups. No restrictions to naming applies
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "BroadcastGroups", BroadcastGroups)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigError(aristaproto.Message):
+    """
+    ConfigError is an error caused by an invalid config being rejected by the backend
+    """
+
+    path: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    path is the 'path' to the invalid config element,
+    eg: path.userPathName.email_configs[1].to =
+    the 'to' field of the second email config of the 'userPathName' broadcast_group
+    """
+
+    error_type: "ConfigErrorType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: ConfigErrorType(0))
+    """
+    error_type is the type of error, this allows custom handling of different error types
+    """
+
+    error: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error is a user-friendly error message
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "ConfigError", ConfigError)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigErrors(aristaproto.Message):
+    """
+    ConfigErrors is a list of configuration-related errors
+    """
+
+    values: "list[ConfigError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of errors
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "ConfigErrors", ConfigErrors)
+
+
+@dataclass(eq=False, repr=False)
+class CueData(aristaproto.Message):
+    """
+    CueData contains additional cue-specific data
+    """
+
+    values: "dict[str, str]" = aristaproto.field(1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_STRING))
+    """
+    values can contain some additional data which is required by the cue specific provider
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueData", CueData)
+
+
+@dataclass(eq=False, repr=False)
+class CueSendgridEndpoint(aristaproto.Message):
+    """
+    CueSendgridEndpoint contains the required information for an alert to be sent to a cue sendgrid endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    to: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    to address to send email to
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    This overrides the value used in Settings message in the global alert config
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSendgridEndpoint", CueSendgridEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class CueSendgridEndpoints(aristaproto.Message):
+    """
+    CueSendgridEndpoints is a set of cue sendgrid endpoints
+    """
+
+    values: "list[CueSendgridEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSendgridEndpoints", CueSendgridEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class CueSendgridSettings(aristaproto.Message):
+    """
+    CueSendgridSettings contain the settings for sending cue alerts to sendgrid
+    """
+
+    api_key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    api_key is the key used to connect to the sendgrid APIs
+    """
+
+    from_: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    from is the sender's address in the email sent
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSendgridSettings", CueSendgridSettings)
+
+
+@dataclass(eq=False, repr=False)
+class CueSnmpAuth(aristaproto.Message):
+    """
+    CueSNMPAuth is the authentication
+    """
+
+    community: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    community is the community string used for authentication in SNMPv1 and v2c
+    required if version < 3
+    """
+
+    username: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    username the username for SNMPv3 auth
+    """
+
+    security_level: "SnmpSecurityLevel" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: SnmpSecurityLevel(0))
+    """
+    security_level the security level for SNMPv3
+    """
+
+    authentication_protocol: "CueSnmpAuthProtocol" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: CueSnmpAuthProtocol(0))
+    """
+    authentication_protocol is the protocol to use for authentication in SNMPv3
+    required for AUTH_NO_PRIV/AUTH_PRIV security levels
+    """
+
+    authentication_passphrase: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    authentication_passphrase is the passphrase to use for authentication in SNMPv3
+    required for AUTH_NO_PRIV/AUTH_PRIV security levels
+    """
+
+    privacy_protocol: "CueSnmpPrivProtocol" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: CueSnmpPrivProtocol(0))
+    """
+    privacy_protocol is the protocol to use for privacy in SNMPv3
+    required for AUTH_PRIV security level
+    """
+
+    privacy_passphrase: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    privacy_passphrase is the passphrase to use for privacy in SNMPv3
+    required for AUTH_PRIV security level
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSNMPAuth", CueSnmpAuth)
+
+
+@dataclass(eq=False, repr=False)
+class CueSnmpEndpoint(aristaproto.Message):
+    """
+    CueSNMPEndpoint contains the required information for an alert to be sent to a cue SNMP endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    settings_override: "CueSnmpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the cue snmp global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSNMPEndpoint", CueSnmpEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class CueSnmpEndpoints(aristaproto.Message):
+    """
+    CueSnmpEndpoints is a set of cue SNMP endpoints
+    """
+
+    values: "list[CueSnmpEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSnmpEndpoints", CueSnmpEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class CueSnmpSettings(aristaproto.Message):
+    """
+    CueSNMPSettings contain the settings for sending cue alerts with SNMP
+    """
+
+    target: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    target is an ipv4 address to send messages to
+    """
+
+    port: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    port is the network port to target
+    """
+
+    transport: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    transport is the transport protocol to use ("udp" or "tcp"); if unset "udp" will be used
+    """
+
+    version: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    version is the SNMP version, v2c and v3 are supported and can be set with 2 and 3 respectively
+    """
+
+    auth: "CueSnmpAuth | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    auth is the optional authentication settings
+    """
+
+    data: "CueData | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    data is additional data that maybe required for constructing the message or sending it
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSNMPSettings", CueSnmpSettings)
+
+
+@dataclass(eq=False, repr=False)
+class CueSyslogEndpoint(aristaproto.Message):
+    """
+    CueSyslogEndpoint contains the required information for an alert to be sent to a cue syslog endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    settings_override: "CueSyslogSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the cue syslog global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSyslogEndpoint", CueSyslogEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class CueSyslogEndpoints(aristaproto.Message):
+    """
+    CueSyslogEndpoints is a set of cue syslog endpoints
+    """
+
+    values: "list[CueSyslogEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSyslogEndpoints", CueSyslogEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class CueSyslogSettings(aristaproto.Message):
+    """
+    CueSyslogSettings contain the settings for sending alerts with syslog for cue
+    """
+
+    network: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    network is the network protocol to use, default is "udp",
+    options also include: tcp,tcp4,tcp6,udp4,udp6
+    """
+
+    address: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    address is the ip address to send syslog messages to
+    """
+
+    port: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    port is server's port to connect to
+    """
+
+    message_format: "CueSyslogMessageFormat" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: CueSyslogMessageFormat(0))
+    """
+    message_format defines the message format to use
+    """
+
+    append_bom_header: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    append_bom_header if true a BOM( Byte Order Mark ) will be appended to the outgoing message
+    BOM will tell the server that is receiving the messages, that the format is UTF8.
+    """
+
+    data: "CueData | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    data is additional data that maybe required for constructing the message or sending it
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CueSyslogSettings", CueSyslogSettings)
+
+
+@dataclass(eq=False, repr=False)
+class CvAction(aristaproto.Message):
+    """
+    CvAction is a single CloudVision Action to be executed.
+    """
+
+    action_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    action_id identifies the Action to run. Presently one cannot specify its arguments.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CvAction", CvAction)
+
+
+@dataclass(eq=False, repr=False)
+class CvActionEndpoint(aristaproto.Message):
+    """
+    CvActionEndpoint contains the required information for an alert to run CloudVision Actions
+    (e.g. python scripts).
+    """
+
+    on_firing: "CvActions | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    on_firing are the CloudVision Actions to be executed sequentially, one after another,
+    when an event is triggered.
+    """
+
+    on_resolving: "CvActions | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    on_resolving are the CloudVision Actions to be executed sequentially, one after another,
+    when an event resolves.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CvActionEndpoint", CvActionEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class CvActionEndpoints(aristaproto.Message):
+    """
+    CvActionEndpoints is a set of Cloud Vision Portal Action endpoints
+    """
+
+    values: "list[CvActionEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CvActionEndpoints", CvActionEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class CvActions(aristaproto.Message):
+    """
+    CvActions is a list of CloudVision Actions to be executed sequentially, one after another.
+    """
+
+    values: "list[CvAction]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of CloudVision Actions to be executed.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "CvActions", CvActions)
+
+
+@dataclass(eq=False, repr=False)
+class CvActionSettings(aristaproto.Message):
+    """
+    CvActionSettings contain the settings for sending alerts to CloudVision Action
+    """
+
+    pass
+
+
+default_message_pool.register_message("arista.alert.v1", "CvActionSettings", CvActionSettings)
+
+
+@dataclass(eq=False, repr=False)
+class DefaultTemplate(aristaproto.Message):
+    """
+    DefaultTemplate is the system default template which is used when no user template has been set
+    """
+
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies which template the configuration is for
+    """
+
+    template: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    template is the string template value to be used
+    Templates need to be compatible with their respective parsers
+    Message templates are read and parsed by https://golang.org/pkg/text/template/
+    Html templates are read and parsed by https://golang.org/pkg/html/template/
+    Templates must output valid JSON for certain templates
+    Templates must not fail for any valid input
+    """
+
+    multi_alert: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    multi_alert is true if this template uses a multiple alert context and false if a single
+    alert context is used.
+    """
+
+    description: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    description is a description of the template.
+    """
+
+    external_documentation: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    external_documentation is a url to any relevant external documentation, or "" if there is no
+    relevant documentation.
+    """
+
+    output_format: "TemplateOutput" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: TemplateOutput(0))
+    """
+    output_format is the expected output format of this template
+    Any submitted template will be expected to output text with valid formatting for any input or
+    may fail validation.
+    """
+
+    display_name: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    display_name is the name that can be displayed to the user for this particular template type
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplate", DefaultTemplate)
+
+
+@dataclass(eq=False, repr=False)
+class DefaultTemplateBatchedStreamRequest(aristaproto.Message):
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each DefaultTemplate at end.
+        * Each DefaultTemplate response is fully-specified (all fields set).
+      * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
+        * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DefaultTemplate at start, followed by updates
+        until end.
+        * Each DefaultTemplate response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateBatchedStreamRequest", DefaultTemplateBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class DefaultTemplateBatchedStreamResponse(aristaproto.Message):
+    responses: "list[DefaultTemplateStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateBatchedStreamResponse", DefaultTemplateBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
 class DefaultTemplateRequest(aristaproto.Message):
-    key: "TemplateKey" = aristaproto.message_field(1)
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key uniquely identifies a DefaultTemplate instance to retrieve.
     This value must be populated.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateRequest", DefaultTemplateRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DefaultTemplateResponse(aristaproto.Message):
-    value: "DefaultTemplate" = aristaproto.message_field(1)
+    value: "DefaultTemplate | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2496,26 +1940,33 @@ class DefaultTemplateResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     DefaultTemplate instance in this response.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateResponse", DefaultTemplateResponse)
+
+
 @dataclass(eq=False, repr=False)
 class DefaultTemplateSomeRequest(aristaproto.Message):
-    keys: List["TemplateKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+    keys: "list[TemplateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateSomeRequest", DefaultTemplateSomeRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DefaultTemplateSomeResponse(aristaproto.Message):
-    value: "DefaultTemplate" = aristaproto.message_field(1)
+    value: "DefaultTemplate | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -2523,22 +1974,25 @@ class DefaultTemplateSomeResponse(aristaproto.Message):
     set to default values.
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
     Error is an optional field.
     It should be filled when there is an error in the GetSome process.
     """
 
-    time: datetime = aristaproto.message_field(3)
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     DefaultTemplate instance in this response.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateSomeResponse", DefaultTemplateSomeResponse)
+
+
 @dataclass(eq=False, repr=False)
 class DefaultTemplateStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2556,21 +2010,24 @@ class DefaultTemplateStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateStreamRequest", DefaultTemplateStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class DefaultTemplateStreamResponse(aristaproto.Message):
-    value: "DefaultTemplate" = aristaproto.message_field(1)
+    value: "DefaultTemplate | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time holds the timestamp of this DefaultTemplate's last modification.
     """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the DefaultTemplate value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -2579,112 +2036,929 @@ class DefaultTemplateStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class DefaultTemplateBatchedStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each DefaultTemplate at end.
-        * Each DefaultTemplate response is fully-specified (all fields set).
-      * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
-        * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each DefaultTemplate at start, followed by updates
-        until end.
-        * Each DefaultTemplate response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.alert.v1", "DefaultTemplateStreamResponse", DefaultTemplateStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class DefaultTemplateBatchedStreamResponse(aristaproto.Message):
-    responses: List["DefaultTemplateStreamResponse"] = aristaproto.message_field(1)
+class EmailEndpoint(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    EmailEndpoint contains the required information for an alert to be sent to an email endpoint
     """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    to: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    to address to send email to
+
+    Email does not have a http override
+    Email does not have a settings override
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EmailEndpoint", EmailEndpoint)
 
 
 @dataclass(eq=False, repr=False)
-class SenderStatusRequest(aristaproto.Message):
-    key: "SenderStatusKey" = aristaproto.message_field(1)
+class EmailEndpoints(aristaproto.Message):
     """
-    Key uniquely identifies a SenderStatus instance to retrieve.
-    This value must be populated.
+    EmailEndpoints is a set of email endpoints
     """
 
-    time: datetime = aristaproto.message_field(2)
+    values: "list[EmailEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    values are the elements of the set
     """
 
 
-@dataclass(eq=False, repr=False)
-class SenderStatusResponse(aristaproto.Message):
-    value: "SenderStatus" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    SenderStatus instance in this response.
-    """
+default_message_pool.register_message("arista.alert.v1", "EmailEndpoints", EmailEndpoints)
 
 
 @dataclass(eq=False, repr=False)
-class SenderStatusSomeRequest(aristaproto.Message):
-    keys: List["SenderStatusKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class EmailSettings(aristaproto.Message):
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    EmailSettings contain the settings for the sending of emails
     """
+
+    from_: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    from is the email address to send from
+    """
+
+    smarthost: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    smarthost is the hostname and port of the SMTP server
+    """
+
+    auth_username: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    auth_username the username to use when sending emails
+    required for all auth methods
+    """
+
+    auth_password: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    auth_password the password to use when sending emails
+    """
+
+    require_tls: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    require_tls always use TLS connections when sending emails
+    """
+
+    single_alert_per_email: "bool | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    single_alert_per_email configures the Alerter such that each alert generates a separate email
+    notification, the email will only have a single notification, the format will also be different
+    """
+
+    azure_o_auth: "AzureOAuth | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    azure_o_auth used for auth when using an Azure smtp server
+    uses auth_username, scopes is not required as we use https://outlook.office365.com/.default
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EmailSettings", EmailSettings)
 
 
 @dataclass(eq=False, repr=False)
-class SenderStatusSomeResponse(aristaproto.Message):
-    value: "SenderStatus" = aristaproto.message_field(1)
+class EndpointError(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    EndpointError is an error caused by a failure to send alert(s) for any reason
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    endpoint_type: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
+    endpoint_type indicates the type of endpoint which failed,
+    or unknown if not endpoint-specific (eg: slack, opsgenie)
     """
 
-    time: datetime = aristaproto.message_field(3)
+    broadcast_group_name: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    SenderStatus instance in this response.
+    broadcast_group_name is the name of the broadcast group which was being used,
+    empty string if not group specific
     """
+
+    config_index: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    config_index is the index of the config on the broadcast group or -1 if not applicable
+    eg: if there are two email config in one broadcast group, then the indices for each are 0 and 1
+    note that these are done per type, so only counting email/slack/...
+    """
+
+    error_type: "EndpointErrorType" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: EndpointErrorType(0))
+    """
+    error_type is the type of error, this allows custom handling of different error types
+    """
+
+    error: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error is a user-friendly error message
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EndpointError", EndpointError)
 
 
 @dataclass(eq=False, repr=False)
-class SenderStatusStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SenderStatus"] = aristaproto.message_field(1)
+class EndpointErrors(aristaproto.Message):
+    """
+    EndpointErrors is a set of errors related to sending of alerts
+    """
+
+    values: "list[EndpointError]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is the list of errors
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EndpointErrors", EndpointErrors)
+
+
+@dataclass(eq=False, repr=False)
+class EventFilter(aristaproto.Message):
+    """
+    EventFilter defines the criteria to filter response data based on the contained event
+    identifiers.
+    If EventFilter is nil, it's a pass-through filter.
+    """
+
+    events: "EventIdentifiers | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    events is a slice of EventIdentifiers that are matched against the EventIdentifiers in
+    a SenderStatus message.
+    Filter passes if any EventIdentifier from events match any EventIdentifier in SenderStatus.
+    Nil fields are considered pass-through.
+    """
+
+    is_test: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_test specifies filtering option with regard to sender status being triggered by a test event
+    or non-test event.
+    When set, it will discard events from status based on matching the IsTest field.
+    If not set, returns all.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EventFilter", EventFilter)
+
+
+@dataclass(eq=False, repr=False)
+class EventIdentifier(aristaproto.Message):
+    """
+    EventIdentifier consists of the minimal information required
+    to uniquely match which event triggered an alert and due to which rule.
+    """
+
+    key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    key is the event key.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    time is the time of event generation.
+    """
+
+    alerter_rule_index: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    alerter_rule_index is the index of an alerter rule (don't confuse with generation rule)
+    that was used to match the receiver and event.
+    The rule index changes dynamically whenever a config change is issued.
+    """
+
+    firing: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    firing is true if event is ongoing and false if event has finished.
+    """
+
+    is_test: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    is_test is true if event was initiated via test notification page.
+    """
+
+    event_type: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    event_type is the type of the event.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EventIdentifier", EventIdentifier)
+
+
+@dataclass(eq=False, repr=False)
+class EventIdentifiers(aristaproto.Message):
+    """
+    EventIdentifiers is a list of EventIdentifier messages.
+    """
+
+    values: "list[EventIdentifier]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values is a list of event identifiers.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EventIdentifiers", EventIdentifiers)
+
+
+@dataclass(eq=False, repr=False)
+class EventList(aristaproto.Message):
+    """
+    EventList is a list of event types
+    """
+
+    event_types: "___fmp__.RepeatedString | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    event_types contain the event types
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "EventList", EventList)
+
+
+@dataclass(eq=False, repr=False)
+class GoogleChatEndpoint(aristaproto.Message):
+    """
+    GoogleChatEndpoint contains the required information for an alert to be sent to a google chat endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "GoogleChatSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the google chat global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "GoogleChatEndpoint", GoogleChatEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class GoogleChatEndpoints(aristaproto.Message):
+    """
+    GoogleChatEndpoints is a set of googleChat endpoints
+    """
+
+    values: "list[GoogleChatEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "GoogleChatEndpoints", GoogleChatEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class GoogleChatSettings(aristaproto.Message):
+    """
+    GoogleChatSettings contain the settings for sending alerts to google chat
+    """
+
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url of the webhook to send alerts to
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "GoogleChatSettings", GoogleChatSettings)
+
+
+@dataclass(eq=False, repr=False)
+class HeaderValues(aristaproto.Message):
+    """
+    HeaderValues is a set of values for this header
+    """
+
+    values: "list[str]" = aristaproto.field(1, aristaproto.TYPE_STRING, repeated=True)
+    """
+    values is the header values
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "HeaderValues", HeaderValues)
+
+
+@dataclass(eq=False, repr=False)
+class HttpHeaders(aristaproto.Message):
+    """
+    HttpHeaders is a set of http headers
+    """
+
+    values: "dict[str, HeaderValues]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is a map of http header names to values
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "HttpHeaders", HttpHeaders)
+
+
+@dataclass(eq=False, repr=False)
+class HttpSettings(aristaproto.Message):
+    """
+    HttpSettings are the settings to be used when sending various message over a http connection
+    """
+
+    username: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    username is the username to use when connecting to the http proxy
+    """
+
+    password: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    password is the password to use when connecting to the http proxy
+    """
+
+    proxy_url: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    proxy_url is the url for the http proxy
+    """
+
+    custom_headers: "HttpHeaders | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    custom_headers is custom http headers to be used along with the default headers
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "HttpSettings", HttpSettings)
+
+
+@dataclass(eq=False, repr=False)
+class InhibitionSettings(aristaproto.Message):
+    """
+    InhibitionSettings allows certain event types to be suppressed while other event types are active
+    """
+
+    values: "dict[str, EventList]" = aristaproto.field(
+        1, aristaproto.TYPE_MAP, map_meta=aristaproto.map_meta(aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    )
+    """
+    values is a map where the keys are event type which when active will suppress any events with
+    event types in the related EventList
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "InhibitionSettings", InhibitionSettings)
+
+
+@dataclass(eq=False, repr=False)
+class Matches(aristaproto.Message):
+    """
+    Matches is a set of restrictions that must be satisfied for a rule to be matched
+    Empty fields are ignored for matching purposes. Condition contents are
+    OR'd and then AND'd with the other criteria
+    """
+
+    severities: "___fmp__.RepeatedString | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    severities is a list of severities to filter on,
+    if an event does not have one of these severities, it will not match
+    Valid values are DEBUG, INFO, WARNING, ERROR and CRITICAL
+    """
+
+    devices: "___fmp__.RepeatedString | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    devices is a list of device IDs to filter on,
+    if an event does not belong to one of these devices, it will not match
+    """
+
+    event_types: "___fmp__.RepeatedString | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    event_types is a list of event types to filter on,
+    if an event does not have one of these event types, it will not match
+    """
+
+    device_tags: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    device_tags is a string tag query that is used to match on the event's device tags
+    """
+
+    intf_tags: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    intf_tags is a string tag query that is used to match on the event's interface tags
+    """
+
+    virtual_tags: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    virtual_tags is a string tag query that is used to match on the event's virtual tags
+    """
+
+    rule_ids: "___fmp__.RepeatedString | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    rule_ids is a list of rule IDs to filter on,
+    if an event does not have one of these rule IDs, it will not match
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Matches", Matches)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MetaResponse", MetaResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MsGraphSendMailEndpoint(aristaproto.Message):
+    """
+    MsGraphSendMailEndpoint contains the required information for an alert to be sent to the
+    microsft graph send mail api
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    to: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    to address to send email to
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "MsGraphSendMailSettings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the microsoft graph send mail global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsGraphSendMailEndpoint", MsGraphSendMailEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class MsGraphSendMailEndpoints(aristaproto.Message):
+    """
+    MsGraphSendMailEndpoints is a set of microsoft graph send mail endpoints
+    """
+
+    values: "list[MsGraphSendMailEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsGraphSendMailEndpoints", MsGraphSendMailEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class MsGraphSendMailSettings(aristaproto.Message):
+    """
+    MsGraphSendMailSettings contain the settings for sending alerts to a Microsoft Graph sendMail
+    """
+
+    single_alert_per_email: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    single_alert_per_email configures the Alerter such that each alert generates a separate email
+    notification, the email will only have a single notification, the format will also be different
+    """
+
+    azure_o_auth: "AzureOAuth | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    azure_o_auth used for auth when using an Azure smtp server
+    uses auth_username
+    """
+
+    user_principal_name: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user_principal_name is the user used to send from
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsGraphSendMailSettings", MsGraphSendMailSettings)
+
+
+@dataclass(eq=False, repr=False)
+class MsTeamsEndpoint(aristaproto.Message):
+    """
+    MsTeamsEndpoint contains the required information for an alert to be sent to an ms teams endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "MsTeamsSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the microsoft teams global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsTeamsEndpoint", MsTeamsEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class MsTeamsEndpoints(aristaproto.Message):
+    """
+    MsTeamsEndpoints is a set of ms teams endpoints
+    """
+
+    values: "list[MsTeamsEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsTeamsEndpoints", MsTeamsEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class MsTeamsSettings(aristaproto.Message):
+    """
+    MsTeamsSettings contain the settings for sending alerts to MS Teams
+    """
+
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url of the webhook to send alerts to
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "MsTeamsSettings", MsTeamsSettings)
+
+
+@dataclass(eq=False, repr=False)
+class OAuth2ClientCredentials(aristaproto.Message):
+    """
+    OAuth2ClientCredentials contains generic settings for authenticating webhook
+    requests using the OAuth2 client credentials (including OpenID Connect) flow.
+    """
+
+    client_id: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    client_id of the OAuth2 client
+    """
+
+    client_secret: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    client_secret for the OAuth2 client
+    """
+
+    token_url: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    token_url is the full URL of the OAuth2/OIDC token endpoint
+    e.g. https://example.com/oauth2/token
+    """
+
+    scope: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    scope is the optional OAuth2 scope string requested for the access token.
+    Multiple scopes can be defined by separating them with spaces,
+    e.g. "scope1 scope2 scope3".
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "OAuth2ClientCredentials", OAuth2ClientCredentials)
+
+
+@dataclass(eq=False, repr=False)
+class OpsgenieEndpoint(aristaproto.Message):
+    """
+    OpsgenieEndpoint contains the required information for an alert to be sent to an opsgenie endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "OpsgenieSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the opsgenie global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "OpsgenieEndpoint", OpsgenieEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class OpsgenieEndpoints(aristaproto.Message):
+    """
+    OpsgenieEndpoints is a set of opsgenie endpoints
+    """
+
+    values: "list[OpsgenieEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "OpsgenieEndpoints", OpsgenieEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class OpsgenieSettings(aristaproto.Message):
+    """
+    OpsgenieSettings contain the settings for sending alerts to opsgenie
+    """
+
+    key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    key is the API key to use when talking to the OpsGenie API
+    """
+
+    url: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url to use when sending alerts to opsgenie
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "OpsgenieSettings", OpsgenieSettings)
+
+
+@dataclass(eq=False, repr=False)
+class PagerdutyEndpoint(aristaproto.Message):
+    """
+    PagerdutyEndpoint contains the required information for an alert to be sent to a pagerduty endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    routing_key: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    routing_key is the routing key for sending pagerduty alerts
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "PagerdutySettings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the pagerduty global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "PagerdutyEndpoint", PagerdutyEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class PagerdutyEndpoints(aristaproto.Message):
+    """
+    PagerdutyEndpoints is a set of pagerduty endpoints
+    """
+
+    values: "list[PagerdutyEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "PagerdutyEndpoints", PagerdutyEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class PagerdutySettings(aristaproto.Message):
+    """
+    PagerdutySettings contain the settings for sending alerts to pagerduty
+    """
+
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url to use when sending alerts to pagerduty
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "PagerdutySettings", PagerdutySettings)
+
+
+@dataclass(eq=False, repr=False)
+class Priorities(aristaproto.Message):
+    """
+    Priorities is a mapping of CV event severities to syslog severities
+    """
+
+    critical: "int | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    critical priority, default = 2 (Critical)
+    """
+
+    error: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    error priority, default = 3 (Error)
+    """
+
+    warn: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    warn priority, default = 4 (Warning)
+    """
+
+    info: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    info priority, default = 6 (Informational)
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Priorities", Priorities)
+
+
+@dataclass(eq=False, repr=False)
+class PushoverEndpoint(aristaproto.Message):
+    """
+    PushoverEndpoint contains the required information for an alert to be sent to a pushover endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    token: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    token is the user's registered application's API token, see https://pushover.net/apps
+    """
+
+    user_key: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    user_key is the user's user key
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+
+    Pushover does not have a settings override
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "PushoverEndpoint", PushoverEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class PushoverEndpoints(aristaproto.Message):
+    """
+    PushoverEndpoints is a set of pushover endpoints
+    """
+
+    values: "list[PushoverEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "PushoverEndpoints", PushoverEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class Rule(aristaproto.Message):
+    """
+    Rule is a rule to send to a certain broadcast group
+    """
+
+    sends_to: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    sends_to is the name of the broadcast group top send matching alerts to
+    """
+
+    match_criteria: "Matches | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    match_criteria is the criteria that an alert must match to be sent to the broadcast group
+    """
+
+    continue_checks: "bool | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    continue_checks if true, causes alerts matching this rule's criteria to continue
+    checking against other rules, allowing for additional matches. If false,
+    alerts matching this rule will not proceed with checking
+    """
+
+    comment: "str | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    comment is a comment to include that will be displayed in the alert
+    """
+
+    suppress_for: "datetime.timedelta | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Duration, optional=True)
+    """
+    suppress_for is a time duration that a rule will be debounced for after being called
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Rule", Rule)
+
+
+@dataclass(eq=False, repr=False)
+class Rules(aristaproto.Message):
+    """
+    Rules is a list of rules which dictates which events generate alerts for which broadcast groups
+    """
+
+    values: "list[Rule]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values contains the rules
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Rules", Rules)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatus(aristaproto.Message):
+    """
+    SenderStatus provides information about the status of particular send.
+    """
+
+    key: "SenderStatusKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key uniquely identifies the instance of sender status.
+    """
+
+    success: "bool | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    success indicates whether the send succeeded or not.
+    """
+
+    config_index: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    config_index is the index of the config on the broadcast group or -1 if not applicable
+    e.g.: if there are two email configs in one broadcast group,
+    then the indices for each are 0 and 1.
+    Config indices are counted per type.
+    """
+
+    remaining_retries: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    remaining_retries is the number of remaining attempts to send a particular alert.
+    """
+
+    error_type: "EndpointErrorType" = aristaproto.field(5, aristaproto.TYPE_ENUM, default_factory=lambda: EndpointErrorType(0))
+    """
+    error_type is the type of error. This allows custom handling of different error types.
+    """
+
+    error_message: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    error_message is a user-friendly error message.
+    """
+
+    events: "EventIdentifiers | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    events is a list of events triggering the alert.
+    """
+
+    previous_attempts: "int | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    previous_attempts is the number of times the alert corresponding to this sender status has been
+    retried.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatus", SenderStatus)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusBatchedStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SenderStatus]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -2693,14 +2967,174 @@ class SenderStatusStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    filter: "EventFilter" = aristaproto.message_field(2)
+    filter: "EventFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
     For each SenderStatus in the list, all populated fields are considered ANDed together
     as a filtering operation. Similarly, the list itself is ORed such that any individual
     filter that matches a given SenderStatus is streamed to the user.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each SenderStatus at end.
+        * Each SenderStatus response is fully-specified (all fields set).
+      * start: Returns the state of each SenderStatus at start, followed by updates until now.
+        * Each SenderStatus response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SenderStatus at start, followed by updates
+        until end.
+        * Each SenderStatus response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    MaxMessages limits the maximum number of messages that can be contained in one batch.
+    MaxMessages is required to be at least 1.
+    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
+    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusBatchedStreamRequest", SenderStatusBatchedStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusBatchedStreamResponse(aristaproto.Message):
+    responses: "list[SenderStatusStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    Values are the values deemed relevant to the initiating request.
+    The length of this structure is guaranteed to be between (inclusive) 1 and
+    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusBatchedStreamResponse", SenderStatusBatchedStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusKey(aristaproto.Message):
+    """
+    SenderStatusKey defines the unique key for SenderStatus.
+    """
+
+    broadcast_group_name: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    broadcast_group_name is the name of the broadcast group which was being used,
+    empty string if not group specific.
+    """
+
+    endpoint_type: "EndpointType" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: EndpointType(0))
+    """
+    endpoint_type indicates the target to which an attempt to send an alert was made
+    or is "unknown" if not endpoint-specific (eg: slack, opsgenie).
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusKey", SenderStatusKey)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusRequest(aristaproto.Message):
+    key: "SenderStatusKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a SenderStatus instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusRequest", SenderStatusRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusResponse(aristaproto.Message):
+    value: "SenderStatus | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SenderStatus instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusResponse", SenderStatusResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusSomeRequest(aristaproto.Message):
+    keys: "list[SenderStatusKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusSomeRequest", SenderStatusSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusSomeResponse(aristaproto.Message):
+    value: "SenderStatus | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SenderStatus instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SenderStatusSomeResponse", SenderStatusSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class SenderStatusStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[SenderStatus]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "EventFilter | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    For each SenderStatus in the list, all populated fields are considered ANDed together
+    as a filtering operation. Similarly, the list itself is ORed such that any individual
+    filter that matches a given SenderStatus is streamed to the user.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2718,19 +3152,24 @@ class SenderStatusStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "SenderStatusStreamRequest", SenderStatusStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class SenderStatusStreamResponse(aristaproto.Message):
-    value: "SenderStatus" = aristaproto.message_field(1)
+    value: "SenderStatus | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this SenderStatus's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this SenderStatus's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the SenderStatus value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -2739,169 +3178,488 @@ class SenderStatusStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class SenderStatusBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["SenderStatus"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    filter: "EventFilter" = aristaproto.message_field(2)
-    """
-    For each SenderStatus in the list, all populated fields are considered ANDed together
-    as a filtering operation. Similarly, the list itself is ORed such that any individual
-    filter that matches a given SenderStatus is streamed to the user.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each SenderStatus at end.
-        * Each SenderStatus response is fully-specified (all fields set).
-      * start: Returns the state of each SenderStatus at start, followed by updates until now.
-        * Each SenderStatus response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each SenderStatus at start, followed by updates
-        until end.
-        * Each SenderStatus response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-    MaxMessages is required to be at least 1.
-    The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-    INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
+default_message_pool.register_message("arista.alert.v1", "SenderStatusStreamResponse", SenderStatusStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class SenderStatusBatchedStreamResponse(aristaproto.Message):
-    responses: List["SenderStatusStreamResponse"] = aristaproto.message_field(1)
+class SendgridEndpoint(aristaproto.Message):
     """
-    Values are the values deemed relevant to the initiating request.
-    The length of this structure is guaranteed to be between (inclusive) 1 and
-    min(req.max_messages, INTERNAL_BATCH_LIMIT).
+    SendgridEndpoint contains the required information for an alert to be sent to a sendgrid endpoint
     """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    to: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    to address to send email to
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SendgridEndpoint", SendgridEndpoint)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigRequest(aristaproto.Message):
-    key: "TemplateKey" = aristaproto.message_field(1)
+class SendgridEndpoints(aristaproto.Message):
     """
-    Key uniquely identifies a TemplateConfig instance to retrieve.
-    This value must be populated.
+    SendgridEndpoints is a set of sendgrid endpoints
     """
 
-    time: datetime = aristaproto.message_field(2)
+    values: "list[SendgridEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    values are the elements of the set
     """
 
 
-@dataclass(eq=False, repr=False)
-class TemplateConfigResponse(aristaproto.Message):
-    value: "TemplateConfig" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TemplateConfig instance in this response.
-    """
+default_message_pool.register_message("arista.alert.v1", "SendgridEndpoints", SendgridEndpoints)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigSomeRequest(aristaproto.Message):
-    keys: List["TemplateKey"] = aristaproto.message_field(1)
-    time: datetime = aristaproto.message_field(2)
+class SendgridSettings(aristaproto.Message):
     """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
+    SendgridSettings contain the settings for sending emails via sendgrid
     """
+
+    api_key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    api_key is the api key to use
+    """
+
+    from_: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    from is the email address to send from
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SendgridSettings", SendgridSettings)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigSomeResponse(aristaproto.Message):
-    value: "TemplateConfig" = aristaproto.message_field(1)
+class Settings(aristaproto.Message):
     """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
+    Settings portion of config, a list of default global settings used by broadcast groups
     """
 
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    email: "EmailSettings | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Error is an optional field.
-    It should be filled when there is an error in the GetSome process.
+    email is the global default settings for email
     """
 
-    time: datetime = aristaproto.message_field(3)
+    http: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    Time carries the (UTC) timestamp of the last-modification of the
-    TemplateConfig instance in this response.
+    http is the global default settings for http
     """
+
+    slack: "SlackSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    slack is the global default settings for slack
+    """
+
+    victorops: "VictoropsSettings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    victorops is the global default settings for victorops
+    """
+
+    pagerduty: "PagerdutySettings | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    pagerduty is the global default settings for pagerduty
+    """
+
+    opsgenie: "OpsgenieSettings | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    opsgenie is the global default settings for opsgenie
+    """
+
+    gchat: "GoogleChatSettings | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    gchat is the global default settings for google chat
+    """
+
+    msteams: "MsTeamsSettings | None" = aristaproto.field(8, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    msteams is the global default settings for ms teams
+    """
+
+    inhibition: "InhibitionSettings | None" = aristaproto.field(9, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    inhibition defines the inhibition rules for alerts, allowing events of certain types to be
+    suppressed while another event type is active
+    """
+
+    base_url: "str | None" = aristaproto.field(10, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    base_url is the root address of your CloudVision app. Used to generate links in notifications.
+    """
+
+    timezone: "str | None" = aristaproto.field(11, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    timezone is used for formatting event times in notifications. E.g. 'UTC', 'US/Pacific'
+    """
+
+    syslog: "SyslogSettings | None" = aristaproto.field(12, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    syslog is the global default settings for syslog
+    """
+
+    snmp: "SnmpSettings | None" = aristaproto.field(13, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    snmp is the global default settings for snmp
+    """
+
+    sendgrid: "SendgridSettings | None" = aristaproto.field(14, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    sendgrid is the global default settings for sendgrid
+    """
+
+    cue_syslog: "CueSyslogSettings | None" = aristaproto.field(15, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_syslog is the global default settings for cue syslog
+    """
+
+    cue_snmp: "CueSnmpSettings | None" = aristaproto.field(16, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_snmp is the global default settings for cue snmp
+    """
+
+    cue_sendgrid: "CueSendgridSettings | None" = aristaproto.field(17, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cue_sendgrid is the global default settings for cue sendgrid
+    """
+
+    hide_tags: "bool | None" = aristaproto.field(18, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    hide_tags is used to by the alerting system to omit tags and other "superfluous"
+    values from the notifications that are sent out by the system
+    """
+
+    zoom: "ZoomSettings | None" = aristaproto.field(19, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    zoom is the global default settings for zoom
+    """
+
+    webhook: "WebhookSettings | None" = aristaproto.field(20, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    webhook is the auth settings for webhook
+    """
+
+    ms_graph_send_mail: "MsGraphSendMailSettings | None" = aristaproto.field(21, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    ms_graph_send_mail is the settings for Microsoft Graph sendMail
+    """
+
+    cv_action: "CvActionSettings | None" = aristaproto.field(22, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    cv_action is the global default settings for CloudVision Action
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "Settings", Settings)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+class SlackEndpoint(aristaproto.Message):
     """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each TemplateConfig at end.
-        * Each TemplateConfig response is fully-specified (all fields set).
-      * start: Returns the state of each TemplateConfig at start, followed by updates until now.
-        * Each TemplateConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each TemplateConfig at start, followed by updates
-        until end.
-        * Each TemplateConfig response at start is fully-specified, but updates until end may
-          be partial.
+    SlackEndpoint contains the required information for an alert to be sent to a slack endpoint
     """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "SlackSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the slack global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SlackEndpoint", SlackEndpoint)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigStreamResponse(aristaproto.Message):
-    value: "TemplateConfig" = aristaproto.message_field(1)
+class SlackEndpoints(aristaproto.Message):
     """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
+    SlackEndpoints is a set of slack endpoints
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this TemplateConfig's last modification."""
+    values: "list[SlackEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+
+default_message_pool.register_message("arista.alert.v1", "SlackEndpoints", SlackEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class SlackSettings(aristaproto.Message):
     """
-    Operation indicates how the TemplateConfig value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
+    SlackSettings contain the settings for sending alerts to slack
     """
+
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url of the slack webhook to use
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SlackSettings", SlackSettings)
+
+
+@dataclass(eq=False, repr=False)
+class SnmpAuth(aristaproto.Message):
+    """
+    SNMPAuth contain authentication information for SNMP
+    """
+
+    community: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    community is the community string used for authentication in SNMPv1 and v2c
+    required if version < 3
+    """
+
+    username: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    username the username for SNMPv3 auth
+    """
+
+    security_level: "SnmpSecurityLevel" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: SnmpSecurityLevel(0))
+    """
+    security_level the security level for SNMPv3
+    """
+
+    authentication_protocol: "SnmpAuthProtocol" = aristaproto.field(4, aristaproto.TYPE_ENUM, default_factory=lambda: SnmpAuthProtocol(0))
+    """
+    authentication_protocol is the protocol to use for authentication in SNMPv3
+    required for AUTH_NO_PRIV/AUTH_PRIV security levels
+    """
+
+    authentication_passphrase: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    authentication_passphrase is the passphrase to use for authentication in SNMPv3
+    required for AUTH_NO_PRIV/AUTH_PRIV security levels
+    """
+
+    privacy_protocol: "SnmpPrivProtocol" = aristaproto.field(6, aristaproto.TYPE_ENUM, default_factory=lambda: SnmpPrivProtocol(0))
+    """
+    privacy_protocol is the protocol to use for privacy in SNMPv3
+    required for AUTH_PRIV security level
+    """
+
+    privacy_passphrase: "str | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    privacy_passphrase is the passphrase to use for privacy in SNMPv3
+    required for AUTH_PRIV security level
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SNMPAuth", SnmpAuth)
+
+
+@dataclass(eq=False, repr=False)
+class SnmpEndpoint(aristaproto.Message):
+    """
+    SNMPEndpoint contains the required information for an alert to be sent to an SNMP endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    settings_override: "SnmpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the microsoft teams global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SNMPEndpoint", SnmpEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class SnmpEndpoints(aristaproto.Message):
+    """
+    SNMPEndpoints is a set of SNMP endpoints
+    """
+
+    values: "list[SnmpEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SNMPEndpoints", SnmpEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class SnmpSettings(aristaproto.Message):
+    """
+    SNMPSettings contain the settings for sending alerts with SNMP
+    """
+
+    target: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    target is an ipv4 address to send messages to
+    """
+
+    port: "int | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    port is the network port to target
+    """
+
+    transport: "str | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    transport is the transport protocol to use ("udp" or "tcp"); if unset "udp" will be used
+    """
+
+    version: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    version is the SNMP version, v1, v2c and v3 are supported and can be set
+    with 1, 2 and 3 respectively
+    """
+
+    auth: "SnmpAuth | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    auth is optional authentication settings
+    """
+
+    engine_id: "str | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    engine_id is the engine ID that will be used by the Alerter
+    This should be a hexadecimal string, colon separators between bytes will be accepted when
+    writing, but will be absent when reading
+    optional: if excluded or left blank, this will be automatically generated
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SNMPSettings", SnmpSettings)
+
+
+@dataclass(eq=False, repr=False)
+class SyslogEndpoint(aristaproto.Message):
+    """
+    SyslogEndpoint contains the required information for an alert to be sent to a syslog endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    settings_override: "SyslogSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the microsoft teams global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SyslogEndpoint", SyslogEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class SyslogEndpoints(aristaproto.Message):
+    """
+    SyslogEndpoints is a set of syslog endpoints
+    """
+
+    values: "list[SyslogEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SyslogEndpoints", SyslogEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class SyslogSettings(aristaproto.Message):
+    """
+    SyslogSettings contain the settings for sending alerts with syslog
+    """
+
+    network: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    network is the network protocol to use, default is "udp",
+    options also include: tcp,tcp4,tcp6,udp4,udp6
+    """
+
+    address: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    address is the network address to send syslog messages to
+    """
+
+    facility: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Int32Value, optional=True)
+    """
+    facility is the syslog facility 0-23 inc. This is the syslog facility as defined in RFC-3164
+    """
+
+    priorities: "Priorities | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    priorities describes how CVP severity maps to syslog priority
+    priority is a number between 0-7 inc. as defined in RFC-3164
+    """
+
+    tag: "str | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    tag is the syslog TAG as described in RFC-3164, it is the prefix to all syslog messages
+    """
+
+    per_device: "bool | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    per_device allows message to optionally be sent per device,
+    if an event concerns two devices the behaviour is changed based on this option:
+      true: two messages are sent, one for each device
+      false: a single message is sent
+    """
+
+    use_tls: "bool | None" = aristaproto.field(7, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    use_tls determines if the connection to the server should be secured with TLS
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "SyslogSettings", SyslogSettings)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfig(aristaproto.Message):
+    """
+    TemplateConfig represents a template configuration
+    """
+
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    key identifies which template the configuration is for
+    """
+
+    template: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    template is the string template value to be used
+    Templates need to be compatible with their respective parsers
+    Message templates are read and parsed by https://golang.org/pkg/text/template/
+    Html templates are read and parsed by https://golang.org/pkg/html/template/
+    Templates must output valid JSON for certain templates
+    Templates must not fail for any valid input
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfig", TemplateConfig)
 
 
 @dataclass(eq=False, repr=False)
 class TemplateConfigBatchedStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -2918,7 +3676,7 @@ class TemplateConfigBatchedStreamRequest(aristaproto.Message):
           be partial.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: "int | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
     MaxMessages is required to be at least 1.
@@ -2927,9 +3685,12 @@ class TemplateConfigBatchedStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigBatchedStreamRequest", TemplateConfigBatchedStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TemplateConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["TemplateConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: "list[TemplateConfigStreamResponse]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     Values are the values deemed relevant to the initiating request.
     The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -2937,67 +3698,64 @@ class TemplateConfigBatchedStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class TemplateConfigSetRequest(aristaproto.Message):
-    value: "TemplateConfig" = aristaproto.message_field(1)
-    """
-    TemplateConfig carries the value to set into the datastore.
-    See the documentation on the TemplateConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigBatchedStreamResponse", TemplateConfigBatchedStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigSetResponse(aristaproto.Message):
-    value: "TemplateConfig" = aristaproto.message_field(1)
-    """
-    Value carries all the values given in the TemplateConfigSetRequest as well
-    as any server-generated values.
-    """
+class TemplateConfigDeleteAllRequest(aristaproto.Message):
+    pass
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteAllRequest", TemplateConfigDeleteAllRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigSetSomeRequest(aristaproto.Message):
-    values: List["TemplateConfig"] = aristaproto.message_field(1)
+class TemplateConfigDeleteAllResponse(aristaproto.Message):
+    type: "___fmp__.DeleteError" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: ___fmp__.DeleteError(0))
     """
-    value contains a list of TemplateConfig values to write.
-    It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
-    If this error occurs you must reduce the number of values sent.
-    See gRPC \"maximum message size\" documentation for more information.
+    This describes the class of delete error.
+    A DeleteAllResponse is only sent when there is an error.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    This indicates the error message from the delete failure.
+    """
+
+    key: "TemplateKey | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    This is the key of the TemplateConfig instance that failed to be deleted.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp when the key was being deleted.
     """
 
 
-@dataclass(eq=False, repr=False)
-class TemplateConfigSetSomeResponse(aristaproto.Message):
-    key: "TemplateKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteAllResponse", TemplateConfigDeleteAllResponse)
 
 
 @dataclass(eq=False, repr=False)
 class TemplateConfigDeleteRequest(aristaproto.Message):
-    key: "TemplateKey" = aristaproto.message_field(1)
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Key indicates which TemplateConfig instance to remove.
     This field must always be set.
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteRequest", TemplateConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
 class TemplateConfigDeleteResponse(aristaproto.Message):
-    key: "TemplateKey" = aristaproto.message_field(1)
-    """Key echoes back the key of the deleted TemplateConfig instance."""
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key echoes back the key of the deleted TemplateConfig instance.
+    """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -3007,10 +3765,18 @@ class TemplateConfigDeleteResponse(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteResponse", TemplateConfigDeleteResponse)
+
+
 @dataclass(eq=False, repr=False)
 class TemplateConfigDeleteSomeRequest(aristaproto.Message):
-    keys: List["TemplateKey"] = aristaproto.message_field(1)
-    """key contains a list of TemplateConfig keys to delete"""
+    keys: "list[TemplateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    key contains a list of TemplateConfig keys to delete
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteSomeRequest", TemplateConfigDeleteSomeRequest)
 
 
 @dataclass(eq=False, repr=False)
@@ -3019,1373 +3785,1220 @@ class TemplateConfigDeleteSomeResponse(aristaproto.Message):
     TemplateConfigDeleteSomeResponse is only sent when there is an error.
     """
 
-    key: "TemplateKey" = aristaproto.message_field(1)
-    error: str = aristaproto.string_field(2)
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigDeleteSomeResponse", TemplateConfigDeleteSomeResponse)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigDeleteAllRequest(aristaproto.Message):
-    pass
+class TemplateConfigRequest(aristaproto.Message):
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Key uniquely identifies a TemplateConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigRequest", TemplateConfigRequest)
 
 
 @dataclass(eq=False, repr=False)
-class TemplateConfigDeleteAllResponse(aristaproto.Message):
-    type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
+class TemplateConfigResponse(aristaproto.Message):
+    value: "TemplateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
-    This describes the class of delete error.
-    A DeleteAllResponse is only sent when there is an error.
-    """
-
-    error: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """This indicates the error message from the delete failure."""
-
-    key: "TemplateKey" = aristaproto.message_field(3)
-    """
-    This is the key of the TemplateConfig instance that failed to be deleted.
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
     """
 
-    time: datetime = aristaproto.message_field(4)
-    """Time indicates the (UTC) timestamp when the key was being deleted."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TemplateConfig instance in this response.
+    """
 
 
-class AlertServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigResponse", TemplateConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSetRequest(aristaproto.Message):
+    value: "TemplateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TemplateConfig carries the value to set into the datastore.
+    See the documentation on the TemplateConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSetRequest", TemplateConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSetResponse(aristaproto.Message):
+    value: "TemplateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the TemplateConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSetResponse", TemplateConfigSetResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSetSomeRequest(aristaproto.Message):
+    values: "list[TemplateConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    value contains a list of TemplateConfig values to write.
+    It is possible to provide more values than can fit within either:
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
+    If this error occurs you must reduce the number of values sent.
+    See gRPC "maximum message size" documentation for more information.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSetSomeRequest", TemplateConfigSetSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSetSomeResponse(aristaproto.Message):
+    key: "TemplateKey | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+
+    error: "str" = aristaproto.field(2, aristaproto.TYPE_STRING)
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSetSomeResponse", TemplateConfigSetSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSomeRequest(aristaproto.Message):
+    keys: "list[TemplateKey]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSomeRequest", TemplateConfigSomeRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigSomeResponse(aristaproto.Message):
+    value: "TemplateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    error: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    Error is an optional field.
+    It should be filled when there is an error in the GetSome process.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TemplateConfig instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigSomeResponse", TemplateConfigSomeResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigStreamRequest(aristaproto.Message):
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each TemplateConfig at end.
+        * Each TemplateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TemplateConfig at start, followed by updates until now.
+        * Each TemplateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TemplateConfig at start, followed by updates
+        until end.
+        * Each TemplateConfig response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigStreamRequest", TemplateConfigStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateConfigStreamResponse(aristaproto.Message):
+    value: "TemplateConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this TemplateConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the TemplateConfig value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateConfigStreamResponse", TemplateConfigStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class TemplateKey(aristaproto.Message):
+    """
+    TemplateKey is used to identify templates for event notifications
+    """
+
+    template_type: "TemplateType" = aristaproto.field(1, aristaproto.TYPE_ENUM, default_factory=lambda: TemplateType(0))
+    """
+    template_type is the enum value to match with the template
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "TemplateKey", TemplateKey)
+
+
+@dataclass(eq=False, repr=False)
+class VictorOpsEndpoint(aristaproto.Message):
+    """
+    VictorOpsEndpoint contains the required information for an alert to be sent to a victorOps endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    routing_key: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    routing_key is the PagerDuty integration key
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "VictoropsSettings | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the victorops global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "VictorOpsEndpoint", VictorOpsEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class VictorOpsEndpoints(aristaproto.Message):
+    """
+    VictorOpsEndpoints is a set of victorOps endpoints
+    """
+
+    values: "list[VictorOpsEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "VictorOpsEndpoints", VictorOpsEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class VictoropsSettings(aristaproto.Message):
+    """
+    VictoropsSettings contain the settings for sending alerts to victorops
+    """
+
+    key: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    key is the API key to use when talking to the VictorOps API
+    """
+
+    url: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the victorops url to use (without integration or routing key
+    default: https://alert.victorops.com/integrations/generic/20131114/alert/
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "VictoropsSettings", VictoropsSettings)
+
+
+@dataclass(eq=False, repr=False)
+class WebhookEndpoint(aristaproto.Message):
+    """
+    WebhookEndpoint contains the required information for an alert to be sent to a webhook endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    url: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the url
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    simple_output: "bool | None" = aristaproto.field(4, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    simple_output is a boolean flag to control the JSON structure of the webhook body.
+    When false the output mimics the old alertmanager format.
+    When true the output is a simple array of json objects which each represent an event.
+    """
+
+    single_alert: "bool | None" = aristaproto.field(5, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    single_alert is a boolean flag that will cause an individual webhook message to be sent per
+    alert when true.
+    """
+
+    settings_override: "WebhookSettings | None" = aristaproto.field(6, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the webhook global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "WebhookEndpoint", WebhookEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class WebhookEndpoints(aristaproto.Message):
+    """
+    WebhookEndpoints is a set of webhook endpoints
+    """
+
+    values: "list[WebhookEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "WebhookEndpoints", WebhookEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class WebhookSettings(aristaproto.Message):
+    """
+    WebhookSettings contain the settings for sending alerts to a Webhook
+    """
+
+    azure_o_auth: "AzureOAuth | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    azure_o_auth used for auth when using Azure to authenticate webhook requests
+    """
+
+    oauth2_client_credentials: "OAuth2ClientCredentials | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    oauth2_client_credentials used for generic OAuth2/OIDC client-credentials auth for webhook
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "WebhookSettings", WebhookSettings)
+
+
+@dataclass(eq=False, repr=False)
+class ZoomEndpoint(aristaproto.Message):
+    """
+    ZoomEndpoint contains the required information for an alert to be sent to a zoom endpoint
+    """
+
+    send_resolved: "bool | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.BoolValue, optional=True)
+    """
+    send_resolved send alerts when events are resolved along with when they are triggered
+    """
+
+    http_override: "HttpSettings | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    http_override is the override of the global http settings
+    """
+
+    settings_override: "ZoomSettings | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    settings_override is the override for the zoom global endpoint settings
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "ZoomEndpoint", ZoomEndpoint)
+
+
+@dataclass(eq=False, repr=False)
+class ZoomEndpoints(aristaproto.Message):
+    """
+    ZoomEndpoints is a set of zoom endpoints
+    """
+
+    values: "list[ZoomEndpoint]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    values are the elements of the set
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "ZoomEndpoints", ZoomEndpoints)
+
+
+@dataclass(eq=False, repr=False)
+class ZoomSettings(aristaproto.Message):
+    """
+    ZoomSettings contain the settings for sending alerts to zoom
+    """
+
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the zoom incoming webhook URL to send messages to
+    """
+
+    verification_token: "str | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    verification_token is the verification token to authenticate with
+    """
+
+
+default_message_pool.register_message("arista.alert.v1", "ZoomSettings", ZoomSettings)
+
+
+class AlertConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        alert_request: "AlertRequest",
+        message: "AlertConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AlertResponse":
-        return await self._unary_unary(
-            "/arista.alert.v1.AlertService/GetOne",
-            alert_request,
-            AlertResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_all(
-        self,
-        alert_stream_request: "AlertStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[AlertStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertService/GetAll",
-            alert_stream_request,
-            AlertStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        alert_stream_request: "AlertStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[AlertStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertService/Subscribe",
-            alert_stream_request,
-            AlertStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_meta(
-        self,
-        alert_stream_request: "AlertStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertService/SubscribeMeta",
-            alert_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class AlertConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        alert_config_request: "AlertConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AlertConfigResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.AlertConfigService/GetOne",
-            alert_config_request,
+            message,
             AlertConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        alert_config_stream_request: "AlertConfigStreamRequest",
+        message: "AlertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AlertConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.AlertConfigService/GetAll",
-            alert_config_stream_request,
+            message,
             AlertConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        alert_config_stream_request: "AlertConfigStreamRequest",
+        message: "AlertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[AlertConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.AlertConfigService/Subscribe",
-            alert_config_stream_request,
+            message,
             AlertConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        alert_config_stream_request: "AlertConfigStreamRequest",
+        message: "AlertConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.AlertConfigService/SubscribeMeta",
-            alert_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        alert_config_set_request: "AlertConfigSetRequest",
+        message: "AlertConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AlertConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.AlertConfigService/Set",
-            alert_config_set_request,
+            message,
             AlertConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
 
-class DefaultTemplateServiceStub(aristaproto.ServiceStub):
+class AlertServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        default_template_request: "DefaultTemplateRequest",
+        message: "AlertRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AlertResponse":
+
+        return await self._unary_unary(
+            "/arista.alert.v1.AlertService/GetOne",
+            message,
+            AlertResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_all(
+        self,
+        message: "AlertStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[AlertStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.alert.v1.AlertService/GetAll",
+            message,
+            AlertStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "AlertStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[AlertStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.alert.v1.AlertService/Subscribe",
+            message,
+            AlertStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_meta(
+        self,
+        message: "AlertStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.alert.v1.AlertService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+class DefaultTemplateServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "DefaultTemplateRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "DefaultTemplateResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.DefaultTemplateService/GetOne",
-            default_template_request,
+            message,
             DefaultTemplateResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        default_template_some_request: "DefaultTemplateSomeRequest",
+        message: "DefaultTemplateSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DefaultTemplateSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/GetSome",
-            default_template_some_request,
+            message,
             DefaultTemplateSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        default_template_stream_request: "DefaultTemplateStreamRequest",
+        message: "DefaultTemplateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DefaultTemplateStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/GetAll",
-            default_template_stream_request,
+            message,
             DefaultTemplateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        default_template_stream_request: "DefaultTemplateStreamRequest",
+        message: "DefaultTemplateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DefaultTemplateStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/Subscribe",
-            default_template_stream_request,
+            message,
             DefaultTemplateStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        default_template_stream_request: "DefaultTemplateStreamRequest",
+        message: "DefaultTemplateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.DefaultTemplateService/GetMeta",
-            default_template_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        default_template_stream_request: "DefaultTemplateStreamRequest",
+        message: "DefaultTemplateStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/SubscribeMeta",
-            default_template_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        default_template_batched_stream_request: "DefaultTemplateBatchedStreamRequest",
+        message: "DefaultTemplateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DefaultTemplateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/GetAllBatched",
-            default_template_batched_stream_request,
+            message,
             DefaultTemplateBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        default_template_batched_stream_request: "DefaultTemplateBatchedStreamRequest",
+        message: "DefaultTemplateBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[DefaultTemplateBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.DefaultTemplateService/SubscribeBatched",
-            default_template_batched_stream_request,
+            message,
             DefaultTemplateBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class SenderStatusServiceStub(aristaproto.ServiceStub):
+class SenderStatusServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        sender_status_request: "SenderStatusRequest",
+        message: "SenderStatusRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "SenderStatusResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.SenderStatusService/GetOne",
-            sender_status_request,
+            message,
             SenderStatusResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        sender_status_some_request: "SenderStatusSomeRequest",
+        message: "SenderStatusSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SenderStatusSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/GetSome",
-            sender_status_some_request,
+            message,
             SenderStatusSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        sender_status_stream_request: "SenderStatusStreamRequest",
+        message: "SenderStatusStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SenderStatusStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/GetAll",
-            sender_status_stream_request,
+            message,
             SenderStatusStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        sender_status_stream_request: "SenderStatusStreamRequest",
+        message: "SenderStatusStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SenderStatusStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/Subscribe",
-            sender_status_stream_request,
+            message,
             SenderStatusStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        sender_status_stream_request: "SenderStatusStreamRequest",
+        message: "SenderStatusStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.SenderStatusService/GetMeta",
-            sender_status_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        sender_status_stream_request: "SenderStatusStreamRequest",
+        message: "SenderStatusStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/SubscribeMeta",
-            sender_status_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        sender_status_batched_stream_request: "SenderStatusBatchedStreamRequest",
+        message: "SenderStatusBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SenderStatusBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/GetAllBatched",
-            sender_status_batched_stream_request,
+            message,
             SenderStatusBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        sender_status_batched_stream_request: "SenderStatusBatchedStreamRequest",
+        message: "SenderStatusBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[SenderStatusBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.SenderStatusService/SubscribeBatched",
-            sender_status_batched_stream_request,
+            message,
             SenderStatusBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class TemplateConfigServiceStub(aristaproto.ServiceStub):
+class TemplateConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        template_config_request: "TemplateConfigRequest",
+        message: "TemplateConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TemplateConfigResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.TemplateConfigService/GetOne",
-            template_config_request,
+            message,
             TemplateConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_some(
         self,
-        template_config_some_request: "TemplateConfigSomeRequest",
+        message: "TemplateConfigSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/GetSome",
-            template_config_some_request,
+            message,
             TemplateConfigSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all(
         self,
-        template_config_stream_request: "TemplateConfigStreamRequest",
+        message: "TemplateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/GetAll",
-            template_config_stream_request,
+            message,
             TemplateConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        template_config_stream_request: "TemplateConfigStreamRequest",
+        message: "TemplateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/Subscribe",
-            template_config_stream_request,
+            message,
             TemplateConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_meta(
         self,
-        template_config_stream_request: "TemplateConfigStreamRequest",
+        message: "TemplateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "MetaResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.TemplateConfigService/GetMeta",
-            template_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def subscribe_meta(
         self,
-        template_config_stream_request: "TemplateConfigStreamRequest",
+        message: "TemplateConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/SubscribeMeta",
-            template_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        template_config_set_request: "TemplateConfigSetRequest",
+        message: "TemplateConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TemplateConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.TemplateConfigService/Set",
-            template_config_set_request,
+            message,
             TemplateConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def set_some(
         self,
-        template_config_set_some_request: "TemplateConfigSetSomeRequest",
+        message: "TemplateConfigSetSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigSetSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/SetSome",
-            template_config_set_some_request,
+            message,
             TemplateConfigSetSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete(
         self,
-        template_config_delete_request: "TemplateConfigDeleteRequest",
+        message: "TemplateConfigDeleteRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "TemplateConfigDeleteResponse":
+
         return await self._unary_unary(
             "/arista.alert.v1.TemplateConfigService/Delete",
-            template_config_delete_request,
+            message,
             TemplateConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete_some(
         self,
-        template_config_delete_some_request: "TemplateConfigDeleteSomeRequest",
+        message: "TemplateConfigDeleteSomeRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigDeleteSomeResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/DeleteSome",
-            template_config_delete_some_request,
+            message,
             TemplateConfigDeleteSomeResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def delete_all(
         self,
-        template_config_delete_all_request: "TemplateConfigDeleteAllRequest",
+        message: "TemplateConfigDeleteAllRequest | None" = None,
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigDeleteAllResponse]":
+
+        if message is None:
+            message = TemplateConfigDeleteAllRequest()
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/DeleteAll",
-            template_config_delete_all_request,
+            message,
             TemplateConfigDeleteAllResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def get_all_batched(
         self,
-        template_config_batched_stream_request: "TemplateConfigBatchedStreamRequest",
+        message: "TemplateConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/GetAllBatched",
-            template_config_batched_stream_request,
+            message,
             TemplateConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_batched(
         self,
-        template_config_batched_stream_request: "TemplateConfigBatchedStreamRequest",
+        message: "TemplateConfigBatchedStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[TemplateConfigBatchedStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.alert.v1.TemplateConfigService/SubscribeBatched",
-            template_config_batched_stream_request,
+            message,
             TemplateConfigBatchedStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
 from .... import fmp as ___fmp__
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class AlertServiceBase(ServiceBase):
-    async def get_one(self, alert_request: "AlertRequest") -> "AlertResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, alert_stream_request: "AlertStreamRequest") -> AsyncIterator[AlertStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, alert_stream_request: "AlertStreamRequest") -> AsyncIterator[AlertStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, alert_stream_request: "AlertStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AlertRequest, AlertResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AlertStreamRequest, AlertStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AlertStreamRequest, AlertStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AlertStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.alert.v1.AlertService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AlertRequest,
-                AlertResponse,
-            ),
-            "/arista.alert.v1.AlertService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertStreamRequest,
-                AlertStreamResponse,
-            ),
-            "/arista.alert.v1.AlertService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertStreamRequest,
-                AlertStreamResponse,
-            ),
-            "/arista.alert.v1.AlertService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class AlertConfigServiceBase(ServiceBase):
-    async def get_one(self, alert_config_request: "AlertConfigRequest") -> "AlertConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, alert_config_stream_request: "AlertConfigStreamRequest") -> AsyncIterator[AlertConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, alert_config_stream_request: "AlertConfigStreamRequest") -> AsyncIterator[AlertConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, alert_config_stream_request: "AlertConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, alert_config_set_request: "AlertConfigSetRequest") -> "AlertConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AlertConfigRequest, AlertConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[AlertConfigStreamRequest, AlertConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[AlertConfigStreamRequest, AlertConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AlertConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[AlertConfigSetRequest, AlertConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.alert.v1.AlertConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AlertConfigRequest,
-                AlertConfigResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertConfigStreamRequest,
-                AlertConfigStreamResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertConfigStreamRequest,
-                AlertConfigStreamResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                AlertConfigSetRequest,
-                AlertConfigSetResponse,
-            ),
-        }
-
-
-class DefaultTemplateServiceBase(ServiceBase):
-    async def get_one(self, default_template_request: "DefaultTemplateRequest") -> "DefaultTemplateResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, default_template_some_request: "DefaultTemplateSomeRequest") -> AsyncIterator[DefaultTemplateSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, default_template_stream_request: "DefaultTemplateStreamRequest") -> AsyncIterator[DefaultTemplateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, default_template_stream_request: "DefaultTemplateStreamRequest") -> AsyncIterator[DefaultTemplateStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, default_template_stream_request: "DefaultTemplateStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, default_template_stream_request: "DefaultTemplateStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, default_template_batched_stream_request: "DefaultTemplateBatchedStreamRequest"
-    ) -> AsyncIterator[DefaultTemplateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, default_template_batched_stream_request: "DefaultTemplateBatchedStreamRequest"
-    ) -> AsyncIterator[DefaultTemplateBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DefaultTemplateRequest, DefaultTemplateResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DefaultTemplateSomeRequest, DefaultTemplateSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DefaultTemplateStreamRequest, DefaultTemplateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DefaultTemplateStreamRequest, DefaultTemplateStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DefaultTemplateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DefaultTemplateStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[DefaultTemplateBatchedStreamRequest, DefaultTemplateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[DefaultTemplateBatchedStreamRequest, DefaultTemplateBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.alert.v1.DefaultTemplateService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DefaultTemplateRequest,
-                DefaultTemplateResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateSomeRequest,
-                DefaultTemplateSomeResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateStreamRequest,
-                DefaultTemplateStreamResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateStreamRequest,
-                DefaultTemplateStreamResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                DefaultTemplateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateBatchedStreamRequest,
-                DefaultTemplateBatchedStreamResponse,
-            ),
-            "/arista.alert.v1.DefaultTemplateService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                DefaultTemplateBatchedStreamRequest,
-                DefaultTemplateBatchedStreamResponse,
-            ),
-        }
-
-
-class SenderStatusServiceBase(ServiceBase):
-    async def get_one(self, sender_status_request: "SenderStatusRequest") -> "SenderStatusResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, sender_status_some_request: "SenderStatusSomeRequest") -> AsyncIterator[SenderStatusSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, sender_status_stream_request: "SenderStatusStreamRequest") -> AsyncIterator[SenderStatusStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, sender_status_stream_request: "SenderStatusStreamRequest") -> AsyncIterator[SenderStatusStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, sender_status_stream_request: "SenderStatusStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, sender_status_stream_request: "SenderStatusStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, sender_status_batched_stream_request: "SenderStatusBatchedStreamRequest"
-    ) -> AsyncIterator[SenderStatusBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, sender_status_batched_stream_request: "SenderStatusBatchedStreamRequest"
-    ) -> AsyncIterator[SenderStatusBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SenderStatusRequest, SenderStatusResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SenderStatusSomeRequest, SenderStatusSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[SenderStatusStreamRequest, SenderStatusStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[SenderStatusStreamRequest, SenderStatusStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SenderStatusStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SenderStatusStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[SenderStatusBatchedStreamRequest, SenderStatusBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[SenderStatusBatchedStreamRequest, SenderStatusBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.alert.v1.SenderStatusService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SenderStatusRequest,
-                SenderStatusResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusSomeRequest,
-                SenderStatusSomeResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusStreamRequest,
-                SenderStatusStreamResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusStreamRequest,
-                SenderStatusStreamResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                SenderStatusStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusBatchedStreamRequest,
-                SenderStatusBatchedStreamResponse,
-            ),
-            "/arista.alert.v1.SenderStatusService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                SenderStatusBatchedStreamRequest,
-                SenderStatusBatchedStreamResponse,
-            ),
-        }
-
-
-class TemplateConfigServiceBase(ServiceBase):
-    async def get_one(self, template_config_request: "TemplateConfigRequest") -> "TemplateConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_some(self, template_config_some_request: "TemplateConfigSomeRequest") -> AsyncIterator[TemplateConfigSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, template_config_stream_request: "TemplateConfigStreamRequest") -> AsyncIterator[TemplateConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, template_config_stream_request: "TemplateConfigStreamRequest") -> AsyncIterator[TemplateConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_meta(self, template_config_stream_request: "TemplateConfigStreamRequest") -> "MetaResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, template_config_stream_request: "TemplateConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, template_config_set_request: "TemplateConfigSetRequest") -> "TemplateConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set_some(self, template_config_set_some_request: "TemplateConfigSetSomeRequest") -> AsyncIterator[TemplateConfigSetSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, template_config_delete_request: "TemplateConfigDeleteRequest") -> "TemplateConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_some(self, template_config_delete_some_request: "TemplateConfigDeleteSomeRequest") -> AsyncIterator[TemplateConfigDeleteSomeResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete_all(self, template_config_delete_all_request: "TemplateConfigDeleteAllRequest") -> AsyncIterator[TemplateConfigDeleteAllResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, template_config_batched_stream_request: "TemplateConfigBatchedStreamRequest"
-    ) -> AsyncIterator[TemplateConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, template_config_batched_stream_request: "TemplateConfigBatchedStreamRequest"
-    ) -> AsyncIterator[TemplateConfigBatchedStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TemplateConfigRequest, TemplateConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TemplateConfigSomeRequest, TemplateConfigSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TemplateConfigStreamRequest, TemplateConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TemplateConfigStreamRequest, TemplateConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TemplateConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_meta(request)
-        await stream.send_message(response)
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TemplateConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TemplateConfigSetRequest, TemplateConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_set_some(self, stream: "grpclib.server.Stream[TemplateConfigSetSomeRequest, TemplateConfigSetSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.set_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[TemplateConfigDeleteRequest, TemplateConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete_some(self, stream: "grpclib.server.Stream[TemplateConfigDeleteSomeRequest, TemplateConfigDeleteSomeResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_some,
-            stream,
-            request,
-        )
-
-    async def __rpc_delete_all(self, stream: "grpclib.server.Stream[TemplateConfigDeleteAllRequest, TemplateConfigDeleteAllResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.delete_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_get_all_batched(self, stream: "grpclib.server.Stream[TemplateConfigBatchedStreamRequest, TemplateConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(self, stream: "grpclib.server.Stream[TemplateConfigBatchedStreamRequest, TemplateConfigBatchedStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.alert.v1.TemplateConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TemplateConfigRequest,
-                TemplateConfigResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/GetSome": grpclib.const.Handler(
-                self.__rpc_get_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigSomeRequest,
-                TemplateConfigSomeResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigStreamRequest,
-                TemplateConfigStreamResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigStreamRequest,
-                TemplateConfigStreamResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/GetMeta": grpclib.const.Handler(
-                self.__rpc_get_meta,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TemplateConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TemplateConfigSetRequest,
-                TemplateConfigSetResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/SetSome": grpclib.const.Handler(
-                self.__rpc_set_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigSetSomeRequest,
-                TemplateConfigSetSomeResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                TemplateConfigDeleteRequest,
-                TemplateConfigDeleteResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/DeleteSome": grpclib.const.Handler(
-                self.__rpc_delete_some,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigDeleteSomeRequest,
-                TemplateConfigDeleteSomeResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/DeleteAll": grpclib.const.Handler(
-                self.__rpc_delete_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigDeleteAllRequest,
-                TemplateConfigDeleteAllResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigBatchedStreamRequest,
-                TemplateConfigBatchedStreamResponse,
-            ),
-            "/arista.alert.v1.TemplateConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                TemplateConfigBatchedStreamRequest,
-                TemplateConfigBatchedStreamResponse,
-            ),
-        }

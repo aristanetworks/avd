@@ -13,9 +13,9 @@ from itertools import pairwise
 from typing import Any, NamedTuple
 from unittest.mock import AsyncMock, patch
 
+import grpc
 import pytest
-from grpclib import Status
-from grpclib.exceptions import GRPCError, StreamTerminatedError
+from grpc.aio import AioRpcError, Metadata
 
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
 from pyavd._cv.client.exceptions import (
@@ -31,6 +31,11 @@ from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 LOGGER = logging.getLogger(__name__)
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
+
+def grpc_error(status: grpc.StatusCode, message: str | None = None) -> AioRpcError:
+    return AioRpcError(status, Metadata(), Metadata(), details=message)
+
 
 INVALID_VERSION_TESTS = [
     # version , expected_exception
@@ -181,7 +186,7 @@ class CvClass:
     async def msgsize_limited_method(self, field: list, max_accepted_len: int) -> list[bool]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
-            raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
+            raise grpc_error(grpc.StatusCode.RESOURCE_EXHAUSTED, f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
 
         # return list with len of fields for this execution.
         return [len(field)]
@@ -198,13 +203,13 @@ class CvClass:
 
     @GRPCRequestHandler()
     async def grpc_unknown_status_method(self) -> str:
-        raise GRPCError(Status.UNKNOWN)
+        raise grpc_error(grpc.StatusCode.UNKNOWN)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def stream_reset_retry_method(self, failures: int = 0, error_code: int = 2, message: str | None = None) -> str:
         self._stream_reset_call_count[self.stream_reset_retry_method.__name__] += 1
         if self._stream_reset_call_count[self.stream_reset_retry_method.__name__] <= failures:
-            raise StreamTerminatedError(message if message is not None else f"Stream reset by remote party, error_code: {error_code}")
+            raise grpc_error(grpc.StatusCode.UNKNOWN, message if message is not None else f"Stream reset by remote party, error_code: {error_code}")
         return "gRPC call succeeded"
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
@@ -223,7 +228,7 @@ class CvClass:
         msg = "Stream reset by remote party, error_code: 2"
         for i, item in enumerate(items):
             if attempt == fail_on_attempt and i == len(items) // 2:
-                raise StreamTerminatedError(msg)
+                raise grpc_error(grpc.StatusCode.UNKNOWN, msg)
             result.append(item)
         return result
 
@@ -232,7 +237,7 @@ class CvClass:
         self._grpc_msgsize_unlimited_call_count[self.msgsize_unlimited_grpc_method_failure.__name__] += 1
         if self._grpc_msgsize_unlimited_call_count[self.msgsize_unlimited_grpc_method_failure.__name__] > failures:
             return "gRPC call succeeded"
-        raise GRPCError(Status.UNAVAILABLE)
+        raise grpc_error(grpc.StatusCode.UNAVAILABLE)
 
     def _calculate_list_hash(self, input_list: list) -> str:
         joined = "".join([str(x) for x in input_list if x is not None])
@@ -242,7 +247,7 @@ class CvClass:
     async def msgsize_limited_grpc_method_success(self, field: list[int] | None = None, max_accepted_size: int = 0) -> list:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_success.__name__][self._calculate_list_hash(field)] += 1
         if (field_sum := sum(field)) > max_accepted_size:
-            raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
+            raise grpc_error(grpc.StatusCode.RESOURCE_EXHAUSTED, f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
         # return list with len of fields for this execution.
         return [len(field)]
 
@@ -256,10 +261,10 @@ class CvClass:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] += 1
         if self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] > failures:
             if (field_sum := sum(field)) > max_accepted_size:
-                raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
+                raise grpc_error(grpc.StatusCode.RESOURCE_EXHAUSTED, f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
             # return list with len of fields for this execution.
             return [len(field)]
-        raise GRPCError(Status.UNAVAILABLE)
+        raise grpc_error(grpc.StatusCode.UNAVAILABLE)
 
     @GRPCRequestHandler(list_field="field")
     async def responses_no_errors(self, field: list[str]) -> list:
@@ -380,7 +385,7 @@ async def test_msg_size_handler_invalid_function_list_field_value_type() -> None
 async def test_msg_size_handler_zero_chunk_size(caplog: pytest.LogCaptureFixture) -> None:
     mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
 
-    with caplog.at_level(logging.DEBUG), pytest.raises(CVMessageSizeExceeded, match=r"Status\.RESOURCE_EXHAUSTED.*message larger than max \(100 vs\. 3\)"):
+    with caplog.at_level(logging.DEBUG), pytest.raises(CVMessageSizeExceeded, match=r"StatusCode\.RESOURCE_EXHAUSTED.*message larger than max \(100 vs\. 3\)"):
         await mocked_cv_client.msgsize_limited_grpc_method_success(field=[100, 100], max_accepted_size=3)
 
 
@@ -423,7 +428,7 @@ async def test_msg_size_handler_zero_chunk_size(caplog: pytest.LogCaptureFixture
                 "Attempt 4/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 5/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
             ],
-            pytest.raises(CVGRPCStatusUnavailable, match="Status\\.UNAVAILABLE: 14"),
+            pytest.raises(CVGRPCStatusUnavailable, match="StatusCode\\.UNAVAILABLE: 14"),
             id="SIX_GRPC_STATUS_UNAVAILABLE_FAILURES",
         ),
         pytest.param(
@@ -436,7 +441,7 @@ async def test_msg_size_handler_zero_chunk_size(caplog: pytest.LogCaptureFixture
                 "Attempt 4/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 5/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
             ],
-            pytest.raises(CVGRPCStatusUnavailable, match="Status\\.UNAVAILABLE: 14"),
+            pytest.raises(CVGRPCStatusUnavailable, match="StatusCode\\.UNAVAILABLE: 14"),
             id="SEVEN_GRPC_STATUS_UNAVAILABLE_FAILURES",
         ),
     ],
@@ -711,20 +716,20 @@ async def test_grpc_request_handler_unlimited_success(
         ),
         pytest.param(
             ["Preparing call.*with 1 item"],
-            GRPCError(Status.NOT_FOUND),
-            pytest.raises(CVResourceNotFound, match=r"Status\.NOT_FOUND: 5"),
+            grpc_error(grpc.StatusCode.NOT_FOUND),
+            pytest.raises(CVResourceNotFound, match=r"StatusCode\.NOT_FOUND"),
             id="GRPC_NOT_FOUND_CVRESOURCENOTFOUND",
         ),
         pytest.param(
             ["Preparing call.*with 1 item"],
-            GRPCError(Status.CANCELLED),
-            pytest.raises(CVTimeoutError, match=r"Status\.CANCELLED: 1"),
+            grpc_error(grpc.StatusCode.CANCELLED),
+            pytest.raises(CVTimeoutError, match=r"StatusCode\.CANCELLED"),
             id="GRPC_CANCELLED_CVTIMEOUTERROR",
         ),
         pytest.param(
             ["Preparing call.*with 1 item"],
-            GRPCError(Status.DEADLINE_EXCEEDED),
-            pytest.raises(CVClientException, match=r"Status\.DEADLINE_EXCEEDED: 4"),
+            grpc_error(grpc.StatusCode.DEADLINE_EXCEEDED),
+            pytest.raises(CVClientException, match=r"StatusCode\.DEADLINE_EXCEEDED"),
             id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
         ),
         pytest.param(
@@ -735,13 +740,13 @@ async def test_grpc_request_handler_unlimited_success(
         ),
         pytest.param(
             ["Preparing call.*with 1 item"],
-            StreamTerminatedError("Stream reset by remote party, error_code: 2"),
+            grpc_error(grpc.StatusCode.UNKNOWN, "Stream reset by remote party, error_code: 2"),
             pytest.raises(CVClientException),
             id="STREAM_RESET_INTERNAL_ERROR_NO_RETRY_FLAG",
         ),
         pytest.param(
             ["Preparing call.*with 1 item"],
-            StreamTerminatedError("Protocol error"),
+            grpc_error(grpc.StatusCode.UNKNOWN, "Protocol error"),
             pytest.raises(CVClientException),
             id="STREAM_RESET_PROTOCOL_ERROR_NO_RETRY_FLAG",
         ),
@@ -938,9 +943,9 @@ async def test_grpc_request_handler_stream_reset_mid_stream(caplog: pytest.LogCa
 async def test_grpc_request_handler_mixed_unavailable_and_stream_reset(caplog: pytest.LogCaptureFixture) -> None:
     """UNAVAILABLE and RST_STREAM INTERNAL_ERROR failures alternate — retry counter is shared and each log names the correct exception."""
     exceptions = [
-        GRPCError(Status.UNAVAILABLE),
-        StreamTerminatedError("Stream reset by remote party, error_code: 2"),
-        GRPCError(Status.UNAVAILABLE),
+        grpc_error(grpc.StatusCode.UNAVAILABLE),
+        grpc_error(grpc.StatusCode.UNKNOWN, "Stream reset by remote party, error_code: 2"),
+        grpc_error(grpc.StatusCode.UNAVAILABLE),
     ]
     log_patterns = [
         r"Attempt 1/6 to execute call '.*' returned '.*UNAVAILABLE.*'\. Retrying in [0-9]+s",

@@ -38,7 +38,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_password</samp> | str | False | None | - | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True | - | Verifies CloudVison server certificates. |
 | <samp>cv_deploy_future</samp> | dict | optional | None | - | Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;use_system_certs</samp> | bool | optional | False | - | Use system certificates instead of Python&#39;s bundled certificate store.<br>Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;use_system_certs</samp> | bool | optional | False | - | Use system certificates instead of the default certificate store used by the underlying Python libraries.<br>Honors `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables. |
 | <samp>proxy_host</samp> | str | False | None | - | FQDN/IP of the HTTP CONNECT proxy server. |
 | <samp>proxy_port</samp> | int | optional | 8080 | - | TCP port of the HTTP CONNECT proxy server. |
 | <samp>proxy_username</samp> | str | False | None | - | Authentication username for the HTTP CONNECT proxy server. |

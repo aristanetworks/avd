@@ -10,7 +10,8 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig
+from pyavd._cv.api.arista.subscriptions import Operation
+from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig, WorkspaceStreamResponse
 from pyavd._cv.client.exceptions import CVTimeoutError, CVWorkspaceFailed
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_B_ID,
@@ -46,16 +47,16 @@ async def test_wait_for_workspace_state_timeout(cv_client: CVClient) -> None:
     Test unsuccessful attempt to wait for a Workspace to reach `rolled_back` state where timeout expires before Workspace reaches the desired state.
 
     This is to replicate the following real events (high level):
-    -  `grpclib.client.Stream` object fetches messages by removing them from the `asyncio` queue
+    -  The gRPC stream object fetches messages by removing them from the `asyncio` queue
     -  If queue is empty for <timeout> seconds, `asyncio.exceptions.CancelledError` is raised
-    -  This exception is caught by `grpclib` client
-    -  `grpclib` client then raises `asyncio.TimeoutError("Deadline exceeded")`
+    -  This exception is caught by the gRPC client
+    -  The gRPC client then raises `asyncio.TimeoutError("Deadline exceeded")`
     -  `pyavd`'s `async_decorator` intercepts this exception and raises `CVTimeoutError`
     """
 
     async def async_iterator_with_timeout(timeout: float = 1.0) -> AsyncIterator[Any]:
         """Async iterator that yields a message and waits for the specified 'timeout' time before raising a TimeoutError."""
-        yield "Single message that you will get before I timeout and raise asyncio.TimeoutError."
+        yield WorkspaceStreamResponse(type=Operation.INITIAL_SYNC_COMPLETE)
         await asyncio.sleep(int(timeout))
         msg = "Deadline exceeded"
         raise AsyncioTimeoutError(msg)
@@ -83,7 +84,7 @@ async def test_rebase_workspace(cv_client: CVClient) -> None:
     -   description: Request rebasing of the Workspace
         request: WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-833a9e6b-9cc0-484b-a5bb-a57f7fa1438f'), "
             "request=Request.REBASE, request_params=RequestParams(request_id='req-73d17f5a-3db7-4527-ae9a-e43ca99d983c')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/6343b1d9dd797d90a6b6544c468eeb02d3c5daf7.json'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/9c3c1c2a6d572ea4ac06a4d2aef65b9e58d27f2c.json'
     """
     with (
         patch(

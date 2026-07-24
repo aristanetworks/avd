@@ -7,156 +7,93 @@
 # This file has been @generated
 
 __all__ = (
-    "ApiTokenConfig",
-    "ApiToken",
-    "ApiProxyConfig",
     "ApiProxy",
-    "MetaResponse",
-    "ApiProxyRequest",
-    "ApiProxyResponse",
-    "ApiProxyStreamRequest",
-    "ApiProxyStreamResponse",
-    "ApiProxyConfigRequest",
-    "ApiProxyConfigResponse",
-    "ApiProxyConfigStreamRequest",
-    "ApiProxyConfigStreamResponse",
-    "ApiProxyConfigSetRequest",
-    "ApiProxyConfigSetResponse",
+    "ApiProxyConfig",
     "ApiProxyConfigDeleteRequest",
     "ApiProxyConfigDeleteResponse",
-    "ApiTokenRequest",
-    "ApiTokenResponse",
-    "ApiTokenStreamRequest",
-    "ApiTokenStreamResponse",
-    "ApiTokenConfigRequest",
-    "ApiTokenConfigResponse",
-    "ApiTokenConfigStreamRequest",
-    "ApiTokenConfigStreamResponse",
-    "ApiTokenConfigSetRequest",
-    "ApiTokenConfigSetResponse",
+    "ApiProxyConfigRequest",
+    "ApiProxyConfigResponse",
+    "ApiProxyConfigServiceStub",
+    "ApiProxyConfigSetRequest",
+    "ApiProxyConfigSetResponse",
+    "ApiProxyConfigStreamRequest",
+    "ApiProxyConfigStreamResponse",
+    "ApiProxyRequest",
+    "ApiProxyResponse",
+    "ApiProxyServiceStub",
+    "ApiProxyStreamRequest",
+    "ApiProxyStreamResponse",
+    "ApiToken",
+    "ApiTokenConfig",
     "ApiTokenConfigDeleteRequest",
     "ApiTokenConfigDeleteResponse",
-    "ApiProxyServiceStub",
-    "ApiProxyServiceBase",
-    "ApiProxyConfigServiceStub",
-    "ApiProxyConfigServiceBase",
-    "ApiTokenServiceStub",
-    "ApiTokenServiceBase",
+    "ApiTokenConfigRequest",
+    "ApiTokenConfigResponse",
     "ApiTokenConfigServiceStub",
-    "ApiTokenConfigServiceBase",
+    "ApiTokenConfigSetRequest",
+    "ApiTokenConfigSetResponse",
+    "ApiTokenConfigStreamRequest",
+    "ApiTokenConfigStreamResponse",
+    "ApiTokenRequest",
+    "ApiTokenResponse",
+    "ApiTokenServiceStub",
+    "ApiTokenStreamRequest",
+    "ApiTokenStreamResponse",
+    "MetaResponse",
 )
 
-
+import datetime
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING
 
 import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+import grpc
+from aristaproto import grpcio as aristaproto_grpcio
+
+from ....message_pool import default_message_pool
 
 if TYPE_CHECKING:
-    import grpclib.server
-    from aristaproto.grpc.grpclib_client import MetadataLike
-    from grpclib.metadata import Deadline
+    from aristaproto.grpcio.grpcio_async_client import MetadataLike
+
+_COMPILER_VERSION = "2.0.0.dev1"
+aristaproto.check_compiler_version(_COMPILER_VERSION)
 
 
 @dataclass(eq=False, repr=False)
-class ApiTokenConfig(aristaproto.Message):
+class ApiProxy(aristaproto.Message):
     """
-    APITokenConfig is the config model allowing users to modify the token value which
-    is used for a multitude of functionalities, mainly in retrieving resources from arista.com e.g.
-    the AlertBase.json or software images.
-    Without a token set, a user can not retrieve any resources from arista.com
-    NOTE: A user configured token is not required on CloudVision-as-a-Service for AlertBase updates.
+    APIProxy is the state model that displays the proxy url string value set and found on
+    the CloudVision instance.
 
-    APITokenConfig Methods:
+    APIProxy Methods:
 
-    The `Set` method is used to add and/or modify a token stored in CloudVision.
-    The `Delete` method is used to remove the token.
-    The `GetOne` method is used to determine whether a token is set or not on CloudVision.
+    The `GetOne` method is used to return a proxy with username and password obscured
+    that has been set within CloudVision.
 
-    Adding a token to CloudVision:
+    Retrieving a proxy:
 
-    When a `Set` is called, the rAPI will first ensure the token is valid and in the correct format
-    after which it will stored within CloudVision.
+    The proxy can be retrieved from CloudVision by calling the `GetOne` method.
 
-    Here is an example of a token value being set
+    Here is an example of a proxy being retrieved
 
     ```
-    Set(APITokenConfig{
-       Token: \"f7f898e3860f618301c01f2de1ao1482\"
+    GetOne(APIProxy{
     })
     ```
 
-    Deleting a token:
-
-    The token can be removed from CloudVision by calling `Delete`.
-
-    Here is an example of a token being deleted
-
-    ```
-    Delete(APITokenConfig{
-    })
-    ```
-
-    Retrieving a token:
-
-    The token can be retrieved from CloudVision by calling the `GetOne` method.
-
-    Here is an example of a token being retrieved
-
-    ```
-    GetOne(APITokenConfig{
-    })
-    ```
-
-    NOTE: `GetOne` functionality for APITokenConfig will only display whether a token is
-    currently present or not. No secret values will be returned.
-    The two valid responses are;
-    * \"Token is set\"
-    * \"Token not set\"
+    NOTE: Proxy configuration is not applicable to CloudVision-as-a-Service.
+    - If a proxy contains a username and/or password, it will be returned with the credentials
+    censored.
     """
 
-    token: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """token is the token string"""
-
-
-@dataclass(eq=False, repr=False)
-class ApiToken(aristaproto.Message):
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
     """
-    APIToken is the state model that indicates whether a token is set or not.
-
-    APIToken Methods:
-
-    The `GetOne` method is used to determine whether a token is set or not within CloudVision.
-
-    Retrieving a token:
-
-    The token can be retrieved from CloudVision by calling the `GetOne` method.
-
-    Here is an example of a token being retrieved
-
-    ```
-    GetOne(APIToken{
-    })
-    ```
-
-    NOTE: `GetOne` functionality for APIToken will only display whether a token is
-    currently present or not. No secret values will be returned.
-    The two valid responses are;
-    * \"Token is set\"
-    * \"Token not set\"
+    url is the proxy URL string
     """
 
-    token: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """token is the token string"""
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxy", ApiProxy)
 
 
 @dataclass(eq=False, repr=False)
@@ -212,150 +149,53 @@ class ApiProxyConfig(aristaproto.Message):
     censored.
     """
 
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the proxy URL string"""
+    url: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    url is the proxy URL string
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfig", ApiProxyConfig)
 
 
 @dataclass(eq=False, repr=False)
-class ApiProxy(aristaproto.Message):
-    """
-    APIProxy is the state model that displays the proxy url string value set and found on
-    the CloudVision instance.
+class ApiProxyConfigDeleteRequest(aristaproto.Message):
+    pass
 
-    APIProxy Methods:
 
-    The `GetOne` method is used to return a proxy with username and password obscured
-    that has been set within CloudVision.
-
-    Retrieving a proxy:
-
-    The proxy can be retrieved from CloudVision by calling the `GetOne` method.
-
-    Here is an example of a proxy being retrieved
-
-    ```
-    GetOne(APIProxy{
-    })
-    ```
-
-    NOTE: Proxy configuration is not applicable to CloudVision-as-a-Service.
-    - If a proxy contains a username and/or password, it will be returned with the credentials
-    censored.
-    """
-
-    url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """url is the proxy URL string"""
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigDeleteRequest", ApiProxyConfigDeleteRequest)
 
 
 @dataclass(eq=False, repr=False)
-class MetaResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class ApiProxyConfigDeleteResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Time holds the timestamp of the last item included in the metadata calculation.
-    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(2)
-    """
-    Operation indicates how the value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
-
-    count: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_UINT32)
-    """
-    Count is the number of items present under the conditions of the request.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
-@dataclass(eq=False, repr=False)
-class ApiProxyRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiProxyResponse(aristaproto.Message):
-    value: "ApiProxy" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    APIProxy instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiProxyStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ApiProxy"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each APIProxy at end.
-        * Each APIProxy response is fully-specified (all fields set).
-      * start: Returns the state of each APIProxy at start, followed by updates until now.
-        * Each APIProxy response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each APIProxy at start, followed by updates
-        until end.
-        * Each APIProxy response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiProxyStreamResponse(aristaproto.Message):
-    value: "ApiProxy" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this APIProxy's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the APIProxy value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigDeleteResponse", ApiProxyConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ApiProxyConfigRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigRequest", ApiProxyConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ApiProxyConfigResponse(aristaproto.Message):
-    value: "ApiProxyConfig" = aristaproto.message_field(1)
+    value: "ApiProxyConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -363,16 +203,52 @@ class ApiProxyConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     APIProxyConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigResponse", ApiProxyConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ApiProxyConfigSetRequest(aristaproto.Message):
+    value: "ApiProxyConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    APIProxyConfig carries the value to set into the datastore.
+    See the documentation on the APIProxyConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigSetRequest", ApiProxyConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ApiProxyConfigSetResponse(aristaproto.Message):
+    value: "ApiProxyConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the APIProxyConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigSetResponse", ApiProxyConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ApiProxyConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ApiProxyConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ApiProxyConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -381,7 +257,7 @@ class ApiProxyConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -399,19 +275,24 @@ class ApiProxyConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigStreamRequest", ApiProxyConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ApiProxyConfigStreamResponse(aristaproto.Message):
-    value: "ApiProxyConfig" = aristaproto.message_field(1)
+    value: "ApiProxyConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this APIProxyConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this APIProxyConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the APIProxyConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -420,41 +301,212 @@ class ApiProxyConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ApiProxyConfigSetRequest(aristaproto.Message):
-    value: "ApiProxyConfig" = aristaproto.message_field(1)
-    """
-    APIProxyConfig carries the value to set into the datastore.
-    See the documentation on the APIProxyConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyConfigStreamResponse", ApiProxyConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ApiProxyConfigSetResponse(aristaproto.Message):
-    value: "ApiProxyConfig" = aristaproto.message_field(1)
+class ApiProxyRequest(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Value carries all the values given in the APIProxyConfigSetRequest as well
-    as any server-generated values.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyRequest", ApiProxyRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ApiProxyConfigDeleteRequest(aristaproto.Message):
+class ApiProxyResponse(aristaproto.Message):
+    value: "ApiProxy | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    APIProxy instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyResponse", ApiProxyResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ApiProxyStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ApiProxy]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
+
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each APIProxy at end.
+        * Each APIProxy response is fully-specified (all fields set).
+      * start: Returns the state of each APIProxy at start, followed by updates until now.
+        * Each APIProxy response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APIProxy at start, followed by updates
+        until end.
+        * Each APIProxy response at start is fully-specified, but updates until end may
+          be partial.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyStreamRequest", ApiProxyStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ApiProxyStreamResponse(aristaproto.Message):
+    value: "ApiProxy | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this APIProxy's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the APIProxy value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIProxyStreamResponse", ApiProxyStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ApiToken(aristaproto.Message):
+    """
+    APIToken is the state model that indicates whether a token is set or not.
+
+    APIToken Methods:
+
+    The `GetOne` method is used to determine whether a token is set or not within CloudVision.
+
+    Retrieving a token:
+
+    The token can be retrieved from CloudVision by calling the `GetOne` method.
+
+    Here is an example of a token being retrieved
+
+    ```
+    GetOne(APIToken{
+    })
+    ```
+
+    NOTE: `GetOne` functionality for APIToken will only display whether a token is
+    currently present or not. No secret values will be returned.
+    The two valid responses are;
+    * "Token is set"
+    * "Token not set"
+    """
+
+    token: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    token is the token string
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APIToken", ApiToken)
+
+
+@dataclass(eq=False, repr=False)
+class ApiTokenConfig(aristaproto.Message):
+    """
+    APITokenConfig is the config model allowing users to modify the token value which
+    is used for a multitude of functionalities, mainly in retrieving resources from arista.com e.g.
+    the AlertBase.json or software images.
+    Without a token set, a user can not retrieve any resources from arista.com
+    NOTE: A user configured token is not required on CloudVision-as-a-Service for AlertBase updates.
+
+    APITokenConfig Methods:
+
+    The `Set` method is used to add and/or modify a token stored in CloudVision.
+    The `Delete` method is used to remove the token.
+    The `GetOne` method is used to determine whether a token is set or not on CloudVision.
+
+    Adding a token to CloudVision:
+
+    When a `Set` is called, the rAPI will first ensure the token is valid and in the correct format
+    after which it will stored within CloudVision.
+
+    Here is an example of a token value being set
+
+    ```
+    Set(APITokenConfig{
+       Token: "f7f898e3860f618301c01f2de1ao1482"
+    })
+    ```
+
+    Deleting a token:
+
+    The token can be removed from CloudVision by calling `Delete`.
+
+    Here is an example of a token being deleted
+
+    ```
+    Delete(APITokenConfig{
+    })
+    ```
+
+    Retrieving a token:
+
+    The token can be retrieved from CloudVision by calling the `GetOne` method.
+
+    Here is an example of a token being retrieved
+
+    ```
+    GetOne(APITokenConfig{
+    })
+    ```
+
+    NOTE: `GetOne` functionality for APITokenConfig will only display whether a token is
+    currently present or not. No secret values will be returned.
+    The two valid responses are;
+    * "Token is set"
+    * "Token not set"
+    """
+
+    token: "str | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.StringValue, optional=True)
+    """
+    token is the token string
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfig", ApiTokenConfig)
+
+
+@dataclass(eq=False, repr=False)
+class ApiTokenConfigDeleteRequest(aristaproto.Message):
     pass
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigDeleteRequest", ApiTokenConfigDeleteRequest)
+
+
 @dataclass(eq=False, repr=False)
-class ApiProxyConfigDeleteResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class ApiTokenConfigDeleteResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
@@ -464,94 +516,24 @@ class ApiProxyConfigDeleteResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ApiTokenRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the time for which you are interested in the data.
-    If no time is given, the server will use the time at which it makes the request.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiTokenResponse(aristaproto.Message):
-    value: "ApiToken" = aristaproto.message_field(1)
-    """
-    Value is the value requested.
-    This structure will be fully-populated as it exists in the datastore. If
-    optional fields were not given at creation, these fields will be empty or
-    set to default values.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time carries the (UTC) timestamp of the last-modification of the
-    APIToken instance in this response.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiTokenStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ApiToken"] = aristaproto.message_field(1)
-    """
-    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
-    This requires all provided fields to be equal to the response.
-
-    While transparent to users, this field also allows services to optimize internal
-    subscriptions if filter(s) are sufficiently specific.
-    """
-
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-    If this field is populated, at least one of the two time fields are required.
-
-    For GetAll, the fields start and end can be used as follows:
-
-      * end: Returns the state of each APIToken at end.
-        * Each APIToken response is fully-specified (all fields set).
-      * start: Returns the state of each APIToken at start, followed by updates until now.
-        * Each APIToken response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each APIToken at start, followed by updates
-        until end.
-        * Each APIToken response at start is fully-specified, but updates until end may
-          be partial.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ApiTokenStreamResponse(aristaproto.Message):
-    value: "ApiToken" = aristaproto.message_field(1)
-    """
-    Value is a value deemed relevant to the initiating request.
-    This structure will always have its key-field populated. Which other fields are
-    populated, and why, depends on the value of Operation and what triggered this notification.
-    """
-
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this APIToken's last modification."""
-
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
-    """
-    Operation indicates how the APIToken value in this response should be considered.
-    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
-    once all initial data is streamed and the client begins to receive modification updates,
-    you should not see INITIAL again.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigDeleteResponse", ApiTokenConfigDeleteResponse)
 
 
 @dataclass(eq=False, repr=False)
 class ApiTokenConfigRequest(aristaproto.Message):
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time indicates the time for which you are interested in the data.
     If no time is given, the server will use the time at which it makes the request.
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigRequest", ApiTokenConfigRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ApiTokenConfigResponse(aristaproto.Message):
-    value: "ApiTokenConfig" = aristaproto.message_field(1)
+    value: "ApiTokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is the value requested.
     This structure will be fully-populated as it exists in the datastore. If
@@ -559,16 +541,52 @@ class ApiTokenConfigResponse(aristaproto.Message):
     set to default values.
     """
 
-    time: datetime = aristaproto.message_field(2)
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
     Time carries the (UTC) timestamp of the last-modification of the
     APITokenConfig instance in this response.
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigResponse", ApiTokenConfigResponse)
+
+
+@dataclass(eq=False, repr=False)
+class ApiTokenConfigSetRequest(aristaproto.Message):
+    value: "ApiTokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    APITokenConfig carries the value to set into the datastore.
+    See the documentation on the APITokenConfig struct for which fields are required.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigSetRequest", ApiTokenConfigSetRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ApiTokenConfigSetResponse(aristaproto.Message):
+    value: "ApiTokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value carries all the values given in the APITokenConfigSetRequest as well
+    as any server-generated values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:
+
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigSetResponse", ApiTokenConfigSetResponse)
+
+
 @dataclass(eq=False, repr=False)
 class ApiTokenConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["ApiTokenConfig"] = aristaproto.message_field(1)
+    partial_eq_filter: "list[ApiTokenConfig]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
     This requires all provided fields to be equal to the response.
@@ -577,7 +595,7 @@ class ApiTokenConfigStreamRequest(aristaproto.Message):
     subscriptions if filter(s) are sufficiently specific.
     """
 
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are required.
@@ -595,19 +613,24 @@ class ApiTokenConfigStreamRequest(aristaproto.Message):
     """
 
 
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigStreamRequest", ApiTokenConfigStreamRequest)
+
+
 @dataclass(eq=False, repr=False)
 class ApiTokenConfigStreamResponse(aristaproto.Message):
-    value: "ApiTokenConfig" = aristaproto.message_field(1)
+    value: "ApiTokenConfig | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
     """
     Value is a value deemed relevant to the initiating request.
     This structure will always have its key-field populated. Which other fields are
     populated, and why, depends on the value of Operation and what triggered this notification.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """Time holds the timestamp of this APITokenConfig's last modification."""
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this APITokenConfig's last modification.
+    """
 
-    type: "__subscriptions__.Operation" = aristaproto.enum_field(3)
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
     """
     Operation indicates how the APITokenConfig value in this response should be considered.
     Under non-subscribe requests, this value should always be INITIAL. In a subscription,
@@ -616,749 +639,549 @@ class ApiTokenConfigStreamResponse(aristaproto.Message):
     """
 
 
-@dataclass(eq=False, repr=False)
-class ApiTokenConfigSetRequest(aristaproto.Message):
-    value: "ApiTokenConfig" = aristaproto.message_field(1)
-    """
-    APITokenConfig carries the value to set into the datastore.
-    See the documentation on the APITokenConfig struct for which fields are required.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenConfigStreamResponse", ApiTokenConfigStreamResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ApiTokenConfigSetResponse(aristaproto.Message):
-    value: "ApiTokenConfig" = aristaproto.message_field(1)
+class ApiTokenRequest(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
     """
-    Value carries all the values given in the APITokenConfigSetRequest as well
-    as any server-generated values.
+    Time indicates the time for which you are interested in the data.
+    If no time is given, the server will use the time at which it makes the request.
     """
 
-    time: datetime = aristaproto.message_field(2)
-    """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
-    """
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenRequest", ApiTokenRequest)
 
 
 @dataclass(eq=False, repr=False)
-class ApiTokenConfigDeleteRequest(aristaproto.Message):
-    pass
+class ApiTokenResponse(aristaproto.Message):
+    value: "ApiToken | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is the value requested.
+    This structure will be fully-populated as it exists in the datastore. If
+    optional fields were not given at creation, these fields will be empty or
+    set to default values.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    APIToken instance in this response.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenResponse", ApiTokenResponse)
 
 
 @dataclass(eq=False, repr=False)
-class ApiTokenConfigDeleteResponse(aristaproto.Message):
-    time: datetime = aristaproto.message_field(1)
+class ApiTokenStreamRequest(aristaproto.Message):
+    partial_eq_filter: "list[ApiToken]" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, repeated=True)
     """
-    Time indicates the (UTC) timestamp at which the system recognizes the
-    deletion. The only guarantees made about this timestamp are:
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response.
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    While transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are required.
+
+    For GetAll, the fields start and end can be used as follows:
+
+      * end: Returns the state of each APIToken at end.
+        * Each APIToken response is fully-specified (all fields set).
+      * start: Returns the state of each APIToken at start, followed by updates until now.
+        * Each APIToken response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APIToken at start, followed by updates
+        until end.
+        * Each APIToken response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
-class ApiProxyServiceStub(aristaproto.ServiceStub):
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenStreamRequest", ApiTokenStreamRequest)
+
+
+@dataclass(eq=False, repr=False)
+class ApiTokenStreamResponse(aristaproto.Message):
+    value: "ApiToken | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, optional=True)
+    """
+    Value is a value deemed relevant to the initiating request.
+    This structure will always have its key-field populated. Which other fields are
+    populated, and why, depends on the value of Operation and what triggered this notification.
+    """
+
+    time: "datetime.datetime | None" = aristaproto.field(2, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of this APIToken's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(3, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the APIToken value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "APITokenStreamResponse", ApiTokenStreamResponse)
+
+
+@dataclass(eq=False, repr=False)
+class MetaResponse(aristaproto.Message):
+    time: "datetime.datetime | None" = aristaproto.field(1, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.Timestamp, optional=True)
+    """
+    Time holds the timestamp of the last item included in the metadata calculation.
+    """
+
+    type: "__subscriptions__.Operation" = aristaproto.field(2, aristaproto.TYPE_ENUM, default_factory=lambda: __subscriptions__.Operation(0))
+    """
+    Operation indicates how the value in this response should be considered.
+    Under non-subscribe requests, this value should always be INITIAL. In a subscription,
+    once all initial data is streamed and the client begins to receive modification updates,
+    you should not see INITIAL again.
+    """
+
+    count: "int | None" = aristaproto.field(3, aristaproto.TYPE_MESSAGE, unwrap=lambda: ___google__protobuf__.UInt32Value, optional=True)
+    """
+    Count is the number of items present under the conditions of the request.
+    """
+
+
+default_message_pool.register_message("arista.arista_portal.v1", "MetaResponse", MetaResponse)
+
+
+class ApiProxyConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        api_proxy_request: "ApiProxyRequest",
+        message: "ApiProxyConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ApiProxyResponse":
-        return await self._unary_unary(
-            "/arista.arista_portal.v1.APIProxyService/GetOne",
-            api_proxy_request,
-            ApiProxyResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        )
-
-    async def get_all(
-        self,
-        api_proxy_stream_request: "ApiProxyStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ApiProxyStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APIProxyService/GetAll",
-            api_proxy_stream_request,
-            ApiProxyStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe(
-        self,
-        api_proxy_stream_request: "ApiProxyStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ApiProxyStreamResponse]":
-        async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APIProxyService/Subscribe",
-            api_proxy_stream_request,
-            ApiProxyStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_meta(
-        self,
-        api_proxy_stream_request: "ApiProxyStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[MetaResponse]":
-        async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APIProxyService/SubscribeMeta",
-            api_proxy_stream_request,
-            MetaResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-
-class ApiProxyConfigServiceStub(aristaproto.ServiceStub):
-    async def get_one(
-        self,
-        api_proxy_config_request: "ApiProxyConfigRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiProxyConfigResponse":
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APIProxyConfigService/GetOne",
-            api_proxy_config_request,
+            message,
             ApiProxyConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        api_proxy_config_stream_request: "ApiProxyConfigStreamRequest",
+        message: "ApiProxyConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ApiProxyConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APIProxyConfigService/GetAll",
-            api_proxy_config_stream_request,
+            message,
             ApiProxyConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        api_proxy_config_stream_request: "ApiProxyConfigStreamRequest",
+        message: "ApiProxyConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ApiProxyConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APIProxyConfigService/Subscribe",
-            api_proxy_config_stream_request,
+            message,
             ApiProxyConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        api_proxy_config_stream_request: "ApiProxyConfigStreamRequest",
+        message: "ApiProxyConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APIProxyConfigService/SubscribeMeta",
-            api_proxy_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        api_proxy_config_set_request: "ApiProxyConfigSetRequest",
+        message: "ApiProxyConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiProxyConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APIProxyConfigService/Set",
-            api_proxy_config_set_request,
+            message,
             ApiProxyConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete(
         self,
-        api_proxy_config_delete_request: "ApiProxyConfigDeleteRequest",
+        message: "ApiProxyConfigDeleteRequest | None" = None,
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiProxyConfigDeleteResponse":
+
+        if message is None:
+            message = ApiProxyConfigDeleteRequest()
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APIProxyConfigService/Delete",
-            api_proxy_config_delete_request,
+            message,
             ApiProxyConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
 
-class ApiTokenServiceStub(aristaproto.ServiceStub):
+class ApiProxyServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        api_token_request: "ApiTokenRequest",
+        message: "ApiProxyRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "ApiTokenResponse":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ApiProxyResponse":
+
         return await self._unary_unary(
-            "/arista.arista_portal.v1.APITokenService/GetOne",
-            api_token_request,
-            ApiTokenResponse,
+            "/arista.arista_portal.v1.APIProxyService/GetOne",
+            message,
+            ApiProxyResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        api_token_stream_request: "ApiTokenStreamRequest",
+        message: "ApiProxyStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ApiTokenStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ApiProxyStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APITokenService/GetAll",
-            api_token_stream_request,
-            ApiTokenStreamResponse,
+            "/arista.arista_portal.v1.APIProxyService/GetAll",
+            message,
+            ApiProxyStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        api_token_stream_request: "ApiTokenStreamRequest",
+        message: "ApiProxyStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
-    ) -> "AsyncIterator[ApiTokenStreamResponse]":
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ApiProxyStreamResponse]":
+
         async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APITokenService/Subscribe",
-            api_token_stream_request,
-            ApiTokenStreamResponse,
+            "/arista.arista_portal.v1.APIProxyService/Subscribe",
+            message,
+            ApiProxyStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        api_token_stream_request: "ApiTokenStreamRequest",
+        message: "ApiProxyStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
-            "/arista.arista_portal.v1.APITokenService/SubscribeMeta",
-            api_token_stream_request,
+            "/arista.arista_portal.v1.APIProxyService/SubscribeMeta",
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
 
-class ApiTokenConfigServiceStub(aristaproto.ServiceStub):
+class ApiTokenConfigServiceStub(aristaproto_grpcio.ServiceStub):
     async def get_one(
         self,
-        api_token_config_request: "ApiTokenConfigRequest",
+        message: "ApiTokenConfigRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiTokenConfigResponse":
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APITokenConfigService/GetOne",
-            api_token_config_request,
+            message,
             ApiTokenConfigResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def get_all(
         self,
-        api_token_config_stream_request: "ApiTokenConfigStreamRequest",
+        message: "ApiTokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ApiTokenConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APITokenConfigService/GetAll",
-            api_token_config_stream_request,
+            message,
             ApiTokenConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe(
         self,
-        api_token_config_stream_request: "ApiTokenConfigStreamRequest",
+        message: "ApiTokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[ApiTokenConfigStreamResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APITokenConfigService/Subscribe",
-            api_token_config_stream_request,
+            message,
             ApiTokenConfigStreamResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def subscribe_meta(
         self,
-        api_token_config_stream_request: "ApiTokenConfigStreamRequest",
+        message: "ApiTokenConfigStreamRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "AsyncIterator[MetaResponse]":
+
         async for response in self._unary_stream(
             "/arista.arista_portal.v1.APITokenConfigService/SubscribeMeta",
-            api_token_config_stream_request,
+            message,
             MetaResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         ):
             yield response
 
     async def set(
         self,
-        api_token_config_set_request: "ApiTokenConfigSetRequest",
+        message: "ApiTokenConfigSetRequest",
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiTokenConfigSetResponse":
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APITokenConfigService/Set",
-            api_token_config_set_request,
+            message,
             ApiTokenConfigSetResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
     async def delete(
         self,
-        api_token_config_delete_request: "ApiTokenConfigDeleteRequest",
+        message: "ApiTokenConfigDeleteRequest | None" = None,
         *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
     ) -> "ApiTokenConfigDeleteResponse":
+
+        if message is None:
+            message = ApiTokenConfigDeleteRequest()
+
         return await self._unary_unary(
             "/arista.arista_portal.v1.APITokenConfigService/Delete",
-            api_token_config_delete_request,
+            message,
             ApiTokenConfigDeleteResponse,
             timeout=timeout,
-            deadline=deadline,
             metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
         )
 
 
+class ApiTokenServiceStub(aristaproto_grpcio.ServiceStub):
+    async def get_one(
+        self,
+        message: "ApiTokenRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "ApiTokenResponse":
+
+        return await self._unary_unary(
+            "/arista.arista_portal.v1.APITokenService/GetOne",
+            message,
+            ApiTokenResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        )
+
+    async def get_all(
+        self,
+        message: "ApiTokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ApiTokenStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.arista_portal.v1.APITokenService/GetAll",
+            message,
+            ApiTokenStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        message: "ApiTokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[ApiTokenStreamResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.arista_portal.v1.APITokenService/Subscribe",
+            message,
+            ApiTokenStreamResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+    async def subscribe_meta(
+        self,
+        message: "ApiTokenStreamRequest",
+        *,
+        timeout: "float | None" = None,
+        metadata: "MetadataLike | None" = None,
+        credentials: "grpc.CallCredentials | None" = None,
+        wait_for_ready: "bool | None" = None,
+    ) -> "AsyncIterator[MetaResponse]":
+
+        async for response in self._unary_stream(
+            "/arista.arista_portal.v1.APITokenService/SubscribeMeta",
+            message,
+            MetaResponse,
+            timeout=timeout,
+            metadata=metadata,
+            credentials=credentials,
+            wait_for_ready=wait_for_ready,
+        ):
+            yield response
+
+
+from ....google import protobuf as ___google__protobuf__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-
-
-class ApiProxyServiceBase(ServiceBase):
-    async def get_one(self, api_proxy_request: "ApiProxyRequest") -> "ApiProxyResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, api_proxy_stream_request: "ApiProxyStreamRequest") -> AsyncIterator[ApiProxyStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, api_proxy_stream_request: "ApiProxyStreamRequest") -> AsyncIterator[ApiProxyStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, api_proxy_stream_request: "ApiProxyStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApiProxyRequest, ApiProxyResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ApiProxyStreamRequest, ApiProxyStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ApiProxyStreamRequest, ApiProxyStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ApiProxyStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.arista_portal.v1.APIProxyService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiProxyRequest,
-                ApiProxyResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyStreamRequest,
-                ApiProxyStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyStreamRequest,
-                ApiProxyStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class ApiProxyConfigServiceBase(ServiceBase):
-    async def get_one(self, api_proxy_config_request: "ApiProxyConfigRequest") -> "ApiProxyConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, api_proxy_config_stream_request: "ApiProxyConfigStreamRequest") -> AsyncIterator[ApiProxyConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, api_proxy_config_stream_request: "ApiProxyConfigStreamRequest") -> AsyncIterator[ApiProxyConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, api_proxy_config_stream_request: "ApiProxyConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, api_proxy_config_set_request: "ApiProxyConfigSetRequest") -> "ApiProxyConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, api_proxy_config_delete_request: "ApiProxyConfigDeleteRequest") -> "ApiProxyConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApiProxyConfigRequest, ApiProxyConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ApiProxyConfigStreamRequest, ApiProxyConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ApiProxyConfigStreamRequest, ApiProxyConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ApiProxyConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ApiProxyConfigSetRequest, ApiProxyConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ApiProxyConfigDeleteRequest, ApiProxyConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.arista_portal.v1.APIProxyConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiProxyConfigRequest,
-                ApiProxyConfigResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyConfigStreamRequest,
-                ApiProxyConfigStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyConfigStreamRequest,
-                ApiProxyConfigStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiProxyConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiProxyConfigSetRequest,
-                ApiProxyConfigSetResponse,
-            ),
-            "/arista.arista_portal.v1.APIProxyConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiProxyConfigDeleteRequest,
-                ApiProxyConfigDeleteResponse,
-            ),
-        }
-
-
-class ApiTokenServiceBase(ServiceBase):
-    async def get_one(self, api_token_request: "ApiTokenRequest") -> "ApiTokenResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, api_token_stream_request: "ApiTokenStreamRequest") -> AsyncIterator[ApiTokenStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, api_token_stream_request: "ApiTokenStreamRequest") -> AsyncIterator[ApiTokenStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, api_token_stream_request: "ApiTokenStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApiTokenRequest, ApiTokenResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ApiTokenStreamRequest, ApiTokenStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ApiTokenStreamRequest, ApiTokenStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ApiTokenStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.arista_portal.v1.APITokenService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiTokenRequest,
-                ApiTokenResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenStreamRequest,
-                ApiTokenStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenStreamRequest,
-                ApiTokenStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenStreamRequest,
-                MetaResponse,
-            ),
-        }
-
-
-class ApiTokenConfigServiceBase(ServiceBase):
-    async def get_one(self, api_token_config_request: "ApiTokenConfigRequest") -> "ApiTokenConfigResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all(self, api_token_config_stream_request: "ApiTokenConfigStreamRequest") -> AsyncIterator[ApiTokenConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe(self, api_token_config_stream_request: "ApiTokenConfigStreamRequest") -> AsyncIterator[ApiTokenConfigStreamResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_meta(self, api_token_config_stream_request: "ApiTokenConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def set(self, api_token_config_set_request: "ApiTokenConfigSetRequest") -> "ApiTokenConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def delete(self, api_token_config_delete_request: "ApiTokenConfigDeleteRequest") -> "ApiTokenConfigDeleteResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApiTokenConfigRequest, ApiTokenConfigResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.get_one(request)
-        await stream.send_message(response)
-
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ApiTokenConfigStreamRequest, ApiTokenConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ApiTokenConfigStreamRequest, ApiTokenConfigStreamResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ApiTokenConfigStreamRequest, MetaResponse]") -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_meta,
-            stream,
-            request,
-        )
-
-    async def __rpc_set(self, stream: "grpclib.server.Stream[ApiTokenConfigSetRequest, ApiTokenConfigSetResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.set(request)
-        await stream.send_message(response)
-
-    async def __rpc_delete(self, stream: "grpclib.server.Stream[ApiTokenConfigDeleteRequest, ApiTokenConfigDeleteResponse]") -> None:
-        request = await stream.recv_message()
-        response = await self.delete(request)
-        await stream.send_message(response)
-
-    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
-        return {
-            "/arista.arista_portal.v1.APITokenConfigService/GetOne": grpclib.const.Handler(
-                self.__rpc_get_one,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiTokenConfigRequest,
-                ApiTokenConfigResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenConfigService/GetAll": grpclib.const.Handler(
-                self.__rpc_get_all,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenConfigStreamRequest,
-                ApiTokenConfigStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenConfigService/Subscribe": grpclib.const.Handler(
-                self.__rpc_subscribe,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenConfigStreamRequest,
-                ApiTokenConfigStreamResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenConfigService/SubscribeMeta": grpclib.const.Handler(
-                self.__rpc_subscribe_meta,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                ApiTokenConfigStreamRequest,
-                MetaResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenConfigService/Set": grpclib.const.Handler(
-                self.__rpc_set,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiTokenConfigSetRequest,
-                ApiTokenConfigSetResponse,
-            ),
-            "/arista.arista_portal.v1.APITokenConfigService/Delete": grpclib.const.Handler(
-                self.__rpc_delete,
-                grpclib.const.Cardinality.UNARY_UNARY,
-                ApiTokenConfigDeleteRequest,
-                ApiTokenConfigDeleteResponse,
-            ),
-        }
