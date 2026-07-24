@@ -23,20 +23,33 @@ class UtilsMixin(Protocol):
     @cached_property
     def _mlag_primary_id(self: AvdIpAddressingProtocol) -> int:
         """Returns our ID if we are MLAG primary. Otherwise returns the peer ID."""
-        if self.shared_utils.switch_facts.mlag_primary is None or (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
-            msg = "Never call '_mlag_primary_id' unless MLAG is configured and both devices have an ID configured."
+        if self.shared_utils.switch_facts.mlag_primary is None:
+            msg = "Never call '_mlag_primary_id' unless MLAG is configured."
             raise NotImplementedError(msg)
 
-        return self._id if self.shared_utils.switch_facts.mlag_primary else peer_id
+        if self.shared_utils.switch_facts.mlag_primary:
+            return self._id
+
+        if (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
+            msg = f"Could not determine ID for MLAG peer '{self.shared_utils.mlag_peer}'."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        return peer_id
 
     @cached_property
     def _mlag_secondary_id(self: AvdIpAddressingProtocol) -> int:
         """Returns our ID if MLAG is not configured or we are MLAG secondary. Otherwise returns the peer ID."""
-        if self.shared_utils.switch_facts.mlag_primary is None or (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
-            msg = "Never call '_mlag_primary_id' unless MLAG is configured and both devices have an ID configured."
+        if self.shared_utils.switch_facts.mlag_primary is None:
+            msg = "Never call '_mlag_primary_id' unless MLAG is configured."
             raise NotImplementedError(msg)
 
-        return peer_id if self.shared_utils.switch_facts.mlag_primary else self._id
+        if self.shared_utils.switch_facts.mlag_primary:
+            if (peer_id := self.shared_utils.switch_facts.mlag_peer_id) is None:
+                msg = f"Could not determine ID for MLAG peer '{self.shared_utils.mlag_peer}'."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            return peer_id
+
+        return self._id
 
     @cached_property
     def _mlag_peer_ipv4_pool(self: AvdIpAddressingProtocol) -> str:

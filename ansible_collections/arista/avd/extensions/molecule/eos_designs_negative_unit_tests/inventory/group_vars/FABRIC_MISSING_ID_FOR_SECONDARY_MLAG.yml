@@ -28,4 +28,4 @@ l2leaf:
           mlag_interfaces: [Ethernet5, Ethernet6]
 
 expected_error_message: >-
-  'id' is required to compute MLAG ids for host 'missing-id-for-secondary-mlag2'.
+  Could not determine ID for MLAG peer 'missing-id-for-secondary-mlag2' for host 'missing-id-for-secondary-mlag1'.

@@ -414,7 +414,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
 
     def update_mlag_groups(self) -> None:
         """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
-        if self.shared_utils.mlag and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+        if self._mlag_allowed and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
             self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:
