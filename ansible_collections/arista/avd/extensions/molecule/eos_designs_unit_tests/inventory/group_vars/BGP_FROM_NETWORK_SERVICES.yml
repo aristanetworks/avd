@@ -81,6 +81,20 @@ tenants:
           - ip_address: 10.10.1.2
             peer_group: MYPEERGROUP
             nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+            # This will render enabled: True in structured config
+            default_originate:
+              always: true
+          - ip_address: 11.11.1.2
+            peer_group: MYPEERGROUP
+            nodes: [bgp-from-network-services-1]
+            # This will render enabled: True in structured config
+            set_ipv4_next_hop: 10.10.1.2
+          - ip_address: 12.12.1.2
+            peer_group: MYPEERGROUP
+            nodes: [bgp-from-network-services-2]
+            # This will render enabled: True in structured config
+            default_originate:
+              always: false
         bgp_peer_groups:
           - name: MYPEERGROUP
             remote_as: 65991
@@ -112,6 +126,9 @@ tenants:
           - ip_address: 10.10.2.2
             peer_group: VALIDATE_BGP_PEERS
             nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+            # This will not render enabled: True in structured config
+            default_originate:
+              always: true
         bgp_peer_groups:
           - name: VALIDATE_BGP_PEERS
             remote_as: 65991

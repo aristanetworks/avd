@@ -1,0 +1,121 @@
+---
+name: "Release"
+
+"on":
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+  build_pyavd_dist:
+    name: Build PyAVD wheel
+    if: github.repository == 'aristanetworks/avd'
+    uses: ./.github/workflows/build-pyavd-wheel.yml
+    with:
+      ref: ${{ github.event.release.tag_name }}
+      artifact_name: pyavd-dist
+
+  # TODO: Move PyPI publishing back to a reusable workflow once trusted publishing supports it.
+  # Track: https://github.com/pypi/warehouse/issues/11096
+  publish_pyavd_testpypi:
+    name: Publish PyAVD to TestPyPI
+    needs: [build_pyavd_dist]
+    runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd'
+    environment:
+      name: test
+      url: https://test.pypi.org/p/pyavd
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download PyAVD wheel
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: pyavd-dist
+          path: dist/
+
+      - name: Publish distribution to TestPyPI
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  test_pyavd_from_testpypi:
+    name: Test PyAVD from TestPyPI on Python ${{ matrix.python }}
+    needs: [build_pyavd_dist, publish_pyavd_testpypi]
+    runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd'
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install PyAVD from TestPyPI
+        env:
+          TARGET_VERSION: ${{ needs.build_pyavd_dist.outputs.target_version }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            --index-url https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple/ \
+            "pyavd[ansible]==${TARGET_VERSION}"
+          python -m pip check
+
+      - name: Smoke test installed PyAVD
+        env:
+          TARGET_VERSION: ${{ needs.build_pyavd_dist.outputs.target_version }}
+        run: |
+          cd "$RUNNER_TEMP"
+          python - <<'PY'
+          from importlib.metadata import version
+          import os
+
+          import pyavd
+          from pyavd.constants import RUNNING_FROM_SRC, SCHEMA_STORE_GZ_FILE
+
+          target_version = os.environ["TARGET_VERSION"]
+          assert version("pyavd") == target_version
+          assert pyavd.__version__ == target_version
+          assert not RUNNING_FROM_SRC
+          assert SCHEMA_STORE_GZ_FILE.is_file()
+
+          for api_name in (
+              "get_avd_facts",
+              "get_device_config",
+              "get_device_doc",
+              "get_device_structured_config",
+              "get_device_test_catalog",
+              "get_fabric_documentation",
+              "validate_inputs",
+              "validate_structured_config",
+          ):
+              assert callable(getattr(pyavd, api_name))
+          PY
+
+  publish_pyavd_pypi:
+    name: Publish PyAVD to PyPI
+    needs: [test_pyavd_from_testpypi]
+    runs-on: ubuntu-latest
+    if: github.repository == 'aristanetworks/avd'
+    environment:
+      name: production
+      url: https://pypi.org/p/pyavd
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download PyAVD wheel
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: pyavd-dist
+          path: dist/
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
