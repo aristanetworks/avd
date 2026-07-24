@@ -35,6 +35,11 @@ class MiscMixin(Protocol):
         return frozenset(self.peer_facts.keys())
 
     @cached_property
+    def is_act_digital_twin(self: SharedUtilsProtocol) -> bool:
+        """Return True when rendering the ACT Digital Twin version of the fabric."""
+        return self.digital_twin and self.inputs.digital_twin.environment == "act"
+
+    @cached_property
     def id(self: SharedUtilsProtocol) -> int | None:
         """
         Node ID.
