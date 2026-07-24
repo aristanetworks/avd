@@ -7,21 +7,21 @@
     - name: Assert Containerlab topology file exists
       delegate_to: 127.0.0.1
       ansible.builtin.stat:
-        path: "{{ root_dir }}/digital_twin/documentation/fabric/{{ fabric_name }}-topology.clab.yml"
+        path: "{{ root_dir }}/digital_twin/{{ fabric_name }}-topology.clab.yml"
       register: containerlab_topology_file
       run_once: true
 
     - name: Read generated Containerlab topology file
       delegate_to: 127.0.0.1
       ansible.builtin.slurp:
-        path: "{{ root_dir }}/digital_twin/documentation/fabric/{{ fabric_name }}-topology.clab.yml"
+        path: "{{ root_dir }}/digital_twin/{{ fabric_name }}-topology.clab.yml"
       register: containerlab_topology_content
       run_once: true
 
     - name: Assert Containerlab interface mapping file exists
       delegate_to: 127.0.0.1
       ansible.builtin.stat:
-        path: "{{ root_dir }}/digital_twin/documentation/fabric/interface_mapping.json"
+        path: "{{ root_dir }}/digital_twin/interface_mapping.json"
       register: containerlab_interface_mapping_file
       run_once: true
 

@@ -1929,18 +1929,16 @@ Produced artifacts (Containerlab Digital Twin):
 ```text
 .
 ├── digital_twin
+│   ├── <FABRIC_NAME>-topology.clab.yml
+│   ├── interface_mapping.json
 │   ├── documentation
 │   │   ├── devices
 │   │   │   ├── <DEVICE_NAME>.md
 │   │   │   └── ...
 │   │   └── fabric
-│   │       ├── init-configs
-│   │       │   ├── <DEVICE_NAME>.cfg
-│   │       │   └── ...
 │   │       ├── <FABRIC_NAME>-documentation.md
 │   │       ├── <FABRIC_NAME>-p2p-links.csv
-│   │       ├── <FABRIC_NAME>-topology.csv
-│   │       └── <FABRIC_NAME>-topology.clab.yml
+│   │       └── <FABRIC_NAME>-topology.csv
 │   └── intended
 │       ├── configs
 │       │   ├── <DEVICE_NAME>.cfg
@@ -1993,9 +1991,7 @@ Important caveats for the current Containerlab implementation:
 !!! warning
     Make sure your lab environment is isolated from production. The management addresses are reused, so take the necessary precautions to avoid pushing configurations to the wrong environment.
 
-Containerlab startup configs are intentionally duplicated under `documentation/fabric/init-configs/`. These files are copies of the generated intended configs and make the topology self-contained and stable to launch without depending on repository-relative paths. Since the lab and production management IPs must currently match, AVD does not rewrite the management addressing in those configs for Containerlab.
-
-The generated topology file is written to `{{ documentation_dir }}/fabric/{{ fabric_name }}-topology.clab.yml`. The generated intended configs remain under `{{ output_dir }}/configs/<hostname>.cfg`, and the Containerlab startup-config copies are written to `{{ documentation_dir }}/fabric/init-configs/<hostname>.cfg`.
+The generated topology file is written to the Digital Twin root directory as `{{ output_dir | dirname }}/{{ fabric_name }}-topology.clab.yml`. The generated intended configs remain under `{{ output_dir }}/configs/<hostname>.cfg`, and the topology references them as `intended/configs/<hostname>.cfg`.
 
 Example generated topology:
 
@@ -2018,28 +2014,28 @@ topology:
   nodes:
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
-      startup-config: init-configs/dc1-leaf1a.cfg
+      startup-config: intended/configs/dc1-leaf1a.cfg
     dc1-leaf1b:
       mgmt-ipv4: 172.16.1.102
-      startup-config: init-configs/dc1-leaf1b.cfg
+      startup-config: intended/configs/dc1-leaf1b.cfg
     dc1-leaf1c:
       mgmt-ipv4: 172.16.1.151
-      startup-config: init-configs/dc1-leaf1c.cfg
+      startup-config: intended/configs/dc1-leaf1c.cfg
     dc1-leaf2a:
       mgmt-ipv4: 172.16.1.103
-      startup-config: init-configs/dc1-leaf2a.cfg
+      startup-config: intended/configs/dc1-leaf2a.cfg
     dc1-leaf2b:
       mgmt-ipv4: 172.16.1.104
-      startup-config: init-configs/dc1-leaf2b.cfg
+      startup-config: intended/configs/dc1-leaf2b.cfg
     dc1-leaf2c:
       mgmt-ipv4: 172.16.1.152
-      startup-config: init-configs/dc1-leaf2c.cfg
+      startup-config: intended/configs/dc1-leaf2c.cfg
     dc1-spine1:
       mgmt-ipv4: 172.16.1.11
-      startup-config: init-configs/dc1-spine1.cfg
+      startup-config: intended/configs/dc1-spine1.cfg
     dc1-spine2:
       mgmt-ipv4: 172.16.1.12
-      startup-config: init-configs/dc1-spine2.cfg
+      startup-config: intended/configs/dc1-spine2.cfg
   links:
   - endpoints:
     - dc1-leaf1a:eth1

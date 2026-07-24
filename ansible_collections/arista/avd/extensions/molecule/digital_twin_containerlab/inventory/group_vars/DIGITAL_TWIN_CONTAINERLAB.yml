@@ -5,9 +5,8 @@ management_eapi:
   enabled: true
 
 eos_designs_documentation:
-  enable: false
-  topology_csv: false
-  p2p_links_csv: false
+  topology_csv: true
+  p2p_links_csv: true
 
 digital_twin:
   environment: containerlab

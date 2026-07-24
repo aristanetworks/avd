@@ -142,7 +142,7 @@ class ActionModule(AVDActionPlugin):
                 content["topology"]["nodes"] = {
                     node_name: {
                         "mgmt-ipv4": node_settings["mgmt-ipv4"],
-                        "startup-config": f"init-configs/{node_name}.cfg",
+                        "startup-config": f"intended/configs/{node_name}.cfg",
                     }
                     for node_name, node_settings in content["topology"]["nodes"].items()
                 }

@@ -85,7 +85,7 @@
         toc: "{{ eos_designs_documentation.toc | arista.avd.default(true) }}"
         digital_twin_file: >-
           {{
-            fabric_dir ~ '/' ~ fabric_name ~ '-topology.clab.yml'
+            (output_dir | dirname) ~ '/' ~ fabric_name ~ '-topology.clab.yml'
             if avd_digital_twin_mode | arista.avd.default(false)
             and digital_twin.environment | arista.avd.default('act') == 'containerlab'
             else fabric_dir ~ '/' ~ fabric_name ~ '-topology.yml'

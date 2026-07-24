@@ -34,7 +34,6 @@ ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
-    "containerlab_startup_config_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "configuration_hide_passwords": {"type": "bool"},
@@ -90,9 +89,6 @@ class ActionModule(AVDActionPlugin):
                 self.logger.debug("Rendering config custom templates [done].")
 
             self.result["changed"] = self.write_file(device_config, validated_args["config_filename"])
-            if startup_config_filename := validated_args.get("containerlab_startup_config_filename"):
-                startup_changed = self.write_file(device_config, startup_config_filename)
-                self.result["changed"] = self.result["changed"] or startup_changed
             self.logger.debug("Rendering configuration [done].")
 
         if validated_args["generate_device_doc"]:
