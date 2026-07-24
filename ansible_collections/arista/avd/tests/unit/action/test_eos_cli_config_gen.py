@@ -231,30 +231,6 @@ def test_main_passes_hide_passwords_options_to_pyavd(action_module: Callable[...
     assert mock_get_device_doc.call_args.kwargs["configuration"].hide_passwords is False
 
 
-def test_main_marks_changed_when_containerlab_startup_config_changes(action_module: Callable[..., ActionModule]) -> None:
-    """Verify startup config changes are included in the action changed result."""
-    structured_config = {"hostname": "test-device"}
-    task_args = {
-        "tmp_dir": MOCK_TMP_DIR,
-        "generate_device_config": True,
-        "generate_device_doc": False,
-        "config_filename": "/output/config.cfg",
-        "containerlab_startup_config_filename": "/output/startup-config.cfg",
-    }
-    module = action_module(ActionModule, task_args=task_args)
-
-    with (
-        patch.object(module, "load_structured_config", return_value=structured_config),
-        patch.object(module, "write_file", side_effect=[False, True]) as mock_write_file,
-        patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
-    ):
-        module.main({"inventory_hostname": "test-device"})
-
-    assert module.result["changed"] is True
-    assert mock_write_file.call_args_list[0].args == ("! config\n", "/output/config.cfg")
-    assert mock_write_file.call_args_list[1].args == ("! config\n", "/output/startup-config.cfg")
-
-
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
     module = action_module(ActionModule)

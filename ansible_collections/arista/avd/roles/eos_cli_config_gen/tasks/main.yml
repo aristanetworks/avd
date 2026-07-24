@@ -37,14 +37,6 @@
         tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
         config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
         documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-        containerlab_startup_config_filename: >-
-          {{
-            documentation_dir ~ '/' ~ (fabric_dir_name | default('fabric')) ~ '/init-configs/' ~ inventory_hostname ~ '.cfg'
-            if avd_digital_twin_mode | arista.avd.default(false)
-            and digital_twin.environment | arista.avd.default('act') == 'containerlab'
-            and eos_cli_config_gen_configuration.enable | arista.avd.default(true)
-            else omit
-          }}
         generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
         generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
         configuration_hide_passwords: "{{ eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(omit) }}"

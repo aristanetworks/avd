@@ -8,10 +8,6 @@
     documentation_dir_name: "digital_twin/documentation"
     avd_digital_twin_mode: true
     avd_ignore_requirements: true
-    eos_designs_documentation:
-      enable: false
-      topology_csv: false
-      p2p_links_csv: false
   tasks:
     - name: Generate intended variables in Containerlab Digital Twin mode
       delegate_to: 127.0.0.1

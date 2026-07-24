@@ -16,16 +16,16 @@ topology:
   nodes:
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
-      startup-config: init-configs/dc1-leaf1a.cfg
+      startup-config: intended/configs/dc1-leaf1a.cfg
     dc1-leaf2a:
       mgmt-ipv4: 172.16.1.102
-      startup-config: init-configs/dc1-leaf2a.cfg
+      startup-config: intended/configs/dc1-leaf2a.cfg
     dc1-spine1:
       mgmt-ipv4: 172.16.1.11
-      startup-config: init-configs/dc1-spine1.cfg
+      startup-config: intended/configs/dc1-spine1.cfg
     dc1-spine2:
       mgmt-ipv4: 172.16.1.12
-      startup-config: init-configs/dc1-spine2.cfg
+      startup-config: intended/configs/dc1-spine2.cfg
   links:
   - endpoints:
     - dc1-leaf1a:eth1
