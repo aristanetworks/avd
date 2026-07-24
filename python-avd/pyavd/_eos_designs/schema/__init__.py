@@ -8239,10 +8239,15 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            Hostnames
+            configured here cannot also be configured under `evpn_route_servers` on the same node.
+            If a remote
+            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+            peering.
 
 
-            Subclass
-            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+            (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8291,10 +8296,15 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                           Hostnames
+                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                           If a remote
+                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                           peering.
 
 
-                           Subclass
-                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                           (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -10650,7 +10660,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -10681,7 +10697,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -11250,6 +11271,9 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        Hostnames configured here cannot also
+        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
         Subclass of AvdList with `str`
         items.
@@ -12210,6 +12234,9 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                       Hostnames configured here cannot also
+                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                        Subclass of AvdList with `str`
                        items.
@@ -13548,10 +13575,15 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            Hostnames
+            configured here cannot also be configured under `evpn_route_servers` on the same node.
+            If a remote
+            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+            peering.
 
 
-            Subclass
-            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+            (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13600,10 +13632,15 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                           Hostnames
+                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                           If a remote
+                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                           peering.
 
 
-                           Subclass
-                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                           (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -15959,7 +15996,13 @@ class EosDesigns(EosDesignsRootModel):
             Overrides global `digital_twin.fabric.act_os_version` flag.
             """
             mgmt_ip: str | None
-            """Desired management interface IPv4 address."""
+            """
+            Desired management interface IPv4 address for the Digital Twin.
+            In ACT Digital Twin mode, this
+            address is used in the ACT topology.
+            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+            address is also used for the generated OOB management interface.
+            """
             act_internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -15990,7 +16033,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version:
                            Desired ACT Digital Twin OS version.
                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                        mgmt_ip: Desired management interface IPv4 address.
+                        mgmt_ip:
+                           Desired management interface IPv4 address for the Digital Twin.
+                           In ACT Digital Twin mode, this
+                           address is used in the ACT topology.
+                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                           address is also used for the generated OOB management interface.
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
@@ -16570,6 +16618,9 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        Hostnames configured here cannot also
+        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
         Subclass of AvdList with `str`
         items.
@@ -17539,6 +17590,9 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                       Hostnames configured here cannot also
+                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                        Subclass of AvdList with `str`
                        items.
@@ -40106,6 +40160,7 @@ class EosDesigns(EosDesignsRootModel):
                 "maxpoll": {"type": int},
                 "minpoll": {"type": int},
                 "version": {"type": int},
+                "source_address": {"type": str},
             }
             name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
@@ -40117,6 +40172,21 @@ class EosDesigns(EosDesignsRootModel):
             minpoll: int | None
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             version: int | None
+            source_address: str | None
+            """
+            - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+            interface.
+            - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+            management interface.
+            - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+            address of the inband management interface.
+            - `use_inband_mgmt_interface_ipv6` configures the source
+            address as the IPv6 address of the inband management interface.
+            - Any other string is used directly
+            as the source address (for example, an IPv4 or IPv6 address).
+            `use_*` values fail validation when
+            the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
+            """
 
             if TYPE_CHECKING:
 
@@ -40130,6 +40200,7 @@ class EosDesigns(EosDesignsRootModel):
                     maxpoll: int | None | UndefinedType = Undefined,
                     minpoll: int | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -40145,6 +40216,19 @@ class EosDesigns(EosDesignsRootModel):
                         maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         version: version
+                        source_address:
+                           - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+                           interface.
+                           - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+                           management interface.
+                           - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+                           address of the inband management interface.
+                           - `use_inband_mgmt_interface_ipv6` configures the source
+                           address as the IPv6 address of the inband management interface.
+                           - Any other string is used directly
+                           as the source address (for example, an IPv4 or IPv6 address).
+                           `use_*` values fail validation when
+                           the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
 
                     """
 
@@ -53730,10 +53814,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -53782,10 +53871,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -56152,7 +56246,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -56183,7 +56283,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -56727,6 +56832,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -57670,6 +57778,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -59016,10 +59127,15 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                            Hostnames
+                            configured here cannot also be configured under `evpn_route_servers` on the same node.
+                            If a remote
+                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                            peering.
 
 
-                            Subclass
-                            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                            (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -59068,10 +59184,15 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                           Hostnames
+                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                           If a remote
+                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                           peering.
 
 
-                                           Subclass
-                                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                           (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -61455,7 +61576,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -61486,7 +61613,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -62042,6 +62174,9 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                        Hostnames configured here cannot also
+                        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                         Subclass of AvdList with `str`
                         items.
@@ -62994,6 +63129,9 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                       Hostnames configured here cannot also
+                                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                        Subclass of AvdList with `str`
                                        items.
@@ -64265,10 +64403,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -64317,10 +64460,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -66687,7 +66835,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -66718,7 +66872,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -67277,6 +67436,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -68231,6 +68393,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -69577,10 +69742,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -69629,10 +69799,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -71999,7 +72174,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -72030,7 +72211,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -72586,6 +72772,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -73538,6 +73727,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -89272,10 +89464,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -89324,10 +89521,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -91694,7 +91896,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -91725,7 +91933,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -92269,6 +92482,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -93212,6 +93428,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -94558,10 +94777,15 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                            Hostnames
+                            configured here cannot also be configured under `evpn_route_servers` on the same node.
+                            If a remote
+                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                            peering.
 
 
-                            Subclass
-                            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                            (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -94610,10 +94834,15 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                           Hostnames
+                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                           If a remote
+                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                           peering.
 
 
-                                           Subclass
-                                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                           (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -96997,7 +97226,13 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """Desired management interface IPv4 address."""
+                            """
+                            Desired management interface IPv4 address for the Digital Twin.
+                            In ACT Digital Twin mode, this
+                            address is used in the ACT topology.
+                            If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                            address is also used for the generated OOB management interface.
+                            """
                             act_internet_access: bool | None
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -97028,7 +97263,12 @@ class EosDesigns(EosDesignsRootModel):
                                         act_os_version:
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
-                                        mgmt_ip: Desired management interface IPv4 address.
+                                        mgmt_ip:
+                                           Desired management interface IPv4 address for the Digital Twin.
+                                           In ACT Digital Twin mode, this
+                                           address is used in the ACT topology.
+                                           If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                           address is also used for the generated OOB management interface.
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
@@ -97584,6 +97824,9 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                        Hostnames configured here cannot also
+                        be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                         Subclass of AvdList with `str`
                         items.
@@ -98536,6 +98779,9 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                       Hostnames configured here cannot also
+                                       be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                        Subclass of AvdList with `str`
                                        items.
@@ -99807,10 +100053,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -99859,10 +100110,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -102229,7 +102485,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -102260,7 +102522,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -102819,6 +103086,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -103773,6 +104043,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.
@@ -105119,10 +105392,15 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                        Hostnames
+                        configured here cannot also be configured under `evpn_route_servers` on the same node.
+                        If a remote
+                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                        peering.
 
 
-                        Subclass
-                        of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                        (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -105171,10 +105449,15 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+                                       Hostnames
+                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
+                                       If a remote
+                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
+                                       peering.
 
 
-                                       Subclass
-                                       of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
+                                       (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -107541,7 +107824,13 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """Desired management interface IPv4 address."""
+                        """
+                        Desired management interface IPv4 address for the Digital Twin.
+                        In ACT Digital Twin mode, this
+                        address is used in the ACT topology.
+                        If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                        address is also used for the generated OOB management interface.
+                        """
                         act_internet_access: bool | None
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
@@ -107572,7 +107861,12 @@ class EosDesigns(EosDesignsRootModel):
                                     act_os_version:
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
-                                    mgmt_ip: Desired management interface IPv4 address.
+                                    mgmt_ip:
+                                       Desired management interface IPv4 address for the Digital Twin.
+                                       In ACT Digital Twin mode, this
+                                       address is used in the ACT topology.
+                                       If the regular `mgmt_ip` is set, this `digital_twin.mgmt_ip`
+                                       address is also used for the generated OOB management interface.
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
@@ -108128,6 +108422,9 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                    Hostnames configured here cannot also
+                    be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                     Subclass of AvdList with `str`
                     items.
@@ -109080,6 +109377,9 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+                                   Hostnames configured here cannot also
+                                   be configured under `evpn_gateway.remote_peers` on the same node.
+
 
                                    Subclass of AvdList with `str`
                                    items.

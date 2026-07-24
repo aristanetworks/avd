@@ -140,6 +140,9 @@
 - [STUN](#stun)
   - [STUN Server](#stun-server)
   - [STUN Device Configuration](#stun-device-configuration)
+- [Schedule](#schedule)
+  - [Schedule Config](#schedule-config)
+  - [Schedule Device Configuration](#schedule-device-configuration)
 
 ## Management
 
@@ -2035,4 +2038,19 @@ stun
    server
       local-interface Ethernet1
       ssl connection lifetime 3 hours
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| - | False |
+
+### Schedule Device Configuration
+
+```eos
+!
+no schedule config prepend-hostname-logfile
 ```
