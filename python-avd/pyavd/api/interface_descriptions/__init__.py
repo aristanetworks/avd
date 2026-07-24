@@ -8,8 +8,6 @@ from __future__ import annotations
 from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
-from ansible.utils.display import Display
-
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import AvdStringFormatter, strip_null_from_data
 from pyavd._utils.deprecated_dict import DeprecatedDict
@@ -84,7 +82,6 @@ class AvdInterfaceDescriptions(AvdFacts):
                 wan_carrier=data.wan_carrier,
                 wan_circuit_id=data.wan_circuit_id,
                 main_interface_wan_carrier=data.main_interface_wan_carrier,
-                # TODO: Add deprecation warning for link.* vars
                 link=DeprecatedDict(
                     {
                         "type": data.link_type,
@@ -95,9 +92,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message="Variables starting with 'link.' in interface descriptions templates are deprecated",
-                    _display=Display(),
-                ),
+                    _message = "The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
+                )
             )
 
         if data.description is not None:
@@ -179,7 +175,6 @@ class AvdInterfaceDescriptions(AvdFacts):
                 wan_carrier=data.wan_carrier,
                 wan_circuit_id=data.wan_circuit_id,
                 main_interface_wan_carrier=data.main_interface_wan_carrier,
-                # TODO: Add deprecation warning for link.* vars
                 link=DeprecatedDict(
                     {
                         "interface": data.interface,
@@ -192,9 +187,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message="Variables starting with 'link.' in interface descriptions templates are deprecated",
-                    _display=Display(),
-                ),
+                    _message = "The 'link' variable is deprecated and will be removed in AVD 7.0.0.",
+                )
             )
 
         if data.port_channel_description is not None:
