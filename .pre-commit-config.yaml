@@ -137,7 +137,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 2700fd5671c633760d912769c041bfcde2b9a01b  # frozen: v0.15.22
+    rev: cb8c523fd4835aba42af70f4cad5568db4df0b6c  # frozen: v0.16.0
     hooks:
       # Run the linter.
       - id: ruff
@@ -209,7 +209,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: 64a97fb7fa63188393d3215c6e312f5f9c6d0f78  # frozen: v1.27.0
+    rev: 067260dc5fe6ea86b7551bfd6f8b3ba4e6c93129  # frozen: v1.28.0
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -328,7 +328,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 06f92c99e930c11230426b5edd775021d25e08a8  # frozen: v0.23.1
+    rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
