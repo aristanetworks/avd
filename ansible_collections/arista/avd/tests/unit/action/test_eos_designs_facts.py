@@ -72,7 +72,13 @@ def test_run_raises_when_fabric_name_invalid(
     ):
         module.run(task_vars=task_vars)
 
-    assert "Invalid/missing 'fabric_name' variable." in exc_info.value.message
+    assert exc_info.value.message == (
+        "Error during plugin 'arista.avd.eos_designs_facts' execution: "
+        "Invalid/missing 'fabric_name' variable. "
+        "All hosts in the play must have the same 'fabric_name' value "
+        "which must point to an Ansible Group containing the hosts."
+        f"play_hosts: {ansible_play_hosts_all}"
+    )
 
 
 def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
