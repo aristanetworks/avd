@@ -43,9 +43,11 @@ jobs:
     # see: https://github.com/ansible-collections/partner-certification-checker#tested-ansible-core-branches-and-python-versions
     with:
       collection-root: 'ansible_collections/arista/avd'
-    #   ansible-core-version: '2.18.0'
-      automation-hub: true
-    # Uncomment the lines below if you have 'automation-hub: true' and need to install collections from Red Hat Ansible Automation Hub.
-    # This requires setting a repository secret called 'AH_TOKEN' which value contains a Red Hat Ansible Automation Hub token.
+      # ansible-core-version: '2.18.0'
+      # Fork PRs: certification runs, with Automation Hub configuration skipped and no secret available.
+      # Same-repo PRs, merge-queue runs, and manual runs: Automation Hub remains enabled and receives AH_TOKEN.
+      automation-hub: >-
+        ${{ github.event_name != 'pull_request' ||
+            github.event.pull_request.head.repo.fork == false }}
     secrets:
       AH_TOKEN: ${{ secrets.AH_TOKEN }}
