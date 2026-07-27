@@ -11,17 +11,25 @@ keys:
     primary_key: name
     description: |-
       IPv6 extended access-lists supporting substitution on certain fields.
-      These access-lists can be referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`,
-      or under node type `l3_interfaces` and `l3_port_channels` using `ipv6_acl_in` / `ipv6_acl_out`,
+      These access-lists can be referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type `l3_interfaces` and `l3_port_channels`,
       and will only be configured on devices where they are in use.
 
       The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
       When using substitution, the interface name will be appended to the ACL name.
 
-      The "interface_ip" substitution field is resolved differently per interface type:
+      The "interface_ipv6" substitution field is resolved per interface type:
       - For SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
       - For L3 interfaces and L3 port-channels: resolved from the first entry of `ipv6_addresses`.
       If the required field is not set, the substitution will fail with an error.
+
+      The "peer_ipv6" substitution field is resolved per interface type:
+      - For SVIs: not supported. Substitution will fail with an error if used.
+      - For network services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if used.
+      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+      If `peer_ipv6` is not set on the interface, the substitution will fail with an error.
+
+      Note: The "interface_ip" and "peer_ip" tokens are deprecated and will be removed in AVD 7.0.0.
+      Use "interface_ipv6" and "peer_ipv6" instead.
     items:
       $ref: "eos_cli_config_gen#/keys/ipv6_access_lists/items"
       type: dict
@@ -40,14 +48,16 @@ keys:
               source:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" and "peer_ip".
+                  This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+                  Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
                   "<ipv6>" without a mask means host.
                   Required except for remarks.
               destination:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" and "peer_ip".
+                  This field supports substitution of the fields "interface_ipv6" and "peer_ipv6".
+                  Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
                   "<ipv6>" without a mask means host.
                   Required except for remarks.

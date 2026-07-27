@@ -149,14 +149,16 @@ $defs:
         ipv6_acl_in:
           description: |-
             Name of the IPv6 access-list to be assigned in the ingress direction.
-            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6 address) and "peer_ip" (resolved from `peer_ipv6`).
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
           convert_types:
             - int
         ipv6_acl_out:
           description: |-
             Name of the IPv6 Access-list to be assigned in the egress direction.
-            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ip", "interface_ipv6" (both resolve to the interface IPv6 address) and "peer_ip" (resolved from `peer_ipv6`).
+            The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
+            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
           convert_types:
             - int
