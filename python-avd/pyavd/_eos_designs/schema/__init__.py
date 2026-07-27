@@ -11797,8 +11797,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Set the OS version and management IP address for the digital twin of the
-        associated node(s).
+        Set the OS version, management IP address, and management gateway for the
+        digital twin of the associated node(s).
 
         Subclass of AvdModel.
         """
@@ -12607,8 +12607,8 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Set the OS version and management IP address for the digital twin of the
-                       associated node(s).
+                       Set the OS version, management IP address, and management gateway for the
+                       digital twin of the associated node(s).
 
                        Subclass of AvdModel.
                     validation_profile:
@@ -17162,8 +17162,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Set the OS version and management IP address for the digital twin of the
-        associated node(s).
+        Set the OS version, management IP address, and management gateway for the
+        digital twin of the associated node(s).
 
         Subclass of AvdModel.
         """
@@ -17981,8 +17981,8 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Set the OS version and management IP address for the digital twin of the
-                       associated node(s).
+                       Set the OS version, management IP address, and management gateway for the
+                       digital twin of the associated node(s).
 
                        Subclass of AvdModel.
                     validation_profile:
@@ -57394,8 +57394,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -58187,8 +58187,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -62754,8 +62754,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Set the OS version and management IP address for the digital twin of the
-                        associated node(s).
+                        Set the OS version, management IP address, and management gateway for the
+                        digital twin of the associated node(s).
 
                         Subclass of AvdModel.
                         """
@@ -63556,8 +63556,8 @@ class EosDesigns(EosDesignsRootModel):
                                     digital_twin:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Set the OS version and management IP address for the digital twin of the
-                                       associated node(s).
+                                       Set the OS version, management IP address, and management gateway for the
+                                       digital twin of the associated node(s).
 
                                        Subclass of AvdModel.
                                     validation_profile:
@@ -68034,8 +68034,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -68838,8 +68838,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -73388,8 +73388,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -74190,8 +74190,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -93116,8 +93116,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -93909,8 +93909,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -98476,8 +98476,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Set the OS version and management IP address for the digital twin of the
-                        associated node(s).
+                        Set the OS version, management IP address, and management gateway for the
+                        digital twin of the associated node(s).
 
                         Subclass of AvdModel.
                         """
@@ -99278,8 +99278,8 @@ class EosDesigns(EosDesignsRootModel):
                                     digital_twin:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Set the OS version and management IP address for the digital twin of the
-                                       associated node(s).
+                                       Set the OS version, management IP address, and management gateway for the
+                                       digital twin of the associated node(s).
 
                                        Subclass of AvdModel.
                                     validation_profile:
@@ -103756,8 +103756,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -104560,8 +104560,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
@@ -109110,8 +109110,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Set the OS version and management IP address for the digital twin of the
-                    associated node(s).
+                    Set the OS version, management IP address, and management gateway for the
+                    digital twin of the associated node(s).
 
                     Subclass of AvdModel.
                     """
@@ -109912,8 +109912,8 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Set the OS version and management IP address for the digital twin of the
-                                   associated node(s).
+                                   Set the OS version, management IP address, and management gateway for the
+                                   digital twin of the associated node(s).
 
                                    Subclass of AvdModel.
                                 validation_profile:
