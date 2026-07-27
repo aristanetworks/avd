@@ -145,7 +145,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  | Configure the peer as a route-reflector-client. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peer_groups</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups") | List, items: Dictionary |  |  |  | List of BGP peer groups definitions.<br>This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.<br>Since BGP peer groups are configured at higher BGP level, shared between VRFs,<br>peer_group names should not overlap between VRFs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].name") | String | Required, Unique |  |  | BGP peer group name. |
@@ -389,7 +389,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "network_services.[].vrfs.[].bgp_peers.[].bfd_timers.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "network_services.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "network_services.[].vrfs.[].bgp_peers.[].route_reflector_client") | Boolean |  |  |  | Configure the peer as a route-reflector-client. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "network_services.[].vrfs.[].bgp_peers.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_peer_groups</samp>](## "network_services.[].vrfs.[].bgp_peer_groups") | List, items: Dictionary |  |  |  | List of BGP peer groups definitions.<br>This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.<br>Since BGP peer groups are configured at higher BGP level, shared between VRFs,<br>peer_group names should not overlap between VRFs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].name") | String | Required, Unique |  |  | BGP peer group name. |
@@ -849,6 +849,8 @@
                   # Rate in milliseconds.
                   min_rx: <int; 50-60000; required>
                   multiplier: <int; 3-50; required>
+
+                # Configure the peer as a route-reflector-client.
                 route_reflector_client: <bool>
                 shutdown: <bool>
 
@@ -1450,6 +1452,8 @@
                   # Rate in milliseconds.
                   min_rx: <int; 50-60000; required>
                   multiplier: <int; 3-50; required>
+
+                # Configure the peer as a route-reflector-client.
                 route_reflector_client: <bool>
                 shutdown: <bool>
 
