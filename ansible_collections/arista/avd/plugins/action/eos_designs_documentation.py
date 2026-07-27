@@ -14,7 +14,8 @@ from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import YamlLoader, get_eos_designs_facts_path, write_file
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils import get, strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
