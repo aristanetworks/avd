@@ -2702,6 +2702,16 @@ keys:
 
           When `false` (default), renders the legacy `spanning-tree portfast` without
           the `edge` keyword.'
+      only_render_separator_with_boot_secret_key:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.4.0.
+
+          When `true`, the ''!'' separator before ''boot secret'' is only rendered
+          when `boot.secret.key` is provided.
+
+          When `false` (default), the ''!'' separator is always rendered when `boot.secret`
+          is defined, even if `boot.secret.key` is missing, for backward compatibility.'
   errdisable:
     type: dict
     keys:
@@ -12639,7 +12649,8 @@ keys:
                 are set.'
             source_address:
               type: str
-              description: 'Source IPv4 address.
+              description: 'Source IPv4/IPv6 address. If ''name'' is an IP address,
+                ''source_address'' must use the same IP version.
 
                 Mutually exclusive with ''local_interface''. ''local_interface'' takes
                 precedence if both are set.'
@@ -17170,6 +17181,9 @@ keys:
                 route_map:
                   type: str
                   description: Route-map name.
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17449,6 +17463,9 @@ keys:
                   type: bool
                 route_map:
                   type: str
+            enforce_first_as:
+              type: bool
+              description: Enforce the first AS in eBGP updates. EOS default is true.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -21042,6 +21059,10 @@ keys:
                         type: bool
                       route_map:
                         type: str
+                  enforce_first_as:
+                    type: bool
+                    description: Enforce the first AS in eBGP updates. EOS default
+                      is true.
                   update_source:
                     type: str
                   route_map_in:
@@ -24728,6 +24749,103 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
+  schedule:
+    type: dict
+    description: Configuration of EOS scheduled jobs.
+    keys:
+      config:
+        type: dict
+        description: Global schedule configuration.
+        keys:
+          max_concurrent_jobs:
+            type: int
+            min: 1
+            max: 4
+            convert_types:
+            - str
+            description: Maximum number of concurrent scheduled jobs.
+          prepend_hostname_logfile:
+            type: bool
+            description: Prepend hostname to the log file name.
+      jobs:
+        type: list
+        primary_key: name
+        description: List of schedule jobs.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Schedule job name.
+              pattern: (?!config)(?!summary$)[a-z0-9_-]+
+            interval:
+              type: int
+              min: 2
+              max: 1440
+              convert_types:
+              - str
+              description: 'Interval in minutes. Used as the standalone interval when
+                `at` is not set,
+
+                or as the recurring interval when combined with `at` and `at.once`
+                is not True.'
+            at:
+              type: dict
+              description: Schedule job at a specific time on a specific date.
+              keys:
+                time:
+                  required: true
+                  type: str
+                  description: Start time in HH:MM:SS format.
+                date:
+                  required: true
+                  type: str
+                  description: 'Start date. Supported formats: mm/dd/yyyy or yyyy-mm-dd.'
+                once:
+                  type: bool
+                  description: 'Run the command a single time at the given time/date.
+
+                    Mutually exclusive with `interval`. `once` takes precedence if
+                    both are set.'
+            timeout:
+              type: int
+              min: 1
+              max: 480
+              convert_types:
+              - str
+              description: Job timeout in minutes for CLI command execution. Must
+                be less than the job interval.
+            max_log_files:
+              type: int
+              required: true
+              min: 0
+              max: 10000
+              convert_types:
+              - str
+              description: Maximum number of log files to retain.
+            logging_verbose:
+              type: bool
+              description: Enable verbose logging.
+            loglocation:
+              type: str
+              description: Log file location path (e.g. flash:/schedule/logs).
+            max_total_size:
+              type: str
+              description: 'Maximum total size of log files (e.g. 110m, 1g).
+
+                Supported suffixes: b (bytes, default), k (kilobytes), m (megabytes),
+                g (gigabytes).'
+            compression:
+              type: str
+              valid_values:
+              - gzip
+              - bzip2
+              - xz
+              description: Compression algorithm for log files.
+            command:
+              type: str
+              required: true
+              description: EOS CLI command to execute.
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -25607,6 +25725,9 @@ keys:
             valid_values:
             - cos
             - dscp
+  switchport_ethernet_llc_validation:
+    type: bool
+    description: Enable Ethernet LLC header validation.
   switchport_port_security:
     type: dict
     keys:
@@ -25621,6 +25742,9 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  switchport_vlan_tag_validation:
+    type: bool
+    description: Enable VLAN tag validation.
   sync_e:
     type: dict
     keys:

@@ -170,9 +170,9 @@ Serial Number: DEADBEEFC0FFEW
   - [Tunnel Interfaces](#tunnel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
-- [Switchport Port-security](#switchport-port-security)
-  - [Switchport Port-security Summary](#switchport-port-security-summary)
-  - [Switchport Port-security Device Configuration](#switchport-port-security-device-configuration)
+- [Switchport](#switchport)
+  - [Switchport Port-security](#switchport-port-security)
+  - [Switchport Validation](#switchport-validation)
 - [Routing](#routing)
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -311,6 +311,10 @@ Serial Number: DEADBEEFC0FFEW
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
   - [Maintenance](#maintenance)
+- [Schedule](#schedule)
+  - [Schedule Config](#schedule-config)
+  - [Schedule Jobs Summary](#schedule-jobs-summary)
+  - [Schedule Device Configuration](#schedule-device-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
@@ -8579,9 +8583,11 @@ interface Vxlan1
 
 ```
 
-## Switchport Port-security
+## Switchport
 
-### Switchport Port-security Summary
+### Switchport Port-security
+
+#### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -8590,7 +8596,7 @@ interface Vxlan1
 | Disable Persistence | True |
 | Violation Protect Chip-based | True |
 
-### Switchport Port-security Device Configuration
+#### Switchport Port-security Device Configuration
 
 ```eos
 !
@@ -8598,6 +8604,22 @@ switchport port-security mac-address aging
 switchport port-security mac-address moveable
 switchport port-security persistence disabled
 switchport port-security violation protect chip-based
+```
+
+### Switchport Validation
+
+#### Switchport Validation Summary
+
+- Switchport Ethernet LLC header validation: True
+- Switchport VLAN tag validation: True
+
+#### Switchport Validation Device Configuration
+
+```eos
+!
+switchport ethernet llc validation
+!
+switchport vlan tag validation
 ```
 
 ## Routing
@@ -9885,6 +9907,18 @@ ASN Notation: asdot
 | -------- | ----- |
 | TTL Max Hops | 42 |
 
+##### TEST-ENFORCE-FIRST-AS-FALSE
+
+| Settings | Value |
+| -------- | ----- |
+| Enforce first AS | False |
+
+##### TEST-ENFORCE-FIRST-AS-TRUE
+
+| Settings | Value |
+| -------- | ----- |
+| Enforce first AS | True |
+
 ##### test-link-bandwidth1
 
 | Settings | Value |
@@ -9953,6 +9987,8 @@ ASN Notation: asdot
 | 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - | - |
 | 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST |
 | 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST |
+| 192.168.0.11 | - | default | - | - | - | - | - | - | - | - | - |
+| 192.168.0.12 | - | default | - | - | - | - | - | - | - | - | - |
 | 192.168.42.42 | 65004 | default | - | - | - | - | - | - | - | - | - |
 | 192.168.251.1 | - | default | True | - | - | - | - | - | - | - | - |
 | 192.168.251.2 | - | default | - | - | - | - | - | - | - | - | - |
@@ -9988,6 +10024,7 @@ ASN Notation: asdot
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | large | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | True | - | - | - | - |
 | 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - |
+| 192.168.0.10 | - | VRF02 | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 
 #### BGP Neighbor Interfaces
@@ -10425,6 +10462,10 @@ router bgp 65101
    neighbor STARDARD-COMMUNITY send-community standard
    neighbor TEST peer group
    neighbor TEST ttl maximum-hops 42
+   neighbor TEST-ENFORCE-FIRST-AS-FALSE peer group
+   no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
+   neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
+   neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10514,6 +10555,8 @@ router bgp 65101
    neighbor 192.0.3.9 peer group TEST
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
+   neighbor 192.168.0.11 enforce-first-as
+   no neighbor 192.168.0.12 enforce-first-as
    neighbor 192.168.42.42 remote-as 65004
    neighbor 192.168.42.42 next-hop-self
    neighbor 192.168.251.1 shutdown
@@ -11441,6 +11484,8 @@ router bgp 65101
       neighbor 1.1.1.1 additional-paths receive
       neighbor 1.1.1.1 additional-paths send ecmp limit 24
       neighbor 1.1.1.1 password 7 <removed>
+      neighbor 1.1.1.1 enforce-first-as
+      no neighbor 192.168.0.10 enforce-first-as
       redistribute connected include leaked route-map RM_VRF_CONNECTED
       redistribute isis level-2 include leaked route-map RM_VRF_ISIS
       redistribute ospf include leaked route-map RM_VRF_OSPF
@@ -15707,6 +15752,41 @@ maintenance
    !
    unit UNIT2
       quiesce
+```
+
+## Schedule
+
+### Schedule Config
+
+| Max Concurrent Jobs | Prepend Hostname Logfile |
+| ------------------- | ------------------------ |
+| 2 | True |
+
+### Schedule Jobs Summary
+
+| Name | Period | Command | Max Log Files | Timeout | Logging Verbose | Log Location | Max Total Size | Compression |
+| ---- | ------ | ------- | ------------- | ------- | --------------- | ------------ | -------------- | ----------- |
+| at_date_interval | at 06:00:00 2027-12-22 interval 60 minutes | show logging | 10 | 30 | - | - | - | gzip |
+| at_date_once | at 11:11:11 02/12/2029 once | show tech-support | 3 | 3 | - | - | - | bzip2 |
+| at_time_once | at 08:00:00 2028-01-15 once | show ip route | 5 | - | - | - | - | - |
+| interval_full_options | interval 44 minutes | show running-config | 3 | 30 | True | flash:/schedule | 1024m | xz |
+| interval_minimal | interval 5 minutes | show version | 44 | 4 | - | - | - | - |
+| interval_simple | interval 31 minutes | show lldp neighbors | 2 | 30 | - | - | - | - |
+| interval_standard | interval 33 minutes | show interfaces | 4 | 30 | - | - | - | - |
+
+### Schedule Device Configuration
+
+```eos
+!
+schedule config max-concurrent-jobs 2
+schedule config prepend-hostname-logfile
+schedule at_date_interval at 06:00:00 2027-12-22 interval 60 timeout 30 max-log-files 10 compression gzip command show logging
+schedule at_date_once at 11:11:11 02/12/2029 once timeout 3 max-log-files 3 compression bzip2 command show tech-support
+schedule at_time_once at 08:00:00 2028-01-15 once max-log-files 5 command show ip route
+schedule interval_full_options interval 44 timeout 30 max-log-files 3 max-total-size 1024m logging verbose loglocation flash:/schedule compression xz command show running-config
+schedule interval_minimal interval 5 timeout 4 max-log-files 44 command show version
+schedule interval_simple interval 31 timeout 30 max-log-files 2 command show lldp neighbors
+schedule interval_standard interval 33 timeout 30 max-log-files 4 command show interfaces
 ```
 
 ## EOS CLI Device Configuration
