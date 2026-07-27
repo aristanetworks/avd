@@ -48,8 +48,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].mtu") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.point_to_point") | Boolean |  | `False` |  |  |
@@ -135,8 +135,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].mtu") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_in") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv4_acl_out") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",<br>resolved from the IPv6 address set on the interface for this node.<br>Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.<br>The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "network_services.[].vrfs.[].l3_interfaces.[].ospf.point_to_point") | Boolean |  | `False` |  |  |
@@ -275,12 +275,15 @@
                 ipv4_acl_out: <str>
 
                 # Name of the IPv6 access-list to be assigned in the ingress direction.
-                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                # The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the IPv6 address set on the interface for this node.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                 ipv6_acl_in: <str>
 
                 # Name of the IPv6 access-list to be assigned in the egress direction.
-                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the IPv6 address set on the interface for this node.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                 # The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
                 ipv6_acl_out: <str>
 
@@ -487,12 +490,15 @@
                 ipv4_acl_out: <str>
 
                 # Name of the IPv6 access-list to be assigned in the ingress direction.
-                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
-                # The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the IPv6 address set on the interface for this node.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                 ipv6_acl_in: <str>
 
                 # Name of the IPv6 access-list to be assigned in the egress direction.
-                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                # resolved from the IPv6 address set on the interface for this node.
+                # Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
                 # The "interface_ip" substitution field is resolved from the IPv6 address set on the interface for this node.
                 ipv6_acl_out: <str>
 
