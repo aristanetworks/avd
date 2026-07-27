@@ -80,7 +80,7 @@ ipv6_acls:
         destination: interface_ip
       - action: permit
         protocol: ipv6
-        source: peer_ip
+        source: peer_ipv6
         destination: interface_ip
   - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
     entries:

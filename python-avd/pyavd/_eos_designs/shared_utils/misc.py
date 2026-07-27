@@ -255,9 +255,8 @@ class MiscMixin(Protocol):
         ip_replacements = {
             "interface_ipv6": interface_ipv6,
             "peer_ipv6": peer_ipv6,
-            # TODO: AVD 7.0.0 - Remove deprecated tokens below.
+            # TODO: AVD 7.0.0 - Remove deprecated token below.
             "interface_ip": interface_ipv6,
-            "peer_ip": peer_ipv6,
         }
         changed = False
         for index, entry in enumerate(ipv6_acl.entries):

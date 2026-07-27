@@ -136,7 +136,7 @@ $defs:
         peer_ipv6:
           type: str
           description: |-
-            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ip" token.
+            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the "peer_ipv6" token.
         bgp:
           type: dict
           description: |-
@@ -184,7 +184,7 @@ $defs:
           description: |-
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
+            Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
           convert_types:
             - int
@@ -192,7 +192,7 @@ $defs:
           description: |-
             Name of the IPv6 Access-list to be assigned in the egress direction.
             The access-list must be defined under `ipv6_acls` and supports field substitution for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`) and "peer_ipv6" (resolved from `peer_ipv6`).
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and will be removed in AVD 7.0.0.
+            Token "interface_ip" is also accepted but deprecated and will be removed in AVD 7.0.0.
           type: str
           convert_types:
             - int

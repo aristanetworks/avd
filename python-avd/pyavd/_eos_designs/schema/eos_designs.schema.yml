@@ -4021,10 +4021,8 @@ keys:
       an error.
 
 
-      Note: The "interface_ip" and "peer_ip" tokens are deprecated and will be removed
-      in AVD 7.0.0.
-
-      Use "interface_ipv6" and "peer_ipv6" instead.'
+      Note: The "interface_ip" token is deprecated and will be removed in AVD 7.0.0.
+      Use "interface_ipv6" instead.'
     items:
       $ref: eos_cli_config_gen#/keys/ipv6_access_lists/items
       type: dict
@@ -4046,8 +4044,8 @@ keys:
                 description: 'This field supports substitution of the fields "interface_ipv6"
                   and "peer_ipv6".
 
-                  Tokens "interface_ip" and "peer_ip" are also accepted but deprecated
-                  and will be removed in AVD 7.0.0.
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -4060,8 +4058,8 @@ keys:
                 description: 'This field supports substitution of the fields "interface_ipv6"
                   and "peer_ipv6".
 
-                  Tokens "interface_ip" and "peer_ip" are also accepted but deprecated
-                  and will be removed in AVD 7.0.0.
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -15543,7 +15541,7 @@ $defs:
         peer_ipv6:
           type: str
           description: The peer device IPv6 address (no mask). Used for field substitution
-            in `ipv6_acls` entries with the "peer_ip" token.
+            in `ipv6_acls` entries with the "peer_ipv6" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15604,8 +15602,8 @@ $defs:
             for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
             and "peer_ipv6" (resolved from `peer_ipv6`).
 
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and
-            will be removed in AVD 7.0.0.'
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15617,8 +15615,8 @@ $defs:
             for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
             and "peer_ipv6" (resolved from `peer_ipv6`).
 
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and
-            will be removed in AVD 7.0.0.'
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15828,7 +15826,7 @@ $defs:
         peer_ipv6:
           type: str
           description: The peer device IPv6 address (no mask). Used for field substitution
-            in `ipv6_acls` entries with the "peer_ip" token.
+            in `ipv6_acls` entries with the "peer_ipv6" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15889,8 +15887,8 @@ $defs:
             for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
             and "peer_ipv6" (resolved from `peer_ipv6`).
 
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and
-            will be removed in AVD 7.0.0.'
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15902,8 +15900,8 @@ $defs:
             for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
             and "peer_ipv6" (resolved from `peer_ipv6`).
 
-            Tokens "interface_ip" and "peer_ip" are also accepted but deprecated and
-            will be removed in AVD 7.0.0.'
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
