@@ -299,10 +299,14 @@ In the example below a `7050X3` production device will be assigned the `veos` AC
 
 #### Management IP Configuration
 
-ACT Digital Twin devices can optionally have an OOB management IP address assigned in the topology file. AVD assigns the ACT management IP in the following priority order:
+ACT Digital Twin devices can optionally have an OOB management IP address assigned in the ACT topology file.
+AVD assigns the ACT topology `ip_addr` in the following priority order:
 
 1. `<node_type_keys.key>.nodes[].digital_twin.mgmt_ip` - Per-node Digital Twin management IP
 2. `<node_type_keys.key>.nodes[].mgmt_ip` - Per-node production management IP
+
+When `digital_twin.mgmt_ip` and the regular node `mgmt_ip` are both set, AVD uses the Digital Twin address for the generated OOB management interface and related management-source configuration in ACT Digital Twin mode.
+This allows the Digital Twin artifacts to use a different OOB management IPv4 address than the production artifacts while preserving the production `mgmt_ip` in the normal production run.
 
 When neither key is set, AVD behaviour depends on the ACT node type:
 
@@ -315,12 +319,12 @@ When neither key is set, AVD behaviour depends on the ACT node type:
 spine:
   nodes:
     - name: spine1
-      mgmt_ip: 192.168.1.11/24  # Used for both production and Digital Twin OOB MGMT IP
+      mgmt_ip: 192.168.1.11/24  # Used for production and in ACT topology file and generated EOS config
 
     - name: spine2
       mgmt_ip: 192.168.1.12/24          # Used for `spine2` in production
       digital_twin:
-        mgmt_ip: 10.255.0.12/24         # Used as OOB MGMT IP for `spine2` in ACT Digital Twin topology file
+        mgmt_ip: 10.255.0.12/24         # Used in ACT topology file and generated EOS config
 ```
 
 !!! note
@@ -423,24 +427,24 @@ spine:
 
 #### ACT Examples
 
-Each example below demonstrates a specific use case with two devices: one using default values and one using customized values.
+Each example below demonstrates a specific use case with devices using default and customized values.
 
-##### Example 1: Topology Management IP Configuration
+##### Example 1: Management IP Configuration
 
-This example shows how to configure topology management IPs for ACT Digital Twin devices.
+This example shows how to configure management IPs for ACT Digital Twin devices.
 
 ```yaml
 spine:
   nodes:
     # Device using production management IP (default behavior)
     - name: spine1
-      mgmt_ip: 10.10.1.11/24  # Used for both production and ACT Digital Twin topology file
+      mgmt_ip: 10.10.1.11/24  # Used for production and in ACT topology file and generated EOS config
 
     # Device using separate ACT Digital Twin management IP
     - name: spine2
       mgmt_ip: 10.10.1.12/24  # Production management IP
       digital_twin:
-        mgmt_ip: 172.16.1.12/24  # ACT Digital Twin management IP (overrides production IP) in topology file
+        mgmt_ip: 172.16.1.12/24  # Used in ACT topology file and generated EOS config
 
     # Device with no management IP — valid only for veos and cloudeos ACT node types
     - name: spine3
@@ -449,8 +453,8 @@ spine:
 
 **Result:**
 
-- `spine1`: Uses `10.10.1.11/24` as OOB MGMT IP in ACT Digital Twin topology file
-- `spine2`: Uses `172.16.1.12/24` as OOB MGMT IP in ACT Digital Twin topology file
+- `spine1`: Uses `10.10.1.11/24` as OOB MGMT IP in ACT Digital Twin topology and generated configuration
+- `spine2`: Uses `172.16.1.12/24` as OOB MGMT IP in ACT Digital Twin topology and generated configuration
 - `spine3`: No `ip_addr` in ACT Digital Twin topology file (only valid for `veos`/`cloudeos` node types)
 
 ##### Example 2: OS Version Configuration
