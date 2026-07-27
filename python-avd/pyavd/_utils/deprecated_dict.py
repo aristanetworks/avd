@@ -3,28 +3,23 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import logging
+import warnings
 from typing import Any
+
+from pyavd._errors import AvdDeprecationWarning
 
 
 class DeprecatedDict(dict):
     _done: bool
     _message: str
-    _logger = logging.getLogger(__name__)
 
     def __init__(self, *args: Any, _message: str, **kwargs: Any) -> None:
         self._done = False
         self._message = _message
         super().__init__(*args, **kwargs)
 
-    def get(self, key: Any, default: Any = None) -> Any:
-        if not self._done:
-            self._logger.warning(self._message)
-            self._done = True
-        return super().get(key, default)
-
     def __getitem__(self, key: Any) -> Any:
         if not self._done:
-            self._logger.warning(self._message)
+            warnings.warn(self._message, AvdDeprecationWarning, stacklevel=2)
             self._done = True
         return super().__getitem__(key)
