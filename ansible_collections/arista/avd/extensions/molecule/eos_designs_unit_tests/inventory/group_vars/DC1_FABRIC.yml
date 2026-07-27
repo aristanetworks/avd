@@ -226,6 +226,7 @@ l3leaf:
           uplink_switch_interfaces: [Ethernet22, Ethernet22, Ethernet22, Ethernet22]
           evpn_gateway:
             remote_peers:
+              - hostname: dc1-spine1
               - hostname: dc1-bl2a
                 # Testing below that the override is working
               - hostname: dc1-bl2b

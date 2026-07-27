@@ -7,6 +7,11 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
+  /tools/
+  /site/
+  /.venv/
+  /venv/
+  /.tox/
 
 # Repository information
 repo_name: AVD on Github
@@ -69,6 +74,18 @@ extra_javascript:
 plugins:
   - exclude:
       glob:
+        # Local development virtualenvs — `docs_dir: .` scans the repo root,
+        # so a `.venv/` here drags every site-packages .md file into the build.
+        - .venv/*
+        - venv/*
+        - .tox/*
+        # Schema Explorer source (generator + SPA assets) and build output
+        # both live under tools/. mkdocs_hook.py copies the built tree into
+        # site/_assets/schema-explorer/ on `mkdocs build`.
+        - tools/*
+        # Local mkdocs build output. With `docs_dir: .`, serving after a build
+        # would otherwise ingest generated `site/` files as source media.
+        - site/*
         - README.md
         - contributing.md
         - pylintrc-ansible
@@ -122,9 +139,13 @@ plugins:
         - ".*.j2$"
   - include_dir_to_nav
   - git-revision-date-localized:
+      # Docker docs containers often mount a git worktree without the host
+      # absolute gitdir target, so disable this plugin there via env.
+      enabled: !ENV [AVD_ENABLE_GIT_REVISION_DATE, true]
       type: date
   - search:
       lang: en
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -171,6 +192,15 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: true
+hooks:
+  # Schema Explorer integration:
+  #   * Auto-builds a cached Schema Explorer outside the repo tree when the
+  #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
+  #     <site_dir>/_assets/schema-explorer/ on build.
+  #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
+  #     are lazy-loaded by app.js when a page hosts the explorer.
+  - tools/schema-explorer/mkdocs_hook.py
+
 # TOC
 docs_dir: .
 nav:
@@ -207,6 +237,7 @@ nav:
           - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
+          - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
       - Ansible Usage Patterns: docs/user-manual/ansible-usage-patterns.md
       - Ansible Collection:
