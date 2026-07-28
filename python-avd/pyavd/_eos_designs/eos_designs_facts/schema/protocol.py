@@ -244,6 +244,28 @@ class EosDesignsFactsProtocol(Protocol):
 
             MlagInterfaces._item_type = str
 
+            class UnderlayMulticast(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
+                pim_sm: bool
+                static: bool
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
+                        """
+                        UnderlayMulticast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            pim_sm: pim_sm
+                            static: static
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "hostname": {"type": str},
                 "id": {"type": int},
@@ -256,6 +278,7 @@ class EosDesignsFactsProtocol(Protocol):
                 "inband_ztp": {"type": bool},
                 "inband_ztp_lacp_fallback_delay": {"type": int},
                 "inband_ztp_vlan": {"type": int},
+                "underlay_multicast": {"type": UnderlayMulticast},
             }
             hostname: str
             """Same hostname as mlag_peer fact but here we have a type guarantee."""
@@ -270,6 +293,12 @@ class EosDesignsFactsProtocol(Protocol):
             inband_ztp: bool
             inband_ztp_lacp_fallback_delay: int | None
             inband_ztp_vlan: int | None
+            underlay_multicast: UnderlayMulticast
+            """
+            Should multicast be enabled on the mlag peer-l3-vlan.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -287,6 +316,7 @@ class EosDesignsFactsProtocol(Protocol):
                     inband_ztp: bool | UndefinedType = Undefined,
                     inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                     inband_ztp_vlan: int | None | UndefinedType = Undefined,
+                    underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Peer.
@@ -306,6 +336,10 @@ class EosDesignsFactsProtocol(Protocol):
                         inband_ztp: inband_ztp
                         inband_ztp_lacp_fallback_delay: inband_ztp_lacp_fallback_delay
                         inband_ztp_vlan: inband_ztp_vlan
+                        underlay_multicast:
+                           Should multicast be enabled on the mlag peer-l3-vlan.
+
+                           Subclass of AvdModel.
 
                     """
 

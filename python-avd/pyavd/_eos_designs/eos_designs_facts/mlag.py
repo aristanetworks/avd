@@ -28,7 +28,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def mlag(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.Mlag:
         """
-        Return facts for the MLAG peer or None if MLAG is not enabled.
+        Always returns the Mlag fact. Refer to Mlag.enabled to see if MLAG should be configured.
 
         Verifies that exactly two devices are part of the same mlag_group.
 
@@ -65,12 +65,6 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             msg = f"MLAG L3 peering is not properly configured for MLAG peer '{peer_hostname}'"
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
-        # Override local capabilities with common capabilities
-        mlag_local_info.underlay_multicast = EosDesignsFactsProtocol.Mlag.Local.UnderlayMulticast(
-            pim_sm=mlag_local_info.underlay_multicast.pim_sm and peer_mlag_info.underlay_multicast.pim_sm,
-            static=mlag_local_info.underlay_multicast.static and peer_mlag_info.underlay_multicast.static,
-        )
-
         peer = EosDesignsFactsProtocol.Mlag.Peer(
             hostname=peer_hostname,
             id=peer_id,
@@ -83,6 +77,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             inband_ztp=peer_facts_generator.inband_ztp,
             inband_ztp_lacp_fallback_delay=peer_facts_generator.inband_ztp_lacp_fallback_delay,
             inband_ztp_vlan=peer_facts_generator.inband_ztp_vlan,
+            underlay_multicast=peer_mlag_info.underlay_multicast._cast_as(EosDesignsFactsProtocol.Mlag.Peer.UnderlayMulticast),
         )
         return EosDesignsFactsProtocol.Mlag(
             enabled=True,
@@ -136,9 +131,9 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def mlag_primary(self: EosDesignsFactsGeneratorProtocol) -> bool | None:
         """
-        MLAG priority is only set when MLAG is allowed and configured with a proper peer.
+        MLAG Primary is only set when MLAG is allowed and configured with a proper peer.
 
-        'mlag_priority' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
+        'mlag_primary' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
         """
         if not self._mlag_allowed:
             return None
@@ -152,7 +147,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def mlag_peer_id(self: EosDesignsFactsGeneratorProtocol) -> int | None:
         """
-        MLAG priority is only set when MLAG is allowed and configured with a proper peer.
+        MLAG Peer ID is only set when MLAG is allowed and configured with a proper peer.
 
         'mlag_peer_id' cannot be folded in to 'mlag', since it is used as a dependency in shared_utils that are indirectly used to build this.
         """
@@ -214,10 +209,10 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         return self.shared_utils.ip_addressing.mlag_l3_ip_primary() if is_primary else self.shared_utils.ip_addressing.mlag_l3_ip_secondary()
 
     def _get_mlag_port_channel_id(self: EosDesignsFactsGeneratorProtocol) -> int:
-        first_mlag_interface = self._mlag_interfaces[0]
         if (manual_id := self.shared_utils.node_config.mlag_port_channel_id) is not None:
             return manual_id
 
+        first_mlag_interface = self._mlag_interfaces[0]
         return int("".join(findall(r"\d", first_mlag_interface)))
 
     @cached_property
@@ -229,6 +224,6 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         """
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             msg = "'mlag_interfaces' not set"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return EosDesignsFactsProtocol.Mlag.Peer.MlagInterfaces(mlag_interfaces)

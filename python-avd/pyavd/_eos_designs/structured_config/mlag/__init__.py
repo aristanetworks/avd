@@ -148,9 +148,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=isis_authentication_key,
                     key_type="7",
                 )
-        if self.facts.mlag.local.underlay_multicast.pim_sm:
+        if self.facts.mlag.local.underlay_multicast.pim_sm and self.facts.mlag.peer.underlay_multicast.pim_sm:
             vlan_interface.pim.ipv4.sparse_mode = True
-        if self.facts.mlag.local.underlay_multicast.static:
+        if self.facts.mlag.local.underlay_multicast.static and self.facts.mlag.peer.underlay_multicast.static:
             vlan_interface.multicast.ipv4.static = True
 
         if self.inputs.underlay_rfc5549:

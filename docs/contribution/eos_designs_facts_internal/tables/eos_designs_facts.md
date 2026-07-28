@@ -72,6 +72,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp</samp>](## "mlag.peer.inband_ztp") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_lacp_fallback_delay</samp>](## "mlag.peer.inband_ztp_lacp_fallback_delay") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_vlan</samp>](## "mlag.peer.inband_ztp_vlan") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "mlag.peer.underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "mlag.peer.underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "mlag.peer.underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>mlag_peer</samp>](## "mlag_peer") | String |  |  |  | MLAG peer is only set when MLAG is allowed and configured with a proper peer.<br>So presence of the mlag_peer fact is the same as MLAG should be configured. |
     | [<samp>mlag_primary</samp>](## "mlag_primary") | Boolean |  |  |  | MLAG primary is only set when MLAG is allowed and configured with a proper peer. |
     | [<samp>mlag_peer_id</samp>](## "mlag_peer_id") | Integer |  |  |  | MLAG peer ID is only set when MLAG is allowed and configured with a proper peer. |
@@ -289,6 +292,11 @@
         inband_ztp: <bool; required>
         inband_ztp_lacp_fallback_delay: <int>
         inband_ztp_vlan: <int>
+
+        # Should multicast be enabled on the mlag peer-l3-vlan.
+        underlay_multicast:
+          pim_sm: <bool; required>
+          static: <bool; required>
 
     # MLAG peer is only set when MLAG is allowed and configured with a proper peer.
     # So presence of the mlag_peer fact is the same as MLAG should be configured.

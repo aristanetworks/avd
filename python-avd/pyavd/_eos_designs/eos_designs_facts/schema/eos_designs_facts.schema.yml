@@ -170,6 +170,16 @@ keys:
             type: int
           inband_ztp_vlan:
             type: int
+          underlay_multicast:
+            type: dict
+            description: Should multicast be enabled on the mlag peer-l3-vlan.
+            keys:
+              pim_sm:
+                type: bool
+                required: true
+              static:
+                type: bool
+                required: true
   mlag_peer:
     type: str
     description: |-
