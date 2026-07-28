@@ -65628,7 +65628,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         """Redistribute OSPFv3 leaked routes."""
                         match_internal: bool | None
-                        """Redistribute only internal OSPFv3 leaked routes instead of all types."""
+                        """Redistribute internal OSPFv3 leaked routes."""
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -65648,7 +65648,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: Redistribute OSPFv3 leaked routes.
-                                    match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
+                                    match_internal: Redistribute internal OSPFv3 leaked routes.
                                     route_map: route_map
 
                                 """
@@ -66001,7 +66001,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         """Redistribute OSPFv3 leaked routes."""
                         match_internal: bool | None
-                        """Redistribute only internal OSPFv3 leaked routes instead of all types."""
+                        """Redistribute internal OSPFv3 leaked routes."""
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -66021,7 +66021,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: Redistribute OSPFv3 leaked routes.
-                                    match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
+                                    match_internal: Redistribute internal OSPFv3 leaked routes.
                                     route_map: route_map
 
                                 """
@@ -66365,7 +66365,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             enabled: bool
                             """Redistribute OSPFv3 leaked routes."""
                             match_internal: bool | None
-                            """Redistribute only internal OSPFv3 leaked routes instead of all types."""
+                            """Redistribute internal OSPFv3 leaked routes."""
                             route_map: str | None
 
                             if TYPE_CHECKING:
@@ -66385,7 +66385,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                     Args:
                                         enabled: Redistribute OSPFv3 leaked routes.
-                                        match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
+                                        match_internal: Redistribute internal OSPFv3 leaked routes.
                                         route_map: route_map
 
                                     """
@@ -66743,7 +66743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             enabled: bool
                             """Redistribute OSPFv3 leaked routes."""
                             match_internal: bool | None
-                            """Redistribute only internal OSPFv3 leaked routes instead of all types."""
+                            """Redistribute internal OSPFv3 leaked routes."""
                             route_map: str | None
 
                             if TYPE_CHECKING:
@@ -66763,7 +66763,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                     Args:
                                         enabled: Redistribute OSPFv3 leaked routes.
-                                        match_internal: Redistribute only internal OSPFv3 leaked routes instead of all types.
+                                        match_internal: Redistribute internal OSPFv3 leaked routes.
                                         route_map: route_map
 
                                     """

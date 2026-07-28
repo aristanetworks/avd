@@ -207,7 +207,8 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
       or router_ospfv3.address_family_ipv4 is arista.avd.defined
-      or router_ospfv3.address_family_ipv6 is arista.avd.defined %}
+      or router_ospfv3.address_family_ipv6 is arista.avd.defined
+      or router_ospfv3.eos_cli is arista.avd.defined %}
 !
 router ospfv3
 {%     set use_delimiter = false %}

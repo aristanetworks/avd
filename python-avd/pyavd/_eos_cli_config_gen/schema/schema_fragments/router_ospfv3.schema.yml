@@ -112,7 +112,7 @@ keys:
                       match_internal:
                         type: bool
                         description: |-
-                          Redistribute only internal OSPFv3 leaked routes instead of all types.
+                          Redistribute internal OSPFv3 leaked routes.
                       route_map:
                         type: str
                   leaked_match_external:

@@ -37,7 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute only internal OSPFv3 leaked routes instead of all types. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute internal OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked_match_external</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external") | Dictionary |  |  |  | Redistribute external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled") | Boolean | Required |  |  |  |
@@ -70,7 +70,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute only internal OSPFv3 leaked routes instead of all types. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute internal OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked_match_external</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external") | Dictionary |  |  |  | Redistribute external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled") | Boolean | Required |  |  |  |
@@ -113,7 +113,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute only internal OSPFv3 leaked routes instead of all types. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute internal OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked_match_external</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked_match_external") | Dictionary |  |  |  | Redistribute external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.ospfv3.leaked_match_external.enabled") | Boolean | Required |  |  |  |
@@ -146,7 +146,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute only internal OSPFv3 leaked routes instead of all types. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked.match_internal") | Boolean |  |  |  | Redistribute internal OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaked_match_external</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked_match_external") | Dictionary |  |  |  | Redistribute external OSPFv3 leaked routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.redistribute.ospfv3.leaked_match_external.enabled") | Boolean | Required |  |  |  |
@@ -215,7 +215,7 @@
               # Redistribute OSPFv3 leaked routes.
               enabled: <bool; required>
 
-              # Redistribute only internal OSPFv3 leaked routes instead of all types.
+              # Redistribute internal OSPFv3 leaked routes.
               match_internal: <bool>
               route_map: <str>
 
@@ -262,7 +262,7 @@
               # Redistribute OSPFv3 leaked routes.
               enabled: <bool; required>
 
-              # Redistribute only internal OSPFv3 leaked routes instead of all types.
+              # Redistribute internal OSPFv3 leaked routes.
               match_internal: <bool>
               route_map: <str>
 
@@ -338,7 +338,7 @@
                   # Redistribute OSPFv3 leaked routes.
                   enabled: <bool; required>
 
-                  # Redistribute only internal OSPFv3 leaked routes instead of all types.
+                  # Redistribute internal OSPFv3 leaked routes.
                   match_internal: <bool>
                   route_map: <str>
 
@@ -385,7 +385,7 @@
                   # Redistribute OSPFv3 leaked routes.
                   enabled: <bool; required>
 
-                  # Redistribute only internal OSPFv3 leaked routes instead of all types.
+                  # Redistribute internal OSPFv3 leaked routes.
                   match_internal: <bool>
                   route_map: <str>
 
