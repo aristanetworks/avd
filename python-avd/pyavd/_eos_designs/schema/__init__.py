@@ -35745,6 +35745,7 @@ class EosDesigns(EosDesignsRootModel):
                     "weight": {"type": int},
                     "bfd": {"type": bool},
                     "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
+                    "route_reflector_client": {"type": bool},
                     "shutdown": {"type": bool},
                 }
                 ip_address: str
@@ -35834,6 +35835,8 @@ class EosDesigns(EosDesignsRootModel):
                 bfd: bool | None
                 bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
                 """Override default BFD timers. BFD must be enabled with `bfd: true`."""
+                route_reflector_client: bool | None
+                """Configure the peer as a route-reflector-client."""
                 shutdown: bool | None
 
                 if TYPE_CHECKING:
@@ -35866,6 +35869,7 @@ class EosDesigns(EosDesignsRootModel):
                         weight: int | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
+                        route_reflector_client: bool | None | UndefinedType = Undefined,
                         shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -35934,6 +35938,7 @@ class EosDesigns(EosDesignsRootModel):
                             weight: weight
                             bfd: bfd
                             bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
+                            route_reflector_client: Configure the peer as a route-reflector-client.
                             shutdown: shutdown
 
                         """
@@ -85236,6 +85241,7 @@ class EosDesigns(EosDesignsRootModel):
                             "weight": {"type": int},
                             "bfd": {"type": bool},
                             "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
+                            "route_reflector_client": {"type": bool},
                             "shutdown": {"type": bool},
                         }
                         ip_address: str
@@ -85325,6 +85331,8 @@ class EosDesigns(EosDesignsRootModel):
                         bfd: bool | None
                         bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
                         """Override default BFD timers. BFD must be enabled with `bfd: true`."""
+                        route_reflector_client: bool | None
+                        """Configure the peer as a route-reflector-client."""
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -85357,6 +85365,7 @@ class EosDesigns(EosDesignsRootModel):
                                 weight: int | None | UndefinedType = Undefined,
                                 bfd: bool | None | UndefinedType = Undefined,
                                 bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
+                                route_reflector_client: bool | None | UndefinedType = Undefined,
                                 shutdown: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -85425,6 +85434,7 @@ class EosDesigns(EosDesignsRootModel):
                                     weight: weight
                                     bfd: bfd
                                     bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
+                                    route_reflector_client: Configure the peer as a route-reflector-client.
                                     shutdown: shutdown
 
                                 """

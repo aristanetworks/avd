@@ -7017,6 +7017,9 @@ keys:
                     bfd_timers:
                       type: dict
                       $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
+                    route_reflector_client:
+                      type: bool
+                      description: Configure the peer as a route-reflector-client.
                     shutdown:
                       type: bool
               bgp:
