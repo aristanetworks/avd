@@ -3986,8 +3986,10 @@ keys:
     primary_key: name
     description: 'IPv6 extended access-lists supporting substitution on certain fields.
 
-      These access-lists can be referenced under network services `svis` using `ipv6_acl_in`
-      / `ipv6_acl_out`, and will only be configured on devices where they are in use.
+      These access-lists can be referenced using `ipv6_acl_in` / `ipv6_acl_out` under
+      network services `svis`, or under node type `l3_interfaces` and `l3_port_channels`,
+
+      and will only be configured on devices where they are in use.
 
 
       The substitution is useful when assigning the same access-list on multiple interfaces
@@ -3996,13 +3998,31 @@ keys:
       When using substitution, the interface name will be appended to the ACL name.
 
 
-      The "interface_ip" substitution field is resolved from `ipv6_address` set on
-      the SVI.
+      The "interface_ipv6" substitution field is resolved per interface type:
 
-      If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is
-      used as a fallback.
+      - For SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals`
+      is used as a fallback.
 
-      If neither is set, the substitution will fail with an error.'
+      - For L3 interfaces and L3 port-channels: resolved from the first entry of `ipv6_addresses`.
+
+      If the required field is not set, the substitution will fail with an error.
+
+
+      The "peer_ipv6" substitution field is resolved per interface type:
+
+      - For SVIs: not supported. Substitution will fail with an error if used.
+
+      - For network services L3 interfaces and L3 port-channels: not supported. Substitution
+      will fail with an error if used.
+
+      - For node type L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+
+      If `peer_ipv6` is not set on the interface, the substitution will fail with
+      an error.
+
+
+      Note: The "interface_ip" token is deprecated and will be removed in AVD 7.0.0.
+      Use "interface_ipv6" instead.'
     items:
       $ref: eos_cli_config_gen#/keys/ipv6_access_lists/items
       type: dict
@@ -4021,8 +4041,11 @@ keys:
             keys:
               source:
                 type: str
-                description: 'This field supports substitution of the field "interface_ip"
-                  for SVIs.
+                description: 'This field supports substitution of the fields "interface_ipv6"
+                  and "peer_ipv6".
+
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -4032,8 +4055,11 @@ keys:
                   Required except for remarks.'
               destination:
                 type: str
-                description: 'This field supports substitution of the field "interface_ip"
-                  for SVIs.
+                description: 'This field supports substitution of the fields "interface_ipv6"
+                  and "peer_ipv6".
+
+                  Token "interface_ip" is also accepted but deprecated and will be
+                  removed in AVD 7.0.0.
 
                   Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
                   or "<ipv6>".
@@ -6269,10 +6295,13 @@ keys:
                         the ingress direction.
 
                         The access-list must be defined under `ipv6_acls` and supports
-                        substitution of the field "interface_ip".
+                        substitution of the field "interface_ipv6",
 
-                        The "interface_ip" substitution field is resolved from the
-                        IPv6 address set on the interface for this node.'
+                        resolved from the IPv6 address set on the interface for this
+                        node.
+
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6281,10 +6310,13 @@ keys:
                         the egress direction.
 
                         The access-list must be defined under `ipv6_acls` and supports
-                        substitution of the field "interface_ip".
+                        substitution of the field "interface_ipv6",
 
-                        The "interface_ip" substitution field is resolved from the
-                        IPv6 address set on the interface for this node.'
+                        resolved from the IPv6 address set on the interface for this
+                        node.
+
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6567,10 +6599,12 @@ keys:
                         the ingress direction.
 
                         The access-list must be defined under `ipv6_acls` and supports
-                        substitution of the field "interface_ip".
+                        substitution of the field "interface_ipv6",
 
-                        The "interface_ip" substitution field is resolved from the
-                        first IPv6 address set on the interface.'
+                        resolved from the first IPv6 address set on the interface.
+
+                        Token "interface_ip" is also accepted but deprecated and will
+                        be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6579,10 +6613,12 @@ keys:
                         the egress direction.
 
                         The access-list must be defined under `ipv6_acls` and supports
-                        substitution of the field "interface_ip".
+                        substitution of the field "interface_ipv6",
 
-                        The "interface_ip" substitution field is resolved from the
-                        first IPv6 address set on the interface.'
+                        resolved from the first IPv6 address set on the interface.
+
+                        Token "interface_ip" is also accepted but deprecated and will
+                        be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -7017,6 +7053,9 @@ keys:
                     bfd_timers:
                       type: dict
                       $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
+                    route_reflector_client:
+                      type: bool
+                      description: Configure the peer as a route-reflector-client.
                     shutdown:
                       type: bool
               bgp:
@@ -15499,6 +15538,10 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15548,6 +15591,32 @@ $defs:
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
             for "interface_ip" and "peer_ip".'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_in:
+          description: 'Name of the IPv6 access-list to be assigned in the ingress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_out:
+          description: 'Name of the IPv6 Access-list to be assigned in the egress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
@@ -15754,6 +15823,10 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        peer_ipv6:
+          type: str
+          description: The peer device IPv6 address (no mask). Used for field substitution
+            in `ipv6_acls` entries with the "peer_ipv6" token.
         bgp:
           type: dict
           description: 'Configure BGP peering for the interface. Supports IPv4 BGP
@@ -15803,6 +15876,32 @@ $defs:
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
             for "interface_ip" and "peer_ip".'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_in:
+          description: 'Name of the IPv6 access-list to be assigned in the ingress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
+          type: str
+          convert_types:
+          - int
+        ipv6_acl_out:
+          description: 'Name of the IPv6 Access-list to be assigned in the egress
+            direction.
+
+            The access-list must be defined under `ipv6_acls` and supports field substitution
+            for "interface_ipv6" (resolved from the first entry of `ipv6_addresses`)
+            and "peer_ipv6" (resolved from `peer_ipv6`).
+
+            Token "interface_ip" is also accepted but deprecated and will be removed
+            in AVD 7.0.0.'
           type: str
           convert_types:
           - int
