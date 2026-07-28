@@ -61,7 +61,7 @@
     | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
     | [<samp>mpls_overlay_role</samp>](## "mpls_overlay_role") | String |  |  |  |  |
-    | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.<br>For all other evpn roles there is no default. |
+    | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere,<br>after excluding hostnames configured under evpn_gateway.remote_peers.<br>For all other evpn roles there is no default. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "evpn_route_servers.[]") | String |  |  |  |  |
     | [<samp>mpls_route_reflectors</samp>](## "mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mpls_route_reflectors.[]") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
@@ -265,7 +265,8 @@
     evpn_role: <str>
     mpls_overlay_role: <str>
 
-    # For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.
+    # For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere,
+    # after excluding hostnames configured under evpn_gateway.remote_peers.
     # For all other evpn roles there is no default.
     evpn_route_servers:
       - <str>

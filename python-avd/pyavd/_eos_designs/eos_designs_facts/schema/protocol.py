@@ -1244,11 +1244,12 @@ class EosDesignsFactsProtocol(Protocol):
     evpn_route_servers: EvpnRouteServers
     """
     For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches
-    variable set elsewhere.
-    For all other evpn roles there is no default.
+    variable set elsewhere,
+    after excluding hostnames configured under evpn_gateway.remote_peers.
+    For
+    all other evpn roles there is no default.
 
-    Subclass of AvdList with
-    `str` items.
+    Subclass of AvdList with `str` items.
     """
     mpls_route_reflectors: MplsRouteReflectors
     """
@@ -1471,11 +1472,12 @@ class EosDesignsFactsProtocol(Protocol):
                 mpls_overlay_role: mpls_overlay_role
                 evpn_route_servers:
                    For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches
-                   variable set elsewhere.
-                   For all other evpn roles there is no default.
+                   variable set elsewhere,
+                   after excluding hostnames configured under evpn_gateway.remote_peers.
+                   For
+                   all other evpn roles there is no default.
 
-                   Subclass of AvdList with
-                   `str` items.
+                   Subclass of AvdList with `str` items.
                 mpls_route_reflectors:
                    List of inventory hostname acting as MPLS route-reflectors.
 

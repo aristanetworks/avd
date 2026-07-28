@@ -15,6 +15,7 @@ l3leaf:
       id: 4
       bgp_as: 65106
       mgmt_ip: 192.168.200.113/24
+      evpn_role: server
       evpn_route_servers:
         - reverse-evpn-gateway-remote-peer
 

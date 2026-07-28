@@ -8272,18 +8272,22 @@ class EosDesigns(EosDesignsRootModel):
             If a remote
             peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
             peering.
-            When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-            the local node must have EVPN overlay enabled when `remote_peers` is configured.
-            When
-            `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-            Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-            manually overridden.
-            Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-            with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+            When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+            reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+            nor `bgp_as` is manually overridden.
+            When reverse EVPN Gateway core peering is enabled, setting
+            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+            node to have EVPN overlay enabled when `remote_peers` is configured.
+            With the default
+            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+            configured on nodes without EVPN overlay are ignored.
+            Auto-rendered reverse EVPN Gateway core
+            peering towards inventory peers marked with `is_deployed: false` honors
+            `shutdown_bgp_towards_undeployed_peers`.
 
 
-            Subclass of
-            AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items.
+            Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8337,18 +8341,22 @@ class EosDesigns(EosDesignsRootModel):
                            If a remote
                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                            peering.
-                           When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                           the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                           When
-                           `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                           Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                           manually overridden.
-                           Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                           with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                           When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                           reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                           nor `bgp_as` is manually overridden.
+                           When reverse EVPN Gateway core peering is enabled, setting
+                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                           node to have EVPN overlay enabled when `remote_peers` is configured.
+                           With the default
+                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                           configured on nodes without EVPN overlay are ignored.
+                           Auto-rendered reverse EVPN Gateway core
+                           peering towards inventory peers marked with `is_deployed: false` honors
+                           `shutdown_bgp_towards_undeployed_peers`.
 
 
-                           Subclass of
-                           AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items.
+                           Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -13624,18 +13632,22 @@ class EosDesigns(EosDesignsRootModel):
             If a remote
             peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
             peering.
-            When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-            the local node must have EVPN overlay enabled when `remote_peers` is configured.
-            When
-            `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-            Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-            manually overridden.
-            Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-            with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+            When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+            reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+            nor `bgp_as` is manually overridden.
+            When reverse EVPN Gateway core peering is enabled, setting
+            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+            node to have EVPN overlay enabled when `remote_peers` is configured.
+            With the default
+            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+            configured on nodes without EVPN overlay are ignored.
+            Auto-rendered reverse EVPN Gateway core
+            peering towards inventory peers marked with `is_deployed: false` honors
+            `shutdown_bgp_towards_undeployed_peers`.
 
 
-            Subclass of
-            AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            Subclass of AvdIndexedList with `RemotePeersItem` items.
+            Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13689,18 +13701,22 @@ class EosDesigns(EosDesignsRootModel):
                            If a remote
                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                            peering.
-                           When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                           the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                           When
-                           `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                           Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                           manually overridden.
-                           Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                           with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                           When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                           reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                           nor `bgp_as` is manually overridden.
+                           When reverse EVPN Gateway core peering is enabled, setting
+                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                           node to have EVPN overlay enabled when `remote_peers` is configured.
+                           With the default
+                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                           configured on nodes without EVPN overlay are ignored.
+                           Auto-rendered reverse EVPN Gateway core
+                           peering towards inventory peers marked with `is_deployed: false` honors
+                           `shutdown_bgp_towards_undeployed_peers`.
 
 
-                           Subclass of
-                           AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                           Subclass of AvdIndexedList with `RemotePeersItem` items.
+                           Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -53879,18 +53895,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -53944,18 +53964,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -59208,18 +59232,22 @@ class EosDesigns(EosDesignsRootModel):
                             If a remote
                             peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                             peering.
-                            When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                            the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                            When
-                            `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                            Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                            manually overridden.
-                            Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                            with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                            When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                            reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                            nor `bgp_as` is manually overridden.
+                            When reverse EVPN Gateway core peering is enabled, setting
+                            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                            node to have EVPN overlay enabled when `remote_peers` is configured.
+                            With the default
+                            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                            configured on nodes without EVPN overlay are ignored.
+                            Auto-rendered reverse EVPN Gateway core
+                            peering towards inventory peers marked with `is_deployed: false` honors
+                            `shutdown_bgp_towards_undeployed_peers`.
 
 
-                            Subclass of
-                            AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items.
+                            Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -59273,18 +59301,22 @@ class EosDesigns(EosDesignsRootModel):
                                            If a remote
                                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                            peering.
-                                           When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                           the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                           When
-                                           `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                           Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                           manually overridden.
-                                           Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                           with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                           When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                           reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                           nor `bgp_as` is manually overridden.
+                                           When reverse EVPN Gateway core peering is enabled, setting
+                                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                           node to have EVPN overlay enabled when `remote_peers` is configured.
+                                           With the default
+                                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                           configured on nodes without EVPN overlay are ignored.
+                                           Auto-rendered reverse EVPN Gateway core
+                                           peering towards inventory peers marked with `is_deployed: false` honors
+                                           `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                           Subclass of
-                                           AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                           Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -64500,18 +64532,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -64565,18 +64601,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -69855,18 +69895,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -69920,18 +69964,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -89593,18 +89641,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -89658,18 +89710,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -94922,18 +94978,22 @@ class EosDesigns(EosDesignsRootModel):
                             If a remote
                             peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                             peering.
-                            When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                            the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                            When
-                            `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                            Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                            manually overridden.
-                            Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                            with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                            When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                            reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                            nor `bgp_as` is manually overridden.
+                            When reverse EVPN Gateway core peering is enabled, setting
+                            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                            node to have EVPN overlay enabled when `remote_peers` is configured.
+                            With the default
+                            `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                            configured on nodes without EVPN overlay are ignored.
+                            Auto-rendered reverse EVPN Gateway core
+                            peering towards inventory peers marked with `is_deployed: false` honors
+                            `shutdown_bgp_towards_undeployed_peers`.
 
 
-                            Subclass of
-                            AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                            Subclass of AvdIndexedList with `RemotePeersItem` items.
+                            Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -94987,18 +95047,22 @@ class EosDesigns(EosDesignsRootModel):
                                            If a remote
                                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                            peering.
-                                           When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                           the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                           When
-                                           `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                           Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                           manually overridden.
-                                           Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                           with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                           When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                           reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                           nor `bgp_as` is manually overridden.
+                                           When reverse EVPN Gateway core peering is enabled, setting
+                                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                           node to have EVPN overlay enabled when `remote_peers` is configured.
+                                           With the default
+                                           `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                           configured on nodes without EVPN overlay are ignored.
+                                           Auto-rendered reverse EVPN Gateway core
+                                           peering towards inventory peers marked with `is_deployed: false` honors
+                                           `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                           Subclass of
-                                           AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                           Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -100214,18 +100278,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -100279,18 +100347,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -105569,18 +105641,22 @@ class EosDesigns(EosDesignsRootModel):
                         If a remote
                         peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                         peering.
-                        When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                        the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                        When
-                        `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                        Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                        manually overridden.
-                        Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                        with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                        When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                        reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                        nor `bgp_as` is manually overridden.
+                        When reverse EVPN Gateway core peering is enabled, setting
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                        node to have EVPN overlay enabled when `remote_peers` is configured.
+                        With the default
+                        `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                        configured on nodes without EVPN overlay are ignored.
+                        Auto-rendered reverse EVPN Gateway core
+                        peering towards inventory peers marked with `is_deployed: false` honors
+                        `shutdown_bgp_towards_undeployed_peers`.
 
 
-                        Subclass of
-                        AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        Subclass of AvdIndexedList with `RemotePeersItem` items.
+                        Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -105634,18 +105710,22 @@ class EosDesigns(EosDesignsRootModel):
                                        If a remote
                                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
                                        peering.
-                                       When `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` is set to `true`,
-                                       the local node must have EVPN overlay enabled when `remote_peers` is configured.
-                                       When
-                                       `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`, reverse EVPN
-                                       Gateway core peering is auto-rendered for inventory peers where neither `ip_address` nor `bgp_as` is
-                                       manually overridden.
-                                       Auto-rendered reverse EVPN Gateway core peering towards inventory peers marked
-                                       with `is_deployed: false` honors `shutdown_bgp_towards_undeployed_peers`.
+                                       When `avd_design_future.configure_reverse_evpn_gateway_remote_peers` is set to `true`,
+                                       reverse EVPN Gateway core peering is auto-rendered for inventory peers where neither `ip_address`
+                                       nor `bgp_as` is manually overridden.
+                                       When reverse EVPN Gateway core peering is enabled, setting
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn` to `true` requires the local
+                                       node to have EVPN overlay enabled when `remote_peers` is configured.
+                                       With the default
+                                       `avd_design_future.raise_for_evpn_gateway_remote_peers_without_evpn: false`, `remote_peers`
+                                       configured on nodes without EVPN overlay are ignored.
+                                       Auto-rendered reverse EVPN Gateway core
+                                       peering towards inventory peers marked with `is_deployed: false` honors
+                                       `shutdown_bgp_towards_undeployed_peers`.
 
 
-                                       Subclass of
-                                       AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items.
+                                       Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 

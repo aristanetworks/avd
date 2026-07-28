@@ -19,6 +19,8 @@ l3leaf:
       id: 3
       bgp_as: 65105
       mgmt_ip: 192.168.200.112/24
+      evpn_route_servers:
+        - reverse-overlapping-evpn-route-server-and-gateway-remote-peer
       evpn_gateway:
         remote_peers:
           - hostname: reverse-overlapping-evpn-route-server-and-gateway-remote-peer
