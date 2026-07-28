@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import pytest
 
-from pyavd._utils.deprecated_dict import DeprecatedDict
+from pyavd._errors import AvdDeprecationWarning
 
 
 def test_get_emits_deprecation_once_and_returns_value() -> None:
@@ -14,5 +14,5 @@ def test_get_emits_deprecation_once_and_returns_value() -> None:
     assert deprecated_dict.get("interface") == "Ethernet1"
     assert deprecated_dict.get("missing", "fallback") == "fallback"
 
-    with pytest.warns(DeprecationWarning, match="deprecated"):
-        interface = deprecated_dict.get("interface")
+    with pytest.warns(AvdDeprecationWarning, match="deprecated"):
+        interface =deprecated_dict.get("interface")
