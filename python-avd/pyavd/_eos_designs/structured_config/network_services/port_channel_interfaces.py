@@ -95,7 +95,6 @@ class PortChannelInterfacesMixin(Protocol):
                         validate_state=self.structured_config_utils.get_interface_validate_state(),
                     ),
                 )
-
                 self._update_port_channel_interface_ipv4(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf, tenant=tenant)
                 self._update_port_channel_interface_ipv6(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf)
 
@@ -142,11 +141,11 @@ class PortChannelInterfacesMixin(Protocol):
         if l3_port_channel.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
         if l3_port_channel.ipv4_acl_out:
             acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
         self._update_port_channel_interface_ospf(port_channel_interface, l3_port_channel=l3_port_channel, vrf=vrf, tenant=tenant)
 
     def _update_port_channel_interface_ospf(
@@ -184,13 +183,13 @@ class PortChannelInterfacesMixin(Protocol):
         if ipv6_interface_ip and "/" in ipv6_interface_ip:
             ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
         if l3_port_channel.ipv6_acl_in:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_in, interface_name=l3_port_channel.name, interface_ip=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_in, interface_name=l3_port_channel.name, interface_ipv6=ipv6_interface_ip)
             port_channel_interface.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
         if l3_port_channel.ipv6_acl_out:
-            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_out, interface_name=l3_port_channel.name, interface_ip=ipv6_interface_ip)
+            acl = self.shared_utils.get_ipv6_acl(name=l3_port_channel.ipv6_acl_out, interface_name=l3_port_channel.name, interface_ipv6=ipv6_interface_ip)
             port_channel_interface.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
     def _set_point_to_point_port_channel_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,
