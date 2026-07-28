@@ -2,8 +2,6 @@
 # Reference from Ansible partner certification requirements:
 # https://raw.githubusercontent.com/ansible-collections/partner-certification-requirements/refs/heads/main/docs/.ansible-lint
 profile: production
-# Skip kips Galaxy requirement/dependency installation since we mock the modules
-offline: true
 
 enable_list:
   - no-log-password
