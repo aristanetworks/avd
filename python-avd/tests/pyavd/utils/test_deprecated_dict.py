@@ -15,4 +15,4 @@ def test_get_emits_deprecation_once_and_returns_value() -> None:
     assert deprecated_dict.get("missing", "fallback") == "fallback"
 
     with pytest.warns(AvdDeprecationWarning, match="deprecated"):
-        interface =deprecated_dict.get("interface")
+        interface = deprecated_dict.get("interface")
