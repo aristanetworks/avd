@@ -71,6 +71,12 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
+- name: RM-default-11.11.1.2-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ip next-hop 10.10.1.2
 router_bgp:
   as: '65001'
   router_id: 192.0.255.1
@@ -109,6 +115,15 @@ router_bgp:
     peer_group: MYPEERGROUP
     metadata:
       validate_state: false
+    route_reflector_client: true
+    default_originate:
+      enabled: true
+      always: true
+  - ip_address: 11.11.1.2
+    peer_group: MYPEERGROUP
+    metadata:
+      validate_state: false
+    route_map_out: RM-default-11.11.1.2-SET-NEXT-HOP-OUT
   redistribute:
     connected:
       enabled: true
@@ -119,6 +134,8 @@ router_bgp:
       activate: true
     neighbors:
     - ip_address: 10.10.1.2
+      activate: true
+    - ip_address: 11.11.1.2
       activate: true
   vrfs:
   - name: validate_bgp_peers
@@ -134,6 +151,9 @@ router_bgp:
         validate_state: true
     - ip_address: 10.10.2.2
       peer_group: VALIDATE_BGP_PEERS
+      route_reflector_client: true
+      default_originate:
+        always: true
       metadata:
         validate_state: true
     redistribute:
