@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'vtep_loopback_ipv6_pool' is required but was not found for host 'missing-vtep-loopback-ipv6-pool'.
