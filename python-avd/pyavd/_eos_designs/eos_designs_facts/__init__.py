@@ -90,7 +90,7 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def mgmt_ip(self) -> str | None:
         """Exposed in avd_switch_facts."""
-        return self.shared_utils.node_config.mgmt_ip
+        return self.shared_utils.oob_mgmt_ip
 
     @remove_cached_property_type
     @cached_property

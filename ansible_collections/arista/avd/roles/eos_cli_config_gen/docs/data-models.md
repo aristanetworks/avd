@@ -774,6 +774,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monito
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
+### Schedule
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/schedule.md
+--8<--
+
 ### SFLOW
 
 --8<--

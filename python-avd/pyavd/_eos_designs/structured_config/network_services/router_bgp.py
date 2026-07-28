@@ -242,6 +242,13 @@ class RouterBgpMixin(Protocol):
                         if bgp_peer_config.default_originate and not bgp_peer_config.default_originate.route_map:
                             bgp_peer_config.default_originate.route_map = route_map
 
+                    # Render enabled: True in case of always or route_map set for bgp peer
+                    # TODO: 7.0 Add default_originate.enabled key all around the data models.
+                    if (bgp_peer_config.default_originate.route_map or bgp_peer.default_originate.always is not None) and isinstance(
+                        bgp_vrf, EosCliConfigGen.RouterBgp
+                    ):
+                        bgp_peer_config.default_originate.enabled = True
+
                     # Needing this since type checker gets too confused about the type of bgp_vrf vs. bgp_peer_config.
                     if vrf.name == "default":
                         # VRF default is added directly under router_bgp
