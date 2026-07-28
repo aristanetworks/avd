@@ -65508,8 +65508,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -65538,8 +65538,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -65568,8 +65568,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -65600,9 +65600,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            level: Level | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            level: Level | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -65637,8 +65637,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                match_internal: bool | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
+                                match_internal: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Leaked.
@@ -65662,7 +65662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 LeakedMatchExternal.
 
@@ -65684,7 +65684,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 LeakedMatchNssaExternal.
 
@@ -65816,9 +65816,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    router_id: str | None | UndefinedType = Undefined,
-                    passive_interface_default: bool | None | UndefinedType = Undefined,
-                    auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -65854,7 +65854,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                             """
                             Dhcp.
 
@@ -65881,8 +65881,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Bgp.
@@ -65911,8 +65911,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Connected.
@@ -65941,8 +65941,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Static.
@@ -65973,9 +65973,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            level: Level | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
+                            level: Level | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Isis.
@@ -66010,8 +66010,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                match_internal: bool | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
+                                match_internal: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Leaked.
@@ -66035,7 +66035,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 LeakedMatchExternal.
 
@@ -66057,7 +66057,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 LeakedMatchNssaExternal.
 
@@ -66195,9 +66195,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     redistribute: Redistribute | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
-                    router_id: str | None | UndefinedType = Undefined,
-                    passive_interface_default: bool | None | UndefinedType = Undefined,
-                    auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -66240,8 +66240,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Bgp.
@@ -66270,8 +66270,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Connected.
@@ -66300,8 +66300,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Static.
@@ -66337,9 +66337,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                level: Level | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                level: Level | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -66374,8 +66374,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    match_internal: bool | None | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
+                                    match_internal: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Leaked.
@@ -66399,7 +66399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                     """
                                     LeakedMatchExternal.
 
@@ -66421,7 +66421,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                     """
                                     LeakedMatchNssaExternal.
 
@@ -66553,9 +66553,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        router_id: str | None | UndefinedType = Undefined,
-                        passive_interface_default: bool | None | UndefinedType = Undefined,
-                        auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                        router_id: str | UndefinedType | None = Undefined,
+                        passive_interface_default: bool | UndefinedType | None = Undefined,
+                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -66591,7 +66591,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 Dhcp.
 
@@ -66618,8 +66618,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Bgp.
@@ -66648,8 +66648,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Connected.
@@ -66678,8 +66678,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Static.
@@ -66715,9 +66715,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                level: Level | None | UndefinedType = Undefined,
-                                route_map: str | None | UndefinedType = Undefined,
-                                include_leaked: bool | None | UndefinedType = Undefined,
+                                level: Level | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 Isis.
@@ -66752,8 +66752,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    match_internal: bool | None | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
+                                    match_internal: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Leaked.
@@ -66777,7 +66777,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                     """
                                     LeakedMatchExternal.
 
@@ -66799,7 +66799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                     """
                                     LeakedMatchNssaExternal.
 
@@ -66937,9 +66937,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         redistribute: Redistribute | UndefinedType = Undefined,
                         enabled: bool | UndefinedType = Undefined,
-                        router_id: str | None | UndefinedType = Undefined,
-                        passive_interface_default: bool | None | UndefinedType = Undefined,
-                        auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                        router_id: str | UndefinedType | None = Undefined,
+                        passive_interface_default: bool | UndefinedType | None = Undefined,
+                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -67007,12 +67007,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    router_id: str | None | UndefinedType = Undefined,
-                    passive_interface_default: bool | None | UndefinedType = Undefined,
-                    auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                    eos_cli: str | None | UndefinedType = Undefined,
+                    eos_cli: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -67098,13 +67098,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                router_id: str | None | UndefinedType = Undefined,
-                passive_interface_default: bool | None | UndefinedType = Undefined,
-                auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
+                router_id: str | UndefinedType | None = Undefined,
+                passive_interface_default: bool | UndefinedType | None = Undefined,
+                auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                eos_cli: str | None | UndefinedType = Undefined,
+                eos_cli: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 RouterOspfv3.
