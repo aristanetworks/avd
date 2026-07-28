@@ -3713,7 +3713,6 @@ flow tracking hardware
    tracker a1
       record export on inactive timeout 3666
       record export on interval 5666
-      record export mpls
       exporter T2-E1
          collector 42.42.42.42
       !

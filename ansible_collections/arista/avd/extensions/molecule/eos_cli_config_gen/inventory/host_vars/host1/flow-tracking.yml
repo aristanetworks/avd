@@ -79,7 +79,6 @@ flow_tracking:
         record_export:
           on_inactive_timeout: 3666
           on_interval: 5666
-          mpls: true
         exporters:
           # Test for sort with ignore_case: false
           - name: a2-e1
