@@ -37,9 +37,9 @@ class RouterPimSparseModeMixin(Protocol):
                     if vrf.name == "default":
                         msg = (
                             f"Use 'underlay_multicast_rps' instead of 'tenant[name={tenant.name}].vrfs[name=default].pim_rp_addresses'"
-                            f" for the host '{self.shared_utils.hostname}'."
+                            f" for host '{self.shared_utils.hostname}'."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     ipv4_config = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4()
                     for rps in vrf_rps:
                         rpaddress = EosCliConfigGen.RouterPimSparseMode.VrfsItem.Ipv4.RpAddressesItem()
