@@ -6300,8 +6300,8 @@ keys:
                         resolved from the IPv6 address set on the interface for this
                         node.
 
-                        Token "interface_ip" is also accepted but deprecated and will
-                        be removed in AVD 7.0.0.'
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int
@@ -6315,11 +6315,8 @@ keys:
                         resolved from the IPv6 address set on the interface for this
                         node.
 
-                        Token "interface_ip" is also accepted but deprecated and will
-                        be removed in AVD 7.0.0.
-
-                        The "interface_ip" substitution field is resolved from the
-                        IPv6 address set on the interface for this node.'
+                        Deprecated token "interface_ip" is also accepted as an alias
+                        for "interface_ipv6" and will be removed in AVD 7.0.0.'
                       type: str
                       convert_types:
                       - int

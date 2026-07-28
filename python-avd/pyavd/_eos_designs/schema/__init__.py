@@ -34712,8 +34712,8 @@ class EosDesigns(EosDesignsRootModel):
                 defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the
                 IPv6 address set on the interface for this node.
-                Token "interface_ip" is also accepted but
-                deprecated and will be removed in AVD 7.0.0.
+                Deprecated token "interface_ip" is also accepted as
+                an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
@@ -34722,10 +34722,8 @@ class EosDesigns(EosDesignsRootModel):
                 under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                 resolved from the IPv6
                 address set on the interface for this node.
-                Token "interface_ip" is also accepted but deprecated and
-                will be removed in AVD 7.0.0.
-                The "interface_ip" substitution field is resolved from the IPv6
-                address set on the interface for this node.
+                Deprecated token "interface_ip" is also accepted as an
+                alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                 """
                 ospf: Ospf
                 """
@@ -34859,18 +34857,16 @@ class EosDesigns(EosDesignsRootModel):
                                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the
                                IPv6 address set on the interface for this node.
-                               Token "interface_ip" is also accepted but
-                               deprecated and will be removed in AVD 7.0.0.
+                               Deprecated token "interface_ip" is also accepted as
+                               an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                resolved from the IPv6
                                address set on the interface for this node.
-                               Token "interface_ip" is also accepted but deprecated and
-                               will be removed in AVD 7.0.0.
-                               The "interface_ip" substitution field is resolved from the IPv6
-                               address set on the interface for this node.
+                               Deprecated token "interface_ip" is also accepted as an
+                               alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                             ospf:
                                OSPF interface configuration.
 
@@ -84591,8 +84587,8 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the
                         IPv6 address set on the interface for this node.
-                        Token "interface_ip" is also accepted but
-                        deprecated and will be removed in AVD 7.0.0.
+                        Deprecated token "interface_ip" is also accepted as
+                        an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
@@ -84601,10 +84597,8 @@ class EosDesigns(EosDesignsRootModel):
                         under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                         resolved from the IPv6
                         address set on the interface for this node.
-                        Token "interface_ip" is also accepted but deprecated and
-                        will be removed in AVD 7.0.0.
-                        The "interface_ip" substitution field is resolved from the IPv6
-                        address set on the interface for this node.
+                        Deprecated token "interface_ip" is also accepted as an
+                        alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                         """
                         ospf: Ospf
                         """
@@ -84738,18 +84732,16 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the
                                        IPv6 address set on the interface for this node.
-                                       Token "interface_ip" is also accepted but
-                                       deprecated and will be removed in AVD 7.0.0.
+                                       Deprecated token "interface_ip" is also accepted as
+                                       an alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
                                        resolved from the IPv6
                                        address set on the interface for this node.
-                                       Token "interface_ip" is also accepted but deprecated and
-                                       will be removed in AVD 7.0.0.
-                                       The "interface_ip" substitution field is resolved from the IPv6
-                                       address set on the interface for this node.
+                                       Deprecated token "interface_ip" is also accepted as an
+                                       alias for "interface_ipv6" and will be removed in AVD 7.0.0.
                                     ospf:
                                        OSPF interface configuration.
 
