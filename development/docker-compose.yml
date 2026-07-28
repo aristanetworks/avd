@@ -6,6 +6,8 @@ services:
     working_dir: /data
     volumes:
       - ${PWD}/:/data
+    environment:
+      AVD_ENABLE_GIT_REVISION_DATE: "false"
     ports:
       - 127.0.0.1:8000:8000
     network_mode: host
