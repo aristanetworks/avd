@@ -277,7 +277,8 @@ cv_register_detailed_results: false
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
 cv_workspace_build_timeout: 300
 
-# Maximum number of retry attempts to synchronize Workspace
+# Maximum number of retry attempts to synchronize Workspace.
+# Requires CloudVision 2026.2.0 or later.
 cv_workspace_max_sync_retries: 5
 
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.

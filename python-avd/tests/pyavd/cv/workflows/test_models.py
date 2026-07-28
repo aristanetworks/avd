@@ -577,6 +577,23 @@ class TestCVWorkspace:
         assert result["build_id"] == "build-id"
         assert result["device_build_results"] == []
 
+    def test_reset(self) -> None:
+        """Tests that reset clears mutable state from the previous deployment attempt."""
+        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
+        ws = CVWorkspace(
+            state="submit failed",
+            build_id="build-id",
+            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+            synchronization_required=True,
+        )
+
+        ws.reset()
+
+        assert not ws.device_build_results
+        assert ws.state == "pending"
+        assert ws.build_id is None
+        assert ws.synchronization_required is False
+
 
 class TestCVDevice:
     def test_get_result(self) -> None:
@@ -801,6 +818,7 @@ class TestDeployToCvResult:
             state="submit failed",
             build_id="b1",
             device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+            synchronization_required=True,
         )
         cc = CVChangeControl(avd_change_control=avd_cc)
         original = DeployToCvResult(
@@ -828,6 +846,7 @@ class TestDeployToCvResult:
         assert any(re.search(r"rebuild_for_workspace_synchronization.*ws-name.*ws-id", str(r.message)) for r in caplog.records)
         assert ws.state == "pending"
         assert ws.build_id is None
+        assert ws.synchronization_required is False
 
     def test_rebuild_for_workspace_synchronization_clears_device_build_results(self) -> None:
         """Tests that workspace.device_build_results is cleared in-place so the next build starts fresh."""

@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
+from pyavd._cv.client.exceptions import CVResourceNotFound, CVWorkspaceSubmitFailedInactiveDevices, CVWorkspaceSynchronizationAttemptsExhausted
 from pyavd._cv.workflows.deploy_to_cv import _finalize_change_control, deploy_to_cv
 from pyavd._cv.workflows.models import (
     AvdWorkspace,
@@ -198,6 +198,40 @@ async def test_deploy_to_cv(
 
 
 @pytest.mark.asyncio
+async def test_deploy_to_cv_abandons_workspace_when_device_is_missing() -> None:
+    """Test that a missing-device failure abandons the Workspace."""
+    mock_cv_client = AsyncMock()
+    mock_cv_client.__aenter__.return_value = mock_cv_client
+    error = CVResourceNotFound("Missing devices on CloudVision")
+
+    with (
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
+        patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock(side_effect=error)),
+    ):
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=8080,
+                proxy_username=None,
+                proxy_password=None,
+            ),
+            workspace=CVWorkspace(avd_workspace=AvdWorkspace(id="test-workspace")),
+        )
+
+    assert result.failed
+    assert result.errors == [error]
+    assert result.workspace.state == "abandoned"
+    mock_cv_client.abandon_workspace.assert_called_once_with(workspace_id="test-workspace")
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("grpc_channel_configuration"),
     [
@@ -336,10 +370,13 @@ async def test_deploy_to_cv_workspace_sync_retry() -> None:
 
 
 @pytest.mark.asyncio
-async def test_deploy_to_cv_loop_warnings_merged_on_success() -> None:
-    """Tests that warnings appended to loop_warnings by finalize_workspace_on_cv are merged into result.warnings on success and are not duplicated on retry."""
+async def test_deploy_to_cv_attempt_warnings_retained_on_success() -> None:
+    """Tests that warnings from a synchronized attempt are discarded while earlier and final-attempt warnings are retained."""
     mock_cv_client = AsyncMock()
     finalize_workspace_on_cv_call_count = 0
+
+    def _verify_devices_on_cv(warnings: list, **_kwargs: object) -> None:
+        warnings.append("verification-warning")
 
     def _finalize_workspace_on_cv(workspace: CVWorkspace, warnings: list, **_kwargs: object) -> None:
         """Append warning at each call and set workspace.synchronization_required to True (only at first call)."""
@@ -357,7 +394,7 @@ async def test_deploy_to_cv_loop_warnings_merged_on_success() -> None:
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client),
         patch("pyavd._cv.workflows.deploy_to_cv.create_workspace_on_cv", AsyncMock()),
         patch("pyavd._cv.workflows.deploy_to_cv.verify_device_inputs"),
-        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock()),
+        patch("pyavd._cv.workflows.deploy_to_cv.verify_devices_on_cv", AsyncMock(side_effect=_verify_devices_on_cv)),
         patch("pyavd._cv.workflows.deploy_to_cv._execute_deployment_steps", AsyncMock()),
         patch("pyavd._cv.workflows.deploy_to_cv.finalize_workspace_on_cv", AsyncMock(side_effect=_finalize_workspace_on_cv)),
         patch("pyavd._cv.workflows.deploy_to_cv.rebase_workspace_on_cv", AsyncMock(side_effect=_rebase_workspace_on_cv)),
@@ -379,17 +416,17 @@ async def test_deploy_to_cv_loop_warnings_merged_on_success() -> None:
         )
 
     # finalize_workspace_on_cv runs twice (once per attempt) but the first attempt's warning is discarded on sync.
-    assert result.warnings == ["build-warning"]
+    assert result.warnings == ["verification-warning", "build-warning"]
 
 
 @pytest.mark.asyncio
-async def test_deploy_to_cv_loop_warnings_from_execute_steps_not_duplicated_on_retry() -> None:
-    """Tests that warnings written to loop_warnings by _execute_deployment_steps are merged once and not duplicated on retry."""
+async def test_deploy_to_cv_attempt_warnings_from_execute_steps_not_duplicated_on_retry() -> None:
+    """Tests that deployment-step warnings from a synchronized attempt are discarded before retrying."""
     mock_cv_client = AsyncMock()
     finalize_workspace_on_cv_call_count = 0
 
-    def _execute_deployment_steps(loop_warnings: list, **_kwargs: object) -> None:
-        loop_warnings.append("deploy-step-warning")
+    def _execute_deployment_steps(result: DeployToCvResult, **_kwargs: object) -> None:
+        result.warnings.append("deploy-step-warning")
 
     def _finalize_workspace_on_cv(workspace: CVWorkspace, **_kwargs: object) -> None:
         """Set workspace.synchronization_required to True at first call only."""
@@ -432,8 +469,8 @@ async def test_deploy_to_cv_loop_warnings_from_execute_steps_not_duplicated_on_r
 
 
 @pytest.mark.asyncio
-async def test_deploy_to_cv_loop_warnings_merged_when_finalize_raises() -> None:
-    """Tests that warnings written to loop_warnings by finalize_workspace_on_cv are merged when finalize_workspace_on_cv raises."""
+async def test_deploy_to_cv_attempt_warnings_retained_when_finalize_raises() -> None:
+    """Tests that warnings from the finalization attempt are retained when finalization raises."""
     mock_cv_client = AsyncMock()
 
     def _finalize_workspace_on_cv(warnings: list, **_kwargs: object) -> None:

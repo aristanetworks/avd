@@ -352,6 +352,13 @@ class CVWorkspace:
     def max_sync_retries(self) -> int:
         return self.avd_workspace.max_sync_retries
 
+    def reset(self) -> None:
+        """Reset mutable state before replaying deployment after synchronization."""
+        self.device_build_results.clear()
+        self.state = "pending"
+        self.build_id = None
+        self.synchronization_required = False
+
     def get_result(self) -> dict[str, Any]:
         """Return a representation of this object for the Ansible module result."""
         return {
@@ -403,8 +410,7 @@ class DeployToCvResult:
 
         Warnings of the parent instance are kept to persist items populated outside of the retry loop (device validation, etc.).
         Errors are not retained as any error sets `result.failed=True` and causes immediate Workspace abandonment.
-        workspace.device_build_results is cleared, workspace.state is reset to "pending" and workspace.build_id is to None to flush the state collected during
-        the last build or submit attempt.
+        Workspace mutable state is reset to flush the state collected during the last build or submit attempt.
 
         Returns: New instance of the DeployToCvResult.
         """
@@ -413,10 +419,7 @@ class DeployToCvResult:
             self.workspace.name,
             self.workspace.id,
         )
-        # clear <instance>.workspace.device_build_results to not carry over details of last Workspace build
-        self.workspace.device_build_results.clear()
-        self.workspace.state = "pending"
-        self.workspace.build_id = None
+        self.workspace.reset()
         return DeployToCvResult(
             warnings=self.warnings,
             workspace=self.workspace,

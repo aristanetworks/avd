@@ -31,7 +31,7 @@ from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .models import AvdManifest, CVDevice, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
+    from .models import AvdManifest, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 LOGGER = getLogger(__name__)
 
@@ -47,7 +47,6 @@ async def _execute_deployment_steps(
     device_deployments: list[CVDeviceDeployment],
     strict_tags: bool,
     cv_client: CVClient,
-    loop_warnings: list,
 ) -> None:
     """Execute all deployment sub-workflows which rely on the state of the CloudVision mainline."""
     try:
@@ -103,7 +102,6 @@ async def _execute_deployment_steps(
             cv_pathfinder_metadata=cv_pathfinder_metadata,
             result=result,
             cv_client=cv_client,
-            warnings=loop_warnings,
         )
 
         # Delete any leftover device configs for devices managed by the static config manifest
@@ -118,30 +116,14 @@ async def _execute_deployment_steps(
         result.failed = True
 
 
-async def _finalize_workspace_preserving_warnings(
-    result: DeployToCvResult,
-    cv_client: CVClient,
-    devices: list[CVDevice],
-    loop_warnings: list,
-) -> None:
-    """Finalize the Workspace and preserve warnings collected during the finalize_workspace_on_cv call if it raises."""
-    try:
-        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=loop_warnings)
-    except CVClientException:
-        result.warnings.extend(loop_warnings)
-        raise
-
-
 async def _rebase_workspace_on_cv_or_raise(
     result: DeployToCvResult,
     cv_client: CVClient,
     workspace_sync_attempt: int,
-    loop_warnings: list,
 ) -> None:
     """Rebase the Workspace unless synchronization attempts are exhausted."""
     LOGGER.info("deploy_to_cv: Workspace %s (%s) requires synchronization/rebase.", result.workspace.name, result.workspace.id)
     if workspace_sync_attempt >= result.workspace.max_sync_retries:
-        result.warnings.extend(loop_warnings)
         raise CVWorkspaceSynchronizationAttemptsExhausted(result.workspace.max_sync_retries, result.workspace.name, result.workspace.id)
     LOGGER.info(
         "deploy_to_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
@@ -298,21 +280,29 @@ async def deploy_to_cv(
 
             # Verify devices exist and update CVDevice objects with exists_on_cv.
             # Depending on skip_missing_devices we will raise or skip missing devices.
-            await verify_devices_on_cv(
-                devices=devices,
-                workspace_id=result.workspace.id,
-                skip_missing_devices=skip_missing_devices,
-                warnings=result.warnings,
-                cv_client=cv_client,
-            )
+            try:
+                await verify_devices_on_cv(
+                    devices=devices,
+                    workspace_id=result.workspace.id,
+                    skip_missing_devices=skip_missing_devices,
+                    warnings=result.warnings,
+                    cv_client=cv_client,
+                )
+            except CVClientException as e:
+                result.errors.append(e)
+                result.failed = True
+
+            if result.failed:
+                await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+                result.workspace.state = "abandoned"
+                return result
 
             for workspace_sync_attempt in range(result.workspace.max_sync_retries + 1):
                 if workspace_sync_attempt > 0:
                     result = result.rebuild_for_workspace_synchronization()
 
-                # Collect warnings generated inside the retry loop separately so they are not duplicated
-                # in result.warnings if the Workspace requires synchronization and steps are replayed.
-                loop_warnings: list = []
+                # Track where warnings from this attempt start so they can be discarded if the Workspace requires synchronization.
+                loop_warnings_start = len(result.warnings)
 
                 await _execute_deployment_steps(
                     result=result,
@@ -325,29 +315,26 @@ async def deploy_to_cv(
                     device_deployments=device_deployments,
                     strict_tags=strict_tags,
                     cv_client=cv_client,
-                    loop_warnings=loop_warnings,
                 )
 
                 # Build, submit or abandon Workspace. If failed, we always abandon.
                 if result.failed:
-                    result.warnings.extend(loop_warnings)
                     await cv_client.abandon_workspace(workspace_id=result.workspace.id)
                     result.workspace.state = "abandoned"
                     return result
 
-                await _finalize_workspace_preserving_warnings(result=result, cv_client=cv_client, devices=devices, loop_warnings=loop_warnings)
+                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
 
                 if result.workspace.synchronization_required:
                     await _rebase_workspace_on_cv_or_raise(
                         result=result,
                         cv_client=cv_client,
                         workspace_sync_attempt=workspace_sync_attempt,
-                        loop_warnings=loop_warnings,
                     )
                     # Workspace has been synchronized on CloudVision. We need to replay all changes.
+                    del result.warnings[loop_warnings_start:]
                     continue
                 # Break for-loop as there was no need to synchronize Workspace on CloudVision. All populated states are up-to-date.
-                result.warnings.extend(loop_warnings)
                 break
 
             await _finalize_change_control(result, cv_client)
