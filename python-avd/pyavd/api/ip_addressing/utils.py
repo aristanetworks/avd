@@ -40,7 +40,7 @@ class UtilsMixin(Protocol):
     def _mlag_secondary_id(self: AvdIpAddressingProtocol) -> int:
         """Returns our ID if MLAG is not configured or we are MLAG secondary. Otherwise returns the peer ID."""
         if self.shared_utils.switch_facts.mlag_primary is None:
-            msg = "Never call '_mlag_primary_id' unless MLAG is configured."
+            msg = "Never call '_mlag_secondary_id' unless MLAG is configured."
             raise NotImplementedError(msg)
 
         if self.shared_utils.switch_facts.mlag_primary:
