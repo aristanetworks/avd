@@ -226,7 +226,7 @@
 ##### OSPFv3
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ---------------------------- | ---------------- | ---------------- |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
 {%         for vlan_interface in ospfv3_vlan_interfaces %}
 | {{ vlan_interface.name }} | {{ vlan_interface.ospfv3.passive_interface | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ vlan_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
 {%         endfor %}

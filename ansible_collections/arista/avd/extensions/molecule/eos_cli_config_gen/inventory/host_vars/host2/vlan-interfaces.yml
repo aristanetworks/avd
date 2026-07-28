@@ -38,3 +38,17 @@ vlan_interfaces:
         area: 1000
       ipv6:
         area: 0.0.0.0
+
+  - name: Vlan1001
+    description: Test VLAN with both ospfv3 and ipv6_ospf configurations
+    ospfv3:
+      ipv4:
+        area: 1000
+      ipv6:
+        area: 0.0.0.0
+      passive_interface: true
+      network_point_to_point: true
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29

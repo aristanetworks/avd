@@ -73614,7 +73614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"area": {"type": str}}
                 area: str
-                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)"""
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
                 if TYPE_CHECKING:
 
@@ -73626,7 +73626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
 
                         """
 

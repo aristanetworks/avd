@@ -457,7 +457,7 @@ keys:
                     - int
                   required: true
                   description: |-
-                    OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)
+                    OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             passive_interface:
               type: bool
               description: Include interface but without actively running OSPF.
