@@ -103,7 +103,7 @@ class MgmtMixin(Protocol):
         In ACT Digital Twin mode, `digital_twin.mgmt_gateway` takes precedence over the regular management gateway.
         """
         if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
-            return default(self.node_config.digital_twin.mgmt_gateway, self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+            return default(self.node_config.digital_twin.mgmt_gateway, self.mgmt_gateway)
 
         return self.mgmt_gateway
 
