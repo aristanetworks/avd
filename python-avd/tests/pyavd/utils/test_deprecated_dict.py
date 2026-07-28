@@ -6,6 +6,7 @@ from __future__ import annotations
 import pytest
 
 from pyavd._errors import AvdDeprecationWarning
+from pyavd._utils.deprecated_dict import DeprecatedDict
 
 
 def test_get_emits_deprecation_once_and_returns_value() -> None:
