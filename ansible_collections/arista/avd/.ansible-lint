@@ -2,17 +2,7 @@
 # Reference from Ansible partner certification requirements:
 # https://raw.githubusercontent.com/ansible-collections/partner-certification-requirements/refs/heads/main/docs/.ansible-lint
 profile: production
-# Skip kips Galaxy requirement/dependency installation since we mock the modules
-offline: true
 
-mock_modules:
-  # The following task files depend on other collections and ansible-lint is running in offline mode on galaxy/automation hub
-  # so need to mock the modules or ignore the files.
-  # mocking the module is better as we can catch other issues in them.
-  # - roles/eos_config_deploy_eapi/tasks/main.yml
-  - arista.eos.eos_config
-  # - roles/eos_snapshot/tasks/main.yml
-  - arista.eos.eos_command
 kinds:
   - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
   - yaml: "**/extensions/molecule/howto/artifacts.yml"

@@ -664,7 +664,7 @@ jobs:
       - name: Run ansible-lint
         working-directory: collections
         run: |
-          ansible-lint --force-color --strict -v
+          ansible-lint -c .ansible-lint-offline --profile=production --force-color --strict -v
 
   # ----------------------------------- #
   # Test of pyavd
